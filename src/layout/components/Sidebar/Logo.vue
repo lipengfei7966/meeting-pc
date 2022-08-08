@@ -8,32 +8,32 @@
         to="/"
       >
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title">vue3-element-admin</h1>
+        <h1 v-else class="sidebar-title">{{ title }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title">vue3-element-admin</h1>
+        <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive, toRefs } from 'vue';
-
-const props = defineProps({
-  collapse: {
-    type: Boolean,
-    required: true
-  }
-});
-
-const state = reactive({
-  isCollapse: props.collapse,
-  logo: new URL(`../../../assets/logo.png`, import.meta.url).href
-});
-
-const { logo } = toRefs(state);
+<script>
+export default {
+  name: 'SidebarLogo',
+  props: {
+    collapse: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      title: 'Vue Admin Template',
+      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -60,9 +60,10 @@ const { logo } = toRefs(state);
     width: 100%;
 
     & .sidebar-logo {
-      width: 20px;
-      height: 20px;
+      width: 32px;
+      height: 32px;
       vertical-align: middle;
+      margin-right: 12px;
     }
 
     & .sidebar-title {
@@ -74,7 +75,6 @@ const { logo } = toRefs(state);
       font-size: 14px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
-      margin-left: 12px;
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form
-      ref="loginFormRef"
+      ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
@@ -9,8 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">{{ $t('login.title') }}</h3>
-        <lang-select class="set-language" />
+        <h3 class="title">Login Form</h3>
       </div>
 
       <el-form-item prop="username">
@@ -20,7 +19,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          :placeholder="$t('login.username')"
+          placeholder="Username"
           name="username"
           type="text"
           tabindex="1"
@@ -28,226 +27,122 @@
         />
       </el-form-item>
 
-      <el-tooltip
-        :disabled="capslockTooltipDisabled"
-        content="Caps lock is On"
-        placement="right"
-      >
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input
-            ref="passwordRef"
-            :key="passwordType"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="Password"
-            name="password"
-            tabindex="2"
-            auto-complete="on"
-            @keyup="checkCapslock"
-            @blur="capslockTooltipDisabled = true"
-            @keyup.enter="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon
-              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-            />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-
-      <!-- 验证码 -->
-      <el-form-item prop="code">
+      <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="valid_code" />
+          <svg-icon icon-class="password" />
         </span>
         <el-input
-          v-model="loginForm.code"
-          auto-complete="off"
-          :placeholder="$t('login.code')"
-          style="width: 65%"
-          @keyup.enter="handleLogin"
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          placeholder="Password"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"
         />
-
-        <div class="captcha">
-          <img
-            :src="captchaBase64"
-            @click="handleCaptchaGenerate"
-            height="38px"
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
           />
-        </div>
+        </span>
       </el-form-item>
 
       <el-button
-        size="default"
         :loading="loading"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
-        @click.prevent="handleLogin"
-        >{{ $t('login.login') }}
-      </el-button>
+        @click.native.prevent="handleLogin"
+        >Login</el-button
+      >
 
       <div class="tips">
-        <span style="margin-right: 20px"
-          >{{ $t('login.username') }}: admin</span
-        >
-        <span> {{ $t('login.password') }}: 123456</span>
+        <span style="margin-right: 20px">username: admin</span>
+        <span> password: any</span>
       </div>
     </el-form>
-
-    <div v-if="showCopyright == true" class="copyright">
-      <p>{{ $t('login.copyright') }}</p>
-      <p>{{ $t('login.icp') }}</p>
-    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch, nextTick } from 'vue';
+<script>
+import { validUsername } from '@/utils/validate'
 
-// 组件依赖
-import { ElForm, ElInput } from 'element-plus';
-import router from '@/router';
-import LangSelect from '@/components/LangSelect/index.vue';
-import SvgIcon from '@/components/SvgIcon/index.vue';
-
-// 状态管理依赖
-import useStore from '@/store';
-
-// API依赖
-import { getCaptcha } from '@/api/login';
-import { useRoute } from 'vue-router';
-import { LoginFormData } from '@/types/api/system/login';
-
-const { user } = useStore();
-const route = useRoute();
-
-const loginFormRef = ref(ElForm);
-const passwordRef = ref(ElInput);
-
-const state = reactive({
-  redirect: '',
-  loginForm: {
-    username: 'admin',
-    password: '123456',
-    code: '',
-    uuid: '',
-  } as LoginFormData,
-  loginRules: {
-    username: [{ required: true, trigger: 'blur' }],
-    password: [
-      { required: true, trigger: 'blur', validator: validatePassword },
-    ],
-  },
-  loading: false,
-  passwordType: 'password',
-  captchaBase64: '',
-  // 大写提示禁用
-  capslockTooltipDisabled: true,
-  otherQuery: {},
-  clientHeight: document.documentElement.clientHeight,
-  showCopyright: true,
-});
-
-function validatePassword(rule: any, value: any, callback: any) {
-  if (value.length < 6) {
-    callback(new Error('The password can not be less than 6 digits'));
-  } else {
-    callback();
-  }
-}
-
-const {
-  loginForm,
-  loginRules,
-  loading,
-  passwordType,
-  captchaBase64,
-  capslockTooltipDisabled,
-  showCopyright,
-} = toRefs(state);
-
-function checkCapslock(e: any) {
-  const { key } = e;
-  state.capslockTooltipDisabled =
-    key && key.length === 1 && key >= 'A' && key <= 'Z';
-}
-
-function showPwd() {
-  if (state.passwordType === 'password') {
-    state.passwordType = '';
-  } else {
-    state.passwordType = 'password';
-  }
-  nextTick(() => {
-    passwordRef.value.focus();
-  });
-}
-
-function handleLogin() {
-  loginFormRef.value.validate((valid: boolean) => {
-    if (valid) {
-      state.loading = true;
-      user
-        .login(state.loginForm)
-        .then(() => {
-          router.push({ path: state.redirect || '/', query: state.otherQuery });
-          state.loading = false;
-        })
-        .catch(() => {
-          state.loading = false;
-          handleCaptchaGenerate();
-        });
-    } else {
-      return false;
+export default {
+  name: 'Login',
+  data() {
+    const validateUsername = (rule, value, callback) => {
+      if (!validUsername(value)) {
+        callback(new Error('Please enter the correct user name'))
+      } else {
+        callback()
+      }
     }
-  });
-}
-
-// 获取验证码
-function handleCaptchaGenerate() {
-  getCaptcha().then(({ data }) => {
-    const { img, uuid } = data;
-    state.captchaBase64 = img;
-    state.loginForm.uuid = uuid;
-  });
-}
-
-watch(
-  route,
-  () => {
-    const query = route.query;
-    if (query) {
-      state.redirect = query.redirect as string;
-      state.otherQuery = getOtherQuery(query);
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('The password can not be less than 6 digits'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      loginForm: {
+        username: 'admin',
+        password: '111111',
+      },
+      loginRules: {
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername },
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword },
+        ],
+      },
+      loading: false,
+      passwordType: 'password',
+      redirect: undefined,
     }
   },
-  {
-    immediate: true,
-  }
-);
-
-function getOtherQuery(query: any) {
-  return Object.keys(query).reduce((acc: any, cur: any) => {
-    if (cur !== 'redirect') {
-      acc[cur] = query[cur];
-    }
-    return acc;
-  }, {});
+  watch: {
+    $route: {
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true,
+    },
+  },
+  methods: {
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
+    handleLogin() {
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          this.loading = true
+          this.$store
+            .dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+  },
 }
-
-onMounted(() => {
-  handleCaptchaGenerate();
-  window.onresize = () => {
-    if (state.clientHeight > document.documentElement.clientHeight) {
-      state.showCopyright = false;
-    } else {
-      state.showCopyright = true;
-    }
-  };
-});
 </script>
 
 <style lang="scss">
@@ -258,61 +153,34 @@ $bg: #283443;
 $light_gray: #fff;
 $cursor: #fff;
 
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+  }
+}
+
 /* reset element-ui css */
 .login-container {
-  .title-container {
-    position: relative;
-
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 3px;
-      font-size: 18px;
-      right: 0px;
-      cursor: pointer;
-    }
-  }
-
   .el-input {
     display: inline-block;
-    height: 36px;
+    height: 47px;
     width: 85%;
-    .el-input__wrapper {
-      padding: 0;
-      background: transparent;
-      box-shadow: none;
-      .el-input__inner {
-        background: transparent;
-        border: 0px;
-        -webkit-appearance: none;
-        border-radius: 0px;
-        color: $light_gray;
-        height: 36px;
-        caret-color: $cursor;
 
-        &:-webkit-autofill {
-          box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
-        }
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+
+      &:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
       }
     }
-  }
-
-  .el-input__inner {
-    &:hover {
-      border-color: var(--el-input-hover-border, var(--el-border-color-hover));
-      box-shadow: none;
-    }
-
-    box-shadow: none;
   }
 
   .el-form-item {
@@ -320,15 +188,6 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
-  }
-
-  .copyright {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    font-size: 12px;
-    text-align: center;
-    color: #cccccc;
   }
 }
 </style>
@@ -366,7 +225,7 @@ $light_gray: #eee;
   }
 
   .svg-container {
-    padding: 5px 10px;
+    padding: 6px 5px 6px 15px;
     color: $dark_gray;
     vertical-align: middle;
     width: 30px;
@@ -393,18 +252,6 @@ $light_gray: #eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
-  }
-
-  .captcha {
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    img {
-      height: 42px;
-      cursor: pointer;
-      vertical-align: middle;
-    }
   }
 }
 </style>

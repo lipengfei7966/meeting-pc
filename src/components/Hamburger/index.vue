@@ -15,19 +15,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
-defineProps({
-  isActive: {
-    required: true,
-    type: Boolean,
-    default: false
-  }
-});
-
-const emit = defineEmits(['toggleClick']);
-
-function toggleClick() {
-  emit('toggleClick');
+<script>
+export default {
+  name: 'Hamburger',
+  props: {
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    toggleClick() {
+      this.$emit('toggleClick')
+    },
+  },
 }
 </script>
 

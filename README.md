@@ -1,120 +1,99 @@
+# vue-admin-template
+
+English | [简体中文](./README-zh.md)
+
+> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
+
+**Live demo:** http://panjiachen.github.io/vue-admin-template
+
+
+**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
+
 <p align="center">
-    <img src="https://img.shields.io/badge/Vue-3.2.25-brightgreen.svg"/>
-    <img src="https://img.shields.io/badge/Vite-2.9.7-green.svg"/>
-    <img src="https://img.shields.io/badge/Element Plus-2.1.8-blue.svg"/>
-    <a src="https://github.com/hxrui" target="_blank">
-        <img src="https://img.shields.io/github/stars/youlaitech/youlai-mall.svg?style=social&label=Stars"/>
-    </a>
-    <a href="https://gitee.com/youlaitech/youlai-mall" target="_blank">
-        <img src="https://gitee.com/youlaiorg/vue3-element-admin/badge/star.svg"/>
-    </a> 
-    <br/>
-    <img src="https://img.shields.io/badge/license-MIT-green.svg"/>
-    <a href="https://gitee.com/youlaiorg" target="_blank">
-        <img src="https://img.shields.io/badge/Author-有来开源组织-orange.svg"/>
-    </a>
+  <b>SPONSORED BY</b>
 </p>
 <p align="center">
-<a target="_blank" href="http://vue3.youlai.tech">在线预览</a> |  <a target="_blank" href="https://www.youlai.tech/pages/5d571c/">官方文档</a> 
+   <a href="https://finclip.com?from=vue_element" title="FinClip" target="_blank">
+      <img height="200px" src="https://gitee.com/panjiachen/gitee-cdn/raw/master/vue%E8%B5%9E%E5%8A%A9.png" title="FinClip">
+   </a>
 </p>
 
-## 项目介绍
+## Build Setup
 
-[vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) 是基于 [vue-element-admin](https://gitee.com/panjiachen/vue-element-admin) 升级的 Vue3 版本后台管理前端解决方案；使用前端主流技术栈 Vue3 + Vite2 + TypeScript + Vue Router + Pinia + Volar + Element Plus 等；实现功能包括不限于动态权限路由、按钮权限控制、国际化、主题大小切换等；基于此模板开发了有来商城管理系统，也是有来开源组织的另一项开源力作。
+```bash
+# clone the project
+git clone https://github.com/PanJiaChen/vue-admin-template.git
 
-## 项目优势
+# enter the project directory
+cd vue-admin-template
 
-- 基于 vue-element-admin 升级的 Vue3 版本 ，极易上手，减少学习成本；
-- 一套完整适配的微服务权限系统线上接口，企业级真实前后端接入场景，非 Mock 数据；
-- 功能全面：国际化、动态路由、按钮权限、主题大小切换、Echart、wangEditor；
-- TypeScript 全面支持，包括组件和 API 调用层面；
-- 主流 Vue3 生态和前端技术栈，常用组件极简封装；
-- 从 0 到 1 的项目文档支持；
-- 全栈技术支持: 微服务接口、Vue3 管理前端、uni-app 移动端和 K8S 持续集成交付；
+# install dependency
+npm install
 
-## 技术栈
+# develop
+npm run dev
+```
 
-| 技术栈 | 描述 | 官网 |
-| --- | --- | --- |
-| Vue3 | 渐进式 JavaScript 框架 | https://v3.cn.vuejs.org/ |
-| TypeScript | JavaScript 的一个超集 | https://www.tslang.cn/ |
-| Vite2 | 前端开发与构建工具 | https://cn.vitejs.dev/ |
-| Element Plus | 基于 Vue 3，面向设计师和开发者的组件库 | https://element-plus.gitee.io/zh-CN/ |
-| Pinia | 新一代状态管理工具 | https://pinia.vuejs.org/ |
-| Vue Router | Vue.js 的官方路由 | https://router.vuejs.org/zh/ |
+This will automatically open http://localhost:9528
 
-## 项目预览
+## Build
 
-在线预览地址: [vue3.youlai.tech](http://vue3.youlai.tech)
+```bash
+# build for test environment
+npm run build:stage
 
-| ![控制台](https://s2.loli.net/2022/04/07/fIEDs3GeSb8rxlt.png) | ![国际化](https://s2.loli.net/2022/04/07/lt6u2jMefpTJvkh.gif) |
-| --- | --- |
-| ![菜单管理](https://s2.loli.net/2022/04/07/quTeB3pNIyQ4alG.png) | ![角色管理](https://s2.loli.net/2022/04/07/dmh5MYtuONGRJZn.png) |
-| ![商品管理](https://s2.loli.net/2022/04/07/5XgYfMqBxhtdcG2.png) | ![库存设置](https://s2.loli.net/2022/04/07/s9IJeP7vRxq2WSL.png) |
+# build for production environment
+npm run build:prod
+```
 
-## 项目地址
+## Advanced
 
-|  | Gitee | Github |
-| --- | --- | --- |
-| vue3-element-admin | [vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) | [vue3-element-admin](https://github.com/youlaitech/vue3-element-admin) |
+```bash
+# preview the release environment effect
+npm run preview
 
-## 启动部署
+# preview the release environment effect + static resource analysis
+npm run preview -- --report
 
-### 环境准备
+# code format check
+npm run lint
 
-- 安装 Node
+# code format check and auto fix
+npm run lint -- --fix
+```
 
-  版本：v14 或 v16
+Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
 
-- 开发工具
+## Demo
 
-  推荐 VSCode
+![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
 
-- 必装插件
+## Extra
 
-  VSCode 插件市场搜索并安装 Volar, 且一定要禁用 Vetur，不然代码会出现组件使用了但编译器还报组件未使用的警告信息，另外尤大也在 Vue3 生态话题说过 Volar 将会替代 Vetur 作为 Vue 的官方插件。
+If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
 
-### 项目启动
+For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 
-1. npm install
-2. npm run dev
-3. 浏览器访问 http://localhost:3000
+## Related Project
 
-### 项目部署
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
-- 本地打包
+- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-  ```
-  npm run build:prod
-  ```
+- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
 
-  生成的静态文件位于项目根目录 dist 文件夹下
+- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
-- nginx.cofig 配置
+## Browsers support
 
-  ```
-  server {
-      listen     80;
-      server_name  localhost;
+Modern browsers and Internet Explorer 10+.
 
-      location / {
-          root /usr/share/nginx/html/web;
-          index index.html index.htm;
-      }
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
 
-      # 代理转发请求至网关，prod-api标识解决跨域问题
-      location /prod-api/ {
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_pass http://api.youlai.tech/;
-      }
-  }
+## License
 
-  ```
+[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
 
-## 联系信息
-
-> 欢迎添加开发者微信，备注「有来」进群
-
-| ![郝先瑞](https://s2.loli.net/2022/04/06/yRx8uzj4emA5QVr.jpg) | ![张川](https://s2.loli.net/2022/04/06/cQihGv9uPsTjXk1.jpg) |
-| --- | --- |
+Copyright (c) 2017-present PanJiaChen
