@@ -1,111 +1,70 @@
 <template>
   <div class="navbar">
     <hamburger
-      id="hamburger-container"
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device !== 'mobile'">
-        <!--        <search id="header-search" class="right-menu-item" />
-                <error-log class="errLog-container right-menu-item hover-effect" />-->
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-        <lang-select class="right-menu-item hover-effect" />
-      </template>
-
-      <el-dropdown
-        class="avatar-container right-menu-item hover-effect"
-        trigger="click"
-      >
+      <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
-          <CaretBottom style="width: 0.6em; height: 0.6em; margin-left: 5px" />
+          <i class="el-icon-caret-bottom" />
         </div>
-
-        <template #dropdown>
-          <el-dropdown-menu>
-            <router-link to="/">
-              <el-dropdown-item>{{ $t('navbar.dashboard') }}</el-dropdown-item>
-            </router-link>
-            <a target="_blank" href="https://github.com/hxrui">
-              <el-dropdown-item>Github</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://gitee.com/haoxr">
-              <el-dropdown-item>{{ $t('navbar.gitee') }}</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://www.cnblogs.com/haoxianrui/">
-              <el-dropdown-item>{{ $t('navbar.document') }}</el-dropdown-item>
-            </a>
-            <el-dropdown-item divided @click="logout">
-              {{ $t('navbar.logout') }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
+        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          <router-link to="/">
+            <el-dropdown-item> Home </el-dropdown-item>
+          </router-link>
+          <a
+            target="_blank"
+            href="https://github.com/PanJiaChen/vue-admin-template/"
+          >
+            <el-dropdown-item>Github</el-dropdown-item>
+          </a>
+          <a
+            target="_blank"
+            href="https://panjiachen.github.io/vue-element-admin-site/#/"
+          >
+            <el-dropdown-item>Docs</el-dropdown-item>
+          </a>
+          <el-dropdown-item divided @click.native="logout">
+            <span style="display: block">Log Out</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
       </el-dropdown>
     </div>
   </div>
 </template>
-<script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { ElMessageBox } from 'element-plus';
 
-import useStore from '@/store';
+<script>
+import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
 
-// 组件依赖
-import Breadcrumb from '@/components/Breadcrumb/index.vue';
-import Hamburger from '@/components/Hamburger/index.vue';
-import Screenfull from '@/components/Screenfull/index.vue';
-import SizeSelect from '@/components/SizeSelect/index.vue';
-import LangSelect from '@/components/LangSelect/index.vue';
-
-// 图标依赖
-import { CaretBottom } from '@element-plus/icons-vue';
-
-const { app, user, tagsView } = useStore();
-
-const route = useRoute();
-const router = useRouter();
-
-const sidebar = computed(() => app.sidebar);
-const device = computed(() => app.device);
-const avatar = computed(() => user.avatar);
-
-function toggleSideBar() {
-  app.toggleSidebar();
-}
-
-function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    user
-      .logout()
-      .then(() => {
-        tagsView.delAllViews();
-      })
-      .then(() => {
-        router.push(`/login?redirect=${route.fullPath}`);
-      });
-  });
+export default {
+  components: {
+    Breadcrumb,
+    Hamburger,
+  },
+  computed: {
+    ...mapGetters(['sidebar', 'avatar']),
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('app/toggleSideBar')
+    },
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
 .navbar {
   height: 50px;
   overflow: hidden;

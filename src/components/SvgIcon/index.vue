@@ -1,28 +1,53 @@
 <template>
-  <svg aria-hidden="true" class="svg-icon">
-    <use :xlink:href="symbolId" :fill="color" />
+  <div
+    v-if="isExternal"
+    :style="styleExternalIcon"
+    class="svg-external-icon svg-icon"
+    v-on="$listeners"
+  />
+  <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">
+    <use :xlink:href="iconName" />
   </svg>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue';
+<script>
+// doc: https://panjiachen.github.io/vue-element-admin-site/feature/component/svg-icon.html#usage
+import { isExternal } from '@/utils/validate'
 
-const props = defineProps({
-  prefix: {
-    type: String,
-    default: 'icon'
+export default {
+  name: 'SvgIcon',
+  props: {
+    iconClass: {
+      type: String,
+      required: true,
+    },
+    className: {
+      type: String,
+      default: '',
+    },
   },
-  iconClass: {
-    type: String,
-    required: false
+  computed: {
+    isExternal() {
+      return isExternal(this.iconClass)
+    },
+    iconName() {
+      return `#icon-${this.iconClass}`
+    },
+    svgClass() {
+      if (this.className) {
+        return 'svg-icon ' + this.className
+      } else {
+        return 'svg-icon'
+      }
+    },
+    styleExternalIcon() {
+      return {
+        mask: `url(${this.iconClass}) no-repeat 50% 50%`,
+        '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`,
+      }
+    },
   },
-  color: {
-    type: String,
-    default: ''
-  }
-});
-
-const symbolId = computed(() => `#${props.prefix}-${props.iconClass}`);
+}
 </script>
 
 <style scoped>
@@ -30,7 +55,13 @@ const symbolId = computed(() => `#${props.prefix}-${props.iconClass}`);
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;
-  overflow: hidden;
   fill: currentColor;
+  overflow: hidden;
+}
+
+.svg-external-icon {
+  background-color: currentColor;
+  mask-size: cover !important;
+  display: inline-block;
 }
 </style>

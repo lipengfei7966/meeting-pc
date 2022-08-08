@@ -1,10 +1,10 @@
 <template>
-  <div v-if="!item.meta || !item.meta.hidden">
+  <div v-if="!item.hidden">
     <template
       v-if="
         hasOneShowingChild(item.children, item) &&
         (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
-        (!item.meta || !item.meta.alwaysShow)
+        !item.alwaysShow
       "
     >
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
@@ -12,103 +12,105 @@
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <svg-icon
-            v-if="onlyOneChild.meta && onlyOneChild.meta.icon"
-            :icon-class="onlyOneChild.meta.icon"
+          <item
+            :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
+            :title="onlyOneChild.meta.title"
           />
-          <template #title>
-            {{ generateTitle(onlyOneChild.meta.title) }}
-          </template>
         </el-menu-item>
       </app-link>
     </template>
-    <el-sub-menu v-else :index="resolvePath(item.path)" popper-append-to-body>
-      <!-- popper-append-to-body -->
-      <template #title>
-        <svg-icon
-          v-if="item.meta && item.meta.icon"
-          :icon-class="item.meta.icon"
-        ></svg-icon>
-        <span v-if="item.meta && item.meta.title">{{
-          generateTitle(item.meta.title)
-        }}</span>
-      </template>
 
+    <el-submenu
+      v-else
+      ref="subMenu"
+      :index="resolvePath(item.path)"
+      popper-append-to-body
+    >
+      <template slot="title">
+        <item
+          v-if="item.meta"
+          :icon="item.meta && item.meta.icon"
+          :title="item.meta.title"
+        />
+      </template>
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
-        :item="child"
         :is-nest="true"
+        :item="child"
         :base-path="resolvePath(child.path)"
         class="nest-menu"
       />
-    </el-sub-menu>
+    </el-submenu>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import path from 'path-browserify';
-import { isExternal } from '@/utils/validate';
-import AppLink from './Link.vue';
+<script>
+import path from 'path'
+import { isExternal } from '@/utils/validate'
+import Item from './Item'
+import AppLink from './Link'
+import FixiOSBug from './FixiOSBug'
 
-import { generateTitle } from '@/utils/i18n';
-import SvgIcon from '@/components/SvgIcon/index.vue';
-
-const props = defineProps({
-  item: {
-    type: Object,
-    required: true
+export default {
+  name: 'SidebarItem',
+  components: { Item, AppLink },
+  mixins: [FixiOSBug],
+  props: {
+    // route object
+    item: {
+      type: Object,
+      required: true,
+    },
+    isNest: {
+      type: Boolean,
+      default: false,
+    },
+    basePath: {
+      type: String,
+      default: '',
+    },
   },
-  isNest: {
-    type: Boolean,
-    required: false
+  data() {
+    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
+    // TODO: refactor with render function
+    this.onlyOneChild = null
+    return {}
   },
-  basePath: {
-    type: String,
-    required: true
-  }
-});
+  methods: {
+    hasOneShowingChild(children = [], parent) {
+      const showingChildren = children.filter((item) => {
+        if (item.hidden) {
+          return false
+        } else {
+          // Temp set(will be used if only has one showing child)
+          this.onlyOneChild = item
+          return true
+        }
+      })
 
-const onlyOneChild = ref();
+      // When there is only one child router, the child router is displayed by default
+      if (showingChildren.length === 1) {
+        return true
+      }
 
-function hasOneShowingChild(children = [] as any, parent: any) {
-  if (!children) {
-    children = [];
-  }
-  const showingChildren = children.filter((item: any) => {
-    if (item.meta && item.meta.hidden) {
-      return false;
-    } else {
-      // Temp set(will be used if only has one showing child)
-      onlyOneChild.value = item;
-      return true;
-    }
-  });
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        this.onlyOneChild = { ...parent, path: '', noShowingChildren: true }
+        return true
+      }
 
-  // When there is only one child router, the child router is displayed by default
-  if (showingChildren.length === 1) {
-    return true;
-  }
-
-  // Show parent if there are no child router to display
-  if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true };
-    return true;
-  }
-
-  return false;
-}
-
-function resolvePath(routePath: string) {
-  if (isExternal(routePath)) {
-    return routePath;
-  }
-  if (isExternal(props.basePath)) {
-    return props.basePath;
-  }
-  return path.resolve(props.basePath, routePath);
+      return false
+    },
+    resolvePath(routePath) {
+      if (isExternal(routePath)) {
+        return routePath
+      }
+      if (isExternal(this.basePath)) {
+        return this.basePath
+      }
+      return path.resolve(this.basePath, routePath)
+    },
+  },
 }
 </script>
-
-<style lang="scss" scoped></style>
