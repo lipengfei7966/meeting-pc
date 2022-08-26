@@ -1,17 +1,25 @@
-import * as Vue from 'vue'
-import * as Vuex from 'vuex'
-import getters from './getters'
-import app from './modules/app'
-import settings from './modules/settings'
-import user from './modules/user'
+import Vue from 'vue'
+import Vuex from 'vuex'
+import app from './frame/base/app'
+import user from './frame/base/user'
+import permission from './frame/base/permission'
+import tagsView from './frame/base/tagsView'
+import sys from './frame/base/sys'
 
-const store = Vuex.createStore({
+import getters from './getters'
+
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
   modules: {
     app,
-    settings,
-    user,
+    permission,
+    tagsView,
+    sys,
+    user
   },
-  getters,
+  getters
 })
 
 export default store
+
