@@ -144,8 +144,8 @@
 
 <script>
 import upload from "@/utils/upload";
-import { validatePhone,validateEMail,isInteger } from '../assets/js/validator'
-import selectOrder from "@/components/selectOrder.vue";
+import { validatePhone,validateEMail,isInteger } from '@/assets/js/validator'
+import selectOrder from "@/components/event/selectOrder.vue";
 export default {
   components: { selectOrder },
   props: {
@@ -214,7 +214,14 @@ export default {
     if (this.itemData != null) {
       this.FormData = JSON.parse(JSON.stringify(this.itemData));
     }
-    this.$api.memberList({ Page: 1, Rows: 999 }, "POST").then((res) => {
+    requestApi({
+        url: '/member/list',
+        method: 'POST',
+        data: {
+         Page: 1, 
+         Rows: 999
+        },
+      }).then((res) => {
       this.userList = res.List;
     });
   },

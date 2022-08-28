@@ -11,4 +11,17 @@ export default {
   DMCcreateEvent: '创建会议',
   DMCEventList: '我的会议',
   DMCinquiryList: '活动询价单',
+  DMCbasicInfoManagement: '基本信息管理',
+  DMCorderList: '我的订单',
+  DMCmemberManage: '用户管理',
+  DMCitineraryList: '行程管理',
+
+  systemSetting: '系统配置',
+  clientMemberManage: '客户成员管理',
+  approveSetting: '审批流配置',
+  otherSetting: '其他配置',
+  relatedPersonSetting: '相关人员配置',
+
+  resourceCenter: '资源中心',
+  siteResource: '场地资源',
 }

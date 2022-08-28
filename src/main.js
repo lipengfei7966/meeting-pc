@@ -18,14 +18,19 @@ import 'echarts/lib/component/legend'
 Vue.prototype.$echarts = echarts
 
 import moment from 'moment'
+import request from '@/utils/requestData.js'
 
 Vue.prototype.$moment = moment
+Vue.prototype.requestApi = request
 
 moment.locale('zh-cn') // 这里是进行了汉化 不写这句默认格式是外国的
 
 import App from './App'
 import store from './store'
 import router from './router'
+
+// 全局方法 及 过滤器
+import '@/utils/globalFun'
 
 import '@/directive/frame/filters' // filter -g
 import '@/directive/frame/dbClick' // directive -g

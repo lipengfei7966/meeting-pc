@@ -247,6 +247,109 @@ export const eventRoute = [
           noCache: true
         }
       },
+      {
+        name: 'DMCbasicInfoManage',
+        path: 'DMCbasicInfoManage',
+        component: () => import('@/views/event/DMCbasicInfoManage/index'),
+        meta: {
+          title: 'DMCbasicInfoManage',
+          noCache: true
+        }
+      },
+      {
+        name: 'DMCorderList',
+        path: 'DMCorderList',
+        component: () => import('@/views/event/DMCorder/orderList/index'),
+        meta: {
+          title: 'DMCorderList',
+          noCache: true
+        }
+      },
+      {
+        name: 'DMCmemberManage',
+        path: 'DMCmemberManage',
+        component: () => import('@/views/event/DMCorder/orderList/index'),
+        meta: {
+          title: 'DMCmemberManage',
+          noCache: true
+        }
+      },
+      {
+        name: 'DMCitineraryList',
+        path: 'DMCitineraryList',
+        component: () => import('@/views/event/DMCitineraryList/itineraryList/index'),
+        meta: {
+          title: 'DMCitineraryList',
+          noCache: true
+        }
+      },
+    ]
+  },
+
+  {
+    path: '/setting',
+    name: 'setting',
+    component: Layout,
+    meta: {
+      title: 'setting'
+    },
+    children: [
+      {
+        name: 'clientMemberManage',
+        path: 'clientMemberManage',
+        component: () => import('@/views/event/setting/clientMemberManage/index'),
+        meta: {
+          title: 'clientMemberManage',
+          noCache: true
+        }
+      },
+      {
+        name: 'approveSetting',
+        path: 'approveSetting',
+        component: () => import('@/views/event/setting/approveSetting/index'),
+        meta: {
+          title: 'approveSetting',
+          noCache: true
+        }
+      },
+      {
+        name: 'otherSetting',
+        path: 'otherSetting',
+        component: () => import('@/views/event/setting/otherSetting/index'),
+        meta: {
+          title: 'otherSetting',
+          noCache: true
+        }
+      },
+      {
+        name: 'relatedPersonSetting',
+        path: 'relatedPersonSetting',
+        component: () => import('@/views/event/setting/relatedPersonSetting/index'),
+        meta: {
+          title: 'relatedPersonSetting',
+          noCache: true
+        }
+      },
+    ]
+  },
+
+  {
+    path: '/resourceCenter',
+    name: 'resourceCenter',
+    component: Layout,
+    meta: {
+      title: 'resourceCenter'
+    },
+    children: [
+      {
+        name: 'siteResource',
+        path: 'siteResource',
+        component: () => import('@/views/event/resourceCenter/siteResource/index'),
+        meta: {
+          title: 'siteResource',
+          noCache: true
+        }
+      },
     ]
   }
 ]
