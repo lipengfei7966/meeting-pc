@@ -1,112 +1,104 @@
 <template>
   <div class="content">
     <div class="index">
-			<span>首页-></span>
-			<span @click="$router.push('/otherSettings')">其他配置 -></span>
-			<span>{{'新增会议附加信息配置规则'}}</span>
-		</div>
-		<div class="title"><span>{{'新增/编辑会议附加信息配置规则'}}</span></div>
+      <span>首页-></span>
+      <span @click="$router.push('/otherSettings')">其他配置 -></span>
+      <span>{{'新增会议附加信息配置规则'}}</span>
+    </div>
+    <div class="title"><span>{{'新增/编辑会议附加信息配置规则'}}</span></div>
 
-		<el-form class="form" :model="ruleInfo" ref="ruleInfo" label-position="left" :rules="rules" label-width="250px">
-			<el-form-item label="客户" v-if="isdefault==0" prop="selectedcuslist">
-				<el-select v-model="selectedcuslist" multiple filterable @change="custchange" placeholder="请选择客户">
-					<el-option
-						v-for="item in ruleInfo.cuslist"
-						:key="item.id"
-						:label="item.name"
-						:value="item.id">
-					</el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item label="客户" prop="" v-else>
-				<span>ALL</span>
-			</el-form-item>
-			<el-form-item label="备注说明" prop="remark">
-				<el-input v-model="ruleInfo.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
-			</el-form-item>
+    <el-form class="form" :model="ruleInfo" ref="ruleInfo" label-position="left" :rules="rules" label-width="250px">
+      <el-form-item label="客户" v-if="isdefault==0" prop="selectedcuslist">
+        <el-select v-model="selectedcuslist" multiple filterable @change="custchange" placeholder="请选择客户">
+          <el-option v-for="item in ruleInfo.cuslist" :key="item.id" :label="item.name" :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="客户" prop="" v-else>
+        <span>ALL</span>
+      </el-form-item>
+      <el-form-item label="备注说明" prop="remark">
+        <el-input v-model="ruleInfo.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+      </el-form-item>
 
-			<el-form-item label="会议附加信息表单" prop="addFormMsg">
-				<el-button type="primary" size="small" @click="addDialogVisible = true;rowIndex = null">添加表单字段</el-button>
-				<div class="approval-body">
-					<el-table :data="ruleInfo.selfform" border style="width: 100%">
-						<el-table-column label="序号" type="index" width="50"> </el-table-column>
-						<el-table-column label="字段名称" prop="fieldname" >	</el-table-column>
-						<el-table-column label="字段类型" width="180" prop="fieldtype" :formatter="fieldTypeFormatter"></el-table-column>
-						<el-table-column label="选项" width="180" prop="defaultvalue">
-							<template slot-scope="scope">
-								<pre style="margin-left: 10px">{{ scope.row.defaultvalue }}</pre>
-							</template>
-						</el-table-column>
+      <el-form-item label="会议附加信息表单" prop="addFormMsg">
+        <el-button type="primary" size="small" @click="addDialogVisible = true;rowIndex = null">添加表单字段</el-button>
+        <div class="approval-body">
+          <el-table :data="ruleInfo.selfform" border style="width: 100%">
+            <el-table-column label="序号" type="index" width="50"> </el-table-column>
+            <el-table-column label="字段名称" prop="fieldname"> </el-table-column>
+            <el-table-column label="字段类型" width="180" prop="fieldtype" :formatter="fieldTypeFormatter"></el-table-column>
+            <el-table-column label="选项" width="180" prop="defaultvalue">
+              <template slot-scope="scope">
+                <pre style="margin-left: 10px">{{ scope.row.defaultvalue }}</pre>
+              </template>
+            </el-table-column>
 
-						<el-table-column label="是否必填" width="100" prop="required">
-							<template slot-scope="scope">
-								<span style="margin-left: 10px">{{ scope.row.required ? '是' : '否' }}</span>
-							</template>
-						</el-table-column>
+            <el-table-column label="是否必填" width="100" prop="required">
+              <template slot-scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.required ? '是' : '否' }}</span>
+              </template>
+            </el-table-column>
 
-						<el-table-column label="操作" width="180">
-							<template slot-scope="scope">
-								<span class="step-operation-edit edit" @click="fieldEdit(scope.row, scope.$index)">编辑</span>
-								<span class="step-operation-del del" @click="fieldDel(scope.$index)" >删除</span>
-								<span>
-									<span style="margin-left:10px;cursor:pointer" @click="upL(scope.row,scope.$index)">
-										<img src="../../assets/images/on.png" alt="" style="width: 17px"/>
-									</span>
-									<span style="margin-left:10px;cursor:pointer" @click="downL(scope.row,scope.$index)">
-										<img src="../../assets/images/up.png" alt="" style="width: 17px" />
-									</span>
-								</span>
-							</template>
-						</el-table-column>
-					</el-table>
-				</div>
-				
-			</el-form-item>
+            <el-table-column label="操作" width="180">
+              <template slot-scope="scope">
+                <span class="step-operation-edit edit" @click="fieldEdit(scope.row, scope.$index)">编辑</span>
+                <span class="step-operation-del del" @click="fieldDel(scope.$index)">删除</span>
+                <span>
+                  <span style="margin-left:10px;cursor:pointer" @click="upL(scope.row,scope.$index)">
+                    <img src="../../assets/images/on.png" alt="" style="width: 17px" />
+                  </span>
+                  <span style="margin-left:10px;cursor:pointer" @click="downL(scope.row,scope.$index)">
+                    <img src="../../assets/images/up.png" alt="" style="width: 17px" />
+                  </span>
+                </span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
 
-			<el-form-item>
-				<el-button class="form-btn" type="primary" @click="submitForm('ruleInfo')">保存</el-button>
-				<el-button class="form-btn" @click="$router.push('/otherSettings')">取消</el-button>
-			</el-form-item>
-		</el-form>
+      </el-form-item>
 
-		<el-dialog title="添加/编辑表单字段" :visible.sync="addDialogVisible" width="30%">
-			<el-form class="form" :model="addfieldInfo" ref="addfieldInfo" label-position="left" :rules="addRules" label-width="100px">
-				<el-form-item label="字段名称" prop="fieldname">
-					<el-input v-model="addfieldInfo.fieldname" type="input" :autosize="{ minRows: 4 }"></el-input>
-				</el-form-item>
-				<el-form-item label="字段类型" prop="fieldtype">
-					<el-select v-model="addfieldInfo.fieldtype" filterable placeholder="请选择字段类型" @change="fieldTypeChange" :autosize="{ minRows: 4 }">
-						<el-option
-							v-for="item in ruleInfo.formitem"
-							:key="item.code"
-							:label="item.fieldtypename"
-							:value="item.code">
-						</el-option>
-					</el-select>
-					
-				</el-form-item>
-				<el-form-item label="选项" prop="defaultvalue" v-show="addfieldInfo.fieldtype == '099-4'">
-					<el-input v-model="addfieldInfo.defaultvalue" type="textarea" :autosize="{ minRows: 4 }"></el-input>
-					备注：每行一个选项
-				</el-form-item>
-				<el-form-item label="是否必填" prop="required">
-					<el-radio-group v-model="addfieldInfo.required">
-						<el-radio :label="0">否</el-radio>
-						<el-radio :label="1">是</el-radio>
-					</el-radio-group>
-				</el-form-item>
-			</el-form>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="addDialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="submitDeleteRule()">确 定</el-button>
-			</span>
-		</el-dialog>
+      <el-form-item>
+        <el-button class="form-btn" type="primary" @click="submitForm('ruleInfo')">保存</el-button>
+        <el-button class="form-btn" @click="$router.push('/otherSettings')">取消</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-dialog title="添加/编辑表单字段" :visible.sync="addDialogVisible" width="30%">
+      <el-form class="form" :model="addfieldInfo" ref="addfieldInfo" label-position="left" :rules="addRules" label-width="100px">
+        <el-form-item label="字段名称" prop="fieldname">
+          <el-input v-model="addfieldInfo.fieldname" type="input" :autosize="{ minRows: 4 }"></el-input>
+        </el-form-item>
+        <el-form-item label="字段类型" prop="fieldtype">
+          <el-select v-model="addfieldInfo.fieldtype" filterable placeholder="请选择字段类型" @change="fieldTypeChange" :autosize="{ minRows: 4 }">
+            <el-option v-for="item in ruleInfo.formitem" :key="item.code" :label="item.fieldtypename" :value="item.code">
+            </el-option>
+          </el-select>
+
+        </el-form-item>
+        <el-form-item label="选项" prop="defaultvalue" v-show="addfieldInfo.fieldtype == '099-4'">
+          <el-input v-model="addfieldInfo.defaultvalue" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          备注：每行一个选项
+        </el-form-item>
+        <el-form-item label="是否必填" prop="required">
+          <el-radio-group v-model="addfieldInfo.required">
+            <el-radio :label="0">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitDeleteRule()">确 定</el-button>
+      </span>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-import requestApi from '@/utils/requestData'
+
 export default {
   data() {
     return {
@@ -152,7 +144,7 @@ export default {
 	methods:{
 		//公司查询
 		getCompany(){
-			requestApi({
+			this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
         data: {
@@ -265,7 +257,7 @@ export default {
 
 		// 规则查询
 		getRuleEdit(){
-			requestApi({
+			this.requestApi({
         url: '/selfform/info',
         method: 'POST',
         data: {
@@ -299,7 +291,7 @@ export default {
 					this.ruleInfo.selfform.forEach((element,index) => {
 						element.orderid = (index+1)
 					});
-					requestApi({
+					this.requestApi({
 						url: '/selfform/saveselfform',
 						method: 'POST',
 						data: this.ruleInfo,
@@ -319,22 +311,23 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-	width: 98%;
-	margin: 0 auto;
-	.index {
-		color: #3272a8;
-	}
-	.title {
-		font-size: 20px;
-	}
-	.form {
-		width: 80%;
-		margin-left: 10%;
-	}
+  width: 98%;
+  margin: 0 auto;
+  .index {
+    color: #3272a8;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .form {
+    width: 80%;
+    margin-left: 10%;
+  }
 }
-.step-operation-edit, .step-operation-del {
+.step-operation-edit,
+.step-operation-del {
   color: #5bc0de;
   margin-right: 20px;
-	cursor: pointer;
+  cursor: pointer;
 }
 </style>

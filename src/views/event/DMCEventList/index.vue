@@ -186,7 +186,7 @@
 
 <script>
 import {formatDate} from '@/utils/common';
-import requestApi from '@/utils/requestData'
+
 export default {
   name: "eventList",
   data(){
@@ -271,7 +271,7 @@ export default {
     // 公司查询
     company() {
       // 替换成权限控制
-      requestApi({
+      this.requestApi({
         url: '/UserGroupmanagement/GetCustomerEventInfoPost',
         method: 'POST',
         data: {},
@@ -285,7 +285,7 @@ export default {
     },
     // 获取城市
     getCityList() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetCitys',
         method: 'GET',
         data: {},
@@ -320,7 +320,7 @@ export default {
         }
         this.event_date = [] // 查询条件-时间重置
       }
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_info',
         method: 'GET',
         data: this.eventSearch,
@@ -361,7 +361,7 @@ export default {
       this.getDataList();
     },
     getBuyerOptions(){
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
         data: {},

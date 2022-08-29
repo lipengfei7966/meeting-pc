@@ -160,7 +160,7 @@ import Expenditurestatistics from './Statistics/expenditureStatistics.vue';
 import Savingstatistics from './Statistics/savingStatistics.vue';
 import Pig from '@/components/event/pig';
 import excelExport from '@/utils/exportexcel.js';
-import requestApi from '@/utils/requestData'
+
 export default {
 	components: {
 		Expenditurestatistics,
@@ -256,7 +256,7 @@ export default {
 	methods: {
 		//会议类型
 		getEventType() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetEventType',
         method: 'POST',
         data: {
@@ -268,7 +268,7 @@ export default {
 		},
 		//客户
 		getCustomers() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
         data: {},
@@ -278,7 +278,7 @@ export default {
 		},
 		//负责人
 		getCustomerContacts() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
         data: {},
@@ -287,7 +287,7 @@ export default {
 			});
 		},
 		dictionaryTable() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
         data: {event_dictionary_code: '0035'},
@@ -300,7 +300,7 @@ export default {
 			console.log(tab, event);
 		},
 		hotelExpenses(beginYear, beginMonth, EndYear, EndMonth) {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/SpendAnalysisAccumulateInfo',
         method: 'GET',
         data: {
@@ -315,7 +315,7 @@ export default {
 				});
 		},
 		search() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/SpendTypeAnalysis',
         method: 'GET',
         data: {

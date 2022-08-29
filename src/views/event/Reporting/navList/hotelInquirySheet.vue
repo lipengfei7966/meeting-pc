@@ -418,7 +418,7 @@ import Bingyu from '@/components/event/bingyu.vue';
 import Bingru from '@/components/event/bingru.vue';
 import Bingku from '@/components/event/bingku.vue';
 import Bingdu from '@/components/event/bingdu.vue';
-import requestApi from '@/utils/requestData'
+
 export default {
   // props: {
   //   picList: {
@@ -611,7 +611,7 @@ export default {
   methods: {
     //获取字典表
     dictionaryTable() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
         data: {
@@ -624,7 +624,7 @@ export default {
     },
     //负责人
     getCustomerContacts() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
         data: {},
@@ -634,7 +634,7 @@ export default {
     },
     //获取数据概览
     getDataOverview() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/HotelInquiryDataOverview',
         method: 'GET',
         data: {},
@@ -648,7 +648,7 @@ export default {
 
     //会议负责人统计
     MeetingLeader() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/CityAnalysis',
         method: 'GET',
         data: {
@@ -672,7 +672,7 @@ export default {
     //  询价单数量统计
     // 
     rfqQty() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/RFPSatatistics',
         method: 'GET',
         data: {
@@ -697,7 +697,7 @@ export default {
     //会议类型及部门
 
     seeting() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/EventType',
         method: 'GET',
         data: {

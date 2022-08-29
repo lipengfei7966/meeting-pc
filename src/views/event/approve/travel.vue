@@ -367,7 +367,7 @@ export default {
 			this.searchData.approveType = this.approveType
 			this.searchData.po = this.PO
 			this.searchData.pr = this.PR
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
         data: this.searchData,
@@ -386,7 +386,7 @@ export default {
 			this.searchData.approveType = this.approveType
 			this.searchData.po = this.PO
 			this.searchData.pr = this.PR
-			requestApi({
+			this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
         data: this.searchData,
@@ -406,7 +406,7 @@ export default {
 			this.searchData.approveType = this.approveType
 			this.searchData.po = this.PO
 			this.searchData.pr = this.PR
-			requestApi({
+			this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
         data: this.searchData,

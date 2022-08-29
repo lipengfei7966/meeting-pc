@@ -512,7 +512,7 @@
 // import VueQr from "vue-qr";
 import { positiveFloat, formatDate } from "@/utils/common";
 import { MAINHOST, meetingH5 } from "@/config";
-import requestApi from '@/utils/requestData'
+
 export default {
   data() {
     return {
@@ -587,7 +587,7 @@ export default {
     positiveFloat,
     formatDate,
     reportList() {
-      requestApi({
+      this.requestApi({
         url: '/UserGroupmanagement/ReportList',
         method: 'post',
         data: {},
@@ -627,7 +627,7 @@ export default {
         meetingH5 + "/#/?id=" + row.id + "&name=" + row.event_name), //扫码后手机显示的页面
         (this.UnDelPoData = row.po_order_no.length > 0 ? true : false);
       this.severBackShow = true;
-      requestApi({
+      this.requestApi({
         url: '/MeetingFeedback/GetFeedback',
         method: 'post',
         data: { meetingID: row.id},
@@ -706,7 +706,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
 
-      requestApi({
+      this.requestApi({
         url: '/BayerReportForm/GetBayerMonthExcel',
         method: 'post',
         data: {
@@ -737,7 +737,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
 
-      requestApi({
+      this.requestApi({
         url: '/BayerReportForm/GetBayerExcel',
         method: 'post',
         data: {
@@ -768,7 +768,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
 
-      requestApi({
+      this.requestApi({
         url: '/MSDReport/GetMSDReportList',
         method: 'post',
         data: {
@@ -800,7 +800,7 @@ export default {
         (enddate > 9 ? enddate : "0" + enddate);
 
 
-      requestApi({
+      this.requestApi({
         url: '/MSDReport/GetOjialReportList',
         method: 'post',
         data: {
@@ -831,7 +831,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
 
-      requestApi({
+      this.requestApi({
         url: '/Reporting/GetLillyAccount',
         method: 'post',
         data: {
@@ -862,7 +862,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
       
-      requestApi({
+      this.requestApi({
         url: '/BayerReportForm/BayerExcel',
         method: 'post',
         data: {
@@ -893,7 +893,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
       
-      requestApi({
+      this.requestApi({
         url: '/BayerReportForm/BayerMonthExcel',
         method: 'post',
         data: {
@@ -924,7 +924,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
       
-      requestApi({
+      this.requestApi({
         url: '/MSDReport/MSDExcel',
         method: 'post',
         data: {
@@ -955,7 +955,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
       
-      requestApi({
+      this.requestApi({
         url: '/MSDReport/OjialExcel',
         method: 'post',
         data: {
@@ -986,7 +986,7 @@ export default {
         "-" +
         (enddate > 9 ? enddate : "0" + enddate);
       
-      requestApi({
+      this.requestApi({
         url: '/Reporting/GetLillyAccountExcel',
         method: 'post',
         data: {

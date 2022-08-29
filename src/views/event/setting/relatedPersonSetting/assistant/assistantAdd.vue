@@ -9,59 +9,54 @@
       <el-breadcrumb-item class="el-bread-item">编辑会议助理规则</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <p style="font-size: 17px; padding: 15px 0">新建/编辑会议助理规则  </p>
+    <p style="font-size: 17px; padding: 15px 0">新建/编辑会议助理规则 </p>
 
     <el-form ref="headeRuleForm" :model="formData" :rules="rules" label-width="250px" label-position="left" class="addPrincipalForm">
-			<el-form-item label="助理用户:" prop="username">
+      <el-form-item label="助理用户:" prop="username">
         <el-select v-model="formData.username" size="small" filterable placeholder="请选择">
           <el-option v-for="item in userNameList" :key="item.username" :label="item.fullname" :value="item.username">
           </el-option>
-				</el-select>	  
-			</el-form-item>
+        </el-select>
+      </el-form-item>
       <el-form-item label="客户:" prop="company_id">
         <el-select v-model="formData.company_id" size="small" filterable @change="changeCustomer" placeholder="请选择">
           <el-option v-for="item in customerList" :key="item.id" :label="item.shortname" :value="item.id">
           </el-option>
-				</el-select>	  
-			</el-form-item>
+        </el-select>
+      </el-form-item>
       <el-form-item label="会议类型:">
         <el-checkbox-group v-model="formData.meeting_type">
-          <el-checkbox 
-            v-for="item in meetingTypeList" 
-            @change="chooseItem($event, item.id)" 
-            :value="item.id" 
-            :key="item.id" 
-            :label="item.name" >
+          <el-checkbox v-for="item in meetingTypeList" @change="chooseItem($event, item.id)" :value="item.id" :key="item.id" :label="item.name">
           </el-checkbox>
-        </el-checkbox-group>  
-			</el-form-item>
-      <el-form-item label="会议城市:" >
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="会议城市:">
         <el-select v-model="formData.city_code" size="small" multiple filterable placeholder="请选择">
           <el-option v-for="item in meetingCityList" :key="item.code" :label="item.name" :value="item.code">
           </el-option>
-				</el-select>	  
-			</el-form-item>
+        </el-select>
+      </el-form-item>
 
       <el-form-item label="会议指定供应商:" prop="service">
         <el-select v-model="formData.service" size="small" multiple filterable placeholder="请选择">
           <el-option v-for="item in serviceList" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
-				</el-select>	  
-			</el-form-item>
+        </el-select>
+      </el-form-item>
 
       <el-form-item label="会议创建用户:" prop="user_name_list">
         <el-select v-model="formData.user_name_list" size="small" multiple filterable placeholder="请选择">
           <el-option v-for="item in userNameList" :key="item.username" :label="item.fullname" :value="item.username">
           </el-option>
-				</el-select>	  
-			</el-form-item>
-		</el-form>
+        </el-select>
+      </el-form-item>
+    </el-form>
 
     <div style="text-align: center">
       <el-button type="primary" @click="save" :disabled="saveDisabled">保存</el-button>
       <el-button @click="cancel">取消</el-button>
     </div>
-    
+
   </div>
 </template>
 
@@ -256,7 +251,7 @@ export default {
 </script>
 
 <style>
-.addPrincipal{
+.addPrincipal {
   background: #fff;
   height: 100%;
   max-width: 1300px;
@@ -264,12 +259,12 @@ export default {
   margin: 0 auto;
   padding: 20px 0;
 }
-.addPrincipalForm{
+.addPrincipalForm {
   padding: 20px 200px;
 }
 @media only screen and (max-width: 1600px) {
-	.addPrincipal{
-		width: 100%;
-	}
+  .addPrincipal {
+    width: 100%;
+  }
 }
 </style>

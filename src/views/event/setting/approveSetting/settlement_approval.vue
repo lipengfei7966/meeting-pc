@@ -1,27 +1,27 @@
 <template>
-	<div>
-		<div class="settle_header">
-			<el-button class="add_button" type="primary" @click="addSettle">{{type == 1 ? '新增结算审批规则' : '新增中标审批规则'}}</el-button>
-		</div>
+  <div>
+    <div class="settle_header">
+      <el-button class="add_button" type="primary" @click="addSettle">{{type == 1 ? '新增结算审批规则' : '新增中标审批规则'}}</el-button>
+    </div>
 
-		<el-table :data="tableData" style="width: 100%">
-			<el-table-column align="left" prop="company_name" label="客户" width="260"></el-table-column>
-			<el-table-column align="center" prop="count" label="启用审批步骤" width="180"></el-table-column>
-			<el-table-column align="center" prop="remarks" label="备注" width="180"></el-table-column>
-			<el-table-column align="right" label="操作" width="260">
-				<template slot-scope="scope">
-					<el-button size="mini" type="primary" @click="configApproval(scope.$index, scope.row)">配置审批流</el-button>
-					<el-button v-if="scope.row.company_name != 'ALL'" size="mini" type="primary" @click="editApproval(scope.$index, scope.row)">编辑</el-button>
-					<el-button v-if="scope.row.company_name != 'ALL'" size="mini" @click="delApproval(scope.$index, scope.row)">删除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
-	</div>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column align="left" prop="company_name" label="客户" width="260"></el-table-column>
+      <el-table-column align="center" prop="count" label="启用审批步骤" width="180"></el-table-column>
+      <el-table-column align="center" prop="remarks" label="备注" width="180"></el-table-column>
+      <el-table-column align="right" label="操作" width="260">
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="configApproval(scope.$index, scope.row)">配置审批流</el-button>
+          <el-button v-if="scope.row.company_name != 'ALL'" size="mini" type="primary" @click="editApproval(scope.$index, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.company_name != 'ALL'" size="mini" @click="delApproval(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
 
-import requestApi from '@/utils/requestData'
+
 export default {
     components: { },
     data: function(){
@@ -37,7 +37,7 @@ export default {
     methods: {
 		searchTableData(type){
 			this.type = type;
-			requestApi({
+			this.requestApi({
         url: '/Approval/GetApporval',
         method: 'POST',
         data: {
@@ -90,7 +90,7 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				requestApi({
+				this.requestApi({
 					url: '/Approval/ApporvalDelete',
 					method: 'POST',
 					data: {
@@ -111,10 +111,9 @@ export default {
 
 <style lang="scss">
 .settle_header {
-	text-align: right;
-	.add_button {
-		margin-right: 100px;
-	}
+  text-align: right;
+  .add_button {
+    margin-right: 100px;
+  }
 }
-
 </style>

@@ -1,39 +1,34 @@
 <template>
   <div>
-     <el-form :model="searchFormData" label-width="120px">
-        <el-row>
-          <el-col :span="6">
-            <el-form-item label="DMC供应商名称">
-              <el-input size="small" class="demand_170" 
-              v-model="searchFormData.name" clearable
-              placeholder="请输入名称模糊查询"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="绑定用户" >
-              <div style="display:flex">
-                <el-select size="small" v-model="searchFormData.isnull" @change="isnullChange" style="width:100px">
-                  <el-option label="全部" :value="-1"></el-option>
-                  <el-option label="不为空" :value="0"></el-option>
-                  <el-option label="为空" :value="1"></el-option>
-                </el-select>
+    <el-form :model="searchFormData" label-width="120px">
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="DMC供应商名称">
+            <el-input size="small" class="demand_170" v-model="searchFormData.name" clearable placeholder="请输入名称模糊查询"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="绑定用户">
+            <div style="display:flex">
+              <el-select size="small" v-model="searchFormData.isnull" @change="isnullChange" style="width:100px">
+                <el-option label="全部" :value="-1"></el-option>
+                <el-option label="不为空" :value="0"></el-option>
+                <el-option label="为空" :value="1"></el-option>
+              </el-select>
 
-                <el-input v-show="searchFormData.isnull==-1 || searchFormData.isnull==0" size="small"
-                 class="demand_170" v-model="searchFormData.username" 
-                 clearable placeholder="请输入账号模糊查询"></el-input>
-              </div>
-              
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" align="right">
-            <el-button size="small" type="primary" @click="getDataList(1)">搜 索</el-button>
-            <el-button size="small" type="primary" @click="getDataList(2)">重 置</el-button>
-          </el-col>
-        </el-row>
-      </el-form>
+              <el-input v-show="searchFormData.isnull==-1 || searchFormData.isnull==0" size="small" class="demand_170" v-model="searchFormData.username" clearable placeholder="请输入账号模糊查询"></el-input>
+            </div>
 
-      <el-table style="height: 380px" border  :data="userbidData">
+          </el-form-item>
+        </el-col>
+        <el-col :span="6" align="right">
+          <el-button size="small" type="primary" @click="getDataList(1)">搜 索</el-button>
+          <el-button size="small" type="primary" @click="getDataList(2)">重 置</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
+
+    <el-table style="height: 380px" border :data="userbidData">
       <!-- <el-table-column label="会议ID" prop="id" align="center" width="180" show-overflow-tooltip></el-table-column> -->
       <el-table-column label="DMC供应商名称 " prop="company_name" align="center" width="350px" show-overflow-tooltip></el-table-column>
       <el-table-column label="地址" prop="company_address" align="center" width="330" show-overflow-tooltip></el-table-column>
@@ -51,7 +46,7 @@
     <!-- 更绑定用户弹窗 -->
     <el-dialog title="更新绑定用户" :visible.sync="dialogVisible" top='30vh' width="30%">
       <div style="line-height:40px">
-        <p class="flex_row" >
+        <p class="flex_row">
           <span style="width:150px">DMC供应商名称：</span>
           <span> {{updateInfo.company_name}} </span>
         </p>
@@ -62,11 +57,7 @@
         <p class="flex_row">
           <span style="width:150px">绑定用户账号：</span>
           <el-select size="mini" filterable multiple v-model="updateInfo.username" placeholder="请选择">
-            <el-option
-              v-for="item in userOptionsList"
-              :key="item.username"
-              :label="item.fullname"
-              :value="item.username">
+            <el-option v-for="item in userOptionsList" :key="item.username" :label="item.fullname" :value="item.username">
             </el-option>
           </el-select>
         </p>
@@ -76,14 +67,14 @@
       <div style="text-align:center">
         <el-button type="primary" size="small" @click="saveUpdateInfo">保 存</el-button>
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        
+
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import requestApi from '@/utils/requestData'
+
 export default {
   data:function(){
     return{
@@ -157,7 +148,7 @@ export default {
         this.searchFormData.isnull = -1;
         this.searchFormData.username = '';
       }
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetServiceProviderUser',
         method: 'POST',
         data: this.searchFormData,
@@ -168,7 +159,7 @@ export default {
       })
     },
     GetUser(){
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'POST',
         data: {}
@@ -196,7 +187,7 @@ export default {
         UserName: this.updateInfo.username.join(),
       };
       debugger
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/ServiceProviderEditUser',
         method: 'POST',
         data: sendData
@@ -233,7 +224,7 @@ export default {
 </script>
 
 <style>
-.el-table__body-wrapper{
+.el-table__body-wrapper {
   overflow-y: auto;
 }
 </style>

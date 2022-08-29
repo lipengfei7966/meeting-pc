@@ -1,39 +1,38 @@
 <template>
-	<div class="content">
-		<el-button class="btn" type="primary" @click="toPage()">新增附加信息规则配置</el-button>
-		<el-table :data="tableData" border style="width: 100%;" :header-cell-style="{'text-align':'center'}"
-          :cell-style="{'text-align':'center'}">
-			<el-table-column prop="cusname" label="客户" width="380">
-				<template slot-scope="scope">
-					{{ scope.row.isdefault? "ALL":scope.row.cusname }}
-				</template>
-			</el-table-column>
-			<el-table-column prop="fieldcount" label="自定义字段" width="180"></el-table-column>
-			<el-table-column prop="remark" label="备注"></el-table-column>
-			<el-table-column label="操作" width="180">
-				<template slot-scope="scope">
-					<el-button type="primary" size="small" @click="toPage(scope.row)">编辑</el-button>
-					<div style="display:inline-block;margin-left:10px;width:56px">
+  <div class="content">
+    <el-button class="btn" type="primary" @click="toPage()">新增附加信息规则配置</el-button>
+    <el-table :data="tableData" border style="width: 100%;" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+      <el-table-column prop="cusname" label="客户" width="380">
+        <template slot-scope="scope">
+          {{ scope.row.isdefault? "ALL":scope.row.cusname }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="fieldcount" label="自定义字段" width="180"></el-table-column>
+      <el-table-column prop="remark" label="备注"></el-table-column>
+      <el-table-column label="操作" width="180">
+        <template slot-scope="scope">
+          <el-button type="primary" size="small" @click="toPage(scope.row)">编辑</el-button>
+          <div style="display:inline-block;margin-left:10px;width:56px">
 
-					<el-button  size="small" v-show="!scope.row.isdefault" @click="deleteRule(scope.row.id)">删除</el-button>
-					</div>
-					<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-						<span>删除规则后不可恢复，请确认是否删除</span>
-						<span slot="footer" class="dialog-footer">
-							<el-button @click="dialogVisible = false">取 消</el-button>
-							<el-button type="primary" @click="submitDeleteRule()">确 定</el-button>
-						</span>
-					</el-dialog>
-				</template>
-			</el-table-column>
-		</el-table>
-		<el-pagination hide-on-single-page background :current-page.sync="pager" layout="prev, pager, next" :total="total"></el-pagination>
-	</div>
+            <el-button size="small" v-show="!scope.row.isdefault" @click="deleteRule(scope.row.id)">删除</el-button>
+          </div>
+          <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+            <span>删除规则后不可恢复，请确认是否删除</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="submitDeleteRule()">确 定</el-button>
+            </span>
+          </el-dialog>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination hide-on-single-page background :current-page.sync="pager" layout="prev, pager, next" :total="total"></el-pagination>
+  </div>
 </template>
 
 <script>
 	import {guid } from '@/utils/common';	
-	import requestApi from '@/utils/requestData'
+	
 export default {
 	data() {
 		return {
@@ -56,7 +55,7 @@ export default {
 		guid,
 		//查询规则
 		getSelfformList() {
-			requestApi({
+			this.requestApi({
         url: '/selfform/list',
         method: 'POST',
         data: {
@@ -99,7 +98,7 @@ export default {
 		},
 		//删除规则
 		submitDeleteRule() {
-			requestApi({
+			this.requestApi({
         url: '/selfform/DeleteSelfForm',
         method: 'POST',
         data: {
@@ -130,9 +129,9 @@ export default {
 
 <style lang="scss" scoped="scoped">
 .content {
-	.btn {
-		float: right;
-		margin-bottom: 20px;
-	}
+  .btn {
+    float: right;
+    margin-bottom: 20px;
+  }
 }
 </style>

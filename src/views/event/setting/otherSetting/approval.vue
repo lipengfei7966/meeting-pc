@@ -16,13 +16,13 @@
             <!-- @click="outerVisible = true"  //没有选中的弹框-->
             <el-button type="text" @click="nullTrue">指派合规人员</el-button>
           </div>
-          <span class="approval-header-a select-see-group" data-visible="0" @click="setVisible((isShow = 1))" >
+          <span class="approval-header-a select-see-group" data-visible="0" @click="setVisible((isShow = 1))">
             <i class="biz"></i>设为不可见
           </span>
-          <span class="approval-header-a select-see-group" data-visible="1" @click="setInvisible((isShow = 0))" >
+          <span class="approval-header-a select-see-group" data-visible="1" @click="setInvisible((isShow = 0))">
             <i class="biz"></i>设为可见
           </span>
-          <span class="approval-header-a select-see-group" data-visible="1" @click="approvalTable" >
+          <span class="approval-header-a select-see-group" data-visible="1" @click="approvalTable">
             <i class="biz"></i>设置合规餐标
           </span>
           <span class="approval-header-a select-see-group" data-visible="1" @click="SetMeetingType = true">
@@ -40,7 +40,7 @@
           <!-- 没有选中的弹框 结束 -->
 
           <!-- 指派合规人员（通用） 有选中的弹框 -->
-          <el-button type="text" @click="centerDialogVisible = true" ></el-button>
+          <el-button type="text" @click="centerDialogVisible = true"></el-button>
           <el-dialog title="指派合规人员" :visible.sync="centerDialogVisible" width="30%" center>
             <span style="margin: 10px">姓名</span>
             <span>
@@ -57,7 +57,7 @@
           <!--指派合规人员 有选中的弹框  结束 -->
           <!-- 指派合规人员（通用） 有选中的弹框 -->
           <el-button type="text" @click="personnel = true"></el-button>
-          <el-dialog title="指派合规人员" :visible.sync="personnel" width="30%" center >
+          <el-dialog title="指派合规人员" :visible.sync="personnel" width="30%" center>
             <span style="margin: 10px">姓名</span>
             <span>
               <el-row class="demo-autocomplete">
@@ -105,7 +105,7 @@
                   </tr>
                   <tr class="trh" v-for="(item, index) in mettingType" :key="index">
                     <th>
-                      <el-input v-show="showInput === index" placeholder="请输入内容" v-model="item.name" clearable  ></el-input>
+                      <el-input v-show="showInput === index" placeholder="请输入内容" v-model="item.name" clearable></el-input>
                       <span v-show="showInput !== index">{{ item.name }}</span>
                     </th>
                     <th class="foterText">
@@ -114,12 +114,12 @@
                         <span type="primary" @click="hander(item, index)">保存</span>
                         <span type="primary" @click="quxiao">取消</span>
                       </span>
-                      <span @click="deleteRow(index)" style="color: red" >删除</span>
+                      <span @click="deleteRow(index)" style="color: red">删除</span>
                       <span @click="up(index)">
                         <img src="@/assets/images/on.png" alt="" style="width: 17px" />
                       </span>
                       <span @click="down(index)">
-                        <img src="@/assets/images/up.png" alt="" style="width: 17px"/>
+                        <img src="@/assets/images/up.png" alt="" style="width: 17px" />
                       </span>
                     </th>
                   </tr>
@@ -141,7 +141,7 @@
         <div class="approval-body">
           <div class="approval-table-box" style="position: relative; margin-top: 100px">
             <div class="approval-table-no-department">
-              <table class="approval-table" cellpadding="1" cellspacing="1" border="1" >
+              <table class="approval-table" cellpadding="1" cellspacing="1" border="1">
                 <tbody>
                   <tr class="approval-table-header">
                     <th v-for="(item, colIndex) in mettingType" :key="colIndex">
@@ -159,11 +159,11 @@
                         <div class="tag-vislble select-see-one" data-visible="0" v-show="item.show == 0">
                           Visible
                         </div>
-                        <div class="tag-vislble select-see-one" data-visible="0" v-show="item.show == 1" style="background: #b6b7b7" >
+                        <div class="tag-vislble select-see-one" data-visible="0" v-show="item.show == 1" style="background: #b6b7b7">
                           Visible
                         </div>
                       </div>
-                      <div class="approval-table-user select-one" data-title="指派合规人员" data-user-type="biller" >
+                      <div class="approval-table-user select-one" data-title="指派合规人员" data-user-type="biller">
                         <!-- @click="personnel = true" -->
                         <div>合规: {{ item.conformance }}</div>
                         <!-- @click="complianceMeal = true" -->
@@ -174,7 +174,7 @@
                 </tbody>
               </table>
             </div>
-            <table class="approval-table approval-table-single" cellpadding="1" cellspacing="1" border="1" >
+            <table class="approval-table approval-table-single" cellpadding="1" cellspacing="1" border="1">
               <tbody>
                 <tr class="approval-table-tr" style="height: 72px">
                   <th class="table-department-item" style="height: 33px !important">
@@ -199,7 +199,7 @@
 </template>
 
 <script>
-import requestApi from '@/utils/requestData'
+
 export default {
   data() {
     return {
@@ -257,7 +257,7 @@ export default {
           order: index+1
         })
       })
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/MeetingTypeOrder',
         method: 'POST',
         data: {
@@ -279,7 +279,7 @@ export default {
           order: index+1
         })
       })
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/MeetingTypeOrder',
         method: 'POST',
         data: {
@@ -404,7 +404,7 @@ export default {
     },
     //点击删除
     deleteRow(index) {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/MeetingTypeDelete',
         method: 'POST',
         data: {
@@ -418,7 +418,7 @@ export default {
     },
     //人员
     GetUser() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'POST',
         data: {
@@ -463,7 +463,7 @@ export default {
       this.mettingType.push({ name: 'new', value: 1 });
     },
     GetDepartmentyMeeting() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetDepartmentyMeeting',
         method: 'POST',
         data: {
@@ -524,7 +524,7 @@ export default {
       obj.name = arr[0].name;
       obj.company_id = this.listValue;
       obj.id = arr[0].id || '';
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/MeetingTypeSava',
         method: 'POST',
         data: {
@@ -566,7 +566,7 @@ export default {
           }
         });
       });
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/DepartmentMeetingTypeShow',
         method: 'POST',
         data: {
@@ -613,7 +613,7 @@ export default {
     },
     //可见不可见接口
     DepartmentMeetingTypeShow(ids, isShow) {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/DepartmentMeetingTypeShow',
         method: 'POST',
         data: {
@@ -642,7 +642,7 @@ export default {
     },
     //列表接口
     DepartmentMeetingTypeSava(ids, type) {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/DepartmentMeetingTypeSava',
         method: 'POST',
         data: {
@@ -657,7 +657,7 @@ export default {
       });
     },
     getAll() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetAllCompany',
         method: 'POST',
         data: {

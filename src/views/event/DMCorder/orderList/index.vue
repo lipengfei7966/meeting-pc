@@ -63,72 +63,44 @@
         <el-table-column prop="attendee_no" label="参会人数">
         </el-table-column>
         <el-table-column label="活动日期">
-			<template slot-scope="scope">
-			  <p v-if="scope.row.event_startdate">{{scope.row.event_startdate.slice(0,10)}}</p>
-			  <p v-if="scope.row.event_enddate">{{scope.row.event_enddate.slice(0,10)}}</p>
-			</template>
+          <template slot-scope="scope">
+            <p v-if="scope.row.event_startdate">{{scope.row.event_startdate.slice(0,10)}}</p>
+            <p v-if="scope.row.event_enddate">{{scope.row.event_enddate.slice(0,10)}}</p>
+          </template>
         </el-table-column>
         <el-table-column prop="fullname" label="报价人"> </el-table-column>
         <el-table-column prop="offer_data" label="报价时间"> </el-table-column>
         <el-table-column prop="price" label="报价"> </el-table-column>
-        <el-table-column prop="statusname" label="状态"> 
+        <el-table-column prop="statusname" label="状态">
           <template slot-scope="scope">
-              <span :class="{signed:scope.row.statusname == '已确认结算单' }">{{scope.row.statusname}}</span>
-            </template>
+            <span :class="{signed:scope.row.statusname == '已确认结算单' }">{{scope.row.statusname}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="240">
           <template slot-scope="scope">
             <el-badge is-dot :hidden="scope.row.remind == '0' ">
-              <el-button
-                class="tools_btn"
-                size="mini"
-                type="text"
-                @click="select(scope.$index, scope.row)"
-                >查看</el-button>
+              <el-button class="tools_btn" size="mini" type="text" @click="select(scope.$index, scope.row)">查看</el-button>
             </el-badge>
-            <el-button
-              class="tools_btn"
-              size="mini"
-              type="text"
-              @click="selectinquiry(scope.$index, scope.row)"
-              >原询价单</el-button>
+            <el-button class="tools_btn" size="mini" type="text" @click="selectinquiry(scope.$index, scope.row)">原询价单</el-button>
             <el-badge is-dot :hidden="scope.row.new_message_count == '0' ">
-              <el-button
-                class="tools_btn"
-                size="mini"
-                type="text"
-                @click="leaveMessage(scope.$index, scope.row)"
-                >留言</el-button>
+              <el-button class="tools_btn" size="mini" type="text" @click="leaveMessage(scope.$index, scope.row)">留言</el-button>
             </el-badge>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页 -->
       <div class="pagination">
-        <el-pagination
-          class="pages"
-          background
-          layout="total,prev, pager, next"
-          :total="tableData.Counts"
-          :current-page="tableData.CurrentPage"
-          @current-change="currentChange"
-        >
+        <el-pagination class="pages" background layout="total,prev, pager, next" :total="tableData.Counts" :current-page="tableData.CurrentPage" @current-change="currentChange">
         </el-pagination>
       </div>
     </div>
     <!-- 留言 -->
-    <el-dialog
-      title="留言"
-      :visible.sync="leaveMessageStatus"
-      :before-close="
+    <el-dialog title="留言" :visible.sync="leaveMessageStatus" :before-close="
         (done) => {
           this.itemData = null;
           done();
         }
-      "
-	  :center="true"
-      width="600px"
-    >
+      " :center="true" width="600px">
       <leaveMessage v-if="leaveMessageStatus" :id="leaveMessageId" />
     </el-dialog>
   </div>
@@ -139,7 +111,7 @@
  * @page 我的订单
  */
 import leaveMessage from "@/components/event/leave-message.vue";
-import requestApi from '@/utils/requestData'
+
 export default {
   name: "OrderList",
   components: { leaveMessage },
@@ -205,7 +177,7 @@ export default {
     },
     // 冻结
     offShelf(index, row) {
-      requestApi({
+      this.requestApi({
         url: '/serviceprovider/casefrozen',
         method: 'POST',
         data: {
@@ -221,7 +193,7 @@ export default {
     },
     // 删除
     onDelete(index, row) {
-      requestApi({
+      this.requestApi({
         url: '/serviceprovider/casedelete',
         method: 'POST',
         data: {
@@ -237,7 +209,7 @@ export default {
     },
     // 获取列表
     GetList() {
-      requestApi({
+      this.requestApi({
         url: '/orderform/list',
         method: 'POST',
         data: {
@@ -265,15 +237,15 @@ export default {
 .orderList {
   display: flex;
   flex-direction: column;
-  .signed{
+  .signed {
     color: limegreen;
   }
 }
-.pagination{
-    text-align: right;
-    width: 100%;
-    // .pagination_part{margin: 20px 0;width: 100%;text-align: right}
-  }
+.pagination {
+  text-align: right;
+  width: 100%;
+  // .pagination_part{margin: 20px 0;width: 100%;text-align: right}
+}
 .title {
   font-size: 16px;
   padding: 15px 20px;

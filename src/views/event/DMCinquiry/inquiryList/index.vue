@@ -107,7 +107,7 @@
  */
 import leaveMessage from "@/components/event/leave-message.vue";
 import {guid, positiveInteger, positiveFloat, positiveFloatSix, formatDate, formatNum } from '@/utils/common';
-import requestApi from '@/utils/requestData'
+
 export default {
   name: "activityOrderList",
   components: { leaveMessage },
@@ -163,7 +163,7 @@ export default {
     },
     // 获取列表
     GetList() {
-      requestApi({
+      this.requestApi({
         url: '/inquirysheet/list',
         method: 'POST',
         data: {

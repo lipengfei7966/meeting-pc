@@ -1,5 +1,5 @@
 import api from "@/assets/js/request";
-import requestApi from '@/utils/requestData'
+
 import Vue from 'vue'
 export default function(urls) { // urls = [ {key,file} ]
 	return new Promise(function(resolve, reject) {
@@ -17,7 +17,7 @@ export default function(urls) { // urls = [ {key,file} ]
 				urls.shift()
 				return upload()
 			}
-			requestApi({
+			this.requestApi({
 				url: '/file/upload',
 				method: 'POST',
 				data: {},

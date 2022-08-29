@@ -1,31 +1,27 @@
 <template>
-	<div>
-		<div class="approval-box">
-			<div style="text-align: right;margin-bottom: 20px;">
+  <div>
+    <div class="approval-box">
+      <div style="text-align: right;margin-bottom: 20px;">
         <el-button type="primary" @click="adduser">新增会议助理配置</el-button>
       </div>
-			<!-- v-show="tableData.length<=0" -->
-			  <el-table :data="tableData" border style="width: 100%">
-					<el-table-column label="助理用户" prop="username" width="100"></el-table-column>
-					<el-table-column label="客户" prop="company_name" width="240"></el-table-column>
-					<el-table-column label="会议类型" prop="meeting_type" ></el-table-column>
-					<el-table-column label="会议城市" prop="city_code" ></el-table-column>
-					<el-table-column label="操作" width="150">
-						<template slot-scope="scope">
-							<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-							<el-button size="mini" type="danger" @click.native.prevent="deleteRow(scope.$index, scope.row)">删除</el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-				<div class="pagination">
-					<el-pagination @current-change="handleCurrentChange" 
-					class="pagination_part" background layout="prev, pager, next" 
-					:total="pageInfo.totalCount"
-					algin="right"
-					></el-pagination>
-				</div>
-		</div>
-	</div>
+      <!-- v-show="tableData.length<=0" -->
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column label="助理用户" prop="username" width="100"></el-table-column>
+        <el-table-column label="客户" prop="company_name" width="240"></el-table-column>
+        <el-table-column label="会议类型" prop="meeting_type"></el-table-column>
+        <el-table-column label="会议城市" prop="city_code"></el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click.native.prevent="deleteRow(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination">
+        <el-pagination @current-change="handleCurrentChange" class="pagination_part" background layout="prev, pager, next" :total="pageInfo.totalCount" algin="right"></el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -108,30 +104,28 @@ export default {
 
 <style scoped>
 element.style {
-	height: 60px;
+  height: 60px;
 }
 body {
-	background: #f2f4f8;
+  background: #f2f4f8;
 }
 .approval-box {
-	width: 1100px;
-	height: 100%;
-	margin: auto;
-	background: #ffffff;
-	margin-top: 30px;
-	position: relative;
-	overflow: hidden;
+  width: 1100px;
+  height: 100%;
+  margin: auto;
+  background: #ffffff;
+  margin-top: 30px;
+  position: relative;
+  overflow: hidden;
 }
 .configuration {
-	position: absolute;
-	left: 940px;
-	margin-top: 30px;
+  position: absolute;
+  left: 940px;
+  margin-top: 30px;
 }
 .el-alert--success.is-light {
-
-	background-color: #fdf6ec;
-	color: #e6a23c;
-
+  background-color: #fdf6ec;
+  color: #e6a23c;
 }
 /* .user {
 	width: 1000px;
@@ -143,12 +137,12 @@ body {
 } */
 
 .rules {
-	color: #e6a23c;
-	font-weight: bold;
+  color: #e6a23c;
+  font-weight: bold;
 }
 .Description {
-	color: #e6a23c;
-	margin-top: 6px;
-	font-weight: bold;
+  color: #e6a23c;
+  margin-top: 6px;
+  font-weight: bold;
 }
 </style>

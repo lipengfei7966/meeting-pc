@@ -216,7 +216,7 @@ import inputFilter from '@/assets/js/filter'
 import { validatePhone,validateEMail } from '@/assets/js/validator'
 import { MAINHOST, } from "@/config";
 import {limitsEffect} from "@/utils/uploadRestrictions.js"
-import requestApi from '@/utils/requestData'
+
 export default {
   name: "createEvent",
   data() {
@@ -430,7 +430,7 @@ export default {
     },
     // 查询当前用户绑定服务商
     ServiceProviderUser(){
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/ServiceProviderUser',
         method: 'POST',
         data: {},
@@ -440,7 +440,7 @@ export default {
       })
     },
     getServiceType(){
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetServiceType',
         method: 'POST',
         data: {},
@@ -474,7 +474,7 @@ export default {
     addContactTap(formName) {
       this.$refs.contactInfo.validate((valid) => {
         if (valid) {
-          requestApi({
+          this.requestApi({
             url: '/MeetingMa/CustomerContactSava',
             method: 'POST',
             data: {Parameter: JSON.stringify(this.contactInfo)},
@@ -491,7 +491,7 @@ export default {
     },
     // 获取会议基本信息
     getEventDetail(){
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_info',
         method: 'GET',
         data: {eventId:this.baseMeet.event_num,eventSearchType: this.$route.query.eventSearchType},
@@ -507,7 +507,7 @@ export default {
         }
         this.ServiceProviderUser()
         if( this.baseMeet.company_id){
-          requestApi({
+          this.requestApi({
             url: '/MeetingMa/GetCustomerContactList',
             method: 'POST',
             data:{ id: this.baseMeet.company_id, type:1},
@@ -537,7 +537,7 @@ export default {
             this.baseMeet.event_enddate = this.baseMeet.event_enddate.slice(0,10) + ' 23:59:59'
             if(this.eventId){
               this.baseMeet.id = this.eventId;
-              requestApi({
+              this.requestApi({
                 url: '/CustomerConfiguration/Get_event_info',
                 method: 'POST',
                 data: this.baseMeet,
@@ -550,7 +550,7 @@ export default {
                 // this.$router.go(-1)
               })
             }else{
-              requestApi({
+              this.requestApi({
                 url: '/CustomerConfiguration/Create_event_info',
                 method: 'POST',
                 data: this.baseMeet,
@@ -570,7 +570,7 @@ export default {
       } else {
         if(this.eventId){
           this.baseMeet.id = this.eventId;
-          requestApi({
+          this.requestApi({
             url: '/CustomerConfiguration/Update_event_info',
             method: 'POST',
             data: this.baseMeet,
@@ -578,7 +578,7 @@ export default {
             this.$message.success('已保存至草稿')
           })
         }else{
-          requestApi({
+          this.requestApi({
             url: '/CustomerConfiguration/Create_event_info',
             method: 'POST',
             data: this.baseMeet,
@@ -652,7 +652,7 @@ export default {
       // })
 
       // 替换成权限控制
-      requestApi({
+      this.requestApi({
         url: '/UserGroupmanagement/GetCustomerEventInfoPost',
         method: 'POST',
         data:{},
@@ -671,7 +671,7 @@ export default {
         this.baseMeet.activity_type = '';
         this.baseMeet.food_limit = '';
         
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/GetCustomerContactList',
           method: 'POST',
           data: { id: this.baseMeet.company_id, type:1},
@@ -687,7 +687,7 @@ export default {
         });
       } else if (type === 1) {
         this.contactInfo.customer_id = '';
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/GetDepartmenty',
           method: 'POST',
           data: {CompanyID:this.contactInfo.company_id},
@@ -704,7 +704,7 @@ export default {
     },
     // 客户联系人所属信息
     getContactInfo(id){
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetCustomerContactEdit',
         method: 'POST',
         data: {ContactID: id},
@@ -739,7 +739,7 @@ export default {
           CompanyID: this.baseMeet.company_id
         }
       }
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetMeetingTypeShow',
         method: 'POST',
         data: params,
@@ -771,7 +771,7 @@ export default {
     },
     // 获取城市
     getCityList() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetCitys',
         method: 'GET',
         data: {},
@@ -781,7 +781,7 @@ export default {
     },
     // 获取会议历史
     getHistoryEvent(){
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_info',
         method: 'GET',
         data: {page:this.page,pageSize:this.pageSize},
@@ -807,7 +807,7 @@ export default {
           this.$message.warning('请选择时间！');
           return
         }
-        requestApi({
+        this.requestApi({
           url: '/CustomerConfiguration/CopyEventInfo',
           method: 'POST',
           data: {id: this.hisItem.id,eventStartDate: this.hisStartDate},

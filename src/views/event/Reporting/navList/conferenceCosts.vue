@@ -345,7 +345,7 @@ import Spend from '@/components/event/spendby.vue';
 import Projectype from '@/components/event/projectype.vue';
 import Costelements from '@/components/event/costelements.vue';
 import excelExport from '@/utils/exportexcel.js'
-import requestApi from '@/utils/requestData'
+
 export default {
 	data() {
 		return {
@@ -461,7 +461,7 @@ export default {
 	methods: {
 		//客户
 		getCustomers() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'post',
         data: {},
@@ -472,7 +472,7 @@ export default {
 		},
 		//
 		spendTypeAnalysisReport() {
-      requestApi({
+      this.requestApi({
         url: '/EventReport/SpendTypeAnalysis',
         method: 'GET',
         data: {
@@ -499,7 +499,7 @@ export default {
 		},
 		//
 		spendByProjectType() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/SpendByProjectType',
         method: 'GET',
         data: {
@@ -526,7 +526,7 @@ export default {
 		},
 		//
 		spendCyCostElements() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/SpendCyCostElements',
         method: 'GET',
         data: {

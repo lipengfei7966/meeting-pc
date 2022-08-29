@@ -100,7 +100,7 @@
 
 <script>
 import Echarts from '@/components/event/echarts';
-import requestApi from '@/utils/requestData'
+
 export default {
   components: {
     Echarts,
@@ -129,7 +129,7 @@ export default {
     },
     //酒店详细数据
     detailedData() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/DetailInformation',
         method: 'GET',
         data: {
@@ -150,7 +150,7 @@ export default {
     },
 
     holaleAnalysis() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/CooperateRate',
         method: 'GET',
         data: {
@@ -164,7 +164,7 @@ export default {
 
     // 酒店名称搜索
     search() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/DetailInformation',
         method: 'GET',
         data: {

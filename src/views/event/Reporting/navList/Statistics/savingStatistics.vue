@@ -109,7 +109,7 @@
 
 <script>
 import BrokenLineTwo from '@/components/event/brokenLineTwo';
-import requestApi from '@/utils/requestData'
+
 export default {
 	props: ['pice'],
 	data() {
@@ -198,7 +198,7 @@ export default {
 	methods: {
 		//会议类型
 		getEventType() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetEventType',
         method: 'POST',
         data: {
@@ -210,7 +210,7 @@ export default {
 		},
 		//客户
 		getCustomers() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
         data: {},
@@ -220,7 +220,7 @@ export default {
 		},
 		//负责人
 		getCustomerContacts() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
         data: {},
@@ -231,7 +231,7 @@ export default {
 		//获取字典表
 
 		dictionaryTable() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
         data: {event_dictionary_code: '0035'},
@@ -242,7 +242,7 @@ export default {
 		},
 		//
 		costStatistics() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/SpendAnalysisInfo',
         method: 'GET',
         data: {

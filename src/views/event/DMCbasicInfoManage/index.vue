@@ -1,115 +1,111 @@
 <template>
-	<div class="BasicInformationManagement">
-		<div class="title">基本信息管理</div>
-		<div class="content">
-			<el-form label-width="120px" :model="ruleForm" :rules="rules" ref="ruleForm" class="form">
-				<el-form-item label="公司名称" prop="company_name">
-					<el-input v-model="ruleForm.company_name" placeholder="公司名称"></el-input>
-				</el-form-item>
-				<el-form-item label="公司地址" prop="company_address">
-					<el-input v-model="ruleForm.company_address" placeholder="公司地址"></el-input>
-				</el-form-item>
-				<el-form-item label="关于我们" prop="about_us">
-					<el-input type="textarea" :rows="5" v-model="ruleForm.about_us" placeholder="关于我们"></el-input>
-				</el-form-item>
-				<el-form-item label="公司介绍" prop="company_profile">
-					<el-input type="textarea" :rows="5" v-model="ruleForm.company_profile" placeholder="公司介绍"></el-input>
-				</el-form-item>
-				<el-form-item label="上传公司LOGO" prop="company_logo">
-					<el-upload ref="upload" action="" :on-change="handlePreviewLogo" :auto-upload="false" :show-file-list="false"
-					 :multiple="false">
-						<el-button slot="trigger" size="small" type="primary">从电脑选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">
-							只能上传jpg/png文件，且不超过500kb
-						</div>
-					</el-upload>
-				</el-form-item>
-				<el-form-item v-if="ruleForm.company_logo">
-					<img :src="ruleForm.company_logo" class="uploadImage" v-if="company_logo_if_image" />
-					<div class="imageName" v-else>
-						已选择: {{ ruleForm.company_logo.name }}
-					</div>
-				</el-form-item>
-				<el-form-item label="上传图片" prop="picture">
-					<el-upload ref="upload" action="" :on-change="handlePreviewImage" :auto-upload="false" :show-file-list="false"
-					 :multiple="false">
-						<el-button slot="trigger" size="small" type="primary">从电脑选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">
-							只能上传jpg/png文件，且不超过500kb
-						</div>
-					</el-upload>
-				</el-form-item>
-				<el-form-item v-if="ruleForm.picture">
-					<img :src="ruleForm.picture" class="uploadImage" v-if="picture_if_image" />
-					<div class="imageName" v-else>
-						已选择: {{ ruleForm.picture.name }}
-					</div>
-				</el-form-item>
-				<el-form-item label="选择城市">
-					<div class="typeList">
-						<el-input v-model="cityName" readonly>
-						</el-input>
-						<div class="item" v-if="type.city != null">
-							<div class="context">
-								<div class="item" v-for="item in type.city[0].city_list" :key="item.code" :class="{
+  <div class="BasicInformationManagement">
+    <div class="title">基本信息管理</div>
+    <div class="content">
+      <el-form label-width="120px" :model="ruleForm" :rules="rules" ref="ruleForm" class="form">
+        <el-form-item label="公司名称" prop="company_name">
+          <el-input v-model="ruleForm.company_name" placeholder="公司名称"></el-input>
+        </el-form-item>
+        <el-form-item label="公司地址" prop="company_address">
+          <el-input v-model="ruleForm.company_address" placeholder="公司地址"></el-input>
+        </el-form-item>
+        <el-form-item label="关于我们" prop="about_us">
+          <el-input type="textarea" :rows="5" v-model="ruleForm.about_us" placeholder="关于我们"></el-input>
+        </el-form-item>
+        <el-form-item label="公司介绍" prop="company_profile">
+          <el-input type="textarea" :rows="5" v-model="ruleForm.company_profile" placeholder="公司介绍"></el-input>
+        </el-form-item>
+        <el-form-item label="上传公司LOGO" prop="company_logo">
+          <el-upload ref="upload" action="" :on-change="handlePreviewLogo" :auto-upload="false" :show-file-list="false" :multiple="false">
+            <el-button slot="trigger" size="small" type="primary">从电脑选择文件</el-button>
+            <div slot="tip" class="el-upload__tip">
+              只能上传jpg/png文件，且不超过500kb
+            </div>
+          </el-upload>
+        </el-form-item>
+        <el-form-item v-if="ruleForm.company_logo">
+          <img :src="ruleForm.company_logo" class="uploadImage" v-if="company_logo_if_image" />
+          <div class="imageName" v-else>
+            已选择: {{ ruleForm.company_logo.name }}
+          </div>
+        </el-form-item>
+        <el-form-item label="上传图片" prop="picture">
+          <el-upload ref="upload" action="" :on-change="handlePreviewImage" :auto-upload="false" :show-file-list="false" :multiple="false">
+            <el-button slot="trigger" size="small" type="primary">从电脑选择文件</el-button>
+            <div slot="tip" class="el-upload__tip">
+              只能上传jpg/png文件，且不超过500kb
+            </div>
+          </el-upload>
+        </el-form-item>
+        <el-form-item v-if="ruleForm.picture">
+          <img :src="ruleForm.picture" class="uploadImage" v-if="picture_if_image" />
+          <div class="imageName" v-else>
+            已选择: {{ ruleForm.picture.name }}
+          </div>
+        </el-form-item>
+        <el-form-item label="选择城市">
+          <div class="typeList">
+            <el-input v-model="cityName" readonly>
+            </el-input>
+            <div class="item" v-if="type.city != null">
+              <div class="context">
+                <div class="item" v-for="item in type.city[0].city_list" :key="item.code" :class="{
 									current:
 									  listFormData.city.findIndex((i) => i.code == item.code) != -1,
-								  }"
-								 @click="selectedCity(item.code,item.AbbreviationName)">
-									{{ item.AbbreviationName }}
-								</div>
-								<template v-for="item in type.city">
-									<div class="more" :key="item.Key" v-if="item.Key != '热门' && statusList.cityStatus">
-										<div class="moreTitle">{{ item.Key }}</div>
-										<div class="moreItems">
-											<div class="item" v-for="item in item.city_list" :class="{
+								  }" @click="selectedCity(item.code,item.AbbreviationName)">
+                  {{ item.AbbreviationName }}
+                </div>
+                <template v-for="item in type.city">
+                  <div class="more" :key="item.Key" v-if="item.Key != '热门' && statusList.cityStatus">
+                    <div class="moreTitle">{{ item.Key }}</div>
+                    <div class="moreItems">
+                      <div class="item" v-for="item in item.city_list" :class="{
 											  current:
 												listFormData.city.findIndex((i) => i.code == item.code) !=
 												-1,
-											}"
-											 :key="item.code" @click="selectedCity(item.code,item.AbbreviationName)">
-												{{ item.AbbreviationName }}
-											</div>
-										</div>
-									</div>
-								</template>
-							</div>
-							<div class="opt">
-								<el-button :type="statusList.cityStatus ? 'warning' : 'success'" size="mini" @click="statusList.cityStatus = !statusList.cityStatus">{{ statusList.cityStatus ? "收起" : "展开" }}</el-button>
-							</div>
-						</div>
-					</div>
-				</el-form-item>
-				<el-form-item label="公司电话" prop="company_phone">
-					<el-input v-model="ruleForm.company_phone" placeholder="公司电话"></el-input>
-				</el-form-item>
-				<el-form-item label="公司传真" prop="company_fax">
-					<el-input v-model="ruleForm.company_fax" placeholder="公司传真"></el-input>
-				</el-form-item>
-				<el-form-item label="公司邮箱" prop="company_email">
-					<el-input v-model="ruleForm.company_email" placeholder="公司邮箱"></el-input>
-				</el-form-item>
-				<el-form-item label="客服姓名">
-					<el-input v-model="ruleForm.customer_service_name" placeholder="客服姓名"></el-input>
-				</el-form-item>
-				<el-form-item label="客服电话" prop="customer_service_telephone_numbers">
-					<el-input v-model="ruleForm.customer_service_telephone_numbers" placeholder="客服电话"></el-input>
-				</el-form-item>
-				<el-form-item label="客服QQ号码" prop="customer_service_QQ_number">
-					<el-input v-model="ruleForm.customer_service_QQ_number" placeholder="客服QQ号码"></el-input>
-				</el-form-item>
-				<el-form-item label="公司网站网址" prop="company_website">
-					<el-input v-model="ruleForm.company_website" placeholder="公司网站网址"></el-input>
-				</el-form-item>
-				<el-form-item label="特别说明">
-					<el-input type="textarea" :rows="5" v-model="ruleForm.special_note" placeholder="特别说明"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="save">立即保存</el-button>
-				</el-form-item>
-			</el-form>
-		</div>
-	</div>
+											}" :key="item.code" @click="selectedCity(item.code,item.AbbreviationName)">
+                        {{ item.AbbreviationName }}
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <div class="opt">
+                <el-button :type="statusList.cityStatus ? 'warning' : 'success'" size="mini" @click="statusList.cityStatus = !statusList.cityStatus">{{ statusList.cityStatus ? "收起" : "展开" }}</el-button>
+              </div>
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="公司电话" prop="company_phone">
+          <el-input v-model="ruleForm.company_phone" placeholder="公司电话"></el-input>
+        </el-form-item>
+        <el-form-item label="公司传真" prop="company_fax">
+          <el-input v-model="ruleForm.company_fax" placeholder="公司传真"></el-input>
+        </el-form-item>
+        <el-form-item label="公司邮箱" prop="company_email">
+          <el-input v-model="ruleForm.company_email" placeholder="公司邮箱"></el-input>
+        </el-form-item>
+        <el-form-item label="客服姓名">
+          <el-input v-model="ruleForm.customer_service_name" placeholder="客服姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="客服电话" prop="customer_service_telephone_numbers">
+          <el-input v-model="ruleForm.customer_service_telephone_numbers" placeholder="客服电话"></el-input>
+        </el-form-item>
+        <el-form-item label="客服QQ号码" prop="customer_service_QQ_number">
+          <el-input v-model="ruleForm.customer_service_QQ_number" placeholder="客服QQ号码"></el-input>
+        </el-form-item>
+        <el-form-item label="公司网站网址" prop="company_website">
+          <el-input v-model="ruleForm.company_website" placeholder="公司网站网址"></el-input>
+        </el-form-item>
+        <el-form-item label="特别说明">
+          <el-input type="textarea" :rows="5" v-model="ruleForm.special_note" placeholder="特别说明"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="save">立即保存</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -117,7 +113,7 @@
 	 * @page 基本信息管理
 	 */
 	import upload from "@/utils/upload";
-	import requestApi from '@/utils/requestData'
+	
 	import {
 		validatePhone,
 		validateTelphone,
@@ -299,7 +295,7 @@
 								console.log(res)
 								if (res[0])
 									this.ruleForm.picture = res[0].FilePath
-								return requestApi({
+								return this.requestApi({
                     url: '/serviceprovider/save',
                     method: 'POST',
                     data: this.ruleForm,
@@ -400,13 +396,13 @@
 			},
 		},
 		mounted() {
-      requestApi({
+      this.requestApi({
         url: '/serviceprovider/info',
         method: 'POST',
         data: {},
       }).then((res) => {
 				this.ruleForm = res;
-        requestApi({
+        this.requestApi({
           url: '/serviceprovider/city',
           method: 'POST',
           data: {},
@@ -437,119 +433,119 @@
 </script>
 
 <style lang="scss" scoped>
-	.BasicInformationManagement {
-		display: flex;
-		flex-direction: column;
-	}
+.BasicInformationManagement {
+  display: flex;
+  flex-direction: column;
+}
 
-	.title {
-		font-size: 16px;
-		padding: 15px 20px;
-		border-bottom: 1px solid #f6f6f6;
-	}
+.title {
+  font-size: 16px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f6f6f6;
+}
 
-	.content {
-		flex: 1;
-		width: 100%;
-		overflow: auto;
-		padding: 15px 20px;
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
+.content {
+  flex: 1;
+  width: 100%;
+  overflow: auto;
+  padding: 15px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 
-		.form {
-			width: 100%;
-			max-width: 800px;
-			margin-left: 10%;
-		}
+  .form {
+    width: 100%;
+    max-width: 800px;
+    margin-left: 10%;
+  }
 
-		.uploadImage {
-			max-width: 200px;
-		}
-	}
+  .uploadImage {
+    max-width: 200px;
+  }
+}
 
-	.imageName {
-		color: #457ffd;
-	}
+.imageName {
+  color: #457ffd;
+}
 
-	.typeList {
-		border: 1px solid #eaecf3;
-		border-radius: 5px;
-		padding: 10px;
-		box-sizing: border-box;
+.typeList {
+  border: 1px solid #eaecf3;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
 
-		>.item {
-			border-bottom: 1px solid #ccc;
-			display: flex;
-			line-height: 32px;
-			font-size: 12px;
-			padding: 10px 0;
-			box-sizing: border-box;
+  > .item {
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    line-height: 32px;
+    font-size: 12px;
+    padding: 10px 0;
+    box-sizing: border-box;
 
-			&:last-child {
-				border: 0;
-				padding-bottom: 0;
-			}
+    &:last-child {
+      border: 0;
+      padding-bottom: 0;
+    }
 
-			&:first-child {
-				padding-top: 0;
-			}
+    &:first-child {
+      padding-top: 0;
+    }
 
-			.name {
-				color: #999999;
-			}
+    .name {
+      color: #999999;
+    }
 
-			.context {
-				flex: 1;
-				margin: 0 10px;
-				overflow: hidden;
-				color: #666666;
-				width: 0;
+    .context {
+      flex: 1;
+      margin: 0 10px;
+      overflow: hidden;
+      color: #666666;
+      width: 0;
 
-				>.item {
-					cursor: pointer;
-					float: left;
-					margin-right: 5px;
-					padding: 0 10px;
-					box-sizing: border-box;
-					border-radius: 3px;
+      > .item {
+        cursor: pointer;
+        float: left;
+        margin-right: 5px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        border-radius: 3px;
 
-					&.current {
-						background-color: #f4ad49;
-						color: #fff;
-					}
-				}
+        &.current {
+          background-color: #f4ad49;
+          color: #fff;
+        }
+      }
 
-				.more {
-					clear: both;
-					display: flex;
-					margin-left: 20px;
+      .more {
+        clear: both;
+        display: flex;
+        margin-left: 20px;
 
-					.moreTitle {
-						font-weight: bold;
-						margin-right: 20px;
-					}
+        .moreTitle {
+          font-weight: bold;
+          margin-right: 20px;
+        }
 
-					.moreItems {
-						flex: 1;
-						overflow: hidden;
+        .moreItems {
+          flex: 1;
+          overflow: hidden;
 
-						>.item {
-							cursor: pointer;
-							float: left;
-							margin-right: 5px;
-							padding: 0 10px;
-							box-sizing: border-box;
-							border-radius: 3px;
+          > .item {
+            cursor: pointer;
+            float: left;
+            margin-right: 5px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            border-radius: 3px;
 
-							&.current {
-								background-color: #f4ad49;
-								color: #fff;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+            &.current {
+              background-color: #f4ad49;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>

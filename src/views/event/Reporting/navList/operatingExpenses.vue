@@ -262,7 +262,7 @@ import Bingtuseeting from '@/components/event/bingtuseeting.vue';
 import Bingcity from '@/components/event/bingcity.vue';
 import ServiceproviderList from '@/components/event/serviceproviderList.vue';
 import excelExport from '@/utils/exportexcel.js'
-import requestApi from '@/utils/requestData'
+
 export default {
 	data() {
 		return {
@@ -382,7 +382,7 @@ export default {
 	methods: {
 		//客户
 		getCustomers() {
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
         data: {},
@@ -392,7 +392,7 @@ export default {
 		},
 		//获取部门id
 		DepartmentId() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetDepartment',
         method: 'GET',
         data: {},
@@ -401,7 +401,7 @@ export default {
 			});
 		},
 		costofOperation() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/BusinessExpenseStatistics',
         method: 'GET',
         data: {
@@ -418,7 +418,7 @@ export default {
 				});
 		},
 		seetingtypes() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/CostStatisticsByEventType',
         method: 'GET',
         data: {
@@ -439,7 +439,7 @@ export default {
 				});
 		},
 		serviceProvider() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetServiceprovider',
         method: 'GET',
         data: {},
@@ -449,7 +449,7 @@ export default {
 			});
 		},
 		suppliers() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/CostStatisticsByEventServiceprovider',
         method: 'GET',
         data: {

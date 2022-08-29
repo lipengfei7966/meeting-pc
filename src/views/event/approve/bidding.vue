@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import requestApi from '@/utils/requestData'
+
 export default {
 	data() {
 		return {
@@ -248,7 +248,7 @@ export default {
 			this.searchData.eventName = this.eventName
 			this.searchData.eventId = this.eventId
 			this.searchData.responsible = this.responsible
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
         data: this.searchData,
@@ -268,7 +268,7 @@ export default {
 			this.searchData.eventName = this.eventName
 			this.searchData.eventId = this.eventId
 			this.searchData.responsible = this.responsible
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
         data: this.searchData,
@@ -286,7 +286,7 @@ export default {
 			this.searchData.eventName = this.eventName
 			this.searchData.eventId = this.eventId
 			this.searchData.responsible = this.responsible
-			requestApi({
+			this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
         data: this.searchData,

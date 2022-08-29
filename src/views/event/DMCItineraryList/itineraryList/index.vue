@@ -3,9 +3,7 @@
     <div class="title">行程管理</div>
     <div class="content">
       <div class="tools">
-        <el-button type="primary" @click="addProjectStatus = true;"
-          >添加新项目</el-button
-        >
+        <el-button type="primary" @click="addProjectStatus = true;">添加新项目</el-button>
       </div>
       <el-table :data="tableData.List" stripe height="100%" style="width: 100%">
         <el-table-column label="创建时间">
@@ -33,76 +31,28 @@
         <el-table-column prop="statusname" label="项目状态"> </el-table-column>
         <el-table-column label="操作" width="240">
           <template slot-scope="scope">
-            <el-button
-              class="tools_btn"
-              size="mini"
-              type="text"
-              @click="goInfo(scope.$index, scope.row)"
-              >查看项目</el-button
-            >
-            <el-button
-              class="tools_btn"
-              size="mini"
-              type="text"
-              @click="addStroke(scope.$index, scope.row)"
-              >添加行程</el-button
-            >
-            <el-popconfirm
-              confirm-button-text="确定"
-              cancel-button-text="取消"
-              icon="el-icon-info"
-              icon-color="red"
-              title="确定要取消此项目吗？"
-              v-if="scope.row.status != cancelprojectstatus"
-              @confirm="onDelete(scope.$index, scope.row)"
-            >
-              <el-button
-                class="tools_btn"
-                size="mini"
-                type="text"
-                slot="reference"
-                >取消项目</el-button
-              >
+            <el-button class="tools_btn" size="mini" type="text" @click="goInfo(scope.$index, scope.row)">查看项目</el-button>
+            <el-button class="tools_btn" size="mini" type="text" @click="addStroke(scope.$index, scope.row)">添加行程</el-button>
+            <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon="el-icon-info" icon-color="red" title="确定要取消此项目吗？" v-if="scope.row.status != cancelprojectstatus" @confirm="onDelete(scope.$index, scope.row)">
+              <el-button class="tools_btn" size="mini" type="text" slot="reference">取消项目</el-button>
             </el-popconfirm>
-            <el-button
-              class="tools_btn"
-              size="mini"
-              type="text"
-              @click="update(scope.$index, scope.row)"
-              >编辑</el-button
-            >
+            <el-button class="tools_btn" size="mini" type="text" @click="update(scope.$index, scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-pagination
-        class="pages"
-        background
-        layout="prev, pager, next"
-        :total="tableData.Counts"
-        :current-page="tableData.CurrentPage"
-        @current-change="currentChange"
-      >
+      <el-pagination class="pages" background layout="prev, pager, next" :total="tableData.Counts" :current-page="tableData.CurrentPage" @current-change="currentChange">
       </el-pagination>
     </div>
     <!-- 添加新项目 -->
-    <el-dialog
-      :title="projectTitle"
-      :visible.sync="addProjectStatus"
-      :before-close="
+    <el-dialog :title="projectTitle" :visible.sync="addProjectStatus" :before-close="
         (done) => {
           this.projectTitle = '添加项目';
           this.itemData = null;
           done();
         }
-      "
-      width="700px"
-    >
-      <projectAdded
-        v-if="addProjectStatus"
-        @onColse="save"
-        :item-data="itemData"
-      />
+      " width="700px">
+      <projectAdded v-if="addProjectStatus" @onColse="save" :item-data="itemData" />
     </el-dialog>
   </div>
 </template>
@@ -112,7 +62,7 @@
  * @page 成员管理
  */
 import projectAdded from "@/components/event/project-added.vue";
-import requestApi from '@/utils/requestData'
+
 export default {
   name: "ItineraryList",
   components: { projectAdded },
@@ -137,7 +87,7 @@ export default {
     },
     // 冻结
     offShelf(index, row) {
-      requestApi({
+      this.requestApi({
         url: '/serviceprovider/casefrozen',
         method: 'POST',
         data: {
@@ -153,7 +103,7 @@ export default {
     },
     // 删除
     onDelete(index, row) {
-      requestApi({
+      this.requestApi({
         url: '/scheduling/cancelproject',
         method: 'POST',
         data: {
@@ -169,7 +119,7 @@ export default {
     },
     // 获取列表
     GetList() {
-      requestApi({
+      this.requestApi({
         url: '/scheduling/projectlist',
         method: 'POST',
         data: {
@@ -187,7 +137,7 @@ export default {
     },
     // 添加/修改
     save(params) {
-      requestApi({
+      this.requestApi({
         url: '/scheduling/projectsave',
         method: 'POST',
         data: params,

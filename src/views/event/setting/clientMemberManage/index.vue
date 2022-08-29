@@ -1,129 +1,126 @@
 <template>
-	<div class="root">
-		<div class="all">
-			<div>
-				<div></div>
-				<div class="index-page-div">
-					<span>首页</span>
-					<span>-></span>
-					<span>客户成员管理</span>
-				</div>
-			</div>
-			<div>
-				<div class="left-div-client">
-					<div>
-						<span>客户</span>
-						<el-select size="mini" @change="client" v-model="value" placeholder="请选择">
-							<el-option v-for="item in companyData" :key="item.id" :label="item.shortname" :value="item.id">
-							</el-option>
-						</el-select>
-					</div>
-					<div>
-						<span class="client-div-span">客户组织架构</span>
-					</div>
-					<div>
-						<div>
-							<span class="client-company-span" @click="searchID = value,searchType = 1,curPage = 1;customerContact(value,1),select_customer='公司全员'">公司全员 ({{companyCount}}人)</span>
-						</div>
-						<div class="client-div" v-for="(item,index) in clientData" @click="departmentChange(item)" :key="index">
-							<span>{{item.shortname}} </span>
-							<span>({{item.count}}人)</span>
-						</div>
-					</div>
-				</div>
-				<div class="right-div">
-					<div>
-						<div class="select-customer-div">
-							<span>{{select_customer}}</span>
-						</div>
-						<el-button class="btn-right" size="mini" @click="addMember=true,shade=true,is_addOrUpdate=true,company(),initialize()">新增成员</el-button>
-						<el-button class="btn-right" size="mini" @click="import_member=true,shade=true">批量导入成员</el-button>
-						<el-button class="btn-right" size="mini" @click="exportExcel()">导出成员</el-button>
-						<el-button class="btn-right" size="mini" @click="updateSection=true">更改用户所属部门</el-button>
-					</div>
-					<div>
-						<el-form class="form-find-class" :inline="true">
-							<el-form-item label="成员">
-								<el-input class="input-find-class" v-model="name" placeholder="输入姓名/邮箱/手机号查询"></el-input>
-							</el-form-item>
-							<el-form-item>
-								<el-button class="btn-find-class" type="primary" @click="searchID = value,searchType = 1,curPage = 1,customerContact(value,1)">查 询</el-button>
-							</el-form-item>
-						</el-form>
-					</div>
-					<div>
-						<el-table id="out-table" ref="multipleTable" :data="tableData"
-						 tooltip-effect="dark" :header-row-style="{height:'40px'}" :header-cell-style="{padding:'0px'}" :row-style="{height:'41px'}" :cell-style="{padding:'0px'}" style="width: 100%" @selection-change="handleSelectionChange">
-							<el-table-column type="selection" width="55">
-							</el-table-column>
-							<el-table-column align="center" label="姓名">
-								<template slot-scope="scope">{{ scope.row.name }}</template>
-							</el-table-column>
-							<el-table-column align="center" prop="" label="邮箱">
-								<template slot-scope="scope">{{ scope.row.mailbox }}</template>
-							</el-table-column>
-							<el-table-column align="center" prop="" label="手机号">
-								<template slot-scope="scope">{{ scope.row.phone }}</template>
-							</el-table-column>
-							<el-table-column align="center" prop="" label="操作/Action" :render-header="renderheader">
-								<template slot-scope="scope">
-									<el-button type="text" @click="is_addOrUpdate=false,addMember=true,shade=true,ruleForm.id=scope.row.id,getData()">编辑</el-button>
-									<el-button type="text" @click="deleteData(scope.row.id)">删除</el-button>
-								</template>
-							</el-table-column>
-						</el-table>
-						<el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size="pagesize" :hide-on-single-page="false"  layout="prev, pager, next" background :total="totalNum" align="right"></el-pagination>
-					</div>
-				</div>
-				<!-- <div class="shade" v-if="shade"></div> -->
+  <div class="root">
+    <div class="all">
+      <div>
+        <div></div>
+        <div class="index-page-div">
+          <span>首页</span>
+          <span>-></span>
+          <span>客户成员管理</span>
+        </div>
+      </div>
+      <div>
+        <div class="left-div-client">
+          <div>
+            <span>客户</span>
+            <el-select size="mini" @change="client" v-model="value" placeholder="请选择">
+              <el-option v-for="item in companyData" :key="item.id" :label="item.shortname" :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
+          <div>
+            <span class="client-div-span">客户组织架构</span>
+          </div>
+          <div>
+            <div>
+              <span class="client-company-span" @click="searchID = value,searchType = 1,curPage = 1;customerContact(value,1),select_customer='公司全员'">公司全员 ({{companyCount}}人)</span>
+            </div>
+            <div class="client-div" v-for="(item,index) in clientData" @click="departmentChange(item)" :key="index">
+              <span>{{item.shortname}} </span>
+              <span>({{item.count}}人)</span>
+            </div>
+          </div>
+        </div>
+        <div class="right-div">
+          <div>
+            <div class="select-customer-div">
+              <span>{{select_customer}}</span>
+            </div>
+            <el-button class="btn-right" size="mini" @click="addMember=true,shade=true,is_addOrUpdate=true,company(),initialize()">新增成员</el-button>
+            <el-button class="btn-right" size="mini" @click="import_member=true,shade=true">批量导入成员</el-button>
+            <el-button class="btn-right" size="mini" @click="exportExcel()">导出成员</el-button>
+            <el-button class="btn-right" size="mini" @click="updateSection=true">更改用户所属部门</el-button>
+          </div>
+          <div>
+            <el-form class="form-find-class" :inline="true">
+              <el-form-item label="成员">
+                <el-input class="input-find-class" v-model="name" placeholder="输入姓名/邮箱/手机号查询"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button class="btn-find-class" type="primary" @click="searchID = value,searchType = 1,curPage = 1,customerContact(value,1)">查 询</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div>
+            <el-table id="out-table" ref="multipleTable" :data="tableData" tooltip-effect="dark" :header-row-style="{height:'40px'}" :header-cell-style="{padding:'0px'}" :row-style="{height:'41px'}" :cell-style="{padding:'0px'}" style="width: 100%" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55">
+              </el-table-column>
+              <el-table-column align="center" label="姓名">
+                <template slot-scope="scope">{{ scope.row.name }}</template>
+              </el-table-column>
+              <el-table-column align="center" prop="" label="邮箱">
+                <template slot-scope="scope">{{ scope.row.mailbox }}</template>
+              </el-table-column>
+              <el-table-column align="center" prop="" label="手机号">
+                <template slot-scope="scope">{{ scope.row.phone }}</template>
+              </el-table-column>
+              <el-table-column align="center" prop="" label="操作/Action" :render-header="renderheader">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="is_addOrUpdate=false,addMember=true,shade=true,ruleForm.id=scope.row.id,getData()">编辑</el-button>
+                  <el-button type="text" @click="deleteData(scope.row.id)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size="pagesize" :hide-on-single-page="false" layout="prev, pager, next" background :total="totalNum" align="right"></el-pagination>
+          </div>
+        </div>
+        <!-- <div class="shade" v-if="shade"></div> -->
 
-				<el-dialog :visible.sync="addMember" width="500px" :title="is_addOrUpdate?'新增成员':'编辑成员信息'" align="center">
-					<el-form ref="memberForm" class="form-rule" :inline="true" label-position="right" :model="ruleForm" :rules="rules">
-						<el-form-item label="姓名" prop="name">
-							<el-input v-model="ruleForm.name"></el-input>
-						</el-form-item>
-						<el-form-item label="邮箱" prop="mailbox">
-							<el-input v-model="ruleForm.mailbox"></el-input>
-						</el-form-item>
-						<el-form-item label="手机号" prop="phone">
-							<el-input v-model="ruleForm.phone"></el-input>
-						</el-form-item>
-						<el-form-item v-if="is_addOrUpdate" label="公司" prop="company_id">
-							<el-select v-model="ruleForm.company_id" placeholder="请选择公司">
-								<el-option v-for="(item,index) in companyData" :label="item.shortname" :value="item.id" :key="index"></el-option>
-							</el-select>
-						</el-form-item>
-						<el-form-item v-if="is_addOrUpdate" label="部门" prop="customer_id">
-							<el-select v-model="ruleForm.customer_id" placeholder="请选择部门">
-								<el-option v-for="(item, index) in clientData" :label="item.shortname" :value="item.id" :key="index"></el-option>
-							</el-select>
-						</el-form-item>
-					</el-form>
-					<div class="submit-div">
-						<el-button type="primary" @click="submit()">提交</el-button>
-						<el-button type="info" @click="shade=false,addMember=false">取消</el-button>
-					</div>
-				</el-dialog>
+        <el-dialog :visible.sync="addMember" width="500px" :title="is_addOrUpdate?'新增成员':'编辑成员信息'" align="center">
+          <el-form ref="memberForm" class="form-rule" :inline="true" label-position="right" :model="ruleForm" :rules="rules">
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="ruleForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="mailbox">
+              <el-input v-model="ruleForm.mailbox"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号" prop="phone">
+              <el-input v-model="ruleForm.phone"></el-input>
+            </el-form-item>
+            <el-form-item v-if="is_addOrUpdate" label="公司" prop="company_id">
+              <el-select v-model="ruleForm.company_id" placeholder="请选择公司">
+                <el-option v-for="(item,index) in companyData" :label="item.shortname" :value="item.id" :key="index"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="is_addOrUpdate" label="部门" prop="customer_id">
+              <el-select v-model="ruleForm.customer_id" placeholder="请选择部门">
+                <el-option v-for="(item, index) in clientData" :label="item.shortname" :value="item.id" :key="index"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div class="submit-div">
+            <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button type="info" @click="shade=false,addMember=false">取消</el-button>
+          </div>
+        </el-dialog>
 
-				
-				<div v-if="import_member" class="import-div">
-					<div>
-						<span>批量导入成员</span>
-					</div>
-					<el-upload action="none" :file-list="fileList" :before-upload="beforeUploadFile" :on-exceed="exceedFile" :limit="1"
-					 accept=".xlsx,.xls" :on-change="fileChange">
-						<el-button size="small" type="primary">选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">支持格式：xls、xlsx，最大4M</div>
-					</el-upload>
-					<div>
-						<a href="http://b.ctgbs.com/%E5%A4%A7%E4%BA%A4%E9%80%9A%E6%A8%A1%E6%9D%BF.xlsx">点击下载模板</a>
-					</div>
-					<div>
-						<el-button type="info" @click="import_member=false,shade=false">取消</el-button>
-						<el-button type="primary" @click="uploadFile()">确认</el-button>
-					</div>
-				</div>
-				<!-- <el-dialog title="编辑部门" :visible.sync="updateSection" width="50%">
+        <div v-if="import_member" class="import-div">
+          <div>
+            <span>批量导入成员</span>
+          </div>
+          <el-upload action="none" :file-list="fileList" :before-upload="beforeUploadFile" :on-exceed="exceedFile" :limit="1" accept=".xlsx,.xls" :on-change="fileChange">
+            <el-button size="small" type="primary">选择文件</el-button>
+            <div slot="tip" class="el-upload__tip">支持格式：xls、xlsx，最大4M</div>
+          </el-upload>
+          <div>
+            <a href="http://b.ctgbs.com/%E5%A4%A7%E4%BA%A4%E9%80%9A%E6%A8%A1%E6%9D%BF.xlsx">点击下载模板</a>
+          </div>
+          <div>
+            <el-button type="info" @click="import_member=false,shade=false">取消</el-button>
+            <el-button type="primary" @click="uploadFile()">确认</el-button>
+          </div>
+        </div>
+        <!-- <el-dialog title="编辑部门" :visible.sync="updateSection" width="50%">
 					<el-form class="form-section" :inline="true" label-position="right" label-width="80px" :model="ruleForm" :rules="rules">
 						<el-form-item label="父部门" prop="customer_id">
 							<el-select v-model="ruleForm.customer_id" placeholder="请选择部门">
@@ -136,25 +133,25 @@
 						<el-button type="info" @click="shade=false,updateSection=false">取消</el-button>
 					</div>
 				</el-dialog> -->
-				<div v-show="updateSection" class="section-div">
-					<div>
-						<span>编辑部门</span>
-					</div>
-					<el-form class="form-section" :inline="true" label-position="right" label-width="80px" :model="ruleForm" :rules="rules">
-						<el-form-item label="父部门" prop="customer_id">
-							<el-select v-model="ruleForm.customer_id" placeholder="请选择部门">
-								<el-option v-for="item in clientData" :label="item.shortname" :value="item.id" :key="item.id"></el-option>
-							</el-select>
-						</el-form-item>
-					</el-form>
-					<div class="transfer-div">
-						<el-button type="primary" @click="transfer(),shade=false,updateSection=false">迁移</el-button>
-						<el-button type="info" @click="shade=false,updateSection=false">取消</el-button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div v-show="updateSection" class="section-div">
+          <div>
+            <span>编辑部门</span>
+          </div>
+          <el-form class="form-section" :inline="true" label-position="right" label-width="80px" :model="ruleForm" :rules="rules">
+            <el-form-item label="父部门" prop="customer_id">
+              <el-select v-model="ruleForm.customer_id" placeholder="请选择部门">
+                <el-option v-for="item in clientData" :label="item.shortname" :value="item.id" :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div class="transfer-div">
+            <el-button type="primary" @click="transfer(),shade=false,updateSection=false">迁移</el-button>
+            <el-button type="info" @click="shade=false,updateSection=false">取消</el-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>
 
@@ -162,7 +159,7 @@
 	//import FileSaver from "file-saver";
 	//import XLSX from "xlsx";
 	import { validatePhone,validateEMail } from '@/assets/js/validator'
-  import requestApi from '@/utils/requestData'
+  
 	export default {
 		data() {
 			return {
@@ -324,7 +321,7 @@
 					form.append('file', this.fileList[0]);
 					form.append('DepartmentyID', '5000');
 					form.append('CompanyID', 'CeShi');
-          requestApi({
+          this.requestApi({
             url: '/MeetingMa/CustomerImportExcel',
             method: 'POST',
             data: {
@@ -352,7 +349,7 @@
 			},
 			// 公司查询
 			company() {
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/GetCompany',
           method: 'POST',
           data: {},
@@ -362,7 +359,7 @@
 			},
 			// 客户(部门)查询
 			client() {
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/GetDepartmenty',
           method: 'POST',
           data: {CompanyID: this.value},
@@ -382,7 +379,7 @@
 			},
 			// 客户联系人查询
 			customerContact(id, type) {
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/GetCustomerContact',
           method: 'POST',
           data: {
@@ -406,7 +403,7 @@
 				 this.$refs.memberForm.validate((valid) => {
 					//  debugger
           if (valid) {
-            requestApi({
+            this.requestApi({
               url: '/MeetingMa/CustomerContactSava',
               method: 'POST',
               data: {
@@ -444,7 +441,7 @@
 			},
 			// 客户联系人编辑查询
 			getData() {
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/GetCustomerContactEdit',
           method: 'POST',
           data: {
@@ -468,7 +465,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          requestApi({
+          this.requestApi({
             url: '/MeetingMa/CustomerDelete',
             method: 'POST',
             data: {
@@ -503,7 +500,7 @@
 					
 				})
 				// 更改部门
-        requestApi({
+        this.requestApi({
           url: '/MeetingMa/DepartmentyEdit',
           method: 'POST',
           data: {
@@ -525,271 +522,271 @@
 </script>
 
 <style lang="scss">
-	.root {
-		background: #F8F8FF;
-	}
+.root {
+  background: #f8f8ff;
+}
 
-	.all {
-		width: 1200px;
-		margin: 0 auto;
-	}
+.all {
+  width: 1200px;
+  margin: 0 auto;
+}
 
-	.left-div-client {
-		width: fit-content;
-		height: 675px;
-		float: left;
-		background-color: #FFFFFF;
-	}
+.left-div-client {
+  width: fit-content;
+  height: 675px;
+  float: left;
+  background-color: #ffffff;
+}
 
-	.left-div-client>div:nth-of-type(1),.left-div-client>div:nth-of-type(2),.left-div-client>div:nth-of-type(3)>div {
-		border-bottom: 1px solid #D3D3D3;
-		padding: 10px 15px;
-	}
-	.left-div-client>div:nth-of-type(1)>span{
-		margin-right: 10px;
-	}
-	.left-div-client>div:nth-of-type(1)>div>div>input{
-		width: 150px;
-	}
-	.left-div-client>div:nth-of-type(3){
-		height: 480px;
-		overflow:auto;
-	}
-	.right-div {
-		float: left;
-		height: 675px;
-		margin-left: 20px;
-		width: 880px;
-		background-color: #FFFFFF;
-	}
+.left-div-client > div:nth-of-type(1),
+.left-div-client > div:nth-of-type(2),
+.left-div-client > div:nth-of-type(3) > div {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 10px 15px;
+}
+.left-div-client > div:nth-of-type(1) > span {
+  margin-right: 10px;
+}
+.left-div-client > div:nth-of-type(1) > div > div > input {
+  width: 150px;
+}
+.left-div-client > div:nth-of-type(3) {
+  height: 480px;
+  overflow: auto;
+}
+.right-div {
+  float: left;
+  height: 675px;
+  margin-left: 20px;
+  width: 880px;
+  background-color: #ffffff;
+}
 
-	.right-div>div {
-		border-bottom: 1px solid #D3D3D3;
-		padding: 10px 5px;
-	}
+.right-div > div {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 10px 5px;
+}
 
-	.right-div>div:nth-of-type(3) {
-		border-bottom: none;
-		text-align: center;
+.right-div > div:nth-of-type(3) {
+  border-bottom: none;
+  text-align: center;
+}
 
-	}
+.el-input__inner {
+  border-color: #2c2c2c;
+}
 
-	.el-input__inner {
-		border-color: #2c2c2c;
-	}
+.el-select__caret {
+  color: #2c2c2c !important;
+}
 
-	.el-select__caret {
-		color: #2c2c2c !important;
-	}
+.client-div {
+  text-indent: 15px;
+  cursor: pointer;
+}
 
-	.client-div {
-		text-indent: 15px;
-		cursor: pointer;
-	}
+.client-div > span:nth-of-type(2) {
+  color: #55aaff;
+}
 
-	.client-div>span:nth-of-type(2) {
-		color: #55aaff;
-	}
+.client-div:hover {
+  background-color: #2896eb;
+  color: #ffffff !important;
+}
 
-	.client-div:hover {
-		background-color: #2896eb;
-		color: #ffffff !important;
-	}
+.client-company-span {
+  color: #55aaff;
+  cursor: pointer;
+}
 
-	.client-company-span {
-		color: #55aaff;
-		cursor: pointer;
-	}
+.client-div-span {
+  font-size: 16px;
+}
 
-	.client-div-span {
-		font-size: 16px;
-	}
+.member-div {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  background-color: #fff;
+  border-radius: 6px;
+  margin: 0 auto;
+}
 
-	.member-div {
-		width: 500px;
-		height: 500px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 999;
-		background-color: #fff;
-		border-radius: 6px;
-		margin: 0 auto;
-	}
+.member-div > div:nth-of-type(1) {
+  border-bottom: 0;
+  text-align: center;
+  position: relative;
+  line-height: 58px;
+  font-size: 20px;
+  color: #50505a;
+  font-weight: normal;
+  background-color: #f2f2f3;
+  border-radius: 6px;
+}
 
-	.member-div>div:nth-of-type(1) {
-		border-bottom: 0;
-		text-align: center;
-		position: relative;
-		line-height: 58px;
-		font-size: 20px;
-		color: #50505a;
-		font-weight: normal;
-		background-color: #f2f2f3;
-		border-radius: 6px;
-	}
+.shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.3;
+  z-index: 2;
+}
 
-	.shade {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #000;
-		opacity: 0.3;
-		z-index: 2;
-	}
+.form-rule {
+  padding-top: 20px;
+  overflow-y: scroll;
+  height: 300px;
+}
 
-	.form-rule {
-		padding-top: 20px;
-		overflow-y: scroll;
-		height: 300px;
-	}
+.submit-div {
+  text-align: center;
+  margin-top: 20px;
+}
+.submit-div > button {
+  width: 120px;
+}
+.import-div {
+  width: 400px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  background-color: #fff;
+  margin: 0 auto;
+  text-align: center;
+}
 
-	.submit-div {
-		text-align: center;
-		margin-top: 20px;
-	}
-	.submit-div>button {
-		width: 120px;
-	}
-	.import-div {
-		width: 400px;
-		height: 300px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 999;
-		background-color: #fff;
-		margin: 0 auto;
-		text-align: center;
-	}
+.import-div > div:nth-of-type(1) {
+  text-align: center;
+  font-size: 20px;
+  color: #50505a;
+  font-weight: normal;
+  margin-top: 20px;
+}
 
-	.import-div>div:nth-of-type(1) {
-		text-align: center;
-		font-size: 20px;
-		color: #50505a;
-		font-weight: normal;
-		margin-top: 20px;
-	}
+.import-div > div {
+  margin-top: 30px;
+}
 
-	.import-div>div {
-		margin-top: 30px;
-	}
+.section-div {
+  width: 500px;
+  height: 240px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  background-color: #fff;
+  border-radius: 6px;
+  margin: 0 auto;
+  text-align: center;
+}
 
-	.section-div {
-		width: 500px;
-		height: 240px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 999;
-		background-color: #fff;
-		border-radius: 6px;
-		margin: 0 auto;
-		text-align: center;
-	}
+.section-div > div:nth-of-type(1) {
+  border-bottom: 0;
+  text-align: center;
+  position: relative;
+  line-height: 58px;
+  font-size: 20px;
+  color: #50505a;
+  font-weight: normal;
+  background-color: #f2f2f3;
+  border-radius: 6px;
+}
 
-	.section-div>div:nth-of-type(1) {
-		border-bottom: 0;
-		text-align: center;
-		position: relative;
-		line-height: 58px;
-		font-size: 20px;
-		color: #50505a;
-		font-weight: normal;
-		background-color: #f2f2f3;
-		border-radius: 6px;
-	}
+.form-section {
+  padding-top: 20px;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+}
 
-	.form-section {
-		padding-top: 20px;
-		overflow-y: scroll;
-		padding-bottom: 20px;
-	}
+.index-page-div {
+  margin-bottom: 30px;
+}
 
-	.index-page-div {
-		margin-bottom: 30px;
-	}
+.index-page-div > span:nth-of-type(1) {
+  color: #2896eb;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 5px;
+}
 
-	.index-page-div>span:nth-of-type(1) {
-		color: #2896eb;
-		font-size: 14px;
-		cursor: pointer;
-		margin-right: 5px;
-	}
+.index-page-div > span:nth-of-type(2) {
+  margin-right: 5px;
+}
 
-	.index-page-div>span:nth-of-type(2) {
-		margin-right: 5px;
-	}
+.btn-right {
+  color: #2896eb;
+}
 
-	.btn-right {
-		color: #2896eb;
-	}
+.btn-right:hover {
+  background-color: #ffffff !important;
+  border: solid 1px #e5e5e5;
+}
 
-	.btn-right:hover {
-		background-color: #FFFFFF !important;
-		border: solid 1px #e5e5e5;
-	}
+.select-customer-div {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4f4f4f;
+  padding: 18px 15px 0px;
+  margin-bottom: 10px;
+}
 
-	.select-customer-div {
-		font-size: 16px;
-		font-weight: 500;
-		color: #4f4f4f;
-		padding: 18px 15px 0px;
-		margin-bottom: 10px;
-	}
+.right-div > div > button:nth-of-type(1) {
+  margin-left: 15px;
+}
 
-	.right-div>div>button:nth-of-type(1) {
-		margin-left: 15px;
-	}
+.form-find-class {
+  margin-left: 15px;
+}
 
-	.form-find-class {
-		margin-left: 15px;
-	}
+.el-form-item {
+  margin-bottom: 20px;
+}
 
-	.el-form-item {
-		margin-bottom: 20px;
-	}
+.el-input__inner {
+  border-color: #dcdfe6;
+}
+.el-form-item__content {
+  width: 220px;
+}
+.el-select {
+}
+.input-find-class > input {
+  height: 30px;
+}
+.btn-find-class {
+  height: 30px;
+  line-height: 0;
+}
+#out-table > el-table-column {
+  height: 40px;
+}
+.transfer-div > button {
+  width: 120px;
+}
 
-	.el-input__inner {
-		border-color: #DCDFE6;
-	}
-	.el-form-item__content{
-		width: 220px;
-	}
-	.el-select{
-	}
-	.input-find-class>input{
-		height: 30px;
-	}
-	.btn-find-class{
-		height: 30px;
-		line-height: 0;
-	}
-	#out-table>el-table-column{
-		height: 40px;
-	}
-	.transfer-div>button{
-		width: 120px;
-	}
-	
-	
-	@media only screen and (max-width: 1450px) {
-		.all{
-			width: 100%;
-		}
-		.left-div-client{
-			width:20%;
-		}
-		.right-div{
-			width: 75%;
-		}
-		.left-div-client > div:nth-of-type(1) > div > div > input{
-			width: 100%;
-		}
-	}
+@media only screen and (max-width: 1450px) {
+  .all {
+    width: 100%;
+  }
+  .left-div-client {
+    width: 20%;
+  }
+  .right-div {
+    width: 75%;
+  }
+  .left-div-client > div:nth-of-type(1) > div > div > input {
+    width: 100%;
+  }
+}
 </style>

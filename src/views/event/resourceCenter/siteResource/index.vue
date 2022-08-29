@@ -2,13 +2,13 @@
   <div class="hotleIndex">
     <div class="section">
       <div class="hotelSearch">
-          <a :class="{  select: !listFormData.isagreement && !listFormData.iscollection }" href="javascript:void(0)" @click="searchall">所有酒店</a>
-          <a :class="{  select: listFormData.isagreement }" href="javascript:void(0)" @click="searchagreement">公司协议酒店</a>
-          <a :class="{  select: listFormData.iscollection }" href="javascript:void(0)" @click="searchcollection">我收藏的酒店</a>
+        <a :class="{  select: !listFormData.isagreement && !listFormData.iscollection }" href="javascript:void(0)" @click="searchall">所有酒店</a>
+        <a :class="{  select: listFormData.isagreement }" href="javascript:void(0)" @click="searchagreement">公司协议酒店</a>
+        <a :class="{  select: listFormData.iscollection }" href="javascript:void(0)" @click="searchcollection">我收藏的酒店</a>
         <div class="R global-search">
-            <input class="text br2 new-search-input" placeholder="输入酒店名称或关键词" type="text" name="keyword" v-model="listFormData.keyword">
-            <i class="el-icon-search"></i>
-            <input class="btn br4 btn-primary" type="submit" id="top_search" value="搜索" @click="getList">
+          <input class="text br2 new-search-input" placeholder="输入酒店名称或关键词" type="text" name="keyword" v-model="listFormData.keyword">
+          <i class="el-icon-search"></i>
+          <input class="btn br4 btn-primary" type="submit" id="top_search" value="搜索" @click="getList">
         </div>
         <div class="clear"></div>
       </div>
@@ -16,45 +16,25 @@
         <div class="item" v-if="type.city != null">
           <div class="name">选择城市</div>
           <div class="context">
-            <div
-              class="item"
-              :class="{ 
-                current: listFormData.city.length == 0 }"
-              @click="selectedCity()"
-            >
+            <div class="item" :class="{ 
+                current: listFormData.city.length == 0 }" @click="selectedCity()">
               不限
             </div>
-            <div
-              class="item"
-              v-for="item in type.city[0].city_list"
-              :key="item.code"
-              :class="{
+            <div class="item" v-for="item in type.city[0].city_list" :key="item.code" :class="{
                 current:
                   listFormData.city.findIndex((i) => i.code == item.code) != -1,
-              }"
-              @click="selectedCity(item.code)"
-            >
+              }" @click="selectedCity(item.code)">
               {{ item.AbbreviationName }}
             </div>
             <template v-for="item in type.city">
-              <div
-                class="more"
-                :key="item.Key"
-                v-if="item.Key != '热门' && statusList.cityStatus"
-              >
+              <div class="more" :key="item.Key" v-if="item.Key != '热门' && statusList.cityStatus">
                 <div class="moreTitle">{{ item.Key }}</div>
                 <div class="moreItems">
-                  <div
-                    class="item"
-                    v-for="item in item.city_list"
-                    :class="{
+                  <div class="item" v-for="item in item.city_list" :class="{
                       current:
                         listFormData.city.findIndex((i) => i.code == item.code) !=
                         -1,
-                    }"
-                    :key="item.code"
-                    @click="selectedCity(item.code)"
-                  >
+                    }" :key="item.code" @click="selectedCity(item.code)">
                     {{ item.AbbreviationName }}
                   </div>
                 </div>
@@ -62,62 +42,37 @@
             </template>
           </div>
           <div class="opt">
-            <el-button
-              :type="statusList.cityStatus ? 'warning' : 'success'"
-              size="mini"
-              @click="statusList.cityStatus = !statusList.cityStatus"
-              >{{ statusList.cityStatus ? "收起" : "展开" }}</el-button
-            >
+            <el-button :type="statusList.cityStatus ? 'warning' : 'success'" size="mini" @click="statusList.cityStatus = !statusList.cityStatus">{{ statusList.cityStatus ? "收起" : "展开" }}</el-button>
           </div>
         </div>
         <div class="item" v-if="type.sitetype">
           <div class="name">场地类型</div>
           <div class="context">
-            <div
-              class="item"
-              :class="{ 
-                current: listFormData.sitetype.length == 0 }"
-              @click="selectedsitetype()"
-            >
+            <div class="item" :class="{ 
+                current: listFormData.sitetype.length == 0 }" @click="selectedsitetype()">
               不限
             </div>
-            <div
-              class="item"
-              v-for="item in type.sitetype"
-              :key="item.code"
-              :class="{
+            <div class="item" v-for="item in type.sitetype" :key="item.code" :class="{
                 current:
                   listFormData.sitetype.findIndex((i) => i.code == item.code) != -1,
-              }"
-              @click="selectedsitetype(item.code)"
-            >
+              }" @click="selectedsitetype(item.code)">
               {{ item.name }}
             </div>
           </div>
           <div class="opt"></div>
-        </div> 
+        </div>
         <div class="item" v-if="type.brand && 1==2">
           <div class="name">酒店品牌</div>
           <div class="context">
-            <div
-              class="item"
-              :class="{ 
-                current: listFormData.brand.length == 0 }"
-              @click="selectedbrand()"
-            >
+            <div class="item" :class="{ 
+                current: listFormData.brand.length == 0 }" @click="selectedbrand()">
               不限
             </div>
             <template v-for="(item, key) in type.brand">
-              <div
-                class="item"
-                :key="item.id"
-                v-if="key < 10"
-                :class="{
+              <div class="item" :key="item.id" v-if="key < 10" :class="{
                   current:
                     listFormData.brand.findIndex((i) => i.id == item.id) != -1,
-                }"
-                @click="selectedbrand(item.id)"
-              >
+                }" @click="selectedbrand(item.id)">
                 {{ item.joinname }}
               </div>
             </template>
@@ -125,17 +80,11 @@
               <div class="more" :key="item.key" v-if="statusList.brandStatus">
                 <div class="moreTitle">{{ item.key }}</div>
                 <div class="moreItems">
-                  <div
-                    class="item"
-                    v-for="item in item.list"
-                    :key="item.id"
-                    :class="{
+                  <div class="item" v-for="item in item.list" :key="item.id" :class="{
                       current:
                         listFormData.brand.findIndex((i) => i.id == item.id) !=
                         -1,
-                    }"
-                    @click="selectedbrand(item.id)"
-                  >
+                    }" @click="selectedbrand(item.id)">
                     {{ item.joinname }}
                   </div>
                 </div>
@@ -143,104 +92,69 @@
             </template>
           </div>
           <div class="opt">
-            <el-button
-              :type="statusList.brandStatus ? 'warning' : 'success'"
-              size="mini"
-              @click="statusList.brandStatus = !statusList.brandStatus"
-              >{{ statusList.brandStatus ? "收起" : "展开" }}</el-button
-            >
+            <el-button :type="statusList.brandStatus ? 'warning' : 'success'" size="mini" @click="statusList.brandStatus = !statusList.brandStatus">{{ statusList.brandStatus ? "收起" : "展开" }}</el-button>
           </div>
-        </div> 
+        </div>
         <div class="item" v-if="type.venuearea">
           <div class="name">会场面积</div>
           <div class="context">
-            <div
-              class="item"
-              :class="{
+            <div class="item" :class="{
                 current:
                   listFormData.venue_min_area == null &&
                   listFormData.venue_max_area == null,
-              }"
-              @click="selectedarea(null, null)"
-            >
+              }" @click="selectedarea(null, null)">
               不限
             </div>
-            <div
-              class="item"
-              v-for="item in type.venuearea"
-              :key="item.id"
-              :class="{
+            <div class="item" v-for="item in type.venuearea" :key="item.id" :class="{
                 current:
                   listFormData.venue_min_area == item.minvalue &&
                   listFormData.venue_max_area == item.maxvalue,
-              }"
-              @click="selectedarea(item.minvalue, item.maxvalue)"
-            >
-              {{ item.name }}
-            </div>
-          </div>
-          <div class="opt"></div>
-        </div> 
-        <div class="item" v-if="type.venuepeoplenumber">
-          <div class="name">会场人数</div>
-          <div class="context">
-            <div
-              class="item"
-              :class="{
-                current:
-                  listFormData.venue_min_people_number == null &&
-                  listFormData.venue_max_people_number == null,
-              }"
-              @click="selectedvenue(null, null)"
-            >
-              不限
-            </div>
-            <div
-              class="item"
-              v-for="item in type.venuepeoplenumber"
-              :key="item.id"
-              :class="{
-                current:
-                  listFormData.venue_min_people_number == item.minvalue &&
-                  listFormData.venue_max_people_number == item.maxvalue,
-              }"
-              @click="selectedvenue(item.minvalue, item.maxvalue)"
-            >
+              }" @click="selectedarea(item.minvalue, item.maxvalue)">
               {{ item.name }}
             </div>
           </div>
           <div class="opt"></div>
         </div>
-         <div class="item" v-if="type.roomprice">
-          <div class="name">团房均价</div>
+        <div class="item" v-if="type.venuepeoplenumber">
+          <div class="name">会场人数</div>
           <div class="context">
-            <div
-              class="item"
-              :class="{
+            <div class="item" :class="{
                 current:
-                  listFormData.room_min_avg_price == null &&
-                  listFormData.room_max_avg_price == null,
-              }"
-              @click="selectedroom(null, null)"
-            >
+                  listFormData.venue_min_people_number == null &&
+                  listFormData.venue_max_people_number == null,
+              }" @click="selectedvenue(null, null)">
               不限
             </div>
-            <div
-              class="item"
-              v-for="item in type.roomprice"
-              :key="item.id"
-              :class="{
+            <div class="item" v-for="item in type.venuepeoplenumber" :key="item.id" :class="{
                 current:
-                  listFormData.room_min_avg_price == item.minvalue &&
-                  listFormData.room_max_avg_price == item.maxvalue,
-              }"
-              @click="selectedroom(item.minvalue, item.maxvalue)"
-            >
+                  listFormData.venue_min_people_number == item.minvalue &&
+                  listFormData.venue_max_people_number == item.maxvalue,
+              }" @click="selectedvenue(item.minvalue, item.maxvalue)">
               {{ item.name }}
             </div>
           </div>
           <div class="opt"></div>
-        </div> 
+        </div>
+        <div class="item" v-if="type.roomprice">
+          <div class="name">团房均价</div>
+          <div class="context">
+            <div class="item" :class="{
+                current:
+                  listFormData.room_min_avg_price == null &&
+                  listFormData.room_max_avg_price == null,
+              }" @click="selectedroom(null, null)">
+              不限
+            </div>
+            <div class="item" v-for="item in type.roomprice" :key="item.id" :class="{
+                current:
+                  listFormData.room_min_avg_price == item.minvalue &&
+                  listFormData.room_max_avg_price == item.maxvalue,
+              }" @click="selectedroom(item.minvalue, item.maxvalue)">
+              {{ item.name }}
+            </div>
+          </div>
+          <div class="opt"></div>
+        </div>
       </div>
       <div class="botContext">
         <div class="hotelList">
@@ -261,7 +175,7 @@
                 <div class="other">
                   <p>
                     <span>场地类型:</span>
-                     {{item.sitetype_name}}
+                    {{item.sitetype_name}}
                   </p>
                   <p>
                     <span>客房数量：</span>
@@ -273,7 +187,7 @@
                   </p>
                 </div>
                 <div class="other">
-                   <p>
+                  <p>
                     <span>会议厅数量：</span>
                     {{ item.venue_number }} 间
                   </p>
@@ -286,7 +200,7 @@
                     {{ item.venue_min_people_number }} ~
                     {{ item.venue_max_people_number }} 人
                   </p>
-                  
+
                   <!-- <p><span>累计成交：</span>0次</p> -->
                 </div>
               </div>
@@ -297,23 +211,13 @@
                   <el-button type="text" v-else @click="cancelcollection(item)">已收藏</el-button>
                 </div>
                 <div class="bottom" v-if="routeType">
-                  <el-button type="warning" v-if="HotelSelectedList.findIndex((i) => i.hotelid == item.id) == -1" @click="selected(item)"
-                    >邀请询价</el-button
-                  >
-                   <el-button type="info" v-else @click="selected(item)"
-                    >取消邀请</el-button
-                  >
+                  <el-button type="warning" v-if="HotelSelectedList.findIndex((i) => i.hotelid == item.id) == -1" @click="selected(item)">邀请询价</el-button>
+                  <el-button type="info" v-else @click="selected(item)">取消邀请</el-button>
                 </div>
               </div>
             </div>
           </div>
-          <el-pagination
-            class="pagination"
-            background
-            layout="prev, pager, next"
-            :total="hotel.Counts"
-            @current-change="sizeChange"
-          ></el-pagination>
+          <el-pagination class="pagination" background layout="prev, pager, next" :total="hotel.Counts" @current-change="sizeChange"></el-pagination>
         </div>
         <div class="right" v-if="routeType">
           <!-- <el-button type="warning">
@@ -326,20 +230,17 @@
               <div class="tips" v-if="HotelSelectedList.length == 0">
                 暂未选择目标酒店
               </div>
-              <div class="item"  v-for="item in HotelSelectedList"
-                :key="`s${item.id}`"
-              >
-                
+              <div class="item" v-for="item in HotelSelectedList" :key="`s${item.id}`">
+
                 <div class="hotelname">
                   <i class="badge"></i>
                   {{ item.hotelname }}
                 </div>
-                <i class="remove el-icon-delete-solid" @click="cancel(item)" ></i>
+                <i class="remove el-icon-delete-solid" @click="cancel(item)"></i>
               </div>
             </div>
             <div class="buttons">
-              <el-button type="warning" style="width: 100%" @click="Inquiry"
-                >一键询价</el-button>
+              <el-button type="warning" style="width: 100%" @click="Inquiry">一键询价</el-button>
             </div>
           </div>
         </div>
@@ -712,80 +613,77 @@ export default {
     position: relative;
     z-index: 1;
     margin-top: 15px;
-    > 
-      a{
-            margin: 0 0 0 10px;
-            background: #eaeaea;
-            border-radius: 3px 3px 0 0;
-            color: #777;
-            font-size: 14px;
-            height: 36px;
-            line-height: 36px;
-            display: inline-block;
-            padding: 0 20px;
-            font-weight:normal;
-            border:0;
-        }
-        a:first-child{
-            margin:0;
-        }
-        a.select{
-            background: #1d89cf;
-            color: #fff;
-            box-shadow: none;
-            border-bottom: 0;
-        }
+    > a {
+      margin: 0 0 0 10px;
+      background: #eaeaea;
+      border-radius: 3px 3px 0 0;
+      color: #777;
+      font-size: 14px;
+      height: 36px;
+      line-height: 36px;
+      display: inline-block;
+      padding: 0 20px;
+      font-weight: normal;
+      border: 0;
+    }
+    a:first-child {
+      margin: 0;
+    }
+    a.select {
+      background: #1d89cf;
+      color: #fff;
+      box-shadow: none;
+      border-bottom: 0;
+    }
 
-        .global-search{
-          width:442px;
-          width: auto;
-          float: right;
-          position: relative;
-          .el-icon-search{
-            position: absolute;
-            left: 10px;
-    top: 17px;
-    color: rgba(29,137,207,1);
-    font-size: 14px;
-    margin: -8px 0 0 0;
-    z-index: 4;
+    .global-search {
+      width: 442px;
+      width: auto;
+      float: right;
+      position: relative;
+      .el-icon-search {
+        position: absolute;
+        left: 10px;
+        top: 17px;
+        color: rgba(29, 137, 207, 1);
+        font-size: 14px;
+        margin: -8px 0 0 0;
+        z-index: 4;
         width: 16px;
-    height: 18px;
-    background: transparent;
-          }
-           .new-search-input {
-                /*width:235px !important;*/
-                height:28px !important;
-                border-radius:2px !important;
-                border:1px solid rgba(29,137,207,1) !important;
-                background-color: #fff !important;
-                padding-left: 30px;
-            }
-            
-            input.btn{
-                vertical-align: top;
-                display: inline-block;
-                height: 30px;
-                line-height: 30px;
-                padding: 0 15px;
-                color: #fff;
-                border-radius: 3px;
-                margin: 0 0 0 5px;
-                border:0;
-                font-size:12px;
-                font-weight:normal;
-                box-shadow: none;
-            }
-            #top_search{
-              background: #1d89cf;
-            }
-            #top_search:hover{
-              background: #30a2ec;
-              transition: all 0.5s ease 0s;
-            }
-        }
+        height: 18px;
+        background: transparent;
+      }
+      .new-search-input {
+        /*width:235px !important;*/
+        height: 28px !important;
+        border-radius: 2px !important;
+        border: 1px solid rgba(29, 137, 207, 1) !important;
+        background-color: #fff !important;
+        padding-left: 30px;
+      }
 
-
+      input.btn {
+        vertical-align: top;
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 15px;
+        color: #fff;
+        border-radius: 3px;
+        margin: 0 0 0 5px;
+        border: 0;
+        font-size: 12px;
+        font-weight: normal;
+        box-shadow: none;
+      }
+      #top_search {
+        background: #1d89cf;
+      }
+      #top_search:hover {
+        background: #30a2ec;
+        transition: all 0.5s ease 0s;
+      }
+    }
   }
   .typeList {
     border: 1px solid #eaecf3;
@@ -906,21 +804,21 @@ export default {
                 color: #ffa611;
               }
             }
-            .collection{
-                background: url(require("@/assets/images/badge.png"));
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-                vertical-align: top;
-                background-size: cover;
+            .collection {
+              background: url(require('@/assets/images/badge.png'));
+              width: 20px;
+              height: 20px;
+              display: inline-block;
+              vertical-align: top;
+              background-size: cover;
             }
-            .notcollection{
-                background: url(require("@/assets/images/notbadge.png"));
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-                vertical-align: top;
-                background-size: cover;
+            .notcollection {
+              background: url(require('@/assets/images/notbadge.png'));
+              width: 20px;
+              height: 20px;
+              display: inline-block;
+              vertical-align: top;
+              background-size: cover;
             }
             .address {
               color: #999999;
@@ -975,7 +873,7 @@ export default {
       line-height: 40px;
       height: 40px;
       border-bottom: 1px solid #eaecf3;
-      .hotelname{
+      .hotelname {
         font-size: 12px;
         color: #666;
         float: left;
@@ -987,23 +885,23 @@ export default {
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      .badge{
-          background: url(/img/badge.df551e01.png);
-          width: 13px;
-          height: 13px;
-          display: inline-block;
-          vertical-align: middle;
-          background-size: cover;
+      .badge {
+        background: url(/img/badge.df551e01.png);
+        width: 13px;
+        height: 13px;
+        display: inline-block;
+        vertical-align: middle;
+        background-size: cover;
       }
-      .remove{
+      .remove {
         float: right;
         line-height: 40px;
       }
     }
   }
 
-  .buttons{
-    margin-top:20px;
+  .buttons {
+    margin-top: 20px;
   }
 }
 </style>

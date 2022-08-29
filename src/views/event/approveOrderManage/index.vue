@@ -238,7 +238,7 @@
 
 <script>
 import {  positiveFloat, formatDate, } from '@/utils/common';
-import requestApi from '@/utils/requestData'
+
 export default {
   data(){
     return{
@@ -350,7 +350,7 @@ export default {
         this.event_date = [] // 查询条件-时间重置
         this.submit_date = [] // 查询条件-时间重置
       }
-      requestApi({
+      this.requestApi({
         url: '/ApproveSheet/GetApproveSheetList',
         method: 'post',
         data: this.eventSearch,
@@ -360,7 +360,7 @@ export default {
       });
     },
     getBuyerOptions(){
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'get',
         data: {},
@@ -370,7 +370,7 @@ export default {
       })
     },
     GetUser(){
-      requestApi({
+      this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'post',
       }).then(res => {
@@ -395,7 +395,7 @@ export default {
         key_id: this.updateInfo.key_id,
       };
       debugger
-      requestApi({
+      this.requestApi({
         url: '/ApproveSheet/EditApproveUser',
         method: 'post',
         data: sendData,
