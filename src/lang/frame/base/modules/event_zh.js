@@ -1,7 +1,12 @@
 export default {
   event: '会议系统',
-  eventList: '我的会议',
   createEvent: '创建会议',
+  eventList: '我的会议',
+  eventDetail: '会议详情',
+  advancedsetting: '高级设置',
+  eventDemand: '采购需求',
+  servicedetails: '询价单详情',
+  offer: '查看报价',
   approveOrderManage: '审批单管理',
   parameter: '会议台账',
   approve: '我的审批',

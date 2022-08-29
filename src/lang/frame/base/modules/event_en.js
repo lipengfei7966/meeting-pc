@@ -1,7 +1,12 @@
 export default {
   event: 'event',
-  eventList: 'event List',
   createEvent: 'create Event',
+  eventList: 'event List',
+  eventDetail: 'event Detail',
+  advancedsetting: 'advanced Setting',
+  eventDemand: 'event Demand',
+  servicedetails: 'service Details',
+  offer: 'offer',
   approveOrderManage: 'approve Order Manage',
   parameter: 'parameter',
   approve: 'approve',

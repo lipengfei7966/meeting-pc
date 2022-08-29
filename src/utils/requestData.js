@@ -18,7 +18,7 @@ import { notifyError } from '@/utils/frame/base/notifyParams'
 const request = axios.create({
   baseURL: process.env.VUE_APP_CMMS_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 15000, // request timeout
+  timeout: 50000, // request timeout
 })
 
 request.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'

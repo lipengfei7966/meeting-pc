@@ -174,6 +174,54 @@ export const eventRoute = [
         }
       },
       {
+        name: 'eventDetail',
+        path: 'eventDetail',
+        component: () => import('@/views/event/eventList/eventDetail'),
+        meta: {
+          title: 'eventDetail',
+          noCache: true
+        }
+      },
+      {
+        name: 'advancedsetting',
+        path: 'advancedsetting',
+        component: () => import('@/views/event/eventList/components/AdvancedSetting'),
+        meta: {
+          title: 'advancedsetting',
+          noCache: true
+        }
+      },
+      {
+        name: 'eventDemand',
+        path: 'eventDemand',
+        component: () => import('@/views/event/eventDemand/index'),
+        meta: {
+          title: 'eventDemand',
+          noCache: true
+        }
+      },
+
+      // 询价单详情
+      {
+        name: 'servicedetails',
+        path: 'servicedetails',
+        component: () => import('@/views/event/servicedetails/index'),
+        meta: {
+          title: 'servicedetails',
+          noCache: true
+        }
+      },
+      // 查看报价
+      {
+        name: 'offer',
+        path: 'offer',
+        component: () => import('@/views/event/offer/index'),
+        meta: {
+          title: 'offer',
+          noCache: true
+        }
+      },
+      {
         name: 'approveOrderManage',
         path: 'approveOrderManage',
         component: () => import('@/views/event/approveOrderManage/index'),
@@ -212,6 +260,7 @@ export const eventRoute = [
       
     ]
   },
+
   {
     path: '/DMCevent',
     name: 'DMCevent',

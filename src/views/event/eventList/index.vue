@@ -269,7 +269,7 @@ export default {
     formatDate,
     goDetail(val){
 		console.log(val)
-      this.$router.push({path:'/EventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
+      this.$router.push({name:'eventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
     },
     // 编辑基本信息
     editBaseTap(rowInfo){

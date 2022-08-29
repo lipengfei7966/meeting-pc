@@ -22,7 +22,7 @@
         <!-- <span :class="['base_title', (menus.b2baudstatus == 1 || (!isShowCancelBtn && eventStatu > 0))?'disableColor':'']">编辑基本信息
            <em :class="[(menus.b2baudstatus == 1 || (!isShowCancelBtn && eventStatu > 0))?'disableColor':'']">Edit Basic Info.</em></span> -->
         <span :class="['base_title', (menus.b2baudstatus == 1 || (!isShowCancelBtn && eventStatu > 0))&&!isDMC?'disableColor':'']">编辑基本信息
-           <em :class="[(menus.b2baudstatus == 1 || (!isShowCancelBtn && eventStatu > 0))&&!isDMC?'disableColor':'']">Edit Basic Info.</em></span>
+          <em :class="[(menus.b2baudstatus == 1 || (!isShowCancelBtn && eventStatu > 0))&&!isDMC?'disableColor':'']">Edit Basic Info.</em></span>
       </div>
     </div>
     <div :class="['information',(source == 'approve' || source == 'bid'|| source == 'order')?'margin_auto':'']" v-show=" conferenceHiding">
@@ -82,7 +82,7 @@
           会议城市
           <span style="margin-left:10px; color: #999999; ">City</span>
           <span style="font-size:12px; font-weight: bold;">:</span>
-          <span v-if="menus.online_meeting == '1' "  style="margin-left:10px;">（线上会议）</span>
+          <span v-if="menus.online_meeting == '1' " style="margin-left:10px;">（线上会议）</span>
           <span v-else style="margin-left:10px;">{{this.menus.event_city}}</span>
         </li>
         <li>
@@ -181,7 +181,7 @@
           <span style="margin-left:10px;">{{this.menus.create_date}}</span>
         </li>
         <li v-if="this.menus.service_provider_name">
-          指定供应商 
+          指定供应商
           <span style="margin-left:10px; color: #999999;">Supplier</span>
           <span style="font-size:12px; font-weight: bold;">:</span>
           <span style="margin-left:10px;">{{this.menus.service_provider_name}}</span>
@@ -199,12 +199,12 @@
               <!-- <span> 上传于 {{item.create_date}}</span> -->
             </p>
           </span>
-          
+
         </li>
-        
+
         <li style="display:flex">
           PO信息
-          <span style="margin-left:10px; color: #999999;">  PO infomation: </span>
+          <span style="margin-left:10px; color: #999999;"> PO infomation: </span>
           <span>
             <p v-for="(po,index) in UnDelPoData" :key="index">
               <span style="margin:0 10px;">PO单号 {{po.po_order_no}}</span>
@@ -215,7 +215,7 @@
               <el-button type="text" size="mini" @click="handleTap('delete', po.id)">删除</el-button>
             </p>
           </span>
-          
+
         </li>
       </ul>
 
@@ -230,12 +230,12 @@
             <el-input placeholder="请输入PO单号" size="small" class="demand_300" v-model="poData.po_order_no" clearable></el-input>
           </el-form-item>
           <el-form-item label="PO金额" prop="po_price">
-            <el-input placeholder="请输入PO金额" size="small" class="demand_300"  v-model="poData.po_price" clearable></el-input>
+            <el-input placeholder="请输入PO金额" size="small" class="demand_300" v-model="poData.po_price" clearable></el-input>
           </el-form-item>
           <el-form-item label="PO创建时间" prop="po_create_date">
-            <el-date-picker value-format="yyyy-MM-dd HH:mm" placeholder="请选择PO创建时间"  size="small" class="demand_300"  v-model="poData.po_create_date" clearable></el-date-picker>
+            <el-date-picker value-format="yyyy-MM-dd HH:mm" placeholder="请选择PO创建时间" size="small" class="demand_300" v-model="poData.po_create_date" clearable></el-date-picker>
           </el-form-item>
-           <el-form-item label="PR" prop="pr_order_no">
+          <el-form-item label="PR" prop="pr_order_no">
             <el-input placeholder="请输入PR号" size="small" class="demand_300" v-model="poData.pr_order_no" clearable></el-input>
           </el-form-item>
         </el-form>
@@ -294,7 +294,11 @@ export default {
   methods:{
     // 获取PO
     getPO(){
-      this.$api.getPoTap({eventInfoId:this.$route.query.id}, 'GET').then(res => {
+      this.requestApi({
+        url: '/CustomerConfiguration/Get_event_po',
+        method: 'GET',
+        data: {eventInfoId:this.$route.query.id},
+      }).then(res => {
         this.poList = res;
          this.UnDelPoData = this.poList.filter((val,index,arr) => {
            return val.is_delete == 0;
@@ -313,7 +317,11 @@ export default {
         this.$refs.poDataForm.validate((valid) => {
           // debugger
           if(valid) {
-            this.$api.addPoTap(this.poData,'POST').then(res => {
+            this.requestApi({
+              url: '/CustomerConfiguration/Set_event_po',
+              method: 'POST',
+              data: this.poData,
+            }).then(res => {
               this.poData.po_order_no = '';
               this.poData.po_price = '';
               this.poData.po_create_date = '';
@@ -324,7 +332,11 @@ export default {
         })
       }else{
         this.poData.id = id;
-        this.$api.addPoTap(this.poData,'POST').then(res => {
+        this.requestApi({
+          url: '/CustomerConfiguration/Set_event_po',
+          method: 'POST',
+          data: this.poData,
+        }).then(res => {
           this.poData.po_order_no = '';
           this.poData.po_price = '';
           this.poData.po_create_date = '';
@@ -421,9 +433,13 @@ export default {
       
     },
     Service() { // 会议基本信息
-      this.$api.getData({MeetingID:this.$route.query.id,}, "POST").then((res) => {
+      this.requestApi({
+        url: '/MeetingMa/GetMeetingList',
+        method: 'POST',
+        data: { MeetingID:this.$route.query.id },
+      }).then((res) => {
         this.menus = res;
-        this.menus.files =  this.menus.files??[]
+        this.menus.files =  this.menus.files? this.menus.files : []
         this.cityCode = this.menus.event_city_code;
         localStorage.setItem('event_city_code', this.cityCode)
       });
@@ -433,7 +449,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.base_part{
+.base_part {
   .nformation {
     width: 1100px;
     height: 50px;
@@ -486,19 +502,19 @@ export default {
       margin-bottom: 18px;
     }
   }
-  .margin_auto{
+  .margin_auto {
     margin: auto;
   }
-  .disableColor{
-    color: #C0C4CC!important;
+  .disableColor {
+    color: #c0c4cc !important;
   }
 }
-@media only screen and (max-width: 1350px){
-	.nformation{
-		width:100% !important;
-	}
-	.information{
-		width: 100% !important;
-	}
+@media only screen and (max-width: 1350px) {
+  .nformation {
+    width: 100% !important;
+  }
+  .information {
+    width: 100% !important;
+  }
 }
 </style>

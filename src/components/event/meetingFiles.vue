@@ -1,6 +1,6 @@
 <template>
   <div>
-		<a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
+    <a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
     <el-form :model="fileSearch" label-width="100px">
       <el-row>
         <el-col :span="6">
@@ -31,16 +31,16 @@
 
     <el-table :data="meetingFileList" style="width: 100%" :row-key="getRowKeys" @selection-change="filesSelectionChange">
       <el-table-column type="selection" :reserve-selection="true" width="60" align="center"></el-table-column>
-      <el-table-column prop="node" label="所属节点" ></el-table-column>
-      <el-table-column prop="file_type" label="文件分类" ></el-table-column>
-      <el-table-column prop="file_name" label="文件名" >
-				<template slot-scope="scope">
+      <el-table-column prop="node" label="所属节点"></el-table-column>
+      <el-table-column prop="file_type" label="文件分类"></el-table-column>
+      <el-table-column prop="file_name" label="文件名">
+        <template slot-scope="scope">
           <el-button type="text" size="small" @click="handlePreview(scope.row)">{{scope.row.file_name}}</el-button>
         </template>
-			</el-table-column>
-      <el-table-column prop="submitter_name" label="上传人" ></el-table-column>
+      </el-table-column>
+      <el-table-column prop="submitter_name" label="上传人"></el-table-column>
       <el-table-column prop="create_date" label="上传时间"></el-table-column>
-      <el-table-column prop="remarks" label="备注" ></el-table-column>
+      <el-table-column prop="remarks" label="备注"></el-table-column>
       <el-table-column label="操作" v-if="showOperation">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="downloadFile(scope.row)">下载</el-button>
@@ -49,109 +49,91 @@
     </el-table>
 
     <div class="pagination  ">
-      <div v-if="showOperation" style="display:inline-block">	
+      <div v-if="showOperation" style="display:inline-block">
         <el-button type="primary" size="small" @click="uploadShow = true">上传文件</el-button>
         <el-button type="primary" size="small" @click="downloadAll">打包下载</el-button>
         <!-- <el-button type="primary" size="small" v-if="eventInfo.tourist_group_no" @click="uploadB2BFiles">上传B2B</el-button> -->
       </div>
-      <el-pagination
-        style="float:right"
-        @current-change="handleCurrentChange"
-        :current-page.sync="fileSearch.pageIndex"
-        class="pagination_part" 
-        background layout="total, prev, pager, next" 
-        :total="fileTotalCount">
+      <el-pagination style="float:right" @current-change="handleCurrentChange" :current-page.sync="fileSearch.pageIndex" class="pagination_part" background layout="total, prev, pager, next" :total="fileTotalCount">
       </el-pagination>
     </div>
-    
+
     <!-- 文件上传弹框 -->
     <el-dialog :visible.sync="uploadShow" width="600px" title="上传文件">
-			<el-form :model="uploadFiles" label-width="100px">
+      <el-form :model="uploadFiles" label-width="100px">
         <el-form-item label="文件类型">
-            <el-select filterable size="small" v-model="uploadFiles.files_type" clearable>
-              <el-option v-for="item in uploadFilesType" :label="item.label" :value="item.type" :key="item.type"></el-option>
-            </el-select>
-          </el-form-item>
+          <el-select filterable size="small" v-model="uploadFiles.files_type" clearable>
+            <el-option v-for="item in uploadFilesType" :label="item.label" :value="item.type" :key="item.type"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="待上传文件">
-          <el-upload
-            ref="upload"
-            :action="UploadFilesUrl"
-            :before-upload="fileLimit"
-            :limit="1"
-            :on-exceed="overLimit"
-            :on-success="meetingFilesUploadSuccess"
-            :file-list="uploadFiles.meetingFilesUploadList"
-            :show-file-list="true"
-            :auto-upload="false"
-            :multiple="true">
-          <el-button type="primary">选择文件</el-button>
-        </el-upload>
+          <el-upload ref="upload" :action="UploadFilesUrl" :before-upload="fileLimit" :limit="1" :on-exceed="overLimit" :on-success="meetingFilesUploadSuccess" :file-list="uploadFiles.meetingFilesUploadList" :show-file-list="true" :auto-upload="false" :multiple="true">
+            <el-button type="primary">选择文件</el-button>
+          </el-upload>
         </el-form-item>
       </el-form>
-      
 
-			<span slot="footer" class="dialog-footer flex_row justify_center">
-				<el-button type="primary" @click="confirmUpload">确 认</el-button>
-				<el-button type="info" @click="uploadShow = false">取 消</el-button>
-			</span>
-		</el-dialog>
+      <span slot="footer" class="dialog-footer flex_row justify_center">
+        <el-button type="primary" @click="confirmUpload">确 认</el-button>
+        <el-button type="info" @click="uploadShow = false">取 消</el-button>
+      </span>
+    </el-dialog>
 
-		<!-- 打包下载弹窗 -->
+    <!-- 打包下载弹窗 -->
     <el-dialog :visible.sync="downloadAllShow" width="600px" title="打包下载">
-			<el-form >
+      <el-form>
         <el-form-item label="下载信息">
-					<el-radio v-model="downloadType" :label="0">下载源文件(包含文件清单Excel)</el-radio>
-					<el-radio v-model="downloadType" :label="1">仅文件清单Excel</el-radio>
+          <el-radio v-model="downloadType" :label="0">下载源文件(包含文件清单Excel)</el-radio>
+          <el-radio v-model="downloadType" :label="1">仅文件清单Excel</el-radio>
         </el-form-item>
-				注：已选择 {{ checkedFiles.length || allCount }} 个文件，请确认是否打包下载
+        注：已选择 {{ checkedFiles.length || allCount }} 个文件，请确认是否打包下载
       </el-form>
-      
 
-			<span slot="footer" class="dialog-footer flex_row justify_center">
-				<el-button type="primary" @click="confirmDownloadAll">确 认</el-button>
-				<el-button type="info" @click="downloadAllShow = false">取 消</el-button>
-			</span>
-		</el-dialog>
+      <span slot="footer" class="dialog-footer flex_row justify_center">
+        <el-button type="primary" @click="confirmDownloadAll">确 认</el-button>
+        <el-button type="info" @click="downloadAllShow = false">取 消</el-button>
+      </span>
+    </el-dialog>
 
-		<!-- 上传B2B团附件弹框 -->
-		<el-dialog :visible.sync="uploadB2BFilesShow" width="60%" title="上传B2B团附件" align="center">
-			<el-table :data="uploadB2BFilesList" header-align="center" style="width: 100%">
-					<el-table-column prop="file_name" label="文件名称" width="180" show-overflow-tooltip header-align="center">
-						<template slot-scope="scope">
-							<el-button type="text" size="small" @click="handlePreview(scope.row)">{{scope.row.file_name}}</el-button>
-						</template>
-					</el-table-column>
-					<el-table-column prop="type" label="类型" width="180" header-align="center">
-						<template slot-scope="scope">
-							<el-select v-model="scope.row.type">
-								<el-option label="客户" :value="0"></el-option>	
-								<el-option label="供应商" :value="1"></el-option>
-							</el-select>
-						</template>
-					</el-table-column>
-					<el-table-column prop="file_type" label="附件类型" width="180" header-align="center">
-						<template slot-scope="scope">
-							<el-select v-model="scope.row.file_type">
-								<el-option v-for="(item,index) in filesTypes" :label="item.name" :value="item.code" :key="index"></el-option>
-							</el-select>
-						</template>
-					</el-table-column>
-					<el-table-column prop="remarks" label="备注" header-align="center">
-						<template slot-scope="scope">
-							<el-input type="textarea" :rows="2" clearable v-model="scope.row.remarks"></el-input>
-						</template>
-					</el-table-column>
-					<el-table-column label="操作" width="60" header-align="center">
-							<template slot-scope="scope">
-								<el-button type="text" size="small" @click="b2bDeleteFile(scope)">删除</el-button>
-							</template>
-						</el-table-column>
-				</el-table>
-			<span slot="footer" class="dialog-footer flex_row justify_center">
-				<el-button type="primary" @click="submit">确认，提交B2B建团</el-button>
-				<el-button type="info" @click="uploadB2BFilesShow = false">取 消</el-button>
-			</span>
-		</el-dialog>
+    <!-- 上传B2B团附件弹框 -->
+    <el-dialog :visible.sync="uploadB2BFilesShow" width="60%" title="上传B2B团附件" align="center">
+      <el-table :data="uploadB2BFilesList" header-align="center" style="width: 100%">
+        <el-table-column prop="file_name" label="文件名称" width="180" show-overflow-tooltip header-align="center">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="handlePreview(scope.row)">{{scope.row.file_name}}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="类型" width="180" header-align="center">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.type">
+              <el-option label="客户" :value="0"></el-option>
+              <el-option label="供应商" :value="1"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column prop="file_type" label="附件类型" width="180" header-align="center">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.file_type">
+              <el-option v-for="(item,index) in filesTypes" :label="item.name" :value="item.code" :key="index"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remarks" label="备注" header-align="center">
+          <template slot-scope="scope">
+            <el-input type="textarea" :rows="2" clearable v-model="scope.row.remarks"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="60" header-align="center">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="b2bDeleteFile(scope)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer flex_row justify_center">
+        <el-button type="primary" @click="submit">确认，提交B2B建团</el-button>
+        <el-button type="info" @click="uploadB2BFilesShow = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -351,12 +333,14 @@ export default {
 			if(type == 1){
 				this.fileSearch.pageIndex = 1
 			}
-			this.$api.GetAllFile(
-				this.fileSearch
-				,"POST").then(res => {
-					this.meetingFileList = res.EvetModels;
-					this.fileTotalCount = res.pageInfo.totalCount
-					this.allCount = res.pageInfo.allCount
+      this.requestApi({
+        url: '/MeetingFile/GetAllFile',
+        method: 'POST',
+        data: this.fileSearch
+      }).then(res => {
+        this.meetingFileList = res.EvetModels;
+        this.fileTotalCount = res.pageInfo.totalCount
+        this.allCount = res.pageInfo.allCount
 			})
 		},
 		// 重置搜索条件
@@ -406,8 +390,8 @@ export default {
     // 下载文件
 		downloadFile(file){
 			// window.open(file.file_path, "_blank");
-			let url = file.file_path??file.filepath;
-			let name = file.file_name??file.filename;
+			let url = file.file_path? file.file_path : file.filepath;
+			let name = file.file_name? file.file_name : file.filename;
 			let a_link = document.createElement('a')
 			// 这里是将url转成blob地址，
 			fetch(url).then(res => res.blob()).then(blob => { // 将链接地址字符内容转变成blob地址
@@ -486,7 +470,11 @@ export default {
 				file_name: file.title //附件名称
 				// create_user: 'mazhenheng',//创建人
 			};
-			this.$api.saveFile({ parameter: JSON.stringify(postData) }, 'POST').then(res => {
+      this.requestApi({
+        url: '/MeetingMa/FilesSave',
+        method: 'POST',
+        data: { parameter: JSON.stringify(postData) }
+      }).then(res => {
 				this.$message.success('上传成功');
 				this.searchFile();
         this.uploadShow = false;
@@ -513,7 +501,11 @@ export default {
 				pageSize: this.allCount,
 				pageIndex: 1
 			}
-			this.$api.GetAllFile(tempSearch,"POST").then(res => {
+      this.requestApi({
+        url: '/MeetingFile/GetAllFile',
+        method: 'POST',
+        data: tempSearch
+      }).then(res => {
 				this.allFiles = res.EvetModels
 				if(this.allFiles.length > 0){
 					this.downloadAllShow = true;
@@ -527,11 +519,14 @@ export default {
     confirmDownloadAll(){
 			console.log(this.checkedFiles)
 			// 获取文件清单
-			this.$api.FileDetailedlist(
-				{
+      this.requestApi({
+        url: '/MeetingFile/FileDetailedlist',
+        method: 'POST',
+        data: {
 					meetingid: this.eventInfo.id,
 					file: this.checkedFiles.length? this.checkedFiles : this.allFiles
-				},"POST").then(res => {
+				}
+      }).then(res => {
 					if(this.downloadType == 1){ // 仅下载文件清单
 						let url = res.msg;
 						let name = res.title;
@@ -644,7 +639,11 @@ export default {
 				files: this.uploadB2BFilesList //文件
 			}
 
-			this.$api.UploadFile( postData, 'POST').then(res => {
+      this.requestApi({
+        url: '/B2B/UploadFile',
+        method: 'POST',
+        data: postData
+      }).then(res => {
 				console.log(res)
 				if(res.status!=1){
 					this.$message.error(res.msg)
@@ -672,7 +671,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .pagination{margin-top: 20px;
-    .pagination_part{text-align: right}
+.pagination {
+  margin-top: 20px;
+  .pagination_part {
+    text-align: right;
   }
+}
 </style>

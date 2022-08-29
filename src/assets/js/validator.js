@@ -419,7 +419,7 @@ export function needDataifyBydate(arr){
 export function EventClassifyByTime(arr){
   let map = {};
   let myArr = [];
-  
+  arr = arr?arr:[];
   for(let i = 0; i < arr.length; i++){
     // debugger
     let totalPrice = (arr[i].build?arr[i].build.price:0) 
