@@ -301,7 +301,8 @@ export default {
 		transfertransfer(a, b, c, d, e, f) {
 			// 待审批 立即确认详情传参
 			this.$router.push({
-				path: "/offercart",
+        name: 'biddingDetail',
+				// path: "/offercart",
 				query: {
 					id: a,	// 会议ID
 					foreign_key_id: b,	// 报价单ID
@@ -316,7 +317,8 @@ export default {
 		examine(a, b, c, d, e) {
 			//  已完成 查看详情传参
 			this.$router.push({
-				path: "/cmms",
+        name:'biddedDetail',
+				// path: "/cmms",
 				query: {
 					id: a,	// 会议ID
 					foreign_key_id: b,	// 报价单ID

@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <router-view></router-view>
+    <transition name="el-fade-in-linear">
+      <div class="loading">
+        <div class="line"></div>
+        <p>加载中...</p>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -39,3 +45,12 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.routerView {
+  height: 100vh;
+  /deep/ .el-table th.gutter {
+    width: 0 !important;
+    display: table-cell !important;
+  }
+}
+</style>

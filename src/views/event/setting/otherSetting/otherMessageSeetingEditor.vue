@@ -46,10 +46,10 @@
                 <span class="step-operation-del del" @click="fieldDel(scope.$index)">删除</span>
                 <span>
                   <span style="margin-left:10px;cursor:pointer" @click="upL(scope.row,scope.$index)">
-                    <img src="../../assets/images/on.png" alt="" style="width: 17px" />
+                    <img :src="require('@/assets/images/on.png')" alt="" style="width: 17px" />
                   </span>
                   <span style="margin-left:10px;cursor:pointer" @click="downL(scope.row,scope.$index)">
-                    <img src="../../assets/images/up.png" alt="" style="width: 17px" />
+                    <img :src="require('@/assets/images/up.png')" alt="" style="width: 17px" />
                   </span>
                 </span>
               </template>

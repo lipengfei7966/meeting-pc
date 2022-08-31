@@ -3,7 +3,7 @@
     <div class="event_process mar_b20 pad_tb10">
       <div class="event_process_title flex_row justify_between align_center pad_lr20">
         <div class="flex_row align_center">
-          <el-button type="text" @click="$router.replace('/EventList')">会议列表</el-button>
+          <el-button type="text" @click="$router.replace('eventList')">会议列表</el-button>
           <span style="color: #7c7f82" class="mar_lr10">></span>
           <span style="color: #7c7f82">会议详情（{{ eventName }}）</span>
         </div>

@@ -2,7 +2,7 @@
   <div>
     <div class="main">
       <ul>
-        <el-button type="text" @click="$router.replace({path:'/EventList'})">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({name:'eventList'})">我的会议</el-button>
         <li style="color:#7c7f82;">></li>
         <el-button type="text" @click="$router.go(-1)">会议详情</el-button>
         <!-- <li v-if="prev" style="color:#7c7f82;">></li> -->
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import BasePart from '@/components/basePart_2'
+import BasePart from '@/components/event/basePart_2'
 import carPart from './components/car'
 import roomPart from './components/room'
 import eventPart from './components/event'
@@ -60,7 +60,7 @@ import transportPart from './components/transport'
 import otherPart from './components/other'
 import servicePart from './components/service'
 import taxPart from './components/tax'
-import {classifyByTime, EventClassifyByTime} from './../../assets/js/validator'
+import {classifyByTime, EventClassifyByTime} from '@/assets/js/validator'
 import { positiveFloat, keepDecimals} from '@/utils/common';
 export default {
 	data() {

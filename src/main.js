@@ -56,6 +56,8 @@ Vue.use(Storage, {
   storage: 'session' // storage name session, local, memory
 })
 
+
+
 // Lazy Table
 import UmyUi from 'umy-ui'
 import 'umy-ui/lib/theme-chalk/index.css'
@@ -106,6 +108,15 @@ Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
+
+// 引入element-tiptap
+// import { ElementTiptapPlugin } from "element-tiptap";
+// import element-tiptap 样式
+// import "element-tiptap/lib/index.css";
+//使用
+// Vue.use(ElementTiptapPlugin, {
+  // lang: "zh",
+// });
 
 // 生产环境是否控制台提示
 Vue.config.productionTip = false

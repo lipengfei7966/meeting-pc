@@ -74,7 +74,7 @@ export default {
 		toPage(e) {//e.type规则类型    e.id规则配置id
 			if(e){//编辑
       this.$router.push({
-        path:'/otherMessageSeetingEditor',
+        name:'otherMessageSeetingEditor',
         query:{
           isdefault:e.isdefault,
           id: e.id, 
@@ -85,7 +85,7 @@ export default {
 			}else{//新增
       // this.$router.push({path:'/otherMessageSeetingEditor',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
       this.$router.push({
-        path:'/otherMessageSeetingEditor',
+        name:'otherMessageSeetingEditor',
         query:{
           isdefault: 0,
           id: this.guid(), 

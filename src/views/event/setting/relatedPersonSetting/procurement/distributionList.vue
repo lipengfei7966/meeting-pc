@@ -62,12 +62,12 @@ export default {
       this.searchTableData();
     },
 		adduser() {
-			this.$router.push("/add");
+			this.$router.push("procurementAdd");
 		},
 		 handleEdit(index, row) {
 			 console.log(index, row);
 			 this.$router.push({
-				 path: "/add",
+				 name: "procurementAdd",
 				 query:{
 					 id: row.id
 				 }

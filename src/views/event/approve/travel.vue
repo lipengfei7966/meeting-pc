@@ -345,7 +345,8 @@ export default {
 		// 结算审批会议基本信息传参e
 		transfer(item,status) { // a 会议ID， b 审批ID， c 结算单ID, d 会议名称, e 待审核
 			this.$router.push({
-				path: "/msd",
+        name: 'msd',
+				// path: "/msd",
 				query: {
 					id: item.event_info_id,  //会议ID
 					approveId: item.id,  // 审批ID

@@ -545,8 +545,17 @@ export default {
 
       if (type === 1) {
         // 酒店
+        // this.$router.push({
+        //   path: '/hotelcg/' + this.eventId + city_code + '/addhotel',
+        // })
         this.$router.push({
-          path: '/hotelcg/' + this.eventId + city_code + '/addhotel',
+          name: 'siteResource',
+          params:{
+            id: this.eventId,
+            city: city_code,
+            type: 'addhotel'
+          }
+          // path: '/hotelcg/' + this.eventId + city_code + '/addhotel',
         })
       } else if (type === 2) {
         // 会议服务商 是否含酒店
@@ -555,18 +564,30 @@ export default {
         //立即采购(不含酒店)
         // this.$router.push({path:'/ServiceProvidercg/' + '/'+ city_code + this.eventId + '/3'});
         this.$router.push({
-          path: '/ServiceProvidercg/' + this.eventId + city_code + '/3',
+          name:'ServiceProvider',
+          params: {
+            id: this.eventId,
+            city: city_code,
+            type: '3'
+          }
+          // path: '/ServiceProvidercg/' + this.eventId + city_code + '/3',
         })
       } else if (type === 4) {
         // 立即采购(含酒店)
         // this.$router.push({path:'/ServiceProvidercg/' + '/'+ city_code + this.eventId + '/2'});
         this.$router.push({
-          path: '/ServiceProvidercg/' + this.eventId + city_code + '/2',
+          name:'ServiceProvider',
+          params: {
+            id: this.eventId,
+            city: city_code,
+            type: '2'
+          }
+          // path: '/ServiceProvidercg/' + this.eventId + city_code + '/2',
         })
       } else if (type === 5) {
         // 详情
         this.$router.replace({
-          path: '/EventDetail',
+          name: 'eventDetail',
           query: { id: this.eventId },
         })
       } else if (type === 6) {

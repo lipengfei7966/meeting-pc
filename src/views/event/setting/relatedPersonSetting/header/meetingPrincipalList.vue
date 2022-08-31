@@ -66,13 +66,13 @@ export default {
     },
 		// 新增
 		adduser() {
-			this.$router.push("/addPrincipal");
+			this.$router.push("addPrincipal");
 		},
 		// 编辑
 		handleEdit(index, row) {
 			 console.log(index, row);
 			 this.$router.push({
-				 path: "/addPrincipal",
+				 name: "addPrincipal",
 				 query:{
 					 id: row.id
 				 }

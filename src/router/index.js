@@ -192,11 +192,21 @@ export const eventRoute = [
         }
       },
       {
-        name: 'eventDemand',
-        path: 'eventDemand',
-        component: () => import('@/views/event/eventDemand/index'),
+        name: 'EventDemand',
+        path: 'EventDemand',
+        component: () => import('@/views/event/EventDemand/index'),
         meta: {
-          title: 'eventDemand',
+          title: 'EventDemand',
+          noCache: true
+        }
+      },
+      // 线下报价
+      {
+        name: 'belowQuotation',
+        path: 'belowQuotation',
+        component: () => import('@/views/event/belowQuotation/index'),
+        meta: {
+          title: 'belowQuotation',
           noCache: true
         }
       },
@@ -211,6 +221,16 @@ export const eventRoute = [
           noCache: true
         }
       },
+      // 比价页详情
+      {
+        name: 'comparisonPrice',
+        path: 'comparisonPrice',
+        component: () => import('@/views/event/comparisonPrice/index'),
+        meta: {
+          title: 'comparisonPrice',
+          noCache: true
+        }
+      },
       // 查看报价
       {
         name: 'offer',
@@ -218,6 +238,36 @@ export const eventRoute = [
         component: () => import('@/views/event/offer/index'),
         meta: {
           title: 'offer',
+          noCache: true
+        }
+      },
+      // 查看汇总报价
+      {
+        name: 'collectOffer',
+        path: 'collectOffer',
+        component: () => import('@/views/event/offer/collectOffer'),
+        meta: {
+          title: 'collectOffer',
+          noCache: true
+        }
+      },
+      // 查看订单
+      {
+        name: 'provider',
+        path: 'provider',
+        component: () => import('@/views/event/provider/index'),
+        meta: {
+          title: 'provider',
+          noCache: true
+        }
+      },
+      // 查看结算单
+      {
+        name: 'msd',
+        path: 'msd',
+        component: () => import('@/views/event/msd/index'),
+        meta: {
+          title: 'msd',
           noCache: true
         }
       },
@@ -245,6 +295,26 @@ export const eventRoute = [
         component: () => import('@/views/event/approve/index'),
         meta: {
           title: 'approve',
+          noCache: true
+        }
+      },
+      // 中标审批详情
+      {
+        name: 'biddingDetail',
+        path: 'biddingDetail',
+        component: () => import('@/views/event/approve/biddingDetail'),
+        meta: {
+          title: 'biddingDetail',
+          noCache: true
+        }
+      },
+      // 中标审批完成详情
+      {
+        name: 'biddedDetail',
+        path: 'biddedDetail',
+        component: () => import('@/views/event/approve/biddedDetail'),
+        meta: {
+          title: 'biddedDetail',
           noCache: true
         }
       },
@@ -288,11 +358,47 @@ export const eventRoute = [
         }
       },
       {
+        name: 'DMCEventDetail',
+        path: 'DMCEventDetail',
+        component: () => import('@/views/event/DMCEventList/DMCEventDetail'),
+        meta: {
+          title: 'DMCEventDetail',
+          noCache: true
+        }
+      },
+      {
+        name: 'DMCEventDemand',
+        path: 'DMCEventDemand',
+        component: () => import('@/views/event/DMCEventDemand/index'),
+        meta: {
+          title: 'DMCEventDemand',
+          noCache: true
+        }
+      },
+      {
         name: 'DMCinquiryList',
         path: 'DMCinquiryList',
         component: () => import('@/views/event/DMCinquiry/inquiryList/index'),
         meta: {
           title: 'DMCinquiryList',
+          noCache: true
+        }
+      },
+      {
+        name: 'DMCinquiryInfo',
+        path: 'DMCinquiryInfo/:id',
+        component: () => import('@/views/event/DMCinquiry/inquiryList/inquiryInfo'),
+        meta: {
+          title: 'DMCinquiryInfo',
+          noCache: true
+        }
+      },
+      {
+        name: 'DMCquotedprice',
+        path: 'DMCquotedprice/:id/:isSubmit',
+        component: () => import('@/views/event/DMCquotedprice/index'),
+        meta: {
+          title: 'DMCquotedprice',
           noCache: true
         }
       },
@@ -311,6 +417,42 @@ export const eventRoute = [
         component: () => import('@/views/event/DMCorder/orderList/index'),
         meta: {
           title: 'DMCorderList',
+          noCache: true
+        }
+      },
+      {
+        name: 'orderInfo',
+        path: 'orderInfo/:id',
+        component: () => import('@/views/event/DMCorder/orderList/orderInfo'),
+        meta: {
+          title: 'orderInfo',
+          noCache: true
+        }
+      },
+      {
+        name: 'settleAccounts',
+        path: 'settleAccounts/:id/:issubmit',
+        component: () => import('@/views/event/settleAccounts/index'),
+        meta: {
+          title: 'settleAccounts',
+          noCache: true
+        }
+      },
+      {
+        name: 'settleAccounts_Hotel',
+        path: 'settleAccounts_Hotel/:id/:issubmit',
+        component: () => import('@/views/event/settleAccounts/settleAccounts_Hotel'),
+        meta: {
+          title: 'settleAccounts_Hotel',
+          noCache: true
+        }
+      },
+      {
+        name: 'offlineSettlement',
+        path: 'offlineSettlement/:id/:issubmit',
+        component: () => import('@/views/event/settleAccounts/offlineSettlement'),
+        meta: {
+          title: 'offlineSettlement',
           noCache: true
         }
       },
@@ -361,12 +503,112 @@ export const eventRoute = [
           noCache: true
         }
       },
+      // 中标审批流配置
+      {
+        name: 'outbid',
+        path: 'outbid',
+        component: () => import('@/views/event/setting/approveSetting/outbid'),
+        meta: {
+          title: 'outbid',
+          noCache: true
+        }
+      },
+      // 结算审批流配置
+      {
+        name: 'settlementSheet',
+        path: 'settlementSheet',
+        component: () => import('@/views/event/setting/approveSetting/settlementSheet'),
+        meta: {
+          title: 'settlementSheet',
+          noCache: true
+        }
+      },
+      // 新增编辑结算审批规则
+      {
+        name: 'addeditApprovalrule',
+        path: 'addeditApprovalrule',
+        component: () => import('@/views/event/setting/approveSetting/addeditApprovalrule'),
+        meta: {
+          title: 'addeditApprovalrule',
+          noCache: true
+        }
+      },
+      // 添加审批步骤
+      {
+        name: 'approvalsteps',
+        path: 'approvalsteps',
+        component: () => import('@/views/event/setting/approveSetting/approvalsteps'),
+        meta: {
+          title: 'approvalsteps',
+          noCache: true
+        }
+      },
       {
         name: 'otherSetting',
-        path: 'otherSetting',
+        path: 'otherSetting/:activeName',
         component: () => import('@/views/event/setting/otherSetting/index'),
         meta: {
           title: 'otherSetting',
+          noCache: true
+        }
+      },
+      // 报价结算规则配置
+      {
+        name: 'quotationSettlementEditor',
+        path: 'quotationSettlementEditor/:company_name/:id/:type/:addOrEdit',
+        component: () => import('@/views/event/setting/otherSetting/quotationSettlementEditor'),
+        meta: {
+          title: 'quotationSettlementEditor',
+          noCache: true
+        }
+      },
+      // 附加信息配置
+      {
+        name: 'otherMessageSeetingEditor',
+        path: 'otherMessageSeetingEditor',
+        component: () => import('@/views/event/setting/otherSetting/otherMessageSeetingEditor'),
+        meta: {
+          title: 'otherMessageSeetingEditor',
+          noCache: true
+        }
+      },
+      // 数据权限配置--新增组
+      {
+        name: 'addeditUsergroup',
+        path: 'addeditUsergroup',
+        component: () => import('@/views/event/setting/otherSetting/addeditUsergroup'),
+        meta: {
+          title: 'addeditUsergroup',
+          noCache: true
+        }
+      },
+      // 数据权限配置--组员管理
+      {
+        name: 'membermanage',
+        path: 'membermanage',
+        component: () => import('@/views/event/setting/otherSetting/membermanage'),
+        meta: {
+          title: 'membermanage',
+          noCache: true
+        }
+      },
+      // 数据权限配置--客户权限管理
+      {
+        name: 'customermanage',
+        path: 'customermanage',
+        component: () => import('@/views/event/setting/otherSetting/customermanage'),
+        meta: {
+          title: 'customermanage',
+          noCache: true
+        }
+      },
+      // 数据权限配置--客户权限管理
+      {
+        name: 'reportmanage',
+        path: 'reportmanage',
+        component: () => import('@/views/event/setting/otherSetting/reportmanage'),
+        meta: {
+          title: 'reportmanage',
           noCache: true
         }
       },
@@ -376,6 +618,46 @@ export const eventRoute = [
         component: () => import('@/views/event/setting/relatedPersonSetting/index'),
         meta: {
           title: 'relatedPersonSetting',
+          noCache: true
+        }
+      },
+      // 会议助理-新增、编辑
+      {
+        name: 'assistantAdd',
+        path: 'assistantAdd',
+        component: () => import('@/views/event/setting/relatedPersonSetting/assistant/assistantAdd'),
+        meta: {
+          title: 'assistantAdd',
+          noCache: true
+        }
+      },
+      // 会议合规人-新增、编辑
+      {
+        name: 'complianceAdd',
+        path: 'complianceAdd',
+        component: () => import('@/views/event/setting/relatedPersonSetting/compliance/complianceAdd'),
+        meta: {
+          title: 'complianceAdd',
+          noCache: true
+        }
+      },
+      // 会议负责人-新增、编辑
+      {
+        name: 'addPrincipal',
+        path: 'addPrincipal',
+        component: () => import('@/views/event/setting/relatedPersonSetting/header/addPrincipal'),
+        meta: {
+          title: 'addPrincipal',
+          noCache: true
+        }
+      },
+      // 会议采购人-新增、编辑
+      {
+        name: 'procurementAdd',
+        path: 'procurementAdd',
+        component: () => import('@/views/event/setting/relatedPersonSetting/procurement/procurementAdd'),
+        meta: {
+          title: 'procurementAdd',
           noCache: true
         }
       },
@@ -392,10 +674,46 @@ export const eventRoute = [
     children: [
       {
         name: 'siteResource',
-        path: 'siteResource',
+        path: '/siteResource/:id?/:city?/:type?',
         component: () => import('@/views/event/resourceCenter/siteResource/index'),
         meta: {
           title: 'siteResource',
+          noCache: true
+        }
+      },
+      {
+        name: 'ServiceProvider',
+        path: '/ServiceProvider/:id?/:city?/:type?',
+        component: () => import('@/views/event/ServiceProvider/index'),
+        meta: {
+          title: 'ServiceProvider',
+          noCache: true
+        }
+      },
+      {
+        name: 'hotelInfo',
+        path: 'hotelInfo/:id',
+        component: () => import('@/views/event/resourceCenter/siteResource/info.vue'),
+        meta: {
+          title: 'hotelInfo',
+          noCache: true
+        }
+      },
+      {
+        name: 'ServiceProviderProcurement',
+        path: '/ServiceProviderProcurement/:id/:type',
+        component: () => import('@/views/event/ServiceProvider/ServiceProviderProcurement.vue'),
+        meta: {
+          title: 'ServiceProviderProcurement',
+          noCache: true
+        }
+      },
+      {
+        name: 'SendSuccess',
+        path: '/SendSuccess',
+        component: () => import('@/views/event/ServiceProvider/SendSuccess.vue'),
+        meta: {
+          title: 'SendSuccess',
           noCache: true
         }
       },

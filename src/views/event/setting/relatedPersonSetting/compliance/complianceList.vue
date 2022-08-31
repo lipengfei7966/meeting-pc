@@ -62,12 +62,12 @@ export default {
       this.searchTableData();
     },
 		adduser() {
-			this.$router.push("/complianceAdd");
+			this.$router.push("complianceAdd");
 		},
 		 handleEdit(index, row) {
 			 console.log(index, row);
 			 this.$router.push({
-				 path: "/complianceAdd",
+				 name: "complianceAdd",
 				 query:{
 					 id: row.id
 				 }

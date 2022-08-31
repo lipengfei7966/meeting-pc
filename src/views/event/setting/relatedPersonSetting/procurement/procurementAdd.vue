@@ -178,7 +178,7 @@ export default {
     // 会议类型查询
     GetMeetingType(id){
       this.requestApi({
-				url: '/MeetingMa/GetCompany',
+				url: '/MeetingMa/GetMeetingType',
 				method: 'POST',
 				data: {CompanyID: id},
 			}).then(res => {
@@ -187,7 +187,7 @@ export default {
     },
     ProvinceCity(){
       this.requestApi({
-				url: '/MeetingMa/GetCompany',
+				url: '/MeetingMa/ProvinceCity',
 				method: 'POST',
 				data: {},
 			}).then(res => {
@@ -229,7 +229,7 @@ export default {
       
     },
     cancel() {
-      this.$router.push({path:'/distributionParent',query:{activeName:'first'}})
+      this.$router.push({name:'relatedPersonSetting',query:{activeName:'first'}})
     },
     changeCustomer(){
       this.GetMeetingType(this.formData.company_id)

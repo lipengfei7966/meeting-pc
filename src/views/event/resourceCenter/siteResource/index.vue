@@ -396,9 +396,9 @@ export default {
       }
     },
     jumpInfo(id) {
-      // this.$router.push({ name: "hotelInfo", params: { id } });
-      let routeData = this.$router.resolve({ name: "hotelInfo", params: { id } });
-      window.open(routeData.href, "_blank");//跳转新页面
+      this.$router.push({ name: "hotelInfo", params: { id } });
+      // let routeData = this.$router.resolve({ name: "hotelInfo", params: { id } });
+      // window.open(routeData.href, "_blank");//跳转新页面
     },
     getList() {
       this.requestApi({

@@ -86,10 +86,10 @@
                   <td>
                     <div class="create_link">
                       <el-badge v-if="item.settlementid" is-dot :hidden="item.remind == '0'" style="margin-left: 10px">
-                        <el-button size="small" type="text" @click="goPage('/msd', item)">查看结算单</el-button>
+                        <el-button size="small" type="text" @click="goPage('msd', item)">查看结算单</el-button>
                       </el-badge>
-                      <el-button size="small" type="text" @click="goPage('/provider', item)" style="margin-left: 10px">查看订单</el-button>
-                      <el-button size="small" type="text" @click="goPage('/serviceDetails', item)">原询价单</el-button>
+                      <el-button size="small" type="text" @click="goPage('provider', item)" style="margin-left: 10px">查看订单</el-button>
+                      <el-button size="small" type="text" @click="goPage('serviceDetails', item)">原询价单</el-button>
                       <el-button size="small" type="text" @click="copyUrl(item, 1)">复制结算链接</el-button>
                     </div>
                   </td>
@@ -165,10 +165,10 @@
                   <td>
                     <div class="create_link">
                       <el-badge v-if="item.settlementid" is-dot :hidden="item.remind == '0'" style="margin-left: 10px">
-                        <el-button size="small" type="text" @click="goPage('/msd', item)">查看结算单</el-button>
+                        <el-button size="small" type="text" @click="goPage('msd', item)">查看结算单</el-button>
                       </el-badge>
-                      <el-button size="small" type="text" @click="goPage('/provider', item)" style="margin-left: 10px">查看订单</el-button>
-                      <el-button size="small" type="text" @click="goPage('/serviceDetails', item)">原询价单</el-button>
+                      <el-button size="small" type="text" @click="goPage('provider', item)" style="margin-left: 10px">查看订单</el-button>
+                      <el-button size="small" type="text" @click="goPage('serviceDetails', item)">原询价单</el-button>
                       <!-- <el-button size="small" type="text" @click="copyUrl(item, 0)">复制结算链接</el-button> -->
                     </div>
                   </td>
@@ -640,10 +640,11 @@ export default {
         }, 100);
       });
     },
-    goPage(url, data = "") {
+    goPage(name, data = "") {
       debugger;
       this.$router.push({
-        path: url,
+        // path: url,
+        name: name,
         query: {
           id: this.eventId, // 会议ID
           event_name: this.$route.query.name,

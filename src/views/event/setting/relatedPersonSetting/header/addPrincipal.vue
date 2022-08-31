@@ -228,7 +228,7 @@ export default {
       
     },
     cancel() {
-      this.$router.push({path:'/distributionParent',query:{activeName: 'second'}})
+      this.$router.push({name:'relatedPersonSetting',query:{activeName:'second'}})
     },
     changeCustomer(){
       this.GetMeetingType(this.formData.company_id)

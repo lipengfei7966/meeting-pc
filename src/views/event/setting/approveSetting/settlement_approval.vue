@@ -67,7 +67,7 @@ export default {
 				});
 			}
 			if(this.type == 2) {
-				this.$router.push({ path: '/outbid', query: {
+				this.$router.push({ name: 'outbid', query: {
 					id: data.id,
 					type: this.type
 				}});

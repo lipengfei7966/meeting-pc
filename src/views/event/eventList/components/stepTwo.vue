@@ -1308,12 +1308,12 @@ export default {
     },
     // 新页面打开酒店详情页
     jumpInfo(id) {
-      // this.$router.push({ name: "hotelInfo", params: { id } });
-      let routeData = this.$router.resolve({
-        name: "hotelInfo",
-        params: { id },
-      });
-      window.open(routeData.href, "_blank"); //跳转新页面
+      this.$router.push({ name: "hotelInfo", params: { id } });
+      // let routeData = this.$router.resolve({
+      //   name: "hotelInfo",
+      //   params: { id },
+      // });
+      // window.open(routeData.href, "_blank"); //跳转新页面
     },
     excelDownLoad() {
       var name = "汇总报价单";
@@ -1465,7 +1465,7 @@ export default {
       }).then((res) => {
           if (res) {
             this.$router.push({
-              name: "DMCactivityOrderInfo",
+              name: "DMCinquiryInfo",
               params: {
                 id: res,
               },
@@ -1538,12 +1538,19 @@ export default {
     goCompare(item, command, type) {
       // command  1仅线上 2含线下  type：hotel/service
       this.$router.push({
-        path: "/activityInquiry/comparisonPrice/" + item.id,
-        query: {
-          id: this.$route.query.id,
+        name: 'comparisonPrice',
+        query: { 
+          InquirySheetID: item.id,
+          eventId: this.$route.query.id,
           command,
           type,
         },
+        // path: "/activityInquiry/comparisonPrice/" + item.id,
+        // query: {
+        //   id: this.$route.query.id,
+        //   command,
+        //   type,
+        // },
       });
     },
     //editDemand
@@ -1563,7 +1570,7 @@ export default {
         });
       } else {
         this.$router.push({
-          name: "eventDemand",
+          name: "EventDemand",
           query: {
             id: this.eventId,
             name: this.$route.query.name,

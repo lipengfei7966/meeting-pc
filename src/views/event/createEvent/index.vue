@@ -722,10 +722,10 @@ export default {
     },
 
     goDemand(){
-      this.$router.push({path:'/EventDemand',query:{id: this.newEventId, name: this.newEventName}})
+      this.$router.push({name:'EventDemand',query:{id: this.newEventId, name: this.newEventName}})
     },
     goDetail() {
-      this.$router.push({path:'/EventDetail',query:{id: this.newEventId, name: this.newEventName}})
+      this.$router.push({name:'eventDetail',query:{id: this.newEventId, name: this.newEventName}})
     },
     // 获取客户列表l
     getCustomerList() {

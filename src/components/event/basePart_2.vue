@@ -418,7 +418,7 @@ export default {
         })
       }else if(this.menus.b2baudstatus != 1 && (this.isShowCancelBtn || this.isShowCancelBtn===undefined|| this.eventStatu == 0)){
         this.$router.push({
-          name:'CreateEvent',
+          name:'createEvent',
           query: {
             event_num: this.menus.event_num,
             id: this.$route.query.id,

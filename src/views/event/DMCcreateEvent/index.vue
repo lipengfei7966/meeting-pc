@@ -539,7 +539,7 @@ export default {
               this.baseMeet.id = this.eventId;
               this.requestApi({
                 url: '/CustomerConfiguration/Get_event_info',
-                method: 'POST',
+                method: 'GET',
                 data: this.baseMeet,
               }).then(res => {
                 if(res){

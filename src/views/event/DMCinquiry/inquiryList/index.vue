@@ -155,7 +155,7 @@ export default {
     // 跳转详情页
     goInfo(index, item) {
       this.$router.push({
-        name: "DMCactivityOrderInfo",
+        name: "DMCinquiryInfo",
         params: {
           id: item.object_id,
         },
