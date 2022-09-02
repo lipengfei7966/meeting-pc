@@ -769,6 +769,18 @@ export const constantRouterMap = [
     component: () => import('@/views/frame/login/user/index'),
     hidden: true
   },
+  // 0902
+  {
+    path: '/microStationManagement',
+    component: () => import('@/views/frame/website/website'),
+    hidden: true
+  },
+  {
+    path: '/stencilManagement',
+    component: () => import('@/views/frame/website/stencil'),
+    hidden: true
+  },
+  // 
   {
     path: '/404',
     name: '404',

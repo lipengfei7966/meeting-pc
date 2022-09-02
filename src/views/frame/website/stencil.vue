@@ -21,8 +21,8 @@ export default {
   .contents{
     width: 100%;
     height: 100%;
-    min-height: 600px;
-    padding: 10px;
+    // min-height: 600px;
+    // padding: 10px;
     // border: 1px solid red;
   }
 </style>
