@@ -83,9 +83,6 @@ Vue.component('image-upload', ImageUpload)
 // 文件上传
 import BsUpload from '@/components/frame/bs/file/upload'
 Vue.component('bs-upload', BsUpload)
-// 文件上传v2(可定义回调函数)
-import BsUploadV2 from '@/components/frame/bs/file/uploadV2'
-Vue.component('bs-upload-v2', BsUploadV2)
 // 弹窗头部
 import titleContain from '@/components/frame/TitleContain'
 Vue.component('title-contain', titleContain)

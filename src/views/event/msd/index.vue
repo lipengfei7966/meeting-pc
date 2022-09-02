@@ -367,7 +367,7 @@ export default {
       fileList: {
         kpFile: [],
         fpFile: [],
-        cventDate: '',
+        cventDate: ''
       },
       UploadFilesUrl: MAINHOST + '/MeetingMa/UploadFiles',
       prev: '',
@@ -390,14 +390,14 @@ export default {
       objection: '', // 其他异议
       pageFrom: '', // 上一级来源
       objectionMsg: [],
-      arr: [],
+      arr: []
     }
   },
-  components: { 
+  components: {
     compare,
-     basePart, 
-    //  eleTiptap 
-    },
+    basePart
+    //  eleTiptap
+  },
   mounted() {
     this.selectQuery = this.$route.query
     if (this.selectQuery.from && this.selectQuery.from === 'approve') {
@@ -417,8 +417,8 @@ export default {
       this.requestApi({
         url: '/InvoiceMsd/WhetherShow',
         method: 'post',
-        data: { SheetID: this.$route.query.settlementId },
-      }).then((res) => {
+        data: { SheetID: this.$route.query.settlementId }
+      }).then(res => {
         this.whetherShow = res
       })
     },
@@ -428,9 +428,9 @@ export default {
         method: 'post',
         data: {
           OrderID: '', // orderid 、sheet_id 传一个就可以
-          SheetID: this.$route.query.settlementId,
-        },
-      }).then((res) => {
+          SheetID: this.$route.query.settlementId
+        }
+      }).then(res => {
         this.fileList = res
       })
     },
@@ -446,7 +446,7 @@ export default {
       console.log($event.target.currentSrc) //拿到图片的src
       let currentSrc = $event.target.currentSrc
       let file = {
-        value: currentSrc,
+        value: currentSrc
       }
       if (currentSrc) {
         //添加预览图片的事件
@@ -461,13 +461,13 @@ export default {
         sheet_id: this.$route.query.settlementId,
         type: 2, // 1开票，2发票
         file_name: e.title,
-        file_path: e.weburl,
+        file_path: e.weburl
       }
       this.requestApi({
         url: '/InvoiceMsd/FileAdd',
         method: 'post',
-        data: sendData,
-      }).then((res) => {
+        data: sendData
+      }).then(res => {
         if (res) {
           this.$message.success('上传成功')
           this.GetFile()
@@ -484,9 +484,9 @@ export default {
         url: '/InvoiceMsd/SettlementReject',
         method: 'post',
         data: {
-          SheetID: this.$route.query.settlementId,
-        },
-      }).then((res) => {
+          SheetID: this.$route.query.settlementId
+        }
+      }).then(res => {
         if (res) {
           this.$message.success('已驳回结算单')
           this.GetFile()
@@ -512,14 +512,14 @@ export default {
     // 结算凭证输入异议
     messageInput() {
       let tempArr = []
-      this.voucherTableData.forEach((item) => {
+      this.voucherTableData.forEach(item => {
         // if(item.message){
         // item.files.forEach(file => {
         tempArr.push({
           datatable: item.datatable,
           id: item.id,
           message: item.message,
-          type: item.type,
+          type: item.type
         })
         // })
         // }
@@ -604,16 +604,16 @@ export default {
             status: 3,
             id: this.selectQuery.approveId,
             remarks: this.approveRemarks,
-            objection: this.objection,
-          }),
-        },
-      }).then((res) => {
+            objection: this.objection
+          })
+        }
+      }).then(res => {
         this.dialogVisible = false
         if (res) {
           this.addFileDialog = false
           this.$message({
             message: '操作成功',
-            type: 'success',
+            type: 'success'
           })
           this.$router.replace({ name: 'approve' })
         }
@@ -622,14 +622,14 @@ export default {
     objectionMsgFn(data) {
       // debugger
       let tempArr = []
-      data.forEach((element) => {
+      data.forEach(element => {
         if (element.data) {
-          element.data.forEach((item) => {
+          element.data.forEach(item => {
             if (item.message || item.message === '') {
               tempArr.push({
                 datatable: item.datatable,
                 id: item.id,
-                message: item.message,
+                message: item.message
               })
             }
           })
@@ -639,7 +639,7 @@ export default {
             tempArr.push({
               datatable: element.datatable,
               id: element.id,
-              message: element.message,
+              message: element.message
             })
           }
         }
@@ -661,9 +661,9 @@ export default {
         method: 'post',
         data: {
           Parameter: JSON.stringify(Parameter),
-          sheetID: this.selectQuery.settlementId,
-        },
-      }).then((res) => {
+          sheetID: this.selectQuery.settlementId
+        }
+      }).then(res => {
         this.$message.success('保存成功')
         this.objectionMsg = [] // 保存成功后，异议列表清空避免向后端传多余数据
       })
@@ -679,8 +679,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/SettlementDescribe',
         method: 'post',
-        data: { SettlementSheetID: this.selectQuery.settlementId },
-      }).then((res) => {
+        data: { SettlementSheetID: this.selectQuery.settlementId }
+      }).then(res => {
         this.detail = res
       })
     },
@@ -692,7 +692,7 @@ export default {
         {
           eventid: this.$route.query.id,
           type: 4,
-          param: this.$route.query.orderId,
+          param: this.$route.query.orderId
         },
         name
       )
@@ -702,8 +702,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/ApproveRecord',
         method: 'post',
-        data: { SettlementID: this.selectQuery.settlementId },
-      }).then((res) => {
+        data: { SettlementID: this.selectQuery.settlementId }
+      }).then(res => {
         this.select = res
       })
     },
@@ -712,8 +712,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/SettlementRecord',
         method: 'post',
-        data: { SettlementID: this.selectQuery.settlementId },
-      }).then((res) => {
+        data: { SettlementID: this.selectQuery.settlementId }
+      }).then(res => {
         this.arr = Array.isArray(res) ? res : []
       })
     },
@@ -737,22 +737,22 @@ export default {
               status: status,
               id: this.selectQuery.approveId,
               remarks: this.approveRemarks,
-              objection: this.objection,
-            }),
-          },
-        }).then((res) => {
+              objection: this.objection
+            })
+          }
+        }).then(res => {
           this.dialogVisible = false
           if (res) {
             this.$message({
               message: '操作成功',
-              type: 'success',
+              type: 'success'
             })
             this.$router.replace({ name: 'approve' })
           }
         })
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -1409,7 +1409,7 @@ export default {
 .msd .el-collapse-item__header.is-active {
   border-bottom: 1px solid #ccc;
 }
-/deep/ .objectionDetailStyle img {
+::deep .objectionDetailStyle img {
   // img{
   max-width: 100%;
   // }

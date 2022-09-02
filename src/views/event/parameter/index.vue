@@ -510,18 +510,18 @@
 
 <script>
 // import VueQr from "vue-qr";
-import { positiveFloat, formatDate } from "@/utils/common";
-import { MAINHOST, meetingH5 } from "@/config";
+import { positiveFloat, formatDate } from '@/utils/common'
+import { MAINHOST, meetingH5 } from '@/config'
 
 export default {
   data() {
     return {
-      imgUrl: "", //扫码后手机显示的页面
+      imgUrl: '', //扫码后手机显示的页面
       reportEnum: [],
-      search_month: "",
-      search_date: ["", ""],
-      searchType: "",
-      excelType: "",
+      search_month: '',
+      search_date: ['', ''],
+      searchType: '',
+      excelType: '',
       tableData: [],
       severBackShow: false, // 服务反馈弹窗是否显示
       UnDelPoData: false, // 是否录入po
@@ -529,59 +529,59 @@ export default {
       datePickerOptions: {
         shortcuts: [
           {
-            text: "最近一个月",
+            text: '最近一个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
           },
           {
-            text: "最近三个月",
+            text: '最近三个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
           },
           {
-            text: "最近半年",
+            text: '最近半年',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
       },
       focusVal: [],
-      focusStrVal: "",
+      focusStrVal: '',
       fokus: [
-        { code: "0010-11", name: "结算完成" },
-        { code: "0010-5", name: "会议已创建" },
-        { code: "0010-8", name: "会议进行中" },
-        { code: "0010-6", name: "询价中" },
-        { code: "0010-1", name: "已取消" },
-        { code: "0010-7", name: "已确定供应商" },
-        { code: "0010-9", name: "待结算（尚无结算单）" },
-        { code: "0010-12", name: "会议过期" },
-        { code: "0010-10", name: "结算中（待审核）" },
-      ],
-    };
+        { code: '0010-11', name: '结算完成' },
+        { code: '0010-5', name: '会议已创建' },
+        { code: '0010-8', name: '会议进行中' },
+        { code: '0010-6', name: '询价中' },
+        { code: '0010-1', name: '已取消' },
+        { code: '0010-7', name: '已确定供应商' },
+        { code: '0010-9', name: '待结算（尚无结算单）' },
+        { code: '0010-12', name: '会议过期' },
+        { code: '0010-10', name: '结算中（待审核）' }
+      ]
+    }
   },
   components: {
     // VueQr,
   },
   created() {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-    this.search_date = [start, end];
+    const end = new Date()
+    const start = new Date()
+    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+    this.search_date = [start, end]
 
-    this.reportList();
+    this.reportList()
   },
   methods: {
     positiveFloat,
@@ -590,121 +590,110 @@ export default {
       this.requestApi({
         url: '/UserGroupmanagement/ReportList',
         method: 'post',
-        data: {},
-      }).then((res) => {
+        data: {}
+      }).then(res => {
         this.reportEnum = [
           {
-            id: "513a8ae5-bc8f-11ec-afdf-fa163ed463f8",
-            name: "01-拜耳小会月度台账",
-            value: "01",
+            id: '513a8ae5-bc8f-11ec-afdf-fa163ed463f8',
+            name: '01-拜耳小会月度台账',
+            value: '01'
           },
           {
-            id: "99382546-bc8f-11ec-afdf-fa163ed463f8",
-            name: "02-拜耳小会台账明细",
-            value: "02",
+            id: '99382546-bc8f-11ec-afdf-fa163ed463f8',
+            name: '02-拜耳小会台账明细',
+            value: '02'
           },
           {
-            id: "9b1eedfb-bc8f-11ec-afdf-fa163ed463f8",
-            name: "03-MSD区域台账",
-            value: "03",
+            id: '9b1eedfb-bc8f-11ec-afdf-fa163ed463f8',
+            name: '03-MSD区域台账',
+            value: '03'
           },
           {
-            id: "9d169f9a-bc8f-11ec-afdf-fa163ed463f8",
-            name: "04-欧佳隆区域台账",
-            value: "04",
+            id: '9d169f9a-bc8f-11ec-afdf-fa163ed463f8',
+            name: '04-欧佳隆区域台账',
+            value: '04'
           },
           {
-            id: "da84f84d-cdb7-11ec-bad7-fa163ed463f8",
-            name: "05-礼来区域台账",
-            value: "05",
-          },
-        ];
-      });
+            id: 'da84f84d-cdb7-11ec-bad7-fa163ed463f8',
+            name: '05-礼来区域台账',
+            value: '05'
+          }
+        ]
+      })
     },
     // 查看评估得分
     GetFeedback(row) {
-      (this.imgUrl =
-        meetingH5 + "/#/?id=" + row.id + "&name=" + row.event_name), //扫码后手机显示的页面
-        (this.UnDelPoData = row.po_order_no.length > 0 ? true : false);
-      this.severBackShow = true;
+      ;(this.imgUrl = meetingH5 + '/#/?id=' + row.id + '&name=' + row.event_name), //扫码后手机显示的页面
+        (this.UnDelPoData = row.po_order_no.length > 0 ? true : false)
+      this.severBackShow = true
       this.requestApi({
         url: '/MeetingFeedback/GetFeedback',
         method: 'post',
-        data: { meetingID: row.id},
-      }).then((res) => {
-          this.severBackInfo = res;
-        });
+        data: { meetingID: row.id }
+      }).then(res => {
+        this.severBackInfo = res
+      })
     },
     // 复制问卷链接
     copyUrl(item, type) {
-      var copyTest = this.imgUrl;
-      var inputTest = document.createElement("input");
-      inputTest.value = copyTest;
-      document.body.appendChild(inputTest);
-      inputTest.select();
-      document.execCommand("Copy");
-      inputTest.className = "oInput";
-      inputTest.style.display = "none";
-      this.$message.success("复制成功");
+      var copyTest = this.imgUrl
+      var inputTest = document.createElement('input')
+      inputTest.value = copyTest
+      document.body.appendChild(inputTest)
+      inputTest.select()
+      document.execCommand('Copy')
+      inputTest.className = 'oInput'
+      inputTest.style.display = 'none'
+      this.$message.success('复制成功')
     },
     tableRowClassName({ row, rowIndex }) {
       // debugger
       if (row.twenty_one === 1) {
-        return "warning-row";
+        return 'warning-row'
       }
-      return "";
+      return ''
     },
     // 点击查询
     search() {
-      this.excelType = this.searchType;
+      this.excelType = this.searchType
       if (this.searchType == 1) {
-        this.GetBayerMonthExcel();
+        this.GetBayerMonthExcel()
       } else if (this.searchType == 2) {
-        this.GetBayerExcel();
+        this.GetBayerExcel()
       } else if (this.searchType == 3) {
-        this.GetMSDExcel();
+        this.GetMSDExcel()
       } else if (this.searchType == 4) {
-        this.GetOrganonExcel();
+        this.GetOrganonExcel()
       } else if (this.searchType == 5) {
-        this.GetLillyAccount();
+        this.GetLillyAccount()
       } else {
-        this.$message.info("请选择要查询的报表");
+        this.$message.info('请选择要查询的报表')
       }
     },
     // 点击导出报表
     downlodExcel() {
       if (this.excelType == 1) {
-        this.BayerMonthExcel();
+        this.BayerMonthExcel()
       } else if (this.excelType == 2) {
-        this.BayerExcel();
+        this.BayerExcel()
       } else if (this.excelType == 3) {
-        this.MSDExcel();
+        this.MSDExcel()
       } else if (this.excelType == 4) {
-        this.OrganonExcel();
+        this.OrganonExcel()
       } else if (this.excelType == 5) {
-        this.GetLillyAccountExcel();
+        this.GetLillyAccountExcel()
       } else {
-        this.$message.info("请查询要导出的报表");
+        this.$message.info('请查询要导出的报表')
       }
     },
     // 获取 01-拜尔小会月度台账 数据
     GetBayerMonthExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
 
       this.requestApi({
         url: '/BayerReportForm/GetBayerMonthExcel',
@@ -712,30 +701,20 @@ export default {
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.tableData = res;
-      });
+      }).then(res => {
+        this.tableData = res
+      })
     },
     // 获取 02-拜尔小会台账明细 数据
     GetBayerExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
 
       this.requestApi({
         url: '/BayerReportForm/GetBayerExcel',
@@ -743,30 +722,20 @@ export default {
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-          this.tableData = res;
-        });
+      }).then(res => {
+        this.tableData = res
+      })
     },
     // 获取 03-MSD区域台账 数据
     GetMSDExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
 
       this.requestApi({
         url: '/MSDReport/GetMSDReportList',
@@ -774,31 +743,20 @@ export default {
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.tableData = res.EvetModels;
-      });
+      }).then(res => {
+        this.tableData = res.EvetModels
+      })
     },
     // 获取 04-欧佳隆区域台账 数据
     GetOrganonExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
-
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
 
       this.requestApi({
         url: '/MSDReport/GetOjialReportList',
@@ -806,30 +764,20 @@ export default {
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.tableData = res.EvetModels;
-      });
+      }).then(res => {
+        this.tableData = res.EvetModels
+      })
     },
     // 获取 05-礼来区域台账 数据
     GetLillyAccount() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
 
       this.requestApi({
         url: '/Reporting/GetLillyAccount',
@@ -837,220 +785,170 @@ export default {
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.tableData = res;
-      });
+      }).then(res => {
+        this.tableData = res
+      })
     },
     // 获取报表明细文件信息
     BayerExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
-      
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
+
       this.requestApi({
         url: '/BayerReportForm/BayerExcel',
         method: 'post',
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.downloadFile(res);
-      });
+      }).then(res => {
+        this.downloadFile(res)
+      })
     },
     // 获取月度报表文件信息
     BayerMonthExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
-      
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
+
       this.requestApi({
         url: '/BayerReportForm/BayerMonthExcel',
         method: 'post',
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.downloadFile(res);
-      });
+      }).then(res => {
+        this.downloadFile(res)
+      })
     },
     // 03-MSD区域台账
     MSDExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
-      
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
+
       this.requestApi({
         url: '/MSDReport/MSDExcel',
         method: 'post',
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.downloadFile(res);
-      });
+      }).then(res => {
+        this.downloadFile(res)
+      })
     },
     // 04-欧佳隆区域台账
     OrganonExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
-      
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
+
       this.requestApi({
         url: '/MSDReport/OjialExcel',
         method: 'post',
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.downloadFile(res);
-      });
+      }).then(res => {
+        this.downloadFile(res)
+      })
     },
     // 04-欧佳隆区域台账
     GetLillyAccountExcel() {
-      let beginmonth = this.search_date[0].getMonth() + 1;
-      let endmonth = this.search_date[1].getMonth() + 1;
-      let begindate = this.search_date[0].getDate();
-      let enddate = this.search_date[1].getDate();
-      let beginTime =
-        this.search_date[0].getFullYear() +
-        "-" +
-        (beginmonth > 9 ? beginmonth : "0" + beginmonth) +
-        "-" +
-        (begindate > 9 ? begindate : "0" + begindate);
-      let endTime =
-        this.search_date[1].getFullYear() +
-        "-" +
-        (endmonth > 9 ? endmonth : "0" + endmonth) +
-        "-" +
-        (enddate > 9 ? enddate : "0" + enddate);
-      
+      let beginmonth = this.search_date[0].getMonth() + 1
+      let endmonth = this.search_date[1].getMonth() + 1
+      let begindate = this.search_date[0].getDate()
+      let enddate = this.search_date[1].getDate()
+      let beginTime = this.search_date[0].getFullYear() + '-' + (beginmonth > 9 ? beginmonth : '0' + beginmonth) + '-' + (begindate > 9 ? begindate : '0' + begindate)
+      let endTime = this.search_date[1].getFullYear() + '-' + (endmonth > 9 ? endmonth : '0' + endmonth) + '-' + (enddate > 9 ? enddate : '0' + enddate)
+
       this.requestApi({
         url: '/Reporting/GetLillyAccountExcel',
         method: 'post',
         data: {
           beginTime,
           endTime,
-          status: this.focusStrVal,
+          status: this.focusStrVal
         }
-      }).then((res) => {
-        this.downloadFile(res);
-      });
+      }).then(res => {
+        this.downloadFile(res)
+      })
     },
     // 导出报表
     downloadFile(file) {
       // window.open(file.file_path, "_blank");
-      let a_link = document.createElement("a");
+      let a_link = document.createElement('a')
       // 这里是将url转成blob地址，
       fetch(file.msg)
-        .then((res) => res.blob())
-        .then((blob) => {
+        .then(res => res.blob())
+        .then(blob => {
           // 将链接地址字符内容转变成blob地址
-          a_link.href = URL.createObjectURL(blob);
-          console.log(a_link.href);
-          a_link.download = file.title; //下载的文件的名字
-          document.body.appendChild(a_link);
-          a_link.click();
-        });
+          a_link.href = URL.createObjectURL(blob)
+          console.log(a_link.href)
+          a_link.download = file.title //下载的文件的名字
+          document.body.appendChild(a_link)
+          a_link.click()
+        })
     },
     moneyFormatter(row, col, value) {
       // let money = Number(row.开票金额)
       // debugger
       if (value || value === 0) {
-        return this.positiveFloat(value);
+        return this.positiveFloat(value)
       } else {
-        return "";
+        return ''
       }
     },
     dateFormatter(row, col, value) {
       if (value) {
-        return this.formatDate("YYYY-mm-dd", new Date(value));
+        return this.formatDate('YYYY-mm-dd', new Date(value))
       } else {
-        return "";
+        return ''
       }
     },
     choice(val) {
-      this.focusStrVal = val.join(",");
-      console.log(this.focusStrVal);
-    },
-  },
-};
+      this.focusStrVal = val.join(',')
+      console.log(this.focusStrVal)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-table__body-wrapper {
+::deep .el-table__body-wrapper {
   overflow-y: auto;
   // overflow-x: hidden
 }
-/deep/ .el-table th.gutter {
+::deep .el-table th.gutter {
   width: 0 !important;
   display: table-cell !important;
 }
 .total {
   font-weight: bold;
 }
-/deep/ .el-table tr.warning-row {
+::deep .el-table tr.warning-row {
   color: red;
 }
 .backItem {
@@ -1067,7 +965,7 @@ export default {
     border-top: 1px solid #ccc;
   }
 }
-/deep/ .severBackQr {
+::deep .severBackQr {
   vertical-align: text-top;
 }
 </style>

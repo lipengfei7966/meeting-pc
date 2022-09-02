@@ -225,7 +225,7 @@ export default {
 
       if (this.mainData.initSearch) {
         this.$nextTick(() => {
-          this.getList()
+          this.$refs.bsTable.getList()
         })
       }
     } else {

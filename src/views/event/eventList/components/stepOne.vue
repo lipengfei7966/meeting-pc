@@ -443,7 +443,7 @@ export default {
         jiedian: '',
         fenlei: '',
         pageSize: 10,
-        pageIndex: 1,
+        pageIndex: 1
       }, // 文件查询条件
       fileTotalCount: 0, // 查询文件数量
       // 所属节点下拉选项
@@ -454,17 +454,17 @@ export default {
           otherOptions: [
             {
               name: '会议附件',
-              value: '001-1',
+              value: '001-1'
             },
             {
               name: 'PO/授标文件',
-              value: '001-2',
+              value: '001-2'
             },
             {
               name: '其他附件',
-              value: '001-3',
-            },
-          ],
+              value: '001-3'
+            }
+          ]
         },
         {
           name: '会议询价',
@@ -472,9 +472,9 @@ export default {
           otherOptions: [
             {
               name: '询价单补充附件',
-              value: '002-1',
-            },
-          ],
+              value: '002-1'
+            }
+          ]
         },
         {
           name: '报价单',
@@ -482,9 +482,9 @@ export default {
           otherOptions: [
             {
               name: '报价书附件',
-              value: '003-1',
-            },
-          ],
+              value: '003-1'
+            }
+          ]
         },
         {
           name: '留言',
@@ -492,9 +492,9 @@ export default {
           otherOptions: [
             {
               name: '留言附件',
-              value: '004-1',
-            },
-          ],
+              value: '004-1'
+            }
+          ]
         },
         {
           name: '结算单',
@@ -502,65 +502,65 @@ export default {
           otherOptions: [
             {
               name: '客户结算单',
-              value: '005-1',
+              value: '005-1'
             },
             {
               name: '客户结算确认邮件',
-              value: '005-2',
+              value: '005-2'
             },
             {
               name: 'PO单',
-              value: '005-3',
+              value: '005-3'
             },
             {
               name: '供应商发票及账单',
-              value: '005-4',
+              value: '005-4'
             },
             {
               name: '酒店住宿发票+小联',
-              value: '005-5',
+              value: '005-5'
             },
             {
               name: '酒店餐饮发票+小联',
-              value: '005-6',
+              value: '005-6'
             },
             {
               name: '酒店会场发票+小联',
-              value: '005-7',
+              value: '005-7'
             },
             {
               name: '外出用餐发票+小联',
-              value: '005-8',
+              value: '005-8'
             },
             {
               name: '注册费发票+小联',
-              value: '005-9',
+              value: '005-9'
             },
             {
               name: '用车发票+小联',
-              value: '005-10',
+              value: '005-10'
             },
             {
               name: '制作物发票+小联',
-              value: '005-11',
+              value: '005-11'
             },
             {
               name: '保险发票+小联',
-              value: '005-12',
+              value: '005-12'
             },
             {
               name: '签到表',
-              value: '005-13',
+              value: '005-13'
             },
             {
               name: '会议照片-全景',
-              value: '005-14',
+              value: '005-14'
             },
             {
               name: '其他结算附件',
-              value: '005-15',
-            },
-          ],
+              value: '005-15'
+            }
+          ]
         },
         {
           name: '会议订单',
@@ -568,13 +568,13 @@ export default {
           otherOptions: [
             {
               name: '开票通知文件',
-              value: '006-1',
+              value: '006-1'
             },
             {
               name: '发票文件',
-              value: '006-2',
-            },
-          ],
+              value: '006-2'
+            }
+          ]
         },
         {
           name: '附加信息',
@@ -582,10 +582,10 @@ export default {
           otherOptions: [
             {
               name: '自定义信息附件',
-              value: '007-1',
-            },
-          ],
-        },
+              value: '007-1'
+            }
+          ]
+        }
       ],
       // 文件分类下拉选项
       fenleiOptions: [],
@@ -601,7 +601,7 @@ export default {
         { code: '0010-7', name: '已确定供应商' },
         { code: '0010-9', name: '待结算（尚无结算单）' },
         { code: '0010-12', name: '会议过期' },
-        { code: '0010-10', name: '结算中（待审核）' },
+        { code: '0010-10', name: '结算中（待审核）' }
       ],
       // PO
       poData: {
@@ -610,13 +610,13 @@ export default {
         po_price: '',
         po_create_date: '',
         cmd: 'add',
-        create_user: 'test',
+        create_user: 'test'
       },
       B2BData: {
         event_name: '',
         b2b_begin: '',
         b2b_end: '',
-        file: [],
+        file: []
       },
       severBackInfo: {}, // 服务反馈信息
       b2bFilesList: [], // b2b 附件列表
@@ -632,12 +632,12 @@ export default {
         { name: '其他', code: '009' },
         { name: '待客户确认资料', code: '010' },
         { name: '酒店比价文件', code: '011' },
-        { name: '租车比价文件', code: '012' },
+        { name: '租车比价文件', code: '012' }
       ],
       additionalInfoData: {
         eventinfoid: '',
         selfformlist: [],
-        updatetime: '',
+        updatetime: ''
       },
       poList: [],
       uploadList: [
@@ -646,7 +646,7 @@ export default {
         { name: '酒店比价文件', fileList: [] },
         { name: '租车比价文件', fileList: [] },
         { name: 'CVENT文件', fileList: [] },
-        { name: '其他附件', fileList: [] },
+        { name: '其他附件', fileList: [] }
       ],
       UploadFilesUrl: MAINHOST + '/MeetingMa/UploadFiles',
       UnDelPoData: {}, // 未删除PO单信息
@@ -655,14 +655,14 @@ export default {
       url: '', //b2b跳转地址
       selfformlist: [],
       additionalInfoRule: {
-        datavalue: [{ required: true, message: '请输入联系人姓名', trigger: 'blur' }],
-      },
+        datavalue: [{ required: true, message: '请输入联系人姓名', trigger: 'blur' }]
+      }
     }
   },
   components: {
     BasePart,
     meetingFiles,
-    VueQr,
+    VueQr
   },
   mounted() {
     this.getUploadList()
@@ -673,7 +673,7 @@ export default {
   watch: {
     baseInfo(newVal, oldVal) {
       this.getPO()
-    },
+    }
   },
   methods: {
     // 文件搜索
@@ -681,7 +681,7 @@ export default {
     // 重置搜索条件
     resetSearch() {},
     jiedianChange(value) {
-      this.fenleiOptions = this.jiedianOptions.find((e) => e.value == this.fileSearch.jiedian).otherOptions
+      this.fenleiOptions = this.jiedianOptions.find(e => e.value == this.fileSearch.jiedian).otherOptions
       debugger
       console.log(this.fenleiOptions)
     },
@@ -696,14 +696,14 @@ export default {
     },
     // 确认选择会议文件
     confirmCheckdFiles() {
-      this.checkedFiles.forEach((element) => {
+      this.checkedFiles.forEach(element => {
         let b2bFile = {
           id: '',
           file_name: element.file_name,
           file_path: element.file_path,
           type: 0,
           file_type: '001',
-          remarks: element.remarks,
+          remarks: element.remarks
         }
         this.B2BData.file.push(b2bFile)
       })
@@ -714,8 +714,8 @@ export default {
       this.requestApi({
         url: '/MeetingFeedback/GetFeedback',
         method: 'post',
-        data: { meetingID: this.$route.query.id },
-      }).then((res) => {
+        data: { meetingID: this.$route.query.id }
+      }).then(res => {
         this.severBackInfo = res
       })
     },
@@ -736,12 +736,12 @@ export default {
       this.requestApi({
         url: '/selfform/eventviewselfform',
         method: 'post',
-        data: { eventinfoid: this.$route.query.id },
-      }).then((res) => {
+        data: { eventinfoid: this.$route.query.id }
+      }).then(res => {
         this.selfformlist = res.selfformlist
-        this.selfformlist.forEach((item) => {
+        this.selfformlist.forEach(item => {
           if (item.fieldtype == '099-5') {
-            item.fileInfos.forEach((file) => {
+            item.fileInfos.forEach(file => {
               file.name = file.file_name
               file.url = file.file_path
             })
@@ -760,8 +760,8 @@ export default {
       this.requestApi({
         url: '/B2B/GetInfo',
         method: 'post',
-        data: { event_info_id: this.$route.query.id },
-      }).then((res) => {
+        data: { event_info_id: this.$route.query.id }
+      }).then(res => {
         if (res) this.B2BData = res
       })
     },
@@ -770,8 +770,8 @@ export default {
       this.requestApi({
         url: '/b2b/autologin',
         method: 'post',
-        data: { funcCode: funcCode },
-      }).then((res) => {
+        data: { funcCode: funcCode }
+      }).then(res => {
         // console.log(res)
         this.url = res
         setTimeout(() => {
@@ -809,14 +809,14 @@ export default {
     },
     // 保存会议附加信息
     additionalInfoSave() {
-      this.$refs.additionalInfoForm.validate((valid) => {
+      this.$refs.additionalInfoForm.validate(valid => {
         // debugger
         if (valid) {
           this.requestApi({
             url: '/selfform/saveeventselfform',
             method: 'post',
-            data: this.additionalInfoData,
-          }).then((res) => {
+            data: this.additionalInfoData
+          }).then(res => {
             if (res === true) {
               // debugger
               this.$message.success('保存成功')
@@ -832,8 +832,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/GetMeetingList',
         method: 'post',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
         this.eventInfo = res
         this.b2baudstatus = res.b2baudstatus
         this.b2bnote = res.b2bnote
@@ -843,13 +843,13 @@ export default {
     cancelSubmit() {
       let postData = {
         event_info_id: this.$route.query.id,
-        file: this.B2BData.file,
+        file: this.B2BData.file
       }
       this.requestApi({
         url: '/B2B/B2BFileSava',
         method: 'post',
-        data: postData,
-      }).then((res) => {
+        data: postData
+      }).then(res => {
         debugger
         this.b2bShow = false
       })
@@ -859,7 +859,7 @@ export default {
       console.log(this.UnDelPoData, this.uploadList)
       console.log(this.B2BData.file)
       // if (this.UnDelPoData == undefined && this.uploadList[1].fileList.length == 0) {
-      let hasPoFile = this.B2BData.file.find((item) => {
+      let hasPoFile = this.B2BData.file.find(item => {
         return item.file_type == '001'
       }) // 是否上传PO/授标文件
       if (this.UnDelPoData == undefined && hasPoFile == undefined) {
@@ -874,8 +874,8 @@ export default {
       this.requestApi({
         url: '/B2B/creatMiceTeam',
         method: 'post',
-        data: postData,
-      }).then((res) => {
+        data: postData
+      }).then(res => {
         console.log(res)
         if (res.status != 1) {
           this.$message.error(res.msg)
@@ -884,12 +884,12 @@ export default {
           if (!res.msg) {
             this.$message({
               message: '提交审核成功',
-              type: 'success',
+              type: 'success'
             })
           } else {
             this.$message({
               message: res.msg,
-              type: 'success',
+              type: 'success'
             })
           }
           this.b2bShow = false
@@ -910,7 +910,7 @@ export default {
         file_path: file.weburl,
         type: 0, // 默认“客户”
         file_type: '001', // 默认 “PO单”
-        remarks: '',
+        remarks: ''
       }
       this.B2BData.file.push(b2bFile)
     },
@@ -921,13 +921,13 @@ export default {
         id: '',
         file_name: file.title,
         name: file.title,
-        file_path: file.weburl,
+        file_path: file.weburl
       })
     },
     // 附加信息文件删除
     deleteFile(file, selfformlistItem, selfformlistIndex) {
       debugger
-      selfformlistItem.fileInfos = selfformlistItem.fileInfos.filter((item) => {
+      selfformlistItem.fileInfos = selfformlistItem.fileInfos.filter(item => {
         return item.uid != file.uid
       })
     },
@@ -940,8 +940,8 @@ export default {
       let a_link = document.createElement('a')
       // 这里是将url转成blob地址，
       fetch(url)
-        .then((res) => res.blob())
-        .then((blob) => {
+        .then(res => res.blob())
+        .then(blob => {
           // 将链接地址字符内容转变成blob地址
           debugger
           a_link.href = URL.createObjectURL(blob)
@@ -959,14 +959,14 @@ export default {
         event_info_id: this.eventId, //会议id
         type: id, //文件类型(0：系统报价单 1：供应商PO 2：酒店比价文件 3：租车比价文件 4：CVENT文件 5：其他附件)
         file_path: type === 0 ? data.weburl : data.file_path, //附件路径
-        file_name: type === 0 ? data.title : data.file_name, //附件名称
+        file_name: type === 0 ? data.title : data.file_name //附件名称
         // create_user: 'mazhenheng',//创建人
       }
       this.requestApi({
         url: '/MeetingMa/FilesSave',
         method: 'post',
-        data: { parameter: JSON.stringify(postData) },
-      }).then((res) => {
+        data: { parameter: JSON.stringify(postData) }
+      }).then(res => {
         if (type === 0) {
           this.$message.success('上传成功')
         } else {
@@ -980,8 +980,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/GetFile',
         method: 'post',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
         if (res && res.length) {
           this.uploadList = [
             { name: '系统报价单', fileList: [] },
@@ -989,9 +989,9 @@ export default {
             { name: '酒店比价文件', fileList: [] },
             { name: '租车比价文件', fileList: [] },
             { name: 'CVENT文件', fileList: [] },
-            { name: '其他附件', fileList: [] },
+            { name: '其他附件', fileList: [] }
           ]
-          res.forEach((item) => {
+          res.forEach(item => {
             this.uploadList[item.type].fileList.push(item)
           })
         } else {
@@ -1001,7 +1001,7 @@ export default {
             { name: '酒店比价文件', fileList: [] },
             { name: '租车比价文件', fileList: [] },
             { name: 'CVENT文件', fileList: [] },
-            { name: '其他附件', fileList: [] },
+            { name: '其他附件', fileList: [] }
           ]
         }
       })
@@ -1012,8 +1012,8 @@ export default {
       await this.requestApi({
         url: '/CustomerConfiguration/Get_event_po',
         method: 'GET',
-        data: { eventInfoId: this.$route.query.id },
-      }).then((res) => {
+        data: { eventInfoId: this.$route.query.id }
+      }).then(res => {
         this.poList = res
         this.UnDelPoData = this.poList.find((val, index, arr) => {
           return val.is_delete == 0
@@ -1024,7 +1024,7 @@ export default {
     editBaseTap() {
       this.$router.push({
         name: 'createEvent',
-        query: { id: this.eventId, type: 'edit' },
+        query: { id: this.eventId, type: 'edit' }
       })
     },
     // 下载全部文件
@@ -1036,8 +1036,8 @@ export default {
         this.requestApi({
           url: '/CustomerConfiguration/Set_event_po',
           method: 'POST',
-          data: this.poData,
-        }).then((res) => {
+          data: this.poData
+        }).then(res => {
           if (res) {
             this.$message.success('添加成功')
             this.getPO()
@@ -1076,8 +1076,8 @@ export default {
       let a_link = document.createElement('a')
       // 这里是将url转成blob地址，
       fetch(file.file_path)
-        .then((res) => res.blob())
-        .then((blob) => {
+        .then(res => res.blob())
+        .then(blob => {
           // 将链接地址字符内容转变成blob地址
           a_link.href = URL.createObjectURL(blob)
           a_link.download = file.file_name //下载的文件的名字
@@ -1089,12 +1089,12 @@ export default {
       this.requestApi({
         url: '/TiMing/ApproveTimeout',
         method: 'POST',
-        data: this.poData,
-      }).then((res) => {
+        data: this.poData
+      }).then(res => {
         this.$message.success('设置成功')
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -1132,7 +1132,7 @@ export default {
       border-top: 1px solid #ccc;
     }
   }
-  /deep/ .severBackQr {
+  ::deep .severBackQr {
     vertical-align: text-top;
   }
 }

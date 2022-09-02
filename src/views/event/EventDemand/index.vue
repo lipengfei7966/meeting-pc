@@ -145,7 +145,7 @@ export default {
       isCheck: false, //是否是查看需求
       InquirySheetObjectID: '', // 勾选询价单objectid
       isSite: [],
-      isShow: true,
+      isShow: true
     }
   },
   components: {
@@ -155,13 +155,13 @@ export default {
     foodDemand,
     foodOutDemand,
     car,
-    other,
+    other
   },
   mounted() {
     // getDemandDetail
     debugger
     this.eventId = this.$route.query.id
-    this.getDemandList().then((res) => {
+    this.getDemandList().then(res => {
       // 各需求数据渲染
       let roomArr = []
       let a = getNextDate(this.dateArr[0], -1)
@@ -170,16 +170,16 @@ export default {
       let d = getNextDate(this.dateArr[this.dateArr.length - 1], 1)
       let e = getNextDate(this.dateArr[this.dateArr.length - 1], 2)
       let f = getNextDate(this.dateArr[this.dateArr.length - 1], 3)
-      this.roomDate = [c, b, a, ...this.dateArr, d].filter((item) => {
+      this.roomDate = [c, b, a, ...this.dateArr, d].filter(item => {
         return item
       })
-      this.outDate = [c, b, a, ...this.dateArr, d, e].filter((item) => {
+      this.outDate = [c, b, a, ...this.dateArr, d, e].filter(item => {
         return item
       })
-      this.allDate = [c, b, a, ...this.dateArr, d, e, f].filter((item) => {
+      this.allDate = [c, b, a, ...this.dateArr, d, e, f].filter(item => {
         return item
       })
-      this.roomDate.forEach((date) => {
+      this.roomDate.forEach(date => {
         let roomItem = {
           id: '',
           check_in_date: date,
@@ -187,7 +187,7 @@ export default {
           king_bed_count: '',
           superior_room_count: '',
           other_requirements: '',
-          is_delete: 0,
+          is_delete: 0
         }
         roomArr.push(roomItem)
       })
@@ -212,7 +212,7 @@ export default {
       this.purposeList = this.demandList.Purpose
       this.carType = this.demandList.CarType
       let otherService = this.demandList.OtherService
-      otherService.forEach((item) => {
+      otherService.forEach(item => {
         item.is_delete = 1
       })
       this.$refs.other.otherList = JSON.parse(JSON.stringify(otherService))
@@ -242,7 +242,7 @@ export default {
     // 点击询价单行事件
     checkedRow(row, column, event) {
       // 勾选相同 询价单号
-      this.tableData.forEach((item) => {
+      this.tableData.forEach(item => {
         if (item.inquiry_sheet_code == row.inquiry_sheet_code) {
           this.$refs.multipleTable.toggleRowSelection(item)
         }
@@ -253,7 +253,7 @@ export default {
       // debugger
       this.$refs.multipleTable.toggleRowSelection(row)
       // 勾选相同 询价单号
-      this.tableData.forEach((item) => {
+      this.tableData.forEach(item => {
         if (item.inquiry_sheet_code == row.inquiry_sheet_code) {
           this.$refs.multipleTable.toggleRowSelection(item)
         }
@@ -263,7 +263,7 @@ export default {
     handleSelectionChange(rows, row) {
       if (rows.length > 0) this.hasCheckedRow = true
       let InquirySheetObjectID = ''
-      rows.forEach((item) => {
+      rows.forEach(item => {
         if (InquirySheetObjectID) {
           InquirySheetObjectID += ',' + item.id
         } else {
@@ -277,29 +277,29 @@ export default {
       let room = this.$refs.room.room
       let conferenceArr = this.$refs.event.conferenceList,
         conference = []
-      conferenceArr.forEach((item) => {
-        item.conference.forEach((conItem) => {
+      conferenceArr.forEach(item => {
+        item.conference.forEach(conItem => {
           conference.push({
             ...conItem,
-            conference_date: item.conference_date,
+            conference_date: item.conference_date
           })
         })
       })
       let food = this.$refs.food.foodBudgetList
       let transportation = this.$refs.intercity.transportationList,
         transportationArr = []
-      transportation.forEach((item) => {
-        item.transportation.forEach((conItem) => {
+      transportation.forEach(item => {
+        item.transportation.forEach(conItem => {
           transportationArr.push({
             ...conItem,
-            transportation_date: item.transportation_date.substring(0, 10),
+            transportation_date: item.transportation_date.substring(0, 10)
           })
         })
       })
       let carList = this.$refs.car.carList,
         carArr = []
-      carList.forEach((item) => {
-        item.car.forEach((conItem) => {
+      carList.forEach(item => {
+        item.car.forEach(conItem => {
           carArr.push({ ...conItem, car_date: item.car_date })
         })
       })
@@ -344,7 +344,7 @@ export default {
         is_delete: '0', //
 
         id: this.purchaseId, //
-        event_info_id: this.eventId, //
+        event_info_id: this.eventId //
       }
       let data = {
         meetingid: this.eventId,
@@ -357,7 +357,7 @@ export default {
         transportation: this.$refs.intercity.is_intercity_transportation == '1' ? transportationArr : [],
         food: this.$refs.food.is_food_beverage == '1' ? this.$refs.food.foodBudgetList : [],
         foodOutside: this.$refs.foodOut.is_food_outside == '1' ? this.$refs.foodOut.foodBudgetList : [],
-        conference: this.$refs.event.is_conference_rooms == '1' ? conferenceArr : [],
+        conference: this.$refs.event.is_conference_rooms == '1' ? conferenceArr : []
       }
       // 必填数据效验
       let eventMsg = '',
@@ -397,8 +397,8 @@ export default {
       data.foodOutside.forEach((item, index) => {
         item.index = index + 1
       })
-      data.conference.forEach((items) => {
-        items.conference.forEach((item) => {
+      data.conference.forEach(items => {
+        items.conference.forEach(item => {
           if (!item.conference_start_time || !item.conference_end_time || !item.attendees || !item.room_setup_type || (item.is_setting_in_advance === 1 && (!item.setting_in_advance_date || !item.rehearsal_date))) {
             eventMsg += '<b>' + items.conference_date + '</b>' + '会场需求 '
             if (!item.conference_start_time) {
@@ -492,8 +492,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/MeetingPurchaseSave',
         method: 'post',
-        data: { Parameter: JSON.stringify(data) },
-      }).then((res) => {
+        data: { Parameter: JSON.stringify(data) }
+      }).then(res => {
         if (val === 1) {
           if (res) {
             this.$message.success('保存成功')
@@ -502,15 +502,15 @@ export default {
             this.requestApi({
               url: '/procurementprocess/selecthotel',
               method: 'post',
-              data: { hotel: JSON.parse(sessionStorage.getItem('isSite')) },
-            }).then((res) => {
+              data: { hotel: JSON.parse(sessionStorage.getItem('isSite')) }
+            }).then(res => {
               debugger
               if (res) {
                 let type = 1
                 this.$nextTick(() => {
                   this.$router.push({
                     name: 'HotelProcurement',
-                    params: { id: this.$route.query.id, type },
+                    params: { id: this.$route.query.id, type }
                   })
                 })
               }
@@ -534,8 +534,8 @@ export default {
       this.requestApi({
         url: '/EditInquirySheet/GetEditInquirySheet',
         method: 'post',
-        data: { MeetingID: this.eventId, },
-      }).then((res) => {
+        data: { MeetingID: this.eventId }
+      }).then(res => {
         this.tableData = res
       })
     },
@@ -545,8 +545,8 @@ export default {
       this.requestApi({
         url: '/MeetingMa/GetPurchase',
         method: 'post',
-        data: { MeetingID: this.eventId, },
-      }).then((res) => {
+        data: { MeetingID: this.eventId }
+      }).then(res => {
         this.isShowHotelBtn = res.type
       })
     },
@@ -561,7 +561,7 @@ export default {
         // })
         this.$router.push({
           name: 'siteResource',
-          params:{
+          params: {
             id: this.eventId,
             city: city_code,
             type: 'addhotel'
@@ -575,7 +575,7 @@ export default {
         //立即采购(不含酒店)
         // this.$router.push({path:'/ServiceProvidercg/' + '/'+ city_code + this.eventId + '/3'});
         this.$router.push({
-          name:'ServiceProvider',
+          name: 'ServiceProvider',
           params: {
             id: this.eventId,
             city: city_code,
@@ -587,7 +587,7 @@ export default {
         // 立即采购(含酒店)
         // this.$router.push({path:'/ServiceProvidercg/' + '/'+ city_code + this.eventId + '/2'});
         this.$router.push({
-          name:'ServiceProvider',
+          name: 'ServiceProvider',
           params: {
             id: this.eventId,
             city: city_code,
@@ -599,7 +599,7 @@ export default {
         // 详情
         this.$router.replace({
           name: 'eventDetail',
-          query: { id: this.eventId },
+          query: { id: this.eventId }
         })
       } else if (type === 6) {
         // 邀请重新报价、返回会议详情
@@ -610,22 +610,22 @@ export default {
             method: 'post',
             data: {
               MeetingID: this.eventId,
-              InquirySheetObjectID: this.InquirySheetObjectID,
-            },
-          }).then((res) => {
+              InquirySheetObjectID: this.InquirySheetObjectID
+            }
+          }).then(res => {
             if (res) {
               this.$router.replace({
-                name:'eventDetail',
+                name: 'eventDetail',
                 // path: '/EventDetail',
-                query: { id: this.eventId },
+                query: { id: this.eventId }
               })
             }
           })
           // 返回会议详情
           this.$router.replace({
-            name:'eventDetail',
+            name: 'eventDetail',
             // path: '/EventDetail',
-            query: { id: this.eventId },
+            query: { id: this.eventId }
           })
         } else {
           this.$message.error('请选择中要更新的询价单')
@@ -639,9 +639,9 @@ export default {
         url: '/MeetingMa/GetMeetingID',
         method: 'post',
         data: {
-          MeetingID: this.eventId,
-        },
-      }).then((res) => {
+          MeetingID: this.eventId
+        }
+      }).then(res => {
         if (!res) return
         let demandDetail = res
         // 客房需求
@@ -664,12 +664,12 @@ export default {
         if (res.conference && res.conference.length) {
           let conference = eventifyByTime(res.conference, 'conference_date'),
             conferenceList = []
-          conference.forEach((item) => {
+          conference.forEach(item => {
             item.conference_date = item.time.substring(0, 10)
             item.conference = item.data
-            item.conference.forEach((conferenceItem) => {
-              conferenceItem.equipment.forEach((tagItem) => {
-                let tag = this.equipmentList.filter((equipmentItem) => {
+            item.conference.forEach(conferenceItem => {
+              conferenceItem.equipment.forEach(tagItem => {
+                let tag = this.equipmentList.filter(equipmentItem => {
                   return equipmentItem.equipment_code === tagItem.equipment_code
                 })
                 tagItem.value = tag.length ? tag[0].value : ''
@@ -711,7 +711,7 @@ export default {
         if (res.transportation && res.transportation.length) {
           this.$refs.intercity.transportationList = []
           let transportation = res.transportation
-          transportation.forEach((item) => {
+          transportation.forEach(item => {
             item.transportation_date = item.transportation_date.substring(0, 10)
           })
           this.$refs.intercity.transportationList = transportation
@@ -740,9 +740,9 @@ export default {
           url: '/MeetingMa/Purchase',
           method: 'post',
           data: {
-            MeetingID: this.eventId,
-          },
-        }).then((res) => {
+            MeetingID: this.eventId
+          }
+        }).then(res => {
           this.demandList = res
 
           this.dateArr = getBetweenDate(this.demandList.BeginTime.substring(0, 10), this.demandList.EndTime.substring(0, 10))
@@ -754,23 +754,23 @@ export default {
     goEdit() {
       debugger
       this.$router.replace({
-        name:'createEvent',
+        name: 'createEvent',
         // path: '/CreateEvent',
-        query: { id: this.eventId, type: 'edit' },
+        query: { id: this.eventId, type: 'edit' }
       })
     },
     backPrePage() {
       this.$router.replace({
-        name:'eventDetail',
+        name: 'eventDetail',
         // path: '/EventDetail',
         query: {
           id: this.eventId,
           name: this.$route.query.name,
-          eventSearchType: this.$route.query.eventSearchType,
-        },
+          eventSearchType: this.$route.query.eventSearchType
+        }
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -842,7 +842,7 @@ export default {
     .select_tag {
       border: 1px solid #88c6f5 !important;
       color: #88c6f5;
-      background: url(require('@/assets/images/check_icon.png'));
+      // background: url(require('@/assets/images/check_icon.png'));
       background-position: right bottom;
       background-repeat: no-repeat;
     }
