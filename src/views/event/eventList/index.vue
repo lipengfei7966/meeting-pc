@@ -263,13 +263,17 @@ export default {
     this.getBuyerOptions();
     this.company();
     this.getCityList();
+
    
   },
   methods:{
     formatDate,
     goDetail(val){
 		console.log(val)
+    // this.$store.dispatch('delVisitedViews', this.$route).then(() => {
       this.$router.push({name:'eventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
+    // })
+      
     },
     // 编辑基本信息
     editBaseTap(rowInfo){

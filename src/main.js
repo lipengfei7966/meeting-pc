@@ -108,7 +108,12 @@ Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
+// 百度地图
+import BaiduMap from "vue-baidu-map";
 
+Vue.use(BaiduMap, {
+  ak: "zeIWZvTuFXvei4GPOWNy3jcMa4GC6sIa", //  在此输入你自己的百度地图ak
+});
 // 引入element-tiptap
 // import { ElementTiptapPlugin } from "element-tiptap";
 // import element-tiptap 样式
