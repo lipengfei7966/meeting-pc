@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs type="border-card" tab-position="left" style="height: 99%">
+    <el-tabs type="border-card" tab-position="left">
       <el-tab-pane label="模块设置">
         <div style="display: flex; justify-content: space-between">
           <div class="contents">
@@ -62,13 +62,18 @@ export default {
     handelClick(item, data, type) {
       console.log(item, data, type)
     }
-  }
+  },
+  mounted() {
+//     debugger
+    this.$refs.station.isPc = false
+  },
+  created() {}
 }
 </script>
 
 <style scoped lang="scss">
 .contents {
-  width: 32%;
+  width: 30%;
   min-height: 600px;
   //   border: 1px solid olive;
   box-shadow: 0 2px 12px 0 lightgray;
