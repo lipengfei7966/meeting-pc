@@ -4,11 +4,11 @@
       <ul>
         <!-- <li style="color:#0084e9;" @click="skip(EventList)">首页</li> -->
         <!-- <li style="color:#7c7f82;">></li> -->
-        <li style="color: #0084e9; cursor: pointer" @click="$router.push({ path: '/eventList' })">
+        <li style="color: #0084e9; cursor: pointer" @click="$router.push({ name: 'eventList' })">
           我的会议
         </li>
         <li style="color: #7c7f82">></li>
-        <li style="color: #0084e9; cursor: pointer" @click="$router.push({ path: '/EventDetail', query: $route.query })">
+        <li style="color: #0084e9; cursor: pointer" @click="$router.push({ name: 'eventDetail', query: $route.query })">
           {{ $route.query.name }}
         </li>
         <li style="color: #7c7f82">></li>

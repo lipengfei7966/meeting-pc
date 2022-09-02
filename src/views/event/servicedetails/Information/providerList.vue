@@ -84,7 +84,7 @@
                   </el-badge>
 
                   <el-badge v-if="item.minprice || item.minprice === 0" is-dot :hidden="item.remind == '0' ">
-                    <el-button type="text" @click="goPage('/offer', item)">查看报价</el-button>
+                    <el-button type="text" @click="goPage('offer', item)">查看报价</el-button>
                   </el-badge>
                 </div>
               </td>
@@ -166,9 +166,9 @@ export default {
       });
     },
     // 查看报价
-    goPage(url, data){
+    goPage(name, data){
       let query = {id:this.$route.query.id,foreign_key_id: data.quoted_priceid,serviceId: data.id,type: 1,prev:'询价单详情'};
-      this.$router.push({path:url,query:query})
+      this.$router.push({name,query})
     },
     //点击留言 弹出绘画框
     conversation(InquirySheetObjectID) {
@@ -193,12 +193,14 @@ export default {
     goCompare(command){
       debugger
       this.$router.push({
-        path: '/activityInquiry/comparisonPrice/' + this.$route.query.sheetId,
-        query: {
-          id: this.$route.query.id,
+        name:'comparisonPrice',
+        // path: '/activityInquiry/comparisonPrice/' + this.$route.query.sheetId,
+        query: { 
+          InquirySheetID: this.$route.query.sheetId,
+          eventId: this.$route.query.id,
           command,
-					type:this.$route.query.type
-        }
+          type:this.$route.query.type,
+        },
       })
     },
     conversationed(){

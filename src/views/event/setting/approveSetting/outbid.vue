@@ -7,7 +7,7 @@
           <el-breadcrumb-item :to="{ path: '/' }" class="el-breadcrumb-item">
             首页
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/approveSetting' }" class="el-bread-item">
+          <el-breadcrumb-item :to="{ name: 'approveSetting' }" class="el-bread-item">
             审批流配置
           </el-breadcrumb-item>
           <el-breadcrumb-item class="el-bread-item">
@@ -246,7 +246,7 @@
       QueryApproval(){
         let isDefalt = this.companyinfo.company_name == 'ALL' ? 1 : 0;
         // this.$router.push({path:'/approvalsteps', query:{id: this.eventId,type: 2}})
-        this.$router.push({path:'/approvalsteps', query:{id: this.id,type: 2, isDefalt}})
+        this.$router.push({name:'approvalsteps', query:{id: this.id,type: 2, isDefalt}})
       },
       //点击编辑请求接口并且跳转
       QueryApprovalEdit(index,typeM){

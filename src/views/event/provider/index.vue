@@ -2,7 +2,7 @@
   <div>
     <div class="brother">
       <ul>
-        <el-button type="text" @click="$router.replace({ path: '/EventList' })">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({ name: 'eventList' })">我的会议</el-button>
         <li style="color: #7c7f82; font-size:14px;">></li>
         <el-button type="text" @click="$router.go(-1)">会议详情</el-button>
         <li v-if="prev" style="color:#7c7f82;">></li>
@@ -32,7 +32,7 @@
         <span v-if="summary[0].name == '结算单已确认'">结算单已确认，会议服务商将会与您沟通发票、付款等事宜。</span>
       </p>
       <div class="flex_row justify_center">
-        <el-button v-if="summary.length && summary[0].settlementId" type="text" @click="goPage('/msd', summary[0])">查看结算单</el-button>
+        <el-button v-if="summary.length && summary[0].settlementId" type="text" @click="goPage('msd', summary[0])">查看结算单</el-button>
         <el-button type="text" class="mar_l20" @click="change">查看服务商评价</el-button>
         <el-button v-if="isShowCancelBtn" type="text" class="mar_l20" @click="cancelOrderDialog = true">取消订单</el-button>
       </div>
@@ -111,9 +111,9 @@
       <p style="margin-left:15px; margin-top:15px; color: #777;">{{ item.servcice_hotel_email }}</p>
       <p style="margin-left:15px; margin-top:15px; color: #777;">关联内容</p>
       <div class="pad_10">
-        <el-button size="small" type="primary" @click="goPage('/offer', item)">报价单</el-button>
-        <el-button size="small" type="primary" @click="goPage('/servicedetails', item)">询价单</el-button>
-        <el-button size="small" v-if="item.settlementId" type="primary" @click="goPage('/msd', item)">结算单</el-button>
+        <el-button size="small" type="primary" @click="goPage('offer', item)">报价单</el-button>
+        <el-button size="small" type="primary" @click="goPage('servicedetails', item)">询价单</el-button>
+        <el-button size="small" v-if="item.settlementId" type="primary" @click="goPage('msd', item)">结算单</el-button>
       </div>
     </div>
     <!-- 会议基本信息 -->
@@ -219,7 +219,7 @@ export default {
 			});
 		},
 		// foreign_key_id 报价单id  serviceId:服务商id
-		goPage(url, data) {
+		goPage(name, data) {
 			// id:$route.query.id,foreign_key_id: item.quoted_priceid, type: 1, serviceId: item.id
 			let query = {
 				id: this.$route.query.id, // 会议id
@@ -229,7 +229,7 @@ export default {
 				settlementId: data.settlement_sheet_id, // 结算单id
 				prev: '订单详情'
 			};
-			this.$router.push({ path: url, query: query });
+			this.$router.push({ name, query });
 		},
 		// 取消订单
 		cancelTap() {

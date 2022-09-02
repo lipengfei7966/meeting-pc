@@ -2,11 +2,16 @@
   <div class="create_demand box">
     <div class="path">
       <ul>
-        <el-button type="text" @click="$router.replace({ path: '/eventlist' })">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({ name: 'eventList' })">我的会议</el-button>
         <li v-if="$route.query.type" style="color: #7c7f82">></li>
         <li v-if="$route.query.type" style="color: #409eff; cursor: pointer" @click="
             $router.replace({
-              path: `/EventDetail?id=${$route.query.id}&name=${$route.query.name}&eventSearchType=${$route.query.eventSearchType}`,
+              name: `eventDetail`,
+              query:{
+                id: $route.query.id,
+                name: $route.query.name,
+                eventSearchType: $route.query.eventSearchType
+              }
             })
           ">
           会议详情 ({{ $route.query.name }})
@@ -14,7 +19,13 @@
         <li v-if="$route.query.type && $route.query.type!='edit'" style="color: #7c7f82">></li>
         <li v-if="$route.query.type && $route.query.type!='edit'" style="color: #409eff; cursor: pointer" @click="
             $router.replace({
-              path: `/CreateEvent?id=${$route.query.id}&name=${$route.query.name}&eventSearchType=${$route.query.eventSearchType}&type=${$route.query.type}`,
+              name: `createEvent`,
+              query:{
+                id: $route.query.id,
+                name: $route.query.name,
+                eventSearchType: $route.query.eventSearchType,
+                type: $route.query.type
+              }
             })
           ">
           创建会议
@@ -604,14 +615,16 @@ export default {
           }).then((res) => {
             if (res) {
               this.$router.replace({
-                path: '/EventDetail',
+                name:'eventDetail',
+                // path: '/EventDetail',
                 query: { id: this.eventId },
               })
             }
           })
           // 返回会议详情
           this.$router.replace({
-            path: '/EventDetail',
+            name:'eventDetail',
+            // path: '/EventDetail',
             query: { id: this.eventId },
           })
         } else {

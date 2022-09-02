@@ -165,7 +165,7 @@ export default {
           this.cancelEventDialog = false;
           this.$message.success("会议取消成功！");
           setTimeout(() => {
-            this.$router.replace({ path: "/EventList" });
+            this.$router.replace({ name: "DMCEventList" });
           }, 100);
         }
         

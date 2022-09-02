@@ -6,7 +6,7 @@
           <el-breadcrumb-item :to="{ path: '/' }" class="el-breadcrumb-item">
             首页
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/otherSettings' }" class="el-bread-item">
+          <el-breadcrumb-item :to="{ name: '/otherSetting' }" class="el-bread-item">
             其他配置
           </el-breadcrumb-item>
           <el-breadcrumb-item class="el-bread-item">

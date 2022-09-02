@@ -2,7 +2,7 @@
   <div class="create_event box">
     <div class="path">
       <ul>
-        <el-button type="text" @click="$router.replace({path:'/eventlist'})">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({name:'eventlist'})">我的会议</el-button>
         <li v-if="$route.query.type" style="color: #7c7f82">></li>
         <li v-if="$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.go(-1)">会议详情 ({{$route.query.name}})</li>
         <li style="color: #7c7f82">></li>

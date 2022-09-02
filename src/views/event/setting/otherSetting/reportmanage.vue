@@ -1,120 +1,83 @@
 <template>
-	<div>
-		<div style="padding-top: 40px;" class="approve-page-body">
-			<div class="centerBox">
-				<el-breadcrumb separator-class="el-icon-arrow-right">
-					<el-breadcrumb-item :to="{ path: '/' }" class="el-breadcrumb-item">
-						首页
-					</el-breadcrumb-item>
-					<el-breadcrumb-item :to="{ path: '/otherSettings' }" class="el-bread-item">
-						其他配置
-					</el-breadcrumb-item>
-					<el-breadcrumb-item class="el-bread-item">
-						报表权限
-					</el-breadcrumb-item>
-				</el-breadcrumb>
-			</div>
-		</div>	
+  <div>
+    <div style="padding-top: 40px;" class="approve-page-body">
+      <div class="centerBox">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/' }" class="el-breadcrumb-item">
+            首页
+          </el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: '/otherSetting' }" class="el-bread-item">
+            其他配置
+          </el-breadcrumb-item>
+          <el-breadcrumb-item class="el-bread-item">
+            报表权限
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+    </div>
 
-		<div class="search_area">
-			<div style="display:flex; align-items:center;">
-				<div style="width:130px;">会议台账名称</div>
-				<el-input v-model="reportname" placeholder="输入报表名称模糊查询" size="mini" type="text"></el-input>
-			</div>
-			<el-button @click="query" type="primary" size="mini" style="margin-left:20px;">查询</el-button>
-			<el-button @click="reset" size="mini" style="margin-left:20px;">重置</el-button>
-			<el-button @click="addUser" type="primary" size="mini" style="margin-left:80px;">添加报表权限</el-button>
-			<el-button @click="batchDel" type="primary" size="mini" style="margin-left:20px;">批量移除报表权限</el-button>
-    	</div>
+    <div class="search_area">
+      <div style="display:flex; align-items:center;">
+        <div style="width:130px;">会议台账名称</div>
+        <el-input v-model="reportname" placeholder="输入报表名称模糊查询" size="mini" type="text"></el-input>
+      </div>
+      <el-button @click="query" type="primary" size="mini" style="margin-left:20px;">查询</el-button>
+      <el-button @click="reset" size="mini" style="margin-left:20px;">重置</el-button>
+      <el-button @click="addUser" type="primary" size="mini" style="margin-left:80px;">添加报表权限</el-button>
+      <el-button @click="batchDel" type="primary" size="mini" style="margin-left:20px;">批量移除报表权限</el-button>
+    </div>
 
-		<el-table
-			ref="multipleTable"
-			:data="tableInfo.EvetModels"
-			tooltip-effect="dark"
-			style="width: 100%"
-			@selection-change="userSelection">
-				<el-table-column
-				type="selection"
-				width="55">
-				</el-table-column>
+    <el-table ref="multipleTable" :data="tableInfo.EvetModels" tooltip-effect="dark" style="width: 100%" @selection-change="userSelection">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
 
-				<el-table-column
-				prop="name"
-				label="报表名称"
-				width="180">
-				</el-table-column>
+      <el-table-column prop="name" label="报表名称" width="180">
+      </el-table-column>
 
-				<el-table-column
-				prop="group_user_name"
-				label="所属用户组"
-				width="160">
-				</el-table-column>
+      <el-table-column prop="group_user_name" label="所属用户组" width="160">
+      </el-table-column>
 
-				<el-table-column label="操作" width="260">
-					<template slot-scope="scope">
-						<el-button size="mini" @click="delUser(scope.$index, scope.row)">移除报表权限</el-button>
-					</template>
-				</el-table-column>
+      <el-table-column label="操作" width="260">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="delUser(scope.$index, scope.row)">移除报表权限</el-button>
+        </template>
+      </el-table-column>
 
-		</el-table>
+    </el-table>
 
-		<el-pagination
-			v-if="tableInfo.EvetModels.length"
-			:hide-on-single-page="true"
-			@current-change="currentChange"
-			style="margin-top:30px; width: 100%; text-align: center;"
-			:current-page="pageIndex"
-			:page-size="pageSize"
-			background layout="total, prev, pager, next"
-			:total="tableInfo.pageInfo.totalCount">
-		</el-pagination>
+    <el-pagination v-if="tableInfo.EvetModels.length" :hide-on-single-page="true" @current-change="currentChange" style="margin-top:30px; width: 100%; text-align: center;" :current-page="pageIndex" :page-size="pageSize" background layout="total, prev, pager, next" :total="tableInfo.pageInfo.totalCount">
+    </el-pagination>
 
+    <el-dialog title="请选择" :visible.sync="dialogVisible" width="70%" :before-close="handleClose">
 
-		<el-dialog
-			title="请选择"
-			:visible.sync="dialogVisible"
-			width="70%"
-			:before-close="handleClose">
-			
-			<div class="grid_content">
-				<div class="search_condition">
-					<div style="display:flex; align-items:center;">
-						<div style="width:130px;">会议台账名称</div>
-						<el-input v-model="grid.reportname" size="mini" type="text"></el-input>
-					</div>
-					<el-button style="margin-left: 20px;" type="primary" size="mini" @click="queryGrid">查询</el-button>
-				</div>
-				<div class="search_result">
-					<el-table
-						ref="gridMultipleTable"
-						:data="gridResult.EvetModels"
-						tooltip-effect="dark"
-						height="250"
-						style="width: 100%;"
-						@selection-change="handleSelectionChange">
-							<el-table-column
-							type="selection"
-							width="55">
-							</el-table-column>
+      <div class="grid_content">
+        <div class="search_condition">
+          <div style="display:flex; align-items:center;">
+            <div style="width:130px;">会议台账名称</div>
+            <el-input v-model="grid.reportname" size="mini" type="text"></el-input>
+          </div>
+          <el-button style="margin-left: 20px;" type="primary" size="mini" @click="queryGrid">查询</el-button>
+        </div>
+        <div class="search_result">
+          <el-table ref="gridMultipleTable" :data="gridResult.EvetModels" tooltip-effect="dark" height="250" style="width: 100%;" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55">
+            </el-table-column>
 
-							<el-table-column
-							prop="name"
-							label="报表名称"
-							width="180">
-							</el-table-column>
-							
-					</el-table>
-				</div>
+            <el-table-column prop="name" label="报表名称" width="180">
+            </el-table-column>
 
-			</div>
+          </el-table>
+        </div>
 
-			<span slot="footer" style="display: flex; justify-content: center;" class="dialog-footer">
-				<el-button @click="handleClose">取 消</el-button>
-				<el-button type="primary" @click="saveGrid">确 定</el-button>
-			</span>
-		</el-dialog>
-		
-	</div>
+      </div>
+
+      <span slot="footer" style="display: flex; justify-content: center;" class="dialog-footer">
+        <el-button @click="handleClose">取 消</el-button>
+        <el-button type="primary" @click="saveGrid">确 定</el-button>
+      </span>
+    </el-dialog>
+
+  </div>
 </template>
 
 <script>
@@ -295,19 +258,18 @@ export default {
 
 <style lang="scss">
 .search_area {
-	display: flex;
-	padding: 40px 80px;
+  display: flex;
+  padding: 40px 80px;
 }
-
 
 .grid_content {
-	height: 330px;
+  height: 330px;
 }
 .search_condition {
-	display: flex;
-	padding-bottom: 20px;
+  display: flex;
+  padding-bottom: 20px;
 }
 .search_result {
-	padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 </style>

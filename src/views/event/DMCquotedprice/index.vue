@@ -2,13 +2,14 @@
   <div class="quotedprice">
     <div class="path">
       <ul>
-        <li style="color: #409eff; cursor: pointer" @click="$router.replace({ path: '/activityInquiry/orderList' })">
+        <li style="color: #409eff; cursor: pointer" @click="$router.replace({ name: 'DMCinquiryList' })">
           活动询价订单列表
         </li>
         <li style="color: #7c7f82">></li>
         <li style="color: #409eff; cursor: pointer" @click="
             $router.replace({
-              path: `/activityInquiry/DMCorderList/${info.inquiry_sheet_object_id}`,
+              name: `DMCinquiryInfo`,
+              params:{id:info.inquiry_sheet_object_id}
             })
           ">
           活动询价订单详情

@@ -5,7 +5,7 @@
         首页
         <!-- <span class="rights">></span> ···· -->
       </el-breadcrumb-item>
-      <el-breadcrumb-item :to="{path: '/distributionParent'}" class="el-bread-item">会议相关人员配置</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{name: 'relatedPersonSetting'}" class="el-bread-item">会议相关人员配置</el-breadcrumb-item>
       <el-breadcrumb-item class="el-bread-item">编辑会议助理规则</el-breadcrumb-item>
     </el-breadcrumb>
 

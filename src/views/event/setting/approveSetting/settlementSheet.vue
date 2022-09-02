@@ -7,7 +7,7 @@
           <el-breadcrumb-item :to="{ path: '/' }" class="el-breadcrumb-item">
             首页
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/approveSetting' }" class="el-bread-item">
+          <el-breadcrumb-item :to="{ name: 'approveSetting' }" class="el-bread-item">
             审批流配置
           </el-breadcrumb-item>
           <el-breadcrumb-item class="el-bread-item">

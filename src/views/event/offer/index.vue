@@ -3,7 +3,7 @@
     <a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
     <div class="main">
       <ul>
-        <el-button type="text" @click="$router.replace({ path: '/EventList' })">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({ name: 'eventList' })">我的会议</el-button>
         <li style="color: #7c7f82">></li>
         <el-button type="text" @click="$router.go(-1)">会议详情</el-button>
         <li v-if="prev" style="color: #7c7f82">></li>
@@ -434,7 +434,7 @@ export default {
         this.maker();
       } else {
         this.$router.push({
-          path: "/offer",
+          name: "offer",
           query: {
             foreign_key_id: item.id, // 报价单ID
             id: this.$route.query.id, // 会议ID

@@ -8,7 +8,7 @@
         <li style="color: #7c7f82">结算单详情</li>
       </ul> -->
       <ul>
-        <el-button type="text" @click="$router.replace({ path: '/EventList' })">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({ name: 'eventList' })">我的会议</el-button>
         <li style="color: #7c7f82">></li>
         <el-button type="text" @click="$router.go(-1)">{{
           $route.query.event_name
@@ -615,7 +615,7 @@ export default {
             message: '操作成功',
             type: 'success',
           })
-          this.$router.push({ path: '/approve' })
+          this.$router.replace({ name: 'approve' })
         }
       })
     },
@@ -747,7 +747,7 @@ export default {
               message: '操作成功',
               type: 'success',
             })
-            this.$router.push({ path: '/approve' })
+            this.$router.replace({ name: 'approve' })
           }
         })
       }

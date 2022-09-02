@@ -414,7 +414,8 @@ export default {
       // 1:结算单审批、 2:中标审批
       if(row.type == 1){
         this.$router.push({
-          path: '/msd',
+          name: 'msd',
+          // path: '/msd',
           query: {
             id: row.event_info_id, // 会议ID
             orderId: row.ids || '', ////type为1则是订单id，2为服务商id

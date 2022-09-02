@@ -2,7 +2,7 @@
   <div class="create_demand box">
     <div class="path">
       <ul>
-        <el-button type="text" @click="$router.replace({path:'/DMCeventlist'})">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({name:'DMCEventList'})">我的会议</el-button>
         <li v-if="$route.query.type" style="color: #7c7f82">></li>
         <li v-if="$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.replace({name:`DMCEventDetail?id=${$route.query.id}&name=${$route.query.name}&eventSearchType=${$route.query.eventSearchType}`})">会议详情 ({{$route.query.name}})</li>
         <li style="color: #7c7f82">></li>
@@ -478,7 +478,7 @@
 				    return
           }
         } else if(type === 5){// 详情
-          this.$router.replace({path: '/DMCEventDetail',query:{id: this.eventId}})
+          this.$router.replace({name: 'DMCEventDetail',query:{id: this.eventId}})
         }
       },
       // 获取采购需求

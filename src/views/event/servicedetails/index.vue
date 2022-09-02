@@ -2,7 +2,7 @@
   <div class="content service_detail">
     <!-- title -->
     <div class="path">
-      <el-button type="text" @click="$router.replace({path:'/EventList'})">我的会议</el-button>
+      <el-button type="text" @click="$router.replace({name:'eventList'})">我的会议</el-button>
       <span style="color:#7c7f82;">></span>
       <el-button type="text" @click="$router.go(-1)">会议详情</el-button>
       <span v-if="prev" style="color:#7c7f82;">></span>

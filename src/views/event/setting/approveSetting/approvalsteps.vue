@@ -5,7 +5,7 @@
         <ul>
           <el-button type="text" @click="$router.replace({path:'/'})">首页</el-button>
           <li style="color: #7c7f82">></li>
-          <li style="color: #409EFF;cursor:pointer" @click="$router.replace({path:'/approveSetting'})">审批流配置</li>
+          <li style="color: #409EFF;cursor:pointer" @click="$router.replace({name:'approveSetting'})">审批流配置</li>
           <li style="color: #7c7f82">></li>
           <li style="color: #7c7f82">{{ this.$route.query.typeM == 1 ? '编辑' : '添加' }}审批步骤</li>
         </ul>

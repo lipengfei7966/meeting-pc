@@ -99,6 +99,7 @@ export const constantMenuMap = [
         name: 'reporting',
         meta: {
           title: 'reporting',
+          icon: 'Tbaob',
           firstParent: 'event'
         }
       },
@@ -168,7 +169,7 @@ export const constantMenuMap = [
     name: 'systemSetting',
     meta: {
       title: 'systemSetting',
-      icon: 'table',
+      icon: 'Tshezhi',
       isFirstParent: true
     },
     hidden: false,

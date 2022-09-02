@@ -2,7 +2,7 @@
   <div class="create_event box">
     <div class="path">
       <ul>
-        <el-button type="text" @click="$router.replace({path:'/DMCeventlist'})">我的会议</el-button>
+        <el-button type="text" @click="$router.replace({name:'DMCEventList'})">我的会议</el-button>
         <li v-if="$route.query.type" style="color: #7c7f82">></li>
         <li v-if="$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.go(-1)">会议详情 ({{$route.query.name}})</li>
         <li style="color: #7c7f82">></li>
@@ -639,10 +639,10 @@ export default {
         })
     },
     goDemand(){
-      this.$router.push({path:'/DMCEventDemand',query:{id: this.newEventId, name: this.newEventName}})
+      this.$router.push({name:'DMCEventDemand',query:{id: this.newEventId, name: this.newEventName}})
     },
     goDetail() {
-      this.$router.push({path:'/DMCEventDetail',query:{id: this.newEventId, name: this.newEventName, eventSearchType: 0}})
+      this.$router.push({name:'DMCEventDetail',query:{id: this.newEventId, name: this.newEventName, eventSearchType: 0}})
     },
     // 获取客户列表l
     getCustomerList() {
