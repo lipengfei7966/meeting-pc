@@ -124,14 +124,14 @@ request.interceptors.response.use(
     }
 
     const res = response
-
+    // debugger
     if (res.status) {
       // 是否进行解密处理
       if (res.encryptData && random) {
         const decryptData = aesDecrypt(res.encryptData, random)
         res.data = JSON.parse(decryptData)
       }
-      return res.data.data
+      return res.data.data || true
     } else {
       // 确认信息不处理
       if (res.confirmFlg) {

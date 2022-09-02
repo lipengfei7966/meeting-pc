@@ -4,9 +4,22 @@
       <ul>
         <el-button type="text" @click="$router.replace({name:'DMCEventList'})">我的会议</el-button>
         <li v-if="$route.query.type" style="color: #7c7f82">></li>
-        <li v-if="$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.replace({name:`DMCEventDetail?id=${$route.query.id}&name=${$route.query.name}&eventSearchType=${$route.query.eventSearchType}`})">会议详情 ({{$route.query.name}})</li>
-        <li style="color: #7c7f82">></li>
-        <li v-if="$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.replace({name:`DMCcreateEvent?id=${$route.query.id}&name=${$route.query.name}&eventSearchType=${$route.query.eventSearchType}&type=${$route.query.type}`})">创建会议</li>
+        <li v-if="$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.replace({name:`DMCEventDetail`,
+            query:{
+              id: $route.query.id,
+              name: $route.query.name,
+              eventSearchType: $route.query.eventSearchType,
+            }
+          })">会议详情 ({{$route.query.name}})</li>
+        <li v-if="!$route.query.type" style="color: #7c7f82">></li>
+        <li v-if="!$route.query.type" style="color: #409EFF;cursor:pointer" @click="$router.replace({name:`DMCcreateEvent`,
+            query:{
+              id: $route.query.id,
+              name: $route.query.name,
+              eventSearchType: $route.query.eventSearchType,
+              type: $route.query.type,
+            }
+        })">创建会议</li>
         <li style="color: #7c7f82">></li>
         <li style="color: #7c7f82">采购需求</li>
       </ul>
@@ -595,7 +608,7 @@
         })
       },
       goEdit() {
-        this.$router.replace({name:'DMCcreateEvent',query: {id: this.eventId,type:'edit'}})
+        this.$router.replace({name:'DMCcreateEvent',query: {id: this.eventId,name:this.$route.query.name,type:'edit'}})
       },
       backPrePage(){
         this.$router.replace({name:'DMCEventDetail',query: {id:this.eventId,name:this.$route.query.name,eventSearchType:this.$route.query.eventSearchType}})

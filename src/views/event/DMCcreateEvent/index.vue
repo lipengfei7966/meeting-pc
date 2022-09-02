@@ -538,11 +538,13 @@ export default {
             if(this.eventId){
               this.baseMeet.id = this.eventId;
               this.requestApi({
-                url: '/CustomerConfiguration/Get_event_info',
-                method: 'GET',
+                url: '/CustomerConfiguration/Update_event_info',
+                method: 'POST',
                 data: this.baseMeet,
               }).then(res => {
+                debugger
                 if(res){
+                  
                   this.demandDialog = true;
                   this.newEventId = this.$route.query.id || this.eventId;
                   this.newEventName = this.$route.query.name || this.baseMeet.event_name;
