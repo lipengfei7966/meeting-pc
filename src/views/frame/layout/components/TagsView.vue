@@ -39,7 +39,7 @@ export default {
   },
   inject: ['app'],
   computed: {
-    ...mapGetters(['clientWidth', 'visitedViews'])
+    ...mapGetters(['clientWidth', 'visitedViews', 'permissionMenus', 'sidebar'])
   },
   watch: {
     $route() {
@@ -89,7 +89,20 @@ export default {
       if (!route) {
         return false
       }
-      this.$store.dispatch('addVisitedViews', route)
+      // debugger
+      let hasmenu = false;
+      this.permissionMenus.forEach(item => {
+        if(item.children) {
+          item.children.forEach(menu => { 
+            if (menu.name == route.name){
+               hasmenu = true;
+            }
+          })
+        }
+      })
+      if(hasmenu){
+        this.$store.dispatch('addVisitedViews', route)
+      }
     },
     // 关闭
     removeTab(targetName) {

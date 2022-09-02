@@ -426,7 +426,8 @@ export default {
         });
       }else if(row.type == 2){
         this.$router.push({
-          path: "/cmms",
+          name:'biddedDetail',
+          // path: "/cmms",
           query: {
             id: row.event_info_id,	// 会议ID
             ApproveID: row.approve_id,	//审批ID

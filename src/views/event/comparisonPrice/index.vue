@@ -1722,7 +1722,7 @@
           <template v-for="item in tableData">
             <td class="operatePage">
               <a @click="
-									goPage('/offer', {
+									goPage('offer', {
 										id: $route.query.id,
 										foreign_key_id: item.firstQuotedPrice.quotedPriceID,
 										type: hotelOrSupplier ? 2 : 1,
@@ -1735,7 +1735,7 @@
             </td>
             <td class="operatePage" v-if="item.lastQuotedPrice">
               <a @click="
-									goPage('/offer', {
+									goPage('offer', {
 										id: $route.query.id,
 										foreign_key_id: item.lastQuotedPrice.quotedPriceID,
 										type: hotelOrSupplier ? 2 : 1,
@@ -2804,7 +2804,7 @@ export default {
 		},
 		conferencedeatail() {
 			this.$router.push({
-				name: 'EventDetail',
+				name: 'eventDetail',
 				query: {
 					id: this.$route.query.eventId,
 					name: this.meeting.event_name,
@@ -2814,15 +2814,15 @@ export default {
 		},
 		inquiry() {
 			this.$router.push({
-				name: 'serviceDetails',
+				name: 'servicedetails',
 				query: {
 					id: this.$route.query.eventId,
 					sheetId: this.$route.query.InquirySheetID
 				}
 			});
 		},
-		goPage(url, query) {
-			this.$router.push({ path: url, query });
+		goPage(name, query) {
+			this.$router.push({ name, query });
 		}
 	}
 };

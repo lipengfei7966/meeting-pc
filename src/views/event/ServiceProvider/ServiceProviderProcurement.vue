@@ -98,7 +98,7 @@
         <div class="list">
           <div class="item item-hotel" v-for="(item, index) in info.selecthotel" :key="item.id">
             <div class="name">{{ item.hotelname }}</div>
-            <div class="role role-update" v-if="item.receptionist.id != null">
+            <div class="role role-update" v-if="item.receptionist.id == null">
               <!-- one -->
               <span class="block-span">
                 酒店默认接单人: {{ item.receptionist.contacts }}
@@ -114,7 +114,7 @@
             </div>
             <!--  -->
             <!-- item.receptionist.id != null -->
-            <div class="role role-update" v-if="item.receptionist.id != null">
+            <div class="role role-update" v-if="item.receptionist.id == null">
               <!-- GsoName -->
               <span class="block-span">酒店抄送（GSO）: {{ item.contactsGSO }}
                 <!-- <span v-for="(item, index) in selectGsoData"
@@ -371,7 +371,7 @@
         <span>会议基本信息</span>
         Event Profiles
         <img @click="isUnfold = !isUnfold" v-if="!isUnfold" :src="require('@/assets/images/open.png')" width="20px" height="20px" alt="" />
-        <img @click="isUnfold = !isUnfold" v-else :src="require('@/assets/images/close.png')" width="20px" height="20px" alt="" />
+        <img @click="isUnfold = !isUnfold" v-else :src="requrie('@/assets/images/close.png')" width="20px" height="20px" alt="" />
         <span @click="isUnfold = !isUnfold" class="unfold-span">{{
           !isUnfold ? "展开" : "收起"
         }}</span>
@@ -1183,7 +1183,7 @@ export default {
       // 处理总数据
       console.log(this.update_GSO, row);
       this.info.selecthotel.forEach((value, index) => {
-        // debugger;
+        debugger;
         if (this.radioIndex == index) {
           // debugger;
           if (
@@ -1609,7 +1609,9 @@ export default {
           return this.requestApi({
             url: '/inquirysheet/send',
             method: 'POST',
-            data: this.info,
+            data: {
+              hotel: this.info,
+            },
           })
         })
         .then((res) => {
@@ -1664,37 +1666,38 @@ export default {
             id: value.hotelid,
           },
         }).then((res) => {
-          value["receptionistList"] = res;
+          debugger
+            value["receptionistList"] = res;
 
-          /* value.receptionistList.forEach((v)=>{
-            if(v.isdefault==1){
-              this.$set(value,'receptionistDefault',v.contacts)
-            }
-          }) */
+            /* value.receptionistList.forEach((v)=>{
+							if(v.isdefault==1){
+								this.$set(value,'receptionistDefault',v.contacts)
+							}
+						}) */
 
-          if (this.update_market) {
-            debugger;
-            if ((this.update_GSO = false)) {
-              //默认接单人列表回显
-              this.openRadioData(
-                this.info.selecthotel[this.radioIndex].receptionistList,
-                this.info.selecthotel[this.radioIndex].hotelid,
-                this.radioIndex
-              );
-            } else if ((this.update_GSO = true)) {
-              //默认接单人列表回显
-              this.openRadioData(
-                this.info.selecthotel[this.radioIndex].receptionistList_,
-                this.info.selecthotel[this.radioIndex].hotelid,
-                this.radioIndex
-              );
+            if (this.update_market) {
+              debugger;
+              if ((this.update_GSO = false)) {
+                //默认接单人列表回显
+                this.openRadioData(
+                  this.info.selecthotel[this.radioIndex].receptionistList,
+                  this.info.selecthotel[this.radioIndex].hotelid,
+                  this.radioIndex
+                );
+              } else if ((this.update_GSO = true)) {
+                //默认接单人列表回显
+                this.openRadioData(
+                  this.info.selecthotel[this.radioIndex].receptionistList_,
+                  this.info.selecthotel[this.radioIndex].hotelid,
+                  this.radioIndex
+                );
+              }
             }
-          }
-          if (this.score == 1) {
-            this.setDft();
-          }
-          this.score = 2;
-        });
+            if (this.score == 1) {
+              this.setDft();
+            }
+            this.score = 2;
+          });
         //
         // debugger;
         // gso人员信息列表
@@ -1702,12 +1705,12 @@ export default {
           url: '/ResourcesApi/Contacts',
           method: 'POST',
           data: {
-            resourcesId: "202206120001089"
+            resourcesId: value.hotelid,
           },
         }).then((res) => {
-          value["receptionistList_"] = res.gsos;
-          value["contactsGSO"] = ""
-        });
+            value["receptionistList_"] = res.gsos;
+            value["contactsGSO"] = ""
+          });
       });
       // gso判断是否需要gso抄送
       // this.$api
@@ -1839,28 +1842,28 @@ export default {
         includinghotel: this.type,
       },
     }).then((res) => {
-      // debugger
-      this.info = res;
-      console.log(res);
-      this.compositeName = this.info.purchase_department;
-      this.company_name = this.info.company_name;
-      this.purchase_department = this.info.purchase_department;
-      this.compositeName2 = this.info.purchase_department;
-      this.ruleForm = {
-        purchase_contracts: this.info.purchase_contracts,
-        purchase_phone: this.info.purchase_phone,
-        purchase_email: this.info.purchase_email,
-        companyName: [
-          //默认勾选
-          this.purchase_department,
-        ],
-      };
-      this.purchase_contracts = this.info.purchase_contracts;
-      this.purchase_phone = this.info.purchase_phone;
-      this.purchase_email = this.info.purchase_email;
-      this.init();
-      this.init_();
-    });
+        // debugger
+        this.info = res;
+        console.log(res);
+        this.compositeName = this.info.purchase_department;
+        this.company_name = this.info.company_name;
+        this.purchase_department = this.info.purchase_department;
+        this.compositeName2 = this.info.purchase_department;
+        this.ruleForm = {
+          purchase_contracts: this.info.purchase_contracts,
+          purchase_phone: this.info.purchase_phone,
+          purchase_email: this.info.purchase_email,
+          companyName: [
+            //默认勾选
+            this.purchase_department,
+          ],
+        };
+        this.purchase_contracts = this.info.purchase_contracts;
+        this.purchase_phone = this.info.purchase_phone;
+        this.purchase_email = this.info.purchase_email;
+        this.init();
+        this.init_();
+      });
     //
   },
 };

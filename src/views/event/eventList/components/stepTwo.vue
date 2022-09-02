@@ -540,7 +540,7 @@
                                 </el-badge>
 
                                 <el-button size="mini" type="text" @click="
-                                    goPage('serviceDetails', {
+                                    goPage('servicedetails', {
                                       id: $route.query.id,
                                       sheetId: item.event_inquiry_sheet_id,
                                     })
@@ -624,7 +624,7 @@
                                   </el-button>
                                 </el-badge>
                                 <el-button size="mini" type="text" @click="
-                                    goPage('serviceDetails', {
+                                    goPage('servicedetails', {
                                       id: $route.query.id,
                                       sheetId: item.event_inquiry_sheet_id,
                                     })
@@ -1587,22 +1587,45 @@ export default {
         : "";
       if (type === 1) {
         // 酒店
-        this.$router.push({
-          path: "/hotelcg/" + this.eventId + city_code + "/addhotel",
-        });
+        this.$router.replace({
+          name: 'siteResource',
+          params:{
+            id: this.eventId,
+            city: city_code,
+            type: 'addhotel'
+          }
+        })
       } else if (type === 2) {
         // 是否含酒店
         this.isDemandHotel = true;
       } else if (type === 3) {
         //立即采购(不含酒店)
+        // this.$router.push({
+        //   path: "/ServiceProvidercg/" + this.eventId + city_code + "/3",
+        // });
         this.$router.push({
-          path: "/ServiceProvidercg/" + this.eventId + city_code + "/3",
-        });
+          name:'ServiceProvider',
+          params: {
+            id: this.eventId,
+            city: city_code,
+            type: '3'
+          }
+          // path: '/ServiceProvidercg/' + this.eventId + city_code + '/3',
+        })
       } else if (type === 4) {
         // 立即采购(含酒店)
+        // this.$router.push({
+        //   path: "/ServiceProvidercg/" + this.eventId + city_code + "/2",
+        // });
         this.$router.push({
-          path: "/ServiceProvidercg/" + this.eventId + city_code + "/2",
-        });
+          name:'ServiceProvider',
+          params: {
+            id: this.eventId,
+            city: city_code,
+            type: '2'
+          }
+          // path: '/ServiceProvidercg/' + this.eventId + city_code + '/3',
+        })
       }
     },
     // 前往大交通

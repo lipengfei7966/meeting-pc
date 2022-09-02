@@ -112,7 +112,7 @@
       <p style="margin-left:15px; margin-top:15px; color: #777;">关联内容</p>
       <div class="pad_10">
         <el-button size="small" type="primary" @click="goPage('/offer', item)">报价单</el-button>
-        <el-button size="small" type="primary" @click="goPage('/serviceDetails', item)">询价单</el-button>
+        <el-button size="small" type="primary" @click="goPage('/servicedetails', item)">询价单</el-button>
         <el-button size="small" v-if="item.settlementId" type="primary" @click="goPage('/msd', item)">结算单</el-button>
       </div>
     </div>

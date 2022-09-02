@@ -8,14 +8,14 @@
         <span>询价单发送成功！</span>
       </div>
       <div>
-        <span>服务商已收到短信和邮件提醒，会第一时间给您回复报价。</span>
+        <span>酒店已收到短信和邮件提醒，会第一时间给您回复报价。</span>
       </div>
       <div>
         <el-button @click="gotoinfo">回到会议详情页</el-button>
       </div>
     </div>
     <div class="foot" v-if='false'>
-      <div>已发送给下列服务商</div>
+      <div>已发送给下列酒店</div>
       <div>
         <div>
           <img src="https://cdn.hotelgg.com/dev/dmc/admin/common/7a53b49b1fab2d6ffc67ef6882248d16.png" alt="">
@@ -48,7 +48,7 @@
 		methods: {
 			//返回会议详情
 			gotoinfo() {
-				this.$router.push({name:'eventDetail',query:{id: this.$route.params.id}})
+				this.$router.replace({name:'eventDetail',query:{id: this.$route.params.id}})
     		}
 		},
 	};

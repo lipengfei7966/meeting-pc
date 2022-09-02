@@ -603,7 +603,8 @@ export default {
             })
               .then(() => {
                 this.$router.push({
-                  path: "/cmms",
+                  name:'biddedDetail',
+                  // path: "/cmms",
                   query: {
                     id: this.$route.query.id,
                     ApproveID: resData.data.ApproveID, // 审批ID

@@ -53,7 +53,8 @@ export default {
 
   resourceCenter: '资源中心',
   siteResource: '场地资源',
+  HotelProcurement: '酒店采购确认单',
   ServiceProvider: '服务商列表',
-  ServiceProviderProcurement: '服务商采购',
+  ServiceProviderProcurement: '服务商采购确认单',
   hotelInfo: '酒店详情',
 }

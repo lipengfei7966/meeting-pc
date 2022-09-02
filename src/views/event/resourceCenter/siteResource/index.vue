@@ -363,7 +363,7 @@ export default {
         });
       }
       this.$router.push({
-        name: "ServiceProviderProcurement",
+        name: "HotelProcurement",
         params: { id: this.$route.params.id,type },
       });
     },

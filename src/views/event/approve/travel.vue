@@ -276,11 +276,11 @@ export default {
 			allTotalCount: 0,
 		};
 	},
-	mounted() {
-		this.condition();
-		this.apprivingSearchFn();
+	 mounted() {
+		 this.condition();
+		 this.apprivingSearchFn();
 		// this.stocks();
-		this.speed();
+		 this.speed();
 	},
 	methods: {
 		// 待审批切换排序
@@ -361,17 +361,18 @@ export default {
 		},
 		// 调用待审批搜索接口
 		condition() {
-			this.searchData.type = 1
-			this.searchData.pageIndex = this.waitPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.supplierName = this.supplierName
-			this.searchData.approveType = this.approveType
-			this.searchData.po = this.PO
-			this.searchData.pr = this.PR
+      let conditionSearch = {...this.searchData}
+      conditionSearch.type = 1
+      conditionSearch.pageIndex = this.waitPageIndex
+      conditionSearch.eventName = this.eventName
+      conditionSearch.supplierName = this.supplierName
+      conditionSearch.approveType = this.approveType
+      conditionSearch.po = this.PO
+      conditionSearch.pr = this.PR
       this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
-        data: this.searchData,
+        data: conditionSearch,
       }).then((res) => {
         this.tableData = res.EvetModels;
         this.waitTotalCount = res.pageInfo.totalCount;
@@ -380,17 +381,18 @@ export default {
 		},
 		// 调用审批中搜索接口
 		apprivingSearchFn() {
-			this.searchData.type = 2
-			this.searchData.pageIndex = this.approvingPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.supplierName = this.supplierName
-			this.searchData.approveType = this.approveType
-			this.searchData.po = this.PO
-			this.searchData.pr = this.PR
+      let apprivingSearch = {...this.searchData}
+			apprivingSearch.type = 2
+			apprivingSearch.pageIndex = this.approvingPageIndex
+			apprivingSearch.eventName = this.eventName
+			apprivingSearch.supplierName = this.supplierName
+			apprivingSearch.approveType = this.approveType
+			apprivingSearch.po = this.PO
+			apprivingSearch.pr = this.PR
 			this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
-        data: this.searchData,
+        data: apprivingSearch,
       }).then((res) => {
 					if (res) {
 						this.approvingTableData = res.EvetModels;
@@ -400,17 +402,18 @@ export default {
 		},
 		// 调用已完成接口
 		speed() {
-			this.searchData.type = 3
-			this.searchData.pageIndex = this.allPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.supplierName = this.supplierName
-			this.searchData.approveType = this.approveType
-			this.searchData.po = this.PO
-			this.searchData.pr = this.PR
+      let speedSearch = {...this.searchData}
+			speedSearch.type = 3
+			speedSearch.pageIndex = this.allPageIndex
+			speedSearch.eventName = this.eventName
+			speedSearch.supplierName = this.supplierName
+			speedSearch.approveType = this.approveType
+			speedSearch.po = this.PO
+			speedSearch.pr = this.PR
 			this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
-        data: this.searchData,
+        data: speedSearch,
       }).then((res) => {
 					this.tablepro = res.EvetModels;
 					this.allTotalCount = res.pageInfo.totalCount;

@@ -159,8 +159,8 @@ export default {
         this.dialogVisible = false;
         console.log(res);
         // this.$route.replace('')
-        this.$router.push({
-          path: "/approve",
+        this.$router.replace({
+          name: "approve",
         });
         this.getDetail();
 

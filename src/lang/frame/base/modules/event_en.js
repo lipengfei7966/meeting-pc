@@ -54,6 +54,7 @@ export default {
   resourceCenter: 'resource Center',
   siteResource: 'site Resource',
   ServiceProvider: 'Service Provider',
+  HotelProcurement: 'Hotel Procurement',
   ServiceProviderProcurement: 'Service Provider Procurement',
   hotelInfo: 'hotel Info'
 }

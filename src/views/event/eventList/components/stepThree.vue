@@ -89,7 +89,7 @@
                         <el-button size="small" type="text" @click="goPage('msd', item)">查看结算单</el-button>
                       </el-badge>
                       <el-button size="small" type="text" @click="goPage('provider', item)" style="margin-left: 10px">查看订单</el-button>
-                      <el-button size="small" type="text" @click="goPage('serviceDetails', item)">原询价单</el-button>
+                      <el-button size="small" type="text" @click="goPage('servicedetails', item)">原询价单</el-button>
                       <el-button size="small" type="text" @click="copyUrl(item, 1)">复制结算链接</el-button>
                     </div>
                   </td>
@@ -168,7 +168,7 @@
                         <el-button size="small" type="text" @click="goPage('msd', item)">查看结算单</el-button>
                       </el-badge>
                       <el-button size="small" type="text" @click="goPage('provider', item)" style="margin-left: 10px">查看订单</el-button>
-                      <el-button size="small" type="text" @click="goPage('serviceDetails', item)">原询价单</el-button>
+                      <el-button size="small" type="text" @click="goPage('servicedetails', item)">原询价单</el-button>
                       <!-- <el-button size="small" type="text" @click="copyUrl(item, 0)">复制结算链接</el-button> -->
                     </div>
                   </td>

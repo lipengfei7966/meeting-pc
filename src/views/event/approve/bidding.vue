@@ -243,15 +243,16 @@ export default {
     },
 		// 调用待审批搜索接口
 		seek() {
-			this.searchData.type = 1
-			this.searchData.pageIndex = this.waitPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.eventId = this.eventId
-			this.searchData.responsible = this.responsible
+      let seekSearck = {...this.searchData}
+			seekSearck.type = 1
+			seekSearck.pageIndex = this.waitPageIndex
+			seekSearck.eventName = this.eventName
+			seekSearck.eventId = this.eventId
+			seekSearck.responsible = this.responsible
       this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
-        data: this.searchData,
+        data: seekSearck,
       }).then((res) => {
 					console.log(res);
 					if (res) {
@@ -263,15 +264,16 @@ export default {
 		},
 		// 调用审批中搜索接口
 		apprivingSearchFn() {
-			this.searchData.type = 2
-			this.searchData.pageIndex = this.approvingPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.eventId = this.eventId
-			this.searchData.responsible = this.responsible
+      let apprivingSearch = {...this.searchData}
+			apprivingSearch.type = 2
+			apprivingSearch.pageIndex = this.approvingPageIndex
+			apprivingSearch.eventName = this.eventName
+			apprivingSearch.eventId = this.eventId
+			apprivingSearch.responsible = this.responsible
       this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
-        data: this.searchData,
+        data: apprivingSearch,
       }).then((res) => {
 					if (res) {
 						this.approvingTableData = res.EvetModels;
@@ -281,15 +283,16 @@ export default {
 		},
 		// 调用已完成搜索接口
 		sear() {
-			this.searchData.type = 3
-			this.searchData.pageIndex = this.finishPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.eventId = this.eventId
-			this.searchData.responsible = this.responsible
+      let searSearch = {...this.searchData}
+			searSearch.type = 3
+			searSearch.pageIndex = this.finishPageIndex
+			searSearch.eventName = this.eventName
+			searSearch.eventId = this.eventId
+			searSearch.responsible = this.responsible
 			this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
-        data: this.searchData,
+        data: searSearch,
       }).then((res) => {
 					if (res) {
 						this.tableData = res.EvetModels;
@@ -358,10 +361,10 @@ export default {
 		
 	},
 
-	mounted() {
-		this.seek()
-		this.sear()
-		this.apprivingSearchFn()
+	 mounted() {
+		 this.seek()
+		 this.sear()
+		 this.apprivingSearchFn()
 	},
 };
 </script>

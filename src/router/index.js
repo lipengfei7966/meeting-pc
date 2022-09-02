@@ -682,6 +682,24 @@ export const eventRoute = [
         }
       },
       {
+        name: 'HotelProcurement',
+        path: '/HotelProcurement/:id?/:type?',
+        component: () => import('@/views/event/resourceCenter/siteResource/HotelProcurement'),
+        meta: {
+          title: 'HotelProcurement',
+          noCache: true
+        }
+      },
+      {
+        name: 'hotelSendSuccess',
+        path: '/hotelSendSuccess/:id?',
+        component: () => import('@/views/event/resourceCenter/siteResource/SendSuccess'),
+        meta: {
+          title: 'hotelSendSuccess',
+          noCache: true
+        }
+      },
+      {
         name: 'ServiceProvider',
         path: '/ServiceProvider/:id?/:city?/:type?',
         component: () => import('@/views/event/ServiceProvider/index'),
@@ -710,7 +728,7 @@ export const eventRoute = [
       },
       {
         name: 'SendSuccess',
-        path: '/SendSuccess',
+        path: '/SendSuccess/:id?',
         component: () => import('@/views/event/ServiceProvider/SendSuccess.vue'),
         meta: {
           title: 'SendSuccess',
