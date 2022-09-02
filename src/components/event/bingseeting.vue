@@ -5,30 +5,30 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
 export default {
   props: ['seetingtypeList'],
   mounted() {
-    this.sudo();
+    this.sudo()
   },
   methods: {
     sudo(data = []) {
-      var chartDom = document.getElementById('haber');
-      var myChart = echarts.init(chartDom);
-      var option;
-      let group = [];
+      var chartDom = document.getElementById('haber')
+      var myChart = echarts.init(chartDom)
+      var option
+      let group = []
       for (let i = 0; i < data.length; i++) {
-        let clist = { value: data[i].amount, name: data[i].eventtypename };
-        group.push(clist);
+        let clist = { value: data[i].amount, name: data[i].eventtypename }
+        group.push(clist)
       }
       option = {
         title: {
           text: '',
           subtext: '',
-          left: 'center',
+          left: 'center'
         },
         tooltip: {
-          trigger: 'item',
+          trigger: 'item'
         },
 
         series: [
@@ -37,8 +37,8 @@ export default {
             type: 'pie',
             radius: '60%',
             left: '20%',
-            top:'-30%',
-            data:group,
+            top: '-30%',
+            data: group,
             // data: [
             //   { value: 1048, name: '其他' },
             //   { value: 735, name: '外部会议' },
@@ -50,30 +50,29 @@ export default {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-              },
-            },
-          },
-        ],
-      };
-      option && myChart.setOption(option);
-    },
-    
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      option && myChart.setOption(option)
+    }
   },
   watch: {
-      seetingtypeList(val = []) {
-        console.log(val, 'valvalvalvalvalvalppppp');
-          this.sudo(val);
-      }
-    },
-};
+    seetingtypeList(val = []) {
+      console.log(val, 'valvalvalvalvalvalppppp')
+      this.sudo(val)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-	.aaa{
-		width: 25vw; 
-		height: 450px;
-		max-width: 430px;
-		// left: -20%;
-	}
+.aaa {
+  width: 25vw;
+  height: 450px;
+  max-width: 430px;
+  // left: -20%;
+}
 </style>

@@ -53,7 +53,6 @@
 
 <script>
 
-
 export default {
     components: { },
     data: function(){
@@ -119,16 +118,15 @@ export default {
 							name: "otherSeetings"
 						});
 					}
-					
+
 				});
 			}
-			
+
 		},
 		cancel() {
       this.$router.push({name:'otherSetting',params:{activeName:'sixth'}})
 		}
-		
-		
+
   }
 }
 </script>

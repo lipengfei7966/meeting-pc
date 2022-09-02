@@ -54,22 +54,27 @@
 </template>
 
 <script>
-import { positiveFloat, } from '@/utils/common';
+import { positiveFloat } from '@/utils/common'
 export default {
-  name: "car",
-  props:['carList', 'additional','isCollectOffer','allQuoteInfo',"hotelInfo"],
+  name: 'car',
+  props: ['carList', 'additional', 'isCollectOffer', 'allQuoteInfo', 'hotelInfo'],
   data() {
-    return{
-      showPart: true,
+    return {
+      showPart: true
     }
   },
 
-  methods:{
+  methods: {
     positiveFloat,
     getDateTotal(data) {
-      return '￥' + data.data.reduce((p, n) => {
-        return p + n.price * n.carcount
-      },0).toFixed(2)
+      return (
+        '￥' +
+        data.data
+          .reduce((p, n) => {
+            return p + n.price * n.carcount
+          }, 0)
+          .toFixed(2)
+      )
     }
   }
 }

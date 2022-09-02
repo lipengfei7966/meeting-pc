@@ -29,7 +29,6 @@
 import settlementSheet from "./settlement_approval";
 import outbid from "./settlement_approval";
 
-
 export default {
     components: { outbid, settlementSheet },
     data: function(){
@@ -45,7 +44,7 @@ export default {
 			if(this.tabIndex == 1) {
 				this.$refs.settlementSheet.searchTableData(1);
 			}
-			
+
 		}
     },
 	mounted() {

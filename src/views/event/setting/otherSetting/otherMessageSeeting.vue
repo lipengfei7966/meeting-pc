@@ -31,100 +31,101 @@
 </template>
 
 <script>
-	import {guid } from '@/utils/common';	
-	
+import { guid } from '@/utils/common'
+
 export default {
-	data() {
-		return {
-			tableData: [],
-			pager: 1,
-			total: 0,
-			dialogVisible:false,//删除规则弹框
-			id:'',
-		};
-	},
-	mounted() {
-		this.getSelfformList()
-	},
-	watch:{
-		pager(newVal ,oldVal){
-			this.getSelfformList()
-		}
-	},
-	methods: {
-		guid,
-		//查询规则
-		getSelfformList() {
-			this.requestApi({
+  data() {
+    return {
+      tableData: [],
+      pager: 1,
+      total: 0,
+      dialogVisible: false, //删除规则弹框
+      id: ''
+    }
+  },
+  mounted() {
+    this.getSelfformList()
+  },
+  watch: {
+    pager(newVal, oldVal) {
+      this.getSelfformList()
+    }
+  },
+  methods: {
+    guid,
+    //查询规则
+    getSelfformList() {
+      this.requestApi({
         url: '/selfform/list',
         method: 'POST',
         data: {
-					// pageIndex: this.pager, //第几页
-					// pageSize: 10, //每页多少行
-				},
+          // pageIndex: this.pager, //第几页
+          // pageSize: 10, //每页多少行
+        }
       }).then(res => {
-					// debugger
-					// console.log(res)
-					this.tableData = res.list	//规则配置列表
-					// this.pager = res.pageInfo.pageIndex; //当前第几页
-					// this.total = res.pageInfo.totalCount; //总条数
-				});
-		},
-		//跳转其他页面
-		toPage(e) {//e.type规则类型    e.id规则配置id
-			if(e){//编辑
-      this.$router.push({
-        name:'otherMessageSeetingEditor',
-        query:{
-          isdefault:e.isdefault,
-          id: e.id, 
-          addOrEdit: 0,
-        }
+        // debugger
+        // console.log(res)
+        this.tableData = res.list //规则配置列表
+        // this.pager = res.pageInfo.pageIndex; //当前第几页
+        // this.total = res.pageInfo.totalCount; //总条数
       })
-				// this.$router.push({ name: 'otherMessageSeetingEditor',params:{type:e.is_default,id:e.id,company_name:e.company_name,addOrEdit:0} });
-			}else{//新增
-      // this.$router.push({path:'/otherMessageSeetingEditor',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
-      this.$router.push({
-        name:'otherMessageSeetingEditor',
-        query:{
-          isdefault: 0,
-          id: this.guid(), 
-          addOrEdit: 1,
-        }
-      })
-				// this.$router.push({ name: 'otherMessageSeetingEditor',params:{type:1,id:this.guid(),company_name:'increase',addOrEdit:1} });
-			}
-			
-		},
-		//删除规则
-		submitDeleteRule() {
-			this.requestApi({
+    },
+    //跳转其他页面
+    toPage(e) {
+      //e.type规则类型    e.id规则配置id
+      if (e) {
+        //编辑
+        this.$router.push({
+          name: 'otherMessageSeetingEditor',
+          query: {
+            isdefault: e.isdefault,
+            id: e.id,
+            addOrEdit: 0
+          }
+        })
+        // this.$router.push({ name: 'otherMessageSeetingEditor',params:{type:e.is_default,id:e.id,company_name:e.company_name,addOrEdit:0} });
+      } else {
+        //新增
+        // this.$router.push({path:'/otherMessageSeetingEditor',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
+        this.$router.push({
+          name: 'otherMessageSeetingEditor',
+          query: {
+            isdefault: 0,
+            id: this.guid(),
+            addOrEdit: 1
+          }
+        })
+        // this.$router.push({ name: 'otherMessageSeetingEditor',params:{type:1,id:this.guid(),company_name:'increase',addOrEdit:1} });
+      }
+    },
+    //删除规则
+    submitDeleteRule() {
+      this.requestApi({
         url: '/selfform/DeleteSelfForm',
         method: 'POST',
         data: {
-					id: this.id, //规则配置id
-				},
+          id: this.id //规则配置id
+        }
       }).then(res => {
-				debugger
-				if(res){
-					this.$message({
-						message: '删除成功',
-							type: 'success'
-					});
-				}else{
-					this.$message.error('删除失败');
-				}
-				this.dialogVisible=false
-				this.getSelfformList()
-			});
-			
-		},
-		deleteRule(id){
-			this.id=id
-			this.dialogVisible = true
-		}
-	}
-};
+        debugger
+        if (res) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error('删除失败')
+        }
+        this.dialogVisible = false
+        this.getSelfformList()
+      })
+    },
+    deleteRule(id) {
+      this.id = id
+      this.dialogVisible = true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped="scoped">

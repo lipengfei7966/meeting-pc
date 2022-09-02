@@ -86,56 +86,56 @@
 <script>
 import basePart from '@/components/event/basePart_2.vue'
 export default {
-	data() {
-		return {
-			menus: [],
-			arr: [],
-			num: [],
-			dialogVisible: false,
-			// dialogVisible1: false,
-			dialogVisibles: false,
-			passMessage: "",
-			selectQuery: {},
-			ApprovalOpinion: "",
-		};
-	},
-	components:{
-		basePart
-	},
-	mounted() {
-		this.selectQuery = this.$route.query;
-		this.getDetail();
-	},
-	methods: {
-		getDetail() {
+  data() {
+    return {
+      menus: [],
+      arr: [],
+      num: [],
+      dialogVisible: false,
+      // dialogVisible1: false,
+      dialogVisibles: false,
+      passMessage: '',
+      selectQuery: {},
+      ApprovalOpinion: ''
+    }
+  },
+  components: {
+    basePart
+  },
+  mounted() {
+    this.selectQuery = this.$route.query
+    this.getDetail()
+  },
+  methods: {
+    getDetail() {
       this.requestApi({
         url: '/MeetingMa/TouristAgencyQuotedPrice',
         method: 'POST',
-        data: {ApproveID: this.selectQuery.ApproveID},
-      }).then((res) => {
-        this.arr = res.approve;
-        this.num = res.inquirySheet;
-        console.log(res);
-      });
-		},
-		max(val) {
-			this.dialogVisible = true;
-			this.passMessage = val;
-		},
-		checkOffer(foreign_key_id) {
-			this.$router.push({
+        data: { ApproveID: this.selectQuery.ApproveID }
+      }).then(res => {
+        this.arr = res.approve
+        this.num = res.inquirySheet
+        console.log(res)
+      })
+    },
+    max(val) {
+      this.dialogVisible = true
+      this.passMessage = val
+    },
+    checkOffer(foreign_key_id) {
+      this.$router.push({
         name: 'offer',
-				// path: '/offer',
-				query: {
-					foreign_key_id: foreign_key_id,// 报价单ID
-					id: this.$route.query.id,// 会议ID
-					type: this.$route.query.type,
-				}
-			})
-		},
+        // path: '/offer',
+        query: {
+          foreign_key_id: foreign_key_id, // 报价单ID
+          id: this.$route.query.id, // 会议ID
+          type: this.$route.query.type
+        }
+      })
+    },
 
-		sendApprove() {
-			const status = this.passMessage === "不通过" ? "1" : "0";
+    sendApprove() {
+      const status = this.passMessage === '不通过' ? '1' : '0'
       this.requestApi({
         url: '/MeetingMa/WinthebiddingApproveSava',
         method: 'POST',
@@ -144,31 +144,29 @@ export default {
             status: status,
             id: this.selectQuery.ApproveID,
             remarks: this.ApprovalOpinion,
-            message: '',  // 字段需传空值，否则接口无响应
-            objection: '',// 字段需传空值，否则接口无响应
-          }),
-        },
-      }).then((res) => {
-        if(res){
+            message: '', // 字段需传空值，否则接口无响应
+            objection: '' // 字段需传空值，否则接口无响应
+          })
+        }
+      }).then(res => {
+        if (res) {
           this.$message({
             message: '操作成功',
             type: 'success'
-          });
+          })
         }
-        
-        this.dialogVisible = false;
-        console.log(res);
+
+        this.dialogVisible = false
+        console.log(res)
         // this.$route.replace('')
         this.$router.replace({
-          name: "approve",
-        });
-        this.getDetail();
-
-      });
-		},
-
-	},
-};
+          name: 'approve'
+        })
+        this.getDetail()
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

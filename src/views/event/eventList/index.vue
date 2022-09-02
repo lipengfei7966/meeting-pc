@@ -264,7 +264,6 @@ export default {
     this.company();
     this.getCityList();
 
-   
   },
   methods:{
     formatDate,
@@ -273,7 +272,7 @@ export default {
     // this.$store.dispatch('delVisitedViews', this.$route).then(() => {
       this.$router.push({name:'eventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
     // })
-      
+
     },
     // 编辑基本信息
     editBaseTap(rowInfo){
@@ -333,7 +332,7 @@ export default {
       let right = this.$refs['eventTypeName'+data.$index].getBoundingClientRect().right
       this.$refs.newMessageBox.style.top = top+'px';
       // debugger
-      
+
       this.$nextTick(res => {
         let megBoxWidth = this.$refs.newMessageBox.offsetWidth;
       this.$refs.newMessageBox.style.left = (right - megBoxWidth)+'px'
@@ -396,7 +395,7 @@ export default {
       this.eventSearch.event_settlement = '';
       this.eventSearch.cvent_no = '';
       this.eventSearch.pr = '';
-      
+
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

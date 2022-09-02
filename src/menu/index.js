@@ -102,7 +102,7 @@ export const constantMenuMap = [
           icon: 'Tbaob',
           firstParent: 'event'
         }
-      },
+      }
     ]
   },
   {
@@ -162,7 +162,7 @@ export const constantMenuMap = [
           title: 'DMCitineraryList',
           firstParent: 'DMCevent'
         }
-      },
+      }
     ]
   },
   {
@@ -173,7 +173,7 @@ export const constantMenuMap = [
       isFirstParent: true
     },
     hidden: false,
-    children:[
+    children: [
       {
         name: 'clientMemberManage',
         meta: {
@@ -201,7 +201,7 @@ export const constantMenuMap = [
           title: 'relatedPersonSetting',
           firstParent: 'systemSetting'
         }
-      },
+      }
     ]
   },
   {
@@ -219,7 +219,7 @@ export const constantMenuMap = [
           title: 'siteResource',
           firstParent: 'resourceCenter'
         }
-      },
+      }
     ]
   }
 ]

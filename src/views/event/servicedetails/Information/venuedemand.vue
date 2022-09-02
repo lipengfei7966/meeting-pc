@@ -18,7 +18,7 @@
                 <th width="110" class="blue">是否采购</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               <tr>
                 <td valign="middle" align="center" width="140">
                   <br />
@@ -37,11 +37,7 @@
                   </div>
                 </td>
                 <td class="blue" align="center">
-                  <a
-                    href="javascript:void(0);"
-                    class="select_icon"
-                    data-key="event_setting,2021-10-01 00:00:00,1,0"
-                  >
+                  <a href="javascript:void(0);" class="select_icon" data-key="event_setting,2021-10-01 00:00:00,1,0">
                   </a>
                 </td>
               </tr>
@@ -57,7 +53,7 @@
                 <th width="110" class="blue">是否采购</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               <!-- <tr v-for="item in conferenceBuild">
                 <td valign="middle" align="center" width="140">
                   <br />
@@ -91,8 +87,8 @@
                   <div class="cfe_list clx" style="clear:both">
                     <span class="cfe_sub_title">Meeting Room :</span>
                     <div class="cfe_con">
-                      {{item.begintime}} - {{item.endtime}} 
-                      {{item.attendees}}人 
+                      {{item.begintime}} - {{item.endtime}}
+                      {{item.attendees}}人
                       {{item.roomsetuptype}}
                       <span v-show="item.min_area&&item.max_area">{{item.min_area}}~{{item.max_area}}</span>
                     </div>
@@ -109,11 +105,7 @@
                   </div>
                 </td>
                 <td class="blue" align="center">
-                  <a
-                    href="javascript:void(0);"
-                    class="select_icon"
-                    data-key="event_meetingroom,2021-09-30,1,0|event_equipment,2021-09-30,1,0"
-                  ></a>
+                  <a href="javascript:void(0);" class="select_icon" data-key="event_meetingroom,2021-09-30,1,0|event_equipment,2021-09-30,1,0"></a>
                 </td>
               </tr>
             </tbody>
@@ -126,8 +118,8 @@
 
 <script>
 export default {
-  props:['conferenceBuild','conference'],
-};
+  props: ['conferenceBuild', 'conference']
+}
 </script>
 
 <style lang="scss">
@@ -138,7 +130,6 @@ export default {
   height: 27px;
 }
 
-
 .clx {
   zoom: 1;
 }
@@ -146,49 +137,51 @@ export default {
   cursor: pointer;
 }
 
-
 .demand .rfp_box {
   padding: 20px;
 }
 .conference .bold {
-    font-weight: 600;
-    text-align: center;
-    line-height: 20px;
-    color: #282828;
+  font-weight: 600;
+  text-align: center;
+  line-height: 20px;
+  color: #282828;
 }
 .conference .cfm_cfe {
-    padding: 12px 20px;
-    text-align: left;
+  padding: 12px 20px;
+  text-align: left;
 }
 .rfp_public td {
-    border: 1px solid #e2e2e2;
-    padding: 8px 10px;
-    font-size: 14px;
-    color: #282828;
-    line-height: 20px;
-    word-break: break-all;
-    word-wrap: break-word;
+  border: 1px solid #e2e2e2;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: #282828;
+  line-height: 20px;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 .cfe_list {
-    padding: 10px 10px;
+  padding: 10px 10px;
 }
 .cfe_list .cfe_sub_title {
-    float: left;
-    width: 140px;
-    color: #787878;
-    line-height: 20px;
+  float: left;
+  width: 140px;
+  color: #787878;
+  line-height: 20px;
 }
 .cfe_list .cfe_con {
-    float: left;
-    color: #282828;
-    line-height: 20px;
-    max-width: 680px;
+  float: left;
+  color: #282828;
+  line-height: 20px;
+  max-width: 680px;
 }
-.rfp_item .rfp_public th.blue, .rfp_item .rfp_public td.blue, .select_icon {
-    display: none;
+.rfp_item .rfp_public th.blue,
+.rfp_item .rfp_public td.blue,
+.select_icon {
+  display: none;
 }
-.rfp_item .rfp_public th.blue, .rfp_item .rfp_public td.blue {
-    background: #e2f3fe;
+.rfp_item .rfp_public th.blue,
+.rfp_item .rfp_public td.blue {
+  background: #e2f3fe;
 }
 .rfp_title {
   background: #fafafa;
@@ -323,5 +316,4 @@ export default {
   color: #2896eb;
   text-decoration: none;
 }
-
 </style>

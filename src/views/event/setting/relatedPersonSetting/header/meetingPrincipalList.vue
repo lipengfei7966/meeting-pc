@@ -28,84 +28,78 @@
 
 <script>
 export default {
-	data() {
-		return {
-			tableData: [],
-			ProvinceCity:[], //省级直辖市列表
-			pageInfo:{
-				totalCount: 0
-			},
-			searchData:{
-				pageIndex: 1,
-				pageSize: 10,
-				type: 1, //1、负责人，2、采购人，3、会议助理，4、合规人员
-			}
+  data() {
+    return {
+      tableData: [],
+      ProvinceCity: [], //省级直辖市列表
+      pageInfo: {
+        totalCount: 0
+      },
+      searchData: {
+        pageIndex: 1,
+        pageSize: 10,
+        type: 1 //1、负责人，2、采购人，3、会议助理，4、合规人员
+      }
     }
-	
-	},
-	mounted() {
-		this.searchTableData();
-		
-	},
-	methods: {
-		// 查询
-		searchTableData(){
-			this.requestApi({
-				url: '/InfoConfig/GetOwnerRule',
-				method: 'POST',
-				data: this.searchData,
-			}).then(res => {
-				this.tableData = res.EvetModels;
-				this.pageInfo = res.pageInfo;
-			})
-		},
-		handleCurrentChange(val) {
-      this.searchData.pageIndex = val;
-      console.log(`当前页: ${val}`);
-      this.searchTableData();
+  },
+  mounted() {
+    this.searchTableData()
+  },
+  methods: {
+    // 查询
+    searchTableData() {
+      this.requestApi({
+        url: '/InfoConfig/GetOwnerRule',
+        method: 'POST',
+        data: this.searchData
+      }).then(res => {
+        this.tableData = res.EvetModels
+        this.pageInfo = res.pageInfo
+      })
     },
-		// 新增
-		adduser() {
-			this.$router.push("addPrincipal");
-		},
-		// 编辑
-		handleEdit(index, row) {
-			 console.log(index, row);
-			 this.$router.push({
-				 name: "addPrincipal",
-				 query:{
-					 id: row.id
-				 }
-			 })
-        
+    handleCurrentChange(val) {
+      this.searchData.pageIndex = val
+      console.log(`当前页: ${val}`)
+      this.searchTableData()
     },
-		// 删除
-		deleteRow(index, row) {
-			this.$confirm('删除规则后不可恢复, 请确认是否删除?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			}).then(() => {
-				this.requestApi({
-            url: '/InfoConfig/OwnerRuleDelete',
-            method: 'POST',
-            data: {ID: row.id},
-          }).then(res => {
-					if(res){
-						this.$message({
-							type: 'success',
-							message: '删除成功!'
-						});
-						this.searchTableData();
-					}
-					
-				})
-				
-			})
-		},
-	},
-  
-};
+    // 新增
+    adduser() {
+      this.$router.push('addPrincipal')
+    },
+    // 编辑
+    handleEdit(index, row) {
+      console.log(index, row)
+      this.$router.push({
+        name: 'addPrincipal',
+        query: {
+          id: row.id
+        }
+      })
+    },
+    // 删除
+    deleteRow(index, row) {
+      this.$confirm('删除规则后不可恢复, 请确认是否删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.requestApi({
+          url: '/InfoConfig/OwnerRuleDelete',
+          method: 'POST',
+          data: { ID: row.id }
+        }).then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.searchTableData()
+          }
+        })
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

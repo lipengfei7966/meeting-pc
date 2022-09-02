@@ -348,7 +348,7 @@ export default {
       }else{
         type=1;
         if(this.HotelSelectedList.length === 0){
-          this.$message({ message: "至少选择一家酒店",   type: "warning", });  
+          this.$message({ message: "至少选择一家酒店",   type: "warning", });
           return;
         }
         this.requestApi({
@@ -418,7 +418,7 @@ export default {
         if(this.listFormData.city.findIndex(item => item.code === code) == -1)
           this.listFormData.city.push({code});
         else
-          this.listFormData.city =  this.listFormData.city.filter(item => item.code != code) 
+          this.listFormData.city =  this.listFormData.city.filter(item => item.code != code)
       }
       else
         this.listFormData.city =[];
@@ -432,7 +432,7 @@ export default {
         if(this.listFormData.sitetype.findIndex(item => item.code === code) == -1)
           this.listFormData.sitetype.push({code});
         else
-          this.listFormData.sitetype = this.listFormData.sitetype.filter(item => item.code != code) 
+          this.listFormData.sitetype = this.listFormData.sitetype.filter(item => item.code != code)
       }
       else
         this.listFormData.sitetype =[];
@@ -445,7 +445,7 @@ export default {
         if(this.listFormData.brand.findIndex(item => item.id === id) == -1)
           this.listFormData.brand.push({id});
         else
-          this.listFormData.brand = this.listFormData.brand.filter(item => item.id != id) 
+          this.listFormData.brand = this.listFormData.brand.filter(item => item.id != id)
       }
       else
         this.listFormData.brand=[];
@@ -474,19 +474,19 @@ export default {
       this.listFormData.isagreement=false;
       this.listFormData.iscollection=false;
       this.listFormData.Page =1;
-      this.getList() 
+      this.getList()
     },
     searchagreement(){
       this.listFormData.isagreement=true;
       this.listFormData.iscollection=false;
       this.listFormData.Page =1;
-      this.getList() 
+      this.getList()
     },
     searchcollection(){
       this.listFormData.isagreement=false;
       this.listFormData.iscollection=true;
       this.listFormData.Page =1;
-      this.getList() 
+      this.getList()
     },
     collection(item){
       this.requestApi({
@@ -521,7 +521,7 @@ export default {
     this.routeCity =this.$route.params.city;
     if(this.routeCity)
       this.selectedCity(this.routeCity)
-    
+
     this.routeType = this.$route.params.type;
     if (this.routeType =="addhotel") {
       this.requestApi({
@@ -578,7 +578,7 @@ export default {
       })
       .then((res) => {
         this.type.venuearea = res;
-        
+
         return this.requestApi({
           url: '/hotel/venuepeoplenumber',
           method: 'POST',

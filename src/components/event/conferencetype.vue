@@ -7,31 +7,31 @@
 
 
 <script>
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
 export default {
   props: ['typelist'],
   data() {
-    return {};
+    return {}
   },
   mounted() {
-    this.datalist();
+    this.datalist()
   },
   methods: {
     datalist(data = []) {
-      var app = {};
-      let months = [];
-      if(data.length > 0){
-        months = data[0].monthInfos;
+      var app = {}
+      let months = []
+      if (data.length > 0) {
+        months = data[0].monthInfos
       }
-      var chartDom = document.getElementById('gucbyf');
-      var myChart = echarts.init(chartDom);
-      var option;
-      let grop = [];
+      var chartDom = document.getElementById('gucbyf')
+      var myChart = echarts.init(chartDom)
+      var option
+      let grop = []
 
       for (let i = 0; i < months.length; i++) {
         let numlist = []
-        
-        for (let j = 0; j < data.length; j++){
+
+        for (let j = 0; j < data.length; j++) {
           numlist.push(data[j].monthInfos[i].amount)
         }
         let filler = {
@@ -40,89 +40,75 @@ export default {
           barGap: 0,
           label: labelOption,
           emphasis: {
-            focus: 'series',
+            focus: 'series'
           },
-          data: numlist  ,
-        };
+          data: numlist
+        }
         grop.push(filler)
       }
-      const posList = [
-        'left',
-        'right',
-        'top',
-        'bottom',
-        'inside',
-        'insideTop',
-        'insideLeft',
-        'insideRight',
-        'insideBottom',
-        'insideTopLeft',
-        'insideTopRight',
-        'insideBottomLeft',
-        'insideBottomRight',
-      ];
+      const posList = ['left', 'right', 'top', 'bottom', 'inside', 'insideTop', 'insideLeft', 'insideRight', 'insideBottom', 'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight']
       app.configParameters = {
         rotate: {
           min: -90,
-          max: 90,
+          max: 90
         },
         align: {
           options: {
             left: 'left',
             center: 'center',
-            right: 'right',
-          },
+            right: 'right'
+          }
         },
         verticalAlign: {
           options: {
             top: 'top',
             middle: 'middle',
-            bottom: 'bottom',
-          },
+            bottom: 'bottom'
+          }
         },
         position: {
-          options: posList.reduce(function (map, pos) {
-            map[pos] = pos;
-            return map;
-          }, {}),
+          options: posList.reduce(function(map, pos) {
+            map[pos] = pos
+            return map
+          }, {})
         },
         distance: {
           min: 0,
-          max: 100,
-        },
-      };
+          max: 100
+        }
+      }
       app.config = {
         rotate: 90,
         align: 'left',
         verticalAlign: 'middle',
         position: 'insideBottom',
         distance: 15,
-        onChange: function () {
+        onChange: function() {
           const labelOption = {
             rotate: app.config.rotate,
             align: app.config.align,
             verticalAlign: app.config.verticalAlign,
             position: app.config.position,
-            distance: app.config.distance,
-          };
+            distance: app.config.distance
+          }
           myChart.setOption({
             series: [
               {
-                label: labelOption,
+                label: labelOption
               },
               {
-                label: labelOption,
+                label: labelOption
               },
               {
-                label: labelOption,
+                label: labelOption
               },
               {
-                label: labelOption,
-              },
-            ],
-          });
-        },
-      };
+                label: labelOption
+              }
+            ]
+          })
+        }
+      }
       const labelOption = {
         show: true,
         position: app.config.position,
@@ -133,18 +119,18 @@ export default {
         formatter: '{c}  {name|{a}}',
         fontSize: 16,
         rich: {
-          name: {},
-        },
-      };
+          name: {}
+        }
+      }
       option = {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow',
-          },
+            type: 'shadow'
+          }
         },
         legend: {
-          data: ['', '', '', ''],
+          data: ['', '', '', '']
         },
         toolbox: {
           show: true,
@@ -152,27 +138,27 @@ export default {
           left: 'right',
           top: 'center',
           feature: {
-            mark: { show: true },
+            mark: { show: true }
             // dataView: { show: true, readOnly: false },
             // magicType: { show: true, type: ['line', 'bar', 'stack'] },
             // restore: { show: true },
             // saveAsImage: { show: true },
-          },
+          }
         },
         xAxis: [
           {
             type: 'category',
             axisTick: { show: false },
             // data: ['2012', '2013', '2014', '2015', '2016'],
-            data: data.map((item) => item.months),
-          },
+            data: data.map(item => item.months)
+          }
         ],
         yAxis: [
           {
-            type: 'value',
-          },
+            type: 'value'
+          }
         ],
-        series:grop,
+        series: grop
         // series: [
         //   filler,
 
@@ -204,31 +190,31 @@ export default {
         //   //   data: [98, 77, 101, 99, 40],
         //   // },
         // ],
-      };
+      }
 
-      option && myChart.setOption(option);
-    },
+      option && myChart.setOption(option)
+    }
   },
   watch: {
     typelist(val = []) {
       debugger
       // return val
-      console.log(val, '123456789');
-      this.data = val;
-      
+      console.log(val, '123456789')
+      this.data = val
+
       if (val.length === 0) {
-        this.datalist(val);
+        this.datalist(val)
       } else {
-        this.datalist(val);
+        this.datalist(val)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .menster {
-  width:50vw;
+  width: 50vw;
   height: 450px;
   max-width: 1030px;
 }

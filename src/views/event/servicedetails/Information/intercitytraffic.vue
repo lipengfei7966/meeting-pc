@@ -18,7 +18,7 @@
               <th width="120">搭乘人数</th>
               <th width="120">抵达时间</th>
               <th width="120">座位等级</th>
-              <th>	备注</th>
+              <th> 备注</th>
               <th width="110" class="blue">是否采购</th>
             </tr>
           </thead>
@@ -33,11 +33,7 @@
               <td>{{item.seatclasses}}</td>
               <td>{{item.requirement}}</td>
               <td class="blue">
-                <a
-                  href="javascript:void(0);"
-                  class="select_icon"
-                  data-key="event_guestroom,2021-09-30"
-                ></a>
+                <a href="javascript:void(0);" class="select_icon" data-key="event_guestroom,2021-09-30"></a>
               </td>
             </tr>
           </tbody>
@@ -49,13 +45,13 @@
 
 <script>
 export default {
-  props:['Transportation'],
-};
+  props: ['Transportation']
+}
 </script>
 
 <style lang="scss">
 .clx {
-    zoom: 1;
+  zoom: 1;
 }
 .rfp_title {
   background: #fafafa;
@@ -98,9 +94,9 @@ export default {
   margin: 0 0 50px 0;
 }
 .rfp_public {
-    width: 100%;
-    // border: 1px solid #e2e2e2;
-    margin: 10px 0 0 0;
+  width: 100%;
+  // border: 1px solid #e2e2e2;
+  margin: 10px 0 0 0;
 }
 .room_date,
 .room_budget {
@@ -135,5 +131,4 @@ export default {
 .rfp_item .rfp_public td.blue {
   background: #e2f3fe;
 }
-
 </style>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as Vue from 'vue'
+// import * as Vue from 'vue'
 // import { ElMessageBox as MessageBox, ElMessage as Message } from 'element-plus'
 // import { Notification } from 'element-plus'
 import { Notification, Message } from 'element-ui'
@@ -10,7 +10,7 @@ import { sign } from '@/utils/frame/base/encript.js'
 
 import { getRandom, rsaEncrypt, aesEncrypt, aesDecrypt } from '@/utils/frame/base/crypto'
 
-import storage from '@/utils/frame/base/localStorage'
+// import storage from '@/utils/frame/base/localStorage'
 import session from '@/utils/frame/base/sessionStorage'
 import { notifyError } from '@/utils/frame/base/notifyParams'
 
@@ -18,7 +18,7 @@ import { notifyError } from '@/utils/frame/base/notifyParams'
 const request = axios.create({
   baseURL: process.env.VUE_APP_CMMS_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 50000, // request timeout
+  timeout: 50000 // request timeout
 })
 
 request.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
@@ -30,7 +30,7 @@ const random = getRandom(8)
 request.interceptors.request.use(
   (config) => {
     // debugger
-    if(config.method == 'get' || config.method == 'GET'){
+    if (config.method === 'get' || config.method === 'GET') {
       config.params = config.data
     }
     // do something before request is sent
@@ -111,7 +111,7 @@ request.interceptors.response.use(
       setMd5(md5AuthToken)
       store.commit('SET_TOKEN', {
         accessToken: authToken,
-        md5Token: md5AuthToken,
+        md5Token: md5AuthToken
       })
     }
     if (licVerify && !session.get('licVerify')) {
@@ -119,7 +119,7 @@ request.interceptors.response.use(
       Message({
         message: '使用期限快过期，请尽快延长注册.',
         type: 'warning',
-        showClose: true,
+        showClose: true
       })
     }
 
@@ -155,7 +155,7 @@ request.interceptors.response.use(
       if (res.msgId === 'EAUT0010' || res.msgId === 'EAUT0007') {
         Notification(
           notifyError({
-            msg: res.msgText,
+            msg: res.msgText
           })
         )
       } else if (
@@ -173,7 +173,7 @@ request.interceptors.response.use(
       } else {
         Notification(
           notifyError({
-            msg: res.msgText || res.msgId,
+            msg: res.msgText || res.msgId
           })
         )
       }
@@ -181,34 +181,34 @@ request.interceptors.response.use(
     }
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000,
-      })
+    // if (res.code !== 20000) {
+    //   Message({
+    //     message: res.message || 'Error',
+    //     type: 'error',
+    //     duration: 5 * 1000
+    //   })
 
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm(
-          'You have been logged out, you can cancel to stay on this page, or log in again',
-          'Confirm logout',
-          {
-            confirmButtonText: 'Re-Login',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
-          }
-        ).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
-      return Promise.reject(new Error(res.message || 'Error'))
-    } else {
-      return res
-    }
+    //   // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+    //   if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+    //     // to re-login
+    //     MessageBox.confirm(
+    //       'You have been logged out, you can cancel to stay on this page, or log in again',
+    //       'Confirm logout',
+    //       {
+    //         confirmButtonText: 'Re-Login',
+    //         cancelButtonText: 'Cancel',
+    //         type: 'warning'
+    //       }
+    //     ).then(() => {
+    //       store.dispatch('user/resetToken').then(() => {
+    //         location.reload()
+    //       })
+    //     })
+    //   }
+    //   return Promise.reject(new Error(res.message || 'Error'))
+    // } else {
+    //   return res
+    // }
   },
   (err) => {
     debugger
@@ -241,7 +241,7 @@ request.interceptors.response.use(
       }, 3000)
       Notification(
         notifyError({
-          msg: err.message,
+          msg: err.message
         })
       )
       return Promise.reject(err)

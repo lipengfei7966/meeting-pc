@@ -87,120 +87,107 @@
 </template>
 
 <script>
-import upload from "@/utils/upload";
-import { validatePhone,validateEMail,isInteger } from '@/assets/js/validator'
-import selectOrder from "@/components/event/selectOrder.vue";
+import upload from '@/utils/upload'
+import { validatePhone, validateEMail, isInteger } from '@/assets/js/validator'
+import selectOrder from '@/components/event/selectOrder.vue'
 export default {
   components: { selectOrder },
   props: {
-    itemData: JSON | null,
+    itemData: JSON | null
   },
   data() {
     return {
       selectOrderStatus: false,
       FormData: {
-        project_manager: "",
-        project_specialist: "",
-        event_orderform_id: "",
-        event_orderform_num: "",
-        event_name: "",
-        start_date: "",
-        end_date: "",
-        customer_company_name: "",
-        customer_name: "",
-        contact_number: "",
-        contact_email: "",
-        number_of_participants: "",
+        project_manager: '',
+        project_specialist: '',
+        event_orderform_id: '',
+        event_orderform_num: '',
+        event_name: '',
+        start_date: '',
+        end_date: '',
+        customer_company_name: '',
+        customer_name: '',
+        contact_number: '',
+        contact_email: '',
+        number_of_participants: ''
       },
       // 等待上传
       waitUpload: [],
       rules: {
-        project_manager: [
-          { required: true, message: "项目经理不能为空", trigger: "change" },
-        ],
-        project_specialist: [
-          { required: true, message: "项目专员不能为空", trigger: "change" },
-        ],
-        event_orderform_id: [
-          { required: true, message: "订单不能为空", trigger: "change" },
-        ],
-        event_name: [
-          { required: true, message: "会议名称不能为空", trigger: "change" },
-        ],
-        start_date: [
-          { required: true, message: "请填写开始时间", trigger: "change" },
-        ],
-        end_date: [
-          { required: true, message: "请填写结束时间", trigger: "change" },
-        ],
-        customer_company_name: [
-          { required: true, message: "请填写客户公司名称", trigger: "change" },
-        ],
-        customer_name: [
-          { required: true, message: "请填写客户姓名", trigger: "change" },
-        ],
+        project_manager: [{ required: true, message: '项目经理不能为空', trigger: 'change' }],
+        project_specialist: [{ required: true, message: '项目专员不能为空', trigger: 'change' }],
+        event_orderform_id: [{ required: true, message: '订单不能为空', trigger: 'change' }],
+        event_name: [{ required: true, message: '会议名称不能为空', trigger: 'change' }],
+        start_date: [{ required: true, message: '请填写开始时间', trigger: 'change' }],
+        end_date: [{ required: true, message: '请填写结束时间', trigger: 'change' }],
+        customer_company_name: [{ required: true, message: '请填写客户公司名称', trigger: 'change' }],
+        customer_name: [{ required: true, message: '请填写客户姓名', trigger: 'change' }],
         contact_number: [
-          { required: true, message: "请填写联系电话", trigger: "change" },{validator:validatePhone, trigger: "blur"}
+          { required: true, message: '请填写联系电话', trigger: 'change' },
+          { validator: validatePhone, trigger: 'blur' }
         ],
         contact_email: [
-          { required: true, message: "请填写联系邮箱", trigger: "change" },{validator:validateEMail, trigger: "blur"}
+          { required: true, message: '请填写联系邮箱', trigger: 'change' },
+          { validator: validateEMail, trigger: 'blur' }
         ],
         number_of_participants: [
-          { required: true, message: "请填写参与人数", trigger: "change" },{validator:isInteger, trigger: "change"}
-        ],
+          { required: true, message: '请填写参与人数', trigger: 'change' },
+          { validator: isInteger, trigger: 'change' }
+        ]
       },
       // 人员列表
-      userList: [],
+      userList: []
       // 订单列表
-    };
+    }
   },
   mounted() {
     if (this.itemData != null) {
-      this.FormData = JSON.parse(JSON.stringify(this.itemData));
+      this.FormData = JSON.parse(JSON.stringify(this.itemData))
     }
     this.requestApi({
-        url: '/member/list',
-        method: 'POST',
-        data: {
-         Page: 1, 
-         Rows: 999
-        },
-      }).then((res) => {
-      this.userList = res.List;
-    });
+      url: '/member/list',
+      method: 'POST',
+      data: {
+        Page: 1,
+        Rows: 999
+      }
+    }).then(res => {
+      this.userList = res.List
+    })
   },
   methods: {
     add() {
-      this.$refs["ruleForm"].validate((valid) => {
+      this.$refs['ruleForm'].validate(valid => {
         if (valid) {
           // 验证成功
-          this.$emit("onColse", this.FormData);
+          this.$emit('onColse', this.FormData)
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     // 图片
     handlePreviewImage(e) {
-      this.waitUpload.push(e);
+      this.waitUpload.push(e)
     },
     // 选择订单
     selectedorder(e) {
-      this.FormData.event_orderform_id = e.id;
-      this.FormData.event_orderform_num=e.num;
-      this.FormData.event_name=e.event_name;
-      this.FormData.start_date=e.event_startdate;
-      this.FormData.end_date=e.event_enddate;
-      this.FormData.customer_company_name=e.company_name;
-      this.FormData.customer_name=e.fullname;
-      this.FormData.contact_number=e.mobile;
-      this.FormData.contact_email=e.email;
-      this.FormData.number_of_participants=e.attendee_no;
-      this.selectOrderStatus = false;
-    },
-  },
-};
+      this.FormData.event_orderform_id = e.id
+      this.FormData.event_orderform_num = e.num
+      this.FormData.event_name = e.event_name
+      this.FormData.start_date = e.event_startdate
+      this.FormData.end_date = e.event_enddate
+      this.FormData.customer_company_name = e.company_name
+      this.FormData.customer_name = e.fullname
+      this.FormData.contact_number = e.mobile
+      this.FormData.contact_email = e.email
+      this.FormData.number_of_participants = e.attendee_no
+      this.selectOrderStatus = false
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

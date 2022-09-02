@@ -3043,11 +3043,11 @@ export default {
 				'%+' +
 				positiveFloatSix(this.otherPrice[0]) +'*'+ positiveFloatSix(this.info.event_info_configure.other_inquiry_taxrate ) +
 				'%+' +
-				
+
 					positiveFloatSix(this.servicePrice[0]) +'*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate ) +'%+'+
 					positiveFloatSix(this.servicePrice[4]) +'*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate )+'%'
 				;
-			
+
 			price[3] =
 				positiveFloatSix(this.roomPrice[1].all) +'*'+ positiveFloatSix(this.info.event_info_configure.room_inquiry_taxrate ) +
 				'%+' +
@@ -3063,7 +3063,7 @@ export default {
 				'%+' +
 				positiveFloatSix(this.otherPrice[1]) +'*'+ positiveFloatSix(this.info.event_info_configure.other_inquiry_taxrate ) +
 				'%+' +
-				
+
 					positiveFloatSix(this.servicePrice[1])+ '*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate ) +'%+'+
 					positiveFloatSix(this.servicePrice[5]) +'*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate )+'%'
 				; */
@@ -4821,12 +4821,6 @@ export default {
                 id: this.info.orderform_id
               }
             })
-            /* this.$router.push({
-						  name: "orderInfo",
-						  params: {
-						    id: this.info.orderform_id,
-						  },
-						}); */
           } else {
             this.$message({
               message: '保存失败！',

@@ -34,24 +34,19 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-
-
-			};
-		},
-		components: {},
-		mounted() {
-
-		},
-		methods: {
-			//返回会议详情
-			gotoinfo() {
-				this.$router.push({name:'eventDetail',query:{id: this.$route.params.id}})
-    		}
-		},
-	};
+export default {
+  data() {
+    return {}
+  },
+  components: {},
+  mounted() {},
+  methods: {
+    //返回会议详情
+    gotoinfo() {
+      this.$router.push({ name: 'eventDetail', query: { id: this.$route.params.id } })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

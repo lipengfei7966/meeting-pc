@@ -411,13 +411,13 @@
   </div>
 </template>
 <script>
-import City from '@/components/event/city.vue';
-import BrokenLine from '@/components/event/brokenLine';
-import Bingtu from '@/components/event/bingtu.vue';
-import Bingyu from '@/components/event/bingyu.vue';
-import Bingru from '@/components/event/bingru.vue';
-import Bingku from '@/components/event/bingku.vue';
-import Bingdu from '@/components/event/bingdu.vue';
+import City from '@/components/event/city.vue'
+import BrokenLine from '@/components/event/brokenLine'
+import Bingtu from '@/components/event/bingtu.vue'
+import Bingyu from '@/components/event/bingyu.vue'
+import Bingru from '@/components/event/bingru.vue'
+import Bingku from '@/components/event/bingku.vue'
+import Bingdu from '@/components/event/bingdu.vue'
 
 export default {
   // props: {
@@ -445,7 +445,7 @@ export default {
     Bingyu,
     Bingru,
     Bingku,
-    Bingdu,
+    Bingdu
   },
   props: {},
   data() {
@@ -453,105 +453,105 @@ export default {
       dateList: [
         {
           id: 2012,
-          datey: '2012',
+          datey: '2012'
         },
         {
           id: 2013,
-          datey: '2013',
+          datey: '2013'
         },
         {
           id: 2014,
-          datey: '2014',
+          datey: '2014'
         },
         {
           id: 2015,
-          datey: '2015',
+          datey: '2015'
         },
         {
           id: 2016,
-          datey: '2016',
+          datey: '2016'
         },
         {
           id: 2017,
-          datey: '2017',
+          datey: '2017'
         },
         {
           id: 2018,
-          datey: '2018',
+          datey: '2018'
         },
         {
           id: 2019,
-          datey: '2019',
+          datey: '2019'
         },
         {
           id: 2020,
-          datey: '2020',
+          datey: '2020'
         },
         {
           id: 2021,
-          datey: '2021',
+          datey: '2021'
         },
         {
           id: 2022,
-          datey: '2022',
-        },
+          datey: '2022'
+        }
       ],
       monthList: [
         {
           id: '1',
-          datem: '1',
+          datem: '1'
         },
         {
           id: '2',
-          datem: '2',
+          datem: '2'
         },
         {
           id: '3',
-          datem: '3',
+          datem: '3'
         },
         {
           id: '4',
-          datem: '4',
+          datem: '4'
         },
         {
           id: '5',
-          datem: '5',
+          datem: '5'
         },
         {
           id: '6',
-          datem: '6',
+          datem: '6'
         },
         {
           id: '7',
-          datem: '7',
+          datem: '7'
         },
         {
           id: '8',
-          datem: '8',
+          datem: '8'
         },
         {
           id: '9',
-          datem: '9',
+          datem: '9'
         },
         {
           id: '10',
-          datem: '10',
+          datem: '10'
         },
         {
           id: '11',
-          datem: '11',
+          datem: '11'
         },
         {
           id: '12',
-          datem: '12',
-        },
+          datem: '12'
+        }
       ],
       seetingoption: [],
       picList: {
         cumulativeHotelInquiries: '',
         cumulativeInquiryHotel: '',
-        cumulativeQuotesReceived:'',
-        cumulativeWinningOrders:'',
+        cumulativeQuotesReceived: '',
+        cumulativeWinningOrders: ''
       },
       city: [],
       // aaa:true,
@@ -596,17 +596,17 @@ export default {
       //
       conferMetting: [],
       //
-      contacts: [],
-    };
+      contacts: []
+    }
   },
   mounted() {
-    this.getDataOverview();
-    this.rfqQty();
-    this.MeetingLeader();
+    this.getDataOverview()
+    this.rfqQty()
+    this.MeetingLeader()
     // this.meetingType();
-    this.seeting();
-    this.dictionaryTable();
-    this.getCustomerContacts();
+    this.seeting()
+    this.dictionaryTable()
+    this.getCustomerContacts()
   },
   methods: {
     //获取字典表
@@ -615,35 +615,34 @@ export default {
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
         data: {
-          event_dictionary_code: '0035',
-        },
-      }).then((res) => {
-        this.conferMetting = res;
-        console.log(this.conferMetting, 'wqeqweqwewqeqq');
-      });
+          event_dictionary_code: '0035'
+        }
+      }).then(res => {
+        this.conferMetting = res
+        console.log(this.conferMetting, 'wqeqweqwewqeqq')
+      })
     },
     //负责人
     getCustomerContacts() {
       this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
-        data: {},
-      }).then((res) => {
-        this.contacts = res;
-      });
+        data: {}
+      }).then(res => {
+        this.contacts = res
+      })
     },
     //获取数据概览
     getDataOverview() {
       this.requestApi({
         url: '/CustomerConfiguration/HotelInquiryDataOverview',
         method: 'GET',
-        data: {},
-      }).then((res) => {
-        if(res){
-          this.picList = res;
+        data: {}
+      }).then(res => {
+        if (res) {
+          this.picList = res
         }
-        
-      });
+      })
     },
 
     //会议负责人统计
@@ -657,20 +656,20 @@ export default {
           BeginMonth: this.city_start_month,
           EndYear: this.city_end_year,
           EndMonth: this.city_end_month,
-          EventType: this.city_category , //会议类型  //接口
-          mountOrQuantity: this.typenum, //按金额或者数量
-        },
-      }).then((res) => {
-          if (res.length === 0) {
-            this.cityShow = true;
-          } else {
-            this.cityShow = false;
-            this.city = res;
-          }
-        });
+          EventType: this.city_category, //会议类型  //接口
+          mountOrQuantity: this.typenum //按金额或者数量
+        }
+      }).then(res => {
+        if (res.length === 0) {
+          this.cityShow = true
+        } else {
+          this.cityShow = false
+          this.city = res
+        }
+      })
     },
     //  询价单数量统计
-    // 
+    //
     rfqQty() {
       this.requestApi({
         url: '/CustomerConfiguration/RFPSatatistics',
@@ -683,16 +682,16 @@ export default {
           EndYear: this.endYears, //结束年份
           EndMonth: this.endMonth, //结束月份
           EventType: this.settingType || '', //会议类型
-          SubmitUser: this.creator, //提交人
-        },
-      }).then((res) => {
-          if (res.length === 0) {
-            this.singular = true;
-          } else {
-            this.singular = false;
-            this.rfqQtyList = res;
-          }
-        });
+          SubmitUser: this.creator //提交人
+        }
+      }).then(res => {
+        if (res.length === 0) {
+          this.singular = true
+        } else {
+          this.singular = false
+          this.rfqQtyList = res
+        }
+      })
     },
     //会议类型及部门
 
@@ -709,29 +708,29 @@ export default {
           EndMonth: this.type_end_month, //结束月份
           EventType: this.type_meetting_type || '', //会议类型
           SubmitUser: this.type_creator || '', //提交人
-          mountOrQuantity: this.type_money_amount, //按金额或者数量
-        },
-      }).then((res) => {
-          if (!res) {
-            this.mettingTypeCost = true;
-          } else {
-            this.mettingTypeCost = false;
-            this.meetinglist = res;
-            this.seetingoption = this.meetinglist.EventTypes;
-          }
-        });
+          mountOrQuantity: this.type_money_amount //按金额或者数量
+        }
+      }).then(res => {
+        if (!res) {
+          this.mettingTypeCost = true
+        } else {
+          this.mettingTypeCost = false
+          this.meetinglist = res
+          this.seetingoption = this.meetinglist.EventTypes
+        }
+      })
     },
     //点击确定
     handle() {
-      this.rfqQty();
-      return;
+      this.rfqQty()
+      return
     },
     mettingHandle() {
-      this.MeetingLeader();
-      return;
-    },
-  },
-};
+      this.MeetingLeader()
+      return
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

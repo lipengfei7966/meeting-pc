@@ -93,7 +93,7 @@ export default {
       // let hasmenu = false;
       // this.permissionMenus.forEach(item => {
       //   if(item.children) {
-      //     item.children.forEach(menu => { 
+      //     item.children.forEach(menu => {
       //       if (menu.name == route.name){
       //          hasmenu = true;
       //       }
@@ -101,7 +101,7 @@ export default {
       //   }
       // })
       // if(hasmenu){
-        this.$store.dispatch('addVisitedViews', route)
+      this.$store.dispatch('addVisitedViews', route)
       // }
     },
     // 关闭
@@ -117,7 +117,7 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      this.$store.dispatch('delVisitedViews', view).then((views) => {
+      this.$store.dispatch('delVisitedViews', view).then(views => {
         if (view.path === this.$route.path) {
           const latestView = views.slice(-1)[0]
           if (latestView) {

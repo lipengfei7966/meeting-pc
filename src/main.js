@@ -56,8 +56,6 @@ Vue.use(Storage, {
   storage: 'session' // storage name session, local, memory
 })
 
-
-
 // Lazy Table
 import UmyUi from 'umy-ui'
 import 'umy-ui/lib/theme-chalk/index.css'
@@ -106,18 +104,18 @@ Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })
 // 百度地图
-import BaiduMap from "vue-baidu-map";
+import BaiduMap from 'vue-baidu-map'
 
 Vue.use(BaiduMap, {
-  ak: "zeIWZvTuFXvei4GPOWNy3jcMa4GC6sIa", //  在此输入你自己的百度地图ak
-});
+  ak: 'zeIWZvTuFXvei4GPOWNy3jcMa4GC6sIa' //  在此输入你自己的百度地图ak
+})
 // 引入element-tiptap
 // import { ElementTiptapPlugin } from "element-tiptap";
 // import element-tiptap 样式
 // import "element-tiptap/lib/index.css";
-//使用
+// 使用
 // Vue.use(ElementTiptapPlugin, {
-  // lang: "zh",
+// lang: "zh",
 // });
 
 // 生产环境是否控制台提示

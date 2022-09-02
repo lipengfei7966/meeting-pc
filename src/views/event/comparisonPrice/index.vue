@@ -2333,499 +2333,493 @@
 </template>
 
 <script>
-import offline from './components/offline';
-import { positiveFloat}  from '@/utils/common';
+import offline from './components/offline'
+import { positiveFloat } from '@/utils/common'
 
 export default {
-	data() {
-		return {
-			offlineData: {
-				room: [],
-				totalPrice: {
-					room: ''
-				},
-				remarks: {
-					room_remarks: ''
-				}
-			}, // 线下
-			eventOut: true, // 会场总价
-			roomOut: true, // 客房总价
-			foodOut: true, // 酒店外总价
-			hotelOut: true, // 酒店外总价
-			trafficOut: true, // 大交通
-			urbanOut: true, // 地面交通
-			otherOut: true, // 其他需求
-			unflod: true,//客房展开、收起
-			unflod_conference: true,//会场展开、收起
-			unflod_repast: true,//酒店内餐饮展开、收起
-			unflod_foodOut: true,//酒店外餐饮展开、收起
-			unflod_transport: true,//大交通展开、收起
-			unflod_car: true,//地面交通展开、收起
-			unflod_other: true,//其他服务展开、收起
-			unflod_service: true,//服务费展开、收起
-			unflod_tax: true,//税费展开、收起
-			unflod_can: true,//取消条款展开、收起
-			is_top_head: false,
-			left_arrow: false,
-			right_arrow: false,
-			isopen: true,//会议基本信息展开、收起
-			margin_l: 0,
-			hotelOrSupplier: null, //true为酒店，false为服务商
-			tableData: [],
-			meeting: {},
-			inquiry_sheet_code: '',
-			type: 1, //hotel 酒店
-			command: 1 //2含线下
-		};
-	},
-	components: { offline },
-	mounted() {
-		this.type = this.$route.query.type;
-		this.command = this.$route.query.command;
-		this.$nextTick(() => {
-			let _this = this;
-			/* _this.$refs.all.style.height=document.body.scrollHeight+'px' */
-			document.addEventListener('scroll', function() {
-				_this.$refs.div_left_top.style.left = _this.$refs.div_leftTop.offsetLeft + 'px';
-				_this.$refs.div_left_top.style.top = _this.$refs.div_leftTop.offsetTop + 'px';
-				_this.$refs.div_head.style.left = _this.$refs.div_leftTop.offsetLeft + 'px';
-				_this.$refs.div_table_left.style.left = _this.$refs.div_leftTop.offsetLeft + 'px';
+  data() {
+    return {
+      offlineData: {
+        room: [],
+        totalPrice: {
+          room: ''
+        },
+        remarks: {
+          room_remarks: ''
+        }
+      }, // 线下
+      eventOut: true, // 会场总价
+      roomOut: true, // 客房总价
+      foodOut: true, // 酒店外总价
+      hotelOut: true, // 酒店外总价
+      trafficOut: true, // 大交通
+      urbanOut: true, // 地面交通
+      otherOut: true, // 其他需求
+      unflod: true, //客房展开、收起
+      unflod_conference: true, //会场展开、收起
+      unflod_repast: true, //酒店内餐饮展开、收起
+      unflod_foodOut: true, //酒店外餐饮展开、收起
+      unflod_transport: true, //大交通展开、收起
+      unflod_car: true, //地面交通展开、收起
+      unflod_other: true, //其他服务展开、收起
+      unflod_service: true, //服务费展开、收起
+      unflod_tax: true, //税费展开、收起
+      unflod_can: true, //取消条款展开、收起
+      is_top_head: false,
+      left_arrow: false,
+      right_arrow: false,
+      isopen: true, //会议基本信息展开、收起
+      margin_l: 0,
+      hotelOrSupplier: null, //true为酒店，false为服务商
+      tableData: [],
+      meeting: {},
+      inquiry_sheet_code: '',
+      type: 1, //hotel 酒店
+      command: 1 //2含线下
+    }
+  },
+  components: { offline },
+  mounted() {
+    this.type = this.$route.query.type
+    this.command = this.$route.query.command
+    this.$nextTick(() => {
+      let _this = this
+      /* _this.$refs.all.style.height=document.body.scrollHeight+'px' */
+      document.addEventListener('scroll', function() {
+        _this.$refs.div_left_top.style.left = _this.$refs.div_leftTop.offsetLeft + 'px'
+        _this.$refs.div_left_top.style.top = _this.$refs.div_leftTop.offsetTop + 'px'
+        _this.$refs.div_head.style.left = _this.$refs.div_leftTop.offsetLeft + 'px'
+        _this.$refs.div_table_left.style.left = _this.$refs.div_leftTop.offsetLeft + 'px'
 
-				_this.$refs.all.style.height = document.body.scrollHeight + 'px';
+        _this.$refs.all.style.height = document.body.scrollHeight + 'px'
 
-				if (window.pageYOffset > _this.$refs.float_tr.offsetTop) {
-					_this.is_top_head = true;
-					_this.left_arrow = true;
-					_this.right_arrow = true;
-					_this.$refs.div_head.style.position = 'fixed';
-					_this.$refs.div_head.style.top = '0px';
-				} else {
-					_this.is_top_head = false;
-					_this.left_arrow = false;
-					_this.right_arrow = false;
-				}
-			});
-		});
-		this.room();
-		this.getMeetingList();
-		this.getsheet();
-		this.summaryThanPrice();
-	},
-	computed: {
-		riseInPrice (){	// 价格上涨金额
-			return function(item){
-				let price = Math.abs(item.service.last.total_price - item.service.first.total_price)/Number(item.service.first.total_price)
-				return (price*100).toFixed(2)
-			}
-		},
-		compareNum(){
-			return function(item){
-				item.service.last.total_price > item.service.first.total_price? true:false
-			}
-		}
-	},
-	methods: {
-		positiveFloat,
-		//坐栏高度
-		leftHeight(){
-			this.$nextTick(()=>{
-				//线上
-				var room=this.tableData[0]&&this.tableData[0].room ? this.tableData[0].room : [];
-				if(room){
-					room.forEach((e,i)=>{//客房
-					if(this.$refs.BorderHeight_roominfo_left && this.$refs.BorderHeight_roominfo_left[i]){
-						this.$refs.BorderHeight_roominfo_left[i].style.height=this.$refs.BorderHeight_roominfo[i].offsetHeight+'px'
-						this.$refs.BorderHeight_roominfo[i].style.height=this.$refs.BorderHeight_roominfo[i].offsetHeight+'px'
-					}
-					})
-				}
-				var conference=this.tableData[0]&&this.tableData[0].conference ? this.tableData[0].conference : [];
-				if(conference){
-					conference.forEach((e,i)=>{//会场
-						if(this.$refs.BorderHeight_conferenceinfo1_left && this.$refs.BorderHeight_conferenceinfo1_left[i]){
-							this.$refs.BorderHeight_conferenceinfo1_left[i].style.height=this.$refs.BorderHeight_conferenceinfo1[i].offsetHeight+'px'
-							this.$refs.BorderHeight_conferenceinfo1[i].style.height=this.$refs.BorderHeight_conferenceinfo1[i].offsetHeight+'px'
-						}
-						if(this.$refs.BorderHeight_conferenceinfo2_left && this.$refs.BorderHeight_conferenceinfo2_left[i]){
-							this.$refs.BorderHeight_conferenceinfo2_left[i].style.height=this.$refs.BorderHeight_conferenceinfo2[i].offsetHeight+'px'
-							this.$refs.BorderHeight_conferenceinfo2[i].style.height=this.$refs.BorderHeight_conferenceinfo2[i].offsetHeight+'px'
-						}
-						if(this.$refs.BorderHeight_conferenceinfo3_left && this.$refs.BorderHeight_conferenceinfo3_left[i]){
-							this.$refs.BorderHeight_conferenceinfo3_left[i].style.height=this.$refs.BorderHeight_conferenceinfo3[i].offsetHeight+'px'
-							this.$refs.BorderHeight_conferenceinfo3[i].style.height=this.$refs.BorderHeight_conferenceinfo3[i].offsetHeight+'px'
-						}
-						
-					})
-				}
-				var food=this.tableData[0] &&this.tableData[0].food? this.tableData[0].food : [];
-				if(food){
-					food.forEach((e,i)=>{//酒店内餐饮
-						if(this.$refs.BorderHeight_foodinfo_left && this.$refs.BorderHeight_foodinfo_left[i]){
-							this.$refs.BorderHeight_foodinfo_left[i].style.height=this.$refs.BorderHeight_foodinfo[i].offsetHeight+'px'
-							this.$refs.BorderHeight_foodinfo[i].style.height=this.$refs.BorderHeight_foodinfo[i].offsetHeight+'px'
-						}
-					})
-				}
-				var foodOutside=this.tableData[0]&&this.tableData[0].foodOutside ?this.tableData[0].foodOutside : [];
-				if(foodOutside){
-					foodOutside.forEach((e,i)=>{//酒店外餐饮
-						if(this.$refs.BorderHeight_foodoutinfo_left && this.$refs.BorderHeight_foodoutinfo_left[i]){
-							this.$refs.BorderHeight_foodoutinfo_left[i].style.height=this.$refs.BorderHeight_foodoutinfo[i].offsetHeight+'px'
-							this.$refs.BorderHeight_foodoutinfo[i].style.height=this.$refs.BorderHeight_foodoutinfo[i].offsetHeight+'px'
-						}
-					})
-				}
-				var transportation=this.tableData[0] &&this.tableData[0].transportation? this.tableData[0].transportation : [];
-				if(transportation){
-					transportation.forEach((e,i)=>{//大交通
-						if(this.$refs.BorderHeight_transportationinfo_left && this.$refs.BorderHeight_transportationinfo_left[i]){
-							this.$refs.BorderHeight_transportationinfo_left[i].style.height=this.$refs.BorderHeight_transportationinfo[i].offsetHeight+'px'
-							this.$refs.BorderHeight_transportationinfo[i].style.height=this.$refs.BorderHeight_transportationinfo[i].offsetHeight+'px'
-						}
-					})
-				}
-				var car=this.tableData[0]&&this.tableData[0].car ? this.tableData[0].car : [];
-				if(car){
-					car.forEach((e,i)=>{//地面交通
-						if(this.$refs.BorderHeight_carinfo_left && this.$refs.BorderHeight_carinfo_left[i]){
-							this.$refs.BorderHeight_carinfo_left[i].style.height=this.$refs.BorderHeight_carinfo[i].offsetHeight+'px'
-							this.$refs.BorderHeight_carinfo[i].style.height=this.$refs.BorderHeight_carinfo[i].offsetHeight+'px'
-						}
-					})
-				}
-				var other=this.tableData[0] &&this.tableData[0].other? this.tableData[0].other : [];
-				if(other){
-					other.forEach((e,i)=>{//其他服务
-						if(this.$refs.BorderHeight_otherinfo_left && this.$refs.BorderHeight_otherinfo_left[i]){
-							this.$refs.BorderHeight_otherinfo_left[i].style.height=this.$refs.BorderHeight_otherinfo[i].offsetHeight+'px'
-							this.$refs.BorderHeight_otherinfo[i].style.height=this.$refs.BorderHeight_otherinfo[i].offsetHeight+'px'
-						}
-					})
-				}
-				//服务商报价说明
-				this.$refs.BorderHeight_remark_left.style.height=this.$refs.BorderHeight_remark.offsetHeight+'px'
-				this.$refs.BorderHeight_remark.style.height=this.$refs.BorderHeight_remark.offsetHeight+'px'
-				
-				
-				//线下
-				//会场
-				if(this.offlineData.conference)
-				this.offlineData.conference.forEach((e,i)=>{
-					this.$refs.BorderHeight_offlineconferencedate_left[i].style.height=this.$refs.BorderHeight_offlineconferencedate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlineconferencedate[i].style.height=this.$refs.BorderHeight_offlineconferencedate[i].offsetHeight+'px'
-					e.data.forEach((item,index)=>{
-						this.$refs.BorderHeight_offlineconferenceinfo_left[index].style.height=this.$refs.BorderHeight_offlineconferenceinfo[index].offsetHeight+'px'
-						this.$refs.BorderHeight_offlineconferenceinfo[index].style.height=this.$refs.BorderHeight_offlineconferenceinfo[index].offsetHeight+'px'
-					})
-				})
-				//客房
-				if(this.offlineData.room)
-				this.offlineData.room.forEach((e,i)=>{
-					this.$refs.BorderHeight_offlineroomdate_left[i].style.height=this.$refs.BorderHeight_offlineroomdate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlineroomdate[i].style.height=this.$refs.BorderHeight_offlineroomdate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlineroominfo_left[i].style.height=this.$refs.BorderHeight_offlineroominfo[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlineroominfo[i].style.height=this.$refs.BorderHeight_offlineroominfo[i].offsetHeight+'px'
-				})
-				//酒店内餐饮
-				if(this.offlineData.food)
-				this.offlineData.food.forEach((e,i)=>{
-					this.$refs.BorderHeight_offlinefooddate_left[i].style.height=this.$refs.BorderHeight_offlinefooddate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefooddate[i].style.height=this.$refs.BorderHeight_offlinefooddate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodinfo_left[i].style.height=this.$refs.BorderHeight_offlinefoodinfo[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodinfo[i].style.height=this.$refs.BorderHeight_offlinefoodinfo[i].offsetHeight+'px'
-				})
-				//酒店外餐饮
-				if(this.offlineData.foodOutside)
-				this.offlineData.foodOutside.forEach((e,i)=>{
-					this.$refs.BorderHeight_offlinefoodoutdate_left[i].style.height=this.$refs.BorderHeight_offlinefoodoutdate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodoutdate[i].style.height=this.$refs.BorderHeight_offlinefoodoutdate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodoutinfo_left[i].style.height=this.$refs.BorderHeight_offlinefoodoutinfo[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodoutinfo[i].style.height=this.$refs.BorderHeight_offlinefoodoutinfo[i].offsetHeight+'px'
-				})
-				//大交通
-				if(this.offlineData.transportation)
-				this.offlineData.transportation.forEach((e,i)=>{
-					this.$refs.BorderHeight_offlinetransportationdate_left[i].style.height=this.$refs.BorderHeight_offlinetransportationdate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinetransportationdate[i].style.height=this.$refs.BorderHeight_offlinetransportationdate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinetransportationinfo_left[i].style.height=this.$refs.BorderHeight_offlinetransportationinfo[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinetransportationinfo[i].style.height=this.$refs.BorderHeight_offlinetransportationinfo[i].offsetHeight+'px'
-				})
-				//地面交通
-				if(this.offlineData.car)
-				this.offlineData.car.forEach((e,i)=>{
-					this.$refs.BorderHeight_offlinecardate_left[i].style.height=this.$refs.BorderHeight_offlinecardate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinecardate[i].style.height=this.$refs.BorderHeight_offlinecardate[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinecarinfo_left[i].style.height=this.$refs.BorderHeight_offlinecarinfo[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlinecarinfo[i].style.height=this.$refs.BorderHeight_offlinecarinfo[i].offsetHeight+'px'
-				})
-				//其他服务
-				if(this.offlineData.other)
-				this.offlineData.other.forEach((e,i)=>{
-					debugger
-					this.$refs.BorderHeight_offlineotherinfo_left[i].style.height=this.$refs.BorderHeight_offlineotherinfo[i].offsetHeight+'px'
-					this.$refs.BorderHeight_offlineotherinfo[i].style.height=this.$refs.BorderHeight_offlineotherinfo[i].offsetHeight+'px'
-				})
-				//服务费
-				if(this.$refs.BorderHeight_serviceinfo_left){
-					this.$refs.BorderHeight_serviceinfo_left.style.height=this.$refs.BorderHeight_serviceinfo.offsetHeight+'px'
+        if (window.pageYOffset > _this.$refs.float_tr.offsetTop) {
+          _this.is_top_head = true
+          _this.left_arrow = true
+          _this.right_arrow = true
+          _this.$refs.div_head.style.position = 'fixed'
+          _this.$refs.div_head.style.top = '0px'
+        } else {
+          _this.is_top_head = false
+          _this.left_arrow = false
+          _this.right_arrow = false
+        }
+      })
+    })
+    this.room()
+    this.getMeetingList()
+    this.getsheet()
+    this.summaryThanPrice()
+  },
+  computed: {
+    riseInPrice() {
+      // 价格上涨金额
+      return function(item) {
+        let price = Math.abs(item.service.last.total_price - item.service.first.total_price) / Number(item.service.first.total_price)
+        return (price * 100).toFixed(2)
+      }
+    },
+    compareNum() {
+      return function(item) {
+        item.service.last.total_price > item.service.first.total_price ? true : false
+      }
+    }
+  },
+  methods: {
+    positiveFloat,
+    //坐栏高度
+    leftHeight() {
+      this.$nextTick(() => {
+        //线上
+        var room = this.tableData[0] && this.tableData[0].room ? this.tableData[0].room : []
+        if (room) {
+          room.forEach((e, i) => {
+            //客房
+            if (this.$refs.BorderHeight_roominfo_left && this.$refs.BorderHeight_roominfo_left[i]) {
+              this.$refs.BorderHeight_roominfo_left[i].style.height = this.$refs.BorderHeight_roominfo[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_roominfo[i].style.height = this.$refs.BorderHeight_roominfo[i].offsetHeight + 'px'
+            }
+          })
+        }
+        var conference = this.tableData[0] && this.tableData[0].conference ? this.tableData[0].conference : []
+        if (conference) {
+          conference.forEach((e, i) => {
+            //会场
+            if (this.$refs.BorderHeight_conferenceinfo1_left && this.$refs.BorderHeight_conferenceinfo1_left[i]) {
+              this.$refs.BorderHeight_conferenceinfo1_left[i].style.height = this.$refs.BorderHeight_conferenceinfo1[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_conferenceinfo1[i].style.height = this.$refs.BorderHeight_conferenceinfo1[i].offsetHeight + 'px'
+            }
+            if (this.$refs.BorderHeight_conferenceinfo2_left && this.$refs.BorderHeight_conferenceinfo2_left[i]) {
+              this.$refs.BorderHeight_conferenceinfo2_left[i].style.height = this.$refs.BorderHeight_conferenceinfo2[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_conferenceinfo2[i].style.height = this.$refs.BorderHeight_conferenceinfo2[i].offsetHeight + 'px'
+            }
+            if (this.$refs.BorderHeight_conferenceinfo3_left && this.$refs.BorderHeight_conferenceinfo3_left[i]) {
+              this.$refs.BorderHeight_conferenceinfo3_left[i].style.height = this.$refs.BorderHeight_conferenceinfo3[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_conferenceinfo3[i].style.height = this.$refs.BorderHeight_conferenceinfo3[i].offsetHeight + 'px'
+            }
+          })
+        }
+        var food = this.tableData[0] && this.tableData[0].food ? this.tableData[0].food : []
+        if (food) {
+          food.forEach((e, i) => {
+            //酒店内餐饮
+            if (this.$refs.BorderHeight_foodinfo_left && this.$refs.BorderHeight_foodinfo_left[i]) {
+              this.$refs.BorderHeight_foodinfo_left[i].style.height = this.$refs.BorderHeight_foodinfo[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_foodinfo[i].style.height = this.$refs.BorderHeight_foodinfo[i].offsetHeight + 'px'
+            }
+          })
+        }
+        var foodOutside = this.tableData[0] && this.tableData[0].foodOutside ? this.tableData[0].foodOutside : []
+        if (foodOutside) {
+          foodOutside.forEach((e, i) => {
+            //酒店外餐饮
+            if (this.$refs.BorderHeight_foodoutinfo_left && this.$refs.BorderHeight_foodoutinfo_left[i]) {
+              this.$refs.BorderHeight_foodoutinfo_left[i].style.height = this.$refs.BorderHeight_foodoutinfo[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_foodoutinfo[i].style.height = this.$refs.BorderHeight_foodoutinfo[i].offsetHeight + 'px'
+            }
+          })
+        }
+        var transportation = this.tableData[0] && this.tableData[0].transportation ? this.tableData[0].transportation : []
+        if (transportation) {
+          transportation.forEach((e, i) => {
+            //大交通
+            if (this.$refs.BorderHeight_transportationinfo_left && this.$refs.BorderHeight_transportationinfo_left[i]) {
+              this.$refs.BorderHeight_transportationinfo_left[i].style.height = this.$refs.BorderHeight_transportationinfo[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_transportationinfo[i].style.height = this.$refs.BorderHeight_transportationinfo[i].offsetHeight + 'px'
+            }
+          })
+        }
+        var car = this.tableData[0] && this.tableData[0].car ? this.tableData[0].car : []
+        if (car) {
+          car.forEach((e, i) => {
+            //地面交通
+            if (this.$refs.BorderHeight_carinfo_left && this.$refs.BorderHeight_carinfo_left[i]) {
+              this.$refs.BorderHeight_carinfo_left[i].style.height = this.$refs.BorderHeight_carinfo[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_carinfo[i].style.height = this.$refs.BorderHeight_carinfo[i].offsetHeight + 'px'
+            }
+          })
+        }
+        var other = this.tableData[0] && this.tableData[0].other ? this.tableData[0].other : []
+        if (other) {
+          other.forEach((e, i) => {
+            //其他服务
+            if (this.$refs.BorderHeight_otherinfo_left && this.$refs.BorderHeight_otherinfo_left[i]) {
+              this.$refs.BorderHeight_otherinfo_left[i].style.height = this.$refs.BorderHeight_otherinfo[i].offsetHeight + 'px'
+              this.$refs.BorderHeight_otherinfo[i].style.height = this.$refs.BorderHeight_otherinfo[i].offsetHeight + 'px'
+            }
+          })
+        }
+        //服务商报价说明
+        this.$refs.BorderHeight_remark_left.style.height = this.$refs.BorderHeight_remark.offsetHeight + 'px'
+        this.$refs.BorderHeight_remark.style.height = this.$refs.BorderHeight_remark.offsetHeight + 'px'
 
-					this.$refs.BorderHeight_serviceinfo.style.height=this.$refs.BorderHeight_serviceinfo.offsetHeight+'px'
-				}
-				//税费
-				if(this.$refs.BorderHeight_taxationinfo_left){
+        //线下
+        //会场
+        if (this.offlineData.conference)
+          this.offlineData.conference.forEach((e, i) => {
+            this.$refs.BorderHeight_offlineconferencedate_left[i].style.height = this.$refs.BorderHeight_offlineconferencedate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlineconferencedate[i].style.height = this.$refs.BorderHeight_offlineconferencedate[i].offsetHeight + 'px'
+            e.data.forEach((item, index) => {
+              this.$refs.BorderHeight_offlineconferenceinfo_left[index].style.height = this.$refs.BorderHeight_offlineconferenceinfo[index].offsetHeight + 'px'
+              this.$refs.BorderHeight_offlineconferenceinfo[index].style.height = this.$refs.BorderHeight_offlineconferenceinfo[index].offsetHeight + 'px'
+            })
+          })
+        //客房
+        if (this.offlineData.room)
+          this.offlineData.room.forEach((e, i) => {
+            this.$refs.BorderHeight_offlineroomdate_left[i].style.height = this.$refs.BorderHeight_offlineroomdate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlineroomdate[i].style.height = this.$refs.BorderHeight_offlineroomdate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlineroominfo_left[i].style.height = this.$refs.BorderHeight_offlineroominfo[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlineroominfo[i].style.height = this.$refs.BorderHeight_offlineroominfo[i].offsetHeight + 'px'
+          })
+        //酒店内餐饮
+        if (this.offlineData.food)
+          this.offlineData.food.forEach((e, i) => {
+            this.$refs.BorderHeight_offlinefooddate_left[i].style.height = this.$refs.BorderHeight_offlinefooddate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinefooddate[i].style.height = this.$refs.BorderHeight_offlinefooddate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinefoodinfo_left[i].style.height = this.$refs.BorderHeight_offlinefoodinfo[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinefoodinfo[i].style.height = this.$refs.BorderHeight_offlinefoodinfo[i].offsetHeight + 'px'
+          })
+        //酒店外餐饮
+        if (this.offlineData.foodOutside)
+          this.offlineData.foodOutside.forEach((e, i) => {
+            this.$refs.BorderHeight_offlinefoodoutdate_left[i].style.height = this.$refs.BorderHeight_offlinefoodoutdate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinefoodoutdate[i].style.height = this.$refs.BorderHeight_offlinefoodoutdate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinefoodoutinfo_left[i].style.height = this.$refs.BorderHeight_offlinefoodoutinfo[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinefoodoutinfo[i].style.height = this.$refs.BorderHeight_offlinefoodoutinfo[i].offsetHeight + 'px'
+          })
+        //大交通
+        if (this.offlineData.transportation)
+          this.offlineData.transportation.forEach((e, i) => {
+            this.$refs.BorderHeight_offlinetransportationdate_left[i].style.height = this.$refs.BorderHeight_offlinetransportationdate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinetransportationdate[i].style.height = this.$refs.BorderHeight_offlinetransportationdate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinetransportationinfo_left[i].style.height = this.$refs.BorderHeight_offlinetransportationinfo[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinetransportationinfo[i].style.height = this.$refs.BorderHeight_offlinetransportationinfo[i].offsetHeight + 'px'
+          })
+        //地面交通
+        if (this.offlineData.car)
+          this.offlineData.car.forEach((e, i) => {
+            this.$refs.BorderHeight_offlinecardate_left[i].style.height = this.$refs.BorderHeight_offlinecardate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinecardate[i].style.height = this.$refs.BorderHeight_offlinecardate[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinecarinfo_left[i].style.height = this.$refs.BorderHeight_offlinecarinfo[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlinecarinfo[i].style.height = this.$refs.BorderHeight_offlinecarinfo[i].offsetHeight + 'px'
+          })
+        //其他服务
+        if (this.offlineData.other)
+          this.offlineData.other.forEach((e, i) => {
+            debugger
+            this.$refs.BorderHeight_offlineotherinfo_left[i].style.height = this.$refs.BorderHeight_offlineotherinfo[i].offsetHeight + 'px'
+            this.$refs.BorderHeight_offlineotherinfo[i].style.height = this.$refs.BorderHeight_offlineotherinfo[i].offsetHeight + 'px'
+          })
+        //服务费
+        if (this.$refs.BorderHeight_serviceinfo_left) {
+          this.$refs.BorderHeight_serviceinfo_left.style.height = this.$refs.BorderHeight_serviceinfo.offsetHeight + 'px'
 
-					this.$refs.BorderHeight_taxationinfo_left.style.height=this.$refs.BorderHeight_taxationinfo.offsetHeight+'px'
-					this.$refs.BorderHeight_taxationinfo.style.height=this.$refs.BorderHeight_taxationinfo.offsetHeight+'px'
-				}
-				
-				//客房总备注
-				if(this.tableData[0] && this.tableData[0].room && this.tableData[0].room.length > 0){
-					if(this.$refs.BorderHeight_roomremark_left){
+          this.$refs.BorderHeight_serviceinfo.style.height = this.$refs.BorderHeight_serviceinfo.offsetHeight + 'px'
+        }
+        //税费
+        if (this.$refs.BorderHeight_taxationinfo_left) {
+          this.$refs.BorderHeight_taxationinfo_left.style.height = this.$refs.BorderHeight_taxationinfo.offsetHeight + 'px'
+          this.$refs.BorderHeight_taxationinfo.style.height = this.$refs.BorderHeight_taxationinfo.offsetHeight + 'px'
+        }
 
-						this.$refs.BorderHeight_roomremark_left.style.height=this.$refs.BorderHeight_roomremark.offsetHeight+'px'
-						this.$refs.BorderHeight_roomremark.style.height=this.$refs.BorderHeight_roomremark.offsetHeight+'px'
-					}
-				}
-				//会场总备注
-				if(this.tableData[0] && this.tableData[0].conference && this.tableData[0].conference.length > 0){
-					if(this.$refs.BorderHeight_conferenceremark_left){
+        //客房总备注
+        if (this.tableData[0] && this.tableData[0].room && this.tableData[0].room.length > 0) {
+          if (this.$refs.BorderHeight_roomremark_left) {
+            this.$refs.BorderHeight_roomremark_left.style.height = this.$refs.BorderHeight_roomremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_roomremark.style.height = this.$refs.BorderHeight_roomremark.offsetHeight + 'px'
+          }
+        }
+        //会场总备注
+        if (this.tableData[0] && this.tableData[0].conference && this.tableData[0].conference.length > 0) {
+          if (this.$refs.BorderHeight_conferenceremark_left) {
+            this.$refs.BorderHeight_conferenceremark_left.style.height = this.$refs.BorderHeight_conferenceremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_conferenceremark.style.height = this.$refs.BorderHeight_conferenceremark.offsetHeight + 'px'
+          }
+        }
+        //酒店内餐饮总备注
+        if (this.tableData[0] && this.tableData[0].food && this.tableData[0].food.length > 0) {
+          if (this.$refs.BorderHeight_foodremark_left) {
+            this.$refs.BorderHeight_foodremark_left.style.height = this.$refs.BorderHeight_foodremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_foodremark.style.height = this.$refs.BorderHeight_foodremark.offsetHeight + 'px'
+          }
+        }
+        //酒店外餐饮总备注
+        if (this.tableData[0] && this.tableData[0].foodOutside && this.tableData[0].foodOutside.length > 0) {
+          if (this.$refs.BorderHeight_foodoutremark_left) {
+            this.$refs.BorderHeight_foodoutremark_left.style.height = this.$refs.BorderHeight_foodoutremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_foodoutremark.style.height = this.$refs.BorderHeight_foodoutremark.offsetHeight + 'px'
+          }
+        }
+        //大交通总备注
+        if (this.tableData[0] && this.tableData[0].transportation && this.tableData[0].transportation.length > 0) {
+          if (this.$refs.BorderHeight_transportationtotalremark_left) {
+            this.$refs.BorderHeight_transportationtotalremark_left.style.height = this.$refs.BorderHeight_transportationtotalremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_transportationtotalremark.style.height = this.$refs.BorderHeight_transportationtotalremark.offsetHeight + 'px'
+          }
+        }
+        //地面交通总备注
+        if (this.tableData[0] && this.tableData[0].car && this.tableData[0].car.length > 0) {
+          if (this.$refs.BorderHeight_carremark_left) {
+            this.$refs.BorderHeight_carremark_left.style.height = this.$refs.BorderHeight_carremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_carremark.style.height = this.$refs.BorderHeight_carremark.offsetHeight + 'px'
+          }
+        }
+        //其他服务总备注
+        if (this.tableData[0] && this.tableData[0].other && this.tableData[0].other.length > 0) {
+          if (this.$refs.BorderHeight_otherremark_left) {
+            this.$refs.BorderHeight_otherremark_left.style.height = this.$refs.BorderHeight_otherremark.offsetHeight + 'px'
+            this.$refs.BorderHeight_otherremark.style.height = this.$refs.BorderHeight_otherremark.offsetHeight + 'px'
+          }
+        }
 
-						this.$refs.BorderHeight_conferenceremark_left.style.height=this.$refs.BorderHeight_conferenceremark.offsetHeight+'px'
-						this.$refs.BorderHeight_conferenceremark.style.height=this.$refs.BorderHeight_conferenceremark.offsetHeight+'px'
-					}
-				}
-				//酒店内餐饮总备注
-				if(this.tableData[0] && this.tableData[0].food && this.tableData[0].food.length > 0){
-					if(this.$refs.BorderHeight_foodremark_left){
-
-						this.$refs.BorderHeight_foodremark_left.style.height=this.$refs.BorderHeight_foodremark.offsetHeight+'px'
-						this.$refs.BorderHeight_foodremark.style.height=this.$refs.BorderHeight_foodremark.offsetHeight+'px'
-					}
-				}
-				//酒店外餐饮总备注
-				if(this.tableData[0] && this.tableData[0].foodOutside && this.tableData[0].foodOutside.length > 0){
-					if(this.$refs.BorderHeight_foodoutremark_left){
-
-						this.$refs.BorderHeight_foodoutremark_left.style.height=this.$refs.BorderHeight_foodoutremark.offsetHeight+'px'
-						this.$refs.BorderHeight_foodoutremark.style.height=this.$refs.BorderHeight_foodoutremark.offsetHeight+'px'
-					}
-				}
-				//大交通总备注
-				if(this.tableData[0] && this.tableData[0].transportation && this.tableData[0].transportation.length > 0){
-					if(this.$refs.BorderHeight_transportationtotalremark_left){
-
-						this.$refs.BorderHeight_transportationtotalremark_left.style.height=this.$refs.BorderHeight_transportationtotalremark.offsetHeight+'px'
-						this.$refs.BorderHeight_transportationtotalremark.style.height=this.$refs.BorderHeight_transportationtotalremark.offsetHeight+'px'
-					}
-				}
-				//地面交通总备注
-				if(this.tableData[0] && this.tableData[0].car && this.tableData[0].car.length > 0){
-					if(this.$refs.BorderHeight_carremark_left){
-
-						this.$refs.BorderHeight_carremark_left.style.height=this.$refs.BorderHeight_carremark.offsetHeight+'px'
-						this.$refs.BorderHeight_carremark.style.height=this.$refs.BorderHeight_carremark.offsetHeight+'px'
-					}
-				}
-				//其他服务总备注
-				if(this.tableData[0] && this.tableData[0].other && this.tableData[0].other.length > 0){
-					if(this.$refs.BorderHeight_otherremark_left){
-
-						this.$refs.BorderHeight_otherremark_left.style.height=this.$refs.BorderHeight_otherremark.offsetHeight+'px'
-						this.$refs.BorderHeight_otherremark.style.height=this.$refs.BorderHeight_otherremark.offsetHeight+'px'
-					}
-				}
-				
-				//线下
-				//客房总备注
-				if(this.offlineData.room && this.offlineData.room.length > 0){
-					this.$refs.BorderHeight_offlineroomremark_left.style.height=this.$refs.BorderHeight_offlineroomremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlineroomremark.style.height=this.$refs.BorderHeight_offlineroomremark.offsetHeight+'px'
-				}
-				//会场总备注
-				if(this.offlineData.conference && this.offlineData.conference.length > 0){
-					this.$refs.BorderHeight_offlineconferenceremark_left.style.height=this.$refs.BorderHeight_offlineconferenceremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlineconferenceremark.style.height=this.$refs.BorderHeight_offlineconferenceremark.offsetHeight+'px'
-				}
-				//酒店内餐饮总备注
-				if(this.offlineData.food && this.offlineData.food.length > 0){
-					this.$refs.BorderHeight_offlinefoodremark_left.style.height=this.$refs.BorderHeight_offlinefoodremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodremark.style.height=this.$refs.BorderHeight_offlinefoodremark.offsetHeight+'px'
-				}
-				//酒店外餐饮总备注
-				if(this.offlineData.foodOutside && this.offlineData.foodOutside.length > 0){
-					this.$refs.BorderHeight_offlinefoodoutremark_left.style.height=this.$refs.BorderHeight_offlinefoodoutremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlinefoodoutremark.style.height=this.$refs.BorderHeight_offlinefoodoutremark.offsetHeight+'px'
-				}
-				//大交通总备注
-				if(this.offlineData.transportation && this.offlineData.transportation.length > 0){
-					this.$refs.BorderHeight_offlinetransportationremark_left.style.height=this.$refs.BorderHeight_offlinetransportationremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlinetransportationremark.style.height=this.$refs.BorderHeight_offlinetransportationremark.offsetHeight+'px'
-				}
-				//地面交通总备注
-				if(this.offlineData.car && this.offlineData.car.length > 0){
-					this.$refs.BorderHeight_offlinecarremark_left.style.height=this.$refs.BorderHeight_offlinecarremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlinecarremark.style.height=this.$refs.BorderHeight_offlinecarremark.offsetHeight+'px'
-				}
-				//其他服务总备注
-				if(this.offlineData.other && this.offlineData.other.length > 0){
-					this.$refs.BorderHeight_offlineotherremark_left.style.height=this.$refs.BorderHeight_offlineotherremark.offsetHeight+'px'
-					this.$refs.BorderHeight_offlineotherremark.style.height=this.$refs.BorderHeight_offlineotherremark.offsetHeight+'px'
-				}
-				
-				
-			})
-		},
-		// 线下需求 日总价
-		getDateTotalPrice(data, type) {
-			return data && data.length
-				? data.reduce((p, n) => {
-						if (type === 1) return p + n.count * n.price;
-						else if (type === 2) return p + n.total_price;
-						else if (type === 3) return p + n.carcount * n.price;
-						else return p;
-				  }, 0)
-				: 0;
-		},
-		// 获取线下报价信息
-		summaryThanPrice() {
+        //线下
+        //客房总备注
+        if (this.offlineData.room && this.offlineData.room.length > 0) {
+          this.$refs.BorderHeight_offlineroomremark_left.style.height = this.$refs.BorderHeight_offlineroomremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlineroomremark.style.height = this.$refs.BorderHeight_offlineroomremark.offsetHeight + 'px'
+        }
+        //会场总备注
+        if (this.offlineData.conference && this.offlineData.conference.length > 0) {
+          this.$refs.BorderHeight_offlineconferenceremark_left.style.height = this.$refs.BorderHeight_offlineconferenceremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlineconferenceremark.style.height = this.$refs.BorderHeight_offlineconferenceremark.offsetHeight + 'px'
+        }
+        //酒店内餐饮总备注
+        if (this.offlineData.food && this.offlineData.food.length > 0) {
+          this.$refs.BorderHeight_offlinefoodremark_left.style.height = this.$refs.BorderHeight_offlinefoodremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlinefoodremark.style.height = this.$refs.BorderHeight_offlinefoodremark.offsetHeight + 'px'
+        }
+        //酒店外餐饮总备注
+        if (this.offlineData.foodOutside && this.offlineData.foodOutside.length > 0) {
+          this.$refs.BorderHeight_offlinefoodoutremark_left.style.height = this.$refs.BorderHeight_offlinefoodoutremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlinefoodoutremark.style.height = this.$refs.BorderHeight_offlinefoodoutremark.offsetHeight + 'px'
+        }
+        //大交通总备注
+        if (this.offlineData.transportation && this.offlineData.transportation.length > 0) {
+          this.$refs.BorderHeight_offlinetransportationremark_left.style.height = this.$refs.BorderHeight_offlinetransportationremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlinetransportationremark.style.height = this.$refs.BorderHeight_offlinetransportationremark.offsetHeight + 'px'
+        }
+        //地面交通总备注
+        if (this.offlineData.car && this.offlineData.car.length > 0) {
+          this.$refs.BorderHeight_offlinecarremark_left.style.height = this.$refs.BorderHeight_offlinecarremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlinecarremark.style.height = this.$refs.BorderHeight_offlinecarremark.offsetHeight + 'px'
+        }
+        //其他服务总备注
+        if (this.offlineData.other && this.offlineData.other.length > 0) {
+          this.$refs.BorderHeight_offlineotherremark_left.style.height = this.$refs.BorderHeight_offlineotherremark.offsetHeight + 'px'
+          this.$refs.BorderHeight_offlineotherremark.style.height = this.$refs.BorderHeight_offlineotherremark.offsetHeight + 'px'
+        }
+      })
+    },
+    // 线下需求 日总价
+    getDateTotalPrice(data, type) {
+      return data && data.length
+        ? data.reduce((p, n) => {
+            if (type === 1) return p + n.count * n.price
+            else if (type === 2) return p + n.total_price
+            else if (type === 3) return p + n.carcount * n.price
+            else return p
+          }, 0)
+        : 0
+    },
+    // 获取线下报价信息
+    summaryThanPrice() {
       this.requestApi({
         url: '/MeetingMa/SummaryThanPrice',
         method: 'POST',
-        data: { InquirySheetID: this.$route.query.InquirySheetID },
+        data: { InquirySheetID: this.$route.query.InquirySheetID }
       }).then(res => {
-				if (res) {
-					this.offlineData = res;
-				}
-			});
-		},
-		//左移
-		leftMove() {
-			var left_move = 0;
-			if (this.$refs.table_move.offsetLeft < this.$refs.div_leftTop.offsetLeft) {
-				if (this.$refs.div_leftTop.offsetLeft - this.$refs.table_move.offsetLeft < 150) {
-					this.margin_l += this.$refs.div_leftTop.offsetLeft - this.$refs.table_move.offsetLeft;
-					left_move = this.$refs.div_leftTop.offsetLeft - this.$refs.table_move.offsetLeft;
-				} else {
-					this.margin_l += 150;
-					left_move = 150;
-				}
-				this.$refs.table_move.style.marginLeft = this.margin_l + 'px';
-				this.$refs.table_head.style.left = this.$refs.table_head.offsetLeft + left_move + 'px';
-			}
-		},
-		//右移
-		rightMove() {
-			var left_move = 0;
-			if (this.$refs.table_move.offsetLeft > this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth)) {
-				if (this.$refs.table_move.offsetLeft - (this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth)) < 150) {
-					this.margin_l -=
-						this.$refs.table_move.offsetLeft - (this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth));
-					left_move = this.$refs.table_move.offsetLeft - (this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth));
-				} else {
-					this.margin_l -= 150;
-					left_move = 150;
-				}
-				this.$refs.table_move.style.marginLeft = this.margin_l + 'px';
-				this.$refs.table_head.style.left = this.$refs.table_head.offsetLeft - left_move + 'px';
-			}
-		},
-		excelExport() {
-			//导出excel
-			if (this.command == 1) {
+        if (res) {
+          this.offlineData = res
+        }
+      })
+    },
+    //左移
+    leftMove() {
+      var left_move = 0
+      if (this.$refs.table_move.offsetLeft < this.$refs.div_leftTop.offsetLeft) {
+        if (this.$refs.div_leftTop.offsetLeft - this.$refs.table_move.offsetLeft < 150) {
+          this.margin_l += this.$refs.div_leftTop.offsetLeft - this.$refs.table_move.offsetLeft
+          left_move = this.$refs.div_leftTop.offsetLeft - this.$refs.table_move.offsetLeft
+        } else {
+          this.margin_l += 150
+          left_move = 150
+        }
+        this.$refs.table_move.style.marginLeft = this.margin_l + 'px'
+        this.$refs.table_head.style.left = this.$refs.table_head.offsetLeft + left_move + 'px'
+      }
+    },
+    //右移
+    rightMove() {
+      var left_move = 0
+      if (this.$refs.table_move.offsetLeft > this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth)) {
+        if (this.$refs.table_move.offsetLeft - (this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth)) < 150) {
+          this.margin_l -= this.$refs.table_move.offsetLeft - (this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth))
+          left_move = this.$refs.table_move.offsetLeft - (this.$refs.div_leftTop.offsetLeft - (this.$refs.table_move.offsetWidth - this.$refs.div_leftTop.offsetWidth))
+        } else {
+          this.margin_l -= 150
+          left_move = 150
+        }
+        this.$refs.table_move.style.marginLeft = this.margin_l + 'px'
+        this.$refs.table_head.style.left = this.$refs.table_head.offsetLeft - left_move + 'px'
+      }
+    },
+    excelExport() {
+      //导出excel
+      if (this.command == 1) {
         this.requestApi({
           url: '/ExcelExport/ThanPriceExcelExport',
           method: 'POST',
-          data: { InquirySheetID: this.$route.query.InquirySheetID },
+          data: { InquirySheetID: this.$route.query.InquirySheetID }
         }).then(res => {
-          console.log(res);
-          window.location.href = res;
-        });
-			} else if (this.command == 2) {
+          console.log(res)
+          window.location.href = res
+        })
+      } else if (this.command == 2) {
         this.requestApi({
           url: '/ExcelExport/SummaryThanPriceExcelExport',
           method: 'POST',
-          data: { InquirySheetID: this.$route.query.InquirySheetID },
+          data: { InquirySheetID: this.$route.query.InquirySheetID }
         }).then(res => {
-          console.log(res);
-          window.location.href = res;
-        });
-			}
-		},
-		// 导出PDF
-		pdfExport() {},
-		room() {
-			if(this.command == '1'){
+          console.log(res)
+          window.location.href = res
+        })
+      }
+    },
+    // 导出PDF
+    pdfExport() {},
+    room() {
+      if (this.command == '1') {
         this.requestApi({
           url: '/MeetingMa/ThanPrice',
           method: 'POST',
-          data: { InquirySheetID: this.$route.query.InquirySheetID },
+          data: { InquirySheetID: this.$route.query.InquirySheetID }
         }).then(res => {
-					this.tableData = res;
-					this.hotelOrSupplier = this.tableData[0].service.service_hotel == 0 ? true : false; //true为酒店  false为服务商
-					this.leftHeight()
-				});
-			}else{
+          this.tableData = res
+          this.hotelOrSupplier = this.tableData[0].service.service_hotel == 0 ? true : false //true为酒店  false为服务商
+          this.leftHeight()
+        })
+      } else {
         this.requestApi({
           url: '/MeetingMa/OfflineThanPrice',
           method: 'POST',
-          data: { InquirySheetID: this.$route.query.InquirySheetID },
+          data: { InquirySheetID: this.$route.query.InquirySheetID }
         }).then(res => {
-					this.tableData = res;
-					this.hotelOrSupplier = this.tableData[0].service.service_hotel == 0 ? true : false; //true为酒店  false为服务商
-					this.leftHeight()
-				});
-			}
-			
-		},
-		getMeetingList() {
+          this.tableData = res
+          this.hotelOrSupplier = this.tableData[0].service.service_hotel == 0 ? true : false //true为酒店  false为服务商
+          this.leftHeight()
+        })
+      }
+    },
+    getMeetingList() {
       this.requestApi({
         url: '/MeetingMa/GetMeetingList',
         method: 'POST',
-        data: { MeetingID: this.$route.query.eventId },
+        data: { MeetingID: this.$route.query.eventId }
       }).then(res => {
-        this.meeting = res;
+        this.meeting = res
         //console.log(res)
-      });
-		},
-		getsheet() {
+      })
+    },
+    getsheet() {
       this.requestApi({
         url: '/MeetingMa/GetInquirySheet',
         method: 'POST',
-        data: { InquirySheetID: this.$route.query.InquirySheetID },
+        data: { InquirySheetID: this.$route.query.InquirySheetID }
       }).then(res => {
-					this.inquiry_sheet_code = res.inquiry_sheet.inquiry_sheet_code;
-				});
-		},
-		conference() {
-			this.$router.push({
-				name: 'EventList',
-				query: {}
-			});
-		},
-		conferencedeatail() {
-			this.$router.push({
-				name: 'eventDetail',
-				query: {
-					id: this.$route.query.eventId,
-					name: this.meeting.event_name,
-					eventSearchType: this.$route.query.eventSearchType
-				}
-			});
-		},
-		inquiry() {
-			this.$router.push({
-				name: 'servicedetails',
-				query: {
-					id: this.$route.query.eventId,
-					sheetId: this.$route.query.InquirySheetID
-				}
-			});
-		},
-		goPage(name, query) {
-			this.$router.push({ name, query });
-		}
-	}
-};
+        this.inquiry_sheet_code = res.inquiry_sheet.inquiry_sheet_code
+      })
+    },
+    conference() {
+      this.$router.push({
+        name: 'EventList',
+        query: {}
+      })
+    },
+    conferencedeatail() {
+      this.$router.push({
+        name: 'eventDetail',
+        query: {
+          id: this.$route.query.eventId,
+          name: this.meeting.event_name,
+          eventSearchType: this.$route.query.eventSearchType
+        }
+      })
+    },
+    inquiry() {
+      this.$router.push({
+        name: 'servicedetails',
+        query: {
+          id: this.$route.query.eventId,
+          sheetId: this.$route.query.InquirySheetID
+        }
+      })
+    },
+    goPage(name, query) {
+      this.$router.push({ name, query })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

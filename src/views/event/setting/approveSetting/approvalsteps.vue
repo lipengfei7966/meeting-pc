@@ -261,12 +261,10 @@ export default {
         name: '' || '',
         type: [],
         desc: '',
-        checkType: [], //审批通知
+        checkType: [] //审批通知
       },
       rules: {
-        name: [
-          { required: true, message: '请输入审批步骤名称', trigger: 'blur' },
-        ],
+        name: [{ required: true, message: '请输入审批步骤名称', trigger: 'blur' }]
       },
       value: '',
       approval: {},
@@ -315,263 +313,250 @@ export default {
       dialogVisibleThree: false,
       getUserValueTwo: '',
       getUserValueThree: '',
-      namestaed :[],
-      namestae :[],
-      namesta : '',
-    };
+      namestaed: [],
+      namestae: [],
+      namesta: ''
+    }
   },
   mounted() {
-    this.id = this.$route.query.id;
-    this.type = this.$route.query.type;
-    this.isDefalt = this.$route.query.isDefalt;
+    this.id = this.$route.query.id
+    this.type = this.$route.query.type
+    this.isDefalt = this.$route.query.isDefalt
 
-    this.getUser();
+    this.getUser()
 
     if (this.$route.query.approval) {
-      this.approval = JSON.parse(this.$route.query.approval);
+      this.approval = JSON.parse(this.$route.query.approval)
 
-      this.citySelect = this.approval.city_code ? this.approval.city_code.split(',') : [];
+      this.citySelect = this.approval.city_code ? this.approval.city_code.split(',') : []
 
-      const relevant_personnel = this.approval.relevant_personnel.split(',');
-      const notice_relevant =this.approval.notice_relevant_personnel.split(',');
-      this.ruleForm.name = this.approval.approve_name; //审批步骤名称
-      this.ruleForm.desc = this.approval.remarks; //备注
-      this.radio1 = this.approval.relevant_personnel_bit + '';
-      this.message = !this.approval.short_message; //是否发送短信
-      this.mail = !this.approval.mail; //是否发送邮件
-      this.overtime = this.approval.overtime; //超时时间
-      this.allowExpediting = !this.approval.service_urge ;//是否允许供应商催审(只有结算审批使用)(0是1否)
-      this.appointMailBit = !this.approval.appoint_mail_bit; //是否启用指定人员邮件
-      this.automaticApproval = !this.approval.adopt; //超时是否自动通过
-      this.onceAgain = !this.approval.notify_approver_again; //超时是否再次通知审批人
-      this.noticePersonnel = !this.approval.notice_relevant_personnel_bit; //通知相关人员
-      this.designee = !this.approval.notice_designated_personnel_bit; //超时是否通知指定人员
+      const relevant_personnel = this.approval.relevant_personnel.split(',')
+      const notice_relevant = this.approval.notice_relevant_personnel.split(',')
+      this.ruleForm.name = this.approval.approve_name //审批步骤名称
+      this.ruleForm.desc = this.approval.remarks //备注
+      this.radio1 = this.approval.relevant_personnel_bit + ''
+      this.message = !this.approval.short_message //是否发送短信
+      this.mail = !this.approval.mail //是否发送邮件
+      this.overtime = this.approval.overtime //超时时间
+      this.allowExpediting = !this.approval.service_urge //是否允许供应商催审(只有结算审批使用)(0是1否)
+      this.appointMailBit = !this.approval.appoint_mail_bit //是否启用指定人员邮件
+      this.automaticApproval = !this.approval.adopt //超时是否自动通过
+      this.onceAgain = !this.approval.notify_approver_again //超时是否再次通知审批人
+      this.noticePersonnel = !this.approval.notice_relevant_personnel_bit //通知相关人员
+      this.designee = !this.approval.notice_designated_personnel_bit //超时是否通知指定人员
       debugger
       this.namesta = this.approval.designated_personnel
-      
+
       relevant_personnel.forEach(item => {
-        if(item == '0032-1'){
+        if (item == '0032-1') {
           this.meetingCreator = item
-        }else if(item == '0032-2'){
+        } else if (item == '0032-2') {
           this.meetingOower = item
-        }else if(item == '0032-3'){
+        } else if (item == '0032-3') {
           this.meetingUp = item
-        }else if(item == '0032-4'){
+        } else if (item == '0032-4') {
           this.meetingPurchase = item
-        }else if(item == '0032-5'){
+        } else if (item == '0032-5') {
           this.meetingPersonnel = item
         }
       })
 
       notice_relevant.forEach(item => {
-        if(item == '0033-1'){
+        if (item == '0033-1') {
           this.meetingCreatored = item
-        }else if(item == '0033-2'){
+        } else if (item == '0033-2') {
           this.meetingOowered = item
-        }else if(item == '0033-3'){
+        } else if (item == '0033-3') {
           this.meetingUped = item
-        }else if(item == '0033-4'){
+        } else if (item == '0033-4') {
           this.meetingPurchaseed = item
-        }else if(item == '0033-5'){
+        } else if (item == '0033-5') {
           this.meetingPersonneled = item
         }
       })
-     
     }
 
-    this.getProvinceCity();
-    this.approvaMeetingType();
-    this.getServiceType();
-    
+    this.getProvinceCity()
+    this.approvaMeetingType()
+    this.getServiceType()
   },
   methods: {
     getProvinceCity() {
       this.requestApi({
         url: '/MeetingMa/ProvinceCity',
         method: 'POST',
-        data: {},
-      }).then((res) => {
-				this.citys = res.map(item => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-			});
+        data: {}
+      }).then(res => {
+        this.citys = res.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+      })
     },
     approvaMeetingType() {
       this.requestApi({
         url: '/Approval/ApprovaMeetingType',
         method: 'POST',
-        data: { id: this.id },
-      }).then((res) => {
-				this.meetingTypes = res.map(item => {
-          item.meetingTypeSelect = [];
+        data: { id: this.id }
+      }).then(res => {
+        this.meetingTypes = res.map(item => {
+          item.meetingTypeSelect = []
 
-          if(this.approval.meeting_type) {
-            for(let i=0; i<this.approval.meeting_type.length; i++) {
-              let company = this.approval.meeting_type[i];
-              if(company.company_id == item.company_id) {
-                item.meetingTypeSelect = [];
+          if (this.approval.meeting_type) {
+            for (let i = 0; i < this.approval.meeting_type.length; i++) {
+              let company = this.approval.meeting_type[i]
+              if (company.company_id == item.company_id) {
+                item.meetingTypeSelect = []
                 item.meeting_type.forEach(element => {
                   company.meeting_type_list.forEach(ele => {
-                    if(element.meeting_type_id == ele.meeting_type_id){
+                    if (element.meeting_type_id == ele.meeting_type_id) {
                       item.meetingTypeSelect.push(element.meeting_type_name)
                     }
                   })
                 })
               }
-
             }
           }
 
-          return item;
-        });
-
-
-			});
+          return item
+        })
+      })
     },
     getServiceType() {
       this.requestApi({
         url: '/MeetingMa/GetServiceType',
         method: 'POST',
-        data: { },
-      }).then((res) => {
-				this.serviceTypes = res;
-        let service_type = [];
-        if(this.approval.service_type) {
-          for(let i=0; i<this.approval.service_type.length; i++) {
-            let ast = this.approval.service_type[i];
-            for(let j=0; j<this.serviceTypes.length; j++) {
-              if(this.serviceTypes[j].id == ast.service_type_id) {
-                service_type.push(this.serviceTypes[j].name);
+        data: {}
+      }).then(res => {
+        this.serviceTypes = res
+        let service_type = []
+        if (this.approval.service_type) {
+          for (let i = 0; i < this.approval.service_type.length; i++) {
+            let ast = this.approval.service_type[i]
+            for (let j = 0; j < this.serviceTypes.length; j++) {
+              if (this.serviceTypes[j].id == ast.service_type_id) {
+                service_type.push(this.serviceTypes[j].name)
               }
             }
           }
         }
 
-        this.serviceTypeSelect = service_type;
-
-			});
+        this.serviceTypeSelect = service_type
+      })
     },
     addListThree() {
-      this.dialogVisibleThree = true;
+      this.dialogVisibleThree = true
     },
     addListTwo() {
-      this.dialogVisibleTwo = true;
+      this.dialogVisibleTwo = true
     },
     visible() {
-      this.mataddialogVisible = false;
-      this.complianceMeal = true;
-      this.change();
+      this.mataddialogVisible = false
+      this.complianceMeal = true
+      this.change()
     },
     getUser() {
       this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'POST',
-        data: { },
-      }).then((res) => {
-        this.getUserList = res;
-      });
+        data: {}
+      }).then(res => {
+        this.getUserList = res
+      })
     },
     cancel() {
-      if(this.type == '1') {
-          this.$router.push({
-            name:'settlementSheet',
-            query: {
-              id: this.id,
-              type: this.type
-            }
-          });
-      }
-      if(this.type == '2') {
+      if (this.type == '1') {
         this.$router.push({
-          name:'outbid',
+          name: 'settlementSheet',
           query: {
             id: this.id,
             type: this.type
           }
-        });
+        })
+      }
+      if (this.type == '2') {
+        this.$router.push({
+          name: 'outbid',
+          query: {
+            id: this.id,
+            type: this.type
+          }
+        })
       }
     },
-    dislist(){
-    this.dialogVisibleTwo = false
-    this.namestae.push(this.getUserValueTwo)
-
+    dislist() {
+      this.dialogVisibleTwo = false
+      this.namestae.push(this.getUserValueTwo)
     },
     change() {
-      this.condition = `${'if'}  ${this.department}  ${this.Right} ${
-        this.check
-      } ${this.checked}`;
+      this.condition = `${'if'}  ${this.department}  ${this.Right} ${this.check} ${this.checked}`
     },
-    addcitys(){
+    addcitys() {
       this.dialogVisible = false
-      if(this.namesta){
-        this.namesta += ","+this.getUserValue
-      }else{
+      if (this.namesta) {
+        this.namesta += ',' + this.getUserValue
+      } else {
         this.namesta = this.getUserValue
       }
       // this.namesta.push(this.getUserValue)
     },
     findMeetingId(list, name) {
-      for(let i=0; i<list.length; i++) {
-        if(name == list[i].meeting_type_name) {
-          return list[i].meeting_type_id;
+      for (let i = 0; i < list.length; i++) {
+        if (name == list[i].meeting_type_name) {
+          return list[i].meeting_type_id
         }
       }
     },
     submitForm() {
-      
-      let service_type = [];
-      for(let i=0; i<this.serviceTypeSelect.length; i++) {
-        for(let j=0; j<this.serviceTypes.length; j++) {
-          if(this.serviceTypes[j].name == this.serviceTypeSelect[i]) {
+      let service_type = []
+      for (let i = 0; i < this.serviceTypeSelect.length; i++) {
+        for (let j = 0; j < this.serviceTypes.length; j++) {
+          if (this.serviceTypes[j].name == this.serviceTypeSelect[i]) {
             service_type.push({
-              id:"",
+              id: '',
               service_type_id: this.serviceTypes[j].id
-            });
+            })
           }
         }
       }
 
-       let meeting_type = [];
-      for(let m=0; m<this.meetingTypes.length; m++) {
-        let mitem = this.meetingTypes[m]; // company_id company_name meetingTypeSelect meeting_type
-        let msitem = this.meetingTypes[m].meetingTypeSelect; // 自办学术会、办学术会
-        let meeting_types = mitem.meeting_type; // meeting_type_id: "7ac67205-e40c-4c9d-a58d-33287f9ebc75" meeting_type_name: "自办学术会"
-        let mts = [];
-        if(msitem && msitem.length) {
-          for(let n=0; n<msitem.length; n++) { // 自办学术会
-            let meetid = this.findMeetingId(meeting_types, msitem[n]);
-            if(meetid) {
+      let meeting_type = []
+      for (let m = 0; m < this.meetingTypes.length; m++) {
+        let mitem = this.meetingTypes[m] // company_id company_name meetingTypeSelect meeting_type
+        let msitem = this.meetingTypes[m].meetingTypeSelect // 自办学术会、办学术会
+        let meeting_types = mitem.meeting_type // meeting_type_id: "7ac67205-e40c-4c9d-a58d-33287f9ebc75" meeting_type_name: "自办学术会"
+        let mts = []
+        if (msitem && msitem.length) {
+          for (let n = 0; n < msitem.length; n++) {
+            // 自办学术会
+            let meetid = this.findMeetingId(meeting_types, msitem[n])
+            if (meetid) {
               mts.push({
-                id: "",
+                id: '',
                 meeting_type_id: meetid
-              });
+              })
             }
           }
         }
         meeting_type.push({
           company_id: mitem.company_id,
           meeting_type_list: mts
-        });
+        })
       }
-     
-   
+
       if (this.ruleForm.name === '') {
-        this.$message('请输入审批步骤名称');
-        return;
+        this.$message('请输入审批步骤名称')
+        return
       }
-      
-      let personnelList = [this.meetingCreator,this.meetingOower,this.meetingUp,this.meetingPurchase,this.meetingPersonnel,this.meetingSettlement];
-      let personnelLists = [this.meetingCreatored,this.meetingOowered,this.meetingUped,this.meetingPurchaseed,this.meetingPersonneled,];
-      personnelList = personnelList.filter(item => item?item:'')
-      personnelLists = personnelLists.filter(item => item?item:'')
-      if (
-        personnelList.every((item) => item == '') &&
-        this.getUserValue == ''
-      ) {
-        this.$message('请选择相关人员或者请填写指定人员');
-        return;
+
+      let personnelList = [this.meetingCreator, this.meetingOower, this.meetingUp, this.meetingPurchase, this.meetingPersonnel, this.meetingSettlement]
+      let personnelLists = [this.meetingCreatored, this.meetingOowered, this.meetingUped, this.meetingPurchaseed, this.meetingPersonneled]
+      personnelList = personnelList.filter(item => (item ? item : ''))
+      personnelLists = personnelLists.filter(item => (item ? item : ''))
+      if (personnelList.every(item => item == '') && this.getUserValue == '') {
+        this.$message('请选择相关人员或者请填写指定人员')
+        return
       }
       this.requestApi({
         url: '/Approval/ApprovalProcessSava',
@@ -580,83 +565,82 @@ export default {
           Parameter: JSON.stringify({
             id: this.approval.id || '', //	ID为空是新增 有值则为修改  id:
             approval_id: this.id,
-            city_code: this.citySelect.join(","),
+            city_code: this.citySelect.join(','),
             service_type: service_type,
             meeting_type: meeting_type,
             approve_name: this.ruleForm.name, //审批步骤名称
             remarks: this.ruleForm.desc, //	说明备注
             relevant_personnel_bit: this.radio1 == 0 ? 0 : 1, //	是否启用相关人员(0是1否)
-            relevant_personnel: personnelList.join(','), //     	相关人员（以英文逗号分割)
+            relevant_personnel: personnelList.join(','), // 	相关人员（以英文逗号分割)
             designated_personnel_bit: this.radio1 == 1 ? 0 : 1, // 	是否启用指定人员(0是1否)
-            designated_personnel:this.namesta, //指定人员(用户编码，以英文逗号分割)
+            designated_personnel: this.namesta, //指定人员(用户编码，以英文逗号分割)
             multi_level_approval_bit: '1', //	是否启用多层审批(0是1否)
-            multi_level_approval: '1', //   	多层审批()
-            short_message: this.message === true ? 0 : 1, //    	是否发送短信(0是1否)
+            multi_level_approval: '1', // 	多层审批()
+            short_message: this.message === true ? 0 : 1, // 	是否发送短信(0是1否)
             mail: this.mail === true ? 0 : 1, //	是否发送邮件(0是1否)
             appoint_mail_bit: this.appointMailBit === true ? 0 : 1, //	是否启用指定人员邮件(0是1否)
             appoint_mail: this.namestae.join(','), //	指定人员邮件(用户编码，以英文逗号分割)
-            overtime: this.overtime, //         	超时市场
-            service_urge:this.allowExpediting === true ? 0 : 1,
+            overtime: this.overtime, // 	超时市场
+            service_urge: this.allowExpediting === true ? 0 : 1,
             adopt: this.automaticApproval === true ? 0 : 1, //	超时是否自动通过(0是1否)
             notify_approver_again: this.onceAgain === true ? 0 : 1, //	超时是否再次通知审批人(0是1否)
-            notice_relevant_personnel_bit:this.noticePersonnel === true ? 0 : 1, //超时是否通知相关人员(0是1否)
+            notice_relevant_personnel_bit: this.noticePersonnel === true ? 0 : 1, //超时是否通知相关人员(0是1否)
             notice_relevant_personnel: personnelLists.join(','), //	超时通知相关人员（以英文逗号分割)
             notice_designated_personnel_bit: this.designee === true ? 0 : 1, //超时是否通知指定人员(0是1否)
-            notice_designated_personnel: this.namestaed.join(','), //  超时通知指定人员（用户编码，以英文逗号分割)
-            type: this.$route.query.type, //  		0会议，1结算，2中标
-          }),
-        },
-      }).then((res) => {
+            notice_designated_personnel: this.namestaed.join(','), //超时通知指定人员（用户编码，以英文逗号分割)
+            type: this.$route.query.type //0会议，1结算，2中标
+          })
+        }
+      }).then(res => {
         if (res === true && this.$route.query.type == 1) {
           this.$router.push({
-            name:'settlementSheet',
+            name: 'settlementSheet',
             query: {
               id: this.id,
               type: this.type
             }
-          });
+          })
         }
         if (this.$route.query.type == 2) {
           this.$router.push({
-            name:'outbid',
+            name: 'outbid',
             query: {
               id: this.id,
               type: this.type
             }
-          });
+          })
         }
-      });
+      })
     },
-    pushlisted(){
-      this.dialogVisibleThree = false;
+    pushlisted() {
+      this.dialogVisibleThree = false
       this.namestaed.push(this.getUserValueThree)
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     addList() {
-      this.dialogVisible = true;
-     
+      this.dialogVisible = true
     },
     elect() {
-      this.complianceMeal = false;
-      this.mataddialogVisible = true;
+      this.complianceMeal = false
+      this.mataddialogVisible = true
     },
     addCondition() {
-      this.emptyArr.push({ name: 2, value: 1 });
+      this.emptyArr.push({ name: 2, value: 1 })
     },
     del(i) {
-      this.emptyArr.splice(i, 1);
+      this.emptyArr.splice(i, 1)
     },
     submit() {
-      this.complianceMeal = false;
-      this.approvalAreaConditions = this.condition;
+      this.complianceMeal = false
+      this.approvalAreaConditions = this.condition
       if (this.approvalAreaConditions) {
-        this.area = true;
+        this.area = true
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" >

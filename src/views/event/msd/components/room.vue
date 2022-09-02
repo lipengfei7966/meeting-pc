@@ -105,51 +105,51 @@
 </template>
 <script>
 export default {
-  name: "room",
-  props:['totalPrice','isAddColorRed'],
-  data(){
-    return{
-      room:[],
-      isShowRoom: true,
+  name: 'room',
+  props: ['totalPrice', 'isAddColorRed'],
+  data() {
+    return {
+      room: [],
+      isShowRoom: true
     }
   },
-  updated(){
+  updated() {
     // debugger
     console.log(this.room)
   },
-  methods:{
-    getStyle(row,column,rowIndex,columnIndex){
-      if(row.columnIndex < 2){
+  methods: {
+    getStyle(row, column, rowIndex, columnIndex) {
+      if (row.columnIndex < 2) {
         return 'background:#fff9f5!important'
       }
     },
-    rowClassName({row, rowIndex}){
+    rowClassName({ row, rowIndex }) {
       // console.log(rowIndex)
-      if(rowIndex%2 !== 0){
+      if (rowIndex % 2 !== 0) {
         return 'display_none'
       }
     },
-    rowStyle({row, rowIndex},nextIndex){
-      if(nextIndex && rowIndex%2 !== 0 ){
-        return {height:'36px',display:'block'}  
+    rowStyle({ row, rowIndex }, nextIndex) {
+      if (nextIndex && rowIndex % 2 !== 0) {
+        return { height: '36px', display: 'block' }
       }
-      if(rowIndex%2 !== 0){
-        return {height:'36px',display:'none'}      
+      if (rowIndex % 2 !== 0) {
+        return { height: '36px', display: 'none' }
       }
     },
-    inputObjection(){
+    inputObjection() {
       // debugger
-      this.$emit('roomObjection',this.room)
+      this.$emit('roomObjection', this.room)
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-        if (rowIndex % 2 !== 0) {
-          if (columnIndex === 1) {
-            return [1, 2];
-          }else if(columnIndex == 2) {
-            return [0,0]
-          }
+      if (rowIndex % 2 !== 0) {
+        if (columnIndex === 1) {
+          return [1, 2]
+        } else if (columnIndex == 2) {
+          return [0, 0]
         }
-      },
+      }
+    }
   }
 }
 </script>

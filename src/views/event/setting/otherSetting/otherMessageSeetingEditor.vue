@@ -98,111 +98,107 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       isdefault: 0, //规则配置  1默认 0自定义
-		  id: '', //规则配置id
-      addOrEdit:0,//新增规则或编辑规则 1新增 0编辑
-			ruleInfo:{
-				selectedcuslist: '',
-				remark: '',
-			},
-			selectedcuslist:[], // 选择客户
-			addfieldInfo:{
-				fieldname: '',
-				fieldtype:'099-1', // 默认是短文本
-				defaultvalue: '',
-				required: 0,
-			},
-			rules: {
-				selectedcuslist:[{ required: true, message: '请选择客户', trigger: 'blur' }],
-				addFormMsg: [{ required: true, message: '请录入会议附加信息', trigger: 'change' }],
-				
-			},//规则校验
-			addRules:{
-        fieldname:[{ required: true, message: '请输入字段名称', trigger: 'blur' }],
-        fieldtype:[{ required: true, message: '请选择字段类型', trigger: 'blur' }],
-        defaultvalue:[{ required: false, message: '请输入下拉列表选项', trigger: 'blur' }],
-        required:[{ required: true, message: '请选择是否必填', trigger: 'blur' }]
+      id: '', //规则配置id
+      addOrEdit: 0, //新增规则或编辑规则 1新增 0编辑
+      ruleInfo: {
+        selectedcuslist: '',
+        remark: ''
       },
-			customers: [], //客户列表
-			fieldTypes: [],
-			addDialogVisible: false,
-			addFormMsgList:[],
-			rowIndex: null, // 附加信息列表操作行 下标
+      selectedcuslist: [], // 选择客户
+      addfieldInfo: {
+        fieldname: '',
+        fieldtype: '099-1', // 默认是短文本
+        defaultvalue: '',
+        required: 0
+      },
+      rules: {
+        selectedcuslist: [{ required: true, message: '请选择客户', trigger: 'blur' }],
+        addFormMsg: [{ required: true, message: '请录入会议附加信息', trigger: 'change' }]
+      }, //规则校验
+      addRules: {
+        fieldname: [{ required: true, message: '请输入字段名称', trigger: 'blur' }],
+        fieldtype: [{ required: true, message: '请选择字段类型', trigger: 'blur' }],
+        defaultvalue: [{ required: false, message: '请输入下拉列表选项', trigger: 'blur' }],
+        required: [{ required: true, message: '请选择是否必填', trigger: 'blur' }]
+      },
+      customers: [], //客户列表
+      fieldTypes: [],
+      addDialogVisible: false,
+      addFormMsgList: [],
+      rowIndex: null // 附加信息列表操作行 下标
     }
   },
   mounted() {
-    this.isdefault = this.$route.query.isdefault; //默认或自定义规则 1默认 0自定义
-		this.id = this.$route.query.id; //配置id
-    this.addOrEdit=this.$route.query.addOrEdit;//新增规则或编辑规则 1新增 0编辑
-		this.getCompany();
-		this.getRuleEdit();
+    this.isdefault = this.$route.query.isdefault //默认或自定义规则 1默认 0自定义
+    this.id = this.$route.query.id //配置id
+    this.addOrEdit = this.$route.query.addOrEdit //新增规则或编辑规则 1新增 0编辑
+    this.getCompany()
+    this.getRuleEdit()
   },
-	methods:{
-		//公司查询
-		getCompany(){
-			this.requestApi({
+  methods: {
+    //公司查询
+    getCompany() {
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
-        data: {
-					
-				},
+        data: {}
       }).then(res => {
-				if(res==null || res==undefined || res==true){
-					this.customers = []
-				}else{
-					this.customers = res;
-				}
-			});
-		},
-		fieldTypeChange(value){
-			if(value == 4){
-				this.addRules.defaultvalue[0].required = true;
-			}else{
-				this.addRules.defaultvalue[0].required = false;
-			}
-		},
-		// 客户修改
-		custchange(value){
-			// debugger
-		},
-		// 字段类型格式化
-		fieldTypeFormatter(row, col, val){
-			// debugger
-			if(val == '099-1'){
-				return '短文本'
-			}else if(val == '099-2'){
-				return '长文本'
-			}else if(val == '099-3'){
-				return '日期'
-			}else if(val == '099-4'){
-				return '下拉列表'
-			}else if(val == '099-5'){
-				return '附件'
-			}
-		},
-		// 编辑
-		fieldEdit(row,index){
-			this.rowIndex = index;
-			this.addDialogVisible = true;
-			this.addfieldInfo = {
-									fieldname: row.fieldname,
-									fieldtype: row.fieldtype,
-									defaultvalue: row.defaultvalue,
-									required: row.required,
-								}
-		},
-		// 删除
-		fieldDel(index){
-			this.ruleInfo.selfform.splice(index, 1);
-		},
-		upL(row,index){
-			if (index === 0) return;
-			let item = this.ruleInfo.selfform.splice(index, 1);
-      this.ruleInfo.selfform.splice(index - 1, 0, item[0]);
+        if (res == null || res == undefined || res == true) {
+          this.customers = []
+        } else {
+          this.customers = res
+        }
+      })
+    },
+    fieldTypeChange(value) {
+      if (value == 4) {
+        this.addRules.defaultvalue[0].required = true
+      } else {
+        this.addRules.defaultvalue[0].required = false
+      }
+    },
+    // 客户修改
+    custchange(value) {
+      // debugger
+    },
+    // 字段类型格式化
+    fieldTypeFormatter(row, col, val) {
+      // debugger
+      if (val == '099-1') {
+        return '短文本'
+      } else if (val == '099-2') {
+        return '长文本'
+      } else if (val == '099-3') {
+        return '日期'
+      } else if (val == '099-4') {
+        return '下拉列表'
+      } else if (val == '099-5') {
+        return '附件'
+      }
+    },
+    // 编辑
+    fieldEdit(row, index) {
+      this.rowIndex = index
+      this.addDialogVisible = true
+      this.addfieldInfo = {
+        fieldname: row.fieldname,
+        fieldtype: row.fieldtype,
+        defaultvalue: row.defaultvalue,
+        required: row.required
+      }
+    },
+    // 删除
+    fieldDel(index) {
+      this.ruleInfo.selfform.splice(index, 1)
+    },
+    upL(row, index) {
+      if (index === 0) return
+      let item = this.ruleInfo.selfform.splice(index, 1)
+      this.ruleInfo.selfform.splice(index - 1, 0, item[0])
       // let tempArr = [];
       // this.ruleInfo.selfform.forEach((item,index) => {
       //   tempArr.push({
@@ -210,12 +206,12 @@ export default {
       //     sort: index+1
       //   })
       // })
-		},
-		// 向下
-    downL(row,index) {
-      if (index === this.ruleInfo.selfform.length - 1) return;
-      let item = this.ruleInfo.selfform.splice(index, 1);
-      this.ruleInfo.selfform.splice(index + 1, 0, item[0]);
+    },
+    // 向下
+    downL(row, index) {
+      if (index === this.ruleInfo.selfform.length - 1) return
+      let item = this.ruleInfo.selfform.splice(index, 1)
+      this.ruleInfo.selfform.splice(index + 1, 0, item[0])
 
       // let tempArr = [];
       // this.ruleInfo.selfform.forEach((item,index) => {
@@ -227,85 +223,88 @@ export default {
       // this.$api.approvaProcessSort({
       //    Parameter: JSON.stringify(tempArr)
       // },"POST").then(res => {
-        
+
       // })
     },
-		// 新增表单字段确认
-		submitDeleteRule(){ // index: 有值是编辑，无值为新增
-			this.$refs.addfieldInfo.validate((valid) => {
+    // 新增表单字段确认
+    submitDeleteRule() {
+      // index: 有值是编辑，无值为新增
+      this.$refs.addfieldInfo.validate(valid => {
         if (valid) {
-					if(this.rowIndex == null){ // 新增
-						this.ruleInfo.selfform.push(this.addfieldInfo)
-					}else{
-						this.ruleInfo.selfform[this.rowIndex].fieldname = this.addfieldInfo.fieldname
-						this.ruleInfo.selfform[this.rowIndex].fieldtype = this.addfieldInfo.fieldtype
-						this.ruleInfo.selfform[this.rowIndex].defaultvalue = this.addfieldInfo.defaultvalue
-						this.ruleInfo.selfform[this.rowIndex].required = this.addfieldInfo.required
-					}
-					this.addDialogVisible = false;
-				}
-					this.addfieldInfo = {
-									fieldname: '',
-									fieldtype:'099-1',
-									defaultvalue: '',
-									required: 0,
-								}
-				
-				console.log(this.ruleInfo.selfform)
-			})
-		},
+          if (this.rowIndex == null) {
+            // 新增
+            this.ruleInfo.selfform.push(this.addfieldInfo)
+          } else {
+            this.ruleInfo.selfform[this.rowIndex].fieldname = this.addfieldInfo.fieldname
+            this.ruleInfo.selfform[this.rowIndex].fieldtype = this.addfieldInfo.fieldtype
+            this.ruleInfo.selfform[this.rowIndex].defaultvalue = this.addfieldInfo.defaultvalue
+            this.ruleInfo.selfform[this.rowIndex].required = this.addfieldInfo.required
+          }
+          this.addDialogVisible = false
+        }
+        this.addfieldInfo = {
+          fieldname: '',
+          fieldtype: '099-1',
+          defaultvalue: '',
+          required: 0
+        }
 
-		// 规则查询
-		getRuleEdit(){
-			this.requestApi({
+        console.log(this.ruleInfo.selfform)
+      })
+    },
+
+    // 规则查询
+    getRuleEdit() {
+      this.requestApi({
         url: '/selfform/info',
         method: 'POST',
         data: {
-					id: this.id
-				},
-      }).then(res =>{
-				// debugger
-				this.ruleInfo = res;
-				this.ruleInfo.selectedcuslist.forEach(item => {
-					this.selectedcuslist.push(item.id)
-				})
-				// this.ruleInfo.selfform = this.ruleInfo.selfform
-			})
-		},
-		// 规则保存
-		submitForm(){
-			if(this.ruleInfo.selfform.length > 0 || this.isdefault == 1){ // 默认规则 “会议附加信息表单”非必填，即可以不添加表单字段
-				this.rules.addFormMsg[0].required = false
-			}
-			this.ruleInfo.selectedcuslist = [];
-			this.selectedcuslist.forEach(item => {
-				this.ruleInfo.cuslist.forEach(element => {
-					if(item == element.id){
-						this.ruleInfo.selectedcuslist.push(element)
-					}
-				})
-			})
-			this.ruleInfo.isdefault = this.isdefault;
-			this.$refs.ruleInfo.validate((valid) => {
+          id: this.id
+        }
+      }).then(res => {
+        // debugger
+        this.ruleInfo = res
+        this.ruleInfo.selectedcuslist.forEach(item => {
+          this.selectedcuslist.push(item.id)
+        })
+        // this.ruleInfo.selfform = this.ruleInfo.selfform
+      })
+    },
+    // 规则保存
+    submitForm() {
+      if (this.ruleInfo.selfform.length > 0 || this.isdefault == 1) {
+        // 默认规则 “会议附加信息表单”非必填，即可以不添加表单字段
+        this.rules.addFormMsg[0].required = false
+      }
+      this.ruleInfo.selectedcuslist = []
+      this.selectedcuslist.forEach(item => {
+        this.ruleInfo.cuslist.forEach(element => {
+          if (item == element.id) {
+            this.ruleInfo.selectedcuslist.push(element)
+          }
+        })
+      })
+      this.ruleInfo.isdefault = this.isdefault
+      this.$refs.ruleInfo.validate(valid => {
         if (valid) {
-					this.ruleInfo.selfform.forEach((element,index) => {
-						element.orderid = (index+1)
-					});
-					this.requestApi({
-						url: '/selfform/saveselfform',
-						method: 'POST',
-						data: this.ruleInfo,
-					}).then(res =>{
-						debugger
-						if(res === '' ){
-							this.$message.success('保存成功')
-							this.$router.push('/otherSettings')
-						}
-					})
-				}
-			})
-		}
-	}
+          this.ruleInfo.selfform.forEach((element, index) => {
+            element.orderid = index + 1
+          })
+          this.requestApi({
+            url: '/selfform/saveselfform',
+            method: 'POST',
+            data: this.ruleInfo
+          }).then(res => {
+            debugger
+            if (res === '') {
+              this.$message.success('保存成功')
+              this.$router.push('/otherSettings')
+            }
+          })
+        }
+      })
+    }
+  }
 }
 </script>
 

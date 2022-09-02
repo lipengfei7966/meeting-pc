@@ -326,8 +326,8 @@ export const eventRoute = [
           title: 'reporting',
           noCache: true
         }
-      },
-      
+      }
+
     ]
   },
 
@@ -338,7 +338,7 @@ export const eventRoute = [
     meta: {
       title: 'DMCevent'
     },
-    children:[
+    children: [
       {
         name: 'DMCcreateEvent',
         path: 'DMCcreateEvent',
@@ -473,7 +473,7 @@ export const eventRoute = [
           title: 'DMCitineraryList',
           noCache: true
         }
-      },
+      }
     ]
   },
 
@@ -660,7 +660,7 @@ export const eventRoute = [
           title: 'procurementAdd',
           noCache: true
         }
-      },
+      }
     ]
   },
 
@@ -734,7 +734,7 @@ export const eventRoute = [
           title: 'SendSuccess',
           noCache: true
         }
-      },
+      }
     ]
   }
 ]
