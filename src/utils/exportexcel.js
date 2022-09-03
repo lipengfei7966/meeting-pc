@@ -19,7 +19,7 @@ export default function(url, data, name) { // urls = [ {key,file} ]
             'Content-Type': 'application/json;charset=utf-8'
           }
         }).then((resp) => {
-          debugger
+          // debugger
           const a_link = document.createElement('a')
           const suffix = resp.data.path.substring(resp.data.path.lastIndexOf('.'))
           // 这里是将url转成blob地址，

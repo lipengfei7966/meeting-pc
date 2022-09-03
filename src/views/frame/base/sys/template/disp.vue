@@ -15,7 +15,7 @@
           </el-row>
         </el-form>
         <div>
-          <iframe ref="bsEditorFrame" src="static/bseditor/index.html" style="width:100%;height:30rem;"></iframe>
+          <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width:100%;height:30rem;"></iframe>
         </div>
       </div>
       <div class="dialog-footer">

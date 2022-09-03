@@ -12,7 +12,7 @@ import session from '@/utils/frame/base/sessionStorage'
 
 export default {
   computed: {
-    ...mapGetters(['clientHeight', 'cachedViews', 'iframeRouters', 'md5', 'tenantCodeHash']),
+    ...mapGetters(['clientHeight', 'cachedViews', 'iframeRouters', 'token', 'tenantCodeHash']),
     iframeHeight() {
       return this.clientHeight - 100 + 'px'
     }
@@ -22,7 +22,7 @@ export default {
       var iframeSrc = route.meta.src
       if (iframeSrc) {
         const token = iframeSrc.indexOf('?') > -1 ? '&' : '?'
-        iframeSrc = iframeSrc + token + 'token=' + this.md5
+        iframeSrc = iframeSrc + token + 'token=' + this.token
         if (this.tenantCodeHash) {
           iframeSrc = iframeSrc + '&tenantCode=' + this.tenantCodeHash
         }

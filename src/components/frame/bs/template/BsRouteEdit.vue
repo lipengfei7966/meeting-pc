@@ -1,5 +1,5 @@
 <template>
-  <div class='app-container edit-page-style'>
+  <div class='bs-container app-container edit-page-style'>
     <!-- 顶部按钮 -->
     <el-row class='top-operate'>
       <template v-for='(button, index) in edit.topButtons'>
