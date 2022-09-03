@@ -12,48 +12,12 @@
     <p class="p_small">{{smallTitle}}</p>
     <div>
           <ul class="feature">
-          <li>
+          <li v-for="(item,index) in moduleData" :key="index" @click.stop="handel(item,index)">
           <div class="conDiv">
           <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">功能一</p>
+          <p class="classTxt">{{item.title}}</p>
           </div>
           </li>
-          <li>
-          <div class="conDiv">
-          <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">功能二</p>
-          </div>
-          </li>
-          <li>
-          <div class="conDiv">
-          <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">功能三</p>
-          </div>
-          </li>
-          <li>
-          <div class="conDiv">
-          <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">功能四</p>
-          </div>
-          </li>
-          <li>
-          <div class="conDiv">
-          <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">功能五</p>
-          </div>
-          </li>
-          <li>
-          <div class="conDiv">
-          <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">功能六</p>
-          </div>
-          </li>
-          <!--  -->
-          <!-- <li>功能二</li>
-          <li>功能三</li>
-          <li>功能四</li>
-          <li>功能五</li>
-          <li>功能六</li> -->
           </ul>
     </div>
   </div>
@@ -67,10 +31,41 @@ export default {
   data() {
     return {
       bigTitle: '大标题xxxxx会议',
-      smallTitle: '小标题xxxx地点'
+      smallTitle: '小标题xxxx地点',
+      pitchOn: false,
+      moduleData: [
+        {
+          img: '',
+          title: '活动日程'
+        },
+        {
+          img: '',
+          title: '荣誉殿堂'
+        },
+        {
+          img: '',
+          title: '讲师介绍'
+        },
+        {
+          img: '',
+          title: '精彩照片'
+        },
+        {
+          img: '',
+          title: '峰会直播'
+        },
+        {
+          img: '',
+          title: '喜从天降'
+        }
+      ]
     }
   },
-  methods: {}
+  methods: {
+    handel(item, index) {
+      console.log(item, index)
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
@@ -103,6 +98,7 @@ export default {
   //   align-items: center;
   li {
     text-align: center;
+    cursor: pointer;
     width: 30%;
     height: 12vh;
     background-color: rgba(198, 75, 34, 0.2);

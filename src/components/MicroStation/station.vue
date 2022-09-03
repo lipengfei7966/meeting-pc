@@ -2,10 +2,11 @@
   <div>
     <div :class="!isPc?'place':''" style="margin-right:10%; margin-top: 10px; float: right;">
       <el-button class="btn" type="success" @click="handelClick">选择模板</el-button>
+      <el-button v-if="!isPc" class="btn" type="success" @click="handelEdit">重新选择模板</el-button>
       <el-button v-if="!isPc" class="btn" type="success" @click="handelAdd">新增模块</el-button>
     </div>
     <ul :class="isPc? 'isPc' : 'isMo'">
-      <li @click="handel(0)">
+      <li @click="handel(1)" :class="pitchOn ? 'template_one' : ''">
         <templateOne></templateOne>
       </li>
       <!-- <li>模板二</li>
@@ -13,7 +14,7 @@
       <li>模板四</li> -->
       <li style="font-size: 20px;
     color: lightgray;
-    text-align: center;" @click="handel(2)" >
+    text-align: center;" @click="handel()" >
     <span style="position: relative;
     top: 40%;">
       <span>更多模板 敬请期待 </span>
@@ -23,7 +24,7 @@
         </li>
         <li style="font-size: 20px;
     color: lightgray;
-    text-align: center;" @click="handel(2)" >
+    text-align: center;" @click="handel()" >
     <span style="position: relative;
     top: 40%;">
       <span>更多模板 敬请期待 </span>
@@ -44,13 +45,35 @@ export default {
   },
   data() {
     return {
-      isPc: true
+      isPc: true,
+      pitchOn: false,
+      templateVal: ''
     }
   },
   methods: {
-    handelClick() {},
+    handelClick() {
+      // debugger
+      if (this.templateVal) {
+        this.$router.push({
+          name: 'microStationManagement',
+          query: {
+            //   event_num: this.menus.event_num,
+            //   id: this.$route.query.id,
+            //   name: this.$route.query.name,
+            //   eventSearchType: this.$route.query.eventSearchType,
+            //   type: 'edit'
+          }
+        })
+      } else {
+        this.$message('请选择一个模板！')
+      }
+    },
     handelAdd() {},
+    handelEdit() {},
     handel(val) {
+      this.pitchOn = !this.pitchOn
+      //       debugger
+      this.templateVal = val
       console.log(val)
     }
   }
@@ -92,5 +115,9 @@ ul {
 }
 .place {
   margin-right: 2%;
+}
+.template_one {
+  border: 3px solid lightblue;
+  box-shadow: 0 2px 22px 0 lightgrey;
 }
 </style>
