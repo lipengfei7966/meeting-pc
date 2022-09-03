@@ -1,12 +1,6 @@
 <template>
   <div>
-    <el-tiptap
-      v-model="content"
-      :extensions="extensions"
-      placeholder="请输入内容 …"
-      width="100%"
-      height="400"
-    ></el-tiptap>
+    <el-tiptap v-model="content" :extensions="extensions" placeholder="请输入内容 …" width="100%" height="400"></el-tiptap>
   </div>
 </template>
 
@@ -119,4 +113,4 @@ export default {
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="sass"></style>

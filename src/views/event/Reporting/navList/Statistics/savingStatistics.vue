@@ -108,141 +108,139 @@
 </template>
 
 <script>
-import BrokenLineTwo from '@/components/event/brokenLineTwo';
-import requestApi from '@/utils/requestData'
+import BrokenLineTwo from '@/components/event/brokenLineTwo'
+
 export default {
-	props: ['pice'],
-	data() {
-		return {
-			dateList: [
-				
-			],
-			monthList: [
-				{
-					id: '1',
-					datem: '1'
-				},
-				{
-					id: '2',
-					datem: '2'
-				},
-				{
-					id: '3',
-					datem: '3'
-				},
-				{
-					id: '4',
-					datem: '4'
-				},
-				{
-					id: '5',
-					datem: '5'
-				},
-				{
-					id: '6',
-					datem: '6'
-				},
-				{
-					id: '7',
-					datem: '7'
-				},
-				{
-					id: '8',
-					datem: '8'
-				},
-				{
-					id: '9',
-					datem: '9'
-				},
-				{
-					id: '10',
-					datem: '10'
-				},
-				{
-					id: '11',
-					datem: '11'
-				},
-				{
-					id: '12',
-					datem: '12'
-				}
-			],
-			contacts: [],
-			picelist: [],
-			dateL: [],
-			customers: [],
-			conferMetting: [],
-			BeginYearTime: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			BeginMonthTime: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			EndYearTime: new Date().getFullYear(),
-			EndMonthTime: new Date().getMonth()+1,
-			costType: null,
-			creator: null,
-			meetingType: null,
-			customer: 0
-		};
-	},
-	mounted() {
-		var timeList = new Date().getFullYear() - 2019;
-		for (var i = 0; i < timeList + 1; i++) {
-			this.dateList.push({ id: i + 1, datey: 2019 + i });
-		}
-		this.costStatistics();
-		// this.dictionaryTable();
-		this.getCustomerContacts();
-		this.getCustomers();
-	},
-	components: {
-		BrokenLineTwo
-	},
-	methods: {
-		//会议类型
-		getEventType() {
-      requestApi({
+  props: ['pice'],
+  data() {
+    return {
+      dateList: [],
+      monthList: [
+        {
+          id: '1',
+          datem: '1'
+        },
+        {
+          id: '2',
+          datem: '2'
+        },
+        {
+          id: '3',
+          datem: '3'
+        },
+        {
+          id: '4',
+          datem: '4'
+        },
+        {
+          id: '5',
+          datem: '5'
+        },
+        {
+          id: '6',
+          datem: '6'
+        },
+        {
+          id: '7',
+          datem: '7'
+        },
+        {
+          id: '8',
+          datem: '8'
+        },
+        {
+          id: '9',
+          datem: '9'
+        },
+        {
+          id: '10',
+          datem: '10'
+        },
+        {
+          id: '11',
+          datem: '11'
+        },
+        {
+          id: '12',
+          datem: '12'
+        }
+      ],
+      contacts: [],
+      picelist: [],
+      dateL: [],
+      customers: [],
+      conferMetting: [],
+      BeginYearTime: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      BeginMonthTime: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      EndYearTime: new Date().getFullYear(),
+      EndMonthTime: new Date().getMonth() + 1,
+      costType: null,
+      creator: null,
+      meetingType: null,
+      customer: 0
+    }
+  },
+  mounted() {
+    var timeList = new Date().getFullYear() - 2019
+    for (var i = 0; i < timeList + 1; i++) {
+      this.dateList.push({ id: i + 1, datey: 2019 + i })
+    }
+    this.costStatistics()
+    // this.dictionaryTable();
+    this.getCustomerContacts()
+    this.getCustomers()
+  },
+  components: {
+    BrokenLineTwo
+  },
+  methods: {
+    //会议类型
+    getEventType() {
+      this.requestApi({
         url: '/CustomerConfiguration/GetEventType',
         method: 'POST',
         data: {
           companyid: this.customer
-        },
+        }
       }).then(res => {
-				this.conferMetting = res;
-			});
-		},
-		//客户
-		getCustomers() {
-      requestApi({
+        this.conferMetting = res
+      })
+    },
+    //客户
+    getCustomers() {
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
-        data: {},
+        data: {}
       }).then(res => {
-				this.customers = res;
-			});
-		},
-		//负责人
-		getCustomerContacts() {
-      requestApi({
+        this.customers = res
+      })
+    },
+    //负责人
+    getCustomerContacts() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
-        data: {},
+        data: {}
       }).then(res => {
-				this.contacts = res;
-			});
-		},
-		//获取字典表
+        this.contacts = res
+      })
+    },
+    //获取字典表
 
-		dictionaryTable() {
-      requestApi({
+    dictionaryTable() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
-        data: {event_dictionary_code: '0035'},
+        data: { event_dictionary_code: '0035' }
       }).then(res => {
-					this.conferMetting = res;
-					console.log(this.conferMetting, 'wqeqweqwewqeqq');
-				});
-		},
-		//
-		costStatistics() {
-      requestApi({
+        this.conferMetting = res
+        console.log(this.conferMetting, 'wqeqweqwewqeqq')
+      })
+    },
+    //
+    costStatistics() {
+      this.requestApi({
         url: '/CustomerConfiguration/SpendAnalysisInfo',
         method: 'GET',
         data: {
@@ -254,22 +252,22 @@ export default {
           SubmitUser: this.creator,
           CostType: this.costType,
           CompanyId: this.customer
-        },
+        }
       }).then(res => {
-					this.dateL = res.infos;
-				});
-		},
-		tatolSaving() {
-			this.costStatistics();
-			this.$emit('hotelExpenses', this.BeginYearTime, this.BeginMonthTime, this.EndYearTime, this.EndMonthTime);
-		}
-	},
-	watch: {
-		pice(val = []) {
-			this.picelist = val;
-		}
-	}
-};
+        this.dateL = res.infos
+      })
+    },
+    tatolSaving() {
+      this.costStatistics()
+      this.$emit('hotelExpenses', this.BeginYearTime, this.BeginMonthTime, this.EndYearTime, this.EndMonthTime)
+    }
+  },
+  watch: {
+    pice(val = []) {
+      this.picelist = val
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

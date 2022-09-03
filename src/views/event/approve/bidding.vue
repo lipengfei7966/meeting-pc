@@ -139,229 +139,232 @@
 </template>
 
 <script>
-import requestApi from '@/utils/requestData'
 export default {
-	data() {
-		return {
-			activeName: "first",
-			// recored: true,
-			tableData: [],
-			tablet: [],
-			approvingTableData: [],
-			eventName: "",
-			eventId: "",
-			responsible: "",
-			searchData: {
-				type: 1,
-				eventName:'',
-				eventId: '',
-				responsible: '',
-				pageIndex: 1,
-				pageSize: 5,
-			},
-			// 待审批数据
-			waitCurrentPage: 1,
-			waitPageIndex: 1,
-			waitPageSize: 5,
-			approveWaitIndex: 1,
-			approveWaitSize: 5,
-			waitTotalCount: 0,
-			// 审批中数据
-			approvingCurrentPage: 1,
-			approvingPageIndex: 1,
-			approvingPageSize: 5,
-			approvingIndex: 1,
-			approvingSize: 5,
-			approvingTotalCount: 0,
-			// 审批完成数据
-			finishCurrentPage: 1,
-			finishPageIndex: 1,
-			finishPageSize: 5,
-			approveFinishIndex: 1,
-			approveFinishSize: 5,
-			finishTotalCount: 0,
-		};
-	},
-	methods: {
-		// 待审批切换排序
+  data() {
+    return {
+      activeName: 'first',
+      // recored: true,
+      tableData: [],
+      tablet: [],
+      approvingTableData: [],
+      eventName: '',
+      eventId: '',
+      responsible: '',
+      searchData: {
+        type: 1,
+        eventName: '',
+        eventId: '',
+        responsible: '',
+        pageIndex: 1,
+        pageSize: 5
+      },
+      // 待审批数据
+      waitCurrentPage: 1,
+      waitPageIndex: 1,
+      waitPageSize: 5,
+      approveWaitIndex: 1,
+      approveWaitSize: 5,
+      waitTotalCount: 0,
+      // 审批中数据
+      approvingCurrentPage: 1,
+      approvingPageIndex: 1,
+      approvingPageSize: 5,
+      approvingIndex: 1,
+      approvingSize: 5,
+      approvingTotalCount: 0,
+      // 审批完成数据
+      finishCurrentPage: 1,
+      finishPageIndex: 1,
+      finishPageSize: 5,
+      approveFinishIndex: 1,
+      approveFinishSize: 5,
+      finishTotalCount: 0
+    }
+  },
+  methods: {
+    // 待审批切换排序
     waitTopTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.searchData.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.searchData.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.searchData.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.searchData.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.searchData.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.searchData.isSort = 0 //0顺序 1倒叙
+        } else {
           this.searchData.isSort = ''
         }
-        this.seek();
+        this.seek()
       }
     },
-		// 审批中切换排序
+    // 审批中切换排序
     approvingTopTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.searchData.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.searchData.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.searchData.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.searchData.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.searchData.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.searchData.isSort = 0 //0顺序 1倒叙
+        } else {
           this.searchData.isSort = ''
         }
-        this.apprivingSearchFn();
+        this.apprivingSearchFn()
       }
     },
-		// 已完成切换排序
+    // 已完成切换排序
     finishTopTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.searchData.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.searchData.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.searchData.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.searchData.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.searchData.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.searchData.isSort = 0 //0顺序 1倒叙
+        } else {
           this.searchData.isSort = ''
         }
-        this.sear();
+        this.sear()
       }
     },
-		handleClick(tab, event) {
-			console.log(tab, event);
-		},
-		tableRowClassName({ row, rowIndex }) {
+    handleClick(tab, event) {
+      console.log(tab, event)
+    },
+    tableRowClassName({ row, rowIndex }) {
       // debugger
       if (row.is_overtime === 1) {
-        return "warning-row";
+        return 'warning-row'
       }
-      return "";
+      return ''
     },
-		// 调用待审批搜索接口
-		seek() {
-			this.searchData.type = 1
-			this.searchData.pageIndex = this.waitPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.eventId = this.eventId
-			this.searchData.responsible = this.responsible
-      requestApi({
+    // 调用待审批搜索接口
+    seek() {
+      let seekSearck = { ...this.searchData }
+      seekSearck.type = 1
+      seekSearck.pageIndex = this.waitPageIndex
+      seekSearck.eventName = this.eventName
+      seekSearck.eventId = this.eventId
+      seekSearck.responsible = this.responsible
+      this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
-        data: this.searchData,
-      }).then((res) => {
-					console.log(res);
-					if (res) {
-						this.tablet = res.EvetModels;
-						this.waitTotalCount = res.pageInfo.totalCount;
-						this.$emit('biddingAwaitCount', this.waitTotalCount)
-					}
-				});
-		},
-		// 调用审批中搜索接口
-		apprivingSearchFn() {
-			this.searchData.type = 2
-			this.searchData.pageIndex = this.approvingPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.eventId = this.eventId
-			this.searchData.responsible = this.responsible
-      requestApi({
+        data: seekSearck
+      }).then(res => {
+        console.log(res)
+        if (res) {
+          this.tablet = res.EvetModels
+          this.waitTotalCount = res.pageInfo.totalCount
+          this.$emit('biddingAwaitCount', this.waitTotalCount)
+        }
+      })
+    },
+    // 调用审批中搜索接口
+    apprivingSearchFn() {
+      let apprivingSearch = { ...this.searchData }
+      apprivingSearch.type = 2
+      apprivingSearch.pageIndex = this.approvingPageIndex
+      apprivingSearch.eventName = this.eventName
+      apprivingSearch.eventId = this.eventId
+      apprivingSearch.responsible = this.responsible
+      this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
-        data: this.searchData,
-      }).then((res) => {
-					if (res) {
-						this.approvingTableData = res.EvetModels;
-						this.approvingTotalCount = res.pageInfo.totalCount;
-					}
-				});
-		},
-		// 调用已完成搜索接口
-		sear() {
-			this.searchData.type = 3
-			this.searchData.pageIndex = this.finishPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.eventId = this.eventId
-			this.searchData.responsible = this.responsible
-			requestApi({
+        data: apprivingSearch
+      }).then(res => {
+        if (res) {
+          this.approvingTableData = res.EvetModels
+          this.approvingTotalCount = res.pageInfo.totalCount
+        }
+      })
+    },
+    // 调用已完成搜索接口
+    sear() {
+      let searSearch = { ...this.searchData }
+      searSearch.type = 3
+      searSearch.pageIndex = this.finishPageIndex
+      searSearch.eventName = this.eventName
+      searSearch.eventId = this.eventId
+      searSearch.responsible = this.responsible
+      this.requestApi({
         url: '/MeetingMa/GetWinthebiddingApprove',
         method: 'POST',
-        data: this.searchData,
-      }).then((res) => {
-					if (res) {
-						this.tableData = res.EvetModels;
-						this.finishTotalCount = res.pageInfo.totalCount;
-					}
-				});
-		},
-
-		transfertransfer(a, b, c, d, e, f) {
-			// 待审批 立即确认详情传参
-			this.$router.push({
-				path: "/offercart",
-				query: {
-					id: a,	// 会议ID
-					foreign_key_id: b,	// 报价单ID
-					group_id: c,	// 组ID
-					ApproveID: d,	//审批ID
-					type: e, // '待审核'
-					event_name: f, // 会议名称
-				},
-			});
-		},
-
-		examine(a, b, c, d, e) {
-			//  已完成 查看详情传参
-			this.$router.push({
-				path: "/cmms",
-				query: {
-					id: a,	// 会议ID
-					foreign_key_id: b,	// 报价单ID
-					group_id: c,	// 组ID
-					ApproveID: d,	//审批ID
-					type: e, // '审核通过/审核不通过'
-				},
-			});
-		},
-		waitHandleSizeChange (val) {
-      this.waitPageSize = val;
-      this.seek();
+        data: searSearch
+      }).then(res => {
+        if (res) {
+          this.tableData = res.EvetModels
+          this.finishTotalCount = res.pageInfo.totalCount
+        }
+      })
     },
-		waitCurrentChange(val) {
-			this.waitPageIndex = val;
-			this.seek();
-		},
-		approvingHandleSizeChange (val) {
-      this.approvingPageSize = val;
-      this.apprivingSearchFn();
-    },
-		approvingCurrentChange(val) {
-			this.approvingPageIndex = val;
-			this.apprivingSearchFn();
-		},
-		finishHandleSizeChange (val) {
-      this.finishPageSize = val;
-      this.sear();
-    },
-		finishCurrentChange(val) {
-			this.finishPageIndex = val;
-			this.sear();
-		},
-		moneyFormatter(row,column,value){
-			return value.toFixed(2)
-		}
-		
-	},
 
-	mounted() {
-		this.seek()
-		this.sear()
-		this.apprivingSearchFn()
-	},
-};
+    transfertransfer(a, b, c, d, e, f) {
+      // 待审批 立即确认详情传参
+      this.$router.push({
+        name: 'biddingDetail',
+        // path: "/offercart",
+        query: {
+          id: a, // 会议ID
+          foreign_key_id: b, // 报价单ID
+          group_id: c, // 组ID
+          ApproveID: d, //审批ID
+          type: e, // '待审核'
+          event_name: f // 会议名称
+        }
+      })
+    },
+
+    examine(a, b, c, d, e) {
+      //  已完成 查看详情传参
+      this.$router.push({
+        name: 'biddedDetail',
+        // path: "/cmms",
+        query: {
+          id: a, // 会议ID
+          foreign_key_id: b, // 报价单ID
+          group_id: c, // 组ID
+          ApproveID: d, //审批ID
+          type: e // '审核通过/审核不通过'
+        }
+      })
+    },
+    waitHandleSizeChange(val) {
+      this.waitPageSize = val
+      this.seek()
+    },
+    waitCurrentChange(val) {
+      this.waitPageIndex = val
+      this.seek()
+    },
+    approvingHandleSizeChange(val) {
+      this.approvingPageSize = val
+      this.apprivingSearchFn()
+    },
+    approvingCurrentChange(val) {
+      this.approvingPageIndex = val
+      this.apprivingSearchFn()
+    },
+    finishHandleSizeChange(val) {
+      this.finishPageSize = val
+      this.sear()
+    },
+    finishCurrentChange(val) {
+      this.finishPageIndex = val
+      this.sear()
+    },
+    moneyFormatter(row, column, value) {
+      return value.toFixed(2)
+    }
+  },
+
+  mounted() {
+    this.seek()
+    this.sear()
+    this.apprivingSearchFn()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -455,7 +458,7 @@ export default {
   }
   .el-pagination {
   }
-  /deep/ .el-table tr.warning-row {
+  ::deep .el-table tr.warning-row {
     color: red;
   }
 }

@@ -341,138 +341,138 @@
 </template>
 
 <script>
-import Spend from '@/components/event/spendby.vue';
-import Projectype from '@/components/event/projectype.vue';
-import Costelements from '@/components/event/costelements.vue';
+import Spend from '@/components/event/spendby.vue'
+import Projectype from '@/components/event/projectype.vue'
+import Costelements from '@/components/event/costelements.vue'
 import excelExport from '@/utils/exportexcel.js'
-import requestApi from '@/utils/requestData'
+
 export default {
-	data() {
-		return {
-			dateList: [],
-			monthList: [
-				{
-					id: '1',
-					datem: '1'
-				},
-				{
-					id: '2',
-					datem: '2'
-				},
-				{
-					id: '3',
-					datem: '3'
-				},
-				{
-					id: '4',
-					datem: '4'
-				},
-				{
-					id: '5',
-					datem: '5'
-				},
-				{
-					id: '6',
-					datem: '6'
-				},
-				{
-					id: '7',
-					datem: '7'
-				},
-				{
-					id: '8',
-					datem: '8'
-				},
-				{
-					id: '9',
-					datem: '9'
-				},
-				{
-					id: '10',
-					datem: '10'
-				},
-				{
-					id: '11',
-					datem: '11'
-				},
-				{
-					id: '12',
-					datem: '12'
-				}
-			],
-			//部门费用显示隐藏
-			singular: false,
-			//
-			settingProject: false,
-			//
-			ElementsCost: false,
+  data() {
+    return {
+      dateList: [],
+      monthList: [
+        {
+          id: '1',
+          datem: '1'
+        },
+        {
+          id: '2',
+          datem: '2'
+        },
+        {
+          id: '3',
+          datem: '3'
+        },
+        {
+          id: '4',
+          datem: '4'
+        },
+        {
+          id: '5',
+          datem: '5'
+        },
+        {
+          id: '6',
+          datem: '6'
+        },
+        {
+          id: '7',
+          datem: '7'
+        },
+        {
+          id: '8',
+          datem: '8'
+        },
+        {
+          id: '9',
+          datem: '9'
+        },
+        {
+          id: '10',
+          datem: '10'
+        },
+        {
+          id: '11',
+          datem: '11'
+        },
+        {
+          id: '12',
+          datem: '12'
+        }
+      ],
+      //部门费用显示隐藏
+      singular: false,
+      //
+      settingProject: false,
+      //
+      ElementsCost: false,
 
-			//部门费用搜索条件默认值
-			division_time_type: '1',
-			division_start_year: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			division_start_month: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			division_end_year: new Date().getFullYear(),
-			division_end_month: new Date().getMonth() + 1,
+      //部门费用搜索条件默认值
+      division_time_type: '1',
+      division_start_year: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      division_start_month: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      division_end_year: new Date().getFullYear(),
+      division_end_month: new Date().getMonth() + 1,
 
-			//会议类型费用搜索条件默认值
-			type_time_type: '1',
-			type_start_year: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			type_start_month: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			type_end_year: new Date().getFullYear(),
-			type_end_month: new Date().getMonth() + 1,
+      //会议类型费用搜索条件默认值
+      type_time_type: '1',
+      type_start_year: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      type_start_month: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      type_end_year: new Date().getFullYear(),
+      type_end_month: new Date().getMonth() + 1,
 
-			//项目成本构成搜索条件默认值
-			elements_time_type: '1',
-			elements_start_year: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			elements_start_month: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			elements_end_year: new Date().getFullYear(),
-			elements_end_month: new Date().getMonth() + 1,
+      //项目成本构成搜索条件默认值
+      elements_time_type: '1',
+      elements_start_year: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      elements_start_month: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      elements_end_year: new Date().getFullYear(),
+      elements_end_month: new Date().getMonth() + 1,
 
-			//
-			departmentType: {}, //图表部门费用
-			meetingType: {}, //图表会议类型
-			projectCost: [], //项目成本
-			customers: [],
-			customerOne: null,
-			customerTwo: null,
-			customerThree: null,
-			dialogVisible:false,
-			beginExcelYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
-			beginExcelMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
-			EndExcelYear: new Date().getFullYear(),
-			EndExcelMonth: new Date().getMonth() + 1,
-		};
-	},
-	components: {
-		Spend,
-		Projectype,
-		Costelements
-	},
-	mounted() {
-		var timeList = new Date().getFullYear() - 2019;
-		for (var i = 0; i < timeList + 1; i++) {
-			this.dateList.push({ id: i + 1, datey: 2019 + i });
-		}
-		this.spendTypeAnalysisReport();
-		this.spendByProjectType();
-		this.spendCyCostElements();
-		this.getCustomers()
-	},
-	methods: {
-		//客户
-		getCustomers() {
-      requestApi({
+      //
+      departmentType: {}, //图表部门费用
+      meetingType: {}, //图表会议类型
+      projectCost: [], //项目成本
+      customers: [],
+      customerOne: null,
+      customerTwo: null,
+      customerThree: null,
+      dialogVisible: false,
+      beginExcelYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      beginExcelMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      EndExcelYear: new Date().getFullYear(),
+      EndExcelMonth: new Date().getMonth() + 1
+    }
+  },
+  components: {
+    Spend,
+    Projectype,
+    Costelements
+  },
+  mounted() {
+    var timeList = new Date().getFullYear() - 2019
+    for (var i = 0; i < timeList + 1; i++) {
+      this.dateList.push({ id: i + 1, datey: 2019 + i })
+    }
+    this.spendTypeAnalysisReport()
+    this.spendByProjectType()
+    this.spendCyCostElements()
+    this.getCustomers()
+  },
+  methods: {
+    //客户
+    getCustomers() {
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'post',
-        data: {},
+        data: {}
       }).then(res => {
-				this.customers = res;
-				this.customerTwo=this.customers[0].id
-			});
-		},
-		//
-		spendTypeAnalysisReport() {
-      requestApi({
+        this.customers = res
+        this.customerTwo = this.customers[0].id
+      })
+    },
+    //
+    spendTypeAnalysisReport() {
+      this.requestApi({
         url: '/EventReport/SpendTypeAnalysis',
         method: 'GET',
         data: {
@@ -481,25 +481,25 @@ export default {
           BeginMonth: this.division_start_month,
           EndYear: this.division_end_year,
           EndMonth: this.division_end_month,
-          CompanyId:this.customerOne
-        },
+          CompanyId: this.customerOne
+        }
       }).then(res => {
-					if (res.length === 0) {
-						this.singular = true;
-					} else {
-						this.singular = false;
-					}
-					this.departmentType = res;
-					console.log(res, '21321321321');
-				});
-		},
-		//部门费用
-		searchDivision() {
-			this.spendTypeAnalysisReport();
-		},
-		//
-		spendByProjectType() {
-      requestApi({
+        if (res.length === 0) {
+          this.singular = true
+        } else {
+          this.singular = false
+        }
+        this.departmentType = res
+        console.log(res, '21321321321')
+      })
+    },
+    //部门费用
+    searchDivision() {
+      this.spendTypeAnalysisReport()
+    },
+    //
+    spendByProjectType() {
+      this.requestApi({
         url: '/CustomerConfiguration/SpendByProjectType',
         method: 'GET',
         data: {
@@ -508,25 +508,25 @@ export default {
           BeginMonth: this.type_start_month,
           EndYear: this.type_end_year,
           EndMonth: this.type_end_month,
-          CompanyId:this.customerTwo
-        },
+          CompanyId: this.customerTwo
+        }
       }).then(res => {
-					if (res.length === 0) {
-						this.settingProject = true;
-					} else {
-						this.settingProject = false;
-					}
-					console.log(res, '21321321321');
-					this.meetingType = res;
-				});
-		},
-		//会议类型费用
-		searchType() {
-			this.spendByProjectType();
-		},
-		//
-		spendCyCostElements() {
-      requestApi({
+        if (res.length === 0) {
+          this.settingProject = true
+        } else {
+          this.settingProject = false
+        }
+        console.log(res, '21321321321')
+        this.meetingType = res
+      })
+    },
+    //会议类型费用
+    searchType() {
+      this.spendByProjectType()
+    },
+    //
+    spendCyCostElements() {
+      this.requestApi({
         url: '/CustomerConfiguration/SpendCyCostElements',
         method: 'GET',
         data: {
@@ -535,52 +535,52 @@ export default {
           BeginMonth: this.elements_start_month,
           EndYear: this.elements_end_year,
           EndMonth: this.elements_end_month,
-          CompanyId:this.customerThree
-        },
+          CompanyId: this.customerThree
+        }
       }).then(res => {
-					if (!res) {
-						this.ElementsCost = true;
-					} else {
-						this.ElementsCost = false;
-					}
-					console.log(res, '21321321321------');
-					this.projectCost = res;
-				});
-		},
-		//项目成本构成
-		searchElements() {
-			this.spendCyCostElements();
-		},
-		downloadReport() {
-			if(!this.beginExcelYear || !this.beginExcelMonth || !this.EndExcelYear || !this.EndExcelMonth){
-				this.$message({
-					type: 'warning',
-					message: '日期不可为空'
-				});
-				return
-			}
-			this.$confirm('是否要导出报表','提示',
-				{
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}
-			)
-				.then(() => {
-					this.dialogVisible=false
-					excelExport('/Reporting/GetExcel',{
-						BeginYear: this.beginExcelYear,
-						BeginMonth: this.beginExcelMonth,
-						EndYear: this.EndExcelYear,
-						EndMonth: this.EndExcelMonth
-					},'报表')
-				})
-				.catch(() => {
-					
-				});
-		}
-	}
-};
+        if (!res) {
+          this.ElementsCost = true
+        } else {
+          this.ElementsCost = false
+        }
+        console.log(res, '21321321321------')
+        this.projectCost = res
+      })
+    },
+    //项目成本构成
+    searchElements() {
+      this.spendCyCostElements()
+    },
+    downloadReport() {
+      if (!this.beginExcelYear || !this.beginExcelMonth || !this.EndExcelYear || !this.EndExcelMonth) {
+        this.$message({
+          type: 'warning',
+          message: '日期不可为空'
+        })
+        return
+      }
+      this.$confirm('是否要导出报表', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.dialogVisible = false
+          excelExport(
+            '/Reporting/GetExcel',
+            {
+              BeginYear: this.beginExcelYear,
+              BeginMonth: this.beginExcelMonth,
+              EndYear: this.EndExcelYear,
+              EndMonth: this.EndExcelMonth
+            },
+            '报表'
+          )
+        })
+        .catch(() => {})
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

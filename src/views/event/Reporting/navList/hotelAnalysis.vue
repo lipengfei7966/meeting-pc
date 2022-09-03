@@ -99,11 +99,11 @@
 </template>
 
 <script>
-import Echarts from '@/components/event/echarts';
-import requestApi from '@/utils/requestData'
+import Echarts from '@/components/event/echarts'
+
 export default {
   components: {
-    Echarts,
+    Echarts
   },
   data() {
     return {
@@ -112,72 +112,74 @@ export default {
       hotelName: '',
       totalCount: 0,
       pageIndex: 1,
-      sort:1,
-    };
+      sort: 1
+    }
   },
   mounted() {
-    this.detailedData();
-    this.holaleAnalysis();
+    this.detailedData()
+    this.holaleAnalysis()
   },
   methods: {
-    changeBarSort($event){
-      console.log($event.target,'999394r39r399');
-      if($event.target.getAttribute('name')!='bar_sort'){return;}
-      this.sort=+$event.target.getAttribute('value');
-      console.log($event.target.getAttribute('value'),'23432332323');
-      this.holaleAnalysis();
+    changeBarSort($event) {
+      console.log($event.target, '999394r39r399')
+      if ($event.target.getAttribute('name') != 'bar_sort') {
+        return
+      }
+      this.sort = +$event.target.getAttribute('value')
+      console.log($event.target.getAttribute('value'), '23432332323')
+      this.holaleAnalysis()
     },
     //酒店详细数据
     detailedData() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/DetailInformation',
         method: 'GET',
         data: {
           name: '',
           pageIndex: this.pageIndex,
-          pageSize: 15,
-        },
-      }).then((res) => {
-          this.totalCount = res.totalCount;
-          console.log(res, '1111ooooo');
-          this.detailLists = res.infos;
-        });
+          pageSize: 15
+        }
+      }).then(res => {
+        this.totalCount = res.totalCount
+        console.log(res, '1111ooooo')
+        this.detailLists = res.infos
+      })
     },
 
     pageChange(pageIndex) {
-      this.pageIndex = pageIndex;
-      this.detailedData();
+      this.pageIndex = pageIndex
+      this.detailedData()
     },
 
     holaleAnalysis() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/CooperateRate',
         method: 'GET',
         data: {
-          sort: this.sort,
-        },
-      }).then((res) => {
-          this.detailed = res;
-          console.log(res, '1111ooooo11111');
-        });
+          sort: this.sort
+        }
+      }).then(res => {
+        this.detailed = res
+        console.log(res, '1111ooooo11111')
+      })
     },
 
     // 酒店名称搜索
     search() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/DetailInformation',
         method: 'GET',
         data: {
           name: this.hotelName,
           pageIndex: 1,
-          pageSize: 15,
-        },
-      }).then((res) => {
-          this.detailLists = res.infos;
-        });
-    },
-  },
-};
+          pageSize: 15
+        }
+      }).then(res => {
+        this.detailLists = res.infos
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -188,7 +188,7 @@ function initRouteName(titleCNameMap, titleENameMap) {
     route: {
       ...zhFrameRoute,
       ...titleCNameMap,
-      ...zhEventRoute,
+      ...zhEventRoute
     }
   }
   // 路由多语言
@@ -196,7 +196,7 @@ function initRouteName(titleCNameMap, titleENameMap) {
     route: {
       ...enFrameRoute,
       ...titleENameMap,
-      ...enEventRoute,
+      ...enEventRoute
     }
   }
   // 路由多语言

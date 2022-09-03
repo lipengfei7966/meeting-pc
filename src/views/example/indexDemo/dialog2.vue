@@ -81,7 +81,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-/deep/ .el-tabs__header {
+::deep .el-tabs__header {
   .el-tabs__item {
     height: 30px;
     line-height: 30px;

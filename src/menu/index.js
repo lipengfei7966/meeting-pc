@@ -99,9 +99,10 @@ export const constantMenuMap = [
         name: 'reporting',
         meta: {
           title: 'reporting',
+          icon: 'Tbaob',
           firstParent: 'event'
         }
-      },
+      }
     ]
   },
   {
@@ -134,6 +135,91 @@ export const constantMenuMap = [
           firstParent: 'DMCevent'
         }
       },
+      {
+        name: 'DMCbasicInfoManage',
+        meta: {
+          title: 'DMCbasicInfoManage',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCorderList',
+        meta: {
+          title: 'DMCorderList',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCmemberManage',
+        meta: {
+          title: 'DMCmemberManage',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCitineraryList',
+        meta: {
+          title: 'DMCitineraryList',
+          firstParent: 'DMCevent'
+        }
+      }
+    ]
+  },
+  {
+    name: 'systemSetting',
+    meta: {
+      title: 'systemSetting',
+      icon: 'Tshezhi',
+      isFirstParent: true
+    },
+    hidden: false,
+    children: [
+      {
+        name: 'clientMemberManage',
+        meta: {
+          title: 'clientMemberManage',
+          firstParent: 'systemSetting'
+        }
+      },
+      {
+        name: 'approveSetting',
+        meta: {
+          title: 'approveSetting',
+          firstParent: 'systemSetting'
+        }
+      },
+      {
+        name: 'otherSetting',
+        meta: {
+          title: 'otherSetting',
+          firstParent: 'systemSetting'
+        }
+      },
+      {
+        name: 'relatedPersonSetting',
+        meta: {
+          title: 'relatedPersonSetting',
+          firstParent: 'systemSetting'
+        }
+      }
+    ]
+  },
+  {
+    name: 'resourceCenter',
+    meta: {
+      title: 'resourceCenter',
+      icon: 'table',
+      isFirstParent: true
+    },
+    hidden: false,
+    children: [
+      {
+        name: 'siteResource',
+        meta: {
+          title: 'siteResource',
+          firstParent: 'resourceCenter'
+        }
+      }
     ]
   }
 ]

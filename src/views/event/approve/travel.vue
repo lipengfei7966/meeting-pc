@@ -200,248 +200,252 @@
 
 <script>
 export default {
-	data() {
-		return {
-			activeName: "1",
-			recored: true,
-			tableData: [],
-			eventName: "",
-			supplierName: "", // 供应商名称
-			approveType:'', // 审批类型
-			PO: "",
-			PR: '',
-			responsible: "",
-			tablecalled: [],
-			tablepro: [],
-			approvingTableData: [],
-			pickerOptions: {
-				shortcuts: [
-					{
-						text: "今天",
-						onClick(picker) {
-							picker.$emit("pick", new Date());
-						},
-					},
-					{
-						text: "昨天",
-						onClick(picker) {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24);
-							picker.$emit("pick", date);
-						},
-					},
-					{
-						text: "一周前",
-						onClick(picker) {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-							picker.$emit("pick", date);
-						},
-					},
-				],
-			},
-			endTime: "",
-			beginTime: "",
-			value3: "",
-			searchData: {
-				type: 1,
-				eventName: "",
-				supplierName: "", // 供应商名称
-				approveType:'', // 审批类型
-				po: "",
-				pr: '',
-				pageIndex: 1,
-				pageSize: 5,
-			},
-			// 待审批数据
-			waitCurrentPage: 1,
-			waitPageIndex: 1,
-			waitPageSize: 5,
-			approveWaitIndex: 1,
-			approveWaitSize: 5,
-			waitTotalCount: 0,
-			// 审批中数据
-			approvingCurrentPage: 1,
-			approvingPageIndex: 1,
-			approvingPageSize: 5,
-			approvingIndex: 1,
-			approvingSize: 5,
-			approvingTotalCount: 0,
-			// 所有已处理数据
-			allCurrentPage: 1,
-			allPageIndex: 1,
-			allPageSize: 5,
-			approveAllIndex: 1,
-			approveAllSize: 5,
-			allTotalCount: 0,
-		};
-	},
-	mounted() {
-		this.condition();
-		this.apprivingSearchFn();
-		// this.stocks();
-		this.speed();
-	},
-	methods: {
-		// 待审批切换排序
+  data() {
+    return {
+      activeName: '1',
+      recored: true,
+      tableData: [],
+      eventName: '',
+      supplierName: '', // 供应商名称
+      approveType: '', // 审批类型
+      PO: '',
+      PR: '',
+      responsible: '',
+      tablecalled: [],
+      tablepro: [],
+      approvingTableData: [],
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date())
+            }
+          },
+          {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          },
+          {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
+          }
+        ]
+      },
+      endTime: '',
+      beginTime: '',
+      value3: '',
+      searchData: {
+        type: 1,
+        eventName: '',
+        supplierName: '', // 供应商名称
+        approveType: '', // 审批类型
+        po: '',
+        pr: '',
+        pageIndex: 1,
+        pageSize: 5
+      },
+      // 待审批数据
+      waitCurrentPage: 1,
+      waitPageIndex: 1,
+      waitPageSize: 5,
+      approveWaitIndex: 1,
+      approveWaitSize: 5,
+      waitTotalCount: 0,
+      // 审批中数据
+      approvingCurrentPage: 1,
+      approvingPageIndex: 1,
+      approvingPageSize: 5,
+      approvingIndex: 1,
+      approvingSize: 5,
+      approvingTotalCount: 0,
+      // 所有已处理数据
+      allCurrentPage: 1,
+      allPageIndex: 1,
+      allPageSize: 5,
+      approveAllIndex: 1,
+      approveAllSize: 5,
+      allTotalCount: 0
+    }
+  },
+  mounted() {
+    this.condition()
+    this.apprivingSearchFn()
+    // this.stocks();
+    this.speed()
+  },
+  methods: {
+    // 待审批切换排序
     waitTopTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.searchData.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.searchData.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.searchData.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.searchData.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.searchData.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.searchData.isSort = 0 //0顺序 1倒叙
+        } else {
           this.searchData.isSort = ''
         }
-        this.condition();
+        this.condition()
       }
     },
-		// 审批中切换排序
+    // 审批中切换排序
     approvingTopTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.searchData.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.searchData.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.searchData.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.searchData.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.searchData.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.searchData.isSort = 0 //0顺序 1倒叙
+        } else {
           this.searchData.isSort = ''
         }
-        this.apprivingSearchFn();
+        this.apprivingSearchFn()
       }
     },
-		// 已完成切换排序
+    // 已完成切换排序
     finishTopTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.searchData.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.searchData.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.searchData.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.searchData.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.searchData.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.searchData.isSort = 0 //0顺序 1倒叙
+        } else {
           this.searchData.isSort = ''
         }
-        this.speed();
+        this.speed()
       }
     },
-		// 旅行社酒店tab切换选项卡
-		handleClick(tab, event) {
-			console.log(tab, event);
-		},
-		tableRowClassName({ row, rowIndex }) {
+    // 旅行社酒店tab切换选项卡
+    handleClick(tab, event) {
+      console.log(tab, event)
+    },
+    tableRowClassName({ row, rowIndex }) {
       // debugger
       if (row.is_overtime === 1) {
-        return "warning-row";
+        return 'warning-row'
       }
-      return "";
+      return ''
     },
-		// 结算审批会议基本信息传参e
-		transfer(item,status) { // a 会议ID， b 审批ID， c 结算单ID, d 会议名称, e 待审核
-			this.$router.push({
-				path: "/msd",
-				query: {
-					id: item.event_info_id,  //会议ID
-					approveId: item.id,  // 审批ID
-					settlementId: item.foreign_key_id, // 结算单ID
-					event_name: item.event_name, //  会议名称
-					orderId: item.orderform_id, // 订单ID
-					statu: status || '', // 待审核 || ‘’
-					from: 'approve',
-					
-				},
-			});
-		},
-		// 调用待审批搜索接口
-		condition() {
-			this.searchData.type = 1
-			this.searchData.pageIndex = this.waitPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.supplierName = this.supplierName
-			this.searchData.approveType = this.approveType
-			this.searchData.po = this.PO
-			this.searchData.pr = this.PR
-      requestApi({
+    // 结算审批会议基本信息传参e
+    transfer(item, status) {
+      // a 会议ID， b 审批ID， c 结算单ID, d 会议名称, e 待审核
+      this.$router.push({
+        name: 'msd',
+        // path: "/msd",
+        query: {
+          id: item.event_info_id, //会议ID
+          approveId: item.id, // 审批ID
+          settlementId: item.foreign_key_id, // 结算单ID
+          event_name: item.event_name, //  会议名称
+          orderId: item.orderform_id, // 订单ID
+          statu: status || '', // 待审核 || ‘’
+          from: 'approve'
+        }
+      })
+    },
+    // 调用待审批搜索接口
+    condition() {
+      let conditionSearch = { ...this.searchData }
+      conditionSearch.type = 1
+      conditionSearch.pageIndex = this.waitPageIndex
+      conditionSearch.eventName = this.eventName
+      conditionSearch.supplierName = this.supplierName
+      conditionSearch.approveType = this.approveType
+      conditionSearch.po = this.PO
+      conditionSearch.pr = this.PR
+      this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
-        data: this.searchData,
-      }).then((res) => {
-        this.tableData = res.EvetModels;
-        this.waitTotalCount = res.pageInfo.totalCount;
+        data: conditionSearch
+      }).then(res => {
+        this.tableData = res.EvetModels
+        this.waitTotalCount = res.pageInfo.totalCount
         this.$emit('travelAwaitCount', this.waitTotalCount)
-      });
-		},
-		// 调用审批中搜索接口
-		apprivingSearchFn() {
-			this.searchData.type = 2
-			this.searchData.pageIndex = this.approvingPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.supplierName = this.supplierName
-			this.searchData.approveType = this.approveType
-			this.searchData.po = this.PO
-			this.searchData.pr = this.PR
-			requestApi({
+      })
+    },
+    // 调用审批中搜索接口
+    apprivingSearchFn() {
+      let apprivingSearch = { ...this.searchData }
+      apprivingSearch.type = 2
+      apprivingSearch.pageIndex = this.approvingPageIndex
+      apprivingSearch.eventName = this.eventName
+      apprivingSearch.supplierName = this.supplierName
+      apprivingSearch.approveType = this.approveType
+      apprivingSearch.po = this.PO
+      apprivingSearch.pr = this.PR
+      this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
-        data: this.searchData,
-      }).then((res) => {
-					if (res) {
-						this.approvingTableData = res.EvetModels;
-						this.approvingTotalCount = res.pageInfo.totalCount;
-					}
-				});
-		},
-		// 调用已完成接口
-		speed() {
-			this.searchData.type = 3
-			this.searchData.pageIndex = this.allPageIndex
-			this.searchData.eventName = this.eventName
-			this.searchData.supplierName = this.supplierName
-			this.searchData.approveType = this.approveType
-			this.searchData.po = this.PO
-			this.searchData.pr = this.PR
-			requestApi({
+        data: apprivingSearch
+      }).then(res => {
+        if (res) {
+          this.approvingTableData = res.EvetModels
+          this.approvingTotalCount = res.pageInfo.totalCount
+        }
+      })
+    },
+    // 调用已完成接口
+    speed() {
+      let speedSearch = { ...this.searchData }
+      speedSearch.type = 3
+      speedSearch.pageIndex = this.allPageIndex
+      speedSearch.eventName = this.eventName
+      speedSearch.supplierName = this.supplierName
+      speedSearch.approveType = this.approveType
+      speedSearch.po = this.PO
+      speedSearch.pr = this.PR
+      this.requestApi({
         url: '/MeetingMa/GetSettlementApprove',
         method: 'POST',
-        data: this.searchData,
-      }).then((res) => {
-					this.tablepro = res.EvetModels;
-					this.allTotalCount = res.pageInfo.totalCount;
-				});
-		},
+        data: speedSearch
+      }).then(res => {
+        this.tablepro = res.EvetModels
+        this.allTotalCount = res.pageInfo.totalCount
+      })
+    },
 
-		waitHandleSizeChange (val) {
-      this.waitPageSize = val;
-      this.condition();
+    waitHandleSizeChange(val) {
+      this.waitPageSize = val
+      this.condition()
     },
-		waitCurrentChange(val) {
-			this.waitPageIndex = val;
-			this.condition();
-		},
-		approvingHandleSizeChange (val) {
-      this.approvingPageSize = val;
-      this.apprivingSearchFn();
+    waitCurrentChange(val) {
+      this.waitPageIndex = val
+      this.condition()
     },
-		approvingCurrentChange(val) {
-			this.approvingPageIndex = val;
-			this.apprivingSearchFn();
-		},
-		allHandleSizeChange (val) {
-      this.allPageSize = val;
-      this.speed();
+    approvingHandleSizeChange(val) {
+      this.approvingPageSize = val
+      this.apprivingSearchFn()
     },
-		allCurrentChange(val) {
-			this.allPageIndex = val;
-			this.speed();
-		}
-	},
-};
+    approvingCurrentChange(val) {
+      this.approvingPageIndex = val
+      this.apprivingSearchFn()
+    },
+    allHandleSizeChange(val) {
+      this.allPageSize = val
+      this.speed()
+    },
+    allCurrentChange(val) {
+      this.allPageIndex = val
+      this.speed()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -529,7 +533,7 @@ tr td div {
 .confirmButton:hover {
   color: #f91;
 }
-/deep/ .el-table tr.warning-row {
+::deep .el-table tr.warning-row {
   color: red;
 }
 // .txtn{

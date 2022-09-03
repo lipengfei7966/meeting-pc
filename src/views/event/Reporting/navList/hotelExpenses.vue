@@ -156,151 +156,151 @@
 </template>
 
 <script>
-import Expenditurestatistics from './Statistics/expenditureStatistics.vue';
-import Savingstatistics from './Statistics/savingStatistics.vue';
-import Pig from '@/components/event/pig';
-import excelExport from '@/utils/exportexcel.js';
-import requestApi from '@/utils/requestData'
+import Expenditurestatistics from './Statistics/expenditureStatistics.vue'
+import Savingstatistics from './Statistics/savingStatistics.vue'
+import Pig from '@/components/event/pig'
+import excelExport from '@/utils/exportexcel.js'
+
 export default {
-	components: {
-		Expenditurestatistics,
-		Savingstatistics,
-		Pig
-	},
-	data() {
-		return {
-			activeName: 'first',
-			dateList: [],
-			monthList: [
-				{
-					id: '1',
-					datem: '1'
-				},
-				{
-					id: '2',
-					datem: '2'
-				},
-				{
-					id: '3',
-					datem: '3'
-				},
-				{
-					id: '4',
-					datem: '4'
-				},
-				{
-					id: '5',
-					datem: '5'
-				},
-				{
-					id: '6',
-					datem: '6'
-				},
-				{
-					id: '7',
-					datem: '7'
-				},
-				{
-					id: '8',
-					datem: '8'
-				},
-				{
-					id: '9',
-					datem: '9'
-				},
-				{
-					id: '10',
-					datem: '10'
-				},
-				{
-					id: '11',
-					datem: '11'
-				},
-				{
-					id: '12',
-					datem: '12'
-				}
-			],
-			// pice: '',
-			pice: [], //
-			beginYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
-			beginMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
-			EndYear: new Date().getFullYear(),
-			EndMonth: new Date().getMonth() + 1,
-			creator: null,
-			city_category: null,
-			// expenseType: 1,
-			expenseTypeList: [],
-			conferMetting: [],
-			contacts: [],
-			customers: [],
-			customer: 0, //搜索客户的默认值
-			dialogVisible: false,
-			beginExcelYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
-			beginExcelMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
-			EndExcelYear: new Date().getFullYear(),
-			EndExcelMonth: new Date().getMonth() + 1
-		};
-	},
-	mounted() {
-		var timeList = new Date().getFullYear() - 2019;
-		for (var i = 0; i < timeList + 1; i++) {
-			this.dateList.push({ id: i + 1, datey: 2019 + i });
-		}
-		this.hotelExpenses(this.beginYear, this.beginMonth, this.EndYear, this.EndMonth);
-		this.search();
-		// this.dictionaryTable();
-		this.getCustomerContacts();
-		this.getCustomers();
-	},
-	methods: {
-		//会议类型
-		getEventType() {
-      requestApi({
+  components: {
+    Expenditurestatistics,
+    Savingstatistics,
+    Pig
+  },
+  data() {
+    return {
+      activeName: 'first',
+      dateList: [],
+      monthList: [
+        {
+          id: '1',
+          datem: '1'
+        },
+        {
+          id: '2',
+          datem: '2'
+        },
+        {
+          id: '3',
+          datem: '3'
+        },
+        {
+          id: '4',
+          datem: '4'
+        },
+        {
+          id: '5',
+          datem: '5'
+        },
+        {
+          id: '6',
+          datem: '6'
+        },
+        {
+          id: '7',
+          datem: '7'
+        },
+        {
+          id: '8',
+          datem: '8'
+        },
+        {
+          id: '9',
+          datem: '9'
+        },
+        {
+          id: '10',
+          datem: '10'
+        },
+        {
+          id: '11',
+          datem: '11'
+        },
+        {
+          id: '12',
+          datem: '12'
+        }
+      ],
+      // pice: '',
+      pice: [], //
+      beginYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      beginMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      EndYear: new Date().getFullYear(),
+      EndMonth: new Date().getMonth() + 1,
+      creator: null,
+      city_category: null,
+      // expenseType: 1,
+      expenseTypeList: [],
+      conferMetting: [],
+      contacts: [],
+      customers: [],
+      customer: 0, //搜索客户的默认值
+      dialogVisible: false,
+      beginExcelYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      beginExcelMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      EndExcelYear: new Date().getFullYear(),
+      EndExcelMonth: new Date().getMonth() + 1
+    }
+  },
+  mounted() {
+    var timeList = new Date().getFullYear() - 2019
+    for (var i = 0; i < timeList + 1; i++) {
+      this.dateList.push({ id: i + 1, datey: 2019 + i })
+    }
+    this.hotelExpenses(this.beginYear, this.beginMonth, this.EndYear, this.EndMonth)
+    this.search()
+    // this.dictionaryTable();
+    this.getCustomerContacts()
+    this.getCustomers()
+  },
+  methods: {
+    //会议类型
+    getEventType() {
+      this.requestApi({
         url: '/CustomerConfiguration/GetEventType',
         method: 'POST',
         data: {
           companyid: this.customer
-        },
+        }
       }).then(res => {
-				this.conferMetting = res;
-			});
-		},
-		//客户
-		getCustomers() {
-      requestApi({
+        this.conferMetting = res
+      })
+    },
+    //客户
+    getCustomers() {
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
-        data: {},
+        data: {}
       }).then(res => {
-				this.customers = res;
-			});
-		},
-		//负责人
-		getCustomerContacts() {
-      requestApi({
+        this.customers = res
+      })
+    },
+    //负责人
+    getCustomerContacts() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
-        data: {},
+        data: {}
       }).then(res => {
-				this.contacts = res;
-			});
-		},
-		dictionaryTable() {
-      requestApi({
+        this.contacts = res
+      })
+    },
+    dictionaryTable() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
-        data: {event_dictionary_code: '0035'},
+        data: { event_dictionary_code: '0035' }
       }).then(res => {
-					this.conferMetting = res;
-				});
-		},
-		//
-		handleClick(tab, event) {
-			console.log(tab, event);
-		},
-		hotelExpenses(beginYear, beginMonth, EndYear, EndMonth) {
-      requestApi({
+        this.conferMetting = res
+      })
+    },
+    //
+    handleClick(tab, event) {
+      console.log(tab, event)
+    },
+    hotelExpenses(beginYear, beginMonth, EndYear, EndMonth) {
+      this.requestApi({
         url: '/CustomerConfiguration/SpendAnalysisAccumulateInfo',
         method: 'GET',
         data: {
@@ -308,14 +308,14 @@ export default {
           BeginMonth: beginMonth,
           EndYear: EndYear,
           EndMonth: EndMonth
-        },
+        }
       }).then(res => {
-					console.log(res);
-					this.pice = res;
-				});
-		},
-		search() {
-      requestApi({
+        console.log(res)
+        this.pice = res
+      })
+    },
+    search() {
+      this.requestApi({
         url: '/CustomerConfiguration/SpendTypeAnalysis',
         method: 'GET',
         data: {
@@ -326,41 +326,41 @@ export default {
           SubmitUser: this.creator,
           EventType: this.city_category,
           CompanyId: this.customer
-        },
+        }
       }).then(res => {
-					this.expenseTypeList = res;
-				});
-		},
-		downloadReport() {
-			if (!this.beginExcelYear || !this.beginExcelMonth || !this.EndExcelYear || !this.EndExcelMonth) {
-				this.$message({
-					type: 'warning',
-					message: '日期不可为空'
-				});
-				return;
-			}
-			this.$confirm('是否要导出报表', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			})
-				.then(() => {
-					this.dialogVisible = false;
-					excelExport(
-						'/Reporting/GetExcel',
-						{
-							BeginYear: this.beginExcelYear,
-							BeginMonth: this.beginExcelMonth,
-							EndYear: this.EndExcelYear,
-							EndMonth: this.EndExcelMonth
-						},
-						'报表'
-					);
-				})
-				.catch(() => {});
-		}
-	}
-};
+        this.expenseTypeList = res
+      })
+    },
+    downloadReport() {
+      if (!this.beginExcelYear || !this.beginExcelMonth || !this.EndExcelYear || !this.EndExcelMonth) {
+        this.$message({
+          type: 'warning',
+          message: '日期不可为空'
+        })
+        return
+      }
+      this.$confirm('是否要导出报表', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.dialogVisible = false
+          excelExport(
+            '/Reporting/GetExcel',
+            {
+              BeginYear: this.beginExcelYear,
+              BeginMonth: this.beginExcelMonth,
+              EndYear: this.EndExcelYear,
+              EndMonth: this.EndExcelMonth
+            },
+            '报表'
+          )
+        })
+        .catch(() => {})
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
