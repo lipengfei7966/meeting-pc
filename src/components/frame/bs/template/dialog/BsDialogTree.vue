@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='treeDialog'>
       <!-- 头部 -->
       <title-contain :titleName='dialog.titleName' @TitleFun="$emit('closeDialog')" />
@@ -57,7 +57,7 @@ export default {
       default: null
     }
   },
-  beforeMount() { },
+  beforeMount() {},
 
   watch: {
     filterText(val) {
@@ -106,7 +106,7 @@ export default {
           // 初始化数据回调
           this.$emit('initCallback', this.treeData)
         })
-        .catch(() => { })
+        .catch(() => {})
 
       if (this.dialog.form.showCheckbox && this.dialog.form.api.getCheckedList) {
         request({
@@ -122,7 +122,7 @@ export default {
             this.checkedKeys = response.data
             this.defaultCheckedKeys = response.data
           })
-          .catch(() => { })
+          .catch(() => {})
       }
     },
 
@@ -162,7 +162,7 @@ export default {
         .then(() => {
           this.$emit('closeDialog', this.$refs.tree.getCheckedKeys())
         })
-        .catch(() => { })
+        .catch(() => {})
     },
 
     // 取消通用事件
@@ -173,7 +173,7 @@ export default {
           .then(() => {
             this.$emit('closeDialog')
           })
-          .catch(() => { })
+          .catch(() => {})
       } else {
         this.$emit('closeDialog')
       }

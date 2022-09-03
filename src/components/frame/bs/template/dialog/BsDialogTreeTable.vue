@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div ref='treeTableDialog' class='dialog-container' type='treeTableDialog'>
       <!-- 头部 -->
       <title-contain :titleName='dialog.titleName' @screenChange="setTableHeight" @TitleFun="$emit('closeDialog')" />

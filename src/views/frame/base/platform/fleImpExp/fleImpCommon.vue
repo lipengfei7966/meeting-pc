@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container edit-page-style">
+  <div class="bs-container app-container edit-page-style">
     <!-- 顶部按钮 -->
     <el-row class="top-operate">
       <el-button size="mini" v-db-click :loading="showLoading1" style="margin-right: 6px" @click="downloadTemplate">

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container dashboard">
+  <div class="bs-container app-container dashboard">
     <div :style="{'width': clientWidth < 1366 ? (this.sidebar.opened ? '1146px' : '1306px') : 'auto'}">
       <div class="dashboardWrap">
         <h1>您好, 欢迎使用数据展示系统</h1>
