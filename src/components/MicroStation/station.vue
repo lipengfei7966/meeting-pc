@@ -66,9 +66,11 @@ export default {
       this.$message('暂无更多模板！')
     },
     handel(val) {
-      this.pitchOn = !this.pitchOn
-      //       debugger
-      this.templateVal = val
+      if (val == 1) {
+        this.pitchOn = !this.pitchOn
+        //       debugger
+        this.templateVal = val
+      }
       console.log(val)
     },
     feature(val) {
