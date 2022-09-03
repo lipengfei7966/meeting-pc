@@ -34,7 +34,7 @@ export default {
     initDialog() {
       const bsEditorFrame = this.$refs.bsEditorFrame
       const selfThis = this
-      bsEditorFrame.addEventListener('bsEditorInit', function(event) {
+      bsEditorFrame.addEventListener('qmEditorInit', function(event) {
         selfThis.template.editorWin = event.detail.editorWin
         selfThis.template.editorWin.setMode('design')
         if (selfThis.type === 'view') {

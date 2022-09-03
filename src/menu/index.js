@@ -1,8 +1,8 @@
 export const constantMenuMap = [
   {
-    name: 'Demo',
+    name: 'example',
     meta: {
-      title: 'Demo',
+      title: 'example',
       icon: 'table',
       isFirstParent: true
     },
@@ -10,24 +10,23 @@ export const constantMenuMap = [
     children: [{
       name: 'indexDemo',
       meta: {
-        title: '一览页面',
+        title: 'indexDemo',
         firstParent: 'example'
       }
     }, {
       name: 'dialogDemo',
       meta: {
-        title: '弹窗页面',
+        title: 'dialogDemo',
         firstParent: 'example'
       }
     }, {
       name: 'treeSearchDemo',
       meta: {
-        title: '树型一览页面',
+        title: 'treeSearchDemo',
         firstParent: 'example'
       }
-    }
-    ]
-  }
+    }]
+  },
   // {
   //   name: 'event',
   //   meta: {
@@ -37,166 +36,166 @@ export const constantMenuMap = [
   //   },
   //   hidden: false,
   //   children: [
-  //     // {
-  //     //   name: 'createEvent',
-  //     //   meta: {
-  //     //     title: 'createEvent',
-  //     //     firstParent: 'event'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'eventList',
-  //     //   meta: {
-  //     //     title: 'eventList',
-  //     //     firstParent: 'event'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'approveOrderManage',
-  //     //   meta: {
-  //     //     title: 'approveOrderManage',
-  //     //     firstParent: 'event'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'eventParameter',
-  //     //   meta: {
-  //     //     title: 'eventParameter',
-  //     //     firstParent: 'event'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'eventApprove',
-  //     //   meta: {
-  //     //     title: 'eventApprove',
-  //     //     firstParent: 'event'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'eventReporting',
-  //     //   meta: {
-  //     //     title: 'eventReporting',
-  //     //     icon: 'Tbaob',
-  //     //     firstParent: 'event'
-  //     //   }
-  //     // }
-  //   ]
-  // },
-  // {
-  //   name: 'DMCevent',
-  //   meta: {
-  //     title: 'DMCevent',
-  //     icon: 'table',
-  //     isFirstParent: true
-  //   },
-  //   hidden: false,
-  //   children: [
-  //     // {
-  //     //   name: 'DMCcreateEvent',
-  //     //   meta: {
-  //     //     title: 'DMCcreateEvent',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'DMCEventList',
-  //     //   meta: {
-  //     //     title: 'DMCEventList',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'DMCinquiryList',
-  //     //   meta: {
-  //     //     title: 'DMCinquiryList',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'DMCbasicInfoManage',
-  //     //   meta: {
-  //     //     title: 'DMCbasicInfoManage',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'DMCorderList',
-  //     //   meta: {
-  //     //     title: 'DMCorderList',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'DMCmemberManage',
-  //     //   meta: {
-  //     //     title: 'DMCmemberManage',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'DMCitineraryList',
-  //     //   meta: {
-  //     //     title: 'DMCitineraryList',
-  //     //     firstParent: 'DMCevent'
-  //     //   }
-  //     // }
-  //   ]
-  // },
-  // {
-  //   name: 'systemSetting',
-  //   meta: {
-  //     title: 'systemSetting',
-  //     icon: 'Tshezhi',
-  //     isFirstParent: true
-  //   },
-  //   hidden: false,
-  //   children: [
-  //     // {
-  //     //   name: 'clientMemberManage',
-  //     //   meta: {
-  //     //     title: 'clientMemberManage',
-  //     //     firstParent: 'systemSetting'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'eventApproveSetting',
-  //     //   meta: {
-  //     //     title: 'eventApproveSetting',
-  //     //     firstParent: 'systemSetting'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'otherSetting',
-  //     //   meta: {
-  //     //     title: 'otherSetting',
-  //     //     firstParent: 'systemSetting'
-  //     //   }
-  //     // },
-  //     // {
-  //     //   name: 'eventRelatedPersonSetting',
-  //     //   meta: {
-  //     //     title: 'eventRelatedPersonSetting',
-  //     //     firstParent: 'systemSetting'
-  //     //   }
-  //     // }
-  //   ]
-  // },
-  // {
-  //   name: 'resourceCenter',
-  //   meta: {
-  //     title: 'resourceCenter',
-  //     icon: 'table',
-  //     isFirstParent: true
-  //   },
-  //   hidden: false,
-  //   children: [
   //     {
-  //       name: 'siteResource',
+  //       name: 'createEvent',
   //       meta: {
-  //         title: 'siteResource',
-  //         firstParent: 'resourceCenter'
+  //         title: 'createEvent',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'eventList',
+  //       meta: {
+  //         title: 'eventList',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'approveOrderManage',
+  //       meta: {
+  //         title: 'approveOrderManage',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'parameter',
+  //       meta: {
+  //         title: 'parameter',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'approve',
+  //       meta: {
+  //         title: 'approve',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'reporting',
+  //       meta: {
+  //         title: 'reporting',
+  //         icon: 'Tbaob',
+  //         firstParent: 'event'
   //       }
   //     }
   //   ]
-  // }
+  // },
+  {
+    name: 'DMCevent',
+    meta: {
+      title: 'DMCevent',
+      icon: 'table',
+      isFirstParent: true
+    },
+    hidden: false,
+    children: [
+      {
+        name: 'DMCcreateEvent',
+        meta: {
+          title: 'DMCcreateEvent',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCEventList',
+        meta: {
+          title: 'DMCEventList',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCinquiryList',
+        meta: {
+          title: 'DMCinquiryList',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCbasicInfoManage',
+        meta: {
+          title: 'DMCbasicInfoManage',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCorderList',
+        meta: {
+          title: 'DMCorderList',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCmemberManage',
+        meta: {
+          title: 'DMCmemberManage',
+          firstParent: 'DMCevent'
+        }
+      },
+      {
+        name: 'DMCitineraryList',
+        meta: {
+          title: 'DMCitineraryList',
+          firstParent: 'DMCevent'
+        }
+      }
+    ]
+  },
+  {
+    name: 'systemSetting',
+    meta: {
+      title: 'systemSetting',
+      icon: 'Tshezhi',
+      isFirstParent: true
+    },
+    hidden: false,
+    children: [
+      {
+        name: 'clientMemberManage',
+        meta: {
+          title: 'clientMemberManage',
+          firstParent: 'systemSetting'
+        }
+      },
+      {
+        name: 'approveSetting',
+        meta: {
+          title: 'approveSetting',
+          firstParent: 'systemSetting'
+        }
+      },
+      {
+        name: 'otherSetting',
+        meta: {
+          title: 'otherSetting',
+          firstParent: 'systemSetting'
+        }
+      },
+      {
+        name: 'relatedPersonSetting',
+        meta: {
+          title: 'relatedPersonSetting',
+          firstParent: 'systemSetting'
+        }
+      }
+    ]
+  },
+  {
+    name: 'resourceCenter',
+    meta: {
+      title: 'resourceCenter',
+      icon: 'table',
+      isFirstParent: true
+    },
+    hidden: false,
+    children: [
+      {
+        name: 'siteResource',
+        meta: {
+          title: 'siteResource',
+          firstParent: 'resourceCenter'
+        }
+      }
+    ]
+  }
 ]
