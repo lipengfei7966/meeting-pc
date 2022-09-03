@@ -48,39 +48,39 @@
 </template>
 
 <script>
-import { positiveFloat, } from '@/utils/common';
-  export default {
-    name: "transport",
-    props:['transportList', 'additional','allQuoteInfo',"hotelInfo"],
-    data() {
-      return{
-        showPart: true,
-      }
-    },
-    computed:{
-      offlineTransportTotalMoney(){
-        let money = 0;
-        if(this.allQuoteInfo){
-          this.allQuoteInfo.offline_quoted_price_transportation.forEach(element => {
+import { positiveFloat } from '@/utils/common'
+export default {
+  name: 'transport',
+  props: ['transportList', 'additional', 'allQuoteInfo', 'hotelInfo'],
+  data() {
+    return {
+      showPart: true
+    }
+  },
+  computed: {
+    offlineTransportTotalMoney() {
+      let money = 0
+      if (this.allQuoteInfo) {
+        this.allQuoteInfo.offline_quoted_price_transportation.forEach(element => {
           money += element.totalprice
-        });
-        }
-        
-        return money
-      },
-    },
-    mounted(){
-      console.log(this.transportList)
-    }, 
-    methods: {
-      positiveFloat,
-      getDateTotal(data) {
-        return data.data.reduce((p, n) => {
-          return p + n.unitprice * n.passengercount
-        }, 0)
+        })
       }
+
+      return money
+    }
+  },
+  mounted() {
+    console.log(this.transportList)
+  },
+  methods: {
+    positiveFloat,
+    getDateTotal(data) {
+      return data.data.reduce((p, n) => {
+        return p + n.unitprice * n.passengercount
+      }, 0)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

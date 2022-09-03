@@ -115,23 +115,23 @@
 </template>
 
 <script>
-import Bus from '../bus.js';
-import { formatNum, positiveFloat, positiveFloatSix,  } from '@/utils/common';
+import Bus from '../bus.js'
+import { formatNum, positiveFloat, positiveFloatSix } from '@/utils/common'
 export default {
   // props:["provideId"],
   data() {
     return {
       provideName: [], //会议服务商询价单
       dialogTableVisible: false, //弹框显示隐藏
-      message:'',
+      message: '',
       messageList: [], // 留言信息列表
-      provideId:[],
-      hasOffer:false, // 是否有报价
-    };
+      provideId: [],
+      hasOffer: false // 是否有报价
+    }
   },
   mounted() {
     // this.getServiceProvider();
-    this.ServiceHotelList();
+    this.ServiceHotelList()
   },
   methods: {
     positiveFloat,
@@ -158,21 +158,21 @@ export default {
         url: '/MeetingMa/ServiceHotelList',
         method: 'post',
         data: {
-          InquirySheetID: this.$route.query.sheetId,
-        },
-      }).then((res) => {
-        this.provideId = res;
+          InquirySheetID: this.$route.query.sheetId
+        }
+      }).then(res => {
+        this.provideId = res
         this.hasOffer = this.provideId.some(item => item.minprice > 0)
-      });
+      })
     },
     // 查看报价
-    goPage(name, data){
-      let query = {id:this.$route.query.id,foreign_key_id: data.quoted_priceid,serviceId: data.id,type: 1,prev:'询价单详情'};
-      this.$router.push({name,query})
+    goPage(name, data) {
+      let query = { id: this.$route.query.id, foreign_key_id: data.quoted_priceid, serviceId: data.id, type: 1, prev: '询价单详情' }
+      this.$router.push({ name, query })
     },
     //点击留言 弹出绘画框
     conversation(InquirySheetObjectID) {
-      this.dialogTableVisible = true;
+      this.dialogTableVisible = true
       this.InquirySheetObjectID = InquirySheetObjectID
       this.getMessage()
     },
@@ -183,53 +183,52 @@ export default {
         method: 'post',
         data: {
           InquirySheetObjectID: this.InquirySheetObjectID
-        },
+        }
       }).then(res => {
-        this.messageList = res || [];
-        this.ServiceHotelList();
+        this.messageList = res || []
+        this.ServiceHotelList()
       })
     },
     // 前往比价页
-    goCompare(command){
+    goCompare(command) {
       debugger
       this.$router.push({
-        name:'comparisonPrice',
+        name: 'comparisonPrice',
         // path: '/activityInquiry/comparisonPrice/' + this.$route.query.sheetId,
-        query: { 
+        query: {
           InquirySheetID: this.$route.query.sheetId,
           eventId: this.$route.query.id,
           command,
-          type:this.$route.query.type,
-        },
+          type: this.$route.query.type
+        }
       })
     },
-    conversationed(){
-      if(!this.message){
-         this.$message.error('请输入留言信息');
-         return
+    conversationed() {
+      if (!this.message) {
+        this.$message.error('请输入留言信息')
+        return
       }
-      const inquiry_sheet_object_id =
-        {
-          inquiry_sheet_object_id:this.InquirySheetObjectID,
-          message:this.message,
-          message_type: 0, // 留言是0，文件是1
-        }
+      const inquiry_sheet_object_id = {
+        inquiry_sheet_object_id: this.InquirySheetObjectID,
+        message: this.message,
+        message_type: 0 // 留言是0，文件是1
+      }
       this.requestApi({
         url: '/MeetingMa/MessageSava',
         method: 'post',
         data: {
-          Parameter:JSON.stringify(inquiry_sheet_object_id)
-        },
+          Parameter: JSON.stringify(inquiry_sheet_object_id)
+        }
       }).then(res => {
-        if(res && res === true){
-          this.getMessage();
+        if (res && res === true) {
+          this.getMessage()
           // this.dialogTableVisible = false
-          this.message = '';
-        };
+          this.message = ''
+        }
       })
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss">

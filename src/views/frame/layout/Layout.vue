@@ -21,7 +21,7 @@
     </div>
 
     <!-- 若token失效则在当前页面弹出登录框 -->
-    <div class='dialog-wrapper relogin-dialog' id='relogin-dialog' v-show='loginVisible'>
+    <div class='bs-container dialog-wrapper relogin-dialog' id='relogin-dialog' v-show='loginVisible'>
       <div class='dialog-container' type='miniColumnsDialog'>
         <!-- 头部 -->
         <title-contain :titleName="$t('login.login')" :isShowClose='false' />
@@ -117,11 +117,14 @@ export default {
       return this.isScreenFull ? this.clientHeight + 'px' : this.clientHeight - 76 + 'px'
     },
     classObj() {
-      return [{
-        'hide-sidebar': !this.sidebar.opened
-      }, {
-        'app-screen-full': this.isScreenFull
-      }]
+      return [
+        {
+          'hide-sidebar': !this.sidebar.opened
+        },
+        {
+          'app-screen-full': this.isScreenFull
+        }
+      ]
     },
     isCollapse() {
       return !this.sidebar.opened
@@ -426,9 +429,7 @@ export default {
 </style>
 
 <style lang='scss'>
-.main-wrapper{
-
-
+.main-wrapper {
   .search {
     position: fixed;
     width: 200px;

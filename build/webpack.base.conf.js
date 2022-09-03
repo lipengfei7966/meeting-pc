@@ -1,11 +1,9 @@
 'use strict'
 const path = require('path')
-const os = require('os')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-const webpack = require("webpack")
-const HappyPack = require('happypack')
+const webpack = require('webpack');
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -20,13 +18,12 @@ const createLintingRule = () => ({
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
 })
-// size: os.cpus().length
-const HappyPackThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: ["babel-polyfill", "./src/main.js"]
+    app: './src/main.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -50,34 +47,34 @@ module.exports = {
       jquery: "jquery",
       "window.jQuery": "jquery"
     }),
-    new HappyPack({
-      id: 'babel',
-      loaders: ['babel-loader?cacheDirectory'],
-      threadPool: HappyPackThreadPool
-    }),
-    new HappyPack({
-      id: 'vue',
-      loaders: [{
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      }],
-      threadPool: HappyPackThreadPool
-    })
+    // new HappyPack({
+    //   id: 'babel',
+    //   loaders: ['babel-loader?cacheDirectory'],
+    //   threadPool: HappyPackThreadPool
+    // }),
+    // new HappyPack({
+    //   id: 'vue',
+    //   loaders: [{
+    //     loader: 'vue-loader',
+    //     options: vueLoaderConfig
+    //   }],
+    //   threadPool: HappyPackThreadPool
+    // })
   ],
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
-        use: ['happypack/loader?id=vue']
-        // loader: 'vue-loader',
-        // options: vueLoaderConfig
+        loader: 'vue-loader',
+        options: vueLoaderConfig
       },
       {
         test: /\.js$/,
-        use: ['happypack/loader?id=babel'],
-        // loader: 'babel-loader',
-        include: [resolve('src'), resolve('node_modules/webpack-dev-server/client')]
+        loader: 'babel-loader',
+        include: [resolve('src'), resolve('test')]
+
+        //include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {
         test: /\.svg$/,
@@ -119,14 +116,14 @@ module.exports = {
           name: utils.assetsPath('pdf/[name].[hash:7].[ext]')
         }
       },
-      {
-        test: /\.json$/,
-        loader: 'json-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('json/[name].[hash:7].[ext]')
-        }
-      }
+      // {
+      //   test: /\.json$/,
+      //   loader: 'json-loader',
+      //   options: {
+      //     limit: 10000,
+      //     name: utils.assetsPath('json/[name].[hash:7].[ext]')
+      //   }
+      // }
     ]
   },
   node: {

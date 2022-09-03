@@ -33,17 +33,17 @@
 
 <script>
 export default {
-  props:['provideName'],
+  props: ['provideName'],
   data() {
     return {
       addText: '', //文本
       remarks: false, //有无备注
-      noteText:[],
-      provideId:[],
-    };
+      noteText: [],
+      provideId: []
+    }
   },
-  mounted(){
-    this.addNotesQuery();
+  mounted() {
+    this.addNotesQuery()
   },
   methods: {
     //点击提交备注
@@ -54,17 +54,17 @@ export default {
         method: 'post',
         data: {
           Parameter: JSON.stringify({
-              foreign_key_id: this.$route.query.sheetId, // 询价单ID
-              // user: '测试',
-              remarks: this.addText,
-              type: 0,
-            }),
-        },
-      }).then((res) => {
-        if(res === true){
-          this.addNotesQuery();
+            foreign_key_id: this.$route.query.sheetId, // 询价单ID
+            // user: '测试',
+            remarks: this.addText,
+            type: 0
+          })
         }
-      });
+      }).then(res => {
+        if (res === true) {
+          this.addNotesQuery()
+        }
+      })
     },
     //查询
     addNotesQuery() {
@@ -73,18 +73,18 @@ export default {
         method: 'post',
         data: {
           ForeignKeyId: this.$route.query.sheetId,
-          type: 0,
-        },
-      }).then((res) => {
-        if(res && res.length >= 0){
-          this.noteText =res;
-          this.remarks = true;
+          type: 0
         }
-        console.log(res, '======-=----');
-      });
-    },
-  },
-};
+      }).then(res => {
+        if (res && res.length >= 0) {
+          this.noteText = res
+          this.remarks = true
+        }
+        console.log(res, '======-=----')
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

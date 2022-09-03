@@ -64,37 +64,37 @@
 export default {
   data: function() {
     return {
-      formData:{
-        id:'',
-        username:'',
-        company_id:'',
-        meeting_type:[],
-        city_code:[],
+      formData: {
+        id: '',
+        username: '',
+        company_id: '',
+        meeting_type: [],
+        city_code: [],
         service: [],
-        user_name_list:[]
+        user_name_list: []
       },
-      checkedMeetingTypes: [], 
-      checkedMeetingTypeIDs:[], // 选中会议类型 ID
+      checkedMeetingTypes: [],
+      checkedMeetingTypeIDs: [], // 选中会议类型 ID
       selectCityCodes: [],
 
-      userNameList:[],
-      customerList:[],
-      meetingTypeList:[], // 客户所有会议类型
-      meetingCityList:[], // 会议省份直辖市
+      userNameList: [],
+      customerList: [],
+      meetingTypeList: [], // 客户所有会议类型
+      meetingCityList: [], // 会议省份直辖市
       serviceList: [], // 服务商列表
       saveDisabled: false, // 保存按钮是否禁用
       rules: {
         username: [{ required: true, message: '请选择负责人用户', trigger: 'change' }],
-        company_id: [{ required: true, message: '请选择客户', trigger: 'change' }],
+        company_id: [{ required: true, message: '请选择客户', trigger: 'change' }]
       }
     }
   },
-  watch:{
+  watch: {
     meetingTypeList: {
       handler(newVal, oldVal) {
         this.meetingTypeList.forEach(item => {
           this.formData.meeting_type.forEach(element => {
-            if(item.name === element){
+            if (item.name === element) {
               // this.formData.meeting_type.push(item.name)
               this.checkedMeetingTypeIDs.push(item.id)
             }
@@ -102,103 +102,101 @@ export default {
         })
       },
       deep: true
-  }
-  },
-  mounted(){
-    this.ProvinceCity();
-    this.GetUser();
-    this.getCompany();
-    this.GetService();
-    if(this.$route.query.id){
-      this.OwnerRuleEdit();
     }
-    
+  },
+  mounted() {
+    this.ProvinceCity()
+    this.GetUser()
+    this.getCompany()
+    this.GetService()
+    if (this.$route.query.id) {
+      this.OwnerRuleEdit()
+    }
   },
   methods: {
     // 编辑信息查询
-    OwnerRuleEdit(){
+    OwnerRuleEdit() {
       this.requestApi({
-				url: '/InfoConfig/OwnerRuleEdit',
-				method: 'POST',
-				data: {id:this.$route.query.id},
-			}).then(res => {
-        this.formData.id = res.id;
-        this.formData.username = res.username;
-        this.formData.company_id = Number(res.company_id);
+        url: '/InfoConfig/OwnerRuleEdit',
+        method: 'POST',
+        data: { id: this.$route.query.id }
+      }).then(res => {
+        this.formData.id = res.id
+        this.formData.username = res.username
+        this.formData.company_id = Number(res.company_id)
         this.GetMeetingType(this.formData.company_id)
-        this.formData.meeting_type = res.meeting_type.split(',');
+        this.formData.meeting_type = res.meeting_type.split(',')
 
         // this.checkedMeetingTypeIDs  = res.meeting_type.split(',');
-        if(res.city_code){
-          this.formData.city_code = res.city_code.split(',');
+        if (res.city_code) {
+          this.formData.city_code = res.city_code.split(',')
         }
-        if(res.service){
+        if (res.service) {
           res.service.forEach(item => {
-            this.formData.service.push(item.serviceid) 
+            this.formData.service.push(item.serviceid)
           })
         }
-        if(res.user_name_list){
+        if (res.user_name_list) {
           res.user_name_list.forEach(item => {
-            this.formData.user_name_list.push(item.username) 
+            this.formData.user_name_list.push(item.username)
           })
         }
-        
       })
     },
     // 获取服务商列表
-    GetService(){
+    GetService() {
       this.requestApi({
-				url: '/InfoConfig/GetService',
-				method: 'POST',
-				data: {},
-			}).then(res => {
-        this.serviceList = res;
+        url: '/InfoConfig/GetService',
+        method: 'POST',
+        data: {}
+      }).then(res => {
+        this.serviceList = res
       })
     },
     // 负责人用户查询
-    GetUser(){
+    GetUser() {
       this.requestApi({
-				url: '/MeetingMa/GetUser',
-				method: 'POST',
-				data: {},
-			}).then(res => {
-        this.userNameList = res;
+        url: '/MeetingMa/GetUser',
+        method: 'POST',
+        data: {}
+      }).then(res => {
+        this.userNameList = res
       })
     },
     // 客户查询
-    getCompany(){
+    getCompany() {
       this.requestApi({
-				url: '/MeetingMa/GetCompany',
-				method: 'POST',
-				data: {},
-			}).then(res => {
-        this.customerList = res;
+        url: '/MeetingMa/GetCompany',
+        method: 'POST',
+        data: {}
+      }).then(res => {
+        this.customerList = res
       })
     },
     // 会议类型查询
-    GetMeetingType(id){
+    GetMeetingType(id) {
       this.requestApi({
-				url: '/MeetingMa/GetMeetingType',
-				method: 'POST',
-				data: {CompanyID: id},
-			}).then(res => {
-        this.meetingTypeList = res;
+        url: '/MeetingMa/GetMeetingType',
+        method: 'POST',
+        data: { CompanyID: id }
+      }).then(res => {
+        this.meetingTypeList = res
       })
     },
-    ProvinceCity(){
+    ProvinceCity() {
       this.requestApi({
-				url: '/MeetingMa/ProvinceCity',
-				method: 'POST',
-				data: {},
-			}).then(res => {
-				this.meetingCityList = res;
-			})
-		},
+        url: '/MeetingMa/ProvinceCity',
+        method: 'POST',
+        data: {}
+      }).then(res => {
+        this.meetingCityList = res
+      })
+    },
     // 保存规则信息
-    save(){ 
-      this.$refs["headeRuleForm"].validate((valid) => {
-        if(valid){
-          this.saveDisabled = true;
+    save() {
+      this.$refs['headeRuleForm'].validate(valid => {
+        if (valid) {
+          this.saveDisabled = true
           let Parameter = {
             id: this.formData.id,
             username: this.formData.username,
@@ -207,31 +205,29 @@ export default {
             city_code: this.formData.city_code.join(','),
             type: 2, //1、负责人，2、采购人，3、会议助理，4、合规人员
             service: this.formData.service.join(','),
-            user_name_list: this.formData.user_name_list.join(','),
+            user_name_list: this.formData.user_name_list.join(',')
           }
           Parameter = JSON.stringify(Parameter)
           this.requestApi({
-				    url: '/InfoConfig/OwnerRuleSava',
+            url: '/InfoConfig/OwnerRuleSava',
             method: 'POST',
-            data: {Parameter},
-          }).then( res => {
-            if(res){
-              this.$message.success('保存成功');
-              this.saveDisabled = false;
-              this.cancel(); // 返回列表页
+            data: { Parameter }
+          }).then(res => {
+            if (res) {
+              this.$message.success('保存成功')
+              this.saveDisabled = false
+              this.cancel() // 返回列表页
             }
           })
-        }else{
+        } else {
           this.$message.warning('请完善规则信息')
         }
       })
-      
-      
     },
     cancel() {
-      this.$router.push({name:'relatedPersonSetting',query:{activeName:'first'}})
+      this.$router.push({ name: 'relatedPersonSetting', query: { activeName: 'first' } })
     },
-    changeCustomer(){
+    changeCustomer() {
       this.GetMeetingType(this.formData.company_id)
     },
     // 选择会议类型
@@ -240,10 +236,10 @@ export default {
       if (event) {
         // 把选中的id存入数组
         debugger
-        this.checkedMeetingTypeIDs.push(id);
+        this.checkedMeetingTypeIDs.push(id)
       } else {
         //如果是取消选中则从数组中删除该id
-        this.checkedMeetingTypeIDs.splice(this.checkedMeetingTypeIDs.indexOf(id), 1);
+        this.checkedMeetingTypeIDs.splice(this.checkedMeetingTypeIDs.indexOf(id), 1)
       }
     }
   }

@@ -28,7 +28,7 @@
         </el-table-column>
         <el-table-column label="上午茶歇" prop="is_important" width="100" align="center">
           <template slot-scope="scope">
-            <el-input size="small" v-model="scope.row.moring_break_count" placeholder="人数"  oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
+            <el-input size="small" v-model="scope.row.moring_break_count" placeholder="人数" oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
           </template>
         </el-table-column>
         <el-table-column label="午餐" prop="is_important" width="150" align="center">
@@ -79,22 +79,22 @@
 </template>
 
 <script>
-import inputFilter from '@/assets/js/filter';
+import inputFilter from '@/assets/js/filter'
 export default {
-  name: "foodDemand",
-  props:['foodList'],
+  name: 'foodDemand',
+  props: ['foodList'],
   directives: {
     inputFilter
   },
-  data(){
-    return{
+  data() {
+    return {
       is_food_beverage: '1', //e 餐饮(0:不需要1：需要) 当为1时需要关联餐饮需求表
       food_beverage_budget: 0, // 餐饮需求总预算
       food_limit: '', // 餐标
-      dateArr:[],
+      dateArr: [],
       foodBudgetList: [
         {
-          id:'',
+          id: '',
           food_date: '', // 用餐日期
           moring_break_count: '', // 早茶人数
           lunch_count: '', // 午餐人数
@@ -105,58 +105,60 @@ export default {
           dinner_address_type: '', // 晚餐用餐地点类型（0：酒店内用餐 1：酒店外用餐）
           dinner_use_type: '', // 晚餐用餐类型(数据字典)
           comments: '', // 需求备注
-          is_delete: 0,
+          is_delete: 0
         }
-      ],
+      ]
     }
   },
-  mounted(){
-    this.$nextTick( res => {
+  mounted() {
+    this.$nextTick(res => {
       this.foodBudgetList.forEach(item => {
-        if(!item.food_date){
-          item.food_date = this.dateArr[0];
+        if (!item.food_date) {
+          item.food_date = this.dateArr[0]
         }
       })
     })
   },
-  methods:{
-    formatNum(){
-      let temp = this.food_beverage_budget.toString();
-      temp = temp.replace(/。/g, ".");
-      temp = temp.replace(/\b(0+)/gi,"");
-      temp = temp.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符
-      temp = temp.replace(/^\./g, ""); //验证第一个字符是数字
-      temp = temp.replace(/\.{2,}/g, ""); //只保留第一个, 清除多余的
-      temp = temp.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-      temp = temp.replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3"); //只能输入两个小数
+  methods: {
+    formatNum() {
+      let temp = this.food_beverage_budget.toString()
+      temp = temp.replace(/。/g, '.')
+      temp = temp.replace(/\b(0+)/gi, '')
+      temp = temp.replace(/[^\d.]/g, '') //清除"数字"和"."以外的字符
+      temp = temp.replace(/^\./g, '') //验证第一个字符是数字
+      temp = temp.replace(/\.{2,}/g, '') //只保留第一个, 清除多余的
+      temp = temp
+        .replace('.', '$#$')
+        .replace(/\./g, '')
+        .replace('$#$', '.')
+      temp = temp.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3') //只能输入两个小数
       this.food_beverage_budget = temp
     },
-    isSHow(){
+    isSHow() {
       return this.foodBudgetList.length < this.dateArr.length
     },
     // 删除餐饮需求
     deleteFoodDemand(id) {
-      if(id === 0 && this.foodBudgetList.length === 1){
+      if (id === 0 && this.foodBudgetList.length === 1) {
         this.is_food_beverag = '0'
-      }else {
-        this.foodBudgetList.splice(id,1)
+      } else {
+        this.foodBudgetList.splice(id, 1)
       }
     },
     // 添加餐饮需求
-    addFoodDemand(){
-      if(this.is_food_beverage == 0){
-        this.is_food_beverage = '1';
+    addFoodDemand() {
+      if (this.is_food_beverage == 0) {
+        this.is_food_beverage = '1'
         return
       }
-      let id = this.foodBudgetList.length-1;
-      let item = {...this.foodBudgetList[id]};
-      item.id = '';
+      let id = this.foodBudgetList.length - 1
+      let item = { ...this.foodBudgetList[id] }
+      item.id = ''
       this.foodBudgetList.push(item)
-    },
+    }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

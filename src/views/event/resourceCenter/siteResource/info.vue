@@ -1005,17 +1005,17 @@
 /**
  * @page 酒店详情
  */
-import { detectZoom } from "@/utils/detectZoom";
+import { detectZoom } from '@/utils/detectZoom'
 // 处理笔记本系统默认系统比例为150%带来的布局影响
 
-const m = detectZoom();
+const m = detectZoom()
 
-document.body.style.zoom = 100 / Number(m);
+document.body.style.zoom = 100 / Number(m)
 export default {
   data() {
     return {
       info: null,
-      activeName: "0",
+      activeName: '0',
       isOpen: false,
       carouselItemIndex: 0,
       showAll: true, //是否展开全部
@@ -1027,238 +1027,227 @@ export default {
       showHotelAll: false,
       showHotel: false,
       showGuest: false,
-      location: "",
-      keyword: sessionStorage.getItem("hotelName"),
+      location: '',
+      keyword: sessionStorage.getItem('hotelName'),
       // sessionStorage.getItem(hotelName)
       is_span: 0,
       dialogVisible: false,
       pictureAll: [
         {
-          src: "https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg",
-          num: 0,
+          src: 'https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg',
+          num: 0
         },
         {
-          src: "https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg",
-          num: 1,
+          src: 'https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg',
+          num: 1
         },
         {
-          src: "https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg",
-          num: 2,
+          src: 'https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg',
+          num: 2
         },
         {
-          src: "https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg",
-          num: 3,
+          src: 'https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg',
+          num: 3
         },
         {
-          src: "https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg",
-          num: 4,
+          src: 'https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg',
+          num: 4
         },
         {
-          src: "https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg",
-          num: 5,
-        },
+          src: 'https://back.tobosu.com/new_impress_pic/water_mark/2022-05-09/6278db1f4e037.jpg',
+          num: 5
+        }
       ],
       kkk: [
         {
-          TableName: "event_hotel_pic",
+          TableName: 'event_hotel_pic',
           id: null,
           father_id: null,
-          pic: "https://img1.baidu.com/it/u=2537712248,2018351523&fm=253&fmt=auto&app=138&f=JPEG?w=751&h=500",
-          pic_type: null,
+          pic: 'https://img1.baidu.com/it/u=2537712248,2018351523&fm=253&fmt=auto&app=138&f=JPEG?w=751&h=500',
+          pic_type: null
         },
         {
-          TableName: "event_hotel_pic",
+          TableName: 'event_hotel_pic',
           id: null,
           father_id: null,
-          pic: "https://img2.baidu.com/it/u=3742188983,2927504392&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400",
-          pic_type: null,
+          pic: 'https://img2.baidu.com/it/u=3742188983,2927504392&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400',
+          pic_type: null
         },
         {
-          TableName: "event_hotel_pic",
+          TableName: 'event_hotel_pic',
           id: null,
           father_id: null,
-          pic: "https://img2.baidu.com/it/u=493459701,3550054331&fm=253&fmt=auto&app=120&f=JPEG?w=750&h=500",
-          pic_type: null,
+          pic: 'https://img2.baidu.com/it/u=493459701,3550054331&fm=253&fmt=auto&app=120&f=JPEG?w=750&h=500',
+          pic_type: null
         },
         // https://img0.baidu.com/it/u=295896979,919754981&fm=253&fmt=auto&app=138&f=JPEG?w=895&h=500
         {
-          TableName: "event_hotel_pic",
+          TableName: 'event_hotel_pic',
           id: null,
           father_id: null,
-          pic: "https://img2.baidu.com/it/u=432859711,3148420507&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400",
-          pic_type: null,
+          pic: 'https://img2.baidu.com/it/u=432859711,3148420507&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400',
+          pic_type: null
         },
         {
-          TableName: "event_hotel_pic",
+          TableName: 'event_hotel_pic',
           id: null,
           father_id: null,
-          pic: "https://img2.baidu.com/it/u=432859711,3148420507&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400",
-          pic_type: null,
-        },
+          pic: 'https://img2.baidu.com/it/u=432859711,3148420507&fm=253&fmt=auto&app=120&f=JPEG?w=600&h=400',
+          pic_type: null
+        }
       ],
       arr: [
         {
-          src: "11111",
+          src: '11111',
           fileList: [
             {
-              aaa: "12222",
+              aaa: '12222',
               bbb: [
                 {
-                  ccc: "0001",
+                  ccc: '0001'
                 },
                 {
-                  ccc: "0002",
+                  ccc: '0002'
                 },
                 {
-                  ccc: "0003",
-                },
-              ],
+                  ccc: '0003'
+                }
+              ]
             },
             {
-              aaa: "12222",
+              aaa: '12222',
               bbb: [
                 {
-                  ccc: "0004",
+                  ccc: '0004'
                 },
                 {
-                  ccc: "0005",
+                  ccc: '0005'
                 },
                 {
-                  ccc: "0006",
-                },
-              ],
-            },
-          ],
+                  ccc: '0006'
+                }
+              ]
+            }
+          ]
         },
         {
-          src: "11111",
+          src: '11111',
           fileList: [
             {
-              aaa: "12222",
+              aaa: '12222',
               bbb: [
                 {
-                  ccc: "0007",
+                  ccc: '0007'
                 },
                 {
-                  ccc: "0008",
+                  ccc: '0008'
                 },
                 {
-                  ccc: "0009",
-                },
-              ],
+                  ccc: '0009'
+                }
+              ]
             },
             {
-              aaa: "12222",
+              aaa: '12222',
               bbb: [
                 {
-                  ccc: "00010",
+                  ccc: '00010'
                 },
                 {
-                  ccc: "00011",
+                  ccc: '00011'
                 },
                 {
-                  ccc: "00012",
-                },
-              ],
-            },
-          ],
-        },
+                  ccc: '00012'
+                }
+              ]
+            }
+          ]
+        }
       ],
       tableLook: false,
       tableLook_: false,
       tableLook_hotel: false,
       flag_: true,
-      largeIcon: "",
+      largeIcon: '',
       pictureList: [],
-      resourcePlatform: [],
-    };
+      resourcePlatform: []
+    }
   },
 
   computed: {
-    word: function () {
+    word: function() {
       if (this.showAll == false) {
         //对文字进行处理
-        return "展开其他会议厅";
+        return '展开其他会议厅'
       } else {
-        return "收起其他会议厅";
+        return '收起其他会议厅'
       }
     },
-    lookHotel: function () {
+    lookHotel: function() {
       if (this.showHotel == false) {
         //对文字进行处理
-        return "效果图展示";
+        return '效果图展示'
       } else {
-        return "效果图展示";
+        return '效果图展示'
       }
     },
-    lookHotel_: function () {
+    lookHotel_: function() {
       if (this.showGuest == false) {
         //对文字进行处理
-        return "效果图展示";
+        return '效果图展示'
       } else {
-        return "效果图展示";
+        return '效果图展示'
       }
     },
-    word_room: function () {
+    word_room: function() {
       if (this.showAll_room == false) {
         //对文字进行处理
-        return "展开其他客房信息";
+        return '展开其他客房信息'
       } else {
-        return "收起其他客房信息";
+        return '收起其他客房信息'
       }
     },
-    btns: function () {
+    btns: function() {
       if (this.showHotelAll == false) {
         //对文字进行处理
-        return "包厢信息";
+        return '包厢信息'
       } else {
-        return "包厢信息";
+        return '包厢信息'
       }
-    },
+    }
   },
   methods: {
     removeLeft() {
       // this.carouselItemIndex -= 1;
-      this.$refs.carousel.prev();
-      console.log(this.carouselItemIndex);
+      this.$refs.carousel.prev()
+      console.log(this.carouselItemIndex)
       // if(this.carouselItemIndex >= 5 && this.carouselItemIndex < [1,2,3,4,5,6,7,8].length-1){
       // 	this.$refs.thumbnailList.style.transform = `translateX(${-75*(this.carouselItemIndex-4)}px)`
       // }else if(this.carouselItemIndex == [1,2,3,4,5,6,7,8].length-1){
       // 	this.$refs.thumbnailList.style.transform = `translateX(${-75*(this.carouselItemIndex - 7)}px)`
       // }
       if (this.carouselItemIndex == 0) {
-        this.$refs.thumbnailList.style.transform = `translateX(${
-          100 * (this.carouselItemIndex - (this.pictureAll.length - 5 - 1))
-        }px)`;
+        this.$refs.thumbnailList.style.transform = `translateX(${100 * (this.carouselItemIndex - (this.pictureAll.length - 5 - 1))}px)`
       } else if (this.pictureAll.length - 5 > this.carouselItemIndex) {
-        this.$refs.thumbnailList.style.transform = `translateX(${
-          100 * (1 - this.carouselItemIndex)
-        }px)`;
+        this.$refs.thumbnailList.style.transform = `translateX(${100 * (1 - this.carouselItemIndex)}px)`
       }
     },
     removeRight() {
       // this.carouselItemIndex += 1;
-      this.$refs.carousel.next();
+      this.$refs.carousel.next()
       // debugger
-      console.log(this.carouselItemIndex);
-      if (
-        this.carouselItemIndex >= 5 &&
-        this.carouselItemIndex < this.pictureAll.length - 1
-      ) {
-        this.$refs.thumbnailList.style.transform = `translateX(${
-          -100 * (this.carouselItemIndex - 4)
-        }px)`;
+      console.log(this.carouselItemIndex)
+      if (this.carouselItemIndex >= 5 && this.carouselItemIndex < this.pictureAll.length - 1) {
+        this.$refs.thumbnailList.style.transform = `translateX(${-100 * (this.carouselItemIndex - 4)}px)`
       } else if (this.carouselItemIndex == this.pictureAll.length - 1) {
-        this.$refs.thumbnailList.style.transform = `translateX(${
-          -100 * (this.carouselItemIndex - (this.pictureAll.length - 1))
-        }px)`;
+        this.$refs.thumbnailList.style.transform = `translateX(${-100 * (this.carouselItemIndex - (this.pictureAll.length - 1))}px)`
       }
     },
     carouselItemChange(index) {
-      this.carouselItemIndex = index;
+      this.carouselItemIndex = index
     },
     checkImg(index) {
-      this.$refs.carousel.setActiveItem(index);
+      this.$refs.carousel.setActiveItem(index)
     },
     onCollection() {
       // console.log(this.info);
@@ -1266,301 +1255,289 @@ export default {
         this.requestApi({
           url: '/hotel/CancelCollection',
           method: 'POST',
-          data: { id: this.info.id },
-        }).then((res) => {
+          data: { id: this.info.id }
+        }).then(res => {
           this.$message({
-            message: "取消收藏成功",
-            type: "warning",
-          });
+            message: '取消收藏成功',
+            type: 'warning'
+          })
           // this.$notify({
           //   title: "成功",
           //   message: "取消收藏",
           //   type: "success",
           //   offset: 100,
           // });
-          this.info.iscollection = 0;
-        });
+          this.info.iscollection = 0
+        })
       } else {
         this.requestApi({
           url: '/hotel/Collection',
           method: 'POST',
-          data: { id: this.info.id },
-        }).then((res) => {
+          data: { id: this.info.id }
+        }).then(res => {
           this.$message({
-            message: "收藏成功",
-            type: "success",
-          });
+            message: '收藏成功',
+            type: 'success'
+          })
           // this.$notify({
           //   title: "成功",
           //   message: "收藏成功",
           //   type: "success",
           //   offset: 100,
           // });
-          this.info.iscollection = 1;
-        });
+          this.info.iscollection = 1
+        })
       }
     },
     handleClick(tab, event) {
       // console.log(tab, event);
       document.getElementById(tab.name).scrollIntoView({
-        block: "start",
-        behavior: "smooth",
-      });
+        block: 'start',
+        behavior: 'smooth'
+      })
     },
     open() {
       this.info.conferencelist.forEach((val, index) => {
-        val["openClose"] = "name";
-        console.log(this.info);
-      });
+        val['openClose'] = 'name'
+        console.log(this.info)
+      })
     },
     close(val) {
-      console.log(val);
+      console.log(val)
     },
     closeSearch() {
       // debugger
-      this.showAll = !this.showAll;
+      this.showAll = !this.showAll
       // this.info.conferencelist
-      this.arrData_ = [];
+      this.arrData_ = []
       if (this.info.conferencelist.length >= 3) {
         for (let i = 0; i < 3; i++) {
-          this.arrData_.push(this.info.conferencelist[i]);
+          this.arrData_.push(this.info.conferencelist[i])
         }
       } else {
-        this.arrData_ = this.info.conferencelist;
+        this.arrData_ = this.info.conferencelist
       }
       if (this.showAll == false) {
-        console.log(123);
-        this.info.conferencelist = this.arrData_;
+        console.log(123)
+        this.info.conferencelist = this.arrData_
       } else {
-        console.log(456);
-        this.info.conferencelist = this.arrData;
+        console.log(456)
+        this.info.conferencelist = this.arrData
       }
     },
     closeHotel(item, index) {
-      this.tableLook = false;
-      this.showHotel = false;
-      this.info.conferencelist[index].flag_ =
-        !this.info.conferencelist[index].flag_;
-      this.tableLook = !this.tableLook;
-      this.showHotel = !this.showHotel;
-      console.log(item, index);
+      this.tableLook = false
+      this.showHotel = false
+      this.info.conferencelist[index].flag_ = !this.info.conferencelist[index].flag_
+      this.tableLook = !this.tableLook
+      this.showHotel = !this.showHotel
+      console.log(item, index)
     },
     closeGuest(item, index) {
-      this.tableLook_ = false;
-      this.showGuest = false;
-      this.info.roomlist[index].flag_ = !this.info.roomlist[index].flag_;
-      this.tableLook_ = !this.tableLook_;
-      this.showGuest = !this.showGuest;
-      console.log(item, index);
+      this.tableLook_ = false
+      this.showGuest = false
+      this.info.roomlist[index].flag_ = !this.info.roomlist[index].flag_
+      this.tableLook_ = !this.tableLook_
+      this.showGuest = !this.showGuest
+      console.log(item, index)
     },
     hotelBtn(item, index) {
-      console.log(item, index);
-      this.tableLook_hotel = false;
-      this.info.restaurantlist[index].flag_ =
-        !this.info.restaurantlist[index].flag_;
-      this.showHotelAll = !this.showHotelAll;
-      this.tableLook_hotel = !this.tableLook_hotel;
+      console.log(item, index)
+      this.tableLook_hotel = false
+      this.info.restaurantlist[index].flag_ = !this.info.restaurantlist[index].flag_
+      this.showHotelAll = !this.showHotelAll
+      this.tableLook_hotel = !this.tableLook_hotel
     },
     closeSearch_room() {
       // debugger
-      this.showAll_room = !this.showAll_room;
+      this.showAll_room = !this.showAll_room
       // this.info.conferencelist
-      this.arrData_roomData = [];
-      console.log(this.info.roomlist, this.arrData_roomData, "33333");
+      this.arrData_roomData = []
+      console.log(this.info.roomlist, this.arrData_roomData, '33333')
       if (this.info.roomlist.length >= 3) {
         for (let i = 0; i < 3; i++) {
-          this.arrData_roomData.push(this.info.roomlist[i]);
+          this.arrData_roomData.push(this.info.roomlist[i])
         }
       } else {
-        this.arrData_roomData = this.info.roomlist;
+        this.arrData_roomData = this.info.roomlist
       }
       if (this.showAll_room == false) {
-        console.log(123);
-        this.info.roomlist = this.arrData_roomData;
+        console.log(123)
+        this.info.roomlist = this.arrData_roomData
       } else {
-        console.log(456);
-        this.info.roomlist = this.roomData;
+        console.log(456)
+        this.info.roomlist = this.roomData
       }
     },
     pictureLook(val) {
       if (val == 0) {
-        console.log(this.info.length);
-        let arr_ = [];
+        console.log(this.info.length)
+        let arr_ = []
         for (let j = 0; j < this.info.conferencelist.length; j++) {
           for (let k = 0; k < this.info.conferencelist[j].piclist.length; k++) {
-            arr_.push(this.info.conferencelist[j].piclist[k]);
+            arr_.push(this.info.conferencelist[j].piclist[k])
           }
         }
         if (arr_.length > 0) {
-          this.$refs.normal.style.left = -380 + "px";
-          this.pictureAll = arr_;
-          this.is_span = val;
+          this.$refs.normal.style.left = -380 + 'px'
+          this.pictureAll = arr_
+          this.is_span = val
         } else {
           this.$message({
-            message: "会场下暂无可展示图片",
-            type: "warning",
-          });
+            message: '会场下暂无可展示图片',
+            type: 'warning'
+          })
         }
         //
-        console.log(this.pictureAll);
+        console.log(this.pictureAll)
       } else if (val == 1) {
         // debugger
-        let arr_ = [];
+        let arr_ = []
         for (let j = 0; j < this.info.roomlist.length; j++) {
           for (let k = 0; k < this.info.roomlist[j].piclist.length; k++) {
-            arr_.push(this.info.roomlist[j].piclist[k]);
+            arr_.push(this.info.roomlist[j].piclist[k])
           }
         }
         if (arr_.length > 0) {
-          this.$refs.normal.style.left = -203 + "px";
-          this.pictureAll = arr_;
-          this.is_span = val;
+          this.$refs.normal.style.left = -203 + 'px'
+          this.pictureAll = arr_
+          this.is_span = val
         } else {
           this.$message({
-            message: "客房下暂无可展示图片",
-            type: "warning",
-          });
+            message: '客房下暂无可展示图片',
+            type: 'warning'
+          })
         }
         //
-        console.log(this.pictureAll);
+        console.log(this.pictureAll)
       } else if (val == 3) {
         // debugger
-        let arr_ = [];
+        let arr_ = []
         for (let j = 0; j < this.info.restaurantlist.length; j++) {
           for (let k = 0; k < this.info.restaurantlist[j].piclist.length; k++) {
-            arr_.push(this.info.restaurantlist[j].piclist[k]);
+            arr_.push(this.info.restaurantlist[j].piclist[k])
           }
         }
         if (arr_.length > 0) {
-          this.$refs.normal.style.left = -25 + "px";
-          this.pictureAll = arr_;
-          this.is_span = val;
+          this.$refs.normal.style.left = -25 + 'px'
+          this.pictureAll = arr_
+          this.is_span = val
         } else {
           this.$message({
-            message: "餐厅下暂无可展示图片",
-            type: "warning",
-          });
+            message: '餐厅下暂无可展示图片',
+            type: 'warning'
+          })
         }
         //
-        console.log(this.pictureAll);
+        console.log(this.pictureAll)
       } else {
       }
     },
     picture_Look() {
       // this.dialogVisible = true;
-      console.log(123);
+      console.log(123)
     },
     handleClose(done) {
-      done();
+      done()
     },
     more(val, item, index_) {
-      console.log(val, item, index_);
+      console.log(val, item, index_)
       // 单张图片
-      this.largeIcon = item;
+      this.largeIcon = item
       // 打开弹窗
-      this.dialogVisible = true;
+      this.dialogVisible = true
       if (val == 0) {
         // 所有图片
-        this.pictureList = this.info.conferencelist[index_].piclist;
+        this.pictureList = this.info.conferencelist[index_].piclist
       } else if (val == 1) {
-        this.pictureList = this.info.roomlist[index_].piclist;
+        this.pictureList = this.info.roomlist[index_].piclist
       }
     },
     imgLook(item) {
-      this.largeIcon = item;
-    },
+      this.largeIcon = item
+    }
   },
   created() {},
   filters: {
-    // 内容过滤
+    //内容过滤
     daylis(value) {
-      console.log(value);
+      console.log(value)
       if (value.length != undefined) {
-        var result = "";
-        if (value.indexOf("1") != -1) {
-          result += "周一 ";
+        var result = ''
+        if (value.indexOf('1') != -1) {
+          result += '周一 '
         }
-        if (value.indexOf("2") != -1) {
-          result += "周二 ";
+        if (value.indexOf('2') != -1) {
+          result += '周二 '
         }
-        if (value.indexOf("3") != -1) {
-          result += "周三 ";
+        if (value.indexOf('3') != -1) {
+          result += '周三 '
         }
-        if (value.indexOf("4") != -1) {
-          result += "周四 ";
+        if (value.indexOf('4') != -1) {
+          result += '周四 '
         }
-        if (value.indexOf("5") != -1) {
-          result += "周五 ";
+        if (value.indexOf('5') != -1) {
+          result += '周五 '
         }
-        if (value.indexOf("6") != -1) {
-          result += "周六 ";
+        if (value.indexOf('6') != -1) {
+          result += '周六 '
         }
-        if (value.indexOf("7") != -1) {
-          result += "周日 ";
+        if (value.indexOf('7') != -1) {
+          result += '周日 '
         }
-        return result;
+        return result
         // if (value.length > 5) {
         //   return value.slice(0, 4) + "...";
         // } else {
         //   return value;
         // }
       }
-    },
+    }
   },
   mounted() {
     debugger
     this.$nextTick(() => {
-      console.log(this.$route.params.id);
+      console.log(this.$route.params.id)
       this.requestApi({
         url: '/hotel/info',
         method: 'POST',
-        data: { id: this.$route.params.id },
-      }).then((res) => {
-          this.info = res;
-          if (this.info.hotel_label) {
-            this.resourcePlatform = this.info.hotel_label.split(",");
+        data: { id: this.$route.params.id }
+      }).then(res => {
+        this.info = res
+        if (this.info.hotel_label) {
+          this.resourcePlatform = this.info.hotel_label.split(',')
+        }
+        this.info.conferencelist.forEach(item => {
+          item.flag_ = 0
+        })
+        this.info.roomlist.forEach(item => {
+          item.flag_ = 0
+        })
+        this.info.restaurantlist.forEach(item => {
+          item.flag_ = 0
+        })
+        console.log(this.info)
+        let arr_ = []
+        for (let j = 0; j < this.info.conferencelist.length; j++) {
+          for (let k = 0; k < this.info.conferencelist[j].piclist.length; k++) {
+            arr_.push(this.info.conferencelist[j].piclist[k])
           }
-          this.info.conferencelist.forEach((item) => {
-            item.flag_ = 0;
-          });
-          this.info.roomlist.forEach((item) => {
-            item.flag_ = 0;
-          });
-          this.info.restaurantlist.forEach((item) => {
-            item.flag_ = 0;
-          });
-          console.log(this.info);
-          let arr_ = [];
-          for (let j = 0; j < this.info.conferencelist.length; j++) {
-            for (
-              let k = 0;
-              k < this.info.conferencelist[j].piclist.length;
-              k++
-            ) {
-              arr_.push(this.info.conferencelist[j].piclist[k]);
-            }
-          }
-          this.pictureAll = arr_;
-          console.log(this.pictureAll);
-          // debugger;
-          this.arrData = this.info.conferencelist;
-          this.roomData = this.info.roomlist;
-          this.closeSearch();
-          this.closeSearch_room();
-          this.info.facilities = this.info.facilities
-            ? this.info.facilities.replace(/,/g, " ")
-            : "";
-          this.info.restaurant = this.info.restaurant
-            ? this.info.restaurant.replace(/,/g, " ")
-            : "";
-          this.info.room_facilities = this.info.room_facilities
-            ? this.info.room_facilities.replace(/,/g, " ")
-            : "";
-          this.open();
-        });
-    });
-  },
-};
+        }
+        this.pictureAll = arr_
+        console.log(this.pictureAll)
+        // debugger;
+        this.arrData = this.info.conferencelist
+        this.roomData = this.info.roomlist
+        this.closeSearch()
+        this.closeSearch_room()
+        this.info.facilities = this.info.facilities ? this.info.facilities.replace(/,/g, ' ') : ''
+        this.info.restaurant = this.info.restaurant ? this.info.restaurant.replace(/,/g, ' ') : ''
+        this.info.room_facilities = this.info.room_facilities ? this.info.room_facilities.replace(/,/g, ' ') : ''
+        this.open()
+      })
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -1749,7 +1726,7 @@ export default {
         right: 0;
         opacity: 0.5;
       }
-      /deep/ .el-carousel__container {
+      ::deep .el-carousel__container {
         height: 500px;
       }
     }
@@ -2004,7 +1981,7 @@ table {
     }
   }
 }
-/deep/.el-tag--mini {
+::deep.el-tag--mini {
   color: #409eff;
 }
 th {

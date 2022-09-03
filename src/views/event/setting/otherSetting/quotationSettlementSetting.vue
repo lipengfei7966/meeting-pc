@@ -27,80 +27,81 @@
 </template>
 
 <script>
-	import {guid } from '@/utils/common';	
+import { guid } from '@/utils/common'
 export default {
-	data() {
-		return {
-			tableData: [],
-			pager: 1,
-			total: 0,
-			dialogVisible:false,//删除规则弹框
-			id:'',
-		};
-	},
-	mounted() {
-		this.getRuleList()
-	},
-	watch:{
-		pager(newVal ,oldVal){
-			this.getRuleList()
-		}
-	},
-	methods: {
-		guid,
-		//查询规则
-		getRuleList() {
-			this.requestApi({
-				url: '/MeetingMa/GetRule',
-				method: 'POST',
-				data: {
-					pageIndex: this.pager, //第几页
-					pageSize: 10, //每页多少行
-				},
-			}).then(res => {
-					// console.log(res)
-					this.tableData = res.EvetModels	//规则配置列表
-					this.pager = res.pageInfo.pageIndex; //当前第几页
-					this.total = res.pageInfo.totalCount; //总条数
-				});
-		},
-		//跳转其他页面
-		toPage(e) {//e.type规则类型    e.id规则配置id
-			if(e){//编辑
-				this.$router.push({ name: 'quotationSettlementEditor',params:{type:e.is_default,id:e.id,company_name:e.company_name,addOrEdit:0} });
-			}else{//新增
-				this.$router.push({ name: 'quotationSettlementEditor',params:{type:1,id:this.guid(),company_name:'increase',addOrEdit:1} });
-			}
-			
-		},
-		//删除规则
-		submitDeleteRule() {
-			this.requestApi({
-				url: '/MeetingMa/RuleDelete',
-				method: 'POST',
-				data: {
-					RuleID: this.id, //规则配置id
-				},
-			}).then(res => {
-				if(res){
-					this.$message({
-						message: '删除成功',
-							type: 'success'
-					});
-				}else{
-					this.$message.error('删除失败');
-				}
-				this.dialogVisible=false
-				this.getRuleList()
-			});
-			
-		},
-		deleteRule(id){
-			this.id=id
-			this.dialogVisible = true
-		}
-	}
-};
+  data() {
+    return {
+      tableData: [],
+      pager: 1,
+      total: 0,
+      dialogVisible: false, //删除规则弹框
+      id: ''
+    }
+  },
+  mounted() {
+    this.getRuleList()
+  },
+  watch: {
+    pager(newVal, oldVal) {
+      this.getRuleList()
+    }
+  },
+  methods: {
+    guid,
+    //查询规则
+    getRuleList() {
+      this.requestApi({
+        url: '/MeetingMa/GetRule',
+        method: 'POST',
+        data: {
+          pageIndex: this.pager, //第几页
+          pageSize: 10 //每页多少行
+        }
+      }).then(res => {
+        // console.log(res)
+        this.tableData = res.EvetModels //规则配置列表
+        this.pager = res.pageInfo.pageIndex //当前第几页
+        this.total = res.pageInfo.totalCount //总条数
+      })
+    },
+    //跳转其他页面
+    toPage(e) {
+      //e.type规则类型    e.id规则配置id
+      if (e) {
+        //编辑
+        this.$router.push({ name: 'quotationSettlementEditor', params: { type: e.is_default, id: e.id, company_name: e.company_name, addOrEdit: 0 } })
+      } else {
+        //新增
+        this.$router.push({ name: 'quotationSettlementEditor', params: { type: 1, id: this.guid(), company_name: 'increase', addOrEdit: 1 } })
+      }
+    },
+    //删除规则
+    submitDeleteRule() {
+      this.requestApi({
+        url: '/MeetingMa/RuleDelete',
+        method: 'POST',
+        data: {
+          RuleID: this.id //规则配置id
+        }
+      }).then(res => {
+        if (res) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error('删除失败')
+        }
+        this.dialogVisible = false
+        this.getRuleList()
+      })
+    },
+    deleteRule(id) {
+      this.id = id
+      this.dialogVisible = true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped="scoped">

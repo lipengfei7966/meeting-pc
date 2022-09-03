@@ -83,23 +83,23 @@
 </template>
 
 <script>
-import MeetingInformation from './Information/meetinginformation.vue';
-import ProviderList from './Information/providerList.vue';
-import AddInternalNotes from './Information/addinternalnotes.vue';
-import RoomDemand from './Information/roomdemand.vue';
-import VenueDemand from './Information/venuedemand.vue';
-import CateringDemand from './Information/cateringdemand.vue';
+import MeetingInformation from './Information/meetinginformation.vue'
+import ProviderList from './Information/providerList.vue'
+import AddInternalNotes from './Information/addinternalnotes.vue'
+import RoomDemand from './Information/roomdemand.vue'
+import VenueDemand from './Information/venuedemand.vue'
+import CateringDemand from './Information/cateringdemand.vue'
 import FoodOutside from './Information/foodOutside.vue'
-import IntercityTraffic from './Information/intercitytraffic.vue';
-import InCityCar from './Information/inCityCar.vue';
-import OtherSever from './Information/otherSever.vue';
+import IntercityTraffic from './Information/intercitytraffic.vue'
+import InCityCar from './Information/inCityCar.vue'
+import OtherSever from './Information/otherSever.vue'
 
-import TravelAgency from './Information/travelagency.vue';
-import Supplement from './Information/supplement.vue';
-import QuotationDeadline from './Information/quotationdeadline.vue';
-import MattersNeedingAttention from './Information/mattersneedingattention.vue';
+import TravelAgency from './Information/travelagency.vue'
+import Supplement from './Information/supplement.vue'
+import QuotationDeadline from './Information/quotationdeadline.vue'
+import MattersNeedingAttention from './Information/mattersneedingattention.vue'
 import BasePart from '@/components/event/basePart_2.vue'
-import {needDataifyBydate} from '@/assets/js/validator'
+import { needDataifyBydate } from '@/assets/js/validator'
 
 // import Bus from './bus'
 export default {
@@ -122,106 +122,107 @@ export default {
   },
   data() {
     return {
-      prev:'',
+      prev: '',
       provideName: [],
       provideId: [],
-      roomList: [],//客房需求
-      room: [],//kefangxiangqing
-      conferenceBuild: [],//huichangxuqiu
-      Transportation: [],//chengjijiaotong
+      roomList: [], //客房需求
+      room: [], //kefangxiangqing
+      conferenceBuild: [], //huichangxuqiu
+      Transportation: [], //chengjijiaotong
       InCityCarData: [], //市内交通
       OtherSeverData: [], // 其他服务
       conference: [],
       food: [],
-      foodOutside:[], // 酒店外餐饮
+      foodOutside: [], // 酒店外餐饮
       other: [],
       Service: [],
-      files:[], // 补充信息附件列表
+      files: [], // 补充信息附件列表
       isadjustdate: '', // 补充信息 日期是否可调整
-      content: '',// 取消询价单原因
+      content: '', // 取消询价单原因
       cancelDialog: false, // 取消询价单弹框
       inquiry_sheet: {}, // 报价单基本信息
       cancelInfo: {}, // 取消信息
-      isShowCancelBtn:false,// 是否展示取消会议按钮
-	  cancelSuccess: false, //询价单取消成功后的弹框显示、隐藏
-	  num:0,//预算填报次数
-    };
+      isShowCancelBtn: false, // 是否展示取消会议按钮
+      cancelSuccess: false, //询价单取消成功后的弹框显示、隐藏
+      num: 0 //预算填报次数
+    }
   },
   mounted() {
-    this.getServiceProvider();
+    this.getServiceProvider()
     // this.ServiceHotelList();
-    this.getInquirySheet();
-    this.cancelShow();
-    this.GetCancel();
-	this.budget()
-    this.prev = this.$route.query.prev;
+    this.getInquirySheet()
+    this.cancelShow()
+    this.GetCancel()
+    this.budget()
+    this.prev = this.$route.query.prev
   },
   methods: {
-	  budget() {
+    budget() {
       this.requestApi({
         url: '/Quotation/FillinBuget',
         method: 'post',
-        data: { eventinfoid: this.$route.query.id },
+        data: { eventinfoid: this.$route.query.id }
       }).then(res => {
-        if (res[0] && res[0].budget_count) this.num = res[0].budget_count;
-      });
-	  },
-	//更新预算
-	updateBudget(){
-		sessionStorage.setItem('budgetKey',true)//存入键值，true为打开填报预算弹框
-		this.$router.go(-1);
-	},
-	//不更新预算
-	notUpdate(){
-		this.cancelSuccess=false
-		//取消之后刷新页面,开发时间短，暂时为更新接口
-		this.getServiceProvider();
-		// this.ServiceHotelList();
-		this.getInquirySheet();
-		this.cancelShow();
-		this.GetCancel();
-	},
+        if (res[0] && res[0].budget_count) this.num = res[0].budget_count
+      })
+    },
+    //更新预算
+    updateBudget() {
+      sessionStorage.setItem('budgetKey', true) //存入键值，true为打开填报预算弹框
+      this.$router.go(-1)
+    },
+    //不更新预算
+    notUpdate() {
+      this.cancelSuccess = false
+      //取消之后刷新页面,开发时间短，暂时为更新接口
+      this.getServiceProvider()
+      // this.ServiceHotelList();
+      this.getInquirySheet()
+      this.cancelShow()
+      this.GetCancel()
+    },
     // 取消询价单  按钮展示
-    cancelShow(){
+    cancelShow() {
       this.requestApi({
         url: '/MeetingMa/CancelShow',
         method: 'post',
         data: {
           ID: this.$route.query.sheetId,
           Type: 2 //1会议，2询价单,3订单
-        },
+        }
       }).then(res => {
-        this.isShowCancelBtn = res;
+        this.isShowCancelBtn = res
       })
     },
     // 取消询价单
     cancelTap() {
-      if(this.content){
+      if (this.content) {
         this.requestApi({
           url: '/MeetingMa/CancelInquirySheet',
           method: 'post',
           data: {
             InquirySheetID: this.$route.query.sheetId,
             Content: this.content
-          },
+          }
         }).then(res => {
-          if(res){
-            this.cancelDialog = false;
-            this.$message.success("取消成功");
-            if(this.num>0 && this.inquiry_sheet.type==1){//this.inquiry_sheet.type 1中标
-              this.cancelSuccess=true
-            }else{
+          if (res) {
+            this.cancelDialog = false
+            this.$message.success('取消成功')
+            if (this.num > 0 && this.inquiry_sheet.type == 1) {
+              //this.inquiry_sheet.type 1中标
+              this.cancelSuccess = true
+            } else {
               //取消之后刷新页面,开发时间短，暂时为更新接口
-              this.getServiceProvider();
+              this.getServiceProvider()
               // this.ServiceHotelList();
-              this.getInquirySheet();
-              this.cancelShow();
-              this.GetCancel();
+              this.getInquirySheet()
+              this.cancelShow()
+              this.GetCancel()
             }
             // this.$router.go(-1);
           }
         })
-      }else {
+      } else {
         this.$message.warning('请填写取消原因')
       }
     },
@@ -232,7 +233,7 @@ export default {
         method: 'post',
         data: {
           ID: this.$route.query.sheetId
-        },
+        }
       }).then(res => {
         this.cancelInfo = res
         console.log(this.inquiry_sheet)
@@ -244,23 +245,22 @@ export default {
         url: '/MeetingMa/GetServiceProvider',
         method: 'post',
         data: {
-          MeetingID: this.$route.query.id,
-        },
-      }).then((res) => {
-          this.provideName = res.service[0];
-
-        });
+          MeetingID: this.$route.query.id
+        }
+      }).then(res => {
+        this.provideName = res.service[0]
+      })
     },
     ServiceHotelList() {
       this.requestApi({
         url: '/MeetingMa/ServiceHotelList',
         method: 'post',
         data: {
-          InquirySheetID: this.$route.query.sheetId,
-        },
-      }).then((res) => {
-          this.provideId = res;
-        });
+          InquirySheetID: this.$route.query.sheetId
+        }
+      }).then(res => {
+        this.provideId = res
+      })
     },
     // 询价单详情查询
     getInquirySheet() {
@@ -268,26 +268,26 @@ export default {
         url: '/MeetingMa/GetInquirySheet',
         method: 'post',
         data: {
-          InquirySheetID: this.$route.query.sheetId,
-        },
-      }).then((res) => {
-          this.roomList=res.room || [];
-          this.inquiry_sheet = res.inquiry_sheet;
-          this.room = needDataifyBydate(res.roomList)
-          this.conferenceBuild=res.conferenceBuild
-          this.conference=res.conference
-          this.Transportation=res.transportation || []
-          this.InCityCarData = res.car || [];
-          this.food=res.food;
-          this.foodOutside = res.foodOutside || [];
-          this.other=res.inquiry_sheet.other;
-          this.OtherSeverData = res.other || [];
-          this.files = res.file;
-          this.isadjustdate = res.inquiry_sheet.isadjustdate
-        });
-    },
+          InquirySheetID: this.$route.query.sheetId
+        }
+      }).then(res => {
+        this.roomList = res.room || []
+        this.inquiry_sheet = res.inquiry_sheet
+        this.room = needDataifyBydate(res.roomList)
+        this.conferenceBuild = res.conferenceBuild
+        this.conference = res.conference
+        this.Transportation = res.transportation || []
+        this.InCityCarData = res.car || []
+        this.food = res.food
+        this.foodOutside = res.foodOutside || []
+        this.other = res.inquiry_sheet.other
+        this.OtherSeverData = res.other || []
+        this.files = res.file
+        this.isadjustdate = res.inquiry_sheet.isadjustdate
+      })
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">

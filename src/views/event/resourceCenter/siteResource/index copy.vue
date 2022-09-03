@@ -723,12 +723,12 @@ export default {
         brand: null,
         venuearea: null,
         venuepeoplenumber: null,
-        roomprice: null,
+        roomprice: null
       },
       // 状态
       statusList: {
         cityStatus: false, //选择城市是否展开,
-        brandStatus: false, //酒店品牌是否展开,
+        brandStatus: false //酒店品牌是否展开,
       },
       // 列表参数筛选
       listFormData: {
@@ -746,7 +746,7 @@ export default {
         isagreement: false,
         iscollection: false,
         Page: 1,
-        Rows: 10,
+        Rows: 10
       },
       listSearchFormData: {
         Page: 1,
@@ -757,15 +757,15 @@ export default {
           resourcesBrandId: '', // 场地品牌ID
           fromHallArea: '', // 起始会场面积
           toHallArea: '', // 截止会场面积
-          isCtgmProtocol: '', // 是否协议酒店
-        },
+          isCtgmProtocol: '' // 是否协议酒店
+        }
       },
       // 酒店列表
       hotel: {
         Counts: 0,
         CurrentPage: 0,
         List: [],
-        PageCount: 0,
+        PageCount: 0
       },
       activeName: 'first',
       exhibition: true,
@@ -786,23 +786,23 @@ export default {
         starDate: '',
         endDate: '',
         page: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       // cityArea:[], // 省市三级联动
       pageInfo: {
         pageIndex: 1,
         pageSize: 10,
-        totalCount: 0,
+        totalCount: 0
       },
       selectingData: [
         {
           value: 'one',
-          label: '选项1',
+          label: '选项1'
         },
         {
           value: 'two',
-          label: '选项2',
-        },
+          label: '选项2'
+        }
       ],
       tableData: [
         {
@@ -817,7 +817,7 @@ export default {
           financeYard: '测试',
           hotelGroup: '测试',
           supplierStatus: '测试',
-          approvalStatus: '测试',
+          approvalStatus: '测试'
         },
         {
           supplierId: '测试2',
@@ -831,7 +831,7 @@ export default {
           financeYard: '测试2',
           hotelGroup: '测试2',
           supplierStatus: '测试2',
-          approvalStatus: '测试2',
+          approvalStatus: '测试2'
         },
         {
           supplierId: '测试3',
@@ -845,7 +845,7 @@ export default {
           financeYard: '测试3',
           hotelGroup: '测试3',
           supplierStatus: '测试3',
-          approvalStatus: '测试3',
+          approvalStatus: '测试3'
         },
         {
           supplierId: '测试4',
@@ -859,7 +859,7 @@ export default {
           financeYard: '测试4',
           hotelGroup: '测试4',
           supplierStatus: '测试4',
-          approvalStatus: '测试4',
+          approvalStatus: '测试4'
         },
         {
           supplierId: '测试5',
@@ -873,8 +873,8 @@ export default {
           financeYard: '测试5',
           hotelGroup: '测试5',
           supplierStatus: '测试5',
-          approvalStatus: '测试5',
-        },
+          approvalStatus: '测试5'
+        }
       ],
       currentPage: 1,
       dialogVisible: false,
@@ -893,13 +893,13 @@ export default {
         cityName: '', // 市名称
         cityArea: '', // 区域
         area: [],
-        fieldAddress: '', // 详细地址
+        fieldAddress: '' // 详细地址
       },
       addHotelNextForm: {
         adminName: '', // 管理员姓名
         adminPhone: '', // 管理员电话
         adminEmail: '', // 管理员邮箱
-        adminCard: '', // 名片上传图片地址
+        adminCard: '' // 名片上传图片地址
       },
       addHotelNextStep: false, // 新增酒店下一步
       rules: {
@@ -907,12 +907,12 @@ export default {
         resourcesBrandId: [{ required: true, message: '请选择场地品牌', trigger: 'change' }],
         area: [{ required: true, message: '请选择城市区域', trigger: 'change' }],
         fieldTypeCode: [{ required: true, message: '请选择场地类型', trigger: 'change' }],
-        fieldAddress: [{ required: true, message: '请输入详细地址', trigger: 'blur' }],
+        fieldAddress: [{ required: true, message: '请输入详细地址', trigger: 'blur' }]
       },
       nextRules: {
         adminName: [{ required: true, message: '请输入管理员姓名' }],
         adminPhone: [{ required: true, message: '请输入管理员电话' }],
-        adminEmail: [{ required: true, message: '请输入管理员邮箱' }],
+        adminEmail: [{ required: true, message: '请输入管理员邮箱' }]
       },
       editExhibition: true,
       //
@@ -940,7 +940,7 @@ export default {
       flag: true,
       screenHeight: document.body.clientHeight, // 获取页面高度
       collectPage: 1, //我收藏的酒店分页
-      resourceFlag: false, //判断是否为场地资源进来的
+      resourceFlag: false //判断是否为场地资源进来的
     }
   },
   computed: {
@@ -948,7 +948,7 @@ export default {
     letterBrand() {
       let data = []
       let filtersName = [
-        'A,B,C',
+        'A,B,C'
         // "D,E,F",
         // "G,H,I",
         // "G,K,L",
@@ -956,17 +956,17 @@ export default {
         // "P,Q,X",
         // "Y,Z",
       ]
-      filtersName.forEach((item) => {
+      filtersName.forEach(item => {
         let key = item.replace(',/g', '')
         // debugger;
         data.push({
           key,
-          list: this.type.brand,
+          list: this.type.brand
         })
       })
       return data
     },
-    word: function () {
+    word: function() {
       if (this.statusList.cityStatus == false) {
         //对文字进行处理
         return '展开'
@@ -974,14 +974,14 @@ export default {
         return '收起'
       }
     },
-    word_: function () {
+    word_: function() {
       if (this.statusList.brandStatus == false) {
         //对文字进行处理
         return '展开'
       } else {
         return '收起'
       }
-    },
+    }
   },
   methods: {
     handleAvatarSuccess(res, file) {
@@ -1004,7 +1004,7 @@ export default {
 
     // 新建酒店下一步
     addNext() {
-      this.$refs['addHotelForm'].validate((valid) => {
+      this.$refs['addHotelForm'].validate(valid => {
         console.log(this.addHotelForm)
         if (valid) {
           this.addHotelNextStep = true
@@ -1020,9 +1020,9 @@ export default {
         url: '/DataSynchro/SupplierList',
         method: 'post',
         data: this.formData
-      }).then((res) => {
+      }).then(res => {
         if (res) {
-          this.tableData = res.EventModels ?res.EventModels : []
+          this.tableData = res.EventModels ? res.EventModels : []
           this.pageInfo = res.pageInfo
         }
       })
@@ -1045,7 +1045,7 @@ export default {
         starDate: '',
         endDate: '',
         page: 1,
-        pageSize: 10,
+        pageSize: 10
       }
       this.examineBtn()
     },
@@ -1058,7 +1058,7 @@ export default {
             url: '/procurementprocess/Selectintentionhotel',
             method: 'post',
             data: { hotel: this.HotelSelectedList }
-          }).then((res) => {
+          }).then(res => {
             // this.$router.push({
             //   name: "ServiceProviderProcurement",
             //   params: { id: this.$route.params.id },
@@ -1074,7 +1074,7 @@ export default {
             url: '/procurementprocess/selecthotel',
             method: 'post',
             data: { hotel: this.HotelSelectedList }
-          }).then((res) => {
+          }).then(res => {
             // this.$router.push({
             //   name: "HotelProcurement",
             //   params: { id: this.$route.params.id },
@@ -1083,7 +1083,7 @@ export default {
         }
         this.$router.push({
           name: 'HotelProcurement',
-          params: { id: this.$route.params.id, type },
+          params: { id: this.$route.params.id, type }
         })
       } else {
         //         debugger
@@ -1093,20 +1093,20 @@ export default {
         }
         this.$router.push({
           name: 'CreateEvent',
-          params: { id: this.$route.params.id, hotel: this.HotelSelectedList },
+          params: { id: this.$route.params.id, hotel: this.HotelSelectedList }
         })
         console.log(this.HotelSelectedList)
       }
     },
     cancel(item) {
-      let index = this.HotelSelectedList.findIndex((i) => i.hotelid == item.hotelid)
+      let index = this.HotelSelectedList.findIndex(i => i.hotelid == item.hotelid)
       if (index > -1) {
         this.HotelSelectedList.splice(index, 1)
       }
     },
     selected(item) {
       console.log(item)
-      let index = this.HotelSelectedList.findIndex((i) => i.hotelid == item.id)
+      let index = this.HotelSelectedList.findIndex(i => i.hotelid == item.id)
       if (index == -1) {
         this.HotelSelectedList.push({
           hotelid: item.id,
@@ -1122,11 +1122,11 @@ export default {
             id: item.receptionist_id,
             contacts: item.receptionist_contacts,
             telephone: item.receptionist_telephone,
-            email: item.receptionist_email,
+            email: item.receptionist_email
           },
           master_data: item.master_data,
           business_license_no: item.business_license_no,
-          social_credit_no: item.social_credit_no,
+          social_credit_no: item.social_credit_no
         })
       } else {
         this.HotelSelectedList.splice(index, 1)
@@ -1140,8 +1140,8 @@ export default {
       let routeData = this.$router.resolve({
         name: 'hotelInfo',
         params: {
-          id: item.id,
-        },
+          id: item.id
+        }
       })
       window.open(routeData.href, '_blank') //跳转新页面
     },
@@ -1155,20 +1155,20 @@ export default {
           url: '/hotel/list',
           method: 'post',
           data: this.listFormData
-        }).then((res) => {
+        }).then(res => {
           this.hotel = res
         })
       } else {
         let params = {
           meeting_id: this.$route.params.id,
           Page: this.collectPage,
-          Rows: 10,
+          Rows: 10
         }
         this.requestApi({
           url: '/hotel/QueryCollection',
           method: 'post',
           data: params
-        }).then((res) => {
+        }).then(res => {
           this.hotel = res
         })
       }
@@ -1191,8 +1191,8 @@ export default {
       // debugger;
       console.log(code)
       if (code) {
-        if (this.listFormData.city.findIndex((item) => item.code === code) == -1) this.listFormData.city.push({ code })
-        else this.listFormData.city = this.listFormData.city.filter((item) => item.code != code)
+        if (this.listFormData.city.findIndex(item => item.code === code) == -1) this.listFormData.city.push({ code })
+        else this.listFormData.city = this.listFormData.city.filter(item => item.code != code)
       } else this.listFormData.city = []
       this.listFormData.Page = 1
       this.listSearchFormData.Page = 1
@@ -1202,8 +1202,8 @@ export default {
     selectedsitetype(dictKey) {
       //this.listFormData.sitetype = [{ code }];
       if (dictKey) {
-        if (this.listFormData.sitetype.findIndex((item) => item.code === dictKey) == -1) this.listFormData.sitetype.push({ code: dictKey })
-        else this.listFormData.sitetype = this.listFormData.sitetype.filter((item) => item.code != dictKey)
+        if (this.listFormData.sitetype.findIndex(item => item.code === dictKey) == -1) this.listFormData.sitetype.push({ code: dictKey })
+        else this.listFormData.sitetype = this.listFormData.sitetype.filter(item => item.code != dictKey)
       } else this.listFormData.sitetype = []
       this.listFormData.Page = 1
       this.getList()
@@ -1213,8 +1213,8 @@ export default {
     selectedbrand(id) {
       //this.listFormData.brand = [{ id }];
       if (id) {
-        if (this.listFormData.brand.findIndex((item) => item.id === id) == -1) this.listFormData.brand.push({ id })
-        else this.listFormData.brand = this.listFormData.brand.filter((item) => item.id != id)
+        if (this.listFormData.brand.findIndex(item => item.id === id) == -1) this.listFormData.brand.push({ id })
+        else this.listFormData.brand = this.listFormData.brand.filter(item => item.id != id)
       } else this.listFormData.brand = []
       this.listFormData.Page = 1
       this.getList()
@@ -1266,10 +1266,10 @@ export default {
         url: '/hotel/Collection',
         method: 'post',
         data: { id: item.id }
-      }).then((res) => {
+      }).then(res => {
         this.$message({
           message: '收藏成功',
-          type: 'success',
+          type: 'success'
         })
         item.iscollection = 1
         if (this.listFormData.iscollection) {
@@ -1284,10 +1284,10 @@ export default {
         url: '/hotel/cancelcollection',
         method: 'post',
         data: { id: item.id }
-      }).then((res) => {
+      }).then(res => {
         this.$message({
           message: '取消收藏成功',
-          type: 'warning',
+          type: 'warning'
         })
         item.iscollection = 0
         if (this.listFormData.iscollection) {
@@ -1379,13 +1379,13 @@ export default {
         cityName: '', // 市名称
         cityArea: '', // 区域
         area: [],
-        fieldAddress: '', // 详细地址
+        fieldAddress: '' // 详细地址
       }
       this.addHotelNextForm = {
         adminName: '', // 管理员姓名
         adminPhone: '', // 管理员电话
         adminEmail: '', // 管理员邮箱
-        adminCard: '', // 名片上传图片地址
+        adminCard: '' // 名片上传图片地址
       }
     },
     closeDiv() {
@@ -1415,7 +1415,7 @@ export default {
         isagreement: false,
         iscollection: false,
         Page: 1,
-        Rows: 10,
+        Rows: 10
       }
       ;(this.CitySelection_ = ['不限']),
         (this.siteSelection_ = ['不限']),
@@ -1431,31 +1431,31 @@ export default {
     //
     perfect() {
       // 表单提交前预验证
-      this.$refs.addHotelForm.validate((valid) => {
+      this.$refs.addHotelForm.validate(valid => {
         if (valid) {
           // 验证下一步表单
-          this.$refs.addHotelNextForm.validate((valid2) => {
+          this.$refs.addHotelNextForm.validate(valid2 => {
             if (valid2) {
               let params = {
                 ...this.addHotelForm,
-                ...this.addHotelNextForm,
+                ...this.addHotelNextForm
               }
               this.requestApi({
                 url: '/ResourcesApi/Taxpayers',
                 method: 'post',
                 data: params
-              }).then((res) => {
+              }).then(res => {
                 console.log(res)
                 if (res) {
                   this.$message({
                     message: '提交成功',
-                    type: 'success',
+                    type: 'success'
                   })
                   this.dialogVisible = false
                 } else {
                   this.$message({
                     message: '提交失败',
-                    type: 'error',
+                    type: 'error'
                   })
                 }
               })
@@ -1473,24 +1473,24 @@ export default {
       console.log(cityArr)
       console.log(this.options)
       // 省
-      let province = this.options.find((item) => item.value == cityArr[0])
+      let province = this.options.find(item => item.value == cityArr[0])
       this.addHotelForm.provinceCode = cityArr[0]
       this.addHotelForm.provinceName = province.label
       // 市
-      let city = province.children.find((item) => item.value == cityArr[1])
+      let city = province.children.find(item => item.value == cityArr[1])
       this.addHotelForm.cityCode = cityArr[1]
       this.addHotelForm.cityName = city.label
       // 县
-      let cityArea = city.children.find((item) => item.value == cityArr[2])
+      let cityArea = city.children.find(item => item.value == cityArr[2])
       // this.addHotelForm.cityArea = cityArr[2]
       this.addHotelForm.cityArea = cityArea.label
     },
     handleBrandChange(brand) {
-      let brandInfo = this.type.brand.find((item) => item.id == brand)
+      let brandInfo = this.type.brand.find(item => item.id == brand)
       this.addHotelForm.resourcesBrandName = brandInfo.shortName
     },
     handleTypeChange(type) {
-      let typeInfo = this.type.sitetype.find((item) => item.dictKey == type)
+      let typeInfo = this.type.sitetype.find(item => item.dictKey == type)
       this.addHotelForm.fieldType = typeInfo.dictValue
     },
     distributorSizeChange(value) {
@@ -1533,7 +1533,7 @@ export default {
           for (let i = 0; i < code.length; i++) {
             let obj = {
               code: code[i],
-              name: val[i],
+              name: val[i]
             }
             arr.push(obj)
           }
@@ -1542,7 +1542,7 @@ export default {
           //
           let selectedCityCode = []
           for (let i = 0; i < this.type.city.length; i++) {
-            this.type.city[i].city_list.forEach((item) => {
+            this.type.city[i].city_list.forEach(item => {
               // debugger
               if (item.code == code) {
                 selectedCityCode.push(item.AbbreviationName)
@@ -1554,7 +1554,7 @@ export default {
           this.CitySelection_ = []
           let obj = {
             code: code,
-            name: selectedCityCode[0],
+            name: selectedCityCode[0]
           }
           arr.push(obj)
         }
@@ -1576,7 +1576,7 @@ export default {
         let arr = []
         for (let i = 0; i < dictKey.length; i++) {
           let obj = {
-            code: dictKey[i],
+            code: dictKey[i]
           }
           arr.push(obj)
         }
@@ -1596,9 +1596,9 @@ export default {
       }
       let isHanList = []
       let selectedCityCode = []
-      this.CitySelection.forEach((selectedCity) => {
+      this.CitySelection.forEach(selectedCity => {
         for (let i = 0; i < this.type.city.length; i++) {
-          this.type.city[i].city_list.forEach((item) => {
+          this.type.city[i].city_list.forEach(item => {
             // debugger
             if (item.AbbreviationName == selectedCity) {
               selectedCityCode.push(item.code)
@@ -1619,7 +1619,7 @@ export default {
       this.siteSelection_ = []
       console.log(this.type.sitetype, val)
       let selectedCityCode = []
-      this.siteType_.forEach((item) => {
+      this.siteType_.forEach(item => {
         for (let i = 0; i < this.type.sitetype.length; i++) {
           // this.type.sitetype[i].city_list.forEach((item) => {
           // debugger
@@ -1646,7 +1646,7 @@ export default {
         let arr = []
         for (let i = 0; i < id.length; i++) {
           let obj = {
-            id: id[i],
+            id: id[i]
           }
           arr.push(obj)
         }
@@ -1661,7 +1661,7 @@ export default {
       this.trademark_ = []
 
       let selectedCityCode = []
-      this.trademark.forEach((item) => {
+      this.trademark.forEach(item => {
         for (let i = 0; i < this.type.brand.length; i++) {
           if (item == this.type.brand[i].name) {
             selectedCityCode.push(this.type.brand[i].id)
@@ -1733,7 +1733,7 @@ export default {
         marker = null
       let local = new BMap.LocalSearch(map, {
         renderOptions: { map: map },
-        onSearchComplete: (res) => {
+        onSearchComplete: res => {
           if (local.getResults() != undefined) {
             map.clearOverlays() //清除地图上所有覆盖物
             if (local.getResults().getPoi(0)) {
@@ -1742,7 +1742,7 @@ export default {
               marker = new BMap.Marker(point) // 创建标注
               map.addOverlay(marker) // 将标注添加到地图中
               marker.enableDragging() // 可拖拽
-              geoc.getLocation(point, function (rs) {
+              geoc.getLocation(point, function(rs) {
                 var addComp = rs.addressComponents
                 that.mapPointName = addComp.province + ', ' + addComp.city + ', ' + addComp.district + ', ' + addComp.street + ', ' + addComp.streetNumber
               })
@@ -1752,10 +1752,10 @@ export default {
           } else {
             alert('未搜索到结果')
           }
-        },
+        }
       })
       local.search(this.place) //要展示的地点
-    },
+    }
   },
   mounted() {
     console.log(this.$route)
@@ -1786,9 +1786,9 @@ export default {
     //   }
     // });
 
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       var _this = this
-      MP(_this.ak).then((BMap) => {
+      MP(_this.ak).then(BMap => {
         let that = this
         this.dialogMap = !this.dialogMap
         if (that.mapGetshow) {
@@ -1807,7 +1807,7 @@ export default {
         url: '/procurementprocess/getselecthotel',
         method: 'post',
         data: {}
-      }).then((res) => {
+      }).then(res => {
         if (res.length > 0) this.HotelSelectedList = res
         else this.HotelSelectedList = []
       })
@@ -1816,7 +1816,7 @@ export default {
         url: '/procurementprocess/getselectintentionhotel',
         method: 'post',
         data: {}
-      }).then((res) => {
+      }).then(res => {
         debugger
         if (res.length > 0) this.HotelSelectedList = res
         else this.HotelSelectedList = []
@@ -1828,31 +1828,32 @@ export default {
       url: '/serviceprovider/city',
       method: 'post',
       data: {}
-    }).then((res) => {
-      this.type.city = res.city
-      //
-      this.routeCity = this.$route.params.city
-      if (this.routeCity) {
-        this.selectedCity_(this.routeCity)
-      } else {
-        this.getList()
-      }
-      //
-      return this.requestApi({
-        url: '/ResourcesApi/GetDictionaries',
-        method: 'post',
-        data: { alias: 'ResourcesType' }
-      })
     })
-      .then((res) => {
+      .then(res => {
+        this.type.city = res.city
+        //
+        this.routeCity = this.$route.params.city
+        if (this.routeCity) {
+          this.selectedCity_(this.routeCity)
+        } else {
+          this.getList()
+        }
+        //
+        return this.requestApi({
+          url: '/ResourcesApi/GetDictionaries',
+          method: 'post',
+          data: { alias: 'ResourcesType' }
+        })
+      })
+      .then(res => {
         this.type.sitetype = res
         return this.requestApi({
           url: '/ResourcesApi/GetBrand',
           method: 'post',
           data: { shortName: '', name: '' }
-        }) 
+        })
       })
-      .then((res) => {
+      .then(res => {
         console.log(res.length)
         if (res.length >= 9) {
           for (let i = 0; i < 9; i++) {
@@ -1866,29 +1867,29 @@ export default {
         return this.requestApi({
           url: '/hotel/venuearea',
           method: 'post',
-          data: {  }
-        }) 
+          data: {}
+        })
       })
-      .then((res) => {
+      .then(res => {
         this.type.venuearea = res
         return this.requestApi({
           url: '/hotel/venuepeoplenumber',
           method: 'post',
-          data: {  }
+          data: {}
         })
       })
-      .then((res) => {
+      .then(res => {
         this.type.venuepeoplenumber = res
         return this.requestApi({
           url: '/hotel/roomprice',
           method: 'post',
-          data: {  }
+          data: {}
         })
       })
-      .then((res) => {
+      .then(res => {
         this.type.roomprice = res
       })
-  },
+  }
 }
 </script>
 
@@ -2196,7 +2197,7 @@ export default {
 }
 .avatar-uploader {
   width: 120px;
-  /deep/ .el-upload {
+  ::deep .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -2471,7 +2472,7 @@ export default {
 .el-radio {
   margin-right: 10px;
 }
-/deep/.el-tabs__nav-wrap::after {
+::deep.el-tabs__nav-wrap::after {
   content: '';
   position: absolute;
   left: 0;

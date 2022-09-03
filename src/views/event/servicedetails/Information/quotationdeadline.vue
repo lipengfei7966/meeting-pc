@@ -8,12 +8,12 @@
         </div>
       </div>
       <div class="rfp_box">
-          <div class="rfp_room clx">
-            <div class="room_date">
-              <!-- {{item[index].end_time}} -->
-              报价截止日期  Deadline：<strong>{{inquiry_sheet.end_time}}</strong>
-            </div>
+        <div class="rfp_room clx">
+          <div class="room_date">
+            <!-- {{item[index].end_time}} -->
+            报价截止日期 Deadline：<strong>{{inquiry_sheet.end_time}}</strong>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -21,13 +21,12 @@
 
 <script>
 export default {
-  props:['inquiry_sheet']
-};
+  props: ['inquiry_sheet']
+}
 </script>
 
 <style lang="scss">
 .clx {
-    zoom: 1;
+  zoom: 1;
 }
-
 </style>

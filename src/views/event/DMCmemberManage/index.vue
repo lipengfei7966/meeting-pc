@@ -121,7 +121,7 @@ export default {
         });
     },
     // 冻结
-    offShelf(index, row) { 
+    offShelf(index, row) {
       this.requestApi({
         url: '/member/frozen',
         method: 'POST',

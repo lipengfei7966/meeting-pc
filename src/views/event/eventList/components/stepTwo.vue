@@ -1030,59 +1030,58 @@
 </template>
 
 <script>
-import { formatNum, positiveFloat, positiveFloatSix } from "@/utils/common";
-import { MAINHOST } from "@/config";
-import excelExport from "@/utils/exportexcel";
+import { formatNum, positiveFloat, positiveFloatSix } from '@/utils/common'
+import { MAINHOST } from '@/config'
+import excelExport from '@/utils/exportexcel'
 export default {
-  name: "stepTwo",
-  props: ["eventId", "eventName", "isShowCancelBtn", "isDMC"],
+  name: 'stepTwo',
+  props: ['eventId', 'eventName', 'isShowCancelBtn', 'isDMC'],
   data() {
     // 完善工商信息-信用代码校验规则
     const chackSocietyCode = (rule, value, callback) => {
-      let reg =
-        /^([0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}|[1-9]\d{14})$/;
+      let reg = /^([0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}|[1-9]\d{14})$/
       if (!reg.test(value)) {
-        callback(new Error("请输入正确的信用代码"));
+        callback(new Error('请输入正确的信用代码'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       // 完善工商信息校验规则
       rules: {
         licenseName: [
-          { required: true, message: "请输入营业执照名称", trigger: "blur" },
+          { required: true, message: '请输入营业执照名称', trigger: 'blur' }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
         societyCode: [
           {
             required: true,
-            message: "请输入统一社会信用代码",
-            trigger: "blur",
+            message: '请输入统一社会信用代码',
+            trigger: 'blur'
           },
-          { validator: chackSocietyCode, trigger: "blur" },
-        ],
+          { validator: chackSocietyCode, trigger: 'blur' }
+        ]
       },
       ruleForm: {
-        licenseName: "",
-        societyCode: "",
+        licenseName: '',
+        societyCode: ''
       },
       radio: true,
-      downloadUrl: "",
+      downloadUrl: '',
       dialogType: 1,
       isTestEnv: true,
-      stepTwo: "1",
+      stepTwo: '1',
       megDialog: false,
       againDialog: false, // 邀请重新报价
       againData: {}, // 重新报价信息
-      reOfferendDate: "", // 重新报价截止时间
+      reOfferendDate: '', // 重新报价截止时间
       urgeOfferDialog: false, // 催报价弹窗
       collectOfferData: {}, // 汇总报价
-      textValue: "",
+      textValue: '',
       pickerOptions0: {
         disabledDate(time) {
-          return time.getTime() < Date.now(); //如果没有后面的-8.64e7就是不可以选择今天的
-        },
+          return time.getTime() < Date.now() //如果没有后面的-8.64e7就是不可以选择今天的
+        }
       },
       showTimeLineOne: true,
       showTimeLineTwo: true,
@@ -1102,8 +1101,8 @@ export default {
       providehotle: [],
       orderhotle: [],
       orderList: [],
-      InquirySheetObjectID: "", //询价服务商ID
-      message: "", // 留言信息
+      InquirySheetObjectID: '', //询价服务商ID
+      message: '', // 留言信息
       messageList: [], // 留言信息列表
       offerCompanyInfo: {},
       budgetDialogDetails: false, //预算填报第二步弹框显示、隐藏
@@ -1111,65 +1110,62 @@ export default {
       orderIdList: [],
       chonseCost: 0, // 预算填报 第一步选择 预算报价金额总和
       budgetInfo: {}, //预算填报第二步信息
-      pr: "",
+      pr: '',
       num: 0, //预算填报提交次数
-      url: "", //b2b团预算跳转地址
+      url: '', //b2b团预算跳转地址
       loading: false,
-      dt: "", //B2B审核状态,''为未提交
+      dt: '', //B2B审核状态,''为未提交
       isSelShow: false, //预算填报下拉框列表dom节点是否显示
       indexSel: null, //预算填报外部select下标
       indexSelSplit: null, //预算填报拆分项select下标
-      costIndex: "", // 要选择供应商的成本项下标
+      costIndex: '', // 要选择供应商的成本项下标
       costsNames: [], // b2b成本项下拉
       supplierOneNameList: [],
       supplierTwoNameList: [],
       search: {
         // 供应商查询条件
-        id: "",
-        supplierOneName: "",
-        supplierTwoName: "",
-        supplierName: "",
-        socialCreditNo: "",
+        id: '',
+        supplierOneName: '',
+        supplierTwoName: '',
+        supplierName: '',
+        socialCreditNo: ''
       },
       supplyTableData: [
         {
-          supplyID: "123",
-          type1: "qwe",
-          type2: "asd",
-          supplyName: "zxc",
-          supplyNum: "fhgh",
+          supplyID: '123',
+          type1: 'qwe',
+          type2: 'asd',
+          supplyName: 'zxc',
+          supplyNum: 'fhgh'
         },
         {
-          supplyID: "456",
-          type1: "qwe",
-          type2: "asd",
-          supplyName: "zxc",
-          supplyNum: "fhgh",
-        },
+          supplyID: '456',
+          type1: 'qwe',
+          type2: 'asd',
+          supplyName: 'zxc',
+          supplyNum: 'fhgh'
+        }
       ], // 供应商列表数据
       commerce: {},
       dialogVisible: false,
-      hotelName: "酒店名称",
+      hotelName: '酒店名称',
 
-      completeInformation: {},
-    };
+      completeInformation: {}
+    }
   },
   mounted() {
-    if (
-      window.location.host == "tmc.ctgbs.com" ||
-      window.location.host == "tmc.ctgbs.cn"
-    ) {
-      this.isTestEnv = false;
+    if (window.location.host == 'tmc.ctgbs.com' || window.location.host == 'tmc.ctgbs.cn') {
+      this.isTestEnv = false
     }
-    this.getServiceProvider();
-    this.orderQuery();
-    this.isEdit();
-    this.SummaryQuotedPrice();
-    this.getDetail();
-    this.budget();
-    this.GetCostItem();
-    this.GetSupplierdataDropDown();
-    console.log(this.eventId);
+    this.getServiceProvider()
+    this.orderQuery()
+    this.isEdit()
+    this.SummaryQuotedPrice()
+    this.getDetail()
+    this.budget()
+    this.GetCostItem()
+    this.GetSupplierdataDropDown()
+    console.log(this.eventId)
   },
   methods: {
     formatNum,
@@ -1179,100 +1175,99 @@ export default {
     searchReset() {
       for (const key in this.search) {
         if (Object.hasOwnProperty.call(this.search, key)) {
-          this.search[key] = "";
+          this.search[key] = ''
         }
       }
-      this.GetSupplyList();
+      this.GetSupplyList()
     },
     // 供应商列表查询
     GetSupplyList(index) {
       let searchData = {
         dto: this.search,
         pageIndex: index || 1,
-        pageSize: 10,
-      };
+        pageSize: 10
+      }
       this.requestApi({
         url: '/B2B/GetSupplierdata',
         method: 'POST',
-        data: searchData,
-      }).then((res) => {
-        this.supplyTableData = res;
-      });
+        data: searchData
+      }).then(res => {
+        this.supplyTableData = res
+      })
     },
     // 点击行 选取供应商
     checkSupply(row) {
       // 判断是单击操作还是 选择文本复制
-      if (window.getSelection().toString() === "") {
-        this.radio = row.id;
-        this.supplyDiolog = false;
-        this.radio = ""; // 供应商选择弹窗关闭后上次取消选择
-        this.budgetInfo.costDetail[this.costIndex].supplyId = row.id;
-        this.budgetInfo.costDetail[this.costIndex].supplyName =
-          row.supplierName;
+      if (window.getSelection().toString() === '') {
+        this.radio = row.id
+        this.supplyDiolog = false
+        this.radio = '' // 供应商选择弹窗关闭后上次取消选择
+        this.budgetInfo.costDetail[this.costIndex].supplyId = row.id
+        this.budgetInfo.costDetail[this.costIndex].supplyName = row.supplierName
       }
     },
     // 触发页码
     currentChange(page) {
-      this.supplyTableData.CurrentPage = page;
-      this.GetSupplyList(page);
+      this.supplyTableData.CurrentPage = page
+      this.GetSupplyList(page)
     },
     // 结算项下拉列表查询
     GetCostItem() {
       this.requestApi({
         url: '/B2B/GetCostItem',
         method: 'POST',
-        data: {},
-      }).then((res) => {
-        this.costsNames = res;
-      });
+        data: {}
+      }).then(res => {
+        this.costsNames = res
+      })
     },
     // 供应商类型查询
     GetSupplierdataDropDown() {
       this.requestApi({
         url: '/B2B/GetSupplierdataDropDown',
         method: 'POST',
-        data: {},
-      }).then((res) => {
-        this.supplierOneNameList = res.supplierOneNameList;
-        this.supplierTwoNameList = res.supplierTwoNameList;
-      });
+        data: {}
+      }).then(res => {
+        this.supplierOneNameList = res.supplierOneNameList
+        this.supplierTwoNameList = res.supplierTwoNameList
+      })
     },
     //获取b2b团预算跳转地址
     gotoB2B(funcCode) {
       this.requestApi({
         url: '/b2b/autologin',
         method: 'POST',
-        data: { funcCode: funcCode },
-      }).then((res) => {
-        this.url = res;
+        data: { funcCode: funcCode }
+      }).then(res => {
+        this.url = res
         setTimeout(() => {
-          this.$refs.a_click.click();
-        }, 100);
-      });
+          this.$refs.a_click.click()
+        }, 100)
+      })
     },
     getDetail() {
       // 获取会议基本信息
       this.requestApi({
         url: '/MeetingMa/GetMeetingList',
         method: 'POST',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
-        this.dt = res.b2baudstatus + "";
-        if (this.dt == "1") {
-          this.budgetDialog = sessionStorage.getItem("budgetKey");
-          sessionStorage.removeItem("budgetKey");
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
+        this.dt = res.b2baudstatus + ''
+        if (this.dt == '1') {
+          this.budgetDialog = sessionStorage.getItem('budgetKey')
+          sessionStorage.removeItem('budgetKey')
         }
-        this.$forceUpdate();
-      });
+        this.$forceUpdate()
+      })
     },
     SummaryQuotedPrice() {
       this.requestApi({
         url: '/MeetingMa/SummaryQuotedPrice',
         method: 'POST',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
-        this.collectOfferData = res;
-      });
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
+        this.collectOfferData = res
+      })
     },
     // 查看比价也
     handleCommand(data, command, type) {
@@ -1281,34 +1276,34 @@ export default {
       // } else if(command == 2) {// 取消会议
       //   this.cancelEventDialog = true;
       // }
-      this.goCompare(data, command, type);
+      this.goCompare(data, command, type)
     },
     isOffer(data) {
-      return data.some((item) => {
-        return item.state >= 0 && item.state != 6;
-      });
+      return data.some(item => {
+        return item.state >= 0 && item.state != 6
+      })
     },
     getMessage(InquirySheetObjectID) {
-      this.InquirySheetObjectID = InquirySheetObjectID;
+      this.InquirySheetObjectID = InquirySheetObjectID
       this.requestApi({
         url: '/MeetingMa/GetMessage',
         method: 'POST',
-        data: { InquirySheetObjectID },
-      }).then((res) => {
-          this.messageList = res || [];
-          // 留言标记已读
-          this.requestApi({
-            url: '/MeetingMa/UnreadMessage',
-            method: 'POST',
-            data: { InquirySheetObjectID },
-          }).then(() => {
-            this.getServiceProvider();
-          });
-        });
+        data: { InquirySheetObjectID }
+      }).then(res => {
+        this.messageList = res || []
+        // 留言标记已读
+        this.requestApi({
+          url: '/MeetingMa/UnreadMessage',
+          method: 'POST',
+          data: { InquirySheetObjectID }
+        }).then(() => {
+          this.getServiceProvider()
+        })
+      })
     },
     // 新页面打开酒店详情页
     jumpInfo(id) {
-      this.$router.push({ name: "hotelInfo", params: { id } });
+      this.$router.push({ name: 'hotelInfo', params: { id } })
       // let routeData = this.$router.resolve({
       //   name: "hotelInfo",
       //   params: { id },
@@ -1316,75 +1311,69 @@ export default {
       // window.open(routeData.href, "_blank"); //跳转新页面
     },
     excelDownLoad() {
-      var name = "汇总报价单";
-      this.excelExport(
-        "/Template/GetTemplate",
-        { eventid: this.eventId, type: 1, param: this.eventId },
-        name
-      );
+      var name = '汇总报价单'
+      this.excelExport('/Template/GetTemplate', { eventid: this.eventId, type: 1, param: this.eventId }, name)
     },
     // 预览留言文件
     handlePreview(filepath) {
-      debugger;
-      filepath = filepath.slice(filepath.lastIndexOf(",") + 1);
-      if (!filepath) return;
+      debugger
+      filepath = filepath.slice(filepath.lastIndexOf(',') + 1)
+      if (!filepath) return
       // 获取文件后缀名
-      let suffix = filepath.substring(filepath.lastIndexOf(".") + 1);
+      let suffix = filepath.substring(filepath.lastIndexOf('.') + 1)
       // doc、docx、xls、xlsx、xlsm、pdf、ppt、pptx、jpeg、jpg、png、txt
-      let types1 = ["pdf", "jpeg", "jpg", "png", "txt"];
-      let types2 = ["docx", "doc", "xls", "xlsx", "xlsm", "ppt", "pptx"];
-      filepath = filepath.replace(/http:/, "https:");
-      this.downloadUrl = filepath;
+      let types1 = ['pdf', 'jpeg', 'jpg', 'png', 'txt']
+      let types2 = ['docx', 'doc', 'xls', 'xlsx', 'xlsm', 'ppt', 'pptx']
+      filepath = filepath.replace(/http:/, 'https:')
+      this.downloadUrl = filepath
       if (types2.includes(suffix)) {
-        this.downloadUrl =
-          "https://view.officeapps.live.com/op/view.aspx?src=" +
-          encodeURIComponent(filepath);
+        this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
       } else if (types1.includes(suffix)) {
-        this.downloadUrl = filepath;
+        this.downloadUrl = filepath
       } else {
-        this.$message.info("文件格式不支持预览，下载后查看");
+        this.$message.info('文件格式不支持预览，下载后查看')
       }
       // this.downloadUrl= 'https://view.xdocin.com/view?src=' + encodeURIComponent(file.url)
       setTimeout(() => {
-        this.$refs.b_click.click();
-      }, 100);
+        this.$refs.b_click.click()
+      }, 100)
     },
     // 留言下载文件
     downloadFile(fileStr) {
-      let downloadUrl = fileStr.slice(fileStr.lastIndexOf(",") + 1);
-      let filename = fileStr.slice(0, fileStr.lastIndexOf(","));
-      let a_link = document.createElement("a");
+      let downloadUrl = fileStr.slice(fileStr.lastIndexOf(',') + 1)
+      let filename = fileStr.slice(0, fileStr.lastIndexOf(','))
+      let a_link = document.createElement('a')
       // // 这里是将url转成blob地址，
       // fetch(downloadUrl).then(res => res.blob()).then(blob => { // 将链接地址字符内容转变成blob地址
       // a_link.href = URL.createObjectURL(blob)
-      a_link.href = downloadUrl;
+      a_link.href = downloadUrl
       // 	console.log(a_link.href)
-      a_link.download = filename; //下载的文件的名字/
-      document.body.appendChild(a_link);
-      a_link.click();
+      a_link.download = filename //下载的文件的名字/
+      document.body.appendChild(a_link)
+      a_link.click()
       // })
     },
     againDialogTap(data, type) {
-      this.againDialog = true;
+      this.againDialog = true
       if (type == 2) {
         // 延长报价时间 默认24小时后
-        let defaultDate = new Date().getTime();
-        defaultDate += 24 * 60 * 60 * 1000;
+        let defaultDate = new Date().getTime()
+        defaultDate += 24 * 60 * 60 * 1000
 
-        this.reOfferendDate = new Date(defaultDate);
+        this.reOfferendDate = new Date(defaultDate)
       }
-      this.againData = data;
-      this.dialogType = type;
+      this.againData = data
+      this.dialogType = type
     },
     isEdit() {
       this.requestApi({
         url: '/MeetingMa/WhetherInquiry',
         method: 'POST',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
         // false不可以去询价，true可以去询价
-        this.hasRequirements = res;
-      });
+        this.hasRequirements = res
+      })
     },
     // 邀请重新报价
     reQuote() {
@@ -1393,44 +1382,44 @@ export default {
         id: this.againData.quoted_priceid, // 报价单ID
         inquiry_sheet_object_id: this.againData.id, //服务商ID
         message: this.textValue,
-        offerenddate: this.reOfferendDate,
-      };
-      if (this.textValue.trim() === "") {
-        this.invalid = true;
-        return false;
-      } else {
-        Parameter.message = this.textValue;
+        offerenddate: this.reOfferendDate
       }
-      this.invalid = false;
+      if (this.textValue.trim() === '') {
+        this.invalid = true
+        return false
+      } else {
+        Parameter.message = this.textValue
+      }
+      this.invalid = false
       this.requestApi({
         url: '/MeetingMa/QuotedPriceStatus',
         method: 'POST',
-        data: { Parameter: JSON.stringify(Parameter) },
-      }).then((res) => {
+        data: { Parameter: JSON.stringify(Parameter) }
+      }).then(res => {
         if (res) {
-          this.$message.success(res.msg);
-          this.againDialog = false;
-          this.getServiceProvider();
+          this.$message.success(res.msg)
+          this.againDialog = false
+          this.getServiceProvider()
         }
-      });
+      })
     },
     urgeOffer(item) {
-      this.offerCompanyInfo.id = item.id;
-      this.offerCompanyInfo.company_name = item.company_name;
-      this.offerCompanyInfo.contanct = item.customer_service_name;
-      this.offerCompanyInfo.email = item.company_email;
-      this.urgeOfferDialog = true;
+      this.offerCompanyInfo.id = item.id
+      this.offerCompanyInfo.company_name = item.company_name
+      this.offerCompanyInfo.contanct = item.customer_service_name
+      this.offerCompanyInfo.email = item.company_email
+      this.urgeOfferDialog = true
     },
     //
     urgeOfferConfirm() {
       this.requestApi({
         url: '/MeetingMa/UrgingQuotedPrice',
         method: 'POST',
-        data: { InquirySheetObjectID: this.offerCompanyInfo.id },
-      }).then((res) => {
-        this.$message.success("发送成功");
-        this.urgeOfferDialog = false;
-      });
+        data: { InquirySheetObjectID: this.offerCompanyInfo.id }
+      }).then(res => {
+        this.$message.success('发送成功')
+        this.urgeOfferDialog = false
+      })
     },
 
     // 延长报价时间
@@ -1438,54 +1427,54 @@ export default {
       let Parameter = {
         id: this.againData.id, //服务商ID
         message: this.textValue,
-        offerenddate: this.reOfferendDate,
-      };
+        offerenddate: this.reOfferendDate
+      }
       this.requestApi({
         url: '/MeetingMa/DelayEndTime',
         method: 'POST',
-        data: { Parameter: JSON.stringify(Parameter) },
-      }).then((res) => {
+        data: { Parameter: JSON.stringify(Parameter) }
+      }).then(res => {
         if (res) {
-          this.$message.success("保存成功");
-          this.againDialog = false;
-          this.getServiceProvider();
+          this.$message.success('保存成功')
+          this.againDialog = false
+          this.getServiceProvider()
         }
-      });
+      })
     },
     // 跳转页面
     goPage(name, query) {
-      this.$router.push({ name, query });
+      this.$router.push({ name, query })
     },
     // 跳转详情页
     checkOrUpdateOffer() {
       this.requestApi({
         url: '/MeetingMa/CreateInquirySheet',
         method: 'POST',
-        data: { MeetingID: this.eventId },
-      }).then((res) => {
-          if (res) {
-            this.$router.push({
-              name: "DMCinquiryInfo",
-              params: {
-                id: res,
-              },
-            });
-          }
-        });
+        data: { MeetingID: this.eventId }
+      }).then(res => {
+        if (res) {
+          this.$router.push({
+            name: 'DMCinquiryInfo',
+            params: {
+              id: res
+            }
+          })
+        }
+      })
     },
     goquotedprice() {
       this.$router.push({
-        name: "quotedprice",
+        name: 'quotedprice',
         params: {
           id: this.info.object_id,
-          isSubmit: 1,
-        },
-      });
+          isSubmit: 1
+        }
+      })
     },
 
     // 复制报价链接
     copyUrl(item, type) {
-      let url = "";
+      let url = ''
       // debugger;
       if (type == 0) {
         // 酒店
@@ -1493,35 +1482,34 @@ export default {
         this.requestApi({
           url: '/ResourcesApi/HotelLike',
           method: 'POST',
-          data: { inquiryObjectID: item.id },
-        }).then((res) => {
+          data: { inquiryObjectID: item.id }
+        }).then(res => {
           if (res) {
-            debugger;
-            url = res;
-            var copyTest = url;
-            var inputTest = document.createElement("input");
-            inputTest.value = copyTest;
-            document.body.appendChild(inputTest);
-            inputTest.select();
-            document.execCommand("Copy");
-            inputTest.className = "oInput";
-            inputTest.style.display = "none";
-            this.$message.success("复制成功");
+            debugger
+            url = res
+            var copyTest = url
+            var inputTest = document.createElement('input')
+            inputTest.value = copyTest
+            document.body.appendChild(inputTest)
+            inputTest.select()
+            document.execCommand('Copy')
+            inputTest.className = 'oInput'
+            inputTest.style.display = 'none'
+            this.$message.success('复制成功')
           }
-        });
+        })
       } else {
         // 服务商
-        url =
-          MAINHOST + "/html/meeting/#/activityInquiry/DMCorderList/" + item.id;
-        var copyTest = url;
-        var inputTest = document.createElement("input");
-        inputTest.value = copyTest;
-        document.body.appendChild(inputTest);
-        inputTest.select();
-        document.execCommand("Copy");
-        inputTest.className = "oInput";
-        inputTest.style.display = "none";
-        this.$message.success("复制成功");
+        url = MAINHOST + '/html/meeting/#/activityInquiry/DMCorderList/' + item.id
+        var copyTest = url
+        var inputTest = document.createElement('input')
+        inputTest.value = copyTest
+        document.body.appendChild(inputTest)
+        inputTest.select()
+        document.execCommand('Copy')
+        inputTest.className = 'oInput'
+        inputTest.style.display = 'none'
+        this.$message.success('复制成功')
       }
     },
     // 临时改变订单状态
@@ -1529,67 +1517,65 @@ export default {
       this.requestApi({
         url: '/MeetingMa/TemporaryOrderfrom',
         method: 'POST',
-        data: { OrderFromID: orderId },
-      }).then((res) => {
-        this.orderQuery();
-      });
+        data: { OrderFromID: orderId }
+      }).then(res => {
+        this.orderQuery()
+      })
     },
     // 前往比价页
     goCompare(item, command, type) {
       // command  1仅线上 2含线下  type：hotel/service
       this.$router.push({
         name: 'comparisonPrice',
-        query: { 
+        query: {
           InquirySheetID: item.id,
           eventId: this.$route.query.id,
           command,
-          type,
-        },
+          type
+        }
         // path: "/activityInquiry/comparisonPrice/" + item.id,
         // query: {
         //   id: this.$route.query.id,
         //   command,
         //   type,
         // },
-      });
+      })
     },
     //editDemand
     editDemand() {
-      this.editDemandDialog = true;
+      this.editDemandDialog = true
     },
     editDemandConfirm(ischeck) {
       if (this.isDMC) {
         this.$router.push({
-          name: "DMCEventDemand",
+          name: 'DMCEventDemand',
           query: {
             id: this.eventId,
             name: this.$route.query.name,
             eventSearchType: this.$route.query.eventSearchType,
-            type: ischeck === "check" ? "check" : "edit",
-          },
-        });
+            type: ischeck === 'check' ? 'check' : 'edit'
+          }
+        })
       } else {
         this.$router.push({
-          name: "EventDemand",
+          name: 'EventDemand',
           query: {
             id: this.eventId,
             name: this.$route.query.name,
             eventSearchType: this.$route.query.eventSearchType,
-            type: ischeck === "check" ? "check" : "edit",
-          },
-        });
+            type: ischeck === 'check' ? 'check' : 'edit'
+          }
+        })
       }
     },
     handleStepTwo() {},
     goDemand(type) {
-      let city_code = localStorage.getItem("event_city_code")
-        ? "/" + localStorage.getItem("event_city_code")
-        : "";
+      let city_code = localStorage.getItem('event_city_code') ? '/' + localStorage.getItem('event_city_code') : ''
       if (type === 1) {
         // 酒店
         this.$router.replace({
           name: 'siteResource',
-          params:{
+          params: {
             id: this.eventId,
             city: city_code,
             type: 'addhotel'
@@ -1597,14 +1583,14 @@ export default {
         })
       } else if (type === 2) {
         // 是否含酒店
-        this.isDemandHotel = true;
+        this.isDemandHotel = true
       } else if (type === 3) {
         //立即采购(不含酒店)
         // this.$router.push({
         //   path: "/ServiceProvidercg/" + this.eventId + city_code + "/3",
         // });
         this.$router.push({
-          name:'ServiceProvider',
+          name: 'ServiceProvider',
           params: {
             id: this.eventId,
             city: city_code,
@@ -1618,7 +1604,7 @@ export default {
         //   path: "/ServiceProvidercg/" + this.eventId + city_code + "/2",
         // });
         this.$router.push({
-          name:'ServiceProvider',
+          name: 'ServiceProvider',
           params: {
             id: this.eventId,
             city: city_code,
@@ -1630,115 +1616,113 @@ export default {
     },
     // 前往大交通
     goTrafficTap() {
-      this.$router.push({ path: "/large", query: { id: this.eventId } });
+      this.$router.push({ path: '/large', query: { id: this.eventId } })
     },
     //查看询价单
     viewRfq(data, type) {
       this.$router.push({
-        name:'servicedetails',
+        name: 'servicedetails',
         // path: "/servicedetails",
-        query: { id: this.eventId, sheetId: data.id, type },
-      });
+        query: { id: this.eventId, sheetId: data.id, type }
+      })
     },
     // 留言
     conversation() {
       if (!this.message.trim()) {
-        this.$message.error("请输入留言信息");
-        return;
+        this.$message.error('请输入留言信息')
+        return
       }
       const Parameter = {
         inquiry_sheet_object_id: this.InquirySheetObjectID,
         message: this.message,
-        message_type: 0, // 留言是0，文件是1
-      };
+        message_type: 0 // 留言是0，文件是1
+      }
       this.requestApi({
         url: '/MeetingMa/MessageSava',
         method: 'POST',
-        data: { Parameter: JSON.stringify(Parameter) },
-      }).then((res) => {
+        data: { Parameter: JSON.stringify(Parameter) }
+      }).then(res => {
         if (res && res === true) {
           // this.megDialog = false;
-          this.message = "";
-          this.getMessage(this.InquirySheetObjectID);
+          this.message = ''
+          this.getMessage(this.InquirySheetObjectID)
         }
-      });
+      })
     },
     //会议服务商询价单
     getServiceProvider() {
       this.requestApi({
         url: '/MeetingMa/GetServiceProvider',
         method: 'POST',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
-        this.provideName = res.service ? res.service : [];
-        this.provideName.forEach((item) => {
-          item.isShowInquiry_hotel = true;
-        });
-        this.providehotle = res.hotel ? res.hotel : [];
-        this.providehotle.forEach((item) => {
-          item.isShowInquiry = true;
-        });
-        this.$forceUpdate();
-      });
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
+        this.provideName = res.service ? res.service : []
+        this.provideName.forEach(item => {
+          item.isShowInquiry_hotel = true
+        })
+        this.providehotle = res.hotel ? res.hotel : []
+        this.providehotle.forEach(item => {
+          item.isShowInquiry = true
+        })
+        this.$forceUpdate()
+      })
     },
     // 询价单展开收缩  type: 1服务商  2 酒店
     isShowTap(type, id) {
       if (type === 1) {
-        this.provideName[id].isShowInquiry_hotel =
-          !this.provideName[id].isShowInquiry_hotel;
+        this.provideName[id].isShowInquiry_hotel = !this.provideName[id].isShowInquiry_hotel
       } else {
-        this.providehotle[id].isShowInquiry =
-          !this.providehotle[id].isShowInquiry;
+        this.providehotle[id].isShowInquiry = !this.providehotle[id].isShowInquiry
       }
-      this.$forceUpdate();
+      this.$forceUpdate()
     },
     //订单查询
     orderQuery() {
       this.requestApi({
         url: '/MeetingMa/GetOrderform',
         method: 'POST',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
-        this.orderList = res.service ? res.service : [];
-        this.orderhotle = res.hotel ? res.hotel : [];
-      });
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
+        this.orderList = res.service ? res.service : []
+        this.orderhotle = res.hotel ? res.hotel : []
+      })
     },
     // 新增成本项
     addCost() {
       let addData = {
-        costItemName: "",
-        supplyId: "",
-        cost: "",
-      };
-      this.budgetInfo.costDetail.push(addData);
+        costItemName: '',
+        supplyId: '',
+        cost: ''
+      }
+      this.budgetInfo.costDetail.push(addData)
     },
     // 删除成本项
     delCost(scoped) {
-      let index = scoped.$index;
-      this.budgetInfo.costDetail.splice(index, 1);
+      let index = scoped.$index
+      this.budgetInfo.costDetail.splice(index, 1)
     },
     //预算填报第二步，费用拆分，单项拆成多项，多项相加不得超出单项
     changeInput(e) {
-      this.$forceUpdate();
-      this.budgetInfo.costDetail.forEach((item) => {
-        var sum = 0;
-        item.splitFeeList.forEach((val) => {
-          sum += parseFloat(val.cost);
-        });
+      this.$forceUpdate()
+      this.budgetInfo.costDetail.forEach(item => {
+        var sum = 0
+        item.splitFeeList.forEach(val => {
+          sum += parseFloat(val.cost)
+        })
         if (item.cost < sum) {
-          this.$message.error("不得超出总额");
+          this.$message.error('不得超出总额')
         }
-      });
+      })
     },
     //预算填报第二步，费用拆分，单项拆成多项，多项之间供应商不能相同
     serviceList(e, index_, indexc) {
-      this.$forceUpdate();
+      this.$forceUpdate()
       this.budgetInfo.costDetail[indexc].splitFeeList.forEach((val, i) => {
         if (val.supplyId == e && i != index_) {
-          this.$message.error("供应商不能相同！");
-          return 0;
+          this.$message.error('供应商不能相同！')
+          return 0
         }
-      });
+      })
     },
     //预算填报第二步，费用拆分
     splitFee(i, list) {
@@ -1746,111 +1730,107 @@ export default {
         {
           costItem: this.budgetInfo.costDetail[i].costItem,
           costItemName: this.budgetInfo.costDetail[i].costItemName,
-          supplyId: "",
-          cost: "0",
+          supplyId: '',
+          cost: '0'
         },
         {
           costItem: this.budgetInfo.costDetail[i].costItem,
           costItemName: this.budgetInfo.costDetail[i].costItemName,
-          supplyId: "",
-          cost: "0",
+          supplyId: '',
+          cost: '0'
         }
-      );
-      this.$forceUpdate();
+      )
+      this.$forceUpdate()
     },
     //预算填报第二步，费用拆分，添加分项
     splitFeeAdd(i, index) {
       this.budgetInfo.costDetail[i].splitFeeList.push({
         costItem: this.budgetInfo.costDetail[i].costItem,
         costItemName: this.budgetInfo.costDetail[i].costItemName,
-        supplyId: "",
-        cost: "0",
-      });
-      this.$forceUpdate();
+        supplyId: '',
+        cost: '0'
+      })
+      this.$forceUpdate()
     },
     //预算填报第二步，费用拆分，删除分项
     splitFeeDel(i, index) {
-      this.budgetInfo.costDetail[i].splitFeeList.splice(index, 1);
+      this.budgetInfo.costDetail[i].splitFeeList.splice(index, 1)
       if (this.budgetInfo.costDetail[i].splitFeeList.length == 1) {
-        this.budgetInfo.costDetail[i].splitFeeList.splice(0, 1);
+        this.budgetInfo.costDetail[i].splitFeeList.splice(0, 1)
       }
-      this.$forceUpdate();
+      this.$forceUpdate()
     },
     beforeClose() {
-      this.budgetDialog = false;
-      this.budgetDialogDetails = false;
-      this.chonseCost = 0;
+      this.budgetDialog = false
+      this.budgetDialogDetails = false
+      this.chonseCost = 0
       if (this.num > 0) {
-        this.cancelSuccess = true;
+        this.cancelSuccess = true
       }
     },
     change(e, item) {
       if (e) {
-        this.orderIdList.push(item.OrderID);
-        this.chonseCost += this.formatNum(item.Price, 2) * 1;
+        this.orderIdList.push(item.OrderID)
+        this.chonseCost += this.formatNum(item.Price, 2) * 1
       } else {
-        this.orderIdList = this.orderIdList.filter((i) => {
-          return i != item.OrderID;
-        });
-        this.chonseCost -= this.formatNum(item.Price, 2) * 1;
+        this.orderIdList = this.orderIdList.filter(i => {
+          return i != item.OrderID
+        })
+        this.chonseCost -= this.formatNum(item.Price, 2) * 1
       }
     },
     nextStep() {
       if (this.orderIdList.length == 0) {
         this.$message({
-          type: "warning",
-          message: "请勾选服务商!",
-        });
-        return;
+          type: 'warning',
+          message: '请勾选服务商!'
+        })
+        return
       }
-      this.budgetDialog = false;
-      this.budgetDialogDetails = true;
-      this.budgetDetails(); //填报预算(明细)
+      this.budgetDialog = false
+      this.budgetDialogDetails = true
+      this.budgetDetails() //填报预算(明细)
     },
     //填报预算(合计)
     budget() {
       this.requestApi({
         url: '/Quotation/FillinBuget',
         method: 'POST',
-        data: { eventinfoid: this.eventId },
-      }).then((res) => {
-          //console.log(res)
-          res = res.filter((e) => {
-            e["checked"] = false;
-            return true;
-          });
-          if (res[0] && res[0].budget_count) this.num = res[0].budget_count;
-          this.budgetList = res;
-          this.orderIdList = [];
-          sessionStorage.setItem("budgetNumKey", this.num); //存入键值,预算填报次数，在取消询价单、订单时使用
-        });
+        data: { eventinfoid: this.eventId }
+      }).then(res => {
+        //console.log(res)
+        res = res.filter(e => {
+          e['checked'] = false
+          return true
+        })
+        if (res[0] && res[0].budget_count) this.num = res[0].budget_count
+        this.budgetList = res
+        this.orderIdList = []
+        sessionStorage.setItem('budgetNumKey', this.num) //存入键值,预算填报次数，在取消询价单、订单时使用
+      })
     },
     //填报预算(明细)
     budgetDetails() {
       this.requestApi({
         url: '/Quotation/FillinBugetDetail',
         method: 'POST',
-        data: { OrderIDS: this.orderIdList },
-      }).then((res) => {
-          // console.log(res);
-          this.budgetInfo = res;
-          this.budgetInfo.pr = this.pr;
-          this.budgetInfo.costDetail = this.budgetInfo.costDetail.filter(
-            (e) => {
-              if (Number(e.cost) > 0) {
-                e["splitFeeList"] = [];
-                return true;
-              }
-            }
-          );
-          this.budgetInfo.costDetail.forEach((item) => {
-            item.cost = this.formatNum(item.cost, 2);
-          });
-          this.budgetInfo.cost = Number(
-            this.formatNum(this.chonseCost, 2)
-          ).toFixed(6);
-          console.log(this.budgetInfo.cost);
-        });
+        data: { OrderIDS: this.orderIdList }
+      }).then(res => {
+        // console.log(res);
+        this.budgetInfo = res
+        this.budgetInfo.pr = this.pr
+        this.budgetInfo.costDetail = this.budgetInfo.costDetail.filter(e => {
+          if (Number(e.cost) > 0) {
+            e['splitFeeList'] = []
+            return true
+          }
+        })
+        this.budgetInfo.costDetail.forEach(item => {
+          item.cost = this.formatNum(item.cost, 2)
+        })
+        this.budgetInfo.cost = Number(this.formatNum(this.chonseCost, 2)).toFixed(6)
+        console.log(this.budgetInfo.cost)
+      })
     },
     //填报预算明细总和
     /* priceSum() {
@@ -1864,17 +1844,14 @@ export default {
 		}, */
     //预算填报提交
     budgetSubmit() {
-      var isSuspend = null;
+      var isSuspend = null
       isSuspend = this.budgetInfo.costDetail.some((item, index) => {
         //校验
         for (var i = index + 1; i < this.budgetInfo.costDetail.length; i++) {
-          if (
-            item.costItem == this.budgetInfo.costDetail[i].costItem &&
-            item.supplyId == this.budgetInfo.costDetail[i].supplyId
-          ) {
-            this.$message.error("相同费用项的供应商不能相同！");
-            return true;
-            break;
+          if (item.costItem == this.budgetInfo.costDetail[i].costItem && item.supplyId == this.budgetInfo.costDetail[i].supplyId) {
+            this.$message.error('相同费用项的供应商不能相同！')
+            return true
+            break
           }
         }
         // var sum = 0;
@@ -1892,160 +1869,151 @@ export default {
         // 	this.$message.error('需要将应付信息根据成本项、供应商进行汇总');
         // 	return true;
         // }
-        return false;
-      });
+        return false
+      })
       // 提交必填项校验
       for (var i = 0; i < this.budgetInfo.costDetail.length; i++) {
-        if (
-          this.budgetInfo.costDetail[i].costItem == "" ||
-          this.budgetInfo.costDetail[i].costItem == null
-        ) {
-          this.$message.error(`第${i + 1}行 成本项 不能为空`);
-          isSuspend = true;
-          break;
+        if (this.budgetInfo.costDetail[i].costItem == '' || this.budgetInfo.costDetail[i].costItem == null) {
+          this.$message.error(`第${i + 1}行 成本项 不能为空`)
+          isSuspend = true
+          break
         }
-        if (
-          this.budgetInfo.costDetail[i].supplyId == "" ||
-          this.budgetInfo.costDetail[i].supplyId == null
-        ) {
-          this.$message.error(`第${i + 1}行 供应商 不能为空`);
-          isSuspend = true;
-          break;
+        if (this.budgetInfo.costDetail[i].supplyId == '' || this.budgetInfo.costDetail[i].supplyId == null) {
+          this.$message.error(`第${i + 1}行 供应商 不能为空`)
+          isSuspend = true
+          break
         }
-        if (
-          this.budgetInfo.costDetail[i].cost == "" ||
-          this.budgetInfo.costDetail[i].cost == null
-        ) {
-          this.$message.error(`第${i + 1}行 金额 不能为空`);
-          isSuspend = true;
-          break;
+        if (this.budgetInfo.costDetail[i].cost == '' || this.budgetInfo.costDetail[i].cost == null) {
+          this.$message.error(`第${i + 1}行 金额 不能为空`)
+          isSuspend = true
+          break
         }
       }
 
-      if (isSuspend) return;
+      if (isSuspend) return
 
-      var submit = {};
-      var teambudget = {};
-      var teamList = [];
-      teambudget = JSON.parse(JSON.stringify(this.budgetInfo));
+      var submit = {}
+      var teambudget = {}
+      var teamList = []
+      teambudget = JSON.parse(JSON.stringify(this.budgetInfo))
       teambudget.costDetail.forEach((e, i) => {
         //"费用拆分"整理到列表中
         if (e.splitFeeList != undefined && e.splitFeeList.length != 0) {
-          var list = [];
-          list = JSON.parse(JSON.stringify(e.splitFeeList));
-          list.forEach((v) => {
-            teamList.push(v);
-          });
+          var list = []
+          list = JSON.parse(JSON.stringify(e.splitFeeList))
+          list.forEach(v => {
+            teamList.push(v)
+          })
         } else {
-          teamList.push(e);
+          teamList.push(e)
         }
-      });
-      teambudget.costDetail = teamList;
+      })
+      teambudget.costDetail = teamList
       submit = {
         event_info_id: this.eventId, //"320ac3f5-dbdf-4c33-aa17-d197747f2b9a"
-        teambudget: teambudget,
-      };
+        teambudget: teambudget
+      }
       this.requestApi({
         url: '/B2B/TeamBudget',
         method: 'POST',
-        data: submit,
-      }).then((res) => {
+        data: submit
+      }).then(res => {
         // console.log(res);
         // this.budgetDialogDetails = false;
         if (res.status == 1) {
           this.$message({
             message: res.msg,
-            type: "success",
-          });
-          this.submitSuccess = true;
-          this.budgetDialogDetails = false;
+            type: 'success'
+          })
+          this.submitSuccess = true
+          this.budgetDialogDetails = false
         } else {
-          this.$message.error(res.msg);
+          this.$message.error(res.msg)
         }
-      });
+      })
     },
 
     //控制下拉框里的dom节点
     visibleChange(e, index) {
-      this.isSelShow = e;
+      this.isSelShow = e
       if (this.isSelShow) {
-        this.indexSel = index;
+        this.indexSel = index
       } else {
-        this.indexSel = -1;
+        this.indexSel = -1
       }
 
-      this.$forceUpdate();
+      this.$forceUpdate()
     },
     //控制下拉框里的dom节点
     visibleChangeSplit(e, indexSplit, index) {
-      this.isSelShowSplit = e;
+      this.isSelShowSplit = e
       if (this.isSelShowSplit) {
-        this.indexSelSplit = indexSplit;
-        this.indexSel = index;
+        this.indexSelSplit = indexSplit
+        this.indexSel = index
       } else {
-        this.indexSelSplit = -1;
-        this.indexSel = -1;
+        this.indexSelSplit = -1
+        this.indexSel = -1
       }
 
-      this.$forceUpdate();
+      this.$forceUpdate()
     },
     // 完善工商信息
     perfect() {
       // 表单提交前预验证
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
           //
-          console.log("123hkz");
-          console.log(this.completeInformation);
+          console.log('123hkz')
+          console.log(this.completeInformation)
           let params = {
             resourcesId: this.completeInformation.id,
             licenseName: this.ruleForm.licenseName,
-            creditCode: this.ruleForm.societyCode,
-          };
+            creditCode: this.ruleForm.societyCode
+          }
           this.requestApi({
             url: '/ResourcesApi/BusinessPerfectInfo',
             method: 'POST',
-            data: params,
-          }).then((res) => {
-            console.log(res);
+            data: params
+          }).then(res => {
+            console.log(res)
             if (res) {
-              this.getServiceProvider();
+              this.getServiceProvider()
               this.$message({
-                message: "提交成功",
-                type: "success",
-              });
+                message: '提交成功',
+                type: 'success'
+              })
             } else {
               this.$message({
-                message: "提交失败",
-                type: "error",
-              });
+                message: '提交失败',
+                type: 'error'
+              })
             }
-            this.dialogVisible = false;
-          });
+            this.dialogVisible = false
+          })
         } else {
           // 表单验证错误
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     closeDiv() {
-      this.$refs["ruleForm"].resetFields();
+      this.$refs['ruleForm'].resetFields()
     },
     handleClose(done) {
       // this.$confirm("确认关闭？")
       //   .then((_) => {
-      done();
+      done()
       //   })
       //   .catch((_) => {});
     },
     complete(item) {
-      this.completeInformation = item;
-      this.hotelName = this.completeInformation.company_name;
-      this.dialogVisible = true;
-    },
-  },
-};
+      this.completeInformation = item
+      this.hotelName = this.completeInformation.company_name
+      this.dialogVisible = true
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="bs-container app-container">
 
     <el-alert v-show="alertShow" title="因菜单信息有5分钟的缓存，业务员在5分钟后登陆可以看到新的菜单目录" type="warning" show-icon style='margin-bottom: 3px;'></el-alert>
     <bs-form ref='bsForm' :form='form'></bs-form>

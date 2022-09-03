@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='treeTableDialog' ref='treeTableDialog' style='width:900px;'>
       <!-- 头部 -->
       <title-contain titleName='高级查询' @screenChange="setTableHeight" @TitleFun="$emit('closeHandler')"></title-contain>
@@ -518,18 +518,18 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-/deep/ .el-tabs__header {
+::deep .el-tabs__header {
   .el-tabs__item {
     height: 32px;
     line-height: 32px;
   }
 }
 
-/deep/ .el-tabs__content {
+::deep .el-tabs__content {
   height: calc(100% - 32px);
 }
 
-/deep/ .el-input--mini .el-input__inner {
+::deep .el-input--mini .el-input__inner {
   height: 24px;
   line-height: 24px;
 }
@@ -602,11 +602,11 @@ export default {
   }
 }
 
-/deep/ .el-input__inner {
+::deep .el-input__inner {
   padding: 6px !important;
 }
 
-/deep/ .search-input .el-input__inner {
+::deep .search-input .el-input__inner {
   padding-left: 30px !important;
 }
 

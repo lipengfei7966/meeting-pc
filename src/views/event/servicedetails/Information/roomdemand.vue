@@ -8,26 +8,26 @@
         </div>
       </div>
       <div class="rfp_box">
-          <div class="rfp_room clx" v-for="(item,index) in roomList" :key="index">
-            <div class="room_date">
-              入住起始日期 Check-in Date：<strong>{{item.check_in_date}}</strong>
-            </div>
-            <div class="room_budget">{{item.networks}}</div>
-            <div class="room_budget">{{item.breakfast}}</div>
-            <div class="room_budget">
-              离店日期 Check-in Date：<strong>{{item.out_date}}</strong>
-            </div>
-            
+        <div class="rfp_room clx" v-for="(item,index) in roomList" :key="index">
+          <div class="room_date">
+            入住起始日期 Check-in Date：<strong>{{item.check_in_date}}</strong>
           </div>
-          <el-table :data="room" border align="center">
-            <el-table-column prop="checkindate" label="日期" width="180" align="center"></el-table-column>
-            <el-table-column prop="doubleBedNum" label="双床房" width="100" align="center"></el-table-column>
-            <el-table-column prop="bigBedNum" label="大床房" width="100" align="center"></el-table-column>
-            <el-table-column prop="suiteNum" label="行政房/套房" width="120" align="center"></el-table-column>
-            <el-table-column prop="totalNum" label="总计" width="100" align="center"></el-table-column>
-            <el-table-column prop="otherrequirements" label="其它要求" align="center"></el-table-column>
-            <!-- <el-table-column prop="fullname" label="是否采购"></el-table-column> -->
-          </el-table>
+          <div class="room_budget">{{item.networks}}</div>
+          <div class="room_budget">{{item.breakfast}}</div>
+          <div class="room_budget">
+            离店日期 Check-in Date：<strong>{{item.out_date}}</strong>
+          </div>
+
+        </div>
+        <el-table :data="room" border align="center">
+          <el-table-column prop="checkindate" label="日期" width="180" align="center"></el-table-column>
+          <el-table-column prop="doubleBedNum" label="双床房" width="100" align="center"></el-table-column>
+          <el-table-column prop="bigBedNum" label="大床房" width="100" align="center"></el-table-column>
+          <el-table-column prop="suiteNum" label="行政房/套房" width="120" align="center"></el-table-column>
+          <el-table-column prop="totalNum" label="总计" width="100" align="center"></el-table-column>
+          <el-table-column prop="otherrequirements" label="其它要求" align="center"></el-table-column>
+          <!-- <el-table-column prop="fullname" label="是否采购"></el-table-column> -->
+        </el-table>
         <!-- <table class="rfp_public room">
           <thead >
             <tr>
@@ -67,21 +67,21 @@
 
 <script>
 export default {
-  props:['roomList','room'],
-  data:function() {
-    return{
+  props: ['roomList', 'room'],
+  data: function() {
+    return {
       allRoomList: []
     }
   },
-  updated(){
-    console.log(this.room,'2222222222')
+  updated() {
+    console.log(this.room, '2222222222')
   }
-};
+}
 </script>
 
 <style lang="scss">
 .clx {
-    zoom: 1;
+  zoom: 1;
 }
 .rfp_title {
   background: #fafafa;
@@ -124,9 +124,9 @@ export default {
   margin: 0 0 50px 0;
 }
 .rfp_public {
-    width: 100%;
-    // border: 1px solid #e2e2e2;
-    margin: 10px 0 0 0;
+  width: 100%;
+  // border: 1px solid #e2e2e2;
+  margin: 10px 0 0 0;
 }
 .room_date,
 .room_budget {
@@ -161,5 +161,4 @@ export default {
 .rfp_item .rfp_public td.blue {
   background: #e2f3fe;
 }
-
 </style>
