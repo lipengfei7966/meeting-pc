@@ -9,7 +9,7 @@ export default function(urls) { // urls = [ {key,file} ]
     const upload = () => {
       // 上传已全部完成
       if (urls.length === 0) return resolve(uploadImageList)
-      debugger
+      // debugger
       if (String(urls[0].file).IsPicture()) {
         // uploadImage= urls[0].file
         // uploadImageList.push(uploadImage)

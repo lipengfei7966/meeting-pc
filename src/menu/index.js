@@ -25,86 +25,62 @@ export const constantMenuMap = [
         title: 'treeSearchDemo',
         firstParent: 'example'
       }
-    }, {
-      name: 'spanTableDemo',
-      meta: {
-        title: 'spanTableDemo',
-        firstParent: 'example'
-      }
-    }, {
-      name: 'spanTableThDemo',
-      meta: {
-        title: 'spanTableThDemo',
-        firstParent: 'example'
-      }
-    }, {
-      name: 'editSpanTableDemo',
-      meta: {
-        title: 'editSpanTableDemo',
-        firstParent: 'example'
-      }
-    }, {
-      name: 'timeLineDemo',
-      meta: {
-        title: 'timeLineDemo',
-        firstParent: 'example'
-      }
     }]
   },
-  {
-    name: 'event',
-    meta: {
-      title: 'event',
-      icon: 'table',
-      isFirstParent: true
-    },
-    hidden: false,
-    children: [
-      {
-        name: 'createEvent',
-        meta: {
-          title: 'createEvent',
-          firstParent: 'event'
-        }
-      },
-      {
-        name: 'eventList',
-        meta: {
-          title: 'eventList',
-          firstParent: 'event'
-        }
-      },
-      {
-        name: 'approveOrderManage',
-        meta: {
-          title: 'approveOrderManage',
-          firstParent: 'event'
-        }
-      },
-      {
-        name: 'parameter',
-        meta: {
-          title: 'parameter',
-          firstParent: 'event'
-        }
-      },
-      {
-        name: 'approve',
-        meta: {
-          title: 'approve',
-          firstParent: 'event'
-        }
-      },
-      {
-        name: 'reporting',
-        meta: {
-          title: 'reporting',
-          icon: 'Tbaob',
-          firstParent: 'event'
-        }
-      }
-    ]
-  },
+  // {
+  //   name: 'event',
+  //   meta: {
+  //     title: 'event',
+  //     icon: 'table',
+  //     isFirstParent: true
+  //   },
+  //   hidden: false,
+  //   children: [
+  //     {
+  //       name: 'createEvent',
+  //       meta: {
+  //         title: 'createEvent',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'eventList',
+  //       meta: {
+  //         title: 'eventList',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'approveOrderManage',
+  //       meta: {
+  //         title: 'approveOrderManage',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'parameter',
+  //       meta: {
+  //         title: 'parameter',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'approve',
+  //       meta: {
+  //         title: 'approve',
+  //         firstParent: 'event'
+  //       }
+  //     },
+  //     {
+  //       name: 'reporting',
+  //       meta: {
+  //         title: 'reporting',
+  //         icon: 'Tbaob',
+  //         firstParent: 'event'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     name: 'DMCevent',
     meta: {

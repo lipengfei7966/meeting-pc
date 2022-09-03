@@ -81,9 +81,6 @@ Vue.component('image-upload', ImageUpload)
 // 文件上传
 import BsUpload from '@/components/frame/bs/file/upload'
 Vue.component('bs-upload', BsUpload)
-// 文件上传v2(可定义回调函数)
-import BsUploadV2 from '@/components/frame/bs/file/uploadV2'
-Vue.component('bs-upload-v2', BsUploadV2)
 // 弹窗头部
 import titleContain from '@/components/frame/TitleContain'
 Vue.component('title-contain', titleContain)
@@ -108,7 +105,12 @@ Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
+// 百度地图
+import BaiduMap from 'vue-baidu-map'
 
+Vue.use(BaiduMap, {
+  ak: 'zeIWZvTuFXvei4GPOWNy3jcMa4GC6sIa' //  在此输入你自己的百度地图ak
+})
 // 引入element-tiptap
 // import { ElementTiptapPlugin } from "element-tiptap";
 // import element-tiptap 样式

@@ -14,15 +14,15 @@ export default {
         styleType: 'medium',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/biz/cmsEventInfo/get',
-          save: '/api/biz/cmsEventInfo/save',
-          update: '/api/biz/cmsEventInfo/update'
+          view: '/api/biz/cmsArticle/get',
+          save: '/api/biz/cmsArticle/save',
+          update: '/api/biz/cmsArticle/update'
         },
 
         formData: [
           {
-            label: 'website.eventInfo.edit.eventName',
-            prop: 'eventName',
+            label: 'website.article.edit.articleName',
+            prop: 'articleName',
             element: 'input-validate',
             attrs: {
               clearable: true,
@@ -36,7 +36,22 @@ export default {
             ]
           },
           {
-            label: 'website.eventInfo.edit.customerName',
+            label: 'website.article.edit.articleTitle',
+            prop: 'articleTitle',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              cols: 3,
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: 'website.article.edit.customerName',
             prop: 'customerCode',
             element: 'base-select',
             attrs: {
@@ -55,18 +70,18 @@ export default {
           },
           {
             type: 'datetime',
-            label: 'website.eventInfo.edit.eventDate',
+            label: 'website.article.edit.eventDate',
             props: ['eventBeginTime', 'eventEndTime'],
             default: this.$toolUtil.getLatestWeektime(),
             attrs: {
               cols: 3,
-              format: 'yyyy-MM-dd HH:mm',
+              format: 'yyyy-MM-dd HH:mm:ss',
               'value-format': 'yyyy-MM-dd HH:mm:ss',
               pickerOptions: this.$toolUtil.getDefaultPickerOptions()
             }
           },
           {
-            label: 'website.eventInfo.edit.eventPlace',
+            label: 'website.article.edit.eventPlace',
             prop: 'eventPlace',
             element: 'input-validate',
             attrs: {

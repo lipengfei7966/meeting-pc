@@ -7,6 +7,8 @@
 </template>
 
 <script>
+  // 日期格式化方法
+import { dateFormate } from '@/utils/frame/base/index'
 export default {
   name: 'eventInfoManage',
   data() {
@@ -38,21 +40,21 @@ export default {
           {
             type: 'date',
             label: 'website.eventInfo.query.startDate',
-            align: 'startDate',
+            prop: 'eventBeginTime',
             attrs: {
               clearable: true,
               format: 'yyyy-MM-dd',
-              'value-format': 'yyyyMMdd'
+              'value-format': 'yyyy-MM-dd HH:mm:ss'
             }
           },
           {
             type: 'date',
             label: 'website.eventInfo.query.endDate',
-            align: 'endDate',
+            prop: 'eventEndTime',
             attrs: {
               clearable: true,
               format: 'yyyy-MM-dd',
-              'value-format': 'yyyyMMdd'
+              'value-format': 'yyyy-MM-dd HH:mm:ss'
             }
           }
         ]
@@ -80,14 +82,23 @@ export default {
             }
           },
           {
-            name: 'remove',
+            name: 'view',
+            type: 'dialog',
+            component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow.id
+              return this.$refs.bsTable.currentRow
             }
           },
           {
-            name: 'detailSet',
+            name: 'remove',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.code
+            }
+          },
+          {
+            name: 'design',
             type: 'route',
+            i18n: '微站设计',
             routeInfo: () => {
               return {
                 name: 'roleDetail',
@@ -109,34 +120,52 @@ export default {
           cols: [
             {
               prop: 'eventName',
-              label: 'website.eventInfo.query.eventName'
+              label: 'website.eventInfo.list.eventName'
             },
             {
-              label: 'website.eventInfo.query.customerName',
+              label: 'website.eventInfo.list.customerName',
               prop: 'customerName'
             },
+            // {
+            //   label: 'website.eventInfo.list.startDate',
+            //   prop: 'eventBeginTime'
+            // },
             {
-              prop: 'startDate',
-              width: '200',
-              label: 'website.eventInfo.query.startDate',
+              label: 'website.eventInfo.list.endDate',
+              prop: 'eventEndTime'
+            },
+            // {
+            //   prop: 'eventBeginTime',
+            //   width: '200',
+            //   label: 'website.eventInfo.list.startDate',
+            //   align: 'center',
+            //   format: {
+            //     dict: 'YYYY-MM-DD 24hh:mm',
+            //     func: 'dateFormat'
+            //   }
+            // },
+            {
+              prop: 'eventBeginTime',
+              label: 'website.eventInfo.list.startDate',
+              width: '120',
               align: 'center',
               format: {
-                dict: 'YYYY-MM-DD 24hh:mm',
-                func: 'dateFormat'
+                dict: 'yyyy-MM-dd 24hh:mm:ss',
+                func: 'dateFormate'
               }
             },
+            // {
+            //   prop: 'eventEndTime',
+            //   width: '200',
+            //   label: 'website.eventInfo.list.endDate',
+            //   align: 'center',
+            //   format: {
+            //     dict: 'YYYY-MM-DD 24hh:mm',
+            //     func: 'dateFormat'
+            //   }
+            // },
             {
-              prop: 'endDate',
-              width: '200',
-              label: 'website.eventInfo.query.endDate',
-              align: 'center',
-              format: {
-                dict: 'YYYY-MM-DD 24hh:mm',
-                func: 'dateFormat'
-              }
-            },
-            {
-              label: 'website.eventInfo.query.eventPlace',
+              label: 'website.eventInfo.list.eventPlace',
               prop: 'eventPlace'
             }
           ]

@@ -211,7 +211,7 @@ request.interceptors.response.use(
     // }
   },
   (err) => {
-    debugger
+    // debugger
     // 这里是返回状态码不为200时候的错误处理
     if (err && err.response) {
       switch (err.response.status) {

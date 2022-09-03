@@ -121,14 +121,6 @@ export const formatRoutes = aMenu => {
                 )
               })
               // 0902
-            } else if (component.includes('views/frame/website/')) {
-              require([`@/views/frame/website/${component.split('views/frame/website/')[1]}.vue`], resolve, e => {
-                Notification(
-                  notifyError({
-                    msg: `${component}找不到文件`
-                  })
-                )
-              })
             } else {
               if (process.env.NODE_ENV === 'development') {
                 if (component.includes('views/example/')) {
