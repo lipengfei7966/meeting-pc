@@ -56,6 +56,8 @@ Vue.use(Storage, {
   storage: 'session' // storage name session, local, memory
 })
 
+
+
 // Lazy Table
 import UmyUi from 'umy-ui'
 import 'umy-ui/lib/theme-chalk/index.css'
@@ -87,9 +89,7 @@ Vue.component('title-contain', titleContain)
 // 列设置
 import elTableColumnSet from '@/components/frame/ColumnSet'
 Vue.component('el-table-column-set', elTableColumnSet)
-// 取色器
-import vcolorpicker from 'vcolorpicker'
-Vue.use(vcolorpicker)
+
 // 基础模板组件
 const path = require('path')
 const bsTmp = require.context('./components/frame/bs/template', true, /\.vue$/)
@@ -117,7 +117,7 @@ Vue.use(BaiduMap, {
 // import "element-tiptap/lib/index.css";
 // 使用
 // Vue.use(ElementTiptapPlugin, {
-// lang: "zh",
+  // lang: "zh",
 // });
 
 // 生产环境是否控制台提示
