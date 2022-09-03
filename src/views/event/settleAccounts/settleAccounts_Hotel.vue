@@ -838,1652 +838,1647 @@
 </template>
 
 <script>
-import { guid, getBetweenDate, positiveInteger, positiveFloat,positiveFloatOne, positiveFloatSix, formatDate, formatNum } from '@/utils/common';
-import upload from '@/utils/upload';
-import moment from 'moment';
-import {limitsEffect} from '@/utils/uploadRestrictions';
-import excelExport from '@/utils/exportexcel';
-import '@/assets/js/directive';
+import { guid, getBetweenDate, positiveInteger, positiveFloat, positiveFloatOne, positiveFloatSix, formatDate, formatNum } from '@/utils/common'
+import upload from '@/utils/upload'
+import moment from 'moment'
+import { limitsEffect } from '@/utils/uploadRestrictions'
+import excelExport from '@/utils/exportexcel'
+import '@/assets/js/directive'
 /**
  * @page 订单详情
  */
 export default {
-	data() {
-		return {
-			info: null,
-			fileList: [], //1.酒店住宿发票+小联
-			fileList2: [], //2.酒店餐饮发票+小联
-			fileList3: [], //3.酒店会场发票+小联
-			fileList4: [], //4.其他
-			fileList5: [], //5.供应商发票及账单
-			status_draft: '0029-1', //草稿状态
-			status_tobeconfirmed: '0029-2', //待确认结算单状态
-			status_confirm: '0029-3', //已确认结算单状态
-			status_supplement: '0029-5', //要求补充材料
-			status_reject: '0029-4', //客户驳回结算单
-			settlement_status: '0029-3',
-			errormsg: [], //异常信息, 保存时使用
-			quoted_price_food_option: [
-				{
-					value: 0,
-					label: '酒店内用餐'
-				},
-				{
-					value: 1,
-					label: '酒店外用餐'
-				}
-			],
-			orderIDList: [],
-			roomOut:1,
-			roomSettlementOut:1,
-			roomOutMsg: '',
-			conferenceOut:1,
-			conferenceSettlementOut: 1,
-			conferenceOutMsg: '',
-			foodOut:1,
-			foodSettlementOut: 1,
-			foodOutMsg: '',
-			transportationOut:1,
-			transportationOutMsg: '',
-			carOut:1,
-			carOutMsg: '',
-			otherOut:1,
-			otherOutMsg: '',
-			arrayList: [
-				{ type: 1, fileList: [], name: '酒店住宿发票+小联', remark: '', dissent: '' },
-				{ type: 2, fileList: [], name: '酒店餐饮发票+小联', remark: '', dissent: '' },
-				{ type: 3, fileList: [], name: '酒店会场发票+小联', remark: '', dissent: '' },
-				{ type: 4, fileList: [], name: '其他', remark: '', dissent: '' },
-				{ type: 5, fileList: [], name: '供应商发票及账单', remark: '', dissent: '' },
-			], //结算相关凭证
-			updateIndex: 0, // 修改文件类目下标
-			updateFileIndex: 0, // 修改文件类目列表 文件下标
-			rename: false, //重命名按钮弹框
-			fileName: '', //文件名称
-			suffix: '', //文件后缀
-			downloadUrl:'',//下载地址
-			addSettleShow: false, // 添加结算项目弹窗
-			projectClass: [
-				{
-					value: '0034',
-					label: '客房'
-				}, 
-				{
-					value: '0049',
-					label: '会场'
-				}, 
-				{
-					value: '0050',
-					label: '酒店内餐饮'
-				}, 
-				
-			],
-			costDates: [],
-			roomcostProjects: [],
-			meetingcostProjects: [],
-			costProjefoodcostProjectscts: [],
-			cost_project_load: false,
-			costProjects: [],
-			addSettleRules: {
-				projectClass: [
-					{ 
-						required: true, 
-						message: '请选择项目分类', 
-						trigger: 'change' 
-					}
-				],
-				costDate: [
-					{ 
-						required: true, 
-						message: '请选择费用发生日期', 
-						trigger: 'change' 
-					}
-				],
-				costProject: [
-					{ 
-						required: true, 
-						message: '请选择费用项目', 
-						trigger: 'change' 
-					}
-				]
-			},
-			addSettleInfo: {
-				projectClass: '0034',
-				costDate: '',
-				costProject: ''
-			},
-			needCostDate: true
-		};
-	},
-	computed: {
-		//控制el-button
-		issubmit() {
-			return this.$route.params.issubmit == 1;
-		},
-		//控制el-input
-		readonly() {
-			return this.$route.params.issubmit == 0;
-		},
-		//已确认状态判断
-		//已确认结算单状态只能操作,供应商发票及账单
-		//反之可以操作酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他
-		isconfirm() {
-			return this.info.settlement_status == this.status_confirm;
-		},
-		//要求补充材料状态判断
-		//可以操作酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他
-		issupplement() {
-			return this.info.settlement_status == this.status_supplement;
-		},
+  data() {
+    return {
+      info: null,
+      fileList: [], //1.酒店住宿发票+小联
+      fileList2: [], //2.酒店餐饮发票+小联
+      fileList3: [], //3.酒店会场发票+小联
+      fileList4: [], //4.其他
+      fileList5: [], //5.供应商发票及账单
+      status_draft: '0029-1', //草稿状态
+      status_tobeconfirmed: '0029-2', //待确认结算单状态
+      status_confirm: '0029-3', //已确认结算单状态
+      status_supplement: '0029-5', //要求补充材料
+      status_reject: '0029-4', //客户驳回结算单
+      settlement_status: '0029-3',
+      errormsg: [], //异常信息, 保存时使用
+      quoted_price_food_option: [
+        {
+          value: 0,
+          label: '酒店内用餐'
+        },
+        {
+          value: 1,
+          label: '酒店外用餐'
+        }
+      ],
+      orderIDList: [],
+      roomOut: 1,
+      roomSettlementOut: 1,
+      roomOutMsg: '',
+      conferenceOut: 1,
+      conferenceSettlementOut: 1,
+      conferenceOutMsg: '',
+      foodOut: 1,
+      foodSettlementOut: 1,
+      foodOutMsg: '',
+      transportationOut: 1,
+      transportationOutMsg: '',
+      carOut: 1,
+      carOutMsg: '',
+      otherOut: 1,
+      otherOutMsg: '',
+      arrayList: [
+        { type: 1, fileList: [], name: '酒店住宿发票+小联', remark: '', dissent: '' },
+        { type: 2, fileList: [], name: '酒店餐饮发票+小联', remark: '', dissent: '' },
+        { type: 3, fileList: [], name: '酒店会场发票+小联', remark: '', dissent: '' },
+        { type: 4, fileList: [], name: '其他', remark: '', dissent: '' },
+        { type: 5, fileList: [], name: '供应商发票及账单', remark: '', dissent: '' }
+      ], //结算相关凭证
+      updateIndex: 0, // 修改文件类目下标
+      updateFileIndex: 0, // 修改文件类目列表 文件下标
+      rename: false, //重命名按钮弹框
+      fileName: '', //文件名称
+      suffix: '', //文件后缀
+      downloadUrl: '', //下载地址
+      addSettleShow: false, // 添加结算项目弹窗
+      projectClass: [
+        {
+          value: '0034',
+          label: '客房'
+        },
+        {
+          value: '0049',
+          label: '会场'
+        },
+        {
+          value: '0050',
+          label: '酒店内餐饮'
+        }
+      ],
+      costDates: [],
+      roomcostProjects: [],
+      meetingcostProjects: [],
+      costProjefoodcostProjectscts: [],
+      cost_project_load: false,
+      costProjects: [],
+      addSettleRules: {
+        projectClass: [
+          {
+            required: true,
+            message: '请选择项目分类',
+            trigger: 'change'
+          }
+        ],
+        costDate: [
+          {
+            required: true,
+            message: '请选择费用发生日期',
+            trigger: 'change'
+          }
+        ],
+        costProject: [
+          {
+            required: true,
+            message: '请选择费用项目',
+            trigger: 'change'
+          }
+        ]
+      },
+      addSettleInfo: {
+        projectClass: '0034',
+        costDate: '',
+        costProject: ''
+      },
+      needCostDate: true
+    }
+  },
+  computed: {
+    //控制el-button
+    issubmit() {
+      return this.$route.params.issubmit == 1
+    },
+    //控制el-input
+    readonly() {
+      return this.$route.params.issubmit == 0
+    },
+    //已确认状态判断
+    //已确认结算单状态只能操作,供应商发票及账单
+    //反之可以操作酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他
+    isconfirm() {
+      return this.info.settlement_status == this.status_confirm
+    },
+    //要求补充材料状态判断
+    //可以操作酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他
+    issupplement() {
+      return this.info.settlement_status == this.status_supplement
+    },
 
-		formateDate: () => {
-			return function(value) {
-				return formatDate('YYYY年mm月dd日', new Date(value));
-			};
-		},
-		//客房需求
-		roomVisible: function() {
-			return this.info.settlement_sheet_room && this.info.settlement_sheet_room.length > 0;
-		},
-		//会场需求
-		conferenceVisible: function() {
-			return this.info.settlement_sheet_conference && this.info.settlement_sheet_conference.length > 0;
-		},
-		//餐饮需求
-		foodVisible: function() {
-			return this.info.settlement_sheet_food && this.info.settlement_sheet_food.length > 0;
-		},
-		//大交通需求
-		transportationVisible: function() {
-			return this.info.settlement_sheet_transportation && this.info.settlement_sheet_transportation.length > 0;
-		},
-		//地面交通
-		carVisible: function() {
-			return this.info.settlement_sheet_car && this.info.settlement_sheet_car.length > 0;
-		},
-		// 房间杂费
-		roomincidental() {
-			return this.info.settlement_sheet_sundries.filter(i => i.type == 1);
-		},
-		// 会议杂费
-		meetingcidental() {
-			return this.info.settlement_sheet_sundries.filter(i => i.type == 2);
-		},
-		// 用餐杂费
-		foodincidental() {
-			return this.info.settlement_sheet_sundries.filter(i => i.type == 3);
-		},
-		// 大交通杂费
-		intercitytrafficincidental() {
-			return this.info.settlement_sheet_sundries.filter(i => i.type == 4);
-		},
-		// 地面交通杂费
-		carincidental() {
-			return this.info.settlement_sheet_sundries.filter(i => i.type == 5);
-		},
-		// 其他杂费
-		otherincidental() {
-			return this.info.settlement_sheet_sundries.filter(i => i.type == 6);
-		},
-		// 客房价格计算
-		roomPrice() {
-			let price = [
-				{
-					all: 0, // 原总价格
-					subtotal: {} // 各项小计
-				},
-				{
-					all: 0, // 结算价格
-					subtotal: {} // 各项小计
-				},
-				0 // 杂项小计
-			];
-			let subtotal_1 = price[0].subtotal;
-			let subtotal_2 = price[1].subtotal;
-			this.info.settlement_sheet_room.forEach((item, index) => {
-				if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-				if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-				item.room_list.forEach(itemc => {
-					subtotal_1[`sub_${index}`] += positiveFloatSix(itemc.totalprice);
-					price[0].all += positiveFloatSix(itemc.totalprice);
-					
-					let totalRoom = 0;
-					if(this.info.is_Inside_outside == 0) {
-						totalRoom = itemc.settlement_count;
-					}else {
-						totalRoom = positiveFloat(itemc.settlement_inside_roomcount) + positiveFloat(itemc.settlement_outside_roomcount);
-					}
+    formateDate: () => {
+      return function(value) {
+        return formatDate('YYYY年mm月dd日', new Date(value))
+      }
+    },
+    //客房需求
+    roomVisible: function() {
+      return this.info.settlement_sheet_room && this.info.settlement_sheet_room.length > 0
+    },
+    //会场需求
+    conferenceVisible: function() {
+      return this.info.settlement_sheet_conference && this.info.settlement_sheet_conference.length > 0
+    },
+    //餐饮需求
+    foodVisible: function() {
+      return this.info.settlement_sheet_food && this.info.settlement_sheet_food.length > 0
+    },
+    //大交通需求
+    transportationVisible: function() {
+      return this.info.settlement_sheet_transportation && this.info.settlement_sheet_transportation.length > 0
+    },
+    //地面交通
+    carVisible: function() {
+      return this.info.settlement_sheet_car && this.info.settlement_sheet_car.length > 0
+    },
+    // 房间杂费
+    roomincidental() {
+      return this.info.settlement_sheet_sundries.filter(i => i.type == 1)
+    },
+    // 会议杂费
+    meetingcidental() {
+      return this.info.settlement_sheet_sundries.filter(i => i.type == 2)
+    },
+    // 用餐杂费
+    foodincidental() {
+      return this.info.settlement_sheet_sundries.filter(i => i.type == 3)
+    },
+    // 大交通杂费
+    intercitytrafficincidental() {
+      return this.info.settlement_sheet_sundries.filter(i => i.type == 4)
+    },
+    // 地面交通杂费
+    carincidental() {
+      return this.info.settlement_sheet_sundries.filter(i => i.type == 5)
+    },
+    // 其他杂费
+    otherincidental() {
+      return this.info.settlement_sheet_sundries.filter(i => i.type == 6)
+    },
+    // 客房价格计算
+    roomPrice() {
+      let price = [
+        {
+          all: 0, // 原总价格
+          subtotal: {} // 各项小计
+        },
+        {
+          all: 0, // 结算价格
+          subtotal: {} // 各项小计
+        },
+        0 // 杂项小计
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      this.info.settlement_sheet_room.forEach((item, index) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.room_list.forEach(itemc => {
+          subtotal_1[`sub_${index}`] += positiveFloatSix(itemc.totalprice)
+          price[0].all += positiveFloatSix(itemc.totalprice)
 
-					subtotal_2[`sub_${index}`] += positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(totalRoom);
-					price[1].all += positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(totalRoom);
-				});
-			});
-			this.roomincidental.forEach(item => {
-				price[1].all += +positiveFloatSix(item.price) * positiveFloat(item.count);
-				price[2] += positiveFloatSix(item.price) * positiveFloat(item.count);
-			});
-			return price;
-		},
-		adddifferenceerrormsg: () => {
-			return function(type, date, rowIndex) {
-				let message = '';
-				if (type == 1) message = this.formateDate(date) + '客房,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明';
-				else if (type == 2) message = this.formateDate(date) + '会场,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明';
-				else if (type == 3) message = this.formateDate(date) + '餐饮,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明';
-				else if (type == 4) message = this.formateDate(date) + '大交通,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明';
-				else if (type == 5) message = this.formateDate(date) + '地面交通,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明';
-				else if (type == 6) message = '其他服务,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明';
-				this.errormsg.push(message);
-			};
-		},
-		addnewitemerrormsg: () => {
-			return function(type, date, rowIndex) {
-				let message = '';
-				if (type == 1) message = this.formateDate(date) + '新增客房,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称';
-				else if (type == 2) message = this.formateDate(date) + '新增会场,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称';
-				else if (type == 3) message = this.formateDate(date) + '新增餐饮,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称';
-				else if (type == 4) message = this.formateDate(date) + '新增大交通,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称';
-				else if (type == 5) message = this.formateDate(date) + '新增地面交通,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称';
-				this.errormsg.push(message);
-			};
-		},
-		addnewitemhasnocommments: () => {
-			return function(type, date, rowIndex) {
-				let message = '';
-				if (type == 1) message = this.formateDate(date) + '新增客房,第' + rowIndex + '行,结算说明为必填项,请填写结算说明';
-				else if (type == 2) message = this.formateDate(date) + '新增会场,第' + rowIndex + '行,结算说明为必填项,请填写结算说明';
-				else if (type == 3) message = this.formateDate(date) + '新增餐饮,第' + rowIndex + '行,结算说明为必填项,请填写结算说明';
-				else if (type == 4) message = this.formateDate(date) + '新增大交通,第' + rowIndex + '行,结算说明为必填项,请填写结算说明';
-				else if (type == 5) message = this.formateDate(date) + '新增地面交通,第' + rowIndex + '行,结算说明为必填项,请填写结算说明';
-				this.errormsg.push(message);
-			};
-		},
-		//客房差异标记
-		roomDifference: () => {
-			return function(item) {
-				return positiveFloatSix(item.unitprice) !== positiveFloatSix(item.settlement_unitprice) 
-							|| positiveFloat(item.provide_count) !== positiveFloat(item.settlement_count)
-							|| (!item.quoted_price_room_id && item.settlement_comments == '');
-			};
-		},
-		//保存时验证客房数据
-		checkRoomDifference: function() {
-			let difference = false;
-			let newitem = false;
-			if (this.info.settlement_sheet_room && this.info.settlement_sheet_room.length > 0) {
-				this.info.settlement_sheet_room.forEach(item => {
-					if (item.room_list && item.room_list.length > 0) {
-						item.room_list.forEach((room, row_index) => {
-							difference = this.roomDifference(room);
-							if (difference && room.quoted_price_room_id != null && (room.settlement_comments == null || room.settlement_comments == '')) this.adddifferenceerrormsg(1, item.date, row_index + 1);
-							if (difference && room.quoted_price_room_id == null && (room.settlement_comments == null || room.settlement_comments == '')) this.addnewitemhasnocommments(1, item.date, row_index + 1);
-						});
-						let newitem = item.room_list.filter(w => w.quoted_price_room_id == null && w.settlement_itemname == '');
-						if (newitem.length > 0) {
-							newitem.forEach((room, row_index) => {
-								this.addnewitemerrormsg(1, item.date, row_index + 1);
-							});
-						}
-					}
-				});
-			}
-		},
-		// 会议价格计算
-		conferencePrice() {
-			let price = [
-				{
-					all: 0, // 原总价格
-					subtotal: {} // 各项小计
-				},
-				{
-					all: 0, // 结算价格
-					subtotal: {} // 各项小计
-				},
-				0 // 杂项小计
-			];
-			let subtotal_1 = price[0].subtotal;
-			let subtotal_2 = price[1].subtotal;
-			this.info.settlement_sheet_conference.forEach((item, index) => {
-				if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-				if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-				item.conference_list.forEach(itemc => {
-					let itemcp = positiveFloatSix(itemc.price) * positiveFloat(itemc.count);
-					let itemcpset = positiveFloatSix(itemc.settlement_price) * positiveFloat(itemc.settlement_count) ;
-					// let itemcpset = positiveFloatSix(itemc.settlement_price) * positiveFloat(itemc.settlement_count);
-					subtotal_1[`sub_${index}`] += itemcp;
-					price[0].all += itemcp;
-					subtotal_2[`sub_${index}`] += itemcpset;
-					price[1].all += itemcpset;
-				});
-			});
-			this.meetingcidental.forEach(item => {
-				
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				price[1].all += itemcp;
-				price[2] += itemcp;
-			});
-			return price;
-		},
-		//会场差异标记
-		conferenceDifference: () => {
-			return function(item) {
-				return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_price) 
-								|| positiveFloat(item.count) !== positiveFloat(item.settlement_count)
-								|| (!item.quoted_price_conference_id && item.settlement_comments == '');
-			};
-		},
-		//保存时验证会场数据
-		checkConferenceDifference: function() {
-			let difference = false;
-			if (this.info.settlement_sheet_conference && this.info.settlement_sheet_conference.length > 0) {
-				this.info.settlement_sheet_conference.forEach(item => {
-					if (item.conference_list && item.conference_list.length > 0) {
-						item.conference_list.forEach((conference, row_index) => {
-							difference = this.conferenceDifference(conference);
-							if (difference && conference.quoted_price_conference_id != null && (conference.settlement_comments == null || conference.settlement_comments == '')){
-								this.adddifferenceerrormsg(2, item.date, row_index + 1);
-							}
-							if (difference && conference.quoted_price_conference_id == null && (conference.settlement_comments == null || conference.settlement_comments == '')){
-								this.addnewitemhasnocommments(2, item.date, row_index + 1);
-							}
-						});
-						let newitem = item.conference_list.filter(w => w.quoted_price_conference_id == null && w.settlement_itemname == '');
-						if (newitem.length > 0) {
-							newitem.forEach((conference, row_index) => {
-								this.addnewitemerrormsg(2, item.date, row_index + 1);
-							});
-						}
-					}
-				});
-			}
-		},
-		// 餐饮价格计算
-		foodPrice() {
-			let price = [
-				{
-					all: 0, // 原总价格
-					subtotal: {} // 各项小计
-				},
-				{
-					all: 0, // 结算价格
-					subtotal: {} // 各项小计
-				},
-				0 // 杂项小计
-			];
-			let subtotal_1 = price[0].subtotal;
-			let subtotal_2 = price[1].subtotal;
-			this.info.settlement_sheet_food.forEach((item, index) => {
-				if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-				if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-				item.food_list.forEach(itemc => {
-					let itemcp = positiveFloatSix(itemc.price) * positiveFloat(itemc.personcount);
-					let itemcpset = positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count);
-					subtotal_1[`sub_${index}`] += itemcp;
-					price[0].all += itemcp;
-					subtotal_2[`sub_${index}`] += itemcpset;
-					price[1].all += itemcpset;
-				});
-			});
-			this.foodincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				price[1].all += itemcp;
-				price[2] += itemcp;
-			});
-			return price;
-		},
-		//餐饮差异标记
-		foodDifference() {
-			return function(item) {
-				return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) 
-								|| positiveFloat(item.personcount) !== positiveFloat(item.settlement_count)
-								|| (!item.quoted_price_food_id && item.settlement_comments == '')
+          let totalRoom = 0
+          if (this.info.is_Inside_outside == 0) {
+            totalRoom = itemc.settlement_count
+          } else {
+            totalRoom = positiveFloat(itemc.settlement_inside_roomcount) + positiveFloat(itemc.settlement_outside_roomcount)
+          }
 
-			};
-		},
-		//保存时验证餐饮数据
-		checkFoodDifference: function() {
-			let difference = false;
-			if (this.info.settlement_sheet_food && this.info.settlement_sheet_food.length > 0) {
-				this.info.settlement_sheet_food.forEach(item => {
-					if (item.food_list && item.food_list.length > 0) {
-						item.food_list.forEach((food, row_index) => {
-							difference = this.foodDifference(food);
-							if (difference && food.quoted_price_food_id != null && (food.settlement_comments == null || food.settlement_comments == '')) this.adddifferenceerrormsg(3, item.date, row_index + 1);
-							if (difference && food.quoted_price_food_id == null && (food.settlement_comments == null || food.settlement_comments == '')) this.addnewitemhasnocommments(3, item.date, row_index + 1);
-						});
-						let newitem = item.food_list.filter(w => w.quoted_price_food_id == null && w.settlement_itemname == '');
-						if (newitem.length > 0) {
-							newitem.forEach((food, row_index) => {
-								this.addnewitemerrormsg(3, item.date, row_index + 1);
-							});
-						}
-					}
-				});
-			}
-		},
-		// 大交通价格计算
-		intercitytrafficPrice() {
-			let price = [
-				{
-					all: 0, // 原总价格
-					subtotal: {} // 各项小计
-				},
-				{
-					all: 0, // 结算价格
-					subtotal: {} // 各项小计
-				},
-				0 // 杂项小计
-			];
-			let subtotal_1 = price[0].subtotal;
-			let subtotal_2 = price[1].subtotal;
-			this.info.settlement_sheet_transportation.forEach((item, index) => {
-				if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-				if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-				item.transportation_list.forEach(itemc => {
-					let itemcp = positiveFloatSix(itemc.unitprice) * positiveFloat(itemc.passengercount);
-					let itemcpset = positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count);
-					subtotal_1[`sub_${index}`] += itemcp;
-					price[0].all += itemcp;
-					subtotal_2[`sub_${index}`] += itemcpset;
-					price[1].all += itemcpset;
-				});
-			});
-			this.intercitytrafficincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				price[1].all += itemcp;
-				price[2] += itemcp;
-			});
-			return price;
-		},
-		//大交通差异标记
-		transportationDifference() {
-			return function(item) {
-				return (
-					positiveFloatSix(item.unitprice) !== positiveFloatSix(item.settlement_unitprice) 
-					|| positiveFloat(item.passengercount) !== positiveFloat(item.settlement_count)
-					|| (!item.quoted_price_transportation_id && item.settlement_comments == '')
+          subtotal_2[`sub_${index}`] += positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(totalRoom)
+          price[1].all += positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(totalRoom)
+        })
+      })
+      this.roomincidental.forEach(item => {
+        price[1].all += +positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[2] += positiveFloatSix(item.price) * positiveFloat(item.count)
+      })
+      return price
+    },
+    adddifferenceerrormsg: () => {
+      return function(type, date, rowIndex) {
+        let message = ''
+        if (type == 1) message = this.formateDate(date) + '客房,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 2) message = this.formateDate(date) + '会场,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 3) message = this.formateDate(date) + '餐饮,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 4) message = this.formateDate(date) + '大交通,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 5) message = this.formateDate(date) + '地面交通,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 6) message = '其他服务,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        this.errormsg.push(message)
+      }
+    },
+    addnewitemerrormsg: () => {
+      return function(type, date, rowIndex) {
+        let message = ''
+        if (type == 1) message = this.formateDate(date) + '新增客房,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 2) message = this.formateDate(date) + '新增会场,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 3) message = this.formateDate(date) + '新增餐饮,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 4) message = this.formateDate(date) + '新增大交通,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 5) message = this.formateDate(date) + '新增地面交通,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        this.errormsg.push(message)
+      }
+    },
+    addnewitemhasnocommments: () => {
+      return function(type, date, rowIndex) {
+        let message = ''
+        if (type == 1) message = this.formateDate(date) + '新增客房,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 2) message = this.formateDate(date) + '新增会场,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 3) message = this.formateDate(date) + '新增餐饮,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 4) message = this.formateDate(date) + '新增大交通,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 5) message = this.formateDate(date) + '新增地面交通,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        this.errormsg.push(message)
+      }
+    },
+    //客房差异标记
+    roomDifference: () => {
+      return function(item) {
+        return positiveFloatSix(item.unitprice) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.provide_count) !== positiveFloat(item.settlement_count) || (!item.quoted_price_room_id && item.settlement_comments == '')
+      }
+    },
+    //保存时验证客房数据
+    checkRoomDifference: function() {
+      let difference = false
+      let newitem = false
+      if (this.info.settlement_sheet_room && this.info.settlement_sheet_room.length > 0) {
+        this.info.settlement_sheet_room.forEach(item => {
+          if (item.room_list && item.room_list.length > 0) {
+            item.room_list.forEach((room, row_index) => {
+              difference = this.roomDifference(room)
+              if (difference && room.quoted_price_room_id != null && (room.settlement_comments == null || room.settlement_comments == '')) this.adddifferenceerrormsg(1, item.date, row_index + 1)
+              if (difference && room.quoted_price_room_id == null && (room.settlement_comments == null || room.settlement_comments == '')) this.addnewitemhasnocommments(1, item.date, row_index + 1)
+            })
+            let newitem = item.room_list.filter(w => w.quoted_price_room_id == null && w.settlement_itemname == '')
+            if (newitem.length > 0) {
+              newitem.forEach((room, row_index) => {
+                this.addnewitemerrormsg(1, item.date, row_index + 1)
+              })
+            }
+          }
+        })
+      }
+    },
+    // 会议价格计算
+    conferencePrice() {
+      let price = [
+        {
+          all: 0, // 原总价格
+          subtotal: {} // 各项小计
+        },
+        {
+          all: 0, // 结算价格
+          subtotal: {} // 各项小计
+        },
+        0 // 杂项小计
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      this.info.settlement_sheet_conference.forEach((item, index) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.conference_list.forEach(itemc => {
+          let itemcp = positiveFloatSix(itemc.price) * positiveFloat(itemc.count)
+          let itemcpset = positiveFloatSix(itemc.settlement_price) * positiveFloat(itemc.settlement_count)
+          // let itemcpset = positiveFloatSix(itemc.settlement_price) * positiveFloat(itemc.settlement_count);
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+        })
+      })
+      this.meetingcidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
+      })
+      return price
+    },
+    //会场差异标记
+    conferenceDifference: () => {
+      return function(item) {
+        return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_price) || positiveFloat(item.count) !== positiveFloat(item.settlement_count) || (!item.quoted_price_conference_id && item.settlement_comments == '')
+      }
+    },
+    //保存时验证会场数据
+    checkConferenceDifference: function() {
+      let difference = false
+      if (this.info.settlement_sheet_conference && this.info.settlement_sheet_conference.length > 0) {
+        this.info.settlement_sheet_conference.forEach(item => {
+          if (item.conference_list && item.conference_list.length > 0) {
+            item.conference_list.forEach((conference, row_index) => {
+              difference = this.conferenceDifference(conference)
+              if (difference && conference.quoted_price_conference_id != null && (conference.settlement_comments == null || conference.settlement_comments == '')) {
+                this.adddifferenceerrormsg(2, item.date, row_index + 1)
+              }
+              if (difference && conference.quoted_price_conference_id == null && (conference.settlement_comments == null || conference.settlement_comments == '')) {
+                this.addnewitemhasnocommments(2, item.date, row_index + 1)
+              }
+            })
+            let newitem = item.conference_list.filter(w => w.quoted_price_conference_id == null && w.settlement_itemname == '')
+            if (newitem.length > 0) {
+              newitem.forEach((conference, row_index) => {
+                this.addnewitemerrormsg(2, item.date, row_index + 1)
+              })
+            }
+          }
+        })
+      }
+    },
+    // 餐饮价格计算
+    foodPrice() {
+      let price = [
+        {
+          all: 0, // 原总价格
+          subtotal: {} // 各项小计
+        },
+        {
+          all: 0, // 结算价格
+          subtotal: {} // 各项小计
+        },
+        0 // 杂项小计
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      this.info.settlement_sheet_food.forEach((item, index) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.food_list.forEach(itemc => {
+          let itemcp = positiveFloatSix(itemc.price) * positiveFloat(itemc.personcount)
+          let itemcpset = positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+        })
+      })
+      this.foodincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
+      })
+      return price
+    },
+    //餐饮差异标记
+    foodDifference() {
+      return function(item) {
+        return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.personcount) !== positiveFloat(item.settlement_count) || (!item.quoted_price_food_id && item.settlement_comments == '')
+      }
+    },
+    //保存时验证餐饮数据
+    checkFoodDifference: function() {
+      let difference = false
+      if (this.info.settlement_sheet_food && this.info.settlement_sheet_food.length > 0) {
+        this.info.settlement_sheet_food.forEach(item => {
+          if (item.food_list && item.food_list.length > 0) {
+            item.food_list.forEach((food, row_index) => {
+              difference = this.foodDifference(food)
+              if (difference && food.quoted_price_food_id != null && (food.settlement_comments == null || food.settlement_comments == '')) this.adddifferenceerrormsg(3, item.date, row_index + 1)
+              if (difference && food.quoted_price_food_id == null && (food.settlement_comments == null || food.settlement_comments == '')) this.addnewitemhasnocommments(3, item.date, row_index + 1)
+            })
+            let newitem = item.food_list.filter(w => w.quoted_price_food_id == null && w.settlement_itemname == '')
+            if (newitem.length > 0) {
+              newitem.forEach((food, row_index) => {
+                this.addnewitemerrormsg(3, item.date, row_index + 1)
+              })
+            }
+          }
+        })
+      }
+    },
+    // 大交通价格计算
+    intercitytrafficPrice() {
+      let price = [
+        {
+          all: 0, // 原总价格
+          subtotal: {} // 各项小计
+        },
+        {
+          all: 0, // 结算价格
+          subtotal: {} // 各项小计
+        },
+        0 // 杂项小计
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      this.info.settlement_sheet_transportation.forEach((item, index) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.transportation_list.forEach(itemc => {
+          let itemcp = positiveFloatSix(itemc.unitprice) * positiveFloat(itemc.passengercount)
+          let itemcpset = positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+        })
+      })
+      this.intercitytrafficincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
+      })
+      return price
+    },
+    //大交通差异标记
+    transportationDifference() {
+      return function(item) {
+        return positiveFloatSix(item.unitprice) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.passengercount) !== positiveFloat(item.settlement_count) || (!item.quoted_price_transportation_id && item.settlement_comments == '')
+      }
+    },
+    //保存时验证大交通数据
+    checkTransportationDifference: function() {
+      let difference = false
+      if (this.info.settlement_sheet_transportation && this.info.settlement_sheet_transportation.length > 0) {
+        this.info.settlement_sheet_transportation.forEach(item => {
+          if (item.transportation_list && item.transportation_list.length > 0) {
+            item.transportation_list.forEach((transportation, row_index) => {
+              difference = this.transportationDifference(transportation)
+              if (difference && transportation.quoted_price_transportation_id != null && (transportation.settlement_comments == null || transportation.settlement_comments == '')) {
+                this.adddifferenceerrormsg(4, item.date, row_index + 1)
+              }
+              if (difference && transportation.quoted_price_transportation_id == null && (transportation.settlement_comments == null || transportation.settlement_comments == '')) {
+                this.addnewitemhasnocommments(4, item.date, row_index + 1)
+              }
+            })
+            let newitem = item.transportation_list.filter(w => w.quoted_price_transportation_id == null && w.settlement_itemname == '')
+            if (newitem.length > 0) {
+              newitem.forEach((transportation, row_index) => {
+                this.addnewitemerrormsg(5, item.date, row_index + 1)
+              })
+            }
+          }
+        })
+      }
+    },
+    // 市内交通价格计算
+    carPrice() {
+      let price = [
+        {
+          all: 0, // 原总价格
+          subtotal: {} // 各项小计
+        },
+        {
+          all: 0, // 结算价格
+          subtotal: {} // 各项小计
+        },
+        0 // 杂项小计
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      this.info.settlement_sheet_car.forEach((item, index) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.car_list.forEach(itemc => {
+          let itemcp = positiveFloatSix(itemc.price) * positiveFloat(itemc.carcount)
+          let itemcpset = positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+        })
+      })
+      this.carincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
+      })
+      return price
+    },
+    //市内交通差异标记
+    carDifference() {
+      return function(item) {
+        return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.carcount) !== positiveFloat(item.settlement_count) || (!item.quoted_price_car_id && item.settlement_comments == '')
+      }
+    },
+    //保存时验证市内交通数据
+    checkCarDifference: function() {
+      let difference = false
+      if (this.info.settlement_sheet_car && this.info.settlement_sheet_car.length > 0) {
+        this.info.settlement_sheet_car.forEach(item => {
+          if (item.car_list && item.car_list.length > 0) {
+            item.car_list.forEach((car, row_index) => {
+              difference = this.carDifference(car)
+              if (difference && car.quoted_price_car_id != null && (car.settlement_comments == null || car.settlement_comments == '')) this.adddifferenceerrormsg(5, item.date, row_index + 1)
+              if (difference && car.quoted_price_car_id == null && (car.settlement_comments == null || car.settlement_comments == '')) this.addnewitemhasnocommments(5, item.date, row_index + 1)
+            })
+            let newitem = item.car_list.filter(w => w.quoted_price_car_id == null && w.settlement_itemname == '')
+            if (newitem.length > 0) {
+              newitem.forEach((car, row_index) => {
+                this.addnewitemerrormsg(4, item.date, row_index + 1)
+              })
+            }
+          }
+        })
+      }
+    },
+    // 其他价格计算
+    otherPrice() {
+      let price = [
+        0, //原总价格
+        0, //结算价格
+        0 // 杂项小计
+      ]
+      this.info.settlement_sheet_other.forEach((item, index) => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.offerservicedaycount) * positiveFloat(item.offerparticipatecount)
+        let itemcpset = positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count)
+        price[0] = price[0] + itemcp
+        price[1] = price[1] + itemcpset
+      })
+      this.otherincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1] = price[1] + itemcp
+        price[2] = price[2] + itemcp
+      })
+      return price
+    },
+    //其他差异标记
+    otherDifference() {
+      return function(item) {
+        return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.offerservicedaycount) * positiveFloat(item.offerparticipatecount) !== positiveFloat(item.settlement_count) || (!item.quoted_price_other_id && item.settlement_comments == '')
+      }
+    },
+    //保存时验证其他服务数据
+    checkOtherDifference: function() {
+      let difference = false
+      if (this.info.settlement_sheet_other && this.info.settlement_sheet_other.length > 0) {
+        this.info.settlement_sheet_other.forEach((item, row_index) => {
+          difference = this.otherDifference(item)
+          if (difference && (item.settlement_comments == null || item.settlement_comments == '')) this.adddifferenceerrormsg(6, null, row_index + 1)
+        })
+      }
+    },
+    // 服务费
+    servicePrice() {
+      let price = [
+        0, //原总价格
+        0 //结算价格
+      ]
+      price[0] = positiveFloatSix(this.info.advance_amount) * positiveFloatSix(this.info.advance_proportion / 100) + positiveFloatSix(this.info.travelagency_payment_money) * positiveFloatSix(this.info.travelagency_payment_proportion / 100) + positiveFloatSix(this.info.off_hotel_expenses) * positiveFloatSix(this.info.off_hotel_proportion / 100)
+      price[1] = positiveFloatSix((positiveFloatSix(this.info.settlement_advance_amount) * this.info.settlement_advance_proportion) / 100) + this.InTheHotelMoney * positiveFloatSix(this.info.settlement_travelagency_payment_proportion / 100) + this.OutsideTheHotelMoney * positiveFloatSix(this.info.settlement_off_hotel_proportion / 100)
 
-				);
-			};
-		},
-		//保存时验证大交通数据
-		checkTransportationDifference: function() {
-			let difference = false;
-			if (this.info.settlement_sheet_transportation && this.info.settlement_sheet_transportation.length > 0) {
-				this.info.settlement_sheet_transportation.forEach(item => {
-					if (item.transportation_list && item.transportation_list.length > 0) {
-						item.transportation_list.forEach((transportation, row_index) => {
-							difference = this.transportationDifference(transportation);
-							if (difference && transportation.quoted_price_transportation_id != null && (transportation.settlement_comments == null || transportation.settlement_comments == '')){
-								this.adddifferenceerrormsg(4, item.date, row_index + 1);
-							}
-							if (difference && transportation.quoted_price_transportation_id == null && (transportation.settlement_comments == null || transportation.settlement_comments == '')){
-								this.addnewitemhasnocommments(4, item.date, row_index + 1);
-							}
-						});
-						let newitem = item.transportation_list.filter(w => w.quoted_price_transportation_id == null && w.settlement_itemname == '');
-						if (newitem.length > 0) {
-							newitem.forEach((transportation, row_index) => {
-								this.addnewitemerrormsg(5, item.date, row_index + 1);
-							});
-						}
-					}
-				});
-			}
-		},
-		// 市内交通价格计算
-		carPrice() {
-			let price = [
-				{
-					all: 0, // 原总价格
-					subtotal: {} // 各项小计
-				},
-				{
-					all: 0, // 结算价格
-					subtotal: {} // 各项小计
-				},
-				0 // 杂项小计
-			];
-			let subtotal_1 = price[0].subtotal;
-			let subtotal_2 = price[1].subtotal;
-			this.info.settlement_sheet_car.forEach((item, index) => {
-				if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-				if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-				item.car_list.forEach(itemc => {
-					let itemcp = positiveFloatSix(itemc.price) * positiveFloat(itemc.carcount);
-					let itemcpset = positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count);
-					subtotal_1[`sub_${index}`] += itemcp;
-					price[0].all += itemcp;
-					subtotal_2[`sub_${index}`] += itemcpset;
-					price[1].all += itemcpset;
-				});
-			});
-			this.carincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				price[1].all += itemcp;
-				price[2] += itemcp;
-			});
-			return price;
-		},
-		//市内交通差异标记
-		carDifference() {
-			return function(item) {
-				return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) 
-								|| positiveFloat(item.carcount) !== positiveFloat(item.settlement_count)
-								|| (!item.quoted_price_car_id && item.settlement_comments == '')
+      this.info.feizhicai_service = price[1]
+      this.info.taxation = 0
+      return price
+    },
+    // 总价格除vat 服务费总价格
+    price_no() {
+      let price = [
+        0, //原总价格
+        0 //结算价格
+      ]
+      price[0] = this.roomPrice[0].all * this.roomOut + this.conferencePrice[0].all * this.conferenceOut + this.foodPrice[0].all * this.foodOut
+      price[1] = this.roomPrice[1].all * this.roomSettlementOut + this.conferencePrice[1].all * this.conferenceSettlementOut + this.foodPrice[1].all * this.foodSettlementOut
+      this.info.settlement_total_amount = price[1] || 0
+      return price
+    },
+    // 总价格
+    price() {
+      let price = [
+        0, //原总价格
+        0 //结算价格
+      ]
+      price[0] =
+        // this.roomPrice[0].all +
+        // this.conferencePrice[0].all +
+        // this.foodPrice[0].all +
+        // this.intercitytrafficPrice[0].all +
+        // this.carPrice[0].all +
+        // this.otherPrice[0] +
+        this.price_no[0] + this.servicePrice[0] + positiveFloatSix(((this.price_no[0] + this.servicePrice[0]) * positiveFloat(this.info.taxrate)) / 100)
 
-			};
-		},
-		//保存时验证市内交通数据
-		checkCarDifference: function() {
-			let difference = false;
-			if (this.info.settlement_sheet_car && this.info.settlement_sheet_car.length > 0) {
-				this.info.settlement_sheet_car.forEach(item => {
-					if (item.car_list && item.car_list.length > 0) {
-						item.car_list.forEach((car, row_index) => {
-							difference = this.carDifference(car);
-							if (difference && car.quoted_price_car_id != null && (car.settlement_comments == null || car.settlement_comments == '')) this.adddifferenceerrormsg(5, item.date, row_index + 1);
-							if (difference && car.quoted_price_car_id == null && (car.settlement_comments == null || car.settlement_comments == '')) this.addnewitemhasnocommments(5, item.date, row_index + 1);
-						});
-						let newitem = item.car_list.filter(w => w.quoted_price_car_id == null && w.settlement_itemname == '');
-						if (newitem.length > 0) {
-							newitem.forEach((car, row_index) => {
-								this.addnewitemerrormsg(4, item.date, row_index + 1);
-							});
-						}
-					}
-				});
-			}
-		},
-		// 其他价格计算
-		otherPrice() {
-			let price = [
-				0, //原总价格
-				0, //结算价格
-				0 // 杂项小计
-			];
-			this.info.settlement_sheet_other.forEach((item, index) => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.offerservicedaycount) * positiveFloat(item.offerparticipatecount);
-				let itemcpset = positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count);
-				price[0] = price[0] + itemcp;
-				price[1] = price[1] + itemcpset;
-			});
-			this.otherincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				price[1] = price[1] + itemcp;
-				price[2] = price[2] + itemcp;
-			});
-			return price;
-		},
-		//其他差异标记
-		otherDifference() {
-			return function(item) {
-				return (
-					positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) ||
-					positiveFloat(item.offerservicedaycount) * positiveFloat(item.offerparticipatecount) !== positiveFloat(item.settlement_count)
-					|| (!item.quoted_price_other_id && item.settlement_comments == '')
+      this.info.settlement_total_amount =
+        // this.roomPrice[1].all +
+        // this.conferencePrice[1].all +
+        // this.foodPrice[1].all +
+        // this.intercitytrafficPrice[1].all +
+        // this.carPrice[1].all +
+        // this.otherPrice[1] +
+        this.price_no[1] + this.servicePrice[1] + positiveFloatSix(((this.price_no[1] + this.servicePrice[1]) * positiveFloat(this.info.settlement_taxrate)) / 100)
+      price[1] = this.info.settlement_total_amount
+      return price
+    },
+    // 酒店内费用 客房费用+会场费用+酒店内餐饮费用
+    InTheHotelMoney() {
+      let InhotelMoney = 0
+      this.info.settlement_sheet_food.forEach(item => {
+        item.food_list.forEach(item => {
+          if (item.addresstype == 0) {
+            InhotelMoney += positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count)
+          }
+        })
+      })
+      //餐饮酒店内杂费
+      let incidental = 0
+      this.foodincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        if (!item.isnotservice) {
+          //酒店内
+          incidental += itemcp
+        }
+      })
+      return (
+        this.roomPrice[1].all + this.conferencePrice[1].all + InhotelMoney + incidental //this.foodPrice[2]
+      )
+    },
+    // 酒店外费用 交通费用+用车费用+酒店外餐饮费用+其他服务费用（不包括全陪，地接）
+    OutsideTheHotelMoney() {
+      let OutsidehotelMoney = 0
+      this.info.settlement_sheet_food.forEach(item => {
+        item.food_list.forEach(item => {
+          if (item.addresstype == 1) {
+            OutsidehotelMoney += positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count)
+          }
+        })
+      })
+      let otherAllMoney = 0
+      this.info.settlement_sheet_other.forEach(item => {
+        if (item.islocalguide != 1) {
+          otherAllMoney += positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count)
+        }
+      })
+      // 其他服务杂费
+      let otherPrice = 0
+      this.otherincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        if (!item.isnotservice) {
+          //计入服务费
+          otherPrice += itemcp
+        }
+      })
+      //大交通杂费
+      this.intercitytrafficincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        if (!item.isnotservice) {
+          //计入服务费
+          otherPrice += itemcp
+        }
+      })
+      //餐饮酒店外杂费
+      this.foodincidental.forEach(item => {
+        let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count)
+        if (item.isnotservice) {
+          //酒店外
+          otherPrice += itemcp
+        }
+      })
+      return (
+        this.intercitytrafficPrice[1].all -
+        this.intercitytrafficPrice[2] + //大交通合计-城际杂项小计
+        this.carPrice[1].all +
+        OutsidehotelMoney +
+        //this.foodPrice[2] +
+        otherAllMoney +
+        otherPrice
+      )
+    }
+  },
+  methods: {
+    guid,
+    positiveInteger,
+    positiveFloat,
+    positiveFloatOne,
+    positiveFloatSix,
+    formatNum,
+    excelExport,
+    limitsEffect,
+    changekefang(id, room) {
+      let filter = this.roomcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      room.settlement_itemname = filter[0].name
+    },
+    changehuichang(id, conference) {
+      let filter = this.meetingcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      conference.settlement_itemname = filter[0].name
+    },
+    changehotelnei(id, food) {
+      let filter = this.foodcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      food.settlement_itemname = filter[0].name
+    },
+    openAddSettle() {
+      this.cost_project_load = true
 
-				);
-			};
-		},
-		//保存时验证其他服务数据
-		checkOtherDifference: function() {
-			let difference = false;
-			if (this.info.settlement_sheet_other && this.info.settlement_sheet_other.length > 0) {
-				this.info.settlement_sheet_other.forEach((item, row_index) => {
-					difference = this.otherDifference(item);
-					if (difference && (item.settlement_comments == null || item.settlement_comments == '')) this.adddifferenceerrormsg(6, null, row_index + 1);
-				});
-			}
-		},
-		// 服务费
-		servicePrice() {
-			let price = [
-				0, //原总价格
-				0 //结算价格
-			];
-			price[0] =
-				positiveFloatSix(this.info.advance_amount) * positiveFloatSix(this.info.advance_proportion / 100) +
-				positiveFloatSix(this.info.travelagency_payment_money) * positiveFloatSix(this.info.travelagency_payment_proportion / 100) +
-				positiveFloatSix(this.info.off_hotel_expenses) * positiveFloatSix(this.info.off_hotel_proportion / 100);
-			price[1] =
-				positiveFloatSix((positiveFloatSix(this.info.settlement_advance_amount) * this.info.settlement_advance_proportion) / 100) +
-				this.InTheHotelMoney * positiveFloatSix(this.info.settlement_travelagency_payment_proportion / 100) +
-				this.OutsideTheHotelMoney * positiveFloatSix(this.info.settlement_off_hotel_proportion / 100);
-				
-			this.info.feizhicai_service=price[1]
-			this.info.taxation=0
-			return price;
-		},
-		// 总价格除vat 服务费总价格
-		price_no() {
-			let price = [
-				0, //原总价格
-				0 //结算价格
-			];
-			price[0] = this.roomPrice[0].all*this.roomOut + this.conferencePrice[0].all*this.conferenceOut + this.foodPrice[0].all*this.foodOut;
-			price[1] = this.roomPrice[1].all*this.roomSettlementOut + this.conferencePrice[1].all*this.conferenceSettlementOut + this.foodPrice[1].all*this.foodSettlementOut
-			this.info.settlement_total_amount = price[1] || 0
-			return price;
-		},
-		// 总价格
-		price() {
-			let price = [
-				0, //原总价格
-				0 //结算价格
-			];
-			price[0] =
-				// this.roomPrice[0].all +
-				// this.conferencePrice[0].all +
-				// this.foodPrice[0].all +
-				// this.intercitytrafficPrice[0].all +
-				// this.carPrice[0].all +
-				// this.otherPrice[0] +
-				this.price_no[0] + this.servicePrice[0] + positiveFloatSix(((this.price_no[0] + this.servicePrice[0]) * positiveFloat(this.info.taxrate)) / 100);
+      let startDate = moment(this.info.event_startdate)
+        .subtract(3, 'days')
+        .format('YYYY-MM-DD')
+      let endDate = moment(this.info.event_enddate)
+        .add(1, 'days')
+        .format('YYYY-MM-DD')
+      let timeRange = getBetweenDate(startDate, endDate)
+      this.costDates = []
+      timeRange.forEach((item, index) => {
+        this.costDates.push({
+          value: item,
+          label: item
+        })
+      })
 
-			this.info.settlement_total_amount =
-				// this.roomPrice[1].all +
-				// this.conferencePrice[1].all +
-				// this.foodPrice[1].all +
-				// this.intercitytrafficPrice[1].all +
-				// this.carPrice[1].all +
-				// this.otherPrice[1] +
-				this.price_no[1] + this.servicePrice[1] + positiveFloatSix(((this.price_no[1] + this.servicePrice[1]) * positiveFloat(this.info.settlement_taxrate)) / 100);
-			price[1] = this.info.settlement_total_amount;
-			return price;
-		},
-		// 酒店内费用 客房费用+会场费用+酒店内餐饮费用
-		InTheHotelMoney() {
-			let InhotelMoney = 0;
-			this.info.settlement_sheet_food.forEach(item => {
-				item.food_list.forEach(item => {
-					if (item.addresstype == 0) {
-						InhotelMoney += positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count);
-					}
-				});
-			});
-			//餐饮酒店内杂费
-			let incidental = 0;
-			this.foodincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				if (!item.isnotservice) {
-					//酒店内
-					incidental += itemcp;
-				}
-			});
-			return (
-				this.roomPrice[1].all + this.conferencePrice[1].all + InhotelMoney + incidental //this.foodPrice[2]
-			);
-		},
-		// 酒店外费用 交通费用+用车费用+酒店外餐饮费用+其他服务费用（不包括全陪，地接）
-		OutsideTheHotelMoney() {
-			let OutsidehotelMoney = 0;
-			this.info.settlement_sheet_food.forEach(item => {
-				item.food_list.forEach(item => {
-					if (item.addresstype == 1) {
-						OutsidehotelMoney += positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count);
-					}
-				});
-			});
-			let otherAllMoney = 0;
-			this.info.settlement_sheet_other.forEach(item => {
-				if (item.islocalguide != 1) {
-					otherAllMoney += positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count);
-				}
-			});
-			// 其他服务杂费
-			let otherPrice = 0;
-			this.otherincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				if (!item.isnotservice) {
-					//计入服务费
-					otherPrice += itemcp;
-				}
-			});
-			//大交通杂费
-			this.intercitytrafficincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				if (!item.isnotservice) {
-					//计入服务费
-					otherPrice += itemcp;
-				}
-			});
-			//餐饮酒店外杂费
-			this.foodincidental.forEach(item => {
-				let itemcp = positiveFloatSix(item.price) * positiveFloat(item.count);
-				if (item.isnotservice) {
-					//酒店外
-					otherPrice += itemcp;
-				}
-			});
-			return (
-				this.intercitytrafficPrice[1].all -
-				this.intercitytrafficPrice[2] + //大交通合计-城际杂项小计
-				this.carPrice[1].all +
-				OutsidehotelMoney +
-				//this.foodPrice[2] +
-				otherAllMoney +
-				otherPrice
-			);
-		}
-	},
-	methods: {
-		guid,
-		positiveInteger,
-		positiveFloat,
-		positiveFloatOne,
-		positiveFloatSix,
-		formatNum,
-		excelExport,
-		limitsEffect,
-		changekefang(id, room) {
-			let filter = this.roomcostProjects.filter(ele => {
-				return ele.code == id;
-			})
-			room.settlement_itemname = filter[0].name;
-		},
-		changehuichang(id, conference) {
-			let filter = this.meetingcostProjects.filter(ele => {
-				return ele.code == id;
-			})
-			conference.settlement_itemname = filter[0].name;
-		},
-		changehotelnei(id, food) {
-			let filter = this.foodcostProjects.filter(ele => {
-				return ele.code == id;
-			})
-			food.settlement_itemname = filter[0].name;
-		},
-		openAddSettle() {
-			this.cost_project_load = true;
+      this.changeProjectClass()
 
-			let startDate = moment(this.info.event_startdate).subtract(3, 'days').format('YYYY-MM-DD');
-			let endDate = moment(this.info.event_enddate).add(1, 'days').format('YYYY-MM-DD');
-			let timeRange = getBetweenDate(startDate, endDate);
-			this.costDates = [];
-			timeRange.forEach((item, index) => {
-				this.costDates.push({
-					value: item,
-					label: item
-				});
-			});
+      this.addSettleShow = true
+    },
+    changecostProject() {
+      if (this.addSettleInfo.costProject == 'zafei') {
+        this.needCostDate = false
+        this.addSettleRules.costDate[0].required = false
+      } else {
+        this.needCostDate = true
+        this.addSettleRules.costDate[0].required = true
+      }
+    },
+    async changeProjectClass() {
+      const SettleEnum = {
+        // 客房
+        '0034': {
+          selects: 'roomcostProjects'
+        },
+        // 会场
+        '0049': {
+          selects: 'meetingcostProjects'
+        },
+        // 酒店内餐饮
+        '0050': {
+          selects: 'foodcostProjects'
+        }
+      }
 
-			this.changeProjectClass();
-			
-			this.addSettleShow = true;
-		},
-		changecostProject() {
-			if(this.addSettleInfo.costProject == 'zafei') {
-				this.needCostDate = false;
-				this.addSettleRules.costDate[0].required = false;
-			}else {
-				this.needCostDate = true;
-				this.addSettleRules.costDate[0].required = true;
-			}
-		},
-		async changeProjectClass() {
-			const SettleEnum = {
-				// 客房
-				'0034': {
-					selects: 'roomcostProjects'
-				},
-				// 会场
-				'0049': {
-					selects: 'meetingcostProjects'
-				},
-				// 酒店内餐饮
-				'0050': {
-					selects: 'foodcostProjects'
-				}
-			};
-			
-			if(this.addSettleInfo.projectClass == '009') {
-				this.needCostDate = false;
-			}else {
-				this.needCostDate = true;
-			}
-			this.cost_project_load = true;
+      if (this.addSettleInfo.projectClass == '009') {
+        this.needCostDate = false
+      } else {
+        this.needCostDate = true
+      }
+      this.cost_project_load = true
 
-			let cpRep = await this.$api
-				.getCostProjects(
-					{
-						code: this.addSettleInfo.projectClass
-					},
-					'POST'
-				);
-			
-			this.cost_project_load = false;
+      let cpRep = await this.$api.getCostProjects(
+        {
+          code: this.addSettleInfo.projectClass
+        },
+        'POST'
+      )
 
-			
-			this[SettleEnum[this.addSettleInfo.projectClass].selects] = cpRep.map(item => {
-				item.value = item.code;
-				item.label = item.name;
-				return item;
-			});
-		
-			this.costProjects = cpRep.map(item => {
-				item.value = item.code;
-				item.label = item.name;
-				return item;
-			});
-			
+      this.cost_project_load = false
 
-			this.costProjects.push({label: '杂费', value: 'zafei'});
+      this[SettleEnum[this.addSettleInfo.projectClass].selects] = cpRep.map(item => {
+        item.value = item.code
+        item.label = item.name
+        return item
+      })
 
-			this.addSettleInfo.costProject = this.costProjects[0].value;
-				
-		},
-		initCostProject() {
-			this.$api.getCostProjects(
-				{
-					code: ''
-				},
-				'POST'
-			).then(res => {
-				let roomcostProjects = res.filter(item => { return item.event_dictionary_code == '0034'});
-				let meetingcostProjects = res.filter(item => { return item.event_dictionary_code == '0049'});
-				let foodcostProjects = res.filter(item => { return item.event_dictionary_code == '0050'});
-				let otherfoodcostProjects = res.filter(item => { return item.event_dictionary_code == '0051'});
-				let transportationcostProjects = res.filter(item => { return item.event_dictionary_code == '003'});
-				let carcostProjects = res.filter(item => { return item.event_dictionary_code == '006'});
-				let othercostProjects = res.filter(item => { return item.event_dictionary_code == '009'});
+      this.costProjects = cpRep.map(item => {
+        item.value = item.code
+        item.label = item.name
+        return item
+      })
 
-				this.roomcostProjects = roomcostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
-				this.meetingcostProjects = meetingcostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
-				this.foodcostProjects = foodcostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
-				this.otherfoodcostProjects = otherfoodcostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
-				this.transportationcostProjects = transportationcostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
-				this.carcostProjects = carcostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
-				this.othercostProjects = othercostProjects.map(item => {item.label = item.name; item.value = item.code; return item});
+      this.costProjects.push({ label: '杂费', value: 'zafei' })
 
-			});
-			
-		},
-		addSettle() {
-			let self = this;
+      this.addSettleInfo.costProject = this.costProjects[0].value
+    },
+    initCostProject() {
+      this.$api
+        .getCostProjects(
+          {
+            code: ''
+          },
+          'POST'
+        )
+        .then(res => {
+          let roomcostProjects = res.filter(item => {
+            return item.event_dictionary_code == '0034'
+          })
+          let meetingcostProjects = res.filter(item => {
+            return item.event_dictionary_code == '0049'
+          })
+          let foodcostProjects = res.filter(item => {
+            return item.event_dictionary_code == '0050'
+          })
+          let otherfoodcostProjects = res.filter(item => {
+            return item.event_dictionary_code == '0051'
+          })
+          let transportationcostProjects = res.filter(item => {
+            return item.event_dictionary_code == '003'
+          })
+          let carcostProjects = res.filter(item => {
+            return item.event_dictionary_code == '006'
+          })
+          let othercostProjects = res.filter(item => {
+            return item.event_dictionary_code == '009'
+          })
 
-			const SettleEnum = {
-				// 客房
-				'0034': {
-					dataList: 'roomlist',
-					addBusinessBlock: 'addroomBusiness',
-					addDataBlock: 'addroom',
-					selects: 'roomcostProjects'
-				},
-				// 会场
-				'0049': {
-					dataList: 'conferencelist',
-					addBusinessBlock: 'addconferenceBusiness',
-					addDataBlock: 'addconference',
-					selects: 'meetingcostProjects'
-				},
-				// 酒店内餐饮
-				'0050': {
-					dataList: 'foodlist',
-					addBusinessBlock: 'addfoodBusiness',
-					addDataBlock: 'addfood',
-					selects: 'foodcostProjects'
-				},
-				
-				
-			};
+          this.roomcostProjects = roomcostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+          this.meetingcostProjects = meetingcostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+          this.foodcostProjects = foodcostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+          this.otherfoodcostProjects = otherfoodcostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+          this.transportationcostProjects = transportationcostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+          this.carcostProjects = carcostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+          this.othercostProjects = othercostProjects.map(item => {
+            item.label = item.name
+            item.value = item.code
+            return item
+          })
+        })
+    },
+    addSettle() {
+      let self = this
 
-			const costProjectEnem = {
-				'0034' : 1,
-				'0049': 2,
-				'0050': 3,
-				'0051': 7,
-				'003': 4,
-				'006': 5,
-				'009': 6
-			};
+      const SettleEnum = {
+        // 客房
+        '0034': {
+          dataList: 'roomlist',
+          addBusinessBlock: 'addroomBusiness',
+          addDataBlock: 'addroom',
+          selects: 'roomcostProjects'
+        },
+        // 会场
+        '0049': {
+          dataList: 'conferencelist',
+          addBusinessBlock: 'addconferenceBusiness',
+          addDataBlock: 'addconference',
+          selects: 'meetingcostProjects'
+        },
+        // 酒店内餐饮
+        '0050': {
+          dataList: 'foodlist',
+          addBusinessBlock: 'addfoodBusiness',
+          addDataBlock: 'addfood',
+          selects: 'foodcostProjects'
+        }
+      }
 
-			this.$refs.addSettleInfo.validate((valid) => {
-				if (valid) {
-					let enumObj = SettleEnum[this.addSettleInfo.projectClass];
-					if(enumObj) {
-						this[enumObj.selects] = [...this.costProjects];
+      const costProjectEnem = {
+        '0034': 1,
+        '0049': 2,
+        '0050': 3,
+        '0051': 7,
+        '003': 4,
+        '006': 5,
+        '009': 6
+      }
 
-						if(this.addSettleInfo.costProject == 'zafei') {
-							this.addOther(costProjectEnem[this.addSettleInfo.projectClass]);
-						}else {
-							if(this.info[enumObj.dataList] && this.info[enumObj.dataList].length) {
-								// 有分类
-								if(this.addSettleInfo.projectClass == '009') {
-									// 如果是“其他服务”
-									this[enumObj.addDataBlock](filterDate[0], true);
-								}else {
-									// 常规类型
-									let filterDate = this.info[enumObj.dataList].filter(item => {
-										return this.addSettleInfo.costDate == moment(item.date).format('YYYY-MM-DD')
-									});
-									if(filterDate && filterDate.length) {
-										// 日期相同
-										this[enumObj.addDataBlock](filterDate[0], true);
-									}else {
-										this[enumObj.addBusinessBlock](true);
-									}
-								}
-							}else {
-								this[enumObj.addBusinessBlock](true);
-							}
-						}
-						
-						
-					}
-					this.addSettleShow = false;
-				}
-			})
-		},
-		excelDownload() {
-			//导出excel
-			this.orderIDList.push(this.info.orderform_id);
-			var name="结算单"+this.info.num
-			this.excelExport('/SettlementSheet/ExportExcel1',{orderIDList:this.orderIDList},name)
-		},
-		// 上传文件
-		handleChangeAttach(file, fileList, type) {
-			const isLt30M = file.size / 1024 / 1024 < 30;
-			
-			if (!this.limitsEffect(file)) {
-				//后缀名不符合的在文件列表中删除该文件
-				this.arrayList.forEach((item, index) => {
-					if (type == item.type) this.$refs.upload[index].handleRemove(file, fileList, type);
-				});
-				return;
-			}
-			if (!isLt30M) {
-				this.$message.error('上传附件大小不能超过 30MB!');
-				// 取消时在文件列表中删除该文件
-				this.arrayList.forEach((item, index) => {
-					if (type == item.type) this.$refs.upload[index].handleRemove(file, fileList, type);
-				});
-				return;
-			}
-			this.arrayList.forEach((e, index) => {
-				if (type == e.type) {
-					e.fileList = fileList;
-				}
-			});
-			this.initFileRename();
-		},
-		handleRemoveAttach(file, fileList, type) {
-			this.arrayList.forEach((e, index) => {
-				if (type == e.type) {
-					e.fileList = fileList;
-				}
-			});
-			this.initFileRename();
-			//console.log(this.fileList);
-		},
-		handlePreview(file) {
-			debugger
-			if(!file.url) return;
-			// 获取文件后缀名
-			let suffix = file.url.substring(file.url.lastIndexOf(".")+1)
-			// doc、docx、xls、xlsx、xlsm、pdf、ppt、pptx、jpeg、jpg、png、txt
-			let types1 = ['pdf','jpeg','jpg','png','txt'];
-			let types2 = ['docx','doc','xls','xlsx','xlsm','ppt','pptx'];
-			file.url = file.url.replace(/http:/, 'https:');
-			this.downloadUrl= file.url
-			if(types2.includes(suffix)){
-				this.downloadUrl= 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(file.url)
-			}else if(types1.includes(suffix)){
-				this.downloadUrl= file.url
-			}else{
-				this.$message.info('文件格式不支持预览，下载后查看')
-			}
-			// this.downloadUrl= 'https://view.xdocin.com/view?src=' + encodeURIComponent(file.url)
-			setTimeout(() => {
-				this.$refs.a_click.click();
-			}, 100);
-		},
-		// handlePreview(file) {
-		// 	file.url = file.url.replace(/http:/, 'https:');
-		// 	this.downloadUrl=file.url
-		// 	setTimeout(() => {
-		// 		this.$refs.a_click.click();
-		// 	}, 100);
-		// },
-		//给每个文件添加重命名按钮
-		initFileRename() {
-			var _this = this;
-			//在dom元素加载完毕后调用
-			this.$nextTick(() => {
-				var list = document.getElementsByClassName('el-upload-list__item-name') || null;
-				Array.from(list).forEach((element, index, array) => {
-					var text = element.innerText;
-					if (!element.getElementsByTagName('span')[0]) {
-						//创建重命名按钮
-						element.innerHTML += "<span style='color:#199ED8;cursor: pointer;'>重命名</span>";
-					}
-					//添加点击事件
-					element.getElementsByTagName('span')[0].addEventListener('click', function(ev) {
-						ev.stopPropagation(); //阻止事件冒泡，父级元素，a标签就不会触发事件
-						_this.rename = true;
-						_this.fileName = text.slice(0, text.lastIndexOf('.'));
-						_this.suffix = text.slice(text.lastIndexOf('.'));
-						/* var node=document.getElementsByClassName('el-upload-list__item');
+      this.$refs.addSettleInfo.validate(valid => {
+        if (valid) {
+          let enumObj = SettleEnum[this.addSettleInfo.projectClass]
+          if (enumObj) {
+            this[enumObj.selects] = [...this.costProjects]
+
+            if (this.addSettleInfo.costProject == 'zafei') {
+              this.addOther(costProjectEnem[this.addSettleInfo.projectClass])
+            } else {
+              if (this.info[enumObj.dataList] && this.info[enumObj.dataList].length) {
+                // 有分类
+                if (this.addSettleInfo.projectClass == '009') {
+                  // 如果是“其他服务”
+                  this[enumObj.addDataBlock](filterDate[0], true)
+                } else {
+                  // 常规类型
+                  let filterDate = this.info[enumObj.dataList].filter(item => {
+                    return this.addSettleInfo.costDate == moment(item.date).format('YYYY-MM-DD')
+                  })
+                  if (filterDate && filterDate.length) {
+                    // 日期相同
+                    this[enumObj.addDataBlock](filterDate[0], true)
+                  } else {
+                    this[enumObj.addBusinessBlock](true)
+                  }
+                }
+              } else {
+                this[enumObj.addBusinessBlock](true)
+              }
+            }
+          }
+          this.addSettleShow = false
+        }
+      })
+    },
+    excelDownload() {
+      //导出excel
+      this.orderIDList.push(this.info.orderform_id)
+      var name = '结算单' + this.info.num
+      this.excelExport('/SettlementSheet/ExportExcel1', { orderIDList: this.orderIDList }, name)
+    },
+    // 上传文件
+    handleChangeAttach(file, fileList, type) {
+      const isLt30M = file.size / 1024 / 1024 < 30
+
+      if (!this.limitsEffect(file)) {
+        //后缀名不符合的在文件列表中删除该文件
+        this.arrayList.forEach((item, index) => {
+          if (type == item.type) this.$refs.upload[index].handleRemove(file, fileList, type)
+        })
+        return
+      }
+      if (!isLt30M) {
+        this.$message.error('上传附件大小不能超过 30MB!')
+        // 取消时在文件列表中删除该文件
+        this.arrayList.forEach((item, index) => {
+          if (type == item.type) this.$refs.upload[index].handleRemove(file, fileList, type)
+        })
+        return
+      }
+      this.arrayList.forEach((e, index) => {
+        if (type == e.type) {
+          e.fileList = fileList
+        }
+      })
+      this.initFileRename()
+    },
+    handleRemoveAttach(file, fileList, type) {
+      this.arrayList.forEach((e, index) => {
+        if (type == e.type) {
+          e.fileList = fileList
+        }
+      })
+      this.initFileRename()
+      //console.log(this.fileList);
+    },
+    handlePreview(file) {
+      debugger
+      if (!file.url) return
+      // 获取文件后缀名
+      let suffix = file.url.substring(file.url.lastIndexOf('.') + 1)
+      // doc、docx、xls、xlsx、xlsm、pdf、ppt、pptx、jpeg、jpg、png、txt
+      let types1 = ['pdf', 'jpeg', 'jpg', 'png', 'txt']
+      let types2 = ['docx', 'doc', 'xls', 'xlsx', 'xlsm', 'ppt', 'pptx']
+      file.url = file.url.replace(/http:/, 'https:')
+      this.downloadUrl = file.url
+      if (types2.includes(suffix)) {
+        this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(file.url)
+      } else if (types1.includes(suffix)) {
+        this.downloadUrl = file.url
+      } else {
+        this.$message.info('文件格式不支持预览，下载后查看')
+      }
+      // this.downloadUrl= 'https://view.xdocin.com/view?src=' + encodeURIComponent(file.url)
+      setTimeout(() => {
+        this.$refs.a_click.click()
+      }, 100)
+    },
+    // handlePreview(file) {
+    // 	file.url = file.url.replace(/http:/, 'https:');
+    // 	this.downloadUrl=file.url
+    // 	setTimeout(() => {
+    // 		this.$refs.a_click.click();
+    // 	}, 100);
+    // },
+    //给每个文件添加重命名按钮
+    initFileRename() {
+      var _this = this
+      //在dom元素加载完毕后调用
+      this.$nextTick(() => {
+        var list = document.getElementsByClassName('el-upload-list__item-name') || null
+        Array.from(list).forEach((element, index, array) => {
+          var text = element.innerText
+          if (!element.getElementsByTagName('span')[0]) {
+            //创建重命名按钮
+            element.innerHTML += "<span style='color:#199ED8;cursor: pointer;'>重命名</span>"
+          }
+          //添加点击事件
+          element.getElementsByTagName('span')[0].addEventListener('click', function(ev) {
+            ev.stopPropagation() //阻止事件冒泡，父级元素，a标签就不会触发事件
+            _this.rename = true
+            _this.fileName = text.slice(0, text.lastIndexOf('.'))
+            _this.suffix = text.slice(text.lastIndexOf('.'))
+            /* var node=document.getElementsByClassName('el-upload-list__item');
 							node.forEach(e=>{
 								console.log(e)
 							}) */
-		
-						console.log(element.getElementsByTagName('span')[0].parentNode.parentNode.parentNode);
-					});
-				});
-			});
-		},
-		fileRename(file, index, file_index) {
-			this.rename = true;
-			this.updateIndex = index;
-			this.updateFileIndex = file_index;
-			this.fileName = file.name.slice(0, file.name.lastIndexOf('.'));
-			this.suffix = file.name.slice(file.name.lastIndexOf('.'));
-		},
-		//文件重命名保存
-		saveFileName() {
-			this.arrayList[this.updateIndex].fileList[this.updateFileIndex].name = this.fileName + this.suffix; //页面文件显示名
-			this.info.settlement_sheet_attach.forEach((e, i) => {
-				//给已上传的文件重命名
-				if (e.id == this.arrayList[this.updateIndex].fileList[this.updateFileIndex].id) {
-					this.info.settlement_sheet_attach[i].filename = this.fileName + this.suffix;
-				}
-			});
-			if (this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw) {
-				//给未上传文件重命名
-				const copyFile = new File([this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw], this.fileName + this.suffix, {
-					// uid:this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.uid,
-					lastModified: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.lastModified,
-					lastModifiedDate: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.lastModifiedDate,
-					type: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.type
-				});
-				this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw = copyFile;
-			}
-			this.rename = false;
-		},
-		//删除附件
-		deleteFile(file, index, file_index) {
-			this.arrayList[index].fileList.splice(file_index, 1);
-		},
-		// 添加杂费
-		addOther(type) {
-			this.info.settlement_sheet_sundries.push({
-				id: this.guid(),
-				type,
-				price: 0, //单价
-				count: 0, //数量
-				comments: '', //结算说明
-				content: '', //杂费项名称
-				isnotservice: false //是否不计入服务费
-			});
-		},
-		// 删除杂费
-		delOther(key) {
-			//this.info.settlement_sheet_sundries.splice(key, 1);
-			this.info.settlement_sheet_sundries = this.info.settlement_sheet_sundries.filter(w => w.id != key);
-		},
-		// 添加客房
-		async addroom(node, addBlock) {
-			if(!addBlock) {
-				this.addSettleInfo.projectClass = '0034';
-				await this.changeProjectClass();
-			}
-			node.room_list.push({
-				settlement_itemid: this.addSettleInfo.costProject,
-				roomtypename: '',
-				totalprice: 0,
-				unitprice: 0,
-				roomcount: 0,
-				inside_roomcount: 0,
-				settlement_inside_roomcount: 0,
-				outside_roomcount: 0,
-				settlement_outside_roomcount: 0,
-				settlement_unitprice: '0',
-				settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
-				settlement_count: '0',
-				settlement_comments: ''
-			});
-		},
-		findCostProjectByKey(value) {
-			let filter = this.costProjects.filter(item => {
-				return value == item.value;
-			});
-			return filter && filter.length ? filter[0] : null;
-		},
-		addroomBusiness(addBlock) {
-			// if(!addBlock) {
-			// 	this.addSettleInfo.projectClass = '0034';
-			// 	this.changeProjectClass();
-			// }
 
-			this.info.settlement_sheet_room.push({
-				"date": moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
-				"room_list":[
-					{
-						settlement_itemid: this.addSettleInfo.costProject,
-						roomtypename: '',
-						totalprice: 0,
-						unitprice: 0,
-						roomcount: 0,
-						inside_roomcount: 0,
-						settlement_inside_roomcount: 0,
-						outside_roomcount: 0,
-						settlement_outside_roomcount: 0,
-						settlement_unitprice: '0',
-						settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
-						settlement_count: '0',
-						settlement_comments: ''
-					}
-				]
-			});
-			this.info.settlement_sheet_room = this.info.settlement_sheet_room.sort((a, b) => {
-				return new Date(a.date).getTime() - new Date(b.date).getTime();
-			});
-		},
-		// 删除客房
-		delroom(node, key) {
-			node.room_list.splice(key, 1);
-		},
-		// 添加会场
-		async addconference(node, addBlock) {
-			if(!addBlock) {
-				this.addSettleInfo.projectClass = '0049';
-				await this.changeProjectClass();
-			}
-			node.conference_list.push({
-				settlement_itemid: this.addSettleInfo.costProject,
-				is_important: '',
-				price: 0,
-				count: 0,
-				settlement_price: '0',
-				settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
-				settlement_count: '1',
-				settlement_comments: ''
-			});
-		},
-		addconferenceBusiness(addBlock) {
-			// if(!addBlock) {
-			// 	this.addSettleInfo.projectClass = '0049';
-			// 	this.changeProjectClass();
-			// }
-			this.info.settlement_sheet_conference.push({
-				"date": moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
-				"conference_list":[
-					{
-						settlement_itemid: this.addSettleInfo.costProject,
-						is_important: '',
-						price: 0,
-						count: 0,
-						settlement_price: '0',
-						settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
-						settlement_count: '1',
-						settlement_comments: ''
-					}
-				]
-			});
+            console.log(element.getElementsByTagName('span')[0].parentNode.parentNode.parentNode)
+          })
+        })
+      })
+    },
+    fileRename(file, index, file_index) {
+      this.rename = true
+      this.updateIndex = index
+      this.updateFileIndex = file_index
+      this.fileName = file.name.slice(0, file.name.lastIndexOf('.'))
+      this.suffix = file.name.slice(file.name.lastIndexOf('.'))
+    },
+    //文件重命名保存
+    saveFileName() {
+      this.arrayList[this.updateIndex].fileList[this.updateFileIndex].name = this.fileName + this.suffix //页面文件显示名
+      this.info.settlement_sheet_attach.forEach((e, i) => {
+        //给已上传的文件重命名
+        if (e.id == this.arrayList[this.updateIndex].fileList[this.updateFileIndex].id) {
+          this.info.settlement_sheet_attach[i].filename = this.fileName + this.suffix
+        }
+      })
+      if (this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw) {
+        //给未上传文件重命名
+        const copyFile = new File([this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw], this.fileName + this.suffix, {
+          // uid:this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.uid,
+          lastModified: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.lastModified,
+          lastModifiedDate: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.lastModifiedDate,
+          type: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.type
+        })
+        this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw = copyFile
+      }
+      this.rename = false
+    },
+    //删除附件
+    deleteFile(file, index, file_index) {
+      this.arrayList[index].fileList.splice(file_index, 1)
+    },
+    // 添加杂费
+    addOther(type) {
+      this.info.settlement_sheet_sundries.push({
+        id: this.guid(),
+        type,
+        price: 0, //单价
+        count: 0, //数量
+        comments: '', //结算说明
+        content: '', //杂费项名称
+        isnotservice: false //是否不计入服务费
+      })
+    },
+    // 删除杂费
+    delOther(key) {
+      //this.info.settlement_sheet_sundries.splice(key, 1);
+      this.info.settlement_sheet_sundries = this.info.settlement_sheet_sundries.filter(w => w.id != key)
+    },
+    // 添加客房
+    async addroom(node, addBlock) {
+      if (!addBlock) {
+        this.addSettleInfo.projectClass = '0034'
+        await this.changeProjectClass()
+      }
+      node.room_list.push({
+        settlement_itemid: this.addSettleInfo.costProject,
+        roomtypename: '',
+        totalprice: 0,
+        unitprice: 0,
+        roomcount: 0,
+        inside_roomcount: 0,
+        settlement_inside_roomcount: 0,
+        outside_roomcount: 0,
+        settlement_outside_roomcount: 0,
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: ''
+      })
+    },
+    findCostProjectByKey(value) {
+      let filter = this.costProjects.filter(item => {
+        return value == item.value
+      })
+      return filter && filter.length ? filter[0] : null
+    },
+    addroomBusiness(addBlock) {
+      // if(!addBlock) {
+      // 	this.addSettleInfo.projectClass = '0034';
+      // 	this.changeProjectClass();
+      // }
 
-			this.info.settlement_sheet_conference = this.info.settlement_sheet_conference.sort((a, b) => {
-				return new Date(a.date).getTime() - new Date(b.date).getTime();
-			});
-			
-		},
-		// 删除会场
-		delconference(node, key) {
-			node.conference_list.splice(key, 1);
-		},
-		// 添加餐饮
-		async addfood(node, addBlock) {
-			if(!addBlock) {
-				this.addSettleInfo.projectClass = '0050';
-				await this.changeProjectClass();
-			}
-			node.food_list.push({
-				settlement_itemid: this.addSettleInfo.costProject,
-				foodtypename: '',
-				addresstype: '0',
-				personcount: 0,
-				price: 0,
-				settlement_unitprice: '0',
-				settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
-				settlement_count: '0',
-				settlement_comments: ''
-			});
-		},
-		addfoodBusiness(addBlock) {
-			// if(!addBlock) {
-			// 	this.addSettleInfo.projectClass = '0050';
-			// 	this.changeProjectClass();
-			// }
-			this.info.settlement_sheet_food.push({
-				"date": moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
-				"food_list":[
-					{
-						settlement_itemid: this.addSettleInfo.costProject,
-						foodtypename: '',
-						addresstype: '0',
-						personcount: 0,
-						price: 0,
-						settlement_unitprice: '0',
-						settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
-						settlement_count: '0',
-						settlement_comments: ''
-					}
-				]
-			});
+      this.info.settlement_sheet_room.push({
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
+        room_list: [
+          {
+            settlement_itemid: this.addSettleInfo.costProject,
+            roomtypename: '',
+            totalprice: 0,
+            unitprice: 0,
+            roomcount: 0,
+            inside_roomcount: 0,
+            settlement_inside_roomcount: 0,
+            outside_roomcount: 0,
+            settlement_outside_roomcount: 0,
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: ''
+          }
+        ]
+      })
+      this.info.settlement_sheet_room = this.info.settlement_sheet_room.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
+    },
+    // 删除客房
+    delroom(node, key) {
+      node.room_list.splice(key, 1)
+    },
+    // 添加会场
+    async addconference(node, addBlock) {
+      if (!addBlock) {
+        this.addSettleInfo.projectClass = '0049'
+        await this.changeProjectClass()
+      }
+      node.conference_list.push({
+        settlement_itemid: this.addSettleInfo.costProject,
+        is_important: '',
+        price: 0,
+        count: 0,
+        settlement_price: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '1',
+        settlement_comments: ''
+      })
+    },
+    addconferenceBusiness(addBlock) {
+      // if(!addBlock) {
+      // 	this.addSettleInfo.projectClass = '0049';
+      // 	this.changeProjectClass();
+      // }
+      this.info.settlement_sheet_conference.push({
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
+        conference_list: [
+          {
+            settlement_itemid: this.addSettleInfo.costProject,
+            is_important: '',
+            price: 0,
+            count: 0,
+            settlement_price: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '1',
+            settlement_comments: ''
+          }
+        ]
+      })
 
-			this.info.settlement_sheet_food = this.info.settlement_sheet_food.sort((a, b) => {
-				return new Date(a.date).getTime() - new Date(b.date).getTime();
-			});
-		},
-		// 删除餐饮
-		delfood(node, key) {
-			node.food_list.splice(key, 1);
-		},
-		// 添加大交通
-		addstransportation(node) {
-			node.transportation_list.push({
-				joinname: '',
-				passengercount: 0,
-				unitprice: 0,
-				settlement_unitprice: '0',
-				settlement_itemname: '',
-				settlement_count: '0',
-				settlement_comments: ''
-			});
-		},
-		// 删除大交通
-		delstransportation(node, key) {
-			node.transportation_list.splice(key, 1);
-		},
-		// 添加市内交通
-		addcar(node) {
-			node.car_list.push({
-				purposename: '',
-				carcount: 0,
-				price: 0,
-				settlement_unitprice: '0',
-				settlement_itemname: '',
-				settlement_count: '0',
-				settlement_comments: ''
-			});
-		},
-		// 删除市内交通
-		delcar(node, key) {
-			node.car_list.splice(key, 1);
-		},
-		submit() {
-			//表单验证
-			if (!this.validate()) {
-				return;
-			}
-			if (!this.arrayList[0].fileList.length && !this.arrayList[1].fileList.length && !this.arrayList[2].fileList.length && !this.arrayList[3].fileList.length) {
-				this.$message.error('请上传酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他');
-				return;
-			}
-			//确认结算单后，上传供应商发票及账单，结算单状态不变
-			if (this.info.settlement_status != this.status_confirm) this.info.settlement_status = this.status_tobeconfirmed;
+      this.info.settlement_sheet_conference = this.info.settlement_sheet_conference.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
+    },
+    // 删除会场
+    delconference(node, key) {
+      node.conference_list.splice(key, 1)
+    },
+    // 添加餐饮
+    async addfood(node, addBlock) {
+      if (!addBlock) {
+        this.addSettleInfo.projectClass = '0050'
+        await this.changeProjectClass()
+      }
+      node.food_list.push({
+        settlement_itemid: this.addSettleInfo.costProject,
+        foodtypename: '',
+        addresstype: '0',
+        personcount: 0,
+        price: 0,
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: ''
+      })
+    },
+    addfoodBusiness(addBlock) {
+      // if(!addBlock) {
+      // 	this.addSettleInfo.projectClass = '0050';
+      // 	this.changeProjectClass();
+      // }
+      this.info.settlement_sheet_food.push({
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
+        food_list: [
+          {
+            settlement_itemid: this.addSettleInfo.costProject,
+            foodtypename: '',
+            addresstype: '0',
+            personcount: 0,
+            price: 0,
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: ''
+          }
+        ]
+      })
 
-			this.save();
-		},
-		draft() {
-			//表单验证
-			if (!this.validate()) {
-				return;
-			}
-			if (!this.arrayList[0].fileList.length && !this.arrayList[1].fileList.length && !this.arrayList[2].fileList.length && !this.arrayList[3].fileList.length) {
-				this.$message.error('请上传酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他');
-				return;
-			}
-			//确认结算单后，上传供应商发票及账单，结算单状态不变
-			this.info.settlement_status = this.status_draft;
-			this.save();
-		},
-		differenceShowErrorMessage: function() {
-			let html = '';
-			this.errormsg.forEach(msg => {
-				html += "<p style='padding:5px;'>" + msg + '</p>';
-			});
-			this.$message({ message: html, dangerouslyUseHTMLString: true, type: 'error', lockScroll: false });
-		},
-		validate: function() {
-			this.errormsg = [];
-			this.checkRoomDifference;
-			this.checkConferenceDifference;
-			this.checkFoodDifference;
-			this.checkTransportationDifference;
-			this.checkCarDifference;
-			this.checkOtherDifference;
+      this.info.settlement_sheet_food = this.info.settlement_sheet_food.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
+    },
+    // 删除餐饮
+    delfood(node, key) {
+      node.food_list.splice(key, 1)
+    },
+    // 添加大交通
+    addstransportation(node) {
+      node.transportation_list.push({
+        joinname: '',
+        passengercount: 0,
+        unitprice: 0,
+        settlement_unitprice: '0',
+        settlement_itemname: '',
+        settlement_count: '0',
+        settlement_comments: ''
+      })
+    },
+    // 删除大交通
+    delstransportation(node, key) {
+      node.transportation_list.splice(key, 1)
+    },
+    // 添加市内交通
+    addcar(node) {
+      node.car_list.push({
+        purposename: '',
+        carcount: 0,
+        price: 0,
+        settlement_unitprice: '0',
+        settlement_itemname: '',
+        settlement_count: '0',
+        settlement_comments: ''
+      })
+    },
+    // 删除市内交通
+    delcar(node, key) {
+      node.car_list.splice(key, 1)
+    },
+    submit() {
+      //表单验证
+      if (!this.validate()) {
+        return
+      }
+      if (!this.arrayList[0].fileList.length && !this.arrayList[1].fileList.length && !this.arrayList[2].fileList.length && !this.arrayList[3].fileList.length) {
+        this.$message.error('请上传酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他')
+        return
+      }
+      //确认结算单后，上传供应商发票及账单，结算单状态不变
+      if (this.info.settlement_status != this.status_confirm) this.info.settlement_status = this.status_tobeconfirmed
 
-			if (this.errormsg.length > 0) this.differenceShowErrorMessage();
-			return this.errormsg.length == 0;
-		},
-		// 保存
-		save() {
-			//客户驳回结算单,清空结算单id
-			if (this.info.pre_settlement_status === this.status_reject) this.info.settlement_sheet_id = null;
-			
-			
-			
-			this.info.settlement_voucher = this.arrayList[0].remark; //住宿发票说明
-			this.info.settlement_contract = this.arrayList[1].remark; //餐饮发票说明
-			this.info.settlement_waterbill = this.arrayList[2].remark; //会场发票说明
-			this.info.settlement_other = this.arrayList[3].remark; //其他说明
-			this.info.settlement_invoice = this.arrayList[4].remark; //供应商发票说明
-			let urlsList = [
-				{ urLs: [] },
-				{ urLs: [] },
-				{ urLs: [] },
-				{ urLs: [] },
-				{ urLs: [] }
-			];
-			//组装本次上传数据
-			urlsList.forEach((itemc, indexc) => {
-				if (this.arrayList[indexc]) {
-					let thisfileList = this.arrayList[indexc].fileList.filter(w => w.uid != '');
-					if (this.arrayList[indexc].fileList.length > 0)
-						this.arrayList[indexc].fileList.forEach(item => {
-							itemc.urLs.push({
-								key: item.uid,
-								file: item.raw
-							});
-						});
-				}
-			});
-			upload(urlsList[0].urLs)
-				.then(res => {
-					//验证已上传文件是否被删除
-					if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
-						this.info.settlement_sheet_attach.forEach(item => {
-							if (this.arrayList[0].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[0].type) item.delete = true;
-						});
-					}
-					res.forEach(item => {
-						if (item) {
-							this.info.settlement_sheet_attach.push({
-								filetype: this.arrayList[0].type,
-								filepath: item.FilePath,
-								filename: item.OriginalFileName
-							});
-						}
-					});
-			
-					return upload(urlsList[1].urLs);
-				})
-				.then(res => {
-					//验证已上传文件是否被删除
-					if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
-						this.info.settlement_sheet_attach.forEach(item => {
-							if (this.arrayList[1].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[1].type) item.delete = true;
-						});
-					}
-					res.forEach(item => {
-						if (item) {
-							this.info.settlement_sheet_attach.push({
-								filetype: this.arrayList[1].type,
-								filepath: item.FilePath,
-								filename: item.OriginalFileName
-							});
-						}
-					});
-					return upload(urlsList[2].urLs);
-				})
-				.then(res => {
-					//验证已上传文件是否被删除
-					if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
-						this.info.settlement_sheet_attach.forEach(item => {
-							if (this.arrayList[2].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[2].type) item.delete = true;
-						});
-					}
-					res.forEach(item => {
-						if (item) {
-							this.info.settlement_sheet_attach.push({
-								filetype: this.arrayList[2].type,
-								filepath: item.FilePath,
-								filename: item.OriginalFileName
-							});
-						}
-					});
-					return upload(urlsList[3].urLs);
-				})
-				.then(res => {
-					//验证已上传文件是否被删除
-					if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
-						this.info.settlement_sheet_attach.forEach(item => {
-							if (this.arrayList[3].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[3].type) item.delete = true;
-						});
-					}
-					res.forEach(item => {
-						if (item) {
-							this.info.settlement_sheet_attach.push({
-								filetype: this.arrayList[3].type,
-								filepath: item.FilePath,
-								filename: item.OriginalFileName
-							});
-						}
-					});
-					return upload(urlsList[4].urLs);
-				})
-				.then(res => {
-					//验证已上传文件是否被删除
-					if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
-						this.info.settlement_sheet_attach.forEach(item => {
-							if (this.arrayList[4].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[4].type) item.delete = true;
-						});
-					}
-					res.forEach(item => {
-						if (item) {
-							this.info.settlement_sheet_attach.push({
-								filetype: this.arrayList[4].type,
-								filepath: item.FilePath,
-								filename: item.OriginalFileName
-							});
-						}
-					});
+      this.save()
+    },
+    draft() {
+      //表单验证
+      if (!this.validate()) {
+        return
+      }
+      if (!this.arrayList[0].fileList.length && !this.arrayList[1].fileList.length && !this.arrayList[2].fileList.length && !this.arrayList[3].fileList.length) {
+        this.$message.error('请上传酒店住宿发票+小联、酒店餐饮发票+小联、酒店会场发票+小联、其他')
+        return
+      }
+      //确认结算单后，上传供应商发票及账单，结算单状态不变
+      this.info.settlement_status = this.status_draft
+      this.save()
+    },
+    differenceShowErrorMessage: function() {
+      let html = ''
+      this.errormsg.forEach(msg => {
+        html += "<p style='padding:5px;'>" + msg + '</p>'
+      })
+      this.$message({ message: html, dangerouslyUseHTMLString: true, type: 'error', lockScroll: false })
+    },
+    validate: function() {
+      this.errormsg = []
+      this.checkRoomDifference
+      this.checkConferenceDifference
+      this.checkFoodDifference
+      this.checkTransportationDifference
+      this.checkCarDifference
+      this.checkOtherDifference
 
-					// 排序
-					if(this.info.settlement_sheet_room) {
-						this.info.settlement_sheet_room.forEach(item => {
-							for(let i=0; i<item.room_list.length; i++) {
-								item.room_list[i].indexs = i + 1;
-							}
-						})
-					}
-					if(this.info.settlement_sheet_conference) {
-						this.info.settlement_sheet_conference.forEach(item => {
-							for(let i=0; i<item.conference_list.length; i++) {
-								item.conference_list[i].indexs = i + 1;
-							}
-						})
-					}
-					if(this.info.settlement_sheet_food) {
-						this.info.settlement_sheet_food.forEach(item => {
-							for(let i=0; i<item.food_list.length; i++) {
-								item.food_list[i].indexs = i + 1;
-							}
-						})
-					}
+      if (this.errormsg.length > 0) this.differenceShowErrorMessage()
+      return this.errormsg.length == 0
+    },
+    // 保存
+    save() {
+      //客户驳回结算单,清空结算单id
+      if (this.info.pre_settlement_status === this.status_reject) this.info.settlement_sheet_id = null
 
-					
-					
+      this.info.settlement_voucher = this.arrayList[0].remark //住宿发票说明
+      this.info.settlement_contract = this.arrayList[1].remark //餐饮发票说明
+      this.info.settlement_waterbill = this.arrayList[2].remark //会场发票说明
+      this.info.settlement_other = this.arrayList[3].remark //其他说明
+      this.info.settlement_invoice = this.arrayList[4].remark //供应商发票说明
+      let urlsList = [{ urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }]
+      //组装本次上传数据
+      urlsList.forEach((itemc, indexc) => {
+        if (this.arrayList[indexc]) {
+          let thisfileList = this.arrayList[indexc].fileList.filter(w => w.uid != '')
+          if (this.arrayList[indexc].fileList.length > 0)
+            this.arrayList[indexc].fileList.forEach(item => {
+              itemc.urLs.push({
+                key: item.uid,
+                file: item.raw
+              })
+            })
+        }
+      })
+      upload(urlsList[0].urLs)
+        .then(res => {
+          //验证已上传文件是否被删除
+          if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
+            this.info.settlement_sheet_attach.forEach(item => {
+              if (this.arrayList[0].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[0].type) item.delete = true
+            })
+          }
+          res.forEach(item => {
+            if (item) {
+              this.info.settlement_sheet_attach.push({
+                filetype: this.arrayList[0].type,
+                filepath: item.FilePath,
+                filename: item.OriginalFileName
+              })
+            }
+          })
 
-					return this.$api.settlementsheetSave(this.info, 'POST');
-				}).then(res => {
-					if (res) {
-						this.$message({
-							message: '保存成功！',
-							type: 'success'
-						});
-						this.$router.push({
-							name: 'orderInfo_Hotel',
-							params: {
-								id: this.info.orderform_id
-							}
-						});
-					} else {
-						this.$message({
-							message: '保存失败！',
-							type: 'error'
-						});
-					}
-				});
-			
-		
-		},
-		initVat(){
-			this.info.taxlist.forEach((item, i) => {
-				if(item.id==this.info.roomtaxid){
-					this.roomOut=item.outtaxrate;
-					this.roomOutMsg = item.taxname;
-				}
-				if(item.id==this.info.conferencetaxid){
-					this.conferenceOut=item.outtaxrate
-					this.conferenceOutMsg = item.taxname;
-				}
-				if(item.id==this.info.foodtaxid){
-					this.foodOut=item.outtaxrate;
-					this.foodOutMsg = item.taxname;
-				}
+          return upload(urlsList[1].urLs)
+        })
+        .then(res => {
+          //验证已上传文件是否被删除
+          if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
+            this.info.settlement_sheet_attach.forEach(item => {
+              if (this.arrayList[1].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[1].type) item.delete = true
+            })
+          }
+          res.forEach(item => {
+            if (item) {
+              this.info.settlement_sheet_attach.push({
+                filetype: this.arrayList[1].type,
+                filepath: item.FilePath,
+                filename: item.OriginalFileName
+              })
+            }
+          })
+          return upload(urlsList[2].urLs)
+        })
+        .then(res => {
+          //验证已上传文件是否被删除
+          if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
+            this.info.settlement_sheet_attach.forEach(item => {
+              if (this.arrayList[2].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[2].type) item.delete = true
+            })
+          }
+          res.forEach(item => {
+            if (item) {
+              this.info.settlement_sheet_attach.push({
+                filetype: this.arrayList[2].type,
+                filepath: item.FilePath,
+                filename: item.OriginalFileName
+              })
+            }
+          })
+          return upload(urlsList[3].urLs)
+        })
+        .then(res => {
+          //验证已上传文件是否被删除
+          if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
+            this.info.settlement_sheet_attach.forEach(item => {
+              if (this.arrayList[3].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[3].type) item.delete = true
+            })
+          }
+          res.forEach(item => {
+            if (item) {
+              this.info.settlement_sheet_attach.push({
+                filetype: this.arrayList[3].type,
+                filepath: item.FilePath,
+                filename: item.OriginalFileName
+              })
+            }
+          })
+          return upload(urlsList[4].urLs)
+        })
+        .then(res => {
+          //验证已上传文件是否被删除
+          if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
+            this.info.settlement_sheet_attach.forEach(item => {
+              if (this.arrayList[4].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[4].type) item.delete = true
+            })
+          }
+          res.forEach(item => {
+            if (item) {
+              this.info.settlement_sheet_attach.push({
+                filetype: this.arrayList[4].type,
+                filepath: item.FilePath,
+                filename: item.OriginalFileName
+              })
+            }
+          })
 
-				if(item.id==this.info.settlement_roomtaxid){
-					this.roomSettlementOut=item.outtaxrate;
-				}
-				if(item.id==this.info.settlement_conferencetaxid){
-					this.conferenceSettlementOut=item.outtaxrate;
-				}
-				
-				if(item.id==this.info.settlement_foodtaxid){
-					this.foodSettlementOut=item.outtaxrate;
-				}
-			});
-			
-		},
-		roomVat(e) {
-			this.info.taxlist.forEach((item, i) => {
-				if(item.id==e){
-					this.roomSettlementOut=item.outtaxrate
-				}
-			});
-			this.info.roomtaxid=e
-		},
-		conferenceVat(e) {
-			this.info.taxlist.forEach((item, i) => {
-				if(item.id==e){
-					this.conferenceSettlementOut=item.outtaxrate
-				}
-			});
-			this.info.conferencetaxid=e
-		},
-		foodVat(e) {
-			this.info.taxlist.forEach((item, i) => {
-				if(item.id==e){
-					this.foodSettlementOut=item.outtaxrate
-				}
-			});
-			this.info.foodtaxid=e
-		},
-		initInfo() {
-			this.info.settlement_sheet_room.forEach((item, index) => {
-				item.room_list.forEach(itemc => {
-					if (!itemc.settlement_sheet_room_id) {
-						//设置默认值，结算金额，数量默认为报价金额，数量
-						itemc.settlement_unitprice = positiveFloatSix(itemc.unitprice);
-						if(this.info.is_Inside_outside == '0') {
-							itemc.settlement_count = itemc.provide_count;
-							itemc.settlement_inside_roomcount = 0;
-							itemc.settlement_outside_roomcount = itemc.provide_count;
-						}
-						if(this.info.is_Inside_outside == '1') {
-							itemc.settlement_count = itemc.provide_count;
-							itemc.settlement_inside_roomcount = itemc.inside_roomcount;
-							itemc.settlement_outside_roomcount = itemc.outside_roomcount;
-						}
+          // 排序
+          if (this.info.settlement_sheet_room) {
+            this.info.settlement_sheet_room.forEach(item => {
+              for (let i = 0; i < item.room_list.length; i++) {
+                item.room_list[i].indexs = i + 1
+              }
+            })
+          }
+          if (this.info.settlement_sheet_conference) {
+            this.info.settlement_sheet_conference.forEach(item => {
+              for (let i = 0; i < item.conference_list.length; i++) {
+                item.conference_list[i].indexs = i + 1
+              }
+            })
+          }
+          if (this.info.settlement_sheet_food) {
+            this.info.settlement_sheet_food.forEach(item => {
+              for (let i = 0; i < item.food_list.length; i++) {
+                item.food_list[i].indexs = i + 1
+              }
+            })
+          }
 
-					}
-				});
-			});
-			this.info.settlement_sheet_conference.forEach((item, index) => {
-				item.conference_list.forEach(itemc => {
-					if (!itemc.settlement_sheet_conference_id) {
-						//设置默认值，结算金额，数量默认为报价金额，数量
-						itemc.settlement_price = positiveFloatSix(itemc.price);
-						itemc.settlement_count = positiveFloat(itemc.count);
-					}
-				});
-			});
-			this.info.settlement_sheet_food.forEach((item, index) => {
-				item.food_list.forEach(itemc => {
-					if (!itemc.settlement_sheet_food_id) {
-						//设置默认值，结算金额，数量默认为报价金额，数量
-						itemc.settlement_unitprice = positiveFloatSix(itemc.price);
-						itemc.settlement_count = positiveFloat(itemc.personcount);
-					}
-				});
-			});
-			
-			// if (this.info.id == null) {
-			// 	//设置默认值，结算金额，比例默认为报价金额，比例
-			// 	this.info.settlement_advance_amount = this.info.quoted_travelagency_payment_money;
-			// 	this.info.settlement_advance_proportion = this.info.quoted_travelagency_payment_proportion;
-			// 	if (!this.info.settlement_advance_amount) {
-			// 		//结算直采金额
-			// 		this.info.settlement_advance_amount = 0;
-			// 	}
-			// 	if (!this.info.settlement_advance_proportion) {
-			// 		//结算直采比例
-			// 		this.info.settlement_advance_proportion = 0;
-			// 	}
-			// }
-			// if (this.info.orderstatus == '0020-1') {
-			// 	this.showPriceInfo = false;
-			// }
-		}
-	},
-	mounted() {
-		this.initCostProject();
-		this.$api
-			.settlementsheetInfo(
-				{
-					id: this.$route.params.id
-				},
-				'POST'
-			)
-			.then(res => {
-				this.info = res;
-				this.initVat();
-				this.initInfo();
-				if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
-					this.info.settlement_sheet_attach.forEach(item => {
-						this.arrayList.forEach((e, i) => {
-							if (item.filetype == e.type) {
-								this.arrayList[i].fileList.push({
-									id: item.id,
-									uid: '',
-									name: item.filename,
-									url: this.info.domain + item.filepath
-								});
-							}
-						});
-					});
-				}
-				
-				this.arrayList[0].remark = this.info.settlement_voucher; //住宿发票说明
-				this.arrayList[1].remark = this.info.settlement_contract; //餐饮发票说明
-				this.arrayList[2].remark = this.info.settlement_waterbill; //会场发票说明
-				this.arrayList[3].remark = this.info.settlement_other; //其他说明
-				this.arrayList[4].remark = this.info.settlement_invoice; //供应商发票说明
-				
-				if(this.info.dissent_invoice){
-					this.arrayList[0].dissent = this.info.dissent_voucher; //住宿发票说明
-					this.arrayList[1].dissent = this.info.dissent_contract; //餐饮发票说明
-					this.arrayList[2].dissent = this.info.dissent_waterbill; //会场发票说明
-					this.arrayList[3].dissent = this.info.dissent_other; //其他说明
-					this.arrayList[4].dissent = this.info.dissent_invoice; //供应商发票说明
-				}
-				
-				this.initFileRename();
-			});
-	}
-};
+          return this.$api.settlementsheetSave(this.info, 'POST')
+        })
+        .then(res => {
+          if (res) {
+            this.$message({
+              message: '保存成功！',
+              type: 'success'
+            })
+            this.$router.push({
+              name: 'orderInfo_Hotel',
+              params: {
+                id: this.info.orderform_id
+              }
+            })
+          } else {
+            this.$message({
+              message: '保存失败！',
+              type: 'error'
+            })
+          }
+        })
+    },
+    initVat() {
+      this.info.taxlist.forEach((item, i) => {
+        if (item.id == this.info.roomtaxid) {
+          this.roomOut = item.outtaxrate
+          this.roomOutMsg = item.taxname
+        }
+        if (item.id == this.info.conferencetaxid) {
+          this.conferenceOut = item.outtaxrate
+          this.conferenceOutMsg = item.taxname
+        }
+        if (item.id == this.info.foodtaxid) {
+          this.foodOut = item.outtaxrate
+          this.foodOutMsg = item.taxname
+        }
+
+        if (item.id == this.info.settlement_roomtaxid) {
+          this.roomSettlementOut = item.outtaxrate
+        }
+        if (item.id == this.info.settlement_conferencetaxid) {
+          this.conferenceSettlementOut = item.outtaxrate
+        }
+
+        if (item.id == this.info.settlement_foodtaxid) {
+          this.foodSettlementOut = item.outtaxrate
+        }
+      })
+    },
+    roomVat(e) {
+      this.info.taxlist.forEach((item, i) => {
+        if (item.id == e) {
+          this.roomSettlementOut = item.outtaxrate
+        }
+      })
+      this.info.roomtaxid = e
+    },
+    conferenceVat(e) {
+      this.info.taxlist.forEach((item, i) => {
+        if (item.id == e) {
+          this.conferenceSettlementOut = item.outtaxrate
+        }
+      })
+      this.info.conferencetaxid = e
+    },
+    foodVat(e) {
+      this.info.taxlist.forEach((item, i) => {
+        if (item.id == e) {
+          this.foodSettlementOut = item.outtaxrate
+        }
+      })
+      this.info.foodtaxid = e
+    },
+    initInfo() {
+      this.info.settlement_sheet_room.forEach((item, index) => {
+        item.room_list.forEach(itemc => {
+          if (!itemc.settlement_sheet_room_id) {
+            //设置默认值，结算金额，数量默认为报价金额，数量
+            itemc.settlement_unitprice = positiveFloatSix(itemc.unitprice)
+            if (this.info.is_Inside_outside == '0') {
+              itemc.settlement_count = itemc.provide_count
+              itemc.settlement_inside_roomcount = 0
+              itemc.settlement_outside_roomcount = itemc.provide_count
+            }
+            if (this.info.is_Inside_outside == '1') {
+              itemc.settlement_count = itemc.provide_count
+              itemc.settlement_inside_roomcount = itemc.inside_roomcount
+              itemc.settlement_outside_roomcount = itemc.outside_roomcount
+            }
+          }
+        })
+      })
+      this.info.settlement_sheet_conference.forEach((item, index) => {
+        item.conference_list.forEach(itemc => {
+          if (!itemc.settlement_sheet_conference_id) {
+            //设置默认值，结算金额，数量默认为报价金额，数量
+            itemc.settlement_price = positiveFloatSix(itemc.price)
+            itemc.settlement_count = positiveFloat(itemc.count)
+          }
+        })
+      })
+      this.info.settlement_sheet_food.forEach((item, index) => {
+        item.food_list.forEach(itemc => {
+          if (!itemc.settlement_sheet_food_id) {
+            //设置默认值，结算金额，数量默认为报价金额，数量
+            itemc.settlement_unitprice = positiveFloatSix(itemc.price)
+            itemc.settlement_count = positiveFloat(itemc.personcount)
+          }
+        })
+      })
+
+      // if (this.info.id == null) {
+      // 	//设置默认值，结算金额，比例默认为报价金额，比例
+      // 	this.info.settlement_advance_amount = this.info.quoted_travelagency_payment_money;
+      // 	this.info.settlement_advance_proportion = this.info.quoted_travelagency_payment_proportion;
+      // 	if (!this.info.settlement_advance_amount) {
+      // 		//结算直采金额
+      // 		this.info.settlement_advance_amount = 0;
+      // 	}
+      // 	if (!this.info.settlement_advance_proportion) {
+      // 		//结算直采比例
+      // 		this.info.settlement_advance_proportion = 0;
+      // 	}
+      // }
+      // if (this.info.orderstatus == '0020-1') {
+      // 	this.showPriceInfo = false;
+      // }
+    }
+  },
+  mounted() {
+    this.initCostProject()
+    this.$api
+      .settlementsheetInfo(
+        {
+          id: this.$route.params.id
+        },
+        'POST'
+      )
+      .then(res => {
+        this.info = res
+        this.initVat()
+        this.initInfo()
+        if (this.info.settlement_sheet_attach && this.info.settlement_sheet_attach.length > 0) {
+          this.info.settlement_sheet_attach.forEach(item => {
+            this.arrayList.forEach((e, i) => {
+              if (item.filetype == e.type) {
+                this.arrayList[i].fileList.push({
+                  id: item.id,
+                  uid: '',
+                  name: item.filename,
+                  url: this.info.domain + item.filepath
+                })
+              }
+            })
+          })
+        }
+
+        this.arrayList[0].remark = this.info.settlement_voucher //住宿发票说明
+        this.arrayList[1].remark = this.info.settlement_contract //餐饮发票说明
+        this.arrayList[2].remark = this.info.settlement_waterbill //会场发票说明
+        this.arrayList[3].remark = this.info.settlement_other //其他说明
+        this.arrayList[4].remark = this.info.settlement_invoice //供应商发票说明
+
+        if (this.info.dissent_invoice) {
+          this.arrayList[0].dissent = this.info.dissent_voucher //住宿发票说明
+          this.arrayList[1].dissent = this.info.dissent_contract //餐饮发票说明
+          this.arrayList[2].dissent = this.info.dissent_waterbill //会场发票说明
+          this.arrayList[3].dissent = this.info.dissent_other //其他说明
+          this.arrayList[4].dissent = this.info.dissent_invoice //供应商发票说明
+        }
+
+        this.initFileRename()
+      })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

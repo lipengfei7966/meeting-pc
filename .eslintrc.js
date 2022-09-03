@@ -15,7 +15,7 @@ module.exports = {
   // required to lint *.vue files
   plugins: [
     'html',
-    // 'vue'
+    'vue'
   ],
   // check if imports actually resolve
   'settings': {

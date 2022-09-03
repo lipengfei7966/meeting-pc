@@ -66,51 +66,48 @@
 <script>
 import basePart from '@/components/event/basePart_2.vue'
 export default {
-	data() {
-		return {
-			menus:[],
-			arr:[],
-			num:[],
-			selectQuery:{},
-		};
-	},
-	components:{
-		basePart
-	},
-	mounted() {
-		this.selectQuery = this.$route.query;
-	  this.store()
-	},
-	methods: {
-		checkOffer(foreign_key_id) {
-			this.$router.push({
+  data() {
+    return {
+      menus: [],
+      arr: [],
+      num: [],
+      selectQuery: {}
+    }
+  },
+  components: {
+    basePart
+  },
+  mounted() {
+    this.selectQuery = this.$route.query
+    this.store()
+  },
+  methods: {
+    checkOffer(foreign_key_id) {
+      this.$router.push({
         name: 'offer',
-				// path: '/offer',
-				query: {
-					foreign_key_id: foreign_key_id,
-					id: this.$route.query.id,
-					type: this.$route.query.type,
-				}
-			})
-		},
+        // path: '/offer',
+        query: {
+          foreign_key_id: foreign_key_id,
+          id: this.$route.query.id,
+          type: this.$route.query.type
+        }
+      })
+    },
 
-	   //中标审批会议详情
-	   store(){
+    //中标审批会议详情
+    store() {
       this.requestApi({
         url: '/MeetingMa/TouristAgencyQuotedPrice',
         method: 'POST',
-        data: { ApproveID: this.selectQuery.ApproveID, },
-      }).then((res)=>{
-			   console.log(res);
-			   this.arr=res.approve;
-			   this.num=res.inquirySheet;
-		   })
-	   }
-
-
-
-	}
-};
+        data: { ApproveID: this.selectQuery.ApproveID }
+      }).then(res => {
+        console.log(res)
+        this.arr = res.approve
+        this.num = res.inquirySheet
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

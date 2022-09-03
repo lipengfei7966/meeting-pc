@@ -149,168 +149,168 @@
 </template>
 
 <script>
-import QuotationPart from '../offer/components/quotation';
-import BasePart from '@/components/event/basePart_2';
-import { classifyByTime, EventClassifyByTime } from '@/assets/js/validator';
+import QuotationPart from '../offer/components/quotation'
+import BasePart from '@/components/event/basePart_2'
+import { classifyByTime, EventClassifyByTime } from '@/assets/js/validator'
 export default {
-	data() {
-		return {
-			prev: '',
-			arr: [],
-			centerDialogVisible: false,
-			value1: null,
-			value2: null,
-			evaluates_grade: '',
-			colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
-			addCommentFlag: false,
-			summary: {},
-			ApprovalOpinion: '',
-			eventId: '',
-			cancelOrderDialog: false, // 取消订单弹框
-			content: '', // 取消原因
-			isShowCancelBtn: false ,// 是否展示取消会议按钮
-			cancelSuccess: false, //订单取消成功后的弹框显示、隐藏
-			num:0,//预算填报次数
-		};
-	},
-	components: {
-		BasePart,
-		QuotationPart
-	},
-	mounted() {
-		this.eventId = this.$route.query.id;
-		this.Searname();
-		this.grade();
-		this.cancelShow();
-		this.budget()
-		this.prev = this.$route.query.prev;
-	},
-	methods: {
-		budget() {
+  data() {
+    return {
+      prev: '',
+      arr: [],
+      centerDialogVisible: false,
+      value1: null,
+      value2: null,
+      evaluates_grade: '',
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
+      addCommentFlag: false,
+      summary: {},
+      ApprovalOpinion: '',
+      eventId: '',
+      cancelOrderDialog: false, // 取消订单弹框
+      content: '', // 取消原因
+      isShowCancelBtn: false, // 是否展示取消会议按钮
+      cancelSuccess: false, //订单取消成功后的弹框显示、隐藏
+      num: 0 //预算填报次数
+    }
+  },
+  components: {
+    BasePart,
+    QuotationPart
+  },
+  mounted() {
+    this.eventId = this.$route.query.id
+    this.Searname()
+    this.grade()
+    this.cancelShow()
+    this.budget()
+    this.prev = this.$route.query.prev
+  },
+  methods: {
+    budget() {
       this.requestApi({
         url: '/Quotation/FillinBuget',
         method: 'POST',
-        data: { eventinfoid: this.eventId },
+        data: { eventinfoid: this.eventId }
       }).then(res => {
-        if (res[0] && res[0].budget_count) this.num = res[0].budget_count;
-      });
-		},
-		//更新预算
-		updateBudget(){
-			sessionStorage.setItem('budgetKey',true)//存入键值，true为打开填报预算弹框,在会议详情获取使用
-			this.$router.go(-1);
-		},
-		//不更新预算
-		notUpdate(){
-			this.cancelSuccess=false
-			//取消之后刷新页面,开发时间短，暂时为更新接口
-			this.Searname();
-			this.grade();
-			this.cancelShow();
-		},
-		// 取消订单  按钮展示
-		cancelShow() {
+        if (res[0] && res[0].budget_count) this.num = res[0].budget_count
+      })
+    },
+    //更新预算
+    updateBudget() {
+      sessionStorage.setItem('budgetKey', true) //存入键值，true为打开填报预算弹框,在会议详情获取使用
+      this.$router.go(-1)
+    },
+    //不更新预算
+    notUpdate() {
+      this.cancelSuccess = false
+      //取消之后刷新页面,开发时间短，暂时为更新接口
+      this.Searname()
+      this.grade()
+      this.cancelShow()
+    },
+    // 取消订单  按钮展示
+    cancelShow() {
       this.requestApi({
         url: '/MeetingMa/CancelShow',
         method: 'POST',
-        data: { ID: this.$route.query.orderId, type: 3 },
+        data: { ID: this.$route.query.orderId, type: 3 }
       }).then(res => {
-				this.isShowCancelBtn = res;
-			});
-		},
-		// foreign_key_id 报价单id  serviceId:服务商id
-		goPage(name, data) {
-			// id:$route.query.id,foreign_key_id: item.quoted_priceid, type: 1, serviceId: item.id
-			let query = {
-				id: this.$route.query.id, // 会议id
-				foreign_key_id: data.event_quoted_price_id, // foreign_key_id 报价单id
-				serviceId: data.servcice_hotel_id, // serviceId:服务商id
-				sheetId: data.event_inquiry_sheet_id, // 询价单id
-				settlementId: data.settlement_sheet_id, // 结算单id
-				prev: '订单详情'
-			};
-			this.$router.push({ name, query });
-		},
-		// 取消订单
-		cancelTap() {
-			if (this.content) {
+        this.isShowCancelBtn = res
+      })
+    },
+    // foreign_key_id 报价单id  serviceId:服务商id
+    goPage(name, data) {
+      // id:$route.query.id,foreign_key_id: item.quoted_priceid, type: 1, serviceId: item.id
+      let query = {
+        id: this.$route.query.id, // 会议id
+        foreign_key_id: data.event_quoted_price_id, // foreign_key_id 报价单id
+        serviceId: data.servcice_hotel_id, // serviceId:服务商id
+        sheetId: data.event_inquiry_sheet_id, // 询价单id
+        settlementId: data.settlement_sheet_id, // 结算单id
+        prev: '订单详情'
+      }
+      this.$router.push({ name, query })
+    },
+    // 取消订单
+    cancelTap() {
+      if (this.content) {
         this.requestApi({
           url: '/MeetingMa/CancelOrderform',
           method: 'POST',
-          data: { OrderformID: this.$route.query.orderId, Content: this.content },
+          data: { OrderformID: this.$route.query.orderId, Content: this.content }
         }).then(res => {
-					this.cancelOrderDialog = false;
-					if(this.num>0 && this.servicer.type==1){ //this.servicer.type 1中标
-						this.cancelSuccess=true
-					}else{
-						//取消之后刷新页面,开发时间短，暂时为更新接口
-						this.Searname();
-						this.grade();
-						this.cancelShow();
-						
-					}
-					this.$message.warning(res.msg);
-				});
-			} else {
-				this.$message.warning('请填写取消原因');
-			}
-		},
-		// 获取需求统计
-		getDemand(QuotedPriceID) {
+          this.cancelOrderDialog = false
+          if (this.num > 0 && this.servicer.type == 1) {
+            //this.servicer.type 1中标
+            this.cancelSuccess = true
+          } else {
+            //取消之后刷新页面,开发时间短，暂时为更新接口
+            this.Searname()
+            this.grade()
+            this.cancelShow()
+          }
+          this.$message.warning(res.msg)
+        })
+      } else {
+        this.$message.warning('请填写取消原因')
+      }
+    },
+    // 获取需求统计
+    getDemand(QuotedPriceID) {
       this.requestApi({
         url: '/MeetingMa/GetQuotedPrice',
         method: 'POST',
-        data: { QuotedPriceID: QuotedPriceID },
+        data: { QuotedPriceID: QuotedPriceID }
       }).then(res => {
-				if (res) {
-					this.servicer = res.service; //服务商、酒店信息
-					this.$refs.quotations.hotelInfo = res.service; //服务商、酒店信息
-					this.$refs.quotations.roomList = classifyByTime(res.room); //客房
-					this.$refs.quotations.eventList = EventClassifyByTime(res.conference); //会场信息
-					this.$refs.quotations.carList = classifyByTime(res.car, 'datatime'); // 地面交通
-					this.$refs.quotations.foodList = classifyByTime(res.food); //餐饮信息
-					this.$refs.quotations.foodOutsideList = classifyByTime(res.foodOutside); //餐饮信息
-					this.$refs.quotations.otherList = res.other ? res.other : []; //其他 兼容后台没数据返回 null
-					this.$refs.quotations.additional = res.quoted_price; // 报价单信息
-					this.$refs.quotations.transportList = classifyByTime(res.transportation, 'datatime'); //大交通
-					this.quotation = res.quotedprice; //报价记录
-				}
-			});
-		},
-		// 查询订单概要
-		Searname() {
+        if (res) {
+          this.servicer = res.service //服务商、酒店信息
+          this.$refs.quotations.hotelInfo = res.service //服务商、酒店信息
+          this.$refs.quotations.roomList = classifyByTime(res.room) //客房
+          this.$refs.quotations.eventList = EventClassifyByTime(res.conference) //会场信息
+          this.$refs.quotations.carList = classifyByTime(res.car, 'datatime') // 地面交通
+          this.$refs.quotations.foodList = classifyByTime(res.food) //餐饮信息
+          this.$refs.quotations.foodOutsideList = classifyByTime(res.foodOutside) //餐饮信息
+          this.$refs.quotations.otherList = res.other ? res.other : [] //其他 兼容后台没数据返回 null
+          this.$refs.quotations.additional = res.quoted_price // 报价单信息
+          this.$refs.quotations.transportList = classifyByTime(res.transportation, 'datatime') //大交通
+          this.quotation = res.quotedprice //报价记录
+        }
+      })
+    },
+    // 查询订单概要
+    Searname() {
       this.requestApi({
         url: '/MeetingMa/GetOrderformByID',
         method: 'POST',
-        data: { OrderformID: this.$route.query.orderId },
+        data: { OrderformID: this.$route.query.orderId }
       }).then(res => {
-				console.log(res);
-				this.summary = res;
-				// 获取需求统计
-				this.getDemand(this.summary[0].event_quoted_price_id); // 传参报价单ID
-				//获取中标信息
-				this.getServiceType(this.summary[0].event_quoted_price_id)// 传参报价单ID
-			});
-		},
-		change() {
-			this.centerDialogVisible = true;
-		},
-		addComment() {
-			this.centerDialogVisible = false;
-			this.addCommentFlag = true;
-		},
-		// 服务商评价查询
-		grade() {
+        console.log(res)
+        this.summary = res
+        // 获取需求统计
+        this.getDemand(this.summary[0].event_quoted_price_id) // 传参报价单ID
+        //获取中标信息
+        this.getServiceType(this.summary[0].event_quoted_price_id) // 传参报价单ID
+      })
+    },
+    change() {
+      this.centerDialogVisible = true
+    },
+    addComment() {
+      this.centerDialogVisible = false
+      this.addCommentFlag = true
+    },
+    // 服务商评价查询
+    grade() {
       this.requestApi({
         url: '/MeetingMa/GetServiceEvaluates',
         method: 'POST',
-        data: { OrderformID: this.$route.query.orderId },
+        data: { OrderformID: this.$route.query.orderId }
       }).then(res => {
-				console.log(res);
-				this.arr = Array.isArray(res) ? res : [];
-			});
-		},
-		submit() {
+        console.log(res)
+        this.arr = Array.isArray(res) ? res : []
+      })
+    },
+    submit() {
       this.requestApi({
         url: '/MeetingMa/ServiceEvaluatesSava',
         method: 'POST',
@@ -320,16 +320,16 @@ export default {
             evaluates_text: this.ApprovalOpinion,
             evaluates_grade: this.evaluates_grade
           })
-        },
+        }
       }).then(res => {
-        console.log(res);
-        this.centerDialogVisible = false;
-        this.addCommentFlag = false;
-        this.grade();
-      });
-		}
-	}
-};
+        console.log(res)
+        this.centerDialogVisible = false
+        this.addCommentFlag = false
+        this.grade()
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

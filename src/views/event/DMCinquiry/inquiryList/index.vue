@@ -105,61 +105,61 @@
 /**
  * @page 活动询价订单
  */
-import leaveMessage from "@/components/event/leave-message.vue";
-import {guid, positiveInteger, positiveFloat, positiveFloatSix, formatDate, formatNum } from '@/utils/common';
+import leaveMessage from '@/components/event/leave-message.vue'
+import { guid, positiveInteger, positiveFloat, positiveFloatSix, formatDate, formatNum } from '@/utils/common'
 
 export default {
-  name: "activityOrderList",
+  name: 'activityOrderList',
   components: { leaveMessage },
   data() {
     return {
       leaveMessageStatus: false,
       leaveMessageId: null,
-      allStatus:[
-        {code:'0012-1', name: '未报价'},
-        {code:'0012-2', name: '等待客户决定'},
-        {code:'0012-3', name: '已签约'},
-        {code:'0012-4', name: '您已拒绝报价'},
-        {code:'0012-5', name: '未中标'},
-        {code:'0012-6', name: '要求重新报价'},
-        {code:'0012-7', name: '已取消'},
+      allStatus: [
+        { code: '0012-1', name: '未报价' },
+        { code: '0012-2', name: '等待客户决定' },
+        { code: '0012-3', name: '已签约' },
+        { code: '0012-4', name: '您已拒绝报价' },
+        { code: '0012-5', name: '未中标' },
+        { code: '0012-6', name: '要求重新报价' },
+        { code: '0012-7', name: '已取消' }
       ],
-      po:{
-        inquiry_sheet_code:"",
-        startdate:null,
-        enddate:null,
-        status:''
+      po: {
+        inquiry_sheet_code: '',
+        startdate: null,
+        enddate: null,
+        status: ''
       },
       tableData: {
         CurrentPage: 1,
-        List: [],
-      },
-    };
+        List: []
+      }
+    }
   },
   methods: {
     // 留言
     leaveMessage(index, item) {
       //红点
-      var inquiry =this.tableData.List.filter(w=> w.object_id ==item.object_id)
-      if(inquiry.length > 0){
-        inquiry[0].new_message_count =0;
+      var inquiry = this.tableData.List.filter(w => w.object_id == item.object_id)
+      if (inquiry.length > 0) {
+        inquiry[0].new_message_count = 0
       }
-      
+
       // this.tableData.List.forEach((model)=>{
       //    if(model.object_id ==item.object_id)
       //     model.new_message_count =0;
       // })
-      this.leaveMessageId = item.object_id;
-      this.leaveMessageStatus = true;
+      this.leaveMessageId = item.object_id
+      this.leaveMessageStatus = true
     },
     // 跳转详情页
     goInfo(index, item) {
       this.$router.push({
-        name: "DMCinquiryInfo",
+        name: 'DMCinquiryInfo',
         params: {
-          id: item.object_id,
-        },
-      });
+          id: item.object_id
+        }
+      })
     },
     // 获取列表
     GetList() {
@@ -169,25 +169,25 @@ export default {
         data: {
           Page: this.tableData.CurrentPage,
           Rows: 10,
-          po:this.po
-        },
-      }).then((res) => {
-          this.tableData = res;
-          this.tableData.List.forEach(element => {
-            element.total_price = positiveFloat(element.total_price, true);
-          });
-        });
+          po: this.po
+        }
+      }).then(res => {
+        this.tableData = res
+        this.tableData.List.forEach(element => {
+          element.total_price = positiveFloat(element.total_price, true)
+        })
+      })
     },
     // 触发页码
     currentChange(page) {
-      this.tableData.CurrentPage = page;
-      this.GetList();
-    },
+      this.tableData.CurrentPage = page
+      this.GetList()
+    }
   },
   mounted() {
-    this.GetList();
-  },
-};
+    this.GetList()
+  }
+}
 </script>
 
 <style lang="scss" scoped>

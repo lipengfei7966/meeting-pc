@@ -199,7 +199,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -235,26 +234,26 @@ export default {
       controlHiding: -1,
 
       // 每个单元格的数据
-      allTableData: [],
-    };
+      allTableData: []
+    }
   },
   created() {
     // this.GetDepartmentyMeeting();
-    this.GetUser();
-    this.getAll();
+    this.GetUser()
+    this.getAll()
   },
   methods: {
     // 向上
     up(index) {
-      if (index === 0) return;
+      if (index === 0) return
       // debugger
-      let item = this.mettingType.splice(index, 1);
-      this.mettingType.splice(index - 1, 0, item[0]);
+      let item = this.mettingType.splice(index, 1)
+      this.mettingType.splice(index - 1, 0, item[0])
       let Parameter = []
-      this.mettingType.forEach((item,index) => {
+      this.mettingType.forEach((item, index) => {
         Parameter.push({
           id: item.id,
-          order: index+1
+          order: index + 1
         })
       })
       this.requestApi({
@@ -262,21 +261,19 @@ export default {
         method: 'POST',
         data: {
           Parameter: JSON.stringify(Parameter)
-        },
-      }).then({
-
-      })
+        }
+      }).then({})
     },
     // 向下
     down(index) {
-      if (index === this.mettingType.length - 1) return;
-      let item = this.mettingType.splice(index, 1);
-      this.mettingType.splice(index + 1, 0, item[0]);
+      if (index === this.mettingType.length - 1) return
+      let item = this.mettingType.splice(index, 1)
+      this.mettingType.splice(index + 1, 0, item[0])
       let Parameter = []
-      this.mettingType.forEach((item,index) => {
+      this.mettingType.forEach((item, index) => {
         Parameter.push({
           id: item.id,
-          order: index+1
+          order: index + 1
         })
       })
       this.requestApi({
@@ -284,75 +281,73 @@ export default {
         method: 'POST',
         data: {
           Parameter: JSON.stringify(Parameter)
-        },
-      }).then({
-
-      })
+        }
+      }).then({})
     },
 
     //
     nullTrue() {
-     let ids = [];
-      this.allTableData.forEach((tab) => {
+      let ids = []
+      this.allTableData.forEach(tab => {
         tab.temp.forEach((t, i) => {
           if (t.isChecked === true) {
-            ids.push({ id: t.id });
+            ids.push({ id: t.id })
           }
-        });
-      });
+        })
+      })
       if (ids.length <= 0) {
-        this.outerVisible = true;
-        return;
+        this.outerVisible = true
+        return
       } else {
-        this.centerDialogVisible = true;
+        this.centerDialogVisible = true
       }
     },
     approvalTable() {
-      let ids = [];
-      this.allTableData.forEach((tab) => {
+      let ids = []
+      this.allTableData.forEach(tab => {
         tab.temp.forEach((t, i) => {
           if (t.isChecked === true) {
-            ids.push({ id: t.id });
+            ids.push({ id: t.id })
           }
-        });
-      });
+        })
+      })
       if (ids.length <= 0) {
-        this.outerVisible = true;
-        return;
+        this.outerVisible = true
+        return
       } else {
-        this.complianceMeal = true;
+        this.complianceMeal = true
       }
     },
     // 全选
     selectAll($event) {
       this.mettingType = this.mettingType.map((item, i) => {
-        item.isChecked = $event.target.checked ? true : false;
-        return item;
-      });
+        item.isChecked = $event.target.checked ? true : false
+        return item
+      })
       this.department = this.department.map((item, i) => {
-        item.isChecked = $event.target.checked ? true : false;
-        return item;
-      });
-      this.allTableData = this.allTableData.map((tab) => {
-        tab.temp.map((t) => {
-          t.isChecked = $event.target.checked ? true : false;
-          return t;
-        });
-        return tab;
-      });
+        item.isChecked = $event.target.checked ? true : false
+        return item
+      })
+      this.allTableData = this.allTableData.map(tab => {
+        tab.temp.map(t => {
+          t.isChecked = $event.target.checked ? true : false
+          return t
+        })
+        return tab
+      })
     },
 
     // 选择列
     selectCol(index, $event) {
-      this.allTableData = this.allTableData.map((tab) => {
+      this.allTableData = this.allTableData.map(tab => {
         tab.temp.map((t, i) => {
           if (+index === i) {
-            t.isChecked = $event.target.checked ? true : false;
+            t.isChecked = $event.target.checked ? true : false
           }
-          return t;
-        });
-        return tab;
-      });
+          return t
+        })
+        return tab
+      })
     },
 
     // 选择行
@@ -373,13 +368,13 @@ export default {
 
       this.allTableData = this.allTableData.map((tab, curIndex) => {
         if (curIndex === +index) {
-          tab.temp.map((t) => {
-            t.isChecked = $event.target.checked ? true : false;
-            return t;
-          });
+          tab.temp.map(t => {
+            t.isChecked = $event.target.checked ? true : false
+            return t
+          })
         }
-        return tab;
-      });
+        return tab
+      })
     },
 
     // 单个选
@@ -388,19 +383,19 @@ export default {
         if (curIndex === +type) {
           tab.temp.map((t, i) => {
             if (+index === i) {
-              t.isChecked = $event.target.checked ? true : false;
+              t.isChecked = $event.target.checked ? true : false
             }
-            return t;
-          });
+            return t
+          })
         }
-        return tab;
-      });
+        return tab
+      })
     },
 
     // 指派合规人员
     assignUser(type) {
-      this.typeSave(type);
-      this.centerDialogVisible = false;
+      this.typeSave(type)
+      this.centerDialogVisible = false
     },
     //点击删除
     deleteRow(index) {
@@ -409,207 +404,203 @@ export default {
         method: 'POST',
         data: {
           TypeID: this.mettingType[index].id
-        },
-      }).then((res) => {
-          if (res) {
-            this.GetDepartmentyMeeting();
-          }
-        });
+        }
+      }).then(res => {
+        if (res) {
+          this.GetDepartmentyMeeting()
+        }
+      })
     },
     //人员
     GetUser() {
       this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'POST',
-        data: {
-          
-        },
-      }).then((res) => {
+        data: {}
+      }).then(res => {
         if (res) {
-          this.GetUser = res;
+          this.GetUser = res
         }
-      });
+      })
     },
     //点击取消
     cancelBox() {
       // approvaProcessSort
-    //   let paster = [{
-    //     id:"20431744-e0a1-430d-905d-c3622868796b",	//审批ID
-    //     sort:1							//	排序顺序
-    // },
-    // {
-    //     id:"c54c63e9-d8b9-4de3-a330-682a50b3a2d0",
-    //     sort:2
-    // }]
+      //   let paster = [{
+      //     id:"20431744-e0a1-430d-905d-c3622868796b",	//审批ID
+      //     sort:1							//	排序顺序
+      // },
+      // {
+      //     id:"c54c63e9-d8b9-4de3-a330-682a50b3a2d0",
+      //     sort:2
+      // }]
 
-    //   this.$api.approvaProcessSort({ Parameter: JSON.stringify(paster)}, 'POST').then((res) => {
-    //     if (res) {
-    //       this.nameList = res;
-    //     }
-    //   });
-      this.SetMeetingType = false;
+      //   this.$api.approvaProcessSort({ Parameter: JSON.stringify(paster)}, 'POST').then((res) => {
+      //     if (res) {
+      //       this.nameList = res;
+      //     }
+      //   });
+      this.SetMeetingType = false
       // location.reload();
     },
-    quxiao(){this.controlHiding=false;this.showInput = !this.showInput;},
+    quxiao() {
+      this.controlHiding = false
+      this.showInput = !this.showInput
+    },
     //点击编辑
     colack(item, index) {
-      this.showInput = index;
-      this.itemID = item.id;
-      this.controlHiding = index;
+      this.showInput = index
+      this.itemID = item.id
+      this.controlHiding = index
     },
     //添加会议类型
     addCondition() {
-      let mettingType = [];
-      this.mettingType.push({ name: 'new', value: 1 });
+      let mettingType = []
+      this.mettingType.push({ name: 'new', value: 1 })
     },
     GetDepartmentyMeeting() {
       this.requestApi({
         url: '/MeetingMa/GetDepartmentyMeeting',
         method: 'POST',
         data: {
-          CompanyID: this.listValue,
-        },
-      }).then((res) => {
+          CompanyID: this.listValue
+        }
+      }).then(res => {
         if (res) {
           // debugger
-          this.allTableData=[];
-          if(res.department) {
-            this.department = res.department.map((item) => {
-              item.isChecked = false;
-              return item;
-            });
-          }else {
+          this.allTableData = []
+          if (res.department) {
+            this.department = res.department.map(item => {
+              item.isChecked = false
+              return item
+            })
+          } else {
             this.department = []
           }
-          if(res.type){
-            this.mettingType = res.type.map((item) => {
-              item.isChecked = false;
-              return item;
-            });
-          }else {
+          if (res.type) {
+            this.mettingType = res.type.map(item => {
+              item.isChecked = false
+              return item
+            })
+          } else {
             this.mettingType = []
           }
 
-          this.Compliance = res.data || [];
+          this.Compliance = res.data || []
           // 数据筛选根据返回的数据customer_id分类
-          this.department.forEach((d) => {
-            let temp = [];
-            let temp1 = [];
-            this.Compliance.forEach((c) => {
+          this.department.forEach(d => {
+            let temp = []
+            let temp1 = []
+            this.Compliance.forEach(c => {
               if (c.customer_id == d.id) {
-                c.isChecked = false;
-                temp1.push(c);
+                c.isChecked = false
+                temp1.push(c)
               }
-            });
+            })
             // temp 按照会议类型排序
             this.mettingType.forEach(d => {
               temp1.forEach(f => {
-                if(d.id == f.meeting_type_id){
-                  temp.push(f);
+                if (d.id == f.meeting_type_id) {
+                  temp.push(f)
                 }
               })
             })
-            
-            this.allTableData.push({ temp });
-          });
+
+            this.allTableData.push({ temp })
+          })
         }
-      });
+      })
     },
     //增加/编辑 点击保存
     hander(item, index) {
-      this.showInput = !this.showInput;
-      this.itemID = item.id;
-      const arr = this.mettingType.filter((item) => item.id === this.itemID);
-      let obj = {};
-      obj.name = arr[0].name;
-      obj.company_id = this.listValue;
-      obj.id = arr[0].id || '';
+      this.showInput = !this.showInput
+      this.itemID = item.id
+      const arr = this.mettingType.filter(item => item.id === this.itemID)
+      let obj = {}
+      obj.name = arr[0].name
+      obj.company_id = this.listValue
+      obj.id = arr[0].id || ''
       this.requestApi({
         url: '/MeetingMa/MeetingTypeSava',
         method: 'POST',
         data: {
-          Parameter: JSON.stringify(obj),
-        },
-      }).then((res) => {
+          Parameter: JSON.stringify(obj)
+        }
+      }).then(res => {
         if (res) {
-          this.$message('保存成功');
-          this.controlHiding = false;
-          this.GetDepartmentyMeeting();
+          this.$message('保存成功')
+          this.controlHiding = false
+          this.GetDepartmentyMeeting()
           // location.reload()
         }
-      });
+      })
     },
     querySearch(queryString, cb) {
-      var restaurants = this.restaurants;
-      var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants;
+      var restaurants = this.restaurants
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
       // 调用 callback 返回建议列表的数据
-      cb(results);
+      cb(results)
     },
     createFilter(queryString) {
-      return (restaurant) => {
-        return (
-          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
-          0
-        );
-      };
+      return restaurant => {
+        return restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+      }
     },
     handleSelect(item) {},
     //可见不可见
     Visible() {
-     let ids = [];
-      this.allTableData.forEach((tab) => {
+      let ids = []
+      this.allTableData.forEach(tab => {
         tab.temp.forEach((t, i) => {
           if (t.isChecked === true) {
-            ids.push({ id: t.id });
+            ids.push({ id: t.id })
           }
-        });
-      });
+        })
+      })
       this.requestApi({
         url: '/MeetingMa/DepartmentMeetingTypeShow',
         method: 'POST',
         data: {
           id: JSON.stringify({ ids }), //	 this.mettingType[index].id
-          Show: 1,
-        },
-      }).then((res) => {
+          Show: 1
+        }
+      }).then(res => {
         if (res == true) {
         }
-      });
+      })
     },
     //设置不可见
     setVisible(isShow) {
-      let ids = [];
-      this.allTableData.forEach((tab) => {
+      let ids = []
+      this.allTableData.forEach(tab => {
         tab.temp.forEach((t, i) => {
           if (t.isChecked === true) {
-            ids.push({ id: t.id });
+            ids.push({ id: t.id })
           }
-        });
-      });
-      console.log(ids, 'ids');
+        })
+      })
+      console.log(ids, 'ids')
       if (ids.length <= 0) {
-        this.outerVisible = true;
-        return;
+        this.outerVisible = true
+        return
       }
-      this.DepartmentMeetingTypeShow(ids, isShow);
+      this.DepartmentMeetingTypeShow(ids, isShow)
     },
     //设置可见
     setInvisible(isShow) {
-      let ids = [];
-      this.allTableData.forEach((tab) => {
+      let ids = []
+      this.allTableData.forEach(tab => {
         tab.temp.forEach((t, i) => {
           if (t.isChecked === true) {
-            ids.push({ id: t.id });
+            ids.push({ id: t.id })
           }
-        });
-      });
+        })
+      })
       if (ids.length <= 0) {
-        this.outerVisible = true;
-        return;
+        this.outerVisible = true
+        return
       }
-      this.DepartmentMeetingTypeShow(ids, isShow);
+      this.DepartmentMeetingTypeShow(ids, isShow)
     },
     //可见不可见接口
     DepartmentMeetingTypeShow(ids, isShow) {
@@ -618,27 +609,27 @@ export default {
         method: 'POST',
         data: {
           IDList: JSON.stringify({ ids }), //
-          Show: isShow,
-        },
-      }).then((res) => {
-        if (res) {
-          location.reload();
-          console.log(res, '111');
+          Show: isShow
         }
-      });
+      }).then(res => {
+        if (res) {
+          location.reload()
+          console.log(res, '111')
+        }
+      })
     },
     // 保存  DepartmentMeetingTypeSava
     typeSave(type) {
-      let ids = [];
-      this.allTableData.forEach((tab) => {
+      let ids = []
+      this.allTableData.forEach(tab => {
         tab.temp.forEach((t, i) => {
           if (t.isChecked === true) {
-            ids.push({ id: t.id });
+            ids.push({ id: t.id })
           }
-        });
-      });
-      this.DepartmentMeetingTypeSava(ids, type);
-      this.complianceMeal = false;
+        })
+      })
+      this.DepartmentMeetingTypeSava(ids, type)
+      this.complianceMeal = false
     },
     //列表接口
     DepartmentMeetingTypeSava(ids, type) {
@@ -648,31 +639,29 @@ export default {
         data: {
           IDList: JSON.stringify({ ids }),
           Value: type === 1 ? this.mealValue : this.userValue,
-          Type: type,
-        },
-      }).then((res) => {
-        if (res) {
-          location.reload();
+          Type: type
         }
-      });
+      }).then(res => {
+        if (res) {
+          location.reload()
+        }
+      })
     },
     getAll() {
       this.requestApi({
         url: '/MeetingMa/GetAllCompany',
         method: 'POST',
-        data: {
-          
-        },
-      }).then((res) => {
+        data: {}
+      }).then(res => {
         if (res) {
-          this.nameList = res;
-          this.listValue = this.nameList[0].id;
-          this.GetDepartmentyMeeting();
+          this.nameList = res
+          this.listValue = this.nameList[0].id
+          this.GetDepartmentyMeeting()
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

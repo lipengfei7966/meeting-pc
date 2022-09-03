@@ -256,151 +256,151 @@
 </template>
 
 <script>
-import SettingType from '@/components/event/conferencetype.vue';
-import Bingseeting from '@/components/event/bingseeting.vue';
-import Bingtuseeting from '@/components/event/bingtuseeting.vue';
-import Bingcity from '@/components/event/bingcity.vue';
-import ServiceproviderList from '@/components/event/serviceproviderList.vue';
+import SettingType from '@/components/event/conferencetype.vue'
+import Bingseeting from '@/components/event/bingseeting.vue'
+import Bingtuseeting from '@/components/event/bingtuseeting.vue'
+import Bingcity from '@/components/event/bingcity.vue'
+import ServiceproviderList from '@/components/event/serviceproviderList.vue'
 import excelExport from '@/utils/exportexcel.js'
 
 export default {
-	data() {
-		return {
-			dateList: [],
-			monthList: [
-				{
-					id: '1',
-					datem: '1'
-				},
-				{
-					id: '2',
-					datem: '2'
-				},
-				{
-					id: '3',
-					datem: '3'
-				},
-				{
-					id: '4',
-					datem: '4'
-				},
-				{
-					id: '5',
-					datem: '5'
-				},
-				{
-					id: '6',
-					datem: '6'
-				},
-				{
-					id: '7',
-					datem: '7'
-				},
-				{
-					id: '8',
-					datem: '8'
-				},
-				{
-					id: '9',
-					datem: '9'
-				},
-				{
-					id: '10',
-					datem: '10'
-				},
-				{
-					id: '11',
-					datem: '11'
-				},
-				{
-					id: '12',
-					datem: '12'
-				}
-			],
-			AmountType: 0,
-			piclist: {
-				cumulativeHotelInquiries: '',
-				cumulativeInquiryHotel: '',
-				cumulativeQuotesReceived: '',
-				cumulativeWinningOrders: ''
-			},
-			typeID: '',
-			tjtime: '0',
-			// 业务费用统计查询条件字段
-			totalBeginYears: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			totalBeginMonth: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			totalEndYears: new Date().getFullYear(),
-			totalEndMonth: new Date().getMonth()+1,
-			// 会议类型费用统计查询条件字段
-			meetBeginYears: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			meetBeginMonth: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			meetEndYears: new Date().getFullYear(),
-			meetEndMonth: new Date().getMonth()+1,
-			settingType: '0',
-			typelist: [],
-			monthlist: [],
-			seetingtypeList: [],
-			cityList: [],
-			serviceList: [],
-			departmentList: [],
-			seetingId: '2d207dbd-0bd4-11ec-ba42-fa163ed463f8',
-			company_name: [],
-			customers: [],
-			customerOne: null,
-			customerTwo: null,
-			customerThree: null,
-			serviceBeginYears:new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(),
-			serviceBeginMonth:new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1,
-			serviceEndYears:new Date().getFullYear(),
-			serviceEndMonth:new Date().getMonth()+1,
-			dialogVisible:false,
-			beginExcelYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
-			beginExcelMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
-			EndExcelYear: new Date().getFullYear(),
-			EndExcelMonth: new Date().getMonth() + 1,
-		};
-	},
-	components: {
-		SettingType,
-		Bingseeting,
-		Bingtuseeting,
-		Bingcity,
-		ServiceproviderList
-	},
-	mounted() {
-		var timeList = new Date().getFullYear() - 2019;
-		for (var i = 0; i < timeList + 1; i++) {
-			this.dateList.push({ id: i + 1, datey: 2019 + i });
-		}
-		this.suppliers();
-		this.costofOperation();
-		this.seetingtypes();
-		this.DepartmentId();
-		this.serviceProvider();
-		this.getCustomers()
-	},
-	methods: {
-		//客户
-		getCustomers() {
+  data() {
+    return {
+      dateList: [],
+      monthList: [
+        {
+          id: '1',
+          datem: '1'
+        },
+        {
+          id: '2',
+          datem: '2'
+        },
+        {
+          id: '3',
+          datem: '3'
+        },
+        {
+          id: '4',
+          datem: '4'
+        },
+        {
+          id: '5',
+          datem: '5'
+        },
+        {
+          id: '6',
+          datem: '6'
+        },
+        {
+          id: '7',
+          datem: '7'
+        },
+        {
+          id: '8',
+          datem: '8'
+        },
+        {
+          id: '9',
+          datem: '9'
+        },
+        {
+          id: '10',
+          datem: '10'
+        },
+        {
+          id: '11',
+          datem: '11'
+        },
+        {
+          id: '12',
+          datem: '12'
+        }
+      ],
+      AmountType: 0,
+      piclist: {
+        cumulativeHotelInquiries: '',
+        cumulativeInquiryHotel: '',
+        cumulativeQuotesReceived: '',
+        cumulativeWinningOrders: ''
+      },
+      typeID: '',
+      tjtime: '0',
+      // 业务费用统计查询条件字段
+      totalBeginYears: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      totalBeginMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      totalEndYears: new Date().getFullYear(),
+      totalEndMonth: new Date().getMonth() + 1,
+      // 会议类型费用统计查询条件字段
+      meetBeginYears: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      meetBeginMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      meetEndYears: new Date().getFullYear(),
+      meetEndMonth: new Date().getMonth() + 1,
+      settingType: '0',
+      typelist: [],
+      monthlist: [],
+      seetingtypeList: [],
+      cityList: [],
+      serviceList: [],
+      departmentList: [],
+      seetingId: '2d207dbd-0bd4-11ec-ba42-fa163ed463f8',
+      company_name: [],
+      customers: [],
+      customerOne: null,
+      customerTwo: null,
+      customerThree: null,
+      serviceBeginYears: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      serviceBeginMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      serviceEndYears: new Date().getFullYear(),
+      serviceEndMonth: new Date().getMonth() + 1,
+      dialogVisible: false,
+      beginExcelYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(),
+      beginExcelMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1,
+      EndExcelYear: new Date().getFullYear(),
+      EndExcelMonth: new Date().getMonth() + 1
+    }
+  },
+  components: {
+    SettingType,
+    Bingseeting,
+    Bingtuseeting,
+    Bingcity,
+    ServiceproviderList
+  },
+  mounted() {
+    var timeList = new Date().getFullYear() - 2019
+    for (var i = 0; i < timeList + 1; i++) {
+      this.dateList.push({ id: i + 1, datey: 2019 + i })
+    }
+    this.suppliers()
+    this.costofOperation()
+    this.seetingtypes()
+    this.DepartmentId()
+    this.serviceProvider()
+    this.getCustomers()
+  },
+  methods: {
+    //客户
+    getCustomers() {
       this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
-        data: {},
+        data: {}
       }).then(res => {
-				this.customers = res;
-			});
-		},
-		//获取部门id
-		DepartmentId() {
+        this.customers = res
+      })
+    },
+    //获取部门id
+    DepartmentId() {
       this.requestApi({
         url: '/CustomerConfiguration/GetDepartment',
         method: 'GET',
-        data: {},
+        data: {}
       }).then(res => {
-				this.departmentList = res;
-			});
-		},
-		costofOperation() {
+        this.departmentList = res
+      })
+    },
+    costofOperation() {
       this.requestApi({
         url: '/CustomerConfiguration/BusinessExpenseStatistics',
         method: 'GET',
@@ -409,15 +409,15 @@ export default {
           BeginMonth: this.totalBeginMonth,
           EndYear: this.totalEndYears,
           EndMonth: this.totalEndMonth,
-          CompanyId:this.customerOne
-        },
+          CompanyId: this.customerOne
+        }
       }).then(res => {
-					if (res) {
-						this.piclist = res;
-					}
-				});
-		},
-		seetingtypes() {
+        if (res) {
+          this.piclist = res
+        }
+      })
+    },
+    seetingtypes() {
       this.requestApi({
         url: '/CustomerConfiguration/CostStatisticsByEventType',
         method: 'GET',
@@ -428,27 +428,27 @@ export default {
           EndMonth: this.meetEndMonth,
           // DepartmentId: this.typeID,
           AmountType: this.tjtime,
-          CompanyId:this.customerTwo
-        },
+          CompanyId: this.customerTwo
+        }
       }).then(res => {
-					if (res) {
-						this.typelist = res.monthTypeList;
-						this.monthlist = res.monthList;
-						this.seetingtypeList = res.typeList;
-					}
-				});
-		},
-		serviceProvider() {
+        if (res) {
+          this.typelist = res.monthTypeList
+          this.monthlist = res.monthList
+          this.seetingtypeList = res.typeList
+        }
+      })
+    },
+    serviceProvider() {
       this.requestApi({
         url: '/CustomerConfiguration/GetServiceprovider',
         method: 'GET',
-        data: {},
+        data: {}
       }).then(res => {
-				console.log(res, '228828282828282');
-				this.company_name = res;
-			});
-		},
-		suppliers() {
+        console.log(res, '228828282828282')
+        this.company_name = res
+      })
+    },
+    suppliers() {
       this.requestApi({
         url: '/CustomerConfiguration/CostStatisticsByEventServiceprovider',
         method: 'GET',
@@ -459,50 +459,50 @@ export default {
           EndYear: this.serviceEndYears,
           EndMonth: this.serviceEndMonth,
           AmountType: this.AmountType,
-          CompanyId:this.customerThree
-        },
+          CompanyId: this.customerThree
+        }
       }).then(res => {
-					console.log(res, '266262626262626626');
-					this.cityList = res.cityList;
-					this.serviceList = res.serviceproviderList;
-				});
-		},
-		seetingsTatistics() {
-			this.seetingtypes();
-		},
-		provider() {
-			this.suppliers();
-		},
-		downloadReport() {
-			if(!this.beginExcelYear || !this.beginExcelMonth || !this.EndExcelYear || !this.EndExcelMonth){
-				this.$message({
-					type: 'warning',
-					message: '日期不可为空'
-				});
-				return
-			}
-			this.$confirm('是否要导出报表','提示',
-				{
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}
-			)
-				.then(() => {
-					this.dialogVisible=false
-					excelExport('/Reporting/GetExcel',{
-						BeginYear: this.beginExcelYear,
-						BeginMonth: this.beginExcelMonth,
-						EndYear: this.EndExcelYear,
-						EndMonth: this.EndExcelMonth
-					},'报表')
-				})
-				.catch(() => {
-					
-				});
-		}
-	}
-};
+        console.log(res, '266262626262626626')
+        this.cityList = res.cityList
+        this.serviceList = res.serviceproviderList
+      })
+    },
+    seetingsTatistics() {
+      this.seetingtypes()
+    },
+    provider() {
+      this.suppliers()
+    },
+    downloadReport() {
+      if (!this.beginExcelYear || !this.beginExcelMonth || !this.EndExcelYear || !this.EndExcelMonth) {
+        this.$message({
+          type: 'warning',
+          message: '日期不可为空'
+        })
+        return
+      }
+      this.$confirm('是否要导出报表', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.dialogVisible = false
+          excelExport(
+            '/Reporting/GetExcel',
+            {
+              BeginYear: this.beginExcelYear,
+              BeginMonth: this.beginExcelMonth,
+              EndYear: this.EndExcelYear,
+              EndMonth: this.EndExcelMonth
+            },
+            '报表'
+          )
+        })
+        .catch(() => {})
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

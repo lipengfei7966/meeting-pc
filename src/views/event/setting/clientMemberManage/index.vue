@@ -156,111 +156,112 @@
 </template>
 
 <script>
-	//import FileSaver from "file-saver";
-	//import XLSX from "xlsx";
-	import { validatePhone,validateEMail } from '@/assets/js/validator'
-  
-	export default {
-		data() {
-			return {
-				select_customer: '公司全员',
-				curPage: 1,
-				pagesize: 10,
-				totalNum: 0, // 客户成员列表总数
-				searchType: 0, //0: id为客户(部门)id , 1:id为公司id
-				searchID: '',
-				is_addOrUpdate: false,
-				shade: false,
-				import_member: false,
-				updateSection: false,
-				value: '',
-				name: '',
-				tableData: [],
-				multipleSelection: [],
-				companyData: [],
-				clientData: [],
-				companyCount: '',
-				addMember: false,
-				ruleForm: {
-					name: '',
-					phone: '',
-					mailbox: '',
-					customer_id: '',
-					company_id: '',
-					id: ''
-				},
-				rules: {
-					name: [{
-							required: true,
-							message: '请输入姓名',
-							trigger: 'blur'
-						},
-						{
-							min: 2,
-							max: 5,
-							message: '长度在 2 到 5 个字符',
-							trigger: 'blur'
-						}
-					],
-					phone: [{
-							required: true,
-							message: '请输入手机号',
-							trigger: 'blur'
-						},
-						{
-							min: 11,
-							max: 11,
-							message: '长度为11个字符',
-							trigger: 'blur'
-						}
-					],
-					mailbox: [
-						{ required: true, 	message: '请输入邮箱', trigger: 'blur' },
-						{validator:validateEMail, trigger: "blur"}
-					],
-					// customer_id: [{
-					// 	required: true,
-					// 	message: '请选择部门',
-					// 	trigger: 'change'
-					// }],
-					company_id: [{
-						required: true,
-						message: '请选择公司',
-						trigger: 'change'
-					}]
-				},
-				currentFile: null,
-				fileList: [],
-				outTableSelection: [], // 公司成员选择数据
-			};
-		},
+//import FileSaver from "file-saver";
+//import XLSX from "xlsx";
+import { validatePhone, validateEMail } from '@/assets/js/validator'
 
-		watch: {
-			tableList: {
-				handler(a) {
-					this.tableList = a;
-					this.tableData = this.tableList.slice(
-						(this.curPage - 1) * this.pagesize,
-						this.curPage * this.pagesize
-					);
-					this.timeStamp = new Date();
-					console.log("监听监听======", a);
-				},
-				deep: true
-			},
-		},
-		components: {},
-		mounted() {
-			this.$nextTick(() => {
-				this.company()
-			})
-		},
-		methods: {
-			exportExcel() {
-				/* 从表生成工作簿对象 */
-				//var wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
-				/* 获取二进制字符串作为输出 */
-				/*var wbout = XLSX.write(wb, {
+export default {
+  data() {
+    return {
+      select_customer: '公司全员',
+      curPage: 1,
+      pagesize: 10,
+      totalNum: 0, // 客户成员列表总数
+      searchType: 0, //0: id为客户(部门)id , 1:id为公司id
+      searchID: '',
+      is_addOrUpdate: false,
+      shade: false,
+      import_member: false,
+      updateSection: false,
+      value: '',
+      name: '',
+      tableData: [],
+      multipleSelection: [],
+      companyData: [],
+      clientData: [],
+      companyCount: '',
+      addMember: false,
+      ruleForm: {
+        name: '',
+        phone: '',
+        mailbox: '',
+        customer_id: '',
+        company_id: '',
+        id: ''
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            message: '请输入姓名',
+            trigger: 'blur'
+          },
+          {
+            min: 2,
+            max: 5,
+            message: '长度在 2 到 5 个字符',
+            trigger: 'blur'
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            message: '请输入手机号',
+            trigger: 'blur'
+          },
+          {
+            min: 11,
+            max: 11,
+            message: '长度为11个字符',
+            trigger: 'blur'
+          }
+        ],
+        mailbox: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: validateEMail, trigger: 'blur' }
+        ],
+        // customer_id: [{
+        // 	required: true,
+        // 	message: '请选择部门',
+        // 	trigger: 'change'
+        // }],
+        company_id: [
+          {
+            required: true,
+            message: '请选择公司',
+            trigger: 'change'
+          }
+        ]
+      },
+      currentFile: null,
+      fileList: [],
+      outTableSelection: [] // 公司成员选择数据
+    }
+  },
+
+  watch: {
+    tableList: {
+      handler(a) {
+        this.tableList = a
+        this.tableData = this.tableList.slice((this.curPage - 1) * this.pagesize, this.curPage * this.pagesize)
+        this.timeStamp = new Date()
+        console.log('监听监听======', a)
+      },
+      deep: true
+    }
+  },
+  components: {},
+  mounted() {
+    this.$nextTick(() => {
+      this.company()
+    })
+  },
+  methods: {
+    exportExcel() {
+      /* 从表生成工作簿对象 */
+      //var wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
+      /* 获取二进制字符串作为输出 */
+      /*var wbout = XLSX.write(wb, {
 					bookType: "xlsx",
 					bookSST: true,
 					type: "array"
@@ -281,244 +282,233 @@
 					if (typeof console !== "undefined") console.log(e, wbout);
 				}
 				return wbout;*/
-			},
-			// 查询对应部门成员
-			departmentChange(item){
-				this.select_customer=item.shortname;
-				this.curPage = 1;
-				this.searchID = item.id;
-				this.searchType = 0;
-				this.customerContact(item.id,0);
-			},
-			fileChange(file, fileList) {
-				console.log(file.raw);
-				this.fileList.push(file.raw);
-				console.log(this.fileList);
-			},
-			exceedFile(files, fileList) {
-				this.$message.warning(`只能选择1个文件，当前共选择了 ${files.length + fileList.length} 个`);
-			},
-			beforeUploadFile(file) {
-				console.log('before upload');
-				console.log(file);
-				let extension = file.name.substring(file.name.lastIndexOf('.') + 1);
-				let size = file.size / 1024 / 1024;
-				if (extension !== 'xls' && extension !== 'xlsx') {
-					this.$message.warning('只能上传后缀是.xlsx,.xls的文件');
-				}
-				if (size > 10) {
-					this.$message.warning('文件大小不得超过10M');
-				}
-			},
-			uploadFile() {
-				if (this.fileList.length === 0) {
-					this.$message.warning('请上传文件');
-				} else {
-					this.import_member = false
-					this.shade = false
-					let form = new FormData();
-					console.log(this.fileList[0])
-					form.append('file', this.fileList[0]);
-					form.append('DepartmentyID', '5000');
-					form.append('CompanyID', 'CeShi');
-          this.requestApi({
-            url: '/MeetingMa/CustomerImportExcel',
-            method: 'POST',
-            data: {
-              form,
-            },
-          }).then((res) => {
-							// console.log(res);
-							console.log(res)
-						});
-				}
-			},
-			renderheader(h, {
-				column,
-				$index
-			}) {
-				return h("span", {}, [
-					h("span", {}, column.label.split("/")[0]),
-					h("br"),
-					h("span", {}, column.label.split("/")[1])
-				]);
-			},
-			handleCurrentChange(val) {
-				this.curPage = val
-				this.customerContact(this.searchID,this.searchType)
-			},
-			// 公司查询
-			company() {
+    },
+    // 查询对应部门成员
+    departmentChange(item) {
+      this.select_customer = item.shortname
+      this.curPage = 1
+      this.searchID = item.id
+      this.searchType = 0
+      this.customerContact(item.id, 0)
+    },
+    fileChange(file, fileList) {
+      console.log(file.raw)
+      this.fileList.push(file.raw)
+      console.log(this.fileList)
+    },
+    exceedFile(files, fileList) {
+      this.$message.warning(`只能选择1个文件，当前共选择了 ${files.length + fileList.length} 个`)
+    },
+    beforeUploadFile(file) {
+      console.log('before upload')
+      console.log(file)
+      let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let size = file.size / 1024 / 1024
+      if (extension !== 'xls' && extension !== 'xlsx') {
+        this.$message.warning('只能上传后缀是.xlsx,.xls的文件')
+      }
+      if (size > 10) {
+        this.$message.warning('文件大小不得超过10M')
+      }
+    },
+    uploadFile() {
+      if (this.fileList.length === 0) {
+        this.$message.warning('请上传文件')
+      } else {
+        this.import_member = false
+        this.shade = false
+        let form = new FormData()
+        console.log(this.fileList[0])
+        form.append('file', this.fileList[0])
+        form.append('DepartmentyID', '5000')
+        form.append('CompanyID', 'CeShi')
         this.requestApi({
-          url: '/MeetingMa/GetCompany',
-          method: 'POST',
-          data: {},
-        }).then((res) => {
-					this.companyData = res
-				});
-			},
-			// 客户(部门)查询
-			client() {
-        this.requestApi({
-          url: '/MeetingMa/GetDepartmenty',
-          method: 'POST',
-          data: {CompanyID: this.value},
-        }).then((res) => {
-          // console.log(res);
-          let _this = this
-          this.clientData = res
-          this.companyData.forEach(function(item) {
-            if (item.id == _this.value) {
-              _this.companyCount = item.count
-            }
-          })
-          this.searchID = this.value;
-          this.searchType = 1;
-          this.customerContact(this.value, 1)
-        });
-			},
-			// 客户联系人查询
-			customerContact(id, type) {
-        this.requestApi({
-          url: '/MeetingMa/GetCustomerContact',
+          url: '/MeetingMa/CustomerImportExcel',
           method: 'POST',
           data: {
-            id: id,
-            type: type,
-            where: this.name,
-            pageIndex: this.curPage,
-            pageSize: this.pagesize,
-          },
-        }).then((res) => {
-						// console.log(res);
-					if (res) {
-						this.tableData = res.EvetModels;
-						this.totalNum = res.pageInfo.totalCount;
-					}
-
-				});
-			},
-			// 客户联系人保存/编辑
-			submit() {
-				 this.$refs.memberForm.validate((valid) => {
-					//  debugger
-          if (valid) {
-            this.requestApi({
-              url: '/MeetingMa/CustomerContactSava',
-              method: 'POST',
-              data: {
-                Parameter: JSON.stringify({
-                  name: this.ruleForm.name,
-                  phone: this.ruleForm.phone,
-                  mailbox: this.ruleForm.mailbox,
-                  customer_id: this.ruleForm.customer_id,
-                  company_id: this.ruleForm.company_id,
-                  id: this.ruleForm.id
-                })
-              },
-            }).then((res) => {
-							// console.log(res);
-							console.log(res)
-							this.company()
-							this.client();
-							this.shade=false;
-							this.addMember=false
-						});
+            form
           }
-        });
-				
-
-			},
-			initialize() {
-				this.ruleForm = {
-					name: '',
-					phone: '',
-					mailbox: '',
-					customer_id: '',
-					company_id: '',
-					id: ''
-				}
-			},
-			// 客户联系人编辑查询
-			getData() {
-        this.requestApi({
-          url: '/MeetingMa/GetCustomerContactEdit',
-          method: 'POST',
-          data: {
-            ContactID: this.ruleForm.id
-          },
-        }).then((res) => {
+        }).then(res => {
           // console.log(res);
           console.log(res)
-          this.ruleForm.company_id = ''
-          this.ruleForm.customer_id = ''
-          this.ruleForm.name = res.name
-          this.ruleForm.phone = res.phone
-          this.ruleForm.mailbox = res.mailbox
-
-        });
-			},
-			// 客户联系人删除
-			deleteData(id) {
-				this.$confirm('此操作将删除该客户联系人, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+        })
+      }
+    },
+    renderheader(h, { column, $index }) {
+      return h('span', {}, [h('span', {}, column.label.split('/')[0]), h('br'), h('span', {}, column.label.split('/')[1])])
+    },
+    handleCurrentChange(val) {
+      this.curPage = val
+      this.customerContact(this.searchID, this.searchType)
+    },
+    // 公司查询
+    company() {
+      this.requestApi({
+        url: '/MeetingMa/GetCompany',
+        method: 'POST',
+        data: {}
+      }).then(res => {
+        this.companyData = res
+      })
+    },
+    // 客户(部门)查询
+    client() {
+      this.requestApi({
+        url: '/MeetingMa/GetDepartmenty',
+        method: 'POST',
+        data: { CompanyID: this.value }
+      }).then(res => {
+        // console.log(res);
+        let _this = this
+        this.clientData = res
+        this.companyData.forEach(function(item) {
+          if (item.id == _this.value) {
+            _this.companyCount = item.count
+          }
+        })
+        this.searchID = this.value
+        this.searchType = 1
+        this.customerContact(this.value, 1)
+      })
+    },
+    // 客户联系人查询
+    customerContact(id, type) {
+      this.requestApi({
+        url: '/MeetingMa/GetCustomerContact',
+        method: 'POST',
+        data: {
+          id: id,
+          type: type,
+          where: this.name,
+          pageIndex: this.curPage,
+          pageSize: this.pagesize
+        }
+      }).then(res => {
+        // console.log(res);
+        if (res) {
+          this.tableData = res.EvetModels
+          this.totalNum = res.pageInfo.totalCount
+        }
+      })
+    },
+    // 客户联系人保存/编辑
+    submit() {
+      this.$refs.memberForm.validate(valid => {
+        //  debugger
+        if (valid) {
           this.requestApi({
-            url: '/MeetingMa/CustomerDelete',
+            url: '/MeetingMa/CustomerContactSava',
             method: 'POST',
             data: {
-              ContactID: id
-            },
-          }).then((res) => {
-            if(res){
+              Parameter: JSON.stringify({
+                name: this.ruleForm.name,
+                phone: this.ruleForm.phone,
+                mailbox: this.ruleForm.mailbox,
+                customer_id: this.ruleForm.customer_id,
+                company_id: this.ruleForm.company_id,
+                id: this.ruleForm.id
+              })
+            }
+          }).then(res => {
+            // console.log(res);
+            console.log(res)
+            this.company()
+            this.client()
+            this.shade = false
+            this.addMember = false
+          })
+        }
+      })
+    },
+    initialize() {
+      this.ruleForm = {
+        name: '',
+        phone: '',
+        mailbox: '',
+        customer_id: '',
+        company_id: '',
+        id: ''
+      }
+    },
+    // 客户联系人编辑查询
+    getData() {
+      this.requestApi({
+        url: '/MeetingMa/GetCustomerContactEdit',
+        method: 'POST',
+        data: {
+          ContactID: this.ruleForm.id
+        }
+      }).then(res => {
+        // console.log(res);
+        console.log(res)
+        this.ruleForm.company_id = ''
+        this.ruleForm.customer_id = ''
+        this.ruleForm.name = res.name
+        this.ruleForm.phone = res.phone
+        this.ruleForm.mailbox = res.mailbox
+      })
+    },
+    // 客户联系人删除
+    deleteData(id) {
+      this.$confirm('此操作将删除该客户联系人, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.requestApi({
+          url: '/MeetingMa/CustomerDelete',
+          method: 'POST',
+          data: {
+            ContactID: id
+          }
+        })
+          .then(res => {
+            if (res) {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
-              });
+              })
               this.company()
               this.client()
             }
-          }).catch(() => {
+          })
+          .catch(() => {
             this.$message({
               type: 'info',
               message: '已取消删除'
-            });          
-          });
-				
-				});
-			},
-			transfer() {
-				let ContactID =  '';
-				this.outTableSelection.forEach((item,index) => {
-					if(index == this.outTableSelection.length - 1 ){
-						ContactID += item.id
-					}else{
-						ContactID += item.id + ','
-					}
-					
-				})
-				// 更改部门
-        this.requestApi({
-          url: '/MeetingMa/DepartmentyEdit',
-          method: 'POST',
-          data: {
-            ContactID,
-            DepartmentyID: this.ruleForm.customer_id
-          },
-        }).then((res) => {
-          // console.log(res);
-          console.log(res)
-          this.company()
-          this.client()
-        });
-			},
-			handleSelectionChange(selection){
-				this.outTableSelection = selection;
-			}
-		},
-	};
+            })
+          })
+      })
+    },
+    transfer() {
+      let ContactID = ''
+      this.outTableSelection.forEach((item, index) => {
+        if (index == this.outTableSelection.length - 1) {
+          ContactID += item.id
+        } else {
+          ContactID += item.id + ','
+        }
+      })
+      // 更改部门
+      this.requestApi({
+        url: '/MeetingMa/DepartmentyEdit',
+        method: 'POST',
+        data: {
+          ContactID,
+          DepartmentyID: this.ruleForm.customer_id
+        }
+      }).then(res => {
+        // console.log(res);
+        console.log(res)
+        this.company()
+        this.client()
+      })
+    },
+    handleSelectionChange(selection) {
+      this.outTableSelection = selection
+    }
+  }
+}
 </script>
 
 <style lang="scss">

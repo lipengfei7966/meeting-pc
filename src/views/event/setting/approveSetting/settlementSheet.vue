@@ -108,28 +108,28 @@ export default {
       approvalList: [],
       approval: {},
       stype: 0,
-      tableCellads: false,
-    };
+      tableCellads: false
+    }
   },
   mounted() {
-    this.type = this.$route.query.type;
-    this.id = this.$route.query.id;
-    this.GetApporval();
-    this.approvalProcessQuery();
+    this.type = this.$route.query.type
+    this.id = this.$route.query.id
+    this.GetApporval()
+    this.approvalProcessQuery()
   },
-  created(){
+  created() {
     this.requestApi({
       url: '/Approval/SettlementOvertimel',
       method: 'POST',
-      data: {},
-    }).then((res) => {
-      if(res){
+      data: {}
+    }).then(res => {
+      if (res) {
       }
-    });
+    })
   },
   activated() {
-    this.type = this.$route.query.type;
-    this.id = this.$route.query.id;
+    this.type = this.$route.query.type
+    this.id = this.$route.query.id
   },
   methods: {
     GetApporval() {
@@ -139,13 +139,12 @@ export default {
         data: {
           type: this.type,
           id: this.id
-        },
-      }).then(res => {
-        if(res && res.length) {
-          this.companyinfo = res[0];
         }
-				
-			})
+      }).then(res => {
+        if (res && res.length) {
+          this.companyinfo = res[0]
+        }
+      })
     },
     stateData(index, type) {
       this.requestApi({
@@ -153,50 +152,52 @@ export default {
         method: 'POST',
         data: {
           id: this.approvalList[index].id,
-          Type: type,
-        },
-      }).then((res) => {
-        if (res) {
-          location.reload();
+          Type: type
         }
-      });
+      }).then(res => {
+        if (res) {
+          location.reload()
+        }
+      })
     },
     approveDeletion(index) {
       if (this.approvalList.length <= 1) {
-        this.openVn();
-        return;
+        this.openVn()
+        return
       }
       this.$confirm('是否删除改审批步骤?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        this.approveDeletiond(index);
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除',
-        });
-      });
+        type: 'warning'
+      })
+        .then(() => {
+          this.approveDeletiond(index)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     openVn() {
-      const h = this.$createElement;
+      const h = this.$createElement
       this.$message({
         message: h('p', null, [
-          h('span', null, '请至少保留一个审批步骤'),
+          h('span', null, '请至少保留一个审批步骤')
           // h('i', { style: 'color: teal' }, 'VNode')
-        ]),
-      });
+        ])
+      })
     },
     upL(index) {
-      if (index === 0) return;
-      let item = this.approvalList.splice(index, 1);
-      this.approvalList.splice(index - 1, 0, item[0]);
-      let tempArr = [];
-      this.approvalList.forEach((item,index) => {
+      if (index === 0) return
+      let item = this.approvalList.splice(index, 1)
+      this.approvalList.splice(index - 1, 0, item[0])
+      let tempArr = []
+      this.approvalList.forEach((item, index) => {
         tempArr.push({
           id: item.id,
-          sort: index+1
+          sort: index + 1
         })
       })
       this.requestApi({
@@ -204,22 +205,20 @@ export default {
         method: 'POST',
         data: {
           Parameter: JSON.stringify(tempArr)
-        },
-      }).then(res => {
-
-      })
+        }
+      }).then(res => {})
     },
     // 向下
     downL(index) {
-      if (index === this.approvalList.length - 1) return;
-      let item = this.approvalList.splice(index, 1);
-      this.approvalList.splice(index + 1, 0, item[0]);
+      if (index === this.approvalList.length - 1) return
+      let item = this.approvalList.splice(index, 1)
+      this.approvalList.splice(index + 1, 0, item[0])
 
-      let tempArr = [];
-      this.approvalList.forEach((item,index) => {
+      let tempArr = []
+      this.approvalList.forEach((item, index) => {
         tempArr.push({
           id: item.id,
-          sort: index+1
+          sort: index + 1
         })
       })
       this.requestApi({
@@ -227,10 +226,8 @@ export default {
         method: 'POST',
         data: {
           Parameter: JSON.stringify(tempArr)
-        },
-      }).then(res => {
-        
-      })
+        }
+      }).then(res => {})
     },
     //查询
     approvalProcessQuery() {
@@ -240,77 +237,79 @@ export default {
         data: {
           type: 1,
           approval_id: this.id
-        },
-      }).then((res) => {
-        this.approvalList = res.length ? res : [];
-      });
+        }
+      }).then(res => {
+        this.approvalList = res.length ? res : []
+      })
     },
     //添加审批步骤跳转
     QueryApproval() {
-      let isDefalt = this.companyinfo.company_name == 'ALL' ? 1 : 0;
+      let isDefalt = this.companyinfo.company_name == 'ALL' ? 1 : 0
       this.$router.push({
         name: 'approvalsteps',
         // query: { id: this.eventId, type: this.type },
-        query: { id: this.id, type: this.type, isDefalt},
-      });
+        query: { id: this.id, type: this.type, isDefalt }
+      })
     },
     //点击编辑请求接口并且跳转
     QueryApprovalEdit(index, typeM) {
-       let isDefalt = this.companyinfo.company_name == 'ALL' ? 1 : 0;
+      let isDefalt = this.companyinfo.company_name == 'ALL' ? 1 : 0
       this.requestApi({
         url: '/Approval/GetApprovaProcessEdit',
         method: 'POST',
         data: {
           ID: this.approvalList[index].id,
-          type: typeM,
-        },
-      }).then((res) => {
-        this.approval = res;
+          type: typeM
+        }
+      }).then(res => {
+        this.approval = res
         this.$router.push({
           name: 'approvalsteps',
-          query: { id: this.id, approval: JSON.stringify(this.approval), type: 1, typeM, isDefalt },
-        });
-      });
+          query: { id: this.id, approval: JSON.stringify(this.approval), type: 1, typeM, isDefalt }
+        })
+      })
     },
     //删除
     approveDeletiond(index) {
       this.requestApi({
         url: '/Approval/ApprovaProcessDelete',
         method: 'POST',
-        data: {id: this.approvalList[index].id},
-      }).then((res) => {
-        if (res) {
+        data: { id: this.approvalList[index].id }
+      })
+        .then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            location.reload()
+          }
+        })
+        .catch(() => {
           this.$message({
-            type: 'success',
-            message: '删除成功!',
-          });
-          location.reload();
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '删除失败',
-        });
-      });
+            type: 'info',
+            message: '删除失败'
+          })
+        })
     },
     edit() {
       this.$router.push({
-				name:'addeditApprovalrule',
-				query: {
-					id: this.id,
-					type: this.type,
+        name: 'addeditApprovalrule',
+        query: {
+          id: this.id,
+          type: this.type,
           back: 'settlementSheet'
-				}
-			});
+        }
+      })
     }
-  },
+  }
   // settlementPersonnel(index,type){
   //    this.$api.settlementPersonnel({}, 'POST').then((res) => {
   //         if(res){
   //         }
   //     });
   // }
-};
+}
 </script>
 
 <style lang="scss">

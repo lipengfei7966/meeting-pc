@@ -74,91 +74,91 @@
 </template>
 
 <script>
-
 export default {
-  data:function(){
-    return{
-      searchFormData:{
+  data: function() {
+    return {
+      searchFormData: {
         pageIndex: 1,
         pageSize: 10,
-        name:'',
+        name: '',
         isnull: -1,
-        username:''
+        username: ''
       },
       isEmpty: 1,
-      userbidData:[
+      userbidData: [
         {
-          id:'',
-          name:'昆明中国国际旅行社有限公司',
+          id: '',
+          name: '昆明中国国际旅行社有限公司',
           address: '云南省昆明市环城南路1118号',
-          username:'service001',
+          username: 'service001'
         },
         {
-          id:'',
-          name:'中国国旅（武汉）国际旅行社有限公司',
+          id: '',
+          name: '中国国旅（武汉）国际旅行社有限公司',
           address: '湖北省武汉市硚口区古田四路江城壹号文化创意园10号楼',
-          username:'service002',
+          username: 'service002'
         },
         {
-          id:'',
-          name:'中国国旅（辽宁）国际旅行社有限公司',
+          id: '',
+          name: '中国国旅（辽宁）国际旅行社有限公司',
           address: '沈阳市和平区南京北街65号华银大厦13层',
-          username:'service003',
+          username: 'service003'
         },
         {
-          id:'',
-          name:'中国国旅（宁波）国际旅行社有限公司',
+          id: '',
+          name: '中国国旅（宁波）国际旅行社有限公司',
           address: '宁波市海曙区开明街396号平安大厦12楼',
-          username:'service004',
+          username: 'service004'
         },
         {
-          id:'',
-          name:'中国国旅（青岛）国际旅行社有限公司',
+          id: '',
+          name: '中国国旅（青岛）国际旅行社有限公司',
           address: '青岛市市北区连云港路33号B座5层517-520室',
-          username:'service005',
-        },
+          username: 'service005'
+        }
       ],
-      userOptionsList:[], // 更改用户option列表
+      userOptionsList: [], // 更改用户option列表
       // 更改用户信息
-      updateInfo:{
-        id:'',
-        name:'',
-        address:'',
-        username:''
+      updateInfo: {
+        id: '',
+        name: '',
+        address: '',
+        username: ''
       },
-      pageInfo:{
+      pageInfo: {
         totalCount: 0
       },
-      dialogVisible:false,
+      dialogVisible: false
     }
   },
-  mounted(){
-    this.getDataList();
-    this.GetUser();
+  mounted() {
+    this.getDataList()
+    this.GetUser()
   },
-  methods:{
+  methods: {
     handleCurrentChange(val) {
-      this.searchFormData.pageIndex = val;
-      console.log(`当前页: ${val}`);
-      this.getDataList();
+      this.searchFormData.pageIndex = val
+      console.log(`当前页: ${val}`)
+      this.getDataList()
     },
-    getDataList(searchType){
-      if(searchType == 2){ // 重置
-        this.searchFormData.name = '';
-        this.searchFormData.isnull = -1;
-        this.searchFormData.username = '';
+    getDataList(searchType) {
+      if (searchType == 2) {
+        // 重置
+        this.searchFormData.name = ''
+        this.searchFormData.isnull = -1
+        this.searchFormData.username = ''
       }
       this.requestApi({
         url: '/MeetingMa/GetServiceProviderUser',
         method: 'POST',
-        data: this.searchFormData,
+        data: this.searchFormData
       }).then(res => {
         debugger
-        this.userbidData = res.EvetModels || [];
+        this.userbidData = res.EvetModels || []
         this.pageInfo = res.pageInfo || this.pageInfo
       })
     },
-    GetUser(){
+    GetUser() {
       this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'POST',
@@ -167,25 +167,25 @@ export default {
         this.userOptionsList = res || []
       })
     },
-    isnullChange(value){
-      if(value == 1){
+    isnullChange(value) {
+      if (value == 1) {
         this.searchFormData.username = ''
       }
     },
-    
-    updateBind(row){
-      this.dialogVisible = true;
-      this.updateInfo = {...row}
+
+    updateBind(row) {
+      this.dialogVisible = true
+      this.updateInfo = { ...row }
       this.updateInfo.username = this.updateInfo.username.split(',')
     },
 
     // 保存更改绑定信息
-    saveUpdateInfo(){
-      // UserName = 
+    saveUpdateInfo() {
+      // UserName =
       let sendData = {
         ID: this.updateInfo.id,
-        UserName: this.updateInfo.username.join(),
-      };
+        UserName: this.updateInfo.username.join()
+      }
       debugger
       this.requestApi({
         url: '/MeetingMa/ServiceProviderEditUser',
@@ -193,25 +193,25 @@ export default {
         data: sendData
       }).then(res => {
         debugger
-        if(res){
-          this.$message.success('修改成功');
-          this.dialogVisible = false;
-          this.getDataList();
-        }else{
-          this.$message.error('已经有其他服务商使用该用户');
+        if (res) {
+          this.$message.success('修改成功')
+          this.dialogVisible = false
+          this.getDataList()
+        } else {
+          this.$message.error('已经有其他服务商使用该用户')
         }
       })
     },
     // 绑定用户账号 转换 用户名
-    userFormatter(row){
+    userFormatter(row) {
       let value = ''
       let username = row.username.split(',')
       this.userOptionsList.forEach(item => {
         username.forEach(Element => {
-          if(Element == item.username){
-            if(value.length > 0){
-              value += '，'+item.fullname
-            }else{
+          if (Element == item.username) {
+            if (value.length > 0) {
+              value += '，' + item.fullname
+            } else {
               value = item.fullname
             }
           }

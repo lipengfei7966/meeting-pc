@@ -1,0 +1,121 @@
+<template>
+  <bs-dialog :dialog='dialog' @closeDialog='handleCloseDialog'></bs-dialog>
+</template>
+
+<script>
+export default {
+  name: 'roleEdit',
+  data() {
+    return {
+      dialog: {
+        type: this.opType,
+        param: this.param,
+        initType: 'param',
+        styleType: 'medium',
+        titleName: this.$t('route.' + this.$route.meta.title),
+        api: {
+          view: '/api/biz/cmsEventInfo/get',
+          save: '/api/biz/cmsEventInfo/save',
+          update: '/api/biz/cmsEventInfo/update'
+        },
+
+        formData: [
+          {
+            label: 'website.eventInfo.edit.eventName',
+            prop: 'eventName',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: 'website.eventInfo.edit.customerName',
+            prop: 'customerCode',
+            element: 'base-select',
+            attrs: {
+              clickParent: true,
+              multiple: false,
+              cols: 2,
+              data: 'FUNC_ORG',
+              clearable: true
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'change'
+              }
+            ]
+          },
+          {
+            type: 'datetime',
+            label: 'website.eventInfo.edit.eventDate',
+            props: ['startDate', 'endDate'],
+            default: this.$toolUtil.getLatestWeektime(),
+            attrs: {
+              cols: 2,
+              format: 'yyyy-MM-dd HH:mm',
+              'value-format': 'yyyy-MM-dd HH:mm',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
+          },
+          {
+            label: 'website.eventInfo.edit.eventPlace',
+            prop: 'eventPlace',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+        ],
+        bottomButtons: [
+          {
+            name: 'biz.btn.close',
+            event: 'close',
+            isShow: ['view'],
+            attrs: {
+              type: 'primary'
+            }
+          },
+          {
+            name: 'biz.btn.cancel',
+            event: 'cancel',
+            isShow: ['add', 'update']
+          },
+          {
+            name: 'biz.btn.save',
+            event: 'save',
+            showLoading: true,
+            isShow: ['add', 'update'],
+            attrs: {
+              type: 'primary'
+            }
+          }
+        ]
+      }
+    }
+  },
+  props: {
+    opType: {
+      type: String,
+      default: 'add'
+    },
+    param: {
+      type: [Object, String],
+      default() {
+        return {}
+      }
+    }
+  },
+  methods: {
+    handleCloseDialog(param) {
+      this.$emit('closeHandler', param)
+    }
+  }
+}
+</script>

@@ -84,34 +84,39 @@
 </template>
 
 <script>
-import { positiveFloat, } from '@/utils/common';
-  export default {
-    name: "room",
-    props:['roomList', 'additional','isCollectOffer','allQuoteInfo',"hotelInfo"],
-    data() {
-      return{
-        showPart: true,
-        carList: [],
-      }
-    },
-    computed:{
-      offlineRoomTotalMoney(){
-        let money = 0;
-        this.allQuoteInfo.offline_quoted_price_room.forEach(element => {
-          money += element.totalprice
-        });
-        return money
-      },
-    },
-    methods:{
-      positiveFloat,
-      getDateTotal(data) {
-        return '￥' + data.data.reduce((p, n) => {
-          return p + n.unitprice * n.provide_count
-        }, 0).toFixed(2)
-      }
+import { positiveFloat } from '@/utils/common'
+export default {
+  name: 'room',
+  props: ['roomList', 'additional', 'isCollectOffer', 'allQuoteInfo', 'hotelInfo'],
+  data() {
+    return {
+      showPart: true,
+      carList: []
+    }
+  },
+  computed: {
+    offlineRoomTotalMoney() {
+      let money = 0
+      this.allQuoteInfo.offline_quoted_price_room.forEach(element => {
+        money += element.totalprice
+      })
+      return money
+    }
+  },
+  methods: {
+    positiveFloat,
+    getDateTotal(data) {
+      return (
+        '￥' +
+        data.data
+          .reduce((p, n) => {
+            return p + n.unitprice * n.provide_count
+          }, 0)
+          .toFixed(2)
+      )
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -60,19 +60,19 @@ import transportPart from './components/transport'
 import otherPart from './components/other'
 import servicePart from './components/service'
 import taxPart from './components/tax'
-import {classifyByTime, EventClassifyByTime} from '@/assets/js/validator'
-import { positiveFloat, keepDecimals} from '@/utils/common';
+import { classifyByTime, EventClassifyByTime } from '@/assets/js/validator'
+import { positiveFloat, keepDecimals } from '@/utils/common'
 export default {
-	data() {
-		return {
+  data() {
+    return {
       hotelInfo: {
-				hotel_name: '',
-				total_price: 0,
-				total_service_price: 0,
-				total_taxation_price: 0
-			}, // 酒店信息
-			
-      baseInfo:{},
+        hotel_name: '',
+        total_price: 0,
+        total_service_price: 0,
+        total_taxation_price: 0
+      }, // 酒店信息
+
+      baseInfo: {},
       carList: [],
       roomList: [],
       foodList: [],
@@ -85,63 +85,64 @@ export default {
       serviceList: {},
       type: 1
     }
-	},
-	components:{
-		BasePart,
-		carPart,
-		roomPart,
-		eventPart,
-		foodPart,
-		foodOutsidePart,
-		transportPart,
-		otherPart,
-		servicePart,
-		taxPart,
-	},
-	watch:{
-    $route(n,o){
-			// debugger
-			if(n.fullPath !== o.fullPath){ //监听路由参数是否变化
-				// this.Service();
-				// this.quote();
-				this.SummaryAllQuotedPrice();  //methods中封装的加载数据函数
+  },
+  components: {
+    BasePart,
+    carPart,
+    roomPart,
+    eventPart,
+    foodPart,
+    foodOutsidePart,
+    transportPart,
+    otherPart,
+    servicePart,
+    taxPart
+  },
+  watch: {
+    $route(n, o) {
+      // debugger
+      if (n.fullPath !== o.fullPath) {
+        //监听路由参数是否变化
+        // this.Service();
+        // this.quote();
+        this.SummaryAllQuotedPrice() //methods中封装的加载数据函数
       }
     }
-	},
-	mounted() {
-		this.SummaryAllQuotedPrice();
-	},
-	methods: {
-		keepDecimals,
-		positiveFloat,
-		// 线上报价单信息查询
-	  SummaryAllQuotedPrice(){
+  },
+  mounted() {
+    this.SummaryAllQuotedPrice()
+  },
+  methods: {
+    keepDecimals,
+    positiveFloat,
+    // 线上报价单信息查询
+    SummaryAllQuotedPrice() {
       this.requestApi({
         url: '/MeetingMa/SummaryAllQuotedPrice',
         method: 'POST',
-        data: { 
+        data: {
           MeetingID: this.$route.query.id
-        },
-      }).then((res)=>{
-				if (res) {
-					this.$nextTick(() => {
-						this.hotelInfo = res.service; //服务商、酒店信息
-						this.roomList = classifyByTime(res.room); //客房
-						// this.eventList = EventClassifyByTime(res.conference); //会场信息
-						this.eventList = res.conference; //会场信息
-						this.carList = classifyByTime(res.car, 'datatime');	// 地面交通
-						this.foodList = classifyByTime(res.food);	//餐饮信息
-						this.foodOutsideList = classifyByTime(res.foodOutside);	//餐饮信息
-						this.otherList = res.other?res.other:[]; //其他 兼容后台没数据返回 null
-						this.additional = res.quoted_price;	// 报价单信息
-						this.transportList = classifyByTime(res.transportation, 'datatime');	//大交通
-						this.quotation = res.quotedprice; //报价记录
-					})
-				}
-			})
-		},
-	},
-};
+        }
+      }).then(res => {
+        if (res) {
+          this.$nextTick(() => {
+            this.hotelInfo = res.service //服务商、酒店信息
+            this.roomList = classifyByTime(res.room) //客房
+            // this.eventList = EventClassifyByTime(res.conference); //会场信息
+            this.eventList = res.conference //会场信息
+            this.carList = classifyByTime(res.car, 'datatime') // 地面交通
+            this.foodList = classifyByTime(res.food) //餐饮信息
+            this.foodOutsideList = classifyByTime(res.foodOutside) //餐饮信息
+            this.otherList = res.other ? res.other : [] //其他 兼容后台没数据返回 null
+            this.additional = res.quoted_price // 报价单信息
+            this.transportList = classifyByTime(res.transportation, 'datatime') //大交通
+            this.quotation = res.quotedprice //报价记录
+          })
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

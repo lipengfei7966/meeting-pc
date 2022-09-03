@@ -27,8 +27,6 @@
               <el-option v-for="(item, index) in outDate" :disabled="index <= disabledIndex" :label="item" :value="item" :key='index'></el-option>
             </el-select>
           </div>
-          
-          
 
           <div class="mar_r20">
             <span class="mar_r10">房标 Room Standard</span>
@@ -36,10 +34,10 @@
             元/间夜
           </div>
           <div class="mar_r20">
-           <el-checkbox v-model="is_networks">需要宽带 Networks</el-checkbox>
-           <el-checkbox v-model="is_breakfast">需要早餐 Breakfast</el-checkbox>
+            <el-checkbox v-model="is_networks">需要宽带 Networks</el-checkbox>
+            <el-checkbox v-model="is_breakfast">需要早餐 Breakfast</el-checkbox>
           </div>
-          
+
         </div>
         <div class="demand_main_base flex_row align_center">
           <div class="mar_r20">
@@ -58,46 +56,37 @@
             </el-table-column>
             <el-table-column label="双床房" prop="twin_bed_count" width="125" align="center">
               <template slot-scope="scope">
-                <el-input v-show="is_Inside_outside == 0" v-model="scope.row.twin_bed_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                <el-input v-show="is_Inside_outside == 0" v-model="scope.row.twin_bed_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
                 <div v-show="is_Inside_outside == 1">
                   内部数量
-                  <el-input v-model="scope.row.in_twin_bed_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                  <el-input v-model="scope.row.in_twin_bed_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
                   外部数量
-                  <el-input v-model="scope.row.out_twin_bed_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                  <el-input v-model="scope.row.out_twin_bed_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
                 </div>
-                          
+
               </template>
             </el-table-column>
             <el-table-column label="大床房" prop="king_bed_count" width="125" align="center">
               <template slot-scope="scope">
-                <el-input v-show="is_Inside_outside == 0" v-model="scope.row.king_bed_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                <el-input v-show="is_Inside_outside == 0" v-model="scope.row.king_bed_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
 
                 <div v-show="is_Inside_outside == 1">
                   内部数量
-                  <el-input v-model="scope.row.in_king_bed_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                  <el-input v-model="scope.row.in_king_bed_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
                   外部数量
-                  <el-input v-model="scope.row.out_king_bed_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
-                </div>        
+                  <el-input v-model="scope.row.out_king_bed_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
+                </div>
               </template>
             </el-table-column>
             <el-table-column label="行政房/套房" prop="superior_room_count" width="150" align="center">
               <template slot-scope="scope">
-                <el-input v-show="is_Inside_outside == 0" v-model="scope.row.superior_room_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                <el-input v-show="is_Inside_outside == 0" v-model="scope.row.superior_room_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
                 <div v-show="is_Inside_outside == 1">
                   <div>内部数量</div>
-                  <el-input v-model="scope.row.in_superior_room_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
+                  <el-input v-model="scope.row.in_superior_room_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
                   <div>外部数量</div>
-                  <el-input v-model="scope.row.out_superior_room_count" size="small" placeholder="请填写"
-                          class="demand_100"  v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable ></el-input>
-                </div>          
+                  <el-input v-model="scope.row.out_superior_room_count" size="small" placeholder="请填写" class="demand_100" v-input-filter:int oninput="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" clearable></el-input>
+                </div>
               </template>
             </el-table-column>
             <el-table-column label="总计" prop="superior_room_count" width="80" align="center">
@@ -112,19 +101,17 @@
                   parseInt(scope.row.in_superior_room_count || 0) + parseInt(scope.row.out_superior_room_count || 0) +
                   parseInt(scope.row.in_king_bed_count || 0) + parseInt(scope.row.out_king_bed_count || 0) }}
                 </div>
-                
+
               </template>
             </el-table-column>
             <el-table-column label="其他需求" prop="superior_room_count" align="center">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.other_requirements" size="small" placeholder="几间无烟／有烟、无窗／有窗"
-                          ></el-input>
+                <el-input v-model="scope.row.other_requirements" size="small" placeholder="几间无烟／有烟、无窗／有窗"></el-input>
               </template>
             </el-table-column>
             <el-table-column label="操作" prop="superior_room_count" align="center" width="150">
               <template slot-scope="scope">
-                <el-button v-if="scope.$index !== 0" type="text" size="small"
-                           @click="copyPreTap('room', scope.$index)">复制昨日数据
+                <el-button v-if="scope.$index !== 0" type="text" size="small" @click="copyPreTap('room', scope.$index)">复制昨日数据
                 </el-button>
               </template>
             </el-table-column>
@@ -136,30 +123,30 @@
 </template>
 
 <script>
-import inputFilter from '@/assets/js/filter';
-import {getBetweenDate, getNextDate} from '@/utils/common'
+import inputFilter from '@/assets/js/filter'
+import { getBetweenDate, getNextDate } from '@/utils/common'
 export default {
-  name: "room",
-  props: ['dateArr','outDate'],
+  name: 'room',
+  props: ['dateArr', 'outDate'],
   directives: {
     inputFilter
   },
-  data(){
-    return{
+  data() {
+    return {
       // 客房需求
       is_guest_room: '1',
       guest_room_budget: 0,
       check_in_date: '',
-      out_date:'',
+      out_date: '',
       disabledIndex: 0, // 日期禁选Index
       night_budget: 0,
       is_networks: true, //是否需要宽带（0:不需要 1：需要） (客房为1时启用)
       is_breakfast: true, // 是否需要早餐(0:不需要1：需要) (客房为1时启用)
-      checkDate:[],
-      roomItem:{check_in_date: '', twin_bed_count: '', king_bed_count: '', superior_room_count: '', other_requirements: ''},
-      orgRoom:[],
+      checkDate: [],
+      roomItem: { check_in_date: '', twin_bed_count: '', king_bed_count: '', superior_room_count: '', other_requirements: '' },
+      orgRoom: [],
       room: [],
-      outDateArr:[] ,// 离店日期下拉选项
+      outDateArr: [], // 离店日期下拉选项
       inneroutter: [
         {
           label: '不区分内外部人员',
@@ -173,82 +160,80 @@ export default {
       is_Inside_outside: '0'
     }
   },
-  mounted(){},
-  methods:{
-    formatNum(type){
-      let temp;
-      if(type === 1) temp = this.guest_room_budget.toString();
-      if(type === 2) temp = this.night_budget.toString();
-      temp = temp.replace(/。/g, ".");
-      temp = temp.replace(/\b(0+)/gi,"");
-      temp = temp.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符
-      temp = temp.replace(/^\./g, ""); //验证第一个字符是数字
-      temp = temp.replace(/\.{2,}/g, ""); //只保留第一个, 清除多余的
-      temp = temp.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-      temp = temp.replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3"); //只能输入两个小数
-      if(type === 1)this.guest_room_budget = temp;
-      if(type === 2) this.night_budget = temp
+  mounted() {},
+  methods: {
+    formatNum(type) {
+      let temp
+      if (type === 1) temp = this.guest_room_budget.toString()
+      if (type === 2) temp = this.night_budget.toString()
+      temp = temp.replace(/。/g, '.')
+      temp = temp.replace(/\b(0+)/gi, '')
+      temp = temp.replace(/[^\d.]/g, '') //清除"数字"和"."以外的字符
+      temp = temp.replace(/^\./g, '') //验证第一个字符是数字
+      temp = temp.replace(/\.{2,}/g, '') //只保留第一个, 清除多余的
+      temp = temp
+        .replace('.', '$#$')
+        .replace(/\./g, '')
+        .replace('$#$', '.')
+      temp = temp.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3') //只能输入两个小数
+      if (type === 1) this.guest_room_budget = temp
+      if (type === 2) this.night_budget = temp
     },
-    changeInout() {
-
-    },
+    changeInout() {},
     // 入住日期修改
     changeCheckDate() {
-      
-      let startid = this.dateArr.indexOf(this.check_in_date);
-      this.disabledIndex = startid;
-      let endid = this.outDate.indexOf(this.out_date);
+      let startid = this.dateArr.indexOf(this.check_in_date)
+      this.disabledIndex = startid
+      let endid = this.outDate.indexOf(this.out_date)
 
-      if(startid >= endid){
-        this.out_date = this.dateArr[this.dateArr.length -1];
+      if (startid >= endid) {
+        this.out_date = this.dateArr[this.dateArr.length - 1]
         this.room.forEach(item => {
-          this.orgRoom.forEach((Element,index) => {
-            if(item.check_in_date.slice(0,10) == Element.check_in_date){
-              this.orgRoom[index] = item;
+          this.orgRoom.forEach((Element, index) => {
+            if (item.check_in_date.slice(0, 10) == Element.check_in_date) {
+              this.orgRoom[index] = item
             }
           })
         })
-        this.room = this.orgRoom.slice(startid,this.dateArr.length-1 );
-      }else{
+        this.room = this.orgRoom.slice(startid, this.dateArr.length - 1)
+      } else {
         this.room.forEach(item => {
-          this.orgRoom.forEach((Element,index) => {
-            if(item.check_in_date.slice(0,10) == Element.check_in_date){
-              this.orgRoom[index] = item;
+          this.orgRoom.forEach((Element, index) => {
+            if (item.check_in_date.slice(0, 10) == Element.check_in_date) {
+              this.orgRoom[index] = item
             }
           })
         })
-        this.room = this.orgRoom.slice(startid, endid);
+        this.room = this.orgRoom.slice(startid, endid)
       }
-      
-      
     },
     // 复制昨天
     copyPreTap(type, idx) {
       if (type === 'room') {
-        let id = this.room[idx].id;
-        let date = this.room[idx].check_in_date;
-        let isDelete = this.room[idx].is_delete;
+        let id = this.room[idx].id
+        let date = this.room[idx].check_in_date
+        let isDelete = this.room[idx].is_delete
 
-        this.room[idx] = Object.assign(this.room[idx], this.room[idx -1]);
-        this.room[idx].id = id;
-        this.room[idx].check_in_date = date;
-        this.room[idx].is_delete = isDelete;
-       
-        console.log(this.room[idx - 1]);
-        console.log(this.room[idx]);
+        this.room[idx] = Object.assign(this.room[idx], this.room[idx - 1])
+        this.room[idx].id = id
+        this.room[idx].check_in_date = date
+        this.room[idx].is_delete = isDelete
+
+        console.log(this.room[idx - 1])
+        console.log(this.room[idx])
       } else {
         console.log(type)
       }
-    },
+    }
   },
-  watch:{
-    dateArr:{
-      handler(newVal, oldVal){
-        this.checkDate = [...newVal]; 
-        this.check_in_date = newVal[1];
-        let id = this.dateArr.indexOf(this.check_in_date);
-        this.room = this.orgRoom.slice(id);
-        this.out_date = this.outDate[this.outDate.length-1]
+  watch: {
+    dateArr: {
+      handler(newVal, oldVal) {
+        this.checkDate = [...newVal]
+        this.check_in_date = newVal[1]
+        let id = this.dateArr.indexOf(this.check_in_date)
+        this.room = this.orgRoom.slice(id)
+        this.out_date = this.outDate[this.outDate.length - 1]
       },
       deep: true,
       immediate: true
@@ -258,5 +243,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

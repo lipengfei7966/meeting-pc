@@ -26,79 +26,74 @@
 
 <script scoped>
 export default {
-	data() {
-		return {
-			tableData: [],
-			ProvinceCity:[], //省级直辖市列表
-			pageInfo:{
+  data() {
+    return {
+      tableData: [],
+      ProvinceCity: [], //省级直辖市列表
+      pageInfo: {
         totalCount: 0
       },
-			searchData:{
-				pageIndex: 1,
-				pageSize: 10,
-				type: 2, //1、负责人，2、采购人，3、会议助理，4、合规人员
-			}
-    }
-	
-	},
-	mounted() {
-		this.searchTableData();
-		
-	},
-	methods: {
-		searchTableData(){
-			this.requestApi({
-				url: '/InfoConfig/GetOwnerRule',
-				method: 'POST',
-				data: this.searchData,
-			}).then(res => {
-				this.tableData = res.EvetModels;
-				this.pageInfo = res.pageInfo;
-			})
-		},
-		handleCurrentChange(val) {
-      this.searchData.pageIndex = val;
-      console.log(`当前页: ${val}`);
-      this.searchTableData();
-    },
-		adduser() {
-			this.$router.push("procurementAdd");
-		},
-		 handleEdit(index, row) {
-			 console.log(index, row);
-			 this.$router.push({
-				 name: "procurementAdd",
-				 query:{
-					 id: row.id
-				 }
-			 })
-        
-      },
-      deleteRow(index, row) {
-				this.$confirm('删除规则后不可恢复, 请确认是否删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-					this.requestApi({
-						url: '/InfoConfig/OwnerRuleDelete',
-						method: 'POST',
-						data: {ID: row.id},
-					}).then(res => {
-						if(res){
-							this.$message({
-								type: 'success',
-								message: '删除成功!'
-							});
-							this.searchTableData();
-						}
-					})
-          
-        })
+      searchData: {
+        pageIndex: 1,
+        pageSize: 10,
+        type: 2 //1、负责人，2、采购人，3、会议助理，4、合规人员
       }
-	},
-  
-};
+    }
+  },
+  mounted() {
+    this.searchTableData()
+  },
+  methods: {
+    searchTableData() {
+      this.requestApi({
+        url: '/InfoConfig/GetOwnerRule',
+        method: 'POST',
+        data: this.searchData
+      }).then(res => {
+        this.tableData = res.EvetModels
+        this.pageInfo = res.pageInfo
+      })
+    },
+    handleCurrentChange(val) {
+      this.searchData.pageIndex = val
+      console.log(`当前页: ${val}`)
+      this.searchTableData()
+    },
+    adduser() {
+      this.$router.push('procurementAdd')
+    },
+    handleEdit(index, row) {
+      console.log(index, row)
+      this.$router.push({
+        name: 'procurementAdd',
+        query: {
+          id: row.id
+        }
+      })
+    },
+    deleteRow(index, row) {
+      this.$confirm('删除规则后不可恢复, 请确认是否删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.requestApi({
+          url: '/InfoConfig/OwnerRuleDelete',
+          method: 'POST',
+          data: { ID: row.id }
+        }).then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.searchTableData()
+          }
+        })
+      })
+    }
+  }
+}
 </script>
 
 <style>

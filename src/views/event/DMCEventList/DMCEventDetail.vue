@@ -60,45 +60,45 @@ import stepTwo from '@/views/event/eventList/components/stepTwo'
 // import stepThree from '@/views/event/eventList/components/stepThree'
 // import stepFour from '@/views/event/eventList/components/stepFour'
 export default {
-  name: "eventDetail",
-  data(){
-    return{
-      eventId:'',
-      eventName:'',
-      baseInfo:'',
-      cancelEventDialog:false,
+  name: 'eventDetail',
+  data() {
+    return {
+      eventId: '',
+      eventName: '',
+      baseInfo: '',
+      cancelEventDialog: false,
       eventStatu: 0,
       //取消会议
       cancelReason: '',
-      isShowCancelBtn:false,// 是否展示取消会议按钮
-	  // statusName:'',//状态名称，线下结算需要
+      isShowCancelBtn: false // 是否展示取消会议按钮
+      // statusName:'',//状态名称，线下结算需要
     }
   },
-  components:{
+  components: {
     stepOne,
-    stepTwo,
+    stepTwo
     // stepThree,
     // stepFour,
   },
-  created(){},
+  created() {},
   mounted() {
     // window.scrollTo(0, 0);
     document.body.scrollTop = document.documentElement.scrollTop = 0
-    this.eventId = this.$route.query.id;
-    this.eventName = this.$route.query.name;
-    this.getDetail();
-    this.cancelShow();
+    this.eventId = this.$route.query.id
+    this.eventName = this.$route.query.name
+    this.getDetail()
+    this.cancelShow()
   },
-  methods:{
+  methods: {
     // 是否展示  取消会议按钮
     cancelShow() {
       this.requestApi({
         url: '/MeetingMa/CancelShow',
         method: 'post',
-        data: { ID: this.$route.query.id, Type: 1 },
-      }).then((res) => {
-          this.isShowCancelBtn = res;
-        });
+        data: { ID: this.$route.query.id, Type: 1 }
+      }).then(res => {
+        this.isShowCancelBtn = res
+      })
     },
     // getDetail
     getDetail() {
@@ -106,78 +106,79 @@ export default {
       this.requestApi({
         url: '/MeetingMa/GetMeetingList',
         method: 'post',
-        data: {MeetingID: this.eventId},
+        data: { MeetingID: this.eventId }
       }).then(res => {
-        this.$refs.baseInfo.baseInfo = res;
-        this.isDraft = res.event_status; // 会议是否为草稿状态，1为草稿
-        this.eventId = res.id;
-        this.eventName = res.event_name;
-      });
+        this.$refs.baseInfo.baseInfo = res
+        this.isDraft = res.event_status // 会议是否为草稿状态，1为草稿
+        this.eventId = res.id
+        this.eventName = res.event_name
+      })
       // 获取会议进度状态
       this.requestApi({
         url: '/MeetingMa/MeetingStatus',
         method: 'post',
-        data: {MeetingID: this.eventId},
-      }).then((res) => {
-          this.eventStatu = Number(res);
-          console.log(res);
-        });
+        data: { MeetingID: this.eventId }
+      }).then(res => {
+        this.eventStatu = Number(res)
+        console.log(res)
+      })
 
       // 获取采购需求信息
       this.requestApi({
         url: '/MeetingMa/GetPurchase',
         method: 'post',
-        data: {MeetingID: this.eventId},
-      }).then((res) => {
-        this.$refs.demandInfo.demandInfo = res;
-      });
+        data: { MeetingID: this.eventId }
+      }).then(res => {
+        this.$refs.demandInfo.demandInfo = res
+      })
       //会议服务商询价单
       this.requestApi({
         url: '/MeetingMa/GetServiceProvider',
         method: 'post',
-        data: {MeetingID: this.eventId},
-      }).then((res) => {
+        data: { MeetingID: this.eventId }
+      }).then(res => {
         // debugger
-        console.log(res);
-        this.$refs.demandInfo.inquiryLIst = res;
-      });
+        console.log(res)
+        this.$refs.demandInfo.inquiryLIst = res
+      })
       // 纳税人工商信息
       this.requestApi({
         url: '/outapi/resources/completeCreditCode',
         method: 'post',
-        data: {},
-      }).then((res) => {
-        this.$refs.demandInfo.commerce = res;
-      });
+        data: {}
+      }).then(res => {
+        this.$refs.demandInfo.commerce = res
+      })
     },
     // 取消会议
     cancelEventTap() {
       if (!this.cancelReason) {
-        this.$message.warning("请简要说明取消原因");
-        return;
+        this.$message.warning('请简要说明取消原因')
+        return
       }
       this.requestApi({
         url: '/MeetingMa/CancelMeeting',
         method: 'post',
-        data: { MeetingID: this.$route.query.id, Content: this.cancelReason },
-      }).then((res) => {
-        if(res){
-          this.cancelEventDialog = false;
-          this.$message.success("会议取消成功！");
+        data: { MeetingID: this.$route.query.id, Content: this.cancelReason }
+      }).then(res => {
+        if (res) {
+          this.cancelEventDialog = false
+          this.$message.success('会议取消成功！')
           setTimeout(() => {
-            this.$router.replace({ name: "DMCEventList" });
-          }, 100);
+            this.$router.replace({ name: 'DMCEventList' })
+          }, 100)
         }
-        
-      });
+      })
     },
     handleCommand(command) {
-      if(command == 1) {// 高级设置
-        this.$router.push({name:'advancedsetting', query:{id: this.eventId,eventName:this.eventName}})
-      } else if(command == 2) {// 取消会议
-        this.cancelEventDialog = true;
+      if (command == 1) {
+        // 高级设置
+        this.$router.push({ name: 'advancedsetting', query: { id: this.eventId, eventName: this.eventName } })
+      } else if (command == 2) {
+        // 取消会议
+        this.cancelEventDialog = true
       }
-    },
+    }
   }
 }
 </script>
@@ -192,7 +193,7 @@ export default {
   .step_title {
     width: 100%;
     height: 33px;
-    background: url(require('@/assets/images/sprite.png')) -234px -141px no-repeat;
+    //background: url(require('@/assets/images/sprite.png')) -234px -141px no-repeat;
     strong {
       float: left;
       width: 80px;
@@ -291,7 +292,7 @@ export default {
   .processing {
     color: #000 !important;
     font-weight: bold !important;
-    /deep/ .el-step__title .is-wait {
+    ::deep .el-step__title .is-wait {
       color: #000 !important;
     }
   }

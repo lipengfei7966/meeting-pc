@@ -254,35 +254,25 @@
 </template>
 
 <script>
-import {
-  guid,
-  positiveInteger,
-  positiveFloat,
-  positiveFloatSix,
-  formatDate,
-  formatNum,
-} from "@/utils/common";
-import BasePart from "@/components/event/basePart_2";
-import QuotationPart from "./components/quotation";
-import {
-  classifyByTime,
-  EventClassifyByTime,
-} from "@/assets/js/validator";
-import { MAINHOST } from "@/config";
-import { limitsEffect } from "@/utils/uploadRestrictions.js";
-import excelExport from "@/utils/exportexcel";
+import { guid, positiveInteger, positiveFloat, positiveFloatSix, formatDate, formatNum } from '@/utils/common'
+import BasePart from '@/components/event/basePart_2'
+import QuotationPart from './components/quotation'
+import { classifyByTime, EventClassifyByTime } from '@/assets/js/validator'
+import { MAINHOST } from '@/config'
+import { limitsEffect } from '@/utils/uploadRestrictions.js'
+import excelExport from '@/utils/exportexcel'
 export default {
   data() {
     return {
-      UploadFilesUrl: MAINHOST + "/MeetingMa/UploadFiles",
-      downloadUrl: "",
-      prev: "", // 上一页
+      UploadFilesUrl: MAINHOST + '/MeetingMa/UploadFiles',
+      downloadUrl: '',
+      prev: '', // 上一页
       selectQuery: {},
       menus: {},
       quotation: {},
       servicer: {}, // 酒店服务商信息
       arr1: [],
-      leaveWordMsg: "", //留言
+      leaveWordMsg: '', //留言
       filesList: [], // 发送附件列表
       fileList: [], // 上传附件列表
       messageList: [], // 留言信息列表
@@ -296,45 +286,45 @@ export default {
       pickerOptions: {
         shortcuts: [
           {
-            text: "今天",
+            text: '今天',
             onClick(picker) {
-              picker.$emit("pick", new Date());
-            },
+              picker.$emit('pick', new Date())
+            }
           },
           {
-            text: "昨天",
+            text: '昨天',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            },
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
           },
           {
-            text: "一周前",
+            text: '一周前',
             onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            },
-          },
-        ],
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
+          }
+        ]
       },
-      isBid: this.$route.query.type == "待审核" ? false : true,
-      messText: "",
-      value1: "",
-      value2: "",
+      isBid: this.$route.query.type == '待审核' ? false : true,
+      messText: '',
+      value1: '',
+      value2: '',
       reOfferendDate: new Date(new Date().getTime() + 86400000),
-      textValue: "",
+      textValue: '',
       bidTotalMoney: 0,
       invalid: false,
       pickerOptions0: {},
       afresh: true,
       status: 0,
-      quotationIds: "", // 报价单ID拼接
+      quotationIds: '', // 报价单ID拼接
       hasSelect: false,
       cancelInfo: {}, // 会议/询价单取消信息
-      isCancel: false, // 判断会议/询价单是否取消
-    };
+      isCancel: false // 判断会议/询价单是否取消
+    }
   },
   components: { QuotationPart, BasePart },
   watch: {
@@ -344,103 +334,94 @@ export default {
         //监听路由参数是否变化
         // this.Service();
         // this.quote();
-        this.maker(); //methods中封装的加载数据函数
+        this.maker() //methods中封装的加载数据函数
       }
-    },
+    }
   },
   computed: {
     riseInPrice() {
       // 价格上涨金额
-      return function (item, index) {
-        let price = item.total_price - this.quotation[index - 1].total_price;
-        return price.toFixed(2);
-      };
+      return function(item, index) {
+        let price = item.total_price - this.quotation[index - 1].total_price
+        return price.toFixed(2)
+      }
     },
     riseInPriceRatio() {
       // 价格上涨比例
-      return function (item, index) {
-        let ratio =
-          ((item.total_price - this.quotation[index - 1].total_price) /
-            this.quotation[index - 1].total_price) *
-          100;
-        return ratio.toFixed(2) + "%"; // 百分比保留四位小数
-      };
+      return function(item, index) {
+        let ratio = ((item.total_price - this.quotation[index - 1].total_price) / this.quotation[index - 1].total_price) * 100
+        return ratio.toFixed(2) + '%' // 百分比保留四位小数
+      }
     },
     priceFavorable() {
       // 价格优惠金额
-      return function (item, index) {
-        let price = this.quotation[index - 1].total_price - item.total_price;
-        return price.toFixed(2);
-      };
+      return function(item, index) {
+        let price = this.quotation[index - 1].total_price - item.total_price
+        return price.toFixed(2)
+      }
     },
     priceFavorableRatio() {
       // 价格优惠比例
-      return function (item, index) {
-        let ratio =
-          ((this.quotation[index - 1].total_price - item.total_price) /
-            this.quotation[index - 1].total_price) *
-          100;
-        return ratio.toFixed(2) + "%"; // 百分比保留四位小数
-      };
-    },
+      return function(item, index) {
+        let ratio = ((this.quotation[index - 1].total_price - item.total_price) / this.quotation[index - 1].total_price) * 100
+        return ratio.toFixed(2) + '%' // 百分比保留四位小数
+      }
+    }
   },
   mounted() {
-    this.maker();
-    this.Service();
-    this.GetCancel();
-    this.prev = this.$route.query.prev;
+    this.maker()
+    this.Service()
+    this.GetCancel()
+    this.prev = this.$route.query.prev
   },
   methods: {
     excelExport,
     positiveFloat(num) {
-      return positiveFloat(num);
+      return positiveFloat(num)
     },
     //查看报价会议基本信息
     Service() {
-      this.selectQuery = this.$route.query;
+      this.selectQuery = this.$route.query
       this.requestApi({
         url: '/MeetingMa/GetMeetingList',
         method: 'POST',
-        data: { MeetingID: this.selectQuery.id, },
-      }).then((res) => {
-          // console.log(res);
-          this.menus = res;
-          this.pickerOptions0.disabledDate = (time) => {
-            let event_startdate = this.menus.event_startdate;
-            // debugger
-            return (
-              time.getTime() < Date.now() - 8.64e7 ||
-              time.getTime() > new Date(event_startdate).getTime()
-            );
-          };
-        });
+        data: { MeetingID: this.selectQuery.id }
+      }).then(res => {
+        // console.log(res);
+        this.menus = res
+        this.pickerOptions0.disabledDate = time => {
+          let event_startdate = this.menus.event_startdate
+          // debugger
+          return time.getTime() < Date.now() - 8.64e7 || time.getTime() > new Date(event_startdate).getTime()
+        }
+      })
     },
     // 获取留言
     getMessage() {
-      let InquirySheetObjectID = this.servicer.inquiry_sheet_object_id;
+      let InquirySheetObjectID = this.servicer.inquiry_sheet_object_id
       this.requestApi({
         url: '/MeetingMa/GetMessage',
         method: 'POST',
-        data: { InquirySheetObjectID, },
-      }).then((res) => {
-        this.messageList = res || [];
-      });
+        data: { InquirySheetObjectID }
+      }).then(res => {
+        this.messageList = res || []
+      })
     },
     // 报价历史查看报价
     checkOffer(item) {
       if (item.id == this.$route.query.foreign_key_id) {
-        this.Service();
+        this.Service()
         // this.quote();
-        this.maker();
+        this.maker()
       } else {
         this.$router.push({
-          name: "offer",
+          name: 'offer',
           query: {
             foreign_key_id: item.id, // 报价单ID
             id: this.$route.query.id, // 会议ID
-            type: this.$route.query.type, // 审核状态
-          },
-        });
+            type: this.$route.query.type // 审核状态
+          }
+        })
       }
     },
     // 查询取消信息
@@ -448,53 +429,53 @@ export default {
       this.requestApi({
         url: '/MeetingMa/GetCancel',
         method: 'POST',
-        data: { 
-          ID: this.$route.query.inquiryListId, // 询价单ID
-        },
-      }).then((res) => {
-          this.cancelInfo = res;
-          if (res.cancel_time) {
-            this.isCancel = true;
-          }
-        });
+        data: {
+          ID: this.$route.query.inquiryListId // 询价单ID
+        }
+      }).then(res => {
+        this.cancelInfo = res
+        if (res.cancel_time) {
+          this.isCancel = true
+        }
+      })
     },
     // 点击询价单行事件
     checkedRow(row, column, event) {
       if (row.state == 1) {
-        this.$refs.multipleTable.toggleRowSelection(row, true);
+        this.$refs.multipleTable.toggleRowSelection(row, true)
       }
     },
     // 默认勾选询价单
     selectRow(selects, row) {
-      debugger;
+      debugger
       if (row.state == 1) {
-        this.$refs.multipleTable.toggleRowSelection(row, true);
+        this.$refs.multipleTable.toggleRowSelection(row, true)
       }
-      this.hasSelect = selects.find((item) => item.state == 2) ? true : false;
+      this.hasSelect = selects.find(item => item.state == 2) ? true : false
     },
     isDisabled(row, index) {
       // debugger
       if (row.state == 1) {
-        return false;
+        return false
       } else {
-        return true;
+        return true
       }
     },
     // 多选询价单，计算金额
     handleSelectionChange(row) {
-      this.bidTotalMoney = 0;
-      this.quotationIds = "";
-      row.forEach((element) => {
-        this.bidTotalMoney += Number(element.total_price); // 计算选择询价单金额
+      this.bidTotalMoney = 0
+      this.quotationIds = ''
+      row.forEach(element => {
+        this.bidTotalMoney += Number(element.total_price) // 计算选择询价单金额
         if (row.length > 1) {
-          this.quotationIds += element.id + ","; //报价单ID拼接
+          this.quotationIds += element.id + ',' //报价单ID拼接
         } else {
-          this.quotationIds = element.id;
+          this.quotationIds = element.id
         }
-      });
+      })
     },
     eventBaseInfo(data) {
-      this.eventBaseInfo = data;
+      this.eventBaseInfo = data
     },
     // 谢绝报价、重新报价
     quote(status) {
@@ -503,117 +484,117 @@ export default {
         status: status,
         id: this.$route.query.foreign_key_id, // 报价单ID
         inquiry_sheet_object_id: this.$route.query.serviceId, //服务商ID
-        message: "",
-      };
+        message: ''
+      }
       if (status !== 1) {
-        if (this.textValue.trim() === "") {
-          this.invalid = true;
-          return false;
+        if (this.textValue.trim() === '') {
+          this.invalid = true
+          return false
         } else {
-          Parameter.message = this.textValue;
+          Parameter.message = this.textValue
         }
         if (status == 3) {
-          Parameter.offerenddate = this.reOfferendDate;
+          Parameter.offerenddate = this.reOfferendDate
         }
       }
 
-      this.invalid = false;
+      this.invalid = false
       this.requestApi({
         url: '/MeetingMa/QuotedPriceStatus',
         method: 'POST',
-        data: { 
-          Parameter: JSON.stringify(Parameter), 
-        },
-      }).then((res) => {
-          this.arr1 = res;
-          if (res) {
-            this.$message({
-              message: res.msg,
-              type: "success",
-            });
-            this.centerDialogVisible = false;
-            this.Visible = false;
-            this.canotBidVisible = false;
-            this.declineVisible = false;
+        data: {
+          Parameter: JSON.stringify(Parameter)
+        }
+      }).then(res => {
+        this.arr1 = res
+        if (res) {
+          this.$message({
+            message: res.msg,
+            type: 'success'
+          })
+          this.centerDialogVisible = false
+          this.Visible = false
+          this.canotBidVisible = false
+          this.declineVisible = false
 
-            if (res == "未审批完成，请勿重复点击") {
-              return;
-            }
-            this.$router.go(-1);
-            this.maker();
-            // this.status = status;
+          if (res == '未审批完成，请勿重复点击') {
+            return
           }
-        });
+          this.$router.go(-1)
+          this.maker()
+          // this.status = status;
+        }
+      })
     },
     yao() {
-      this.centerDialogVisible = true;
-      this.invalid = false;
+      this.centerDialogVisible = true
+      this.invalid = false
     },
     // 确认报价
     Confirm(sbumitType) {
-      debugger;
+      debugger
       let Parameter = {
         status: 1,
         type: sbumitType || 0, // 默认0，不走审批流 1
         id: this.$route.query.foreign_key_id, // 报价单ID
-        inquiry_sheet_object_id: this.servicer.inquiry_sheet_object_id, //服务商ID
-      };
-      const _this = this;
+        inquiry_sheet_object_id: this.servicer.inquiry_sheet_object_id //服务商ID
+      }
+      const _this = this
       this.requestApi({
         url: '/MeetingMa/QuotedPriceStatus',
         method: 'POST',
-        data: { 
-          Parameter: JSON.stringify(Parameter), 
-        },
-      }).then((resData) => {
-          if (resData.data === 1 || resData.data === 0) {
-            //0酒店,1服务商
-            this.requestApi({
-              url: '/MeetingMa/WinTheBiddingQuotedPrice',
-              method: 'POST',
-              data: { 
-                MeetingID: this.$route.query.id,
-                type: resData.data,
-              },
-            }).then((res) => {
-              this.Visible = true;
-              this.tableData = res;
-              this.$nextTick(() => {
-                this.tableData.forEach((item, index) => {
-                  if (item.state == 1) {
-                    // 默认选中已中标报价单
-                    _this.$refs.multipleTable.toggleRowSelection(item, true);
-                  }
-                });
-              });
-            });
-          } else if (resData.data === true) {
-            this.$message({
-              message: resData.msg,
-              type: "success",
-            });
-            this.$router.go(-1);
-            this.maker();
-          } else {
-            // this.canotBidVisible = true; // 无法确认中标弹窗
-            this.$confirm(resData.msg, "提示", {
-              confirmButtonText: "查看审批进度",
-              cancelButtonText: "取消",
-              center: true,
-            })
-              .then(() => {
-                this.$router.push({
-                  name:'biddedDetail',
-                  // path: "/cmms",
-                  query: {
-                    id: this.$route.query.id,
-                    ApproveID: resData.data.ApproveID, // 审批ID
-                  },
-                });
+        data: {
+          Parameter: JSON.stringify(Parameter)
+        }
+      }).then(resData => {
+        if (resData.data === 1 || resData.data === 0) {
+          //0酒店,1服务商
+          this.requestApi({
+            url: '/MeetingMa/WinTheBiddingQuotedPrice',
+            method: 'POST',
+            data: {
+              MeetingID: this.$route.query.id,
+              type: resData.data
+            }
+          }).then(res => {
+            this.Visible = true
+            this.tableData = res
+            this.$nextTick(() => {
+              this.tableData.forEach((item, index) => {
+                if (item.state == 1) {
+                  // 默认选中已中标报价单
+                  _this.$refs.multipleTable.toggleRowSelection(item, true)
+                }
               })
-              .catch(() => {});
-          }
-        });
+            })
+          })
+        } else if (resData.data === true) {
+          this.$message({
+            message: resData.msg,
+            type: 'success'
+          })
+          this.$router.go(-1)
+          this.maker()
+        } else {
+          // this.canotBidVisible = true; // 无法确认中标弹窗
+          this.$confirm(resData.msg, '提示', {
+            confirmButtonText: '查看审批进度',
+            cancelButtonText: '取消',
+            center: true
+          })
+            .then(() => {
+              this.$router.push({
+                name: 'biddedDetail',
+                // path: "/cmms",
+                query: {
+                  id: this.$route.query.id,
+                  ApproveID: resData.data.ApproveID // 审批ID
+                }
+              })
+            })
+            .catch(() => {})
+        }
+      })
     },
     // 确认报价临时方法
     ConfirmTempFn() {
@@ -622,274 +603,265 @@ export default {
         status: 1,
         id: this.$route.query.foreign_key_id, // 报价单ID
         inquiry_sheet_object_id: this.$route.query.serviceId, //服务商ID
-        message: "",
-      };
+        message: ''
+      }
       this.requestApi({
         url: '/MeetingMa/Temporary',
         method: 'POST',
-        data: { 
-          Parameter: JSON.stringify(Parameter),
-        },
-      }).then((res) => {
+        data: {
+          Parameter: JSON.stringify(Parameter)
+        }
+      }).then(res => {
         this.$message({
-          message: "确认中标成功",
-          type: "success",
-        });
-        this.maker();
-      });
+          message: '确认中标成功',
+          type: 'success'
+        })
+        this.maker()
+      })
     },
     // 确认报价生成审批
     confirmBid() {
-      debugger;
+      debugger
       if (!this.quotationIds || !this.hasSelect) {
-        this.$message.error("请选择中标报价");
-        return;
+        this.$message.error('请选择中标报价')
+        return
       }
       let Parameter = {
         id: this.quotationIds, // 多个报价单ID
         event_info_id: this.$route.query.id, //会议ID
-        total_price: this.bidTotalMoney, // 多个询价单总金额
-      };
+        total_price: this.bidTotalMoney // 多个询价单总金额
+      }
       // debugger
       this.requestApi({
         url: '/MeetingMa/WinningTheBidApprove',
         method: 'POST',
-        data: { 
-          Parameter: JSON.stringify(Parameter),
-        },
-      }).then((res) => {
-        debugger;
-        if (res === 1) {
-          this.$confirm("没有审批流程，是否直接提交中标?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
-          }).then(() => {
-            this.Confirm(1); // 没有审批流程，直接中标
-            this.Visible = false;
-          });
-        } else {
-          this.$message({ message: "操作成功", type: "success" });
-          this.Visible = false;
-          this.maker();
+        data: {
+          Parameter: JSON.stringify(Parameter)
         }
-      });
+      }).then(res => {
+        debugger
+        if (res === 1) {
+          this.$confirm('没有审批流程，是否直接提交中标?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.Confirm(1) // 没有审批流程，直接中标
+            this.Visible = false
+          })
+        } else {
+          this.$message({ message: '操作成功', type: 'success' })
+          this.Visible = false
+          this.maker()
+        }
+      })
     },
     decline() {
-      this.declineVisible = true;
-      this.invalid = false;
+      this.declineVisible = true
+      this.invalid = false
     },
     downloadOffer() {
       if (this.quotationIds) {
         this.requestApi({
           url: '/ExcelExport/QuotedPriceSettlementExcel',
           method: 'POST',
-          data: { 
-            QuotedPriceID: this.quotationIds,
-          },
-        }).then((resUrl) => {
+          data: {
+            QuotedPriceID: this.quotationIds
+          }
+        }).then(resUrl => {
           // window.open(resUrl, "_blank");
           if (resUrl) {
-            let a_link = document.createElement("a");
+            let a_link = document.createElement('a')
             fetch(resUrl)
-              .then((res) => res.blob())
-              .then((blob) => {
+              .then(res => res.blob())
+              .then(blob => {
                 // 将链接地址字符内容转变成blob地址
-                a_link.href = URL.createObjectURL(blob);
-                a_link.download = "报价单"; //下载的文件的名字
-                document.body.appendChild(a_link);
-                a_link.click();
-              });
-            }
-          });
+                a_link.href = URL.createObjectURL(blob)
+                a_link.download = '报价单' //下载的文件的名字
+                document.body.appendChild(a_link)
+                a_link.click()
+              })
+          }
+        })
       } else {
-        this.$message.error("请勾选需要下载的报价单");
+        this.$message.error('请勾选需要下载的报价单')
       }
     },
     // 下载报价单
     excelexport() {
       //导出excel
-      var name = "DMC报价单" + this.$route.query.id;
+      var name = 'DMC报价单' + this.$route.query.id
       // let priceSheetId = this.$route.params.id
       this.excelExport(
-        "/Template/GetTemplate",
+        '/Template/GetTemplate',
         {
           eventid: this.$route.query.id,
           type: 3,
-          param: this.$route.query.foreign_key_id,
+          param: this.$route.query.foreign_key_id
         },
         name
-      );
+      )
     },
     fileLimit(file) {
-      const isLt30M = file.size / 1024 / 1024 < 30;
+      const isLt30M = file.size / 1024 / 1024 < 30
       if (!isLt30M) {
-        this.$message.error("上传附件大小不能超过 30MB!");
-        return false;
+        this.$message.error('上传附件大小不能超过 30MB!')
+        return false
       }
-      return limitsEffect(file);
+      return limitsEffect(file)
     },
     // 上传文件
     uploadFile(e) {
-      this.uploadFileInfo = e;
+      this.uploadFileInfo = e
       // this.fileList = [{name:e.title, url: e.weburl}];
-      this.filesList.push({ name: e.title, url: e.weburl });
+      this.filesList.push({ name: e.title, url: e.weburl })
     },
     // 上传文件个数超出限制
     overLimit(files, fileList) {
-      this.$message.error("文件只能上传一份");
+      this.$message.error('文件只能上传一份')
     },
     // 文件删除
     deleteFile(file, fileList) {
-      this.filesList = [];
-      fileList.forEach((file) => {
-        this.filesList.push({ name: file.name, url: file.url });
-      });
+      this.filesList = []
+      fileList.forEach(file => {
+        this.filesList.push({ name: file.name, url: file.url })
+      })
       // this.waitUpload = e;
     },
     // 给会议服务商发送信息
     sendMsg() {
       let Parameter = {
         inquiry_sheet_object_id: this.servicer.inquiry_sheet_object_id,
-        message: "",
-        message_type: 0, // 留言是0，文件是1
-      };
+        message: '',
+        message_type: 0 // 留言是0，文件是1
+      }
       if (this.leaveWordMsg) {
-        Parameter.message = this.leaveWordMsg;
+        Parameter.message = this.leaveWordMsg
         this.requestApi({
           url: '/MeetingMa/MessageSava',
           method: 'POST',
-          data: { 
-            Parameter: JSON.stringify(Parameter),
-          },
-        }).then((res) => {
-          if (res) {
-            this.getMessage();
-            this.$message({
-              message: "消息发送成功",
-              type: "success",
-            });
-            this.leaveWordMsg = "";
+          data: {
+            Parameter: JSON.stringify(Parameter)
           }
-        });
+        }).then(res => {
+          if (res) {
+            this.getMessage()
+            this.$message({
+              message: '消息发送成功',
+              type: 'success'
+            })
+            this.leaveWordMsg = ''
+          }
+        })
       }
       this.filesList.forEach((file, index) => {
-        Parameter.message = file.name + "," + file.url;
-        Parameter.message_type = 1;
+        Parameter.message = file.name + ',' + file.url
+        Parameter.message_type = 1
         this.requestApi({
           url: '/MeetingMa/MessageSava',
           method: 'POST',
-          data: { 
-            Parameter: JSON.stringify(Parameter),
-          },
-        }).then((res) => {
+          data: {
+            Parameter: JSON.stringify(Parameter)
+          }
+        }).then(res => {
           if (res && index == 0) {
             this.$message({
-              message: "文件发送成功",
-              type: "success",
-            });
-            this.leaveWordMsg = "";
-            this.getMessage();
+              message: '文件发送成功',
+              type: 'success'
+            })
+            this.leaveWordMsg = ''
+            this.getMessage()
           }
-        });
-      });
+        })
+      })
     },
     // 预览留言文件
     handlePreview(fileStr) {
-      debugger;
-      let filepath = fileStr.slice(fileStr.lastIndexOf(",") + 1);
-      let filename = fileStr.slice(0, fileStr.lastIndexOf(","));
-      if (!filepath) return;
+      debugger
+      let filepath = fileStr.slice(fileStr.lastIndexOf(',') + 1)
+      let filename = fileStr.slice(0, fileStr.lastIndexOf(','))
+      if (!filepath) return
       // 获取文件后缀名
-      let suffix = filepath.substring(filepath.lastIndexOf(".") + 1);
+      let suffix = filepath.substring(filepath.lastIndexOf('.') + 1)
       // doc、docx、xls、xlsx、xlsm、pdf、ppt、pptx、jpeg、jpg、png、txt
-      let types1 = ["pdf", "jpeg", "jpg", "png", "txt"];
-      let types2 = ["docx", "doc", "xls", "xlsx", "xlsm", "ppt", "pptx"];
-      filepath = filepath.replace(/http:/, "https:");
-      this.downloadUrl = filepath;
+      let types1 = ['pdf', 'jpeg', 'jpg', 'png', 'txt']
+      let types2 = ['docx', 'doc', 'xls', 'xlsx', 'xlsm', 'ppt', 'pptx']
+      filepath = filepath.replace(/http:/, 'https:')
+      this.downloadUrl = filepath
       if (types2.includes(suffix)) {
-        this.downloadUrl =
-          "https://view.officeapps.live.com/op/view.aspx?src=" +
-          encodeURIComponent(filepath);
+        this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
       } else if (types1.includes(suffix)) {
-        this.downloadUrl = filepath;
+        this.downloadUrl = filepath
       } else {
-        this.$message.info("文件格式不支持预览，下载后查看");
+        this.$message.info('文件格式不支持预览，下载后查看')
       }
       // this.downloadUrl= 'https://view.xdocin.com/view?src=' + encodeURIComponent(file.url)
       setTimeout(() => {
-        this.$refs.a_click.click();
-      }, 100);
+        this.$refs.a_click.click()
+      }, 100)
     },
     // 留言下载文件
     downloadFile(fileStr) {
-      let downloadUrl = fileStr.slice(fileStr.lastIndexOf(",") + 1);
-      let filename = fileStr.slice(0, fileStr.lastIndexOf(","));
-      let a_link = document.createElement("a");
-      a_link.href = downloadUrl;
-      a_link.download = filename; //下载的文件的名字/
-      document.body.appendChild(a_link);
-      a_link.click();
+      let downloadUrl = fileStr.slice(fileStr.lastIndexOf(',') + 1)
+      let filename = fileStr.slice(0, fileStr.lastIndexOf(','))
+      let a_link = document.createElement('a')
+      a_link.href = downloadUrl
+      a_link.download = filename //下载的文件的名字/
+      document.body.appendChild(a_link)
+      a_link.click()
       // })
     },
     hotel() {
       this.requestApi({
         url: '/MeetingMa/GetQuotedPrice',
         method: 'POST',
-        data: { 
-          QuotedPriceID: this.$route.query.foreign_key_id,
-        },
-      }).then((res) => {
-        console.log(res);
-        this.quotation = res.quotedprice;
-      });
+        data: {
+          QuotedPriceID: this.$route.query.foreign_key_id
+        }
+      }).then(res => {
+        console.log(res)
+        this.quotation = res.quotedprice
+      })
     },
     maker() {
       this.requestApi({
         url: '/MeetingMa/GetQuotedPrice',
         method: 'POST',
-        data: { 
-          QuotedPriceID: this.$route.query.foreign_key_id,
-        },
-      }).then((res) => {
+        data: {
+          QuotedPriceID: this.$route.query.foreign_key_id
+        }
+      }).then(res => {
         if (res) {
-          this.servicer = res.service; //服务商、酒店信息
-          this.$refs.quotations.hotelInfo = res.service; //服务商、酒店信息
-          this.$refs.quotations.roomList = classifyByTime(res.room); //客房
-          this.$refs.quotations.eventList = EventClassifyByTime(
-            res.conference
-          ); //会场信息
-          this.$refs.quotations.carList = classifyByTime(res.car, "datatime"); // 地面交通
-          this.$refs.quotations.foodList = classifyByTime(res.food); //餐饮信息
-          this.$refs.quotations.foodOutsideList = classifyByTime(
-            res.foodOutside
-          ); //餐饮信息
-          this.$refs.quotations.otherList = res.other ? res.other : []; //其他 兼容后台没数据返回 null
-          this.$refs.quotations.additional = res.quoted_price; // 报价单信息
-          this.$refs.quotations.transportList = classifyByTime(
-            res.transportation,
-            "datatime"
-          ); //大交通
-          this.quotation = res.quotedprice; //报价记录
+          this.servicer = res.service //服务商、酒店信息
+          this.$refs.quotations.hotelInfo = res.service //服务商、酒店信息
+          this.$refs.quotations.roomList = classifyByTime(res.room) //客房
+          this.$refs.quotations.eventList = EventClassifyByTime(res.conference) //会场信息
+          this.$refs.quotations.carList = classifyByTime(res.car, 'datatime') // 地面交通
+          this.$refs.quotations.foodList = classifyByTime(res.food) //餐饮信息
+          this.$refs.quotations.foodOutsideList = classifyByTime(res.foodOutside) //餐饮信息
+          this.$refs.quotations.otherList = res.other ? res.other : [] //其他 兼容后台没数据返回 null
+          this.$refs.quotations.additional = res.quoted_price // 报价单信息
+          this.$refs.quotations.transportList = classifyByTime(res.transportation, 'datatime') //大交通
+          this.quotation = res.quotedprice //报价记录
           if (this.servicer.type == 1) {
             //1为已中标，2为重新报价，3谢绝报价
-            this.messText = "该报价已中标！";
+            this.messText = '该报价已中标！'
           } else if (this.servicer.type === 2) {
-            this.messText = "已通知会议服务商重新报价！";
+            this.messText = '已通知会议服务商重新报价！'
           } else if (this.servicer.type == 3) {
-            this.messText = "您已谢绝该报价!";
+            this.messText = '您已谢绝该报价!'
           } else if (this.servicer.type == 4) {
-            this.messText = "服务商已提交最新报价!";
+            this.messText = '服务商已提交最新报价!'
           } else {
-            this.messText = "";
+            this.messText = ''
           }
           // 获取留言
-          this.getMessage();
+          this.getMessage()
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
