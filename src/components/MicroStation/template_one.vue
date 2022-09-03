@@ -1,5 +1,5 @@
 <template>
-  <div class="contents">
+  <div class="contents" :style="{'backgroundImage':'url('+loginBg+')'}">
     <div class="block">
     <el-carousel trigger="click" height="200px" indicator-position="none">
       <el-carousel-item v-for="item in 4" :key="item">
@@ -12,7 +12,7 @@
     <p class="p_small">{{smallTitle}}</p>
     <div>
           <ul class="feature">
-          <li v-for="(item,index) in moduleData" :key="index" @click.stop="handel(item,index)">
+          <li :style="isTrue ? {'backgroundColor': backColor} : ''" v-for="(item,index) in moduleData" :key="index" @click.stop="handel(item,index)">
           <div class="conDiv">
           <i class="el-icon-goods classRgb"></i>
           <p class="classTxt">{{item.title}}</p>
@@ -30,8 +30,12 @@ export default {
   components: {},
   data() {
     return {
-      bigTitle: '大标题xxxxx会议',
-      smallTitle: '小标题xxxx地点',
+      isTrue: true,
+      loginBg: require('./images/demo.jpeg'),
+      backColor: 'rgba(198, 75, 34, 0.2)',
+      backColor_: 'rgba(198, 75, 34, 0.2)',
+      bigTitle: '2022中国人保寿险第十四届高峰会',
+      smallTitle: '中国-武汉',
       pitchOn: false,
       moduleData: [
         {
@@ -64,7 +68,24 @@ export default {
   methods: {
     handel(item, index) {
       console.log(item, index)
+    },
+    watchVal(val) {
+      //       debugger
+      if (val == 1) {
+        this.isTrue = true
+      } else if (val == 2) {
+        this.isTrue = false
+      } else if (val == 3) {
+        this.isTrue = true
+      }
+      console.log(val)
+    },
+    colorVal(val) {
+      this.backColor = val
     }
+  },
+  mounted() {
+    this.$emit('feature', this.moduleData)
   }
 }
 </script>
@@ -87,7 +108,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background-image: url('./images/demo.jpeg');
+  //   background-image: url('./images/demo.jpeg');
   background-size: 100% 100%;
 }
 .feature {
@@ -101,7 +122,7 @@ export default {
     cursor: pointer;
     width: 30%;
     height: 12vh;
-    background-color: rgba(198, 75, 34, 0.2);
+    //     background-color: rgba(198, 75, 34, 0.2);
     //     border: 1px solid red;
     margin-bottom: 10px;
   }

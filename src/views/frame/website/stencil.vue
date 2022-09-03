@@ -1,6 +1,6 @@
 <template>
   <div class="contents">
-     <templateOne ref="templateOne" />
+     <templateOne ref="templateOne" v-if="isState == 0"/>
   </div>
 </template>        
 <script>
@@ -11,9 +11,14 @@ export default {
     templateOne
   },
   data() {
-    return {}
+    return {
+      isState: 0
+    }
   },
-  methods: {}
+  methods: {
+    handelEdit() {},
+    handelAdd() {}
+  }
 }
 </script>
 
