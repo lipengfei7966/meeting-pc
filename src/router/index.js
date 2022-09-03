@@ -841,29 +841,6 @@ export const constantRouterMap = [
         }
       }
     ]
-  },
-  {
-    path: '',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/generatorMenu',
-        name: 'generatorMenu',
-        component: () => import('@/views/frame/base/generator/form/preview/menu.vue'),
-        meta: {
-          title: '查询页生成一览'
-        }
-      },
-      {
-        path: '/generatorSubmenu',
-        name: 'generatorSubmenu',
-        component: () => import('@/views/frame/base/generator/form/preview/submenu.vue'),
-        meta: {
-          title: '编辑页生成一览'
-        }
-      }
-    ]
   }
 ]
 export const routeIframe = {

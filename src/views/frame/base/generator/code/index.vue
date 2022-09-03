@@ -64,16 +64,6 @@ export default {
             getParam(currentRow) {
               return { table: currentRow.tableName, appCode: this.$refs.bsForm.form.listQuery.data.codeApp }
             }
-          },
-          {
-            name: 'update',
-            i18n: '配置表引用',
-            type: 'dialog',
-            $refs: this.$refs,
-            component: () => import('@/views/frame/base/generator/tableJoin/add.vue'),
-            getParam(currentRow) {
-              return { appCode: this.$refs.bsForm.form.listQuery.data.codeApp, tableName: currentRow.tableName, tableComment: currentRow.tableComment }
-            }
           }
         ],
         initSearch: false,
