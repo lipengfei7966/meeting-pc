@@ -136,7 +136,7 @@ export default {
   height: 100%;
   margin-top: 15px;
 }
-/deep/.el-radio {
+.el-radio {
   color: #606266;
   font-weight: 500;
   cursor: pointer;
