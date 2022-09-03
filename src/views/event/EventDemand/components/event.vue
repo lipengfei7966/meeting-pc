@@ -53,23 +53,13 @@
                   <div class="flex_column align_start time" style="height: 320px">
                     <div class="text_left">会场时间 Conference Room</div>
                     <div class="text_left">开始时间 Start Time</div>
-                    <el-time-select
-                            @change="scope.row.conference_end_time = ''"
-                            placeholder="起始时间"
-                            value='12:00'
-                            v-model="scope.row.conference_start_time"
-                            :picker-options="{
+                    <el-time-select @change="scope.row.conference_end_time = ''" placeholder="起始时间" value='12:00' v-model="scope.row.conference_start_time" :picker-options="{
                               start: '00:00',
                               step: '01:00',
                               end: '24:00'
-                            }"
-                            size="small" class="demand_200"></el-time-select>
+                            }" size="small" class="demand_200"></el-time-select>
                     <div class="text_left">结束时间 Start Time</div>
-                    <el-time-select
-                            placeholder="结束时间"
-                            v-model="scope.row.conference_end_time"
-                            size="small" class="demand_200"
-                            :picker-options="getStep(scope.row.conference_start_time)"></el-time-select>
+                    <el-time-select placeholder="结束时间" v-model="scope.row.conference_end_time" size="small" class="demand_200" :picker-options="getStep(scope.row.conference_start_time)"></el-time-select>
                     <div class="text_left">参与人数 Attendees</div>
                     <el-input v-model="scope.row.attendees" size="small" class="demand_200" v-input-filter:int clearable></el-input>
                     <div class="text_left">会场面积范围 Area</div>
@@ -77,7 +67,7 @@
                       <el-input v-model="scope.row.min_area" size="small" v-input-filter:number style="width:80px"></el-input>~
                       <el-input v-model="scope.row.max_area" size="small" v-input-filter:number style="width:80px"></el-input>sqm
                     </div>
-                    
+
                   </div>
                 </template>
               </el-table-column>
@@ -90,7 +80,7 @@
                     </el-select>
                     <div class="flex_row" @click="isSetStageTap(index, scope.$index, scope.row.is_setting_in_advance)">
                       <el-checkbox disabled v-model="scope.row.is_setting_in_advance == 1"></el-checkbox>
-                       &nbsp;提前搭建 Setting in Advance
+                      &nbsp;提前搭建 Setting in Advance
                     </div>
                     <div v-show="scope.row.is_setting_in_advance == 1">
                       <p>搭建入场时间</p>
@@ -103,15 +93,10 @@
                               :picker-options="getStepStart"></el-date-picker> -->
                       <!-- <el-input v-model="scope.row.setting_in_advance_date" placeholder="yyyy-MM-dd HH:mm:ss" suffix-icon="el-icon-date" size='small'></el-input> -->
                       <div style="display: flex;">
-                        <el-date-picker v-model="scope.row.setting_in_advance_date" value-format="yyyy-MM-dd" style="width:130px" type="date" placeholder="搭建日期" size="mini"
-                          @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)"
-                          :picker-options="datePickers[index]"
-                          ></el-date-picker>
-                        <el-time-select placeholder="搭建时间" v-model="scope.row.setting_in_advance_time" style="width:120px"
-                          @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)"
-                          :picker-options="{ start: '00:00', step: '01:00',end: '24:00'}" size="mini"></el-time-select>
+                        <el-date-picker v-model="scope.row.setting_in_advance_date" value-format="yyyy-MM-dd" style="width:130px" type="date" placeholder="搭建日期" size="mini" @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)" :picker-options="datePickers[index]"></el-date-picker>
+                        <el-time-select placeholder="搭建时间" v-model="scope.row.setting_in_advance_time" style="width:120px" @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)" :picker-options="{ start: '00:00', step: '01:00',end: '24:00'}" size="mini"></el-time-select>
                       </div>
-                      
+
                       <!-- <el-date-picker
                               type="datetime" class="demand_250 mar_tb10"
                               placeholder="搭建彩排完成时间"
@@ -121,18 +106,12 @@
                               :picker-options="getStepEnd"></el-date-picker> -->
                       <p style="margin-top: 10px">搭建彩排完成时间</p>
                       <!-- <el-input v-model="scope.row.rehearsal_date" placeholder="yyyy-MM-dd HH:mm:ss" suffix-icon="el-icon-date" size='small'></el-input> -->
-                      <div style="display: flex;margin-bottom:10px"> 
-                        <el-date-picker v-model="scope.row.rehearsal_date" value-format="yyyy-MM-dd" style="width:130px" type="date" placeholder="搭建日期" size="mini"
-                          @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)"
-                          :picker-options="datePickers[index]"
-                        ></el-date-picker>
-                        <el-time-select placeholder="彩排时间" v-model="scope.row.rehearsal_time" style="width:120px"
-                          @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)"
-                          :picker-options="{ start: '00:00', step: '01:00',end: '24:00'}" size="mini"></el-time-select>
+                      <div style="display: flex;margin-bottom:10px">
+                        <el-date-picker v-model="scope.row.rehearsal_date" value-format="yyyy-MM-dd" style="width:130px" type="date" placeholder="搭建日期" size="mini" @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)" :picker-options="datePickers[index]"></el-date-picker>
+                        <el-time-select placeholder="彩排时间" v-model="scope.row.rehearsal_time" style="width:120px" @change="setLimitEnd(scope.row.setting_in_advance_date,scope.row.setting_in_advance_time,scope.row.rehearsal_date,scope.row.rehearsal_time, index, scope.$index)" :picker-options="{ start: '00:00', step: '01:00',end: '24:00'}" size="mini"></el-time-select>
                       </div>
-                              
-                      <el-input type="textarea" placeholder="提前进场搭建酒店会收取相应费用，请根据实际需求进行填写，但务必预留充分搭建彩排时间。"
-                                v-model="scope.row.describe" size="small" class="demand_250" :rows="5"></el-input>
+
+                      <el-input type="textarea" placeholder="提前进场搭建酒店会收取相应费用，请根据实际需求进行填写，但务必预留充分搭建彩排时间。" v-model="scope.row.describe" size="small" class="demand_250" :rows="5"></el-input>
                     </div>
                   </div>
                 </template>
@@ -142,8 +121,7 @@
                   <div class="tag flex_column align_start" style="min-height: 320px">
                     <div>会场设备Site Equipment</div>
                     <div class="equipment_tag">
-                        <span @click="selectTagTap(a, index, scope.$index)" :class="item.is_delete == 0?'select_tag':''"
-                              v-for="(item,a) in scope.row.equipment">{{item.value}}</span>
+                      <span @click="selectTagTap(a, index, scope.$index)" :class="item.is_delete == 0?'select_tag':''" v-for="(item,a) in scope.row.equipment">{{item.value}}</span>
                       <el-button type="text" @click="clearCheckTap(index, scope.$index)">X清空勾选</el-button>
                     </div>
                     <!-- <div class="mar_b10">
@@ -156,8 +134,7 @@
                       <el-input size="small" class="demand_120" v-model="scope.row.wireless_microphone_count"
                                 placeholder="请填写数量" v-input-filter:int clearable></el-input>
                     </div> -->
-                    <el-input type="textarea" v-model="scope.row.microphone_describe" :rows="5"
-                              placeholder="说明以上设备数量和尺寸 / 补充其他设备"></el-input>
+                    <el-input type="textarea" v-model="scope.row.microphone_describe" :rows="5" placeholder="说明以上设备数量和尺寸 / 补充其他设备"></el-input>
                   </div>
                 </template>
               </el-table-column>
@@ -180,11 +157,11 @@
 </template>
 
 <script>
-import inputFilter from '@/assets/js/filter';
-import {getBetweenDate, getNextDate} from '@/utils/common'
+import inputFilter from '@/assets/js/filter'
+import { getBetweenDate, getNextDate } from '@/utils/common'
 export default {
-  name: "event",
-  props:['swingList', 'dateArr'],
+  name: 'event',
+  props: ['swingList', 'dateArr'],
   directives: {
     inputFilter
   },
@@ -198,9 +175,9 @@ export default {
           conference_date: '',
           conference: [
             {
-              id:'',
+              id: '',
               order_name: 1,
-              conference_id:'',
+              conference_id: '',
               event_info_id: '',
               is_important: 0, // 是否主会场（0：主会场 1：子会场）
               conference_start_time: '09:00', // 会场开始使用时间（24时制 如 8:00）
@@ -216,113 +193,114 @@ export default {
               wire_microphone_count: '', //  有线麦克风数量
               wireless_microphone_count: '', //  无线麦克风数量
               microphone_describe: '', //  麦克风或其他设备描述
-              equipment:[],
-              is_delete: 0,
+              equipment: [],
+              is_delete: 0
             }
-          ],
+          ]
         }
       ],
       isChangeStageIdx_a: 0,
       isChangeStageIdx_b: 0,
       setStageShow: false,
       stageBtn: false,
-      step: {start: '08:00', step: '01:00', end: '22:00'},
+      step: { start: '08:00', step: '01:00', end: '22:00' },
       // : {start: '08:00', step: '01:00', end: '22:00',minTime: startTime},
       tagList: [],
       meetDate: [],
       disMeetDate: [],
-      datePickers:[], // 会场日期选择限制
-      
-      getStepEnd:{
-        disabledDate:(time) => {
-          return time.getTime() < Date.now() - 8.64e7;
+      datePickers: [], // 会场日期选择限制
+
+      getStepEnd: {
+        disabledDate: time => {
+          return time.getTime() < Date.now() - 8.64e7
         }
       },
-      getStepStart:{
-        disabledDate:(time) => {
-          return time.getTime() < Date.now() - 8.64e7;
+      getStepStart: {
+        disabledDate: time => {
+          return time.getTime() < Date.now() - 8.64e7
         }
-      },
+      }
     }
-
   },
-  mounted(){
-    this.$nextTick(() =>{
-      this.addDate();
-
+  mounted() {
+    this.$nextTick(() => {
+      this.addDate()
     })
   },
-  methods: { 
-    formatNum(){
-      let temp = this.conference_rooms_budget.toString();
-      temp = temp.replace(/。/g, ".");
-      temp = temp.replace(/\b(0+)/gi,"");
-      temp = temp.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符
-      temp = temp.replace(/^\./g, ""); //验证第一个字符是数字
-      temp = temp.replace(/\.{2,}/g, ""); //只保留第一个, 清除多余的
-      temp = temp.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-      temp = temp.replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3"); //只能输入两个小数
+  methods: {
+    formatNum() {
+      let temp = this.conference_rooms_budget.toString()
+      temp = temp.replace(/。/g, '.')
+      temp = temp.replace(/\b(0+)/gi, '')
+      temp = temp.replace(/[^\d.]/g, '') //清除"数字"和"."以外的字符
+      temp = temp.replace(/^\./g, '') //验证第一个字符是数字
+      temp = temp.replace(/\.{2,}/g, '') //只保留第一个, 清除多余的
+      temp = temp
+        .replace('.', '$#$')
+        .replace(/\./g, '')
+        .replace('$#$', '.')
+      temp = temp.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3') //只能输入两个小数
       this.conference_rooms_budget = temp
     },
-    setLimitEnd(date1,time1, date2, time2, a, b){
+    setLimitEnd(date1, time1, date2, time2, a, b) {
       debugger
-      let start = date1+' '+time1;
-      let emd = date2+' '+time2;
-      start = new Date(start).getTime();
-      emd = new Date(emd).getTime();
-      if(date1 && date2 && start >= emd){
-        this.$message.warning('搭建入场时间不能早于彩排完成时间');
+      let start = date1 + ' ' + time1
+      let emd = date2 + ' ' + time2
+      start = new Date(start).getTime()
+      emd = new Date(emd).getTime()
+      if (date1 && date2 && start >= emd) {
+        this.$message.warning('搭建入场时间不能早于彩排完成时间')
         // this.conferenceList[a].conference[b].rehearsal_date = '';
-        this.conferenceList[a].conference[b].rehearsal_time = '';
+        this.conferenceList[a].conference[b].rehearsal_time = ''
       }
     },
-    getStep(time){
-      return {start: '00:00', step: '01:00', end: '24:00',minTime: time}
+    getStep(time) {
+      return { start: '00:00', step: '01:00', end: '24:00', minTime: time }
     },
-    addDate(){
-      this.conferenceList.forEach((item,idx) =>{
-        if(!item.conference_date && this.meetDate.length){
-          if(idx === 0) item.conference_date = this.meetDate[0];
+    addDate() {
+      this.conferenceList.forEach((item, idx) => {
+        if (!item.conference_date && this.meetDate.length) {
+          if (idx === 0) item.conference_date = this.meetDate[0]
         }
-        if(this.disMeetDate.indexOf(item.conference_date) === -1){
+        if (this.disMeetDate.indexOf(item.conference_date) === -1) {
           this.disMeetDate.push(item.conference_date)
         }
-      });
+      })
     },
     // 筛选不能选择会议的日期
-    selectDateTap(){
-      this.disMeetDate = [];
-      this.conferenceList.forEach(item =>{
-        if(item.conference_date){
+    selectDateTap() {
+      this.disMeetDate = []
+      this.conferenceList.forEach(item => {
+        if (item.conference_date) {
           this.disMeetDate.push(item.conference_date)
         }
-      });
+      })
     },
     //会议值日禁选
-    getDisTap(date){
+    getDisTap(date) {
       // return this.disMeetDate.indexOf(date) !== -1
     },
     // 是否提前搭建舞台
     changeStageTap(id) {
-      let a = this.isChangeStageIdx_a;
-      let b = this.isChangeStageIdx_b;
-      let data = this.conferenceList[a].conference[b];
-      data.is_setting_in_advance = id;
-      this.conferenceList[a].conference.splice(b,1,data);
-      this.stageBtn = id === 1;
-      this.setStageShow = false;
+      let a = this.isChangeStageIdx_a
+      let b = this.isChangeStageIdx_b
+      let data = this.conferenceList[a].conference[b]
+      data.is_setting_in_advance = id
+      this.conferenceList[a].conference.splice(b, 1, data)
+      this.stageBtn = id === 1
+      this.setStageShow = false
     },
     isSetStageTap(a, b, isSetting) {
-      this.stageBtn = isSetting == 0;
-      this.setStageShow = true;
-      this.isChangeStageIdx_a = a;
-      this.isChangeStageIdx_b = b;
+      this.stageBtn = isSetting == 0
+      this.setStageShow = true
+      this.isChangeStageIdx_a = a
+      this.isChangeStageIdx_b = b
     },
     // 勾选会场设备 item.is_delete == 0
     selectTagTap(id, a, b) {
-      let data = this.conferenceList[a].conference[b].equipment[id];
-      data.is_delete = data.is_delete == 0 ? 1 : 0;
-      this.conferenceList[a].conference[b].equipment.splice(id, 1, data);
+      let data = this.conferenceList[a].conference[b].equipment[id]
+      data.is_delete = data.is_delete == 0 ? 1 : 0
+      this.conferenceList[a].conference[b].equipment.splice(id, 1, data)
     },
     // 清空勾选
     clearCheckTap(a, b) {
@@ -330,50 +308,50 @@ export default {
     },
     // 删除会场
     deleteEvent(a, b) {
-      if(this.conferenceList.length === 1){
-        if(this.conferenceList[a].conference.length === 1) {
+      if (this.conferenceList.length === 1) {
+        if (this.conferenceList[a].conference.length === 1) {
           this.is_conference_rooms = '1'
         } else {
           this.conferenceList[a].conference.splice(b, 1)
         }
       } else {
-        if(this.conferenceList[a].conference.length === 1){
+        if (this.conferenceList[a].conference.length === 1) {
           this.conferenceList.splice(a, 1)
-        }else {
+        } else {
           this.conferenceList[a].conference.splice(b, 1)
         }
       }
-      this.conferenceList.forEach((item,index) => {
-        item.conference.order_name = index+1;
+      this.conferenceList.forEach((item, index) => {
+        item.conference.order_name = index + 1
       })
       this.selectDateTap()
     },
     // 复制上一场会议
-    copyPreEvent(a, b){
-      if(b > 0) {
-        let orgData = JSON.parse(JSON.stringify({...this.conferenceList[a].conference[b-1]}));
+    copyPreEvent(a, b) {
+      if (b > 0) {
+        let orgData = JSON.parse(JSON.stringify({ ...this.conferenceList[a].conference[b - 1] }))
         // 复制上一次会议，不能复制会场ID和是否是分会场
-        orgData.id = this.conferenceList[a].conference[b].id;
-        orgData.is_important = 1;//分会场
+        orgData.id = this.conferenceList[a].conference[b].id
+        orgData.is_important = 1 //分会场
         this.conferenceList[a].conference.splice(b, 1, orgData)
       }
     },
     // 复制上一天会议
-    copyPreDate(a){
-      let orgData = JSON.parse(JSON.stringify({...this.conferenceList[a-1]}));
+    copyPreDate(a) {
+      let orgData = JSON.parse(JSON.stringify({ ...this.conferenceList[a - 1] }))
       debugger
-      orgData.conference.forEach((conference,index) => {
-        conference.id = this.conferenceList[a].conference[index]?this.conferenceList[a].conference[index].id : ''
+      orgData.conference.forEach((conference, index) => {
+        conference.id = this.conferenceList[a].conference[index] ? this.conferenceList[a].conference[index].id : ''
       })
       orgData.conference_date = this.conferenceList[a].conference_date
-      orgData.conference[0].order_name = a+1;
-      this.conferenceList.splice(a,1,orgData)
+      orgData.conference[0].order_name = a + 1
+      this.conferenceList.splice(a, 1, orgData)
     },
     // 添加该日分会场
     addTodayEvent(a) {
       let conference = {
-        id:'',
-        conference_id:'',
+        id: '',
+        conference_id: '',
         event_info_id: '',
         conference_date: '',
         is_important: 1, // 是否主会场（0：主会场 1：子会场）
@@ -388,26 +366,26 @@ export default {
         wire_microphone_count: '', //  有线麦克风数量
         wireless_microphone_count: '', //  无线麦克风数量
         microphone_describe: '', //  麦克风或其他设备描述
-        equipment:JSON.parse(JSON.stringify(this.tagList)),
-        is_delete: 0,
-      };
-      let len = this.conferenceList[a].conference.length;
-      this.conferenceList[a].conference.splice(len, 0, conference);
+        equipment: JSON.parse(JSON.stringify(this.tagList)),
+        is_delete: 0
+      }
+      let len = this.conferenceList[a].conference.length
+      this.conferenceList[a].conference.splice(len, 0, conference)
     },
     // 添加其他日期 会议
     addOtherEvent() {
       // this.addDate();
 
-      let optional = this.meetDate.filter(item=>{
+      let optional = this.meetDate.filter(item => {
         return this.disMeetDate.indexOf(item) === -1
-      });
+      })
       let conference = [
         {
-          id:'',
+          id: '',
           order_name: '',
           event_info_id: '',
-          conference_id:'',
-          conference_date: optional.length? optional[0] : '',
+          conference_id: '',
+          conference_date: optional.length ? optional[0] : '',
           is_important: 0, // 是否主会场（0：主会场 1：子会场）
           conference_start_time: '09:00', // 会场开始使用时间（24时制 如 8:00）
           conference_end_time: '16:00', // 会场结束使用时间（24时制 如 16:00）
@@ -422,25 +400,24 @@ export default {
           wire_microphone_count: '', //  有线麦克风数量
           wireless_microphone_count: '', //  无线麦克风数量
           microphone_describe: '', //  麦克风或其他设备描述
-          equipment:JSON.parse(JSON.stringify(this.tagList)),
-          is_delete: 0,
+          equipment: JSON.parse(JSON.stringify(this.tagList)),
+          is_delete: 0
         }
-      ];
-      let len = this.conferenceList.length;
+      ]
+      let len = this.conferenceList.length
       conference[0].setting_in_advance_date = getNextDate(this.meetDate[0], -1)
       conference[0].rehearsal_date = getNextDate(this.meetDate[0], -1)
-      conference[0].order_name = len+1;
+      conference[0].order_name = len + 1
       debugger
-      this.conferenceList.splice(len, 0, {conference, conference_date: optional.length? optional[0] : ''});
-      this.disMeetDate.push(optional.length? optional[0] : '')
-    },
-
+      this.conferenceList.splice(len, 0, { conference, conference_date: optional.length ? optional[0] : '' })
+      this.disMeetDate.push(optional.length ? optional[0] : '')
+    }
   },
-  watch:{
-    meetDate:{
-      handler(newVal, oldVal){
+  watch: {
+    meetDate: {
+      handler(newVal, oldVal) {
         // 搭建入场日期默认值
-        this.conferenceList[0].conference[0].setting_in_advance_date = getNextDate(newVal[0], -1);
+        this.conferenceList[0].conference[0].setting_in_advance_date = getNextDate(newVal[0], -1)
         // 彩排完成日期默认值
         this.conferenceList[0].conference[0].rehearsal_date = getNextDate(newVal[0], -1)
       },
@@ -448,14 +425,14 @@ export default {
       immediate: true
     },
     // 监听会场列表，动态添加搭建、彩排日期选择范围
-    conferenceList:{
-      handler(newVal, oldVal){
-        this.datePickers = [];
+    conferenceList: {
+      handler(newVal, oldVal) {
+        this.datePickers = []
         // debugger
         newVal.forEach(item => {
           this.datePickers.push({
-            disabledDate :(time)=>{
-              return time.getTime() > new Date(item.conference_date) 
+            disabledDate: time => {
+              return time.getTime() > new Date(item.conference_date)
             }
           })
         })
@@ -468,5 +445,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

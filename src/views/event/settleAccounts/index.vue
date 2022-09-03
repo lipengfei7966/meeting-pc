@@ -1789,23 +1789,12 @@
 </template>
 
 <script>
-import {
-  guid,
-  getBetweenDate,
-  positiveInteger,
-  positiveFloat,
-  positiveFloatOne,
-  positiveFloatSix,
-  formatDate,
-  formatNum,
-  getFormatDate,
-  positiveFloatZero,
-} from "@/utils/common";
-import upload from "@/utils/upload";
-import moment from "moment";
-import { limitsEffect } from "@/utils/uploadRestrictions";
-import excelExport from "@/utils/exportexcel";
-import "@/assets/js/directive";
+import { guid, getBetweenDate, positiveInteger, positiveFloat, positiveFloatOne, positiveFloatSix, formatDate, formatNum, getFormatDate, positiveFloatZero } from '@/utils/common'
+import upload from '@/utils/upload'
+import moment from 'moment'
+import { limitsEffect } from '@/utils/uploadRestrictions'
+import excelExport from '@/utils/exportexcel'
+import '@/assets/js/directive'
 /**
  * @page 订单详情
  */
@@ -1813,22 +1802,22 @@ export default {
   data() {
     return {
       info: null,
-      status_draft: "0029-1", //草稿状态
-      status_tobeconfirmed: "0029-2", //待确认结算单状态
-      status_confirm: "0029-3", //已确认结算单状态
-      status_supplement: "0029-5", //要求补充材料
-      status_reject: "0029-4", //客户驳回结算单
-      settlement_status: "0029-3",
+      status_draft: '0029-1', //草稿状态
+      status_tobeconfirmed: '0029-2', //待确认结算单状态
+      status_confirm: '0029-3', //已确认结算单状态
+      status_supplement: '0029-5', //要求补充材料
+      status_reject: '0029-4', //客户驳回结算单
+      settlement_status: '0029-3',
       errormsg: [], //异常信息, 保存时使用
       quoted_price_food_option: [
         {
           value: 0,
-          label: "酒店内用餐",
+          label: '酒店内用餐'
         },
         {
           value: 1,
-          label: "酒店外用餐",
-        },
+          label: '酒店外用餐'
+        }
       ],
       orderIDList: [],
       isopen: false, //会议基本信息展开、收起
@@ -1836,163 +1825,163 @@ export default {
         {
           type: 6,
           fileList: [],
-          name: "客户结算单",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '客户结算单',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 7,
           fileList: [],
-          name: "客户结算确认邮件",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '客户结算确认邮件',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 8,
           fileList: [],
-          name: "PO单",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: 'PO单',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 5,
           fileList: [],
-          name: "供应商发票及账单",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '供应商发票及账单',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 1,
           fileList: [],
-          name: "酒店住宿发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '酒店住宿发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 2,
           fileList: [],
-          name: "酒店餐饮发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '酒店餐饮发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 3,
           fileList: [],
-          name: "酒店会场发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '酒店会场发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 9,
           fileList: [],
-          name: "外出用餐发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '外出用餐发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 10,
           fileList: [],
-          name: "注册费发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '注册费发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 11,
           fileList: [],
-          name: "用车发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '用车发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 12,
           fileList: [],
-          name: "制作物发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '制作物发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 13,
           fileList: [],
-          name: "保险发票+小联",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '保险发票+小联',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 14,
           fileList: [],
-          name: "签到表",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '签到表',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 15,
           fileList: [],
-          name: "会议照片-全景",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
+          name: '会议照片-全景',
+          remark: '',
+          dissent: '',
+          arrayLength: null
         },
         {
           type: 4,
           fileList: [],
-          name: "其他",
-          remark: "",
-          dissent: "",
-          arrayLength: null,
-        },
+          name: '其他',
+          remark: '',
+          dissent: '',
+          arrayLength: null
+        }
       ], //结算相关凭证
       updateIndex: 0, // 修改文件类目下标
       updateFileIndex: 0, // 修改文件类目列表 文件下标
       rename: false, //重命名按钮弹框
-      fileName: "", //文件名称
-      suffix: "", //文件后缀
+      fileName: '', //文件名称
+      suffix: '', //文件后缀
       showInfo: true, //附件信息展开/收起
       showPriceInfo: true, //结算明细信息展开/收起
       isFail: 1,
-      downloadUrl: "", //下载地址
+      downloadUrl: '', //下载地址
       addSettleShow: false, // 添加结算项目弹窗
       projectClass: [
         {
-          value: "0034",
-          label: "客房",
+          value: '0034',
+          label: '客房'
         },
         {
-          value: "0049",
-          label: "会场",
+          value: '0049',
+          label: '会场'
         },
         {
-          value: "0050",
-          label: "酒店内餐饮",
+          value: '0050',
+          label: '酒店内餐饮'
         },
         {
-          value: "0051",
-          label: "酒店外餐饮",
+          value: '0051',
+          label: '酒店外餐饮'
         },
         {
-          value: "003",
-          label: "大交通",
+          value: '003',
+          label: '大交通'
         },
         {
-          value: "006",
-          label: "地面交通",
+          value: '006',
+          label: '地面交通'
         },
         {
-          value: "009",
-          label: "其他服务",
-        },
+          value: '009',
+          label: '其他服务'
+        }
       ],
       costDates: [],
       cost_project_load: false,
@@ -2009,407 +1998,248 @@ export default {
         projectClass: [
           {
             required: true,
-            message: "请选择项目分类",
-            trigger: "change",
-          },
+            message: '请选择项目分类',
+            trigger: 'change'
+          }
         ],
         costDate: [
           {
             required: true,
-            message: "请选择费用发生日期",
-            trigger: "change",
-          },
+            message: '请选择费用发生日期',
+            trigger: 'change'
+          }
         ],
         costProject: [
           {
             required: true,
-            message: "请选择费用项目",
-            trigger: "change",
-          },
-        ],
+            message: '请选择费用项目',
+            trigger: 'change'
+          }
+        ]
       },
       addSettleInfo: {
-        projectClass: "0034",
-        costDate: "",
-        costProject: "",
+        projectClass: '0034',
+        costDate: '',
+        costProject: ''
       },
-      needCostDate: true,
-    };
+      needCostDate: true
+    }
   },
   computed: {
     //控制el-button  //要求补充材料状态判断this.info.settlement_status != this.status_supplement
     issubmit() {
-      return this.info.settlement_status != this.status_supplement;
+      return this.info.settlement_status != this.status_supplement
     },
     //控制el-input   //要求补充材料状态判断this.info.settlement_status == this.status_supplement
     readonly() {
-      return ["0020-2", "0020-3", "0020-5", "0020-6", "0020-8"].includes(
-        this.info.orderstatus
-      );
+      return ['0020-2', '0020-3', '0020-5', '0020-6', '0020-8'].includes(this.info.orderstatus)
     },
     //要求补充材料状态判断
     issupplement() {
-      return this.info.settlement_status == this.status_supplement;
+      return this.info.settlement_status == this.status_supplement
     },
     //结算明细信息展开/收起
     isshowPriceInfo() {
-      this.showPriceInfo = this.info.orderstatus != "0020-1"; //初次进入，按钮默认和状态的判断值一致
-      return this.info.orderstatus != "0020-1";
+      this.showPriceInfo = this.info.orderstatus != '0020-1' //初次进入，按钮默认和状态的判断值一致
+      return this.info.orderstatus != '0020-1'
     },
 
     formateDate: () => {
-      return function (value) {
-        return formatDate("YYYY年mm月dd日", new Date(value));
-      };
+      return function(value) {
+        return formatDate('YYYY年mm月dd日', new Date(value))
+      }
     },
     //客房需求
-    roomVisible: function () {
-      return this.info.roomlist && this.info.roomlist.length > 0;
+    roomVisible: function() {
+      return this.info.roomlist && this.info.roomlist.length > 0
     },
     //会场需求
-    conferenceVisible: function () {
-      return this.info.conferencelist && this.info.conferencelist.length > 0;
+    conferenceVisible: function() {
+      return this.info.conferencelist && this.info.conferencelist.length > 0
     },
     //餐饮需求
-    foodVisible: function () {
-      return this.info.foodlist && this.info.foodlist.length > 0;
+    foodVisible: function() {
+      return this.info.foodlist && this.info.foodlist.length > 0
     },
     //酒店外餐饮需求
-    otherfoodVisible: function () {
-      return this.info.otherfoodlist && this.info.otherfoodlist.length > 0;
+    otherfoodVisible: function() {
+      return this.info.otherfoodlist && this.info.otherfoodlist.length > 0
     },
     //大交通需求
-    transportationVisible: function () {
-      return (
-        this.info.transportationlist && this.info.transportationlist.length > 0
-      );
+    transportationVisible: function() {
+      return this.info.transportationlist && this.info.transportationlist.length > 0
     },
     //地面交通
-    carVisible: function () {
-      return this.info.carlist && this.info.carlist.length > 0;
+    carVisible: function() {
+      return this.info.carlist && this.info.carlist.length > 0
     },
     // 房间杂费
     roomincidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 1 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 1 && !i.isdelete)
     },
     // 会议杂费
     meetingcidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 2 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 2 && !i.isdelete)
     },
     // 用餐杂费
     foodincidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 3 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 3 && !i.isdelete)
     },
     // 酒店外用餐杂费
     otherfoodincidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 7 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 7 && !i.isdelete)
     },
     // 大交通杂费
     intercitytrafficincidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 4 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 4 && !i.isdelete)
     },
     // 地面交通杂费
     carincidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 5 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 5 && !i.isdelete)
     },
     // 其他杂费
     otherincidental() {
-      return this.info.sundrieslist.filter((i) => i.type == 6 && !i.isdelete);
+      return this.info.sundrieslist.filter(i => i.type == 6 && !i.isdelete)
     },
     // 客房价格计算
     roomPrice() {
       let price = [
         {
           all: 0, // 原总价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         {
           all: 0, // 结算价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         0, // 杂项小计
         0, //结算服务费-分项
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let subtotal_1 = price[0].subtotal;
-      let subtotal_2 = price[1].subtotal;
-      if (
-        this.info.event_info_configure.room_inquiry_service_taxrate == undefined
-      )
-        this.info.event_info_configure["room_inquiry_service_taxrate"] = 0;
-      var taxrate =
-        this.info.event_info_configure.room_inquiry_service_taxrate != null
-          ? this.info.event_info_configure.room_inquiry_service_taxrate
-          : 0; //设置默认值，服务费率
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      if (this.info.event_info_configure.room_inquiry_service_taxrate == undefined) this.info.event_info_configure['room_inquiry_service_taxrate'] = 0
+      var taxrate = this.info.event_info_configure.room_inquiry_service_taxrate != null ? this.info.event_info_configure.room_inquiry_service_taxrate : 0 //设置默认值，服务费率
       this.info.roomlist.forEach((item, index) => {
-        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
         item.roomlists.forEach((itemc, indexc) => {
           /* if(itemc.quoted_price_room_id && itemc.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 						itemc.settlement_unitprice=positiveFloatSix(itemc.unitprice)
 						itemc.settlement_count=positiveInteger(itemc.provide_count)
 					} */
 
-          let totalRoom = 0;
+          let totalRoom = 0
           if (this.info.is_Inside_outside == 0) {
-            totalRoom = itemc.settlement_count;
+            totalRoom = itemc.settlement_count
           } else {
-            totalRoom =
-              positiveFloat(itemc.settlement_inside_roomcount) +
-              positiveFloat(itemc.settlement_outside_roomcount);
+            totalRoom = positiveFloat(itemc.settlement_inside_roomcount) + positiveFloat(itemc.settlement_outside_roomcount)
           }
 
-          var amount =
-            itemc.lineoroffline == 1
-              ? positiveFloatSix(itemc.settlementsumprice)
-              : positiveFloatSix(itemc.settlement_unitprice) *
-                positiveFloat(totalRoom);
-          subtotal_1[`sub_${index}`] += positiveFloatSix(
-            itemc.quotationsumprice
-          );
-          price[0].all += positiveFloatSix(itemc.quotationsumprice);
-          subtotal_2[`sub_${index}`] += positiveFloatSix(amount);
-          price[1].all += positiveFloatSix(amount);
-          if (
-            this.info.event_info_configure.hotel_food_inquiry_isnotservice == 1
-          ) {
+          var amount = itemc.lineoroffline == 1 ? positiveFloatSix(itemc.settlementsumprice) : positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(totalRoom)
+          subtotal_1[`sub_${index}`] += positiveFloatSix(itemc.quotationsumprice)
+          price[0].all += positiveFloatSix(itemc.quotationsumprice)
+          subtotal_2[`sub_${index}`] += positiveFloatSix(amount)
+          price[1].all += positiveFloatSix(amount)
+          if (this.info.event_info_configure.hotel_food_inquiry_isnotservice == 1) {
             //0不计入服务费,1计入服务费
-            price[3] += positiveFloatSix(amount);
-            price[4] += positiveFloatSix(itemc.quotationsumprice);
+            price[3] += positiveFloatSix(amount)
+            price[4] += positiveFloatSix(itemc.quotationsumprice)
 
-            price[5] += positiveFloatSix(itemc.quotationsumprice);
-            price[6] += positiveFloatSix(amount);
+            price[5] += positiveFloatSix(itemc.quotationsumprice)
+            price[6] += positiveFloatSix(amount)
           }
-        });
-      });
-      let price_service = 0;
-      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100);
-      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100);
-      this.roomincidental.forEach((item) => {
-        var sumPrice =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
+        })
+      })
+      let price_service = 0
+      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100)
+      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100)
+      this.roomincidental.forEach(item => {
+        var sumPrice = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
 
-        price[1].all += positiveFloatSix(sumPrice);
-        price[2] += positiveFloatSix(sumPrice);
+        price[1].all += positiveFloatSix(sumPrice)
+        price[2] += positiveFloatSix(sumPrice)
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          price_service += positiveFloatSix(sumPrice);
+          price_service += positiveFloatSix(sumPrice)
 
-          price[6] += positiveFloatSix(sumPrice);
+          price[6] += positiveFloatSix(sumPrice)
         }
-      });
-      price[3] =
-        positiveFloatSix(price[3]) +
-        positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100);
-      price[7] +=
-        "+" +
-        positiveFloatSix(price[5]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      price[8] +=
-        "+" +
-        positiveFloatSix(price[6]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      return price;
+      })
+      price[3] = positiveFloatSix(price[3]) + positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100)
+      price[7] += '+' + positiveFloatSix(price[5]) + '*' + positiveFloatSix(taxrate) + '%'
+      price[8] += '+' + positiveFloatSix(price[6]) + '*' + positiveFloatSix(taxrate) + '%'
+      return price
     },
     adddifferenceerrormsg: () => {
-      return function (type, date, rowIndex) {
-        let message = "";
-        if (type == 1)
-          message =
-            this.formateDate(date) +
-            "客房,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        else if (type == 2)
-          message =
-            this.formateDate(date) +
-            "会场,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        else if (type == 3)
-          message =
-            this.formateDate(date) +
-            "酒店内餐饮,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        else if (type == 4)
-          message =
-            this.formateDate(date) +
-            "大交通,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        else if (type == 5)
-          message =
-            this.formateDate(date) +
-            "地面交通,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        else if (type == 6)
-          message =
-            "其他服务,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        else if (type == 7)
-          message =
-            this.formateDate(date) +
-            "酒店外餐饮,第" +
-            rowIndex +
-            "行,单价(元)或数量存在差异,请填写结算说明";
-        this.errormsg.push(message);
-      };
+      return function(type, date, rowIndex) {
+        let message = ''
+        if (type == 1) message = this.formateDate(date) + '客房,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 2) message = this.formateDate(date) + '会场,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 3) message = this.formateDate(date) + '酒店内餐饮,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 4) message = this.formateDate(date) + '大交通,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 5) message = this.formateDate(date) + '地面交通,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 6) message = '其他服务,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        else if (type == 7) message = this.formateDate(date) + '酒店外餐饮,第' + rowIndex + '行,单价(元)或数量存在差异,请填写结算说明'
+        this.errormsg.push(message)
+      }
     },
     addnewitemhasnocommments: () => {
-      return function (type, date, rowIndex) {
-        let message = "";
-        if (type == 1)
-          message =
-            this.formateDate(date) +
-            "新增客房,第" +
-            rowIndex +
-            "行,结算说明为必填项,请填写结算说明";
-        else if (type == 2)
-          message =
-            this.formateDate(date) +
-            "新增会场,第" +
-            rowIndex +
-            "行,结算说明为必填项,请填写结算说明";
-        else if (type == 3)
-          message =
-            this.formateDate(date) +
-            "新增酒店内餐饮,第" +
-            rowIndex +
-            "行,结算说明为必填项,请填写结算说明";
-        else if (type == 4)
-          message =
-            this.formateDate(date) +
-            "新增大交通,第" +
-            rowIndex +
-            "行,结算说明为必填项,请填写结算说明";
-        else if (type == 5)
-          message =
-            this.formateDate(date) +
-            "新增地面交通,第" +
-            rowIndex +
-            "行,结算说明为必填项,请填写结算说明";
-        else if (type == 6)
-          message =
-            "新增其他服务,第" +
-            rowIndex +
-            "行,结算说明为必填项,请选择消费项目名称";
-        else if (type == 7)
-          message =
-            this.formateDate(date) +
-            "新增酒店外餐饮,第" +
-            rowIndex +
-            "行,结算说明为必填项,请填写结算说明";
-        this.errormsg.push(message);
-      };
+      return function(type, date, rowIndex) {
+        let message = ''
+        if (type == 1) message = this.formateDate(date) + '新增客房,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 2) message = this.formateDate(date) + '新增会场,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 3) message = this.formateDate(date) + '新增酒店内餐饮,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 4) message = this.formateDate(date) + '新增大交通,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 5) message = this.formateDate(date) + '新增地面交通,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        else if (type == 6) message = '新增其他服务,第' + rowIndex + '行,结算说明为必填项,请选择消费项目名称'
+        else if (type == 7) message = this.formateDate(date) + '新增酒店外餐饮,第' + rowIndex + '行,结算说明为必填项,请填写结算说明'
+        this.errormsg.push(message)
+      }
     },
     addnewitemerrormsg: () => {
-      return function (type, date, rowIndex) {
-        let message = "";
-        if (type == 1)
-          message =
-            this.formateDate(date) +
-            "新增客房,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请填写消费项目名称";
-        else if (type == 2)
-          message =
-            this.formateDate(date) +
-            "新增会场,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请填写消费项目名称";
-        else if (type == 3)
-          message =
-            this.formateDate(date) +
-            "新增酒店内餐饮,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请填写消费项目名称";
-        else if (type == 4)
-          message =
-            this.formateDate(date) +
-            "新增大交通,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请填写消费项目名称";
-        else if (type == 5)
-          message =
-            this.formateDate(date) +
-            "新增地面交通,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请填写消费项目名称";
-        else if (type == 6)
-          message =
-            "新增其他服务,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请选择消费项目名称";
-        else if (type == 7)
-          message =
-            this.formateDate(date) +
-            "新增酒店外餐饮,第" +
-            rowIndex +
-            "行,消费项目名称为必填项,请填写消费项目名称";
-        this.errormsg.push(message);
-      };
+      return function(type, date, rowIndex) {
+        let message = ''
+        if (type == 1) message = this.formateDate(date) + '新增客房,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 2) message = this.formateDate(date) + '新增会场,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 3) message = this.formateDate(date) + '新增酒店内餐饮,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 4) message = this.formateDate(date) + '新增大交通,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 5) message = this.formateDate(date) + '新增地面交通,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        else if (type == 6) message = '新增其他服务,第' + rowIndex + '行,消费项目名称为必填项,请选择消费项目名称'
+        else if (type == 7) message = this.formateDate(date) + '新增酒店外餐饮,第' + rowIndex + '行,消费项目名称为必填项,请填写消费项目名称'
+        this.errormsg.push(message)
+      }
     },
     //客房差异标记
     roomDifference: () => {
-      return function (item) {
-        return (
-          ((positiveFloatSix(item.unitprice) !==
-            positiveFloatSix(item.settlement_unitprice) ||
-            positiveFloat(item.provide_count) !==
-              positiveFloat(item.settlement_count)) &&
-            item.quoted_price_room_id != null) ||
-          (!item.quoted_price_room_id && item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return ((positiveFloatSix(item.unitprice) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.provide_count) !== positiveFloat(item.settlement_count)) && item.quoted_price_room_id != null) || (!item.quoted_price_room_id && item.settlement_comments == '')
+      }
     },
     //保存时验证客房数据
-    checkRoomDifference: function () {
-      let difference = false;
-      let newitem = false;
+    checkRoomDifference: function() {
+      let difference = false
+      let newitem = false
       if (this.info.roomlist && this.info.roomlist.length > 0) {
-        this.info.roomlist.forEach((item) => {
+        this.info.roomlist.forEach(item => {
           if (item.roomlists && item.roomlists.length > 0) {
             item.roomlists.forEach((room, row_index) => {
-              difference = this.roomDifference(room);
-              if (
-                difference &&
-                room.quoted_price_room_id != null &&
-                (room.settlement_comments == null ||
-                  room.settlement_comments == "")
-              )
-                this.adddifferenceerrormsg(1, item.date, row_index + 1);
-              if (
-                difference &&
-                room.quoted_price_room_id == null &&
-                (room.settlement_comments == null ||
-                  room.settlement_comments == "")
-              )
-                this.addnewitemhasnocommments(1, item.date, row_index + 1);
-            });
-            let newitem = item.roomlists.filter(
-              (w) =>
-                w.quoted_price_room_id == null && w.settlement_itemname == ""
-            );
+              difference = this.roomDifference(room)
+              if (difference && room.quoted_price_room_id != null && (room.settlement_comments == null || room.settlement_comments == '')) this.adddifferenceerrormsg(1, item.date, row_index + 1)
+              if (difference && room.quoted_price_room_id == null && (room.settlement_comments == null || room.settlement_comments == '')) this.addnewitemhasnocommments(1, item.date, row_index + 1)
+            })
+            let newitem = item.roomlists.filter(w => w.quoted_price_room_id == null && w.settlement_itemname == '')
             if (newitem.length > 0) {
               newitem.forEach((room, row_index) => {
-                this.addnewitemerrormsg(1, item.date, row_index + 1);
-              });
+                this.addnewitemerrormsg(1, item.date, row_index + 1)
+              })
             }
           }
-        });
+        })
       }
     },
     // 会议价格计算
@@ -2417,151 +2247,97 @@ export default {
       let price = [
         {
           all: 0, // 原总价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         {
           all: 0, // 结算价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         0, // 杂项小计
         0, //结算服务费-分项
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let subtotal_1 = price[0].subtotal;
-      let subtotal_2 = price[1].subtotal;
-      if (
-        this.info.event_info_configure.conference_inquiry_service_taxrate ==
-        undefined
-      )
-        this.info.event_info_configure[
-          "conference_inquiry_service_taxrate"
-        ] = 0;
-      var taxrate =
-        this.info.event_info_configure.conference_inquiry_service_taxrate !=
-        null
-          ? this.info.event_info_configure.conference_inquiry_service_taxrate
-          : 0; //设置默认值，服务费率
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      if (this.info.event_info_configure.conference_inquiry_service_taxrate == undefined) this.info.event_info_configure['conference_inquiry_service_taxrate'] = 0
+      var taxrate = this.info.event_info_configure.conference_inquiry_service_taxrate != null ? this.info.event_info_configure.conference_inquiry_service_taxrate : 0 //设置默认值，服务费率
       this.info.conferencelist.forEach((item, index) => {
-        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-        item.conferencelists.forEach((itemc) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.conferencelists.forEach(itemc => {
           /* if(itemc.quoted_price_conference_id && itemc.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 						itemc.settlement_price=positiveFloatSix(itemc.price)
 						itemc.settlement_count=positiveInteger(itemc.count)
 					} */
 
-          let itemcp = positiveFloatSix(itemc.quotationsumprice);
-          let itemcpset =
-            itemc.lineoroffline == 1
-              ? positiveFloatSix(itemc.settlementsumprice)
-              : positiveFloatSix(itemc.settlement_price) *
-                positiveFloat(itemc.settlement_count);
+          let itemcp = positiveFloatSix(itemc.quotationsumprice)
+          let itemcpset = itemc.lineoroffline == 1 ? positiveFloatSix(itemc.settlementsumprice) : positiveFloatSix(itemc.settlement_price) * positiveFloat(itemc.settlement_count)
           /*subtotal_1[`sub_${index}`] += itemcp;
 					price[0].all += itemcp;
 					subtotal_2[`sub_${index}`] += itemcpset;
 					price[1].all += itemcpset; */
-          subtotal_1[`sub_${index}`] += itemcp;
-          price[0].all += itemcp;
-          subtotal_2[`sub_${index}`] += itemcpset;
-          price[1].all += itemcpset;
-          if (
-            this.info.event_info_configure.conference_inquiry_isnotservice == 1
-          ) {
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+          if (this.info.event_info_configure.conference_inquiry_isnotservice == 1) {
             //0不计入服务费,1计入服务费
-            price[3] += itemcpset;
-            price[4] += itemcp;
+            price[3] += itemcpset
+            price[4] += itemcp
 
-            price[5] += itemcp;
-            price[6] += itemcpset;
+            price[5] += itemcp
+            price[6] += itemcpset
           }
-        });
-      });
-      let price_service = 0;
-      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100);
-      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100);
-      this.meetingcidental.forEach((item) => {
-        let itemcp =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
-        price[1].all += itemcp;
-        price[2] += itemcp;
+        })
+      })
+      let price_service = 0
+      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100)
+      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100)
+      this.meetingcidental.forEach(item => {
+        let itemcp = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          price_service += itemcp;
+          price_service += itemcp
 
-          price[6] += itemcp;
+          price[6] += itemcp
         }
-      });
-      price[3] =
-        positiveFloatSix(price[3]) +
-        positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100);
-      price[7] =
-        "+" +
-        positiveFloatSix(price[5]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      price[8] =
-        "+" +
-        positiveFloatSix(price[6]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      return price;
+      })
+      price[3] = positiveFloatSix(price[3]) + positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100)
+      price[7] = '+' + positiveFloatSix(price[5]) + '*' + positiveFloatSix(taxrate) + '%'
+      price[8] = '+' + positiveFloatSix(price[6]) + '*' + positiveFloatSix(taxrate) + '%'
+      return price
     },
     //会场差异标记
     conferenceDifference: () => {
-      return function (item) {
-        return (
-          ((positiveFloatSix(item.price) !==
-            positiveFloatSix(item.settlement_price) ||
-            positiveFloat(item.count) !==
-              positiveFloat(item.settlement_count)) &&
-            item.quoted_price_conference_id != null) ||
-          (!item.quoted_price_conference_id && item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return ((positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_price) || positiveFloat(item.count) !== positiveFloat(item.settlement_count)) && item.quoted_price_conference_id != null) || (!item.quoted_price_conference_id && item.settlement_comments == '')
+      }
     },
     //保存时验证会场数据
-    checkConferenceDifference: function () {
-      let difference = false;
+    checkConferenceDifference: function() {
+      let difference = false
       if (this.info.conferencelist && this.info.conferencelist.length > 0) {
-        this.info.conferencelist.forEach((item) => {
+        this.info.conferencelist.forEach(item => {
           if (item.conferencelists && item.conferencelists.length > 0) {
             item.conferencelists.forEach((conference, row_index) => {
-              difference = this.conferenceDifference(conference);
-              if (
-                difference &&
-                conference.quoted_price_conference_id != null &&
-                (conference.settlement_comments == null ||
-                  conference.settlement_comments == "")
-              )
-                this.adddifferenceerrormsg(2, item.date, row_index + 1);
-              if (
-                difference &&
-                conference.quoted_price_conference_id == null &&
-                (conference.settlement_comments == null ||
-                  conference.settlement_comments == "")
-              )
-                this.addnewitemhasnocommments(2, item.date, row_index + 1);
-            });
-            let newitem = item.conferencelists.filter(
-              (w) =>
-                w.quoted_price_conference_id == null &&
-                w.settlement_itemname == ""
-            );
+              difference = this.conferenceDifference(conference)
+              if (difference && conference.quoted_price_conference_id != null && (conference.settlement_comments == null || conference.settlement_comments == '')) this.adddifferenceerrormsg(2, item.date, row_index + 1)
+              if (difference && conference.quoted_price_conference_id == null && (conference.settlement_comments == null || conference.settlement_comments == '')) this.addnewitemhasnocommments(2, item.date, row_index + 1)
+            })
+            let newitem = item.conferencelists.filter(w => w.quoted_price_conference_id == null && w.settlement_itemname == '')
             if (newitem.length > 0) {
               newitem.forEach((conference, row_index) => {
-                this.addnewitemerrormsg(2, item.date, row_index + 1);
-              });
+                this.addnewitemerrormsg(2, item.date, row_index + 1)
+              })
             }
           }
-        });
+        })
       }
     },
     // 酒店内餐饮价格计算
@@ -2569,147 +2345,94 @@ export default {
       let price = [
         {
           all: 0, // 原总价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         {
           all: 0, // 结算价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         0, // 杂项小计
         0, //结算服务费-分项
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let subtotal_1 = price[0].subtotal;
-      let subtotal_2 = price[1].subtotal;
-      if (
-        this.info.event_info_configure.hotel_food_inquiry_service_taxrate ==
-        undefined
-      )
-        this.info.event_info_configure[
-          "hotel_food_inquiry_service_taxrate"
-        ] = 0;
-      var taxrate =
-        this.info.event_info_configure.hotel_food_inquiry_service_taxrate !=
-        null
-          ? this.info.event_info_configure.hotel_food_inquiry_service_taxrate
-          : 0; //设置默认值，服务费率
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      if (this.info.event_info_configure.hotel_food_inquiry_service_taxrate == undefined) this.info.event_info_configure['hotel_food_inquiry_service_taxrate'] = 0
+      var taxrate = this.info.event_info_configure.hotel_food_inquiry_service_taxrate != null ? this.info.event_info_configure.hotel_food_inquiry_service_taxrate : 0 //设置默认值，服务费率
       this.info.foodlist.forEach((item, index) => {
-        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-        item.foodlists.forEach((itemc) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.foodlists.forEach(itemc => {
           /* if(itemc.quoted_price_food_id && itemc.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 						itemc.settlement_unitprice=positiveFloatSix(itemc.price)
 						itemc.settlement_count=positiveInteger(itemc.personcount)
 					} */
 
-          let itemcp = positiveFloatSix(itemc.quotationsumprice);
-          let itemcpset =
-            itemc.lineoroffline == 1
-              ? positiveFloatSix(itemc.settlementsumprice)
-              : positiveFloatSix(itemc.settlement_unitprice) *
-                positiveFloat(itemc.settlement_count);
+          let itemcp = positiveFloatSix(itemc.quotationsumprice)
+          let itemcpset = itemc.lineoroffline == 1 ? positiveFloatSix(itemc.settlementsumprice) : positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
 
-          subtotal_1[`sub_${index}`] += itemcp;
-          price[0].all += itemcp;
-          subtotal_2[`sub_${index}`] += itemcpset;
-          price[1].all += itemcpset;
-          if (
-            this.info.event_info_configure.hotel_food_inquiry_isnotservice == 1
-          ) {
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+          if (this.info.event_info_configure.hotel_food_inquiry_isnotservice == 1) {
             //0不计入服务费,1计入服务费
-            price[3] += itemcpset;
-            price[4] += itemcp;
+            price[3] += itemcpset
+            price[4] += itemcp
 
-            price[5] += itemcp;
-            price[6] += itemcpset;
+            price[5] += itemcp
+            price[6] += itemcpset
           }
-        });
-      });
-      let price_service = 0;
-      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100);
-      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100);
-      this.foodincidental.forEach((item) => {
-        let itemcp =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
-        price[1].all += itemcp;
-        price[2] += itemcp;
+        })
+      })
+      let price_service = 0
+      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100)
+      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100)
+      this.foodincidental.forEach(item => {
+        let itemcp = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          price_service += itemcp;
+          price_service += itemcp
 
-          price[6] += itemcp;
+          price[6] += itemcp
         }
-      });
-      price[3] =
-        positiveFloatSix(price[3]) +
-        positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100);
-      price[7] +=
-        "+" +
-        positiveFloatSix(price[5]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      price[8] +=
-        "+" +
-        positiveFloatSix(price[6]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      return price;
+      })
+      price[3] = positiveFloatSix(price[3]) + positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100)
+      price[7] += '+' + positiveFloatSix(price[5]) + '*' + positiveFloatSix(taxrate) + '%'
+      price[8] += '+' + positiveFloatSix(price[6]) + '*' + positiveFloatSix(taxrate) + '%'
+      return price
     },
     //酒店内餐饮差异标记
     foodDifference() {
-      return function (item) {
-        return (
-          ((positiveFloatSix(item.price) !==
-            positiveFloatSix(item.settlement_unitprice) ||
-            positiveFloat(item.personcount) !==
-              positiveFloat(item.settlement_count)) &&
-            item.quoted_price_food_id != null) ||
-          (!item.quoted_price_food_id && item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return ((positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.personcount) !== positiveFloat(item.settlement_count)) && item.quoted_price_food_id != null) || (!item.quoted_price_food_id && item.settlement_comments == '')
+      }
     },
     //保存时验证酒店内餐饮数据
-    checkFoodDifference: function () {
-      let difference = false;
+    checkFoodDifference: function() {
+      let difference = false
       if (this.info.foodlist && this.info.foodlist.length > 0) {
-        this.info.foodlist.forEach((item) => {
+        this.info.foodlist.forEach(item => {
           if (item.foodlists && item.foodlists.length > 0) {
             item.foodlists.forEach((food, row_index) => {
-              difference = this.foodDifference(food);
-              if (
-                difference &&
-                food.quoted_price_food_id != null &&
-                (food.settlement_comments == null ||
-                  food.settlement_comments == "")
-              )
-                this.adddifferenceerrormsg(3, item.date, row_index + 1);
-              if (
-                difference &&
-                food.quoted_price_food_id == null &&
-                (food.settlement_comments == null ||
-                  food.settlement_comments == "")
-              )
-                this.addnewitemhasnocommments(3, item.date, row_index + 1);
-            });
-            let newitem = item.foodlists.filter(
-              (w) =>
-                w.quoted_price_food_id == null && w.settlement_itemname == ""
-            );
+              difference = this.foodDifference(food)
+              if (difference && food.quoted_price_food_id != null && (food.settlement_comments == null || food.settlement_comments == '')) this.adddifferenceerrormsg(3, item.date, row_index + 1)
+              if (difference && food.quoted_price_food_id == null && (food.settlement_comments == null || food.settlement_comments == '')) this.addnewitemhasnocommments(3, item.date, row_index + 1)
+            })
+            let newitem = item.foodlists.filter(w => w.quoted_price_food_id == null && w.settlement_itemname == '')
             if (newitem.length > 0) {
               newitem.forEach((food, row_index) => {
-                this.addnewitemerrormsg(3, item.date, row_index + 1);
-              });
+                this.addnewitemerrormsg(3, item.date, row_index + 1)
+              })
             }
           }
-        });
+        })
       }
     },
     // 酒店外餐饮价格计算
@@ -2717,147 +2440,94 @@ export default {
       let price = [
         {
           all: 0, // 原总价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         {
           all: 0, // 结算价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         0, // 杂项小计
         0, //结算服务费-分项
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let subtotal_1 = price[0].subtotal;
-      let subtotal_2 = price[1].subtotal;
-      if (
-        this.info.event_info_configure.others_food_inquiry_service_taxrate ==
-        undefined
-      )
-        this.info.event_info_configure[
-          "others_food_inquiry_service_taxrate"
-        ] = 0;
-      var taxrate =
-        this.info.event_info_configure.others_food_inquiry_service_taxrate !=
-        null
-          ? this.info.event_info_configure.others_food_inquiry_service_taxrate
-          : 0; //设置默认值，服务费率
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      if (this.info.event_info_configure.others_food_inquiry_service_taxrate == undefined) this.info.event_info_configure['others_food_inquiry_service_taxrate'] = 0
+      var taxrate = this.info.event_info_configure.others_food_inquiry_service_taxrate != null ? this.info.event_info_configure.others_food_inquiry_service_taxrate : 0 //设置默认值，服务费率
       this.info.otherfoodlist.forEach((item, index) => {
-        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-        item.foodlists.forEach((itemc) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.foodlists.forEach(itemc => {
           /* if(itemc.quoted_price_food_id && itemc.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 						itemc.settlement_unitprice=positiveFloatSix(itemc.price)
 						itemc.settlement_count=positiveInteger(itemc.personcount)
 					} */
 
-          let itemcp = positiveFloatSix(itemc.quotationsumprice);
-          let itemcpset =
-            itemc.lineoroffline == 1
-              ? positiveFloatSix(itemc.settlementsumprice)
-              : positiveFloatSix(itemc.settlement_unitprice) *
-                positiveFloat(itemc.settlement_count);
+          let itemcp = positiveFloatSix(itemc.quotationsumprice)
+          let itemcpset = itemc.lineoroffline == 1 ? positiveFloatSix(itemc.settlementsumprice) : positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
 
-          subtotal_1[`sub_${index}`] += itemcp;
-          price[0].all += itemcp;
-          subtotal_2[`sub_${index}`] += itemcpset;
-          price[1].all += itemcpset;
-          if (
-            this.info.event_info_configure.others_food_inquiry_isnotservice == 1
-          ) {
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+          if (this.info.event_info_configure.others_food_inquiry_isnotservice == 1) {
             //0不计入服务费,1计入服务费
-            price[3] += itemcpset;
-            price[4] += itemcp;
+            price[3] += itemcpset
+            price[4] += itemcp
 
-            price[5] += itemcp;
-            price[6] += itemcpset;
+            price[5] += itemcp
+            price[6] += itemcpset
           }
-        });
-      });
-      let price_service = 0;
-      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100);
-      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100);
-      this.otherfoodincidental.forEach((item) => {
-        let itemcp =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
-        price[1].all += itemcp;
-        price[2] += itemcp;
+        })
+      })
+      let price_service = 0
+      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100)
+      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100)
+      this.otherfoodincidental.forEach(item => {
+        let itemcp = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          price_service += itemcp;
+          price_service += itemcp
 
-          price[6] += itemcp;
+          price[6] += itemcp
         }
-      });
-      price[3] =
-        positiveFloatSix(price[3]) +
-        positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100);
-      price[7] +=
-        "+" +
-        positiveFloatSix(price[5]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      price[8] +=
-        "+" +
-        positiveFloatSix(price[6]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      return price;
+      })
+      price[3] = positiveFloatSix(price[3]) + positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100)
+      price[7] += '+' + positiveFloatSix(price[5]) + '*' + positiveFloatSix(taxrate) + '%'
+      price[8] += '+' + positiveFloatSix(price[6]) + '*' + positiveFloatSix(taxrate) + '%'
+      return price
     },
     //酒店外餐饮差异标记
     otherFoodDifference() {
-      return function (item) {
-        return (
-          ((positiveFloatSix(item.price) !==
-            positiveFloatSix(item.settlement_unitprice) ||
-            positiveFloat(item.personcount) !==
-              positiveFloat(item.settlement_count)) &&
-            item.quoted_price_food_id != null) ||
-          (!item.quoted_price_food_id && item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return ((positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.personcount) !== positiveFloat(item.settlement_count)) && item.quoted_price_food_id != null) || (!item.quoted_price_food_id && item.settlement_comments == '')
+      }
     },
     //保存时验证酒店外餐饮数据
-    checkOtherFoodDifference: function () {
-      let difference = false;
+    checkOtherFoodDifference: function() {
+      let difference = false
       if (this.info.otherfoodlist && this.info.otherfoodlist.length > 0) {
-        this.info.otherfoodlist.forEach((item) => {
+        this.info.otherfoodlist.forEach(item => {
           if (item.foodlists && item.foodlists.length > 0) {
             item.foodlists.forEach((food, row_index) => {
-              difference = this.otherFoodDifference(food);
-              if (
-                difference &&
-                food.quoted_price_food_id != null &&
-                (food.settlement_comments == null ||
-                  food.settlement_comments == "")
-              )
-                this.adddifferenceerrormsg(7, item.date, row_index + 1);
-              if (
-                difference &&
-                food.quoted_price_food_id == null &&
-                (food.settlement_comments == null ||
-                  food.settlement_comments == "")
-              )
-                this.addnewitemhasnocommments(7, item.date, row_index + 1);
-            });
-            let newitem = item.foodlists.filter(
-              (w) =>
-                w.quoted_price_food_id == null && w.settlement_itemname == ""
-            );
+              difference = this.otherFoodDifference(food)
+              if (difference && food.quoted_price_food_id != null && (food.settlement_comments == null || food.settlement_comments == '')) this.adddifferenceerrormsg(7, item.date, row_index + 1)
+              if (difference && food.quoted_price_food_id == null && (food.settlement_comments == null || food.settlement_comments == '')) this.addnewitemhasnocommments(7, item.date, row_index + 1)
+            })
+            let newitem = item.foodlists.filter(w => w.quoted_price_food_id == null && w.settlement_itemname == '')
             if (newitem.length > 0) {
               newitem.forEach((food, row_index) => {
-                this.addnewitemerrormsg(7, item.date, row_index + 1);
-              });
+                this.addnewitemerrormsg(7, item.date, row_index + 1)
+              })
             }
           }
-        });
+        })
       }
     },
     // 大交通价格计算
@@ -2865,154 +2535,94 @@ export default {
       let price = [
         {
           all: 0, // 原总价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         {
           all: 0, // 结算价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         0, // 杂项小计
         0, //结算服务费-分项
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let subtotal_1 = price[0].subtotal;
-      let subtotal_2 = price[1].subtotal;
-      if (
-        this.info.event_info_configure.transportation_inquiry_service_taxrate ==
-        undefined
-      )
-        this.info.event_info_configure[
-          "transportation_inquiry_service_taxrate"
-        ] = 0;
-      var taxrate =
-        this.info.event_info_configure.transportation_inquiry_service_taxrate !=
-        null
-          ? this.info.event_info_configure
-              .transportation_inquiry_service_taxrate
-          : 0; //设置默认值，服务费率
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      if (this.info.event_info_configure.transportation_inquiry_service_taxrate == undefined) this.info.event_info_configure['transportation_inquiry_service_taxrate'] = 0
+      var taxrate = this.info.event_info_configure.transportation_inquiry_service_taxrate != null ? this.info.event_info_configure.transportation_inquiry_service_taxrate : 0 //设置默认值，服务费率
       this.info.transportationlist.forEach((item, index) => {
-        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-        item.tranlists.forEach((itemc) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.tranlists.forEach(itemc => {
           /* if(itemc.quoted_price_transportation_id && itemc.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 						itemc.settlement_unitprice=positiveFloatSix(itemc.unitprice)
 						itemc.settlement_count=positiveInteger(itemc.passengercount)
 					} */
 
-          let itemcp = positiveFloatSix(itemc.quotationsumprice);
-          let itemcpset =
-            itemc.lineoroffline == 1
-              ? positiveFloatSix(itemc.settlementsumprice)
-              : positiveFloatSix(itemc.settlement_unitprice) *
-                positiveFloat(itemc.settlement_count);
+          let itemcp = positiveFloatSix(itemc.quotationsumprice)
+          let itemcpset = itemc.lineoroffline == 1 ? positiveFloatSix(itemc.settlementsumprice) : positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
 
-          subtotal_1[`sub_${index}`] += itemcp;
-          price[0].all += itemcp;
-          subtotal_2[`sub_${index}`] += itemcpset;
-          price[1].all += itemcpset;
-          if (
-            this.info.event_info_configure
-              .transportation_inquiry_isnotservice == 1
-          ) {
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
+          if (this.info.event_info_configure.transportation_inquiry_isnotservice == 1) {
             //0不计入服务费,1计入服务费
-            price[3] += itemcpset;
-            price[4] += itemcp;
+            price[3] += itemcpset
+            price[4] += itemcp
 
-            price[5] += itemcp;
-            price[6] += itemcpset;
+            price[5] += itemcp
+            price[6] += itemcpset
           }
-        });
-      });
-      let price_service = 0;
-      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100);
-      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100);
-      this.intercitytrafficincidental.forEach((item) => {
-        let itemcp =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
-        price[1].all += itemcp;
-        price[2] += itemcp;
+        })
+      })
+      let price_service = 0
+      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100)
+      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100)
+      this.intercitytrafficincidental.forEach(item => {
+        let itemcp = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          price_service += itemcp;
+          price_service += itemcp
 
-          price[6] += itemcp;
+          price[6] += itemcp
         }
-      });
-      price[3] =
-        positiveFloatSix(price[3]) +
-        positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100);
-      price[7] =
-        "+" +
-        positiveFloatSix(price[5]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      price[8] =
-        "+" +
-        positiveFloatSix(price[6]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      return price;
+      })
+      price[3] = positiveFloatSix(price[3]) + positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100)
+      price[7] = '+' + positiveFloatSix(price[5]) + '*' + positiveFloatSix(taxrate) + '%'
+      price[8] = '+' + positiveFloatSix(price[6]) + '*' + positiveFloatSix(taxrate) + '%'
+      return price
     },
     //大交通差异标记
     transportationDifference() {
-      return function (item) {
-        return (
-          ((positiveFloatSix(item.unitprice) !==
-            positiveFloatSix(item.settlement_unitprice) ||
-            positiveFloat(item.passengercount) !==
-              positiveFloat(item.settlement_count)) &&
-            item.quoted_price_transportation_id != null) ||
-          (!item.quoted_price_transportation_id &&
-            item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return ((positiveFloatSix(item.unitprice) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.passengercount) !== positiveFloat(item.settlement_count)) && item.quoted_price_transportation_id != null) || (!item.quoted_price_transportation_id && item.settlement_comments == '')
+      }
     },
     //保存时验证大交通数据
-    checkTransportationDifference: function () {
-      let difference = false;
-      if (
-        this.info.transportationlist &&
-        this.info.transportationlist.length > 0
-      ) {
-        this.info.transportationlist.forEach((item) => {
+    checkTransportationDifference: function() {
+      let difference = false
+      if (this.info.transportationlist && this.info.transportationlist.length > 0) {
+        this.info.transportationlist.forEach(item => {
           if (item.tranlists && item.tranlists.length > 0) {
             item.tranlists.forEach((transportation, row_index) => {
-              difference = this.transportationDifference(transportation);
-              if (
-                difference &&
-                transportation.quoted_price_transportation_id != null &&
-                (transportation.settlement_comments == null ||
-                  transportation.settlement_comments == "")
-              )
-                this.adddifferenceerrormsg(4, item.date, row_index + 1);
-              if (
-                difference &&
-                transportation.quoted_price_transportation_id == null &&
-                (transportation.settlement_comments == null ||
-                  transportation.settlement_comments == "")
-              )
-                this.addnewitemhasnocommments(4, item.date, row_index + 1);
-            });
-            let newitem = item.tranlists.filter(
-              (w) =>
-                w.quoted_price_transportation_id == null &&
-                w.settlement_itemid == null
-            );
+              difference = this.transportationDifference(transportation)
+              if (difference && transportation.quoted_price_transportation_id != null && (transportation.settlement_comments == null || transportation.settlement_comments == '')) this.adddifferenceerrormsg(4, item.date, row_index + 1)
+              if (difference && transportation.quoted_price_transportation_id == null && (transportation.settlement_comments == null || transportation.settlement_comments == '')) this.addnewitemhasnocommments(4, item.date, row_index + 1)
+            })
+            let newitem = item.tranlists.filter(w => w.quoted_price_transportation_id == null && w.settlement_itemid == null)
             if (newitem.length > 0) {
               newitem.forEach((transportation, row_index) => {
-                this.addnewitemerrormsg(4, item.date, row_index + 1);
-              });
+                this.addnewitemerrormsg(4, item.date, row_index + 1)
+              })
             }
           }
-        });
+        })
       }
     },
     // 市内交通价格计算
@@ -3020,141 +2630,94 @@ export default {
       let price = [
         {
           all: 0, // 原总价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         {
           all: 0, // 结算价格
-          subtotal: {}, // 各项小计
+          subtotal: {} // 各项小计
         },
         0, // 杂项小计
         0, //结算服务费-分项
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let subtotal_1 = price[0].subtotal;
-      let subtotal_2 = price[1].subtotal;
-      if (
-        this.info.event_info_configure.car_inquiry_service_taxrate == undefined
-      )
-        this.info.event_info_configure["car_inquiry_service_taxrate"] = 0;
-      var taxrate =
-        this.info.event_info_configure.car_inquiry_service_taxrate != null
-          ? this.info.event_info_configure.car_inquiry_service_taxrate
-          : 0; //设置默认值，服务费率
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let subtotal_1 = price[0].subtotal
+      let subtotal_2 = price[1].subtotal
+      if (this.info.event_info_configure.car_inquiry_service_taxrate == undefined) this.info.event_info_configure['car_inquiry_service_taxrate'] = 0
+      var taxrate = this.info.event_info_configure.car_inquiry_service_taxrate != null ? this.info.event_info_configure.car_inquiry_service_taxrate : 0 //设置默认值，服务费率
       this.info.carlist.forEach((item, index) => {
-        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0;
-        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0;
-        item.carlists.forEach((itemc) => {
+        if (!subtotal_1[`sub_${index}`]) subtotal_1[`sub_${index}`] = 0
+        if (!subtotal_2[`sub_${index}`]) subtotal_2[`sub_${index}`] = 0
+        item.carlists.forEach(itemc => {
           /* if(itemc.quoted_price_car_id && itemc.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 						itemc.settlement_unitprice=itemc.settlement_unitprice==0?positiveFloatSix(itemc.price):itemc.settlement_unitprice
 						itemc.settlement_count=itemc.settlement_count==0?positiveInteger(itemc.carcount):itemc.settlement_count
 					} */
 
-          let itemcp = positiveFloatSix(itemc.quotationsumprice);
-          let itemcpset =
-            itemc.lineoroffline == 1
-              ? positiveFloatSix(itemc.settlementsumprice)
-              : positiveFloatSix(itemc.settlement_unitprice) *
-                positiveFloat(itemc.settlement_count);
+          let itemcp = positiveFloatSix(itemc.quotationsumprice)
+          let itemcpset = itemc.lineoroffline == 1 ? positiveFloatSix(itemc.settlementsumprice) : positiveFloatSix(itemc.settlement_unitprice) * positiveFloat(itemc.settlement_count)
 
-          subtotal_1[`sub_${index}`] += itemcp;
-          price[0].all += itemcp;
-          subtotal_2[`sub_${index}`] += itemcpset;
-          price[1].all += itemcpset;
+          subtotal_1[`sub_${index}`] += itemcp
+          price[0].all += itemcp
+          subtotal_2[`sub_${index}`] += itemcpset
+          price[1].all += itemcpset
           if (this.info.event_info_configure.car_inquiry_isnotservice == 1) {
             //0不计入服务费,1计入服务费
-            price[3] += itemcpset;
-            price[4] += itemcp;
+            price[3] += itemcpset
+            price[4] += itemcp
 
-            price[5] += itemcp;
-            price[6] += itemcpset;
+            price[5] += itemcp
+            price[6] += itemcpset
           }
-        });
-      });
-      let price_service = 0;
-      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100);
-      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100);
-      this.carincidental.forEach((item) => {
-        let itemcp =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
-        price[1].all += itemcp;
-        price[2] += itemcp;
+        })
+      })
+      let price_service = 0
+      price[3] = positiveFloatSix(price[3]) * positiveFloatSix(taxrate / 100)
+      price[4] = positiveFloatSix(price[4]) * positiveFloatSix(taxrate / 100)
+      this.carincidental.forEach(item => {
+        let itemcp = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1].all += itemcp
+        price[2] += itemcp
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          price_service += itemcp;
+          price_service += itemcp
 
-          price[6] += itemcp;
+          price[6] += itemcp
         }
-      });
-      price[3] =
-        positiveFloatSix(price[3]) +
-        positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100);
-      price[7] +=
-        "+" +
-        positiveFloatSix(price[5]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      price[8] +=
-        "+" +
-        positiveFloatSix(price[6]) +
-        "*" +
-        positiveFloatSix(taxrate) +
-        "%";
-      return price;
+      })
+      price[3] = positiveFloatSix(price[3]) + positiveFloatSix(price_service) * positiveFloatSix(taxrate / 100)
+      price[7] += '+' + positiveFloatSix(price[5]) + '*' + positiveFloatSix(taxrate) + '%'
+      price[8] += '+' + positiveFloatSix(price[6]) + '*' + positiveFloatSix(taxrate) + '%'
+      return price
     },
     //市内交通差异标记
     carDifference() {
-      return function (item) {
-        return (
-          ((positiveFloatSix(item.price) !==
-            positiveFloatSix(item.settlement_unitprice) ||
-            positiveFloat(item.carcount) !==
-              positiveFloat(item.settlement_count)) &&
-            item.quoted_price_car_id != null) ||
-          (!item.quoted_price_car_id && item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return ((positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.carcount) !== positiveFloat(item.settlement_count)) && item.quoted_price_car_id != null) || (!item.quoted_price_car_id && item.settlement_comments == '')
+      }
     },
     //保存时验证市内交通数据
-    checkCarDifference: function () {
-      let difference = false;
+    checkCarDifference: function() {
+      let difference = false
       if (this.info.carlist && this.info.carlist.length > 0) {
-        this.info.carlist.forEach((item) => {
+        this.info.carlist.forEach(item => {
           if (item.carlists && item.carlists.length > 0) {
             item.carlists.forEach((car, row_index) => {
-              difference = this.carDifference(car);
-              if (
-                difference &&
-                car.quoted_price_car_id != null &&
-                (car.settlement_comments == null ||
-                  car.settlement_comments == "")
-              )
-                this.adddifferenceerrormsg(5, item.date, row_index + 1);
-              if (
-                difference &&
-                car.quoted_price_car_id == null &&
-                (car.settlement_comments == null ||
-                  car.settlement_comments == "")
-              )
-                this.addnewitemhasnocommments(5, item.date, row_index + 1);
-            });
-            let newitem = item.carlists.filter(
-              (w) =>
-                w.quoted_price_car_id == null && w.settlement_itemname == ""
-            );
+              difference = this.carDifference(car)
+              if (difference && car.quoted_price_car_id != null && (car.settlement_comments == null || car.settlement_comments == '')) this.adddifferenceerrormsg(5, item.date, row_index + 1)
+              if (difference && car.quoted_price_car_id == null && (car.settlement_comments == null || car.settlement_comments == '')) this.addnewitemhasnocommments(5, item.date, row_index + 1)
+            })
+            let newitem = item.carlists.filter(w => w.quoted_price_car_id == null && w.settlement_itemname == '')
             if (newitem.length > 0) {
               newitem.forEach((car, row_index) => {
-                this.addnewitemerrormsg(5, item.date, row_index + 1);
-              });
+                this.addnewitemerrormsg(5, item.date, row_index + 1)
+              })
             }
           }
-        });
+        })
       }
     },
     // 其他价格计算
@@ -3167,149 +2730,91 @@ export default {
         0, //原服务费-分项
         0, //原服价格-阶梯
         0, //结算价格-阶梯
-        "", //原服务费-分项公式
-        "", //结算服务费-分项公式
-      ];
-      let service_price = 0;
-      let otherPrice = 0;
-      let oldserviceprice = 0;
+        '', //原服务费-分项公式
+        '' //结算服务费-分项公式
+      ]
+      let service_price = 0
+      let otherPrice = 0
+      let oldserviceprice = 0
       this.info.otherlist.forEach((item, index) => {
         /* if(item.quoted_price_other_id && item.lineoroffline == 1 && this.info.id==null){//设置默认值，结算金额，数量默认为报价金额，数量
 					item.settlement_unitprice=item.settlement_unitprice==0?positiveFloatSix(item.price):item.settlement_unitprice
 					item.settlement_count=item.settlement_count==0?positiveInteger(item.offerservicedaycount) * positiveInteger(item.offerparticipatecount):item.settlement_count
 				} */
 
-        if (item.settlementservice_taxrate == undefined)
-          item["settlementservice_taxrate"] = 0;
-        item.settlementservice_taxrate =
-          item.settlementservice_taxrate != null
-            ? item.settlementservice_taxrate
-            : 0; //设置默认值，结算服务费率
+        if (item.settlementservice_taxrate == undefined) item['settlementservice_taxrate'] = 0
+        item.settlementservice_taxrate = item.settlementservice_taxrate != null ? item.settlementservice_taxrate : 0 //设置默认值，结算服务费率
 
-        if (item.service_taxrate == undefined) item["service_taxrate"] = 0;
-        item.service_taxrate =
-          item.service_taxrate != null ? item.service_taxrate : 0; //设置默认值，报价服务费率
+        if (item.service_taxrate == undefined) item['service_taxrate'] = 0
+        item.service_taxrate = item.service_taxrate != null ? item.service_taxrate : 0 //设置默认值，报价服务费率
 
-        let taxrate =
-          item.quoted_price_other_id != null
-            ? item.service_taxrate
-            : item.settlementservice_taxrate; //服务费率,为空是结算，不为空则为报价
-        let itemcp = positiveFloatSix(item.quotationsumprice);
-        let itemcpset =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.settlementsumprice)
-            : positiveFloatSix(item.settlement_unitprice) *
-              positiveFloat(item.settlement_count);
+        let taxrate = item.quoted_price_other_id != null ? item.service_taxrate : item.settlementservice_taxrate //服务费率,为空是结算，不为空则为报价
+        let itemcp = positiveFloatSix(item.quotationsumprice)
+        let itemcpset = item.lineoroffline == 1 ? positiveFloatSix(item.settlementsumprice) : positiveFloatSix(item.settlement_unitprice) * positiveFloat(item.settlement_count)
 
         /* let itemcp = positiveFloatSix(item.price) * positiveInteger(item.offerservicedaycount) * positiveInteger(item.offerparticipatecount);
 				let itemcpset = positiveFloatSix(item.settlement_unitprice) * positiveInteger(item.settlement_count); */
-        price[0] = price[0] + itemcp;
-        price[1] = price[1] + itemcpset;
+        price[0] = price[0] + itemcp
+        price[1] = price[1] + itemcpset
 
         //给其他项税率、是否计入服务费赋值
         this.info.eventinfoother.forEach((itemc, indexc) => {
           if (item.servicetype == itemc.othercode) {
-            this.info.otherlist[index].settlementservice_taxrate =
-              itemc.servicerate;
+            this.info.otherlist[index].settlementservice_taxrate = itemc.servicerate
             // this.info.otherlist[index].isnotservice = itemc.iscalservice;
           }
-        });
+        })
 
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          service_price +=
-            positiveFloatSix(itemcpset) * positiveFloatSix(taxrate / 100);
-          oldserviceprice +=
-            positiveFloatSix(itemcp) * positiveFloatSix(taxrate / 100);
+          service_price += positiveFloatSix(itemcpset) * positiveFloatSix(taxrate / 100)
+          oldserviceprice += positiveFloatSix(itemcp) * positiveFloatSix(taxrate / 100)
 
-          price[5] += itemcp;
-          price[6] += itemcpset;
+          price[5] += itemcp
+          price[6] += itemcpset
           // debugger
-          price[7] +=
-            "+" +
-            positiveFloatSix(itemcp) +
-            "*" +
-            positiveFloatSix(taxrate) +
-            "%";
-          price[8] +=
-            "+" +
-            positiveFloatSix(itemcpset) +
-            "*" +
-            positiveFloatSix(taxrate) +
-            "%";
+          price[7] += '+' + positiveFloatSix(itemcp) + '*' + positiveFloatSix(taxrate) + '%'
+          price[8] += '+' + positiveFloatSix(itemcpset) + '*' + positiveFloatSix(taxrate) + '%'
         }
-      });
-      this.otherincidental.forEach((item) => {
-        if (item.settlementservice_taxrate == undefined)
-          item["settlementservice_taxrate"] = 0;
-        item.settlementservice_taxrate =
-          item.settlementservice_taxrate != null
-            ? item.settlementservice_taxrate
-            : 0; //设置默认值，服务费率
-        let itemcp =
-          item.lineoroffline == 1
-            ? positiveFloatSix(item.sumprice)
-            : positiveFloatSix(item.price) * positiveFloat(item.count);
-        price[1] = price[1] + itemcp;
-        price[2] = price[2] + itemcp;
+      })
+      this.otherincidental.forEach(item => {
+        if (item.settlementservice_taxrate == undefined) item['settlementservice_taxrate'] = 0
+        item.settlementservice_taxrate = item.settlementservice_taxrate != null ? item.settlementservice_taxrate : 0 //设置默认值，服务费率
+        let itemcp = item.lineoroffline == 1 ? positiveFloatSix(item.sumprice) : positiveFloatSix(item.price) * positiveFloat(item.count)
+        price[1] = price[1] + itemcp
+        price[2] = price[2] + itemcp
         if (item.isnotservice == 1) {
           //0不计入服务费,1计入服务费
-          otherPrice +=
-            positiveFloatSix(itemcp) *
-            positiveFloatSix(item.settlementservice_taxrate / 100);
-          console.log(item.settlementservice_taxrate);
-          price[6] += itemcp;
-          price[8] +=
-            "+" +
-            positiveFloatSix(itemcp) +
-            "*" +
-            positiveFloatSix(item.settlementservice_taxrate) +
-            "%";
+          otherPrice += positiveFloatSix(itemcp) * positiveFloatSix(item.settlementservice_taxrate / 100)
+          console.log(item.settlementservice_taxrate)
+          price[6] += itemcp
+          price[8] += '+' + positiveFloatSix(itemcp) + '*' + positiveFloatSix(item.settlementservice_taxrate) + '%'
         }
-      });
-      price[3] = positiveFloatSix(service_price) + positiveFloatSix(otherPrice);
-      price[4] = positiveFloatSix(oldserviceprice);
-      return price;
+      })
+      price[3] = positiveFloatSix(service_price) + positiveFloatSix(otherPrice)
+      price[4] = positiveFloatSix(oldserviceprice)
+      return price
     },
     //其他差异标记
     otherDifference() {
-      return function (item) {
-        return (
-          positiveFloatSix(item.price) !==
-            positiveFloatSix(item.settlement_unitprice) ||
-          positiveFloat(item.offerservicedaycount) *
-            positiveFloat(item.offerparticipatecount) !==
-            positiveFloat(item.settlement_count) ||
-          (!item.quoted_price_other_id && item.settlement_comments == "")
-        );
-      };
+      return function(item) {
+        return positiveFloatSix(item.price) !== positiveFloatSix(item.settlement_unitprice) || positiveFloat(item.offerservicedaycount) * positiveFloat(item.offerparticipatecount) !== positiveFloat(item.settlement_count) || (!item.quoted_price_other_id && item.settlement_comments == '')
+      }
     },
     //保存时验证其他服务数据
-    checkOtherDifference: function () {
-      let difference = false;
+    checkOtherDifference: function() {
+      let difference = false
       if (this.info.otherlist && this.info.otherlist.length > 0) {
         this.info.otherlist.forEach((item, row_index) => {
-          difference = this.otherDifference(item);
-          if (
-            difference &&
-            item.quoted_price_other_id != null &&
-            (item.settlement_comments == null || item.settlement_comments == "")
-          )
-            this.adddifferenceerrormsg(6, null, row_index + 1);
-          if (
-            difference &&
-            item.quoted_price_other_id == null &&
-            (item.settlement_comments == null || item.settlement_comments == "")
-          )
-            this.addnewitemhasnocommments(6, null, row_index + 1);
-        });
-        let newitem = this.info.otherlist.filter(
-          (w) => w.quoted_price_other_id == null && !w.servicetype
-        );
+          difference = this.otherDifference(item)
+          if (difference && item.quoted_price_other_id != null && (item.settlement_comments == null || item.settlement_comments == '')) this.adddifferenceerrormsg(6, null, row_index + 1)
+          if (difference && item.quoted_price_other_id == null && (item.settlement_comments == null || item.settlement_comments == '')) this.addnewitemhasnocommments(6, null, row_index + 1)
+        })
+        let newitem = this.info.otherlist.filter(w => w.quoted_price_other_id == null && !w.servicetype)
         if (newitem.length > 0) {
           newitem.forEach((other, row_index) => {
-            this.addnewitemerrormsg(6, null, row_index + 1);
-          });
+            this.addnewitemerrormsg(6, null, row_index + 1)
+          })
         }
       }
     },
@@ -3318,235 +2823,107 @@ export default {
       let price = [
         0, //原总价格-分项/阶梯/跳档
         0, //结算价格-分项/阶梯/跳档
-        "", //原服务费-分项/阶梯/跳档公式
-        "", //结算服务费-分项/阶梯/跳档公式
+        '', //原服务费-分项/阶梯/跳档公式
+        '', //结算服务费-分项/阶梯/跳档公式
         0, //原总价格-直采
         0, //结算价格-直采
-        "", //原服务费-直采公式
-        "", //结算服务费-直采公式
+        '', //原服务费-直采公式
+        '', //结算服务费-直采公式
         0, // 拜耳直采服务费 报价总金额
-        0, // 拜耳直采服务费 结算总金额
-      ];
+        0 // 拜耳直采服务费 结算总金额
+      ]
       if (this.info.event_info_configure.service_fee_calculation_method == 0) {
         //分项
-        price[0] =
-          positiveFloatSix(this.roomPrice[4]) +
-          positiveFloatSix(this.conferencePrice[4]) +
-          positiveFloatSix(this.foodPrice[4]) +
-          positiveFloatSix(this.otherfoodPrice[4]) +
-          positiveFloatSix(this.intercitytrafficPrice[4]) +
-          positiveFloatSix(this.carPrice[4]) +
-          positiveFloatSix(this.otherPrice[4]);
+        price[0] = positiveFloatSix(this.roomPrice[4]) + positiveFloatSix(this.conferencePrice[4]) + positiveFloatSix(this.foodPrice[4]) + positiveFloatSix(this.otherfoodPrice[4]) + positiveFloatSix(this.intercitytrafficPrice[4]) + positiveFloatSix(this.carPrice[4]) + positiveFloatSix(this.otherPrice[4])
 
-        price[1] =
-          positiveFloatSix(this.roomPrice[3]) +
-          positiveFloatSix(this.conferencePrice[3]) +
-          positiveFloatSix(this.foodPrice[3]) +
-          positiveFloatSix(this.otherfoodPrice[3]) +
-          positiveFloatSix(this.intercitytrafficPrice[3]) +
-          positiveFloatSix(this.carPrice[3]) +
-          positiveFloatSix(this.otherPrice[3]);
+        price[1] = positiveFloatSix(this.roomPrice[3]) + positiveFloatSix(this.conferencePrice[3]) + positiveFloatSix(this.foodPrice[3]) + positiveFloatSix(this.otherfoodPrice[3]) + positiveFloatSix(this.intercitytrafficPrice[3]) + positiveFloatSix(this.carPrice[3]) + positiveFloatSix(this.otherPrice[3])
 
-        price[2] =
-          this.roomPrice[7] +
-          this.conferencePrice[7] +
-          this.foodPrice[7] +
-          this.otherfoodPrice[7] +
-          this.intercitytrafficPrice[7] +
-          this.carPrice[7] +
-          this.otherPrice[7];
-        price[3] =
-          this.roomPrice[8] +
-          this.conferencePrice[8] +
-          this.foodPrice[8] +
-          this.otherfoodPrice[8] +
-          this.intercitytrafficPrice[8] +
-          this.carPrice[8] +
-          this.otherPrice[8];
-      } else if (
-        this.info.event_info_configure.service_fee_calculation_method == 1
-      ) {
+        price[2] = this.roomPrice[7] + this.conferencePrice[7] + this.foodPrice[7] + this.otherfoodPrice[7] + this.intercitytrafficPrice[7] + this.carPrice[7] + this.otherPrice[7]
+        price[3] = this.roomPrice[8] + this.conferencePrice[8] + this.foodPrice[8] + this.otherfoodPrice[8] + this.intercitytrafficPrice[8] + this.carPrice[8] + this.otherPrice[8]
+      } else if (this.info.event_info_configure.service_fee_calculation_method == 1) {
         //阶梯
         if (this.info.event_info_ladder_taxrates) {
-          this.info.event_info_ladder_taxrates.sort(function (obj1, obj2) {
+          this.info.event_info_ladder_taxrates.sort(function(obj1, obj2) {
             //从小到大排序
-            var value1 = obj1["ladder_min"];
-            var value2 = obj2["ladder_min"];
-            return value1 - value2;
-          });
+            var value1 = obj1['ladder_min']
+            var value2 = obj2['ladder_min']
+            return value1 - value2
+          })
         }
-        var oldTotalPrice = this.price_no[2];
-        var newTotalPrice = this.price_no[3];
+        var oldTotalPrice = this.price_no[2]
+        var newTotalPrice = this.price_no[3]
         this.info.event_info_ladder_taxrates.forEach((item, index) => {
-          var oldMoney = 0;
-          var newMoney = 0;
+          var oldMoney = 0
+          var newMoney = 0
           if (this.info.event_info_ladder_taxrates[index - 1]) {
-            oldMoney =
-              positiveFloatZero(item.ladder_max) -
-              positiveFloatZero(
-                this.info.event_info_ladder_taxrates[index - 1].ladder_max
-                  ? this.info.event_info_ladder_taxrates[index - 1].ladder_max
-                  : 0
-              );
-            newMoney =
-              positiveFloatZero(item.ladder_max) -
-              positiveFloatZero(
-                this.info.event_info_ladder_taxrates[index - 1].ladder_max
-                  ? this.info.event_info_ladder_taxrates[index - 1].ladder_max
-                  : 0
-              );
+            oldMoney = positiveFloatZero(item.ladder_max) - positiveFloatZero(this.info.event_info_ladder_taxrates[index - 1].ladder_max ? this.info.event_info_ladder_taxrates[index - 1].ladder_max : 0)
+            newMoney = positiveFloatZero(item.ladder_max) - positiveFloatZero(this.info.event_info_ladder_taxrates[index - 1].ladder_max ? this.info.event_info_ladder_taxrates[index - 1].ladder_max : 0)
           } else {
-            oldMoney = positiveFloatZero(item.ladder_max) - 0;
-            newMoney = positiveFloatZero(item.ladder_max) - 0;
+            oldMoney = positiveFloatZero(item.ladder_max) - 0
+            newMoney = positiveFloatZero(item.ladder_max) - 0
           }
           if (positiveFloatZero(oldTotalPrice) >= positiveFloatZero(oldMoney)) {
             //剩余金额大于等于当前阶梯区间的金额
             if (this.info.event_info_ladder_taxrates.length - 1 == index) {
               //最终的阶梯
-              price[0] +=
-                positiveFloatZero(oldTotalPrice) *
-                positiveFloatZero(item.ladder_taxrate / 100);
-              price[2] +=
-                "+" +
-                positiveFloatSix(oldTotalPrice) +
-                "*" +
-                positiveFloatSix(item.ladder_taxrate) +
-                "%";
+              price[0] += positiveFloatZero(oldTotalPrice) * positiveFloatZero(item.ladder_taxrate / 100)
+              price[2] += '+' + positiveFloatSix(oldTotalPrice) + '*' + positiveFloatSix(item.ladder_taxrate) + '%'
             } else {
-              oldTotalPrice =
-                positiveFloatZero(oldTotalPrice) - positiveFloatZero(oldMoney);
-              price[0] +=
-                positiveFloatZero(oldMoney) *
-                positiveFloatZero(item.ladder_taxrate / 100);
-              price[2] +=
-                "+" +
-                positiveFloatSix(oldMoney) +
-                "*" +
-                positiveFloatSix(item.ladder_taxrate) +
-                "%";
+              oldTotalPrice = positiveFloatZero(oldTotalPrice) - positiveFloatZero(oldMoney)
+              price[0] += positiveFloatZero(oldMoney) * positiveFloatZero(item.ladder_taxrate / 100)
+              price[2] += '+' + positiveFloatSix(oldMoney) + '*' + positiveFloatSix(item.ladder_taxrate) + '%'
             }
           } else {
-            price[0] +=
-              positiveFloatZero(oldTotalPrice) *
-              positiveFloatZero(item.ladder_taxrate / 100);
-            price[2] +=
-              "+" +
-              positiveFloatSix(oldTotalPrice) +
-              "*" +
-              positiveFloatSix(item.ladder_taxrate) +
-              "%";
-            oldTotalPrice = 0;
+            price[0] += positiveFloatZero(oldTotalPrice) * positiveFloatZero(item.ladder_taxrate / 100)
+            price[2] += '+' + positiveFloatSix(oldTotalPrice) + '*' + positiveFloatSix(item.ladder_taxrate) + '%'
+            oldTotalPrice = 0
           }
           if (positiveFloatZero(newTotalPrice) >= positiveFloatZero(newMoney)) {
             if (this.info.event_info_ladder_taxrates.length - 1 == index) {
-              price[1] +=
-                positiveFloatZero(newTotalPrice) *
-                positiveFloatZero(item.ladder_taxrate / 100);
-              price[3] +=
-                "+" +
-                positiveFloatSix(newTotalPrice) +
-                "*" +
-                positiveFloatSix(item.ladder_taxrate) +
-                "%";
+              price[1] += positiveFloatZero(newTotalPrice) * positiveFloatZero(item.ladder_taxrate / 100)
+              price[3] += '+' + positiveFloatSix(newTotalPrice) + '*' + positiveFloatSix(item.ladder_taxrate) + '%'
             } else {
-              newTotalPrice =
-                positiveFloatZero(newTotalPrice) - positiveFloatZero(newMoney);
-              price[1] +=
-                positiveFloatZero(newMoney) *
-                positiveFloatZero(item.ladder_taxrate / 100);
-              price[3] +=
-                "+" +
-                positiveFloatSix(newMoney) +
-                "*" +
-                positiveFloatSix(item.ladder_taxrate) +
-                "%";
+              newTotalPrice = positiveFloatZero(newTotalPrice) - positiveFloatZero(newMoney)
+              price[1] += positiveFloatZero(newMoney) * positiveFloatZero(item.ladder_taxrate / 100)
+              price[3] += '+' + positiveFloatSix(newMoney) + '*' + positiveFloatSix(item.ladder_taxrate) + '%'
             }
           } else {
-            price[1] +=
-              positiveFloatZero(newTotalPrice) *
-              positiveFloatZero(item.ladder_taxrate / 100);
-            price[3] +=
-              "+" +
-              positiveFloatSix(newTotalPrice) +
-              "*" +
-              positiveFloatSix(item.ladder_taxrate) +
-              "%";
-            newTotalPrice = 0;
+            price[1] += positiveFloatZero(newTotalPrice) * positiveFloatZero(item.ladder_taxrate / 100)
+            price[3] += '+' + positiveFloatSix(newTotalPrice) + '*' + positiveFloatSix(item.ladder_taxrate) + '%'
+            newTotalPrice = 0
           }
-        });
-      } else if (
-        this.info.event_info_configure.service_fee_calculation_method == 2
-      ) {
-        var oldTotalPrice = this.price_no[2];
-        var newTotalPrice = this.price_no[3];
+        })
+      } else if (this.info.event_info_configure.service_fee_calculation_method == 2) {
+        var oldTotalPrice = this.price_no[2]
+        var newTotalPrice = this.price_no[3]
 
         // 原报价 服务费
         for (var i = 0; i < this.info.event_info_grade_taxrates.length; i++) {
-          if (
-            i == this.info.event_info_grade_taxrates.length - 1 ||
-            (positiveFloatSix(oldTotalPrice) >=
-              this.info.event_info_grade_taxrates[i].grade_money &&
-              positiveFloatSix(oldTotalPrice) <
-                this.info.event_info_grade_taxrates[i + 1].grade_money)
-          ) {
-            price[0] =
-              (((positiveFloatSix(oldTotalPrice) *
-                this.info.event_info_grade_taxrates[i].grade_taxrate) /
-                100) *
-                this.info.fzc_service) /
-              100; // 服务费金额 = 计入服务费总价 * 对应档次 服务费比例
-            price[2] =
-              positiveFloat(oldTotalPrice) +
-              "*" +
-              this.info.event_info_grade_taxrates[i].grade_taxrate +
-              "%";
+          if (i == this.info.event_info_grade_taxrates.length - 1 || (positiveFloatSix(oldTotalPrice) >= this.info.event_info_grade_taxrates[i].grade_money && positiveFloatSix(oldTotalPrice) < this.info.event_info_grade_taxrates[i + 1].grade_money)) {
+            price[0] = (((positiveFloatSix(oldTotalPrice) * this.info.event_info_grade_taxrates[i].grade_taxrate) / 100) * this.info.fzc_service) / 100 // 服务费金额 = 计入服务费总价 * 对应档次 服务费比例
+            price[2] = positiveFloat(oldTotalPrice) + '*' + this.info.event_info_grade_taxrates[i].grade_taxrate + '%'
 
             if (this.info.event_info_configure.service_fee_ratio == 1) {
-              price[2] += "*" + this.info.fzc_service + "%";
+              price[2] += '*' + this.info.fzc_service + '%'
             }
             // 有非直采最低服务费 并且 非直采服务费 小于 最低服务费，取值最低服务费
-            if (
-              this.info.event_info_configure.minimum_service_fee == 1 &&
-              price[0] <
-                this.info.event_info_configure.minimum_service_fee_money
-            ) {
-              price[0] =
-                this.info.event_info_configure.minimum_service_fee_money;
+            if (this.info.event_info_configure.minimum_service_fee == 1 && price[0] < this.info.event_info_configure.minimum_service_fee_money) {
+              price[0] = this.info.event_info_configure.minimum_service_fee_money
             }
-            break;
+            break
           }
         }
         // 结算服务费
         for (var i = 0; i < this.info.event_info_grade_taxrates.length; i++) {
-          if (
-            i == this.info.event_info_grade_taxrates.length - 1 ||
-            (positiveFloatSix(newTotalPrice) >=
-              this.info.event_info_grade_taxrates[i].grade_money &&
-              positiveFloatSix(newTotalPrice) <
-                this.info.event_info_grade_taxrates[i + 1].grade_money)
-          ) {
+          if (i == this.info.event_info_grade_taxrates.length - 1 || (positiveFloatSix(newTotalPrice) >= this.info.event_info_grade_taxrates[i].grade_money && positiveFloatSix(newTotalPrice) < this.info.event_info_grade_taxrates[i + 1].grade_money)) {
             // 服务费金额 = 计入服务费总价 * 对应档次 服务费比例 * 服务费折扣
-            price[1] =
-              (((positiveFloatSix(newTotalPrice) *
-                this.info.event_info_grade_taxrates[i].grade_taxrate) /
-                100) *
-                this.info.sheet_fzc_service) /
-              100;
-            price[3] =
-              positiveFloat(newTotalPrice) +
-              "*" +
-              this.info.event_info_grade_taxrates[i].grade_taxrate +
-              "%";
+            price[1] = (((positiveFloatSix(newTotalPrice) * this.info.event_info_grade_taxrates[i].grade_taxrate) / 100) * this.info.sheet_fzc_service) / 100
+            price[3] = positiveFloat(newTotalPrice) + '*' + this.info.event_info_grade_taxrates[i].grade_taxrate + '%'
             // 有非直采最低服务费 并且 非直采服务费 小于 最低服务费，取值最低服务费
-            if (
-              this.info.event_info_configure.minimum_service_fee == 1 &&
-              price[1] <
-                this.info.event_info_configure.minimum_service_fee_money
-            ) {
-              price[1] =
-                this.info.event_info_configure.minimum_service_fee_money;
+            if (this.info.event_info_configure.minimum_service_fee == 1 && price[1] < this.info.event_info_configure.minimum_service_fee_money) {
+              price[1] = this.info.event_info_configure.minimum_service_fee_money
             }
-            break;
+            break
           }
         }
       }
@@ -3554,56 +2931,42 @@ export default {
       // 直采服务费为拜耳规则
       if (this.info.zhicai_service == 1) {
         // 报价展示计算
-        this.info.event_quoted_price_zhicai_service.forEach((item) => {
-          price[8] += item.grade_price * item.grade_count ? item.grade_count : 0;
-        });
+        this.info.event_quoted_price_zhicai_service.forEach(item => {
+          price[8] += item.grade_price * item.grade_count ? item.grade_count : 0
+        })
         // 填写结算计算
-        this.info.event_settlement_sheet_zhicai_service.forEach((item) => {
-          price[9] += item.grade_price * item.grade_count ? item.grade_count : 0;
-        });
+        this.info.event_settlement_sheet_zhicai_service.forEach(item => {
+          price[9] += item.grade_price * item.grade_count ? item.grade_count : 0
+        })
       }
 
-      price[2] = price[2].replace("+", "");
-      price[3] = price[3].replace("+", "");
+      price[2] = price[2].replace('+', '')
+      price[3] = price[3].replace('+', '')
       if (!this.info.quoted_travelagency_payment_money) {
         //报价直采金额
-        this.info.quoted_travelagency_payment_money = 0;
+        this.info.quoted_travelagency_payment_money = 0
       }
       if (!this.info.quoted_travelagency_payment_proportion) {
         //报价直采比例
-        this.info.quoted_travelagency_payment_proportion = 0;
+        this.info.quoted_travelagency_payment_proportion = 0
       }
 
-      price[4] =
-        positiveFloatZero(this.info.quoted_travelagency_payment_money) *
-        positiveFloatZero(
-          this.info.quoted_travelagency_payment_proportion / 100
-        );
-      price[5] =
-        positiveFloatZero(this.info.settlement_advance_amount) *
-        positiveFloatZero(this.info.settlement_advance_proportion / 100);
-      price[6] =
-        positiveFloatSix(this.info.quoted_travelagency_payment_money) +
-        "*" +
-        positiveFloatSix(this.info.quoted_travelagency_payment_proportion) +
-        "%";
-      price[7] =
-        positiveFloatSix(this.info.settlement_advance_amount) +
-        "*" +
-        positiveFloatSix(this.info.settlement_advance_proportion) +
-        "%";
+      price[4] = positiveFloatZero(this.info.quoted_travelagency_payment_money) * positiveFloatZero(this.info.quoted_travelagency_payment_proportion / 100)
+      price[5] = positiveFloatZero(this.info.settlement_advance_amount) * positiveFloatZero(this.info.settlement_advance_proportion / 100)
+      price[6] = positiveFloatSix(this.info.quoted_travelagency_payment_money) + '*' + positiveFloatSix(this.info.quoted_travelagency_payment_proportion) + '%'
+      price[7] = positiveFloatSix(this.info.settlement_advance_amount) + '*' + positiveFloatSix(this.info.settlement_advance_proportion) + '%'
 
-      this.info.feizhicai_service = price[1];
-      return price;
+      this.info.feizhicai_service = price[1]
+      return price
     },
     //税费
     vatPrice() {
       let price = [
         0, //原总价格税费
         0, //结算价格税费
-        "", //原服务费-分项/阶梯公式
-        "", //结算服务费-分项/阶梯公式
-      ];
+        '', //原服务费-分项/阶梯公式
+        '' //结算服务费-分项/阶梯公式
+      ]
       // debugger
       price[0] =
         ((positiveFloatZero(this.roomPrice[0].all) +
@@ -3614,21 +2977,14 @@ export default {
           positiveFloatZero(this.carPrice[0].all) +
           positiveFloatZero(this.otherPrice[0]) +
           // positiveFloatZero(this.servicePrice[0]) * positiveFloatZero(this.info.event_info_configure.service_taxrate / 100) +
-          (this.info.zhicai_service == 0
-            ? positiveFloatZero(this.servicePrice[4])
-            : positiveFloatZero(this.servicePrice[8]))) *
+          (this.info.zhicai_service == 0 ? positiveFloatZero(this.servicePrice[4]) : positiveFloatZero(this.servicePrice[8]))) *
           this.info.taxrate) /
-        100;
+        100
       // positiveFloatZero(this.servicePrice[4]) * positiveFloatZero(this.info.event_info_configure.service_taxrate / 100);
 
-      if (
-        this.info.event_info_configure.fzc_service_fee_money == 1 ||
-        this.info.event_info_configure.fzc_service_fee_money == null
-      ) {
+      if (this.info.event_info_configure.fzc_service_fee_money == 1 || this.info.event_info_configure.fzc_service_fee_money == null) {
         // 非直采服务费计税
-        price[0] +=
-          positiveFloatZero(this.servicePrice[0]) *
-          positiveFloatZero(this.info.taxrate / 100);
+        price[0] += positiveFloatZero(this.servicePrice[0]) * positiveFloatZero(this.info.taxrate / 100)
       }
 
       price[1] =
@@ -3640,59 +2996,38 @@ export default {
           positiveFloatZero(this.carPrice[1].all) +
           positiveFloatZero(this.otherPrice[1]) +
           // positiveFloatZero(this.servicePrice[1]) * positiveFloatZero(this.info.event_info_configure.service_taxrate / 100) +
-          (this.info.zhicai_service == 0
-            ? positiveFloatZero(this.servicePrice[5])
-            : positiveFloatZero(this.servicePrice[9]))) *
+          (this.info.zhicai_service == 0 ? positiveFloatZero(this.servicePrice[5]) : positiveFloatZero(this.servicePrice[9]))) *
           this.info.settlement_taxrate) /
-        100;
+        100
       // positiveFloatZero(this.servicePrice[5]) * positiveFloatZero(this.info.event_info_configure.service_taxrate / 100);
 
-      if (
-        this.info.event_info_configure.fzc_service_fee_money ||
-        this.info.event_info_configure.fzc_service_fee_money == null
-      ) {
+      if (this.info.event_info_configure.fzc_service_fee_money || this.info.event_info_configure.fzc_service_fee_money == null) {
         // 非直采服务费计税
-        price[1] +=
-          positiveFloatZero(this.servicePrice[1]) *
-          positiveFloatZero(this.info.settlement_taxrate / 100);
+        price[1] += positiveFloatZero(this.servicePrice[1]) * positiveFloatZero(this.info.settlement_taxrate / 100)
       }
       //当前为统一规则vat
       price[2] =
-        "(" +
+        '(' +
         positiveFloat(this.price_no[0]) +
-        "+" +
+        '+' +
         positiveFloat(
-          (this.info.event_info_configure.fzc_service_fee_money == 0
-            ? 0
-            : positiveFloatSix(this.servicePrice[0])) +
-            positiveFloatSix(
-              this.info.zhicai_service == 0
-                ? this.servicePrice[4]
-                : this.servicePrice[8]
-            ) // 直采服务费
+          (this.info.event_info_configure.fzc_service_fee_money == 0 ? 0 : positiveFloatSix(this.servicePrice[0])) + positiveFloatSix(this.info.zhicai_service == 0 ? this.servicePrice[4] : this.servicePrice[8]) // 直采服务费
         ) +
-        ") *" +
+        ') *' +
         positiveFloatSix(this.info.taxrate) +
-        "%";
+        '%'
 
       price[3] =
-        "(" +
+        '(' +
         positiveFloat(this.price_no[1]) +
-        "+" +
+        '+' +
         positiveFloat(
-          (this.info.event_info_configure.fzc_service_fee_money == 0
-            ? 0
-            : positiveFloatSix(this.servicePrice[1])) +
-            positiveFloatSix(
-              this.info.zhicai_service == 0
-                ? this.servicePrice[5]
-                : this.servicePrice[9]
-            ) // 直采服务费
+          (this.info.event_info_configure.fzc_service_fee_money == 0 ? 0 : positiveFloatSix(this.servicePrice[1])) + positiveFloatSix(this.info.zhicai_service == 0 ? this.servicePrice[5] : this.servicePrice[9]) // 直采服务费
         ) +
-        ") ";
+        ') '
       // + positiveFloatSix(this.info.event_info_configure.room_inquiry_taxrate) +'%';
 
-      this.info.taxation = price[1];
+      this.info.taxation = price[1]
       /* price[2] =
 				positiveFloatSix(this.roomPrice[0].all) +'*' +positiveFloatSix(this.info.event_info_configure.room_inquiry_taxrate ) +
 				'%+' +
@@ -3708,11 +3043,11 @@ export default {
 				'%+' +
 				positiveFloatSix(this.otherPrice[0]) +'*'+ positiveFloatSix(this.info.event_info_configure.other_inquiry_taxrate ) +
 				'%+' +
-				
+
 					positiveFloatSix(this.servicePrice[0]) +'*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate ) +'%+'+
 					positiveFloatSix(this.servicePrice[4]) +'*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate )+'%'
 				;
-			
+
 			price[3] =
 				positiveFloatSix(this.roomPrice[1].all) +'*'+ positiveFloatSix(this.info.event_info_configure.room_inquiry_taxrate ) +
 				'%+' +
@@ -3728,11 +3063,11 @@ export default {
 				'%+' +
 				positiveFloatSix(this.otherPrice[1]) +'*'+ positiveFloatSix(this.info.event_info_configure.other_inquiry_taxrate ) +
 				'%+' +
-				
+
 					positiveFloatSix(this.servicePrice[1])+ '*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate ) +'%+'+
 					positiveFloatSix(this.servicePrice[5]) +'*'+ positiveFloatSix(this.info.event_info_configure.service_taxrate )+'%'
 				; */
-      return price;
+      return price
     },
     // 总价格除vat 服务费总价格（净价）
     price_no() {
@@ -3740,77 +3075,28 @@ export default {
         0, //原总价格
         0, //结算价格
         0, //原总价格-阶梯
-        0, //结算价格-阶梯
-      ];
-      price[0] =
-        this.roomPrice[0].all +
-        this.conferencePrice[0].all +
-        this.foodPrice[0].all +
-        this.otherfoodPrice[0].all +
-        this.intercitytrafficPrice[0].all +
-        this.carPrice[0].all +
-        this.otherPrice[0];
-      price[1] =
-        this.roomPrice[1].all +
-        this.conferencePrice[1].all +
-        this.foodPrice[1].all +
-        this.otherfoodPrice[1].all +
-        this.intercitytrafficPrice[1].all +
-        this.carPrice[1].all +
-        this.otherPrice[1];
-      console.log(
-        price[1],
-        this.roomPrice[1].all,
-        this.conferencePrice[1].all,
-        this.foodPrice[1].all,
-        this.otherfoodPrice[1].all,
-        this.intercitytrafficPrice[1].all,
-        this.carPrice[1].all,
-        this.otherPrice[1]
-      );
-      this.info.settlement_total_price = price[1];
-      price[2] =
-        this.roomPrice[5] +
-        this.conferencePrice[5] +
-        this.foodPrice[5] +
-        this.otherfoodPrice[5] +
-        this.intercitytrafficPrice[5] +
-        this.carPrice[5] +
-        this.otherPrice[5];
+        0 //结算价格-阶梯
+      ]
+      price[0] = this.roomPrice[0].all + this.conferencePrice[0].all + this.foodPrice[0].all + this.otherfoodPrice[0].all + this.intercitytrafficPrice[0].all + this.carPrice[0].all + this.otherPrice[0]
+      price[1] = this.roomPrice[1].all + this.conferencePrice[1].all + this.foodPrice[1].all + this.otherfoodPrice[1].all + this.intercitytrafficPrice[1].all + this.carPrice[1].all + this.otherPrice[1]
+      console.log(price[1], this.roomPrice[1].all, this.conferencePrice[1].all, this.foodPrice[1].all, this.otherfoodPrice[1].all, this.intercitytrafficPrice[1].all, this.carPrice[1].all, this.otherPrice[1])
+      this.info.settlement_total_price = price[1]
+      price[2] = this.roomPrice[5] + this.conferencePrice[5] + this.foodPrice[5] + this.otherfoodPrice[5] + this.intercitytrafficPrice[5] + this.carPrice[5] + this.otherPrice[5]
 
-      price[3] =
-        this.roomPrice[6] +
-        this.conferencePrice[6] +
-        this.foodPrice[6] +
-        this.otherfoodPrice[6] +
-        this.intercitytrafficPrice[6] +
-        this.carPrice[6] +
-        this.otherPrice[6];
-      return price;
+      price[3] = this.roomPrice[6] + this.conferencePrice[6] + this.foodPrice[6] + this.otherfoodPrice[6] + this.intercitytrafficPrice[6] + this.carPrice[6] + this.otherPrice[6]
+      return price
     },
     // 总价格(净价 + 服务费 + 税费)
     price() {
       let price = [
         0, //原总价格
-        0, //结算价格
-      ];
-      price[0] =
-        positiveFloatSix(this.price_no[0]) +
-        positiveFloat(this.servicePrice[0]) +
-        (this.info.zhicai_service === 0
-          ? positiveFloat(this.servicePrice[4])
-          : positiveFloat(this.servicePrice[8])) +
-        positiveFloat(this.vatPrice[0]);
-      price[1] =
-        positiveFloatSix(this.price_no[1]) +
-        positiveFloat(this.servicePrice[1]) +
-        (this.info.zhicai_service === 0
-          ? positiveFloat(this.servicePrice[5])
-          : positiveFloat(this.servicePrice[9])) +
-        positiveFloat(this.vatPrice[1]);
-      this.info.total_amount = price[1];
-      return price;
-    },
+        0 //结算价格
+      ]
+      price[0] = positiveFloatSix(this.price_no[0]) + positiveFloat(this.servicePrice[0]) + (this.info.zhicai_service === 0 ? positiveFloat(this.servicePrice[4]) : positiveFloat(this.servicePrice[8])) + positiveFloat(this.vatPrice[0])
+      price[1] = positiveFloatSix(this.price_no[1]) + positiveFloat(this.servicePrice[1]) + (this.info.zhicai_service === 0 ? positiveFloat(this.servicePrice[5]) : positiveFloat(this.servicePrice[9])) + positiveFloat(this.vatPrice[1])
+      this.info.total_amount = price[1]
+      return price
+    }
   },
   methods: {
     guid,
@@ -3824,529 +3110,485 @@ export default {
     getFormatDate,
     limitsEffect,
     changekefang(id, room) {
-      let filter = this.roomcostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      room.settlement_itemname = filter[0].name;
+      let filter = this.roomcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      room.settlement_itemname = filter[0].name
     },
     changehuichang(id, conference) {
-      let filter = this.meetingcostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      conference.settlement_itemname = filter[0].name;
+      let filter = this.meetingcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      conference.settlement_itemname = filter[0].name
     },
     changehotelnei(id, food) {
-      let filter = this.foodcostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      food.settlement_itemname = filter[0].name;
+      let filter = this.foodcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      food.settlement_itemname = filter[0].name
     },
     changehotelwai(id, food) {
-      let filter = this.otherfoodcostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      food.settlement_itemname = filter[0].name;
+      let filter = this.otherfoodcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      food.settlement_itemname = filter[0].name
     },
     changebigcar(id, transportation) {
-      let filter = this.transportationcostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      food.settlement_itemname = filter[0].name;
+      let filter = this.transportationcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      food.settlement_itemname = filter[0].name
     },
     changecar(id, car) {
-      let filter = this.carcostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      food.settlement_itemname = filter[0].name;
+      let filter = this.carcostProjects.filter(ele => {
+        return ele.code == id
+      })
+      food.settlement_itemname = filter[0].name
     },
     openAddSettle() {
-      this.cost_project_load = true;
+      this.cost_project_load = true
 
-      let sdate = getFormatDate(this.info.event_info.event_startdate).slice(
-        0,
-        10
-      );
-      let edate = getFormatDate(this.info.event_info.event_enddate).slice(
-        0,
-        10
-      );
-      let startDate = moment(sdate).subtract(3, "days").format("YYYY-MM-DD");
-      let endDate = moment(edate).add(1, "days").format("YYYY-MM-DD");
-      let timeRange = getBetweenDate(startDate, endDate);
-      this.costDates = [];
+      let sdate = getFormatDate(this.info.event_info.event_startdate).slice(0, 10)
+      let edate = getFormatDate(this.info.event_info.event_enddate).slice(0, 10)
+      let startDate = moment(sdate)
+        .subtract(3, 'days')
+        .format('YYYY-MM-DD')
+      let endDate = moment(edate)
+        .add(1, 'days')
+        .format('YYYY-MM-DD')
+      let timeRange = getBetweenDate(startDate, endDate)
+      this.costDates = []
       timeRange.forEach((item, index) => {
         this.costDates.push({
           value: item,
-          label: item,
-        });
-      });
+          label: item
+        })
+      })
 
-      this.changeProjectClass();
+      this.changeProjectClass()
 
-      this.addSettleShow = true;
+      this.addSettleShow = true
     },
     changecostProject() {
-      if (
-        this.addSettleInfo.costProject == "zafei" ||
-        this.addSettleInfo.projectClass == "009"
-      ) {
-        this.needCostDate = false;
-        this.addSettleRules.costDate[0].required = false;
+      if (this.addSettleInfo.costProject == 'zafei' || this.addSettleInfo.projectClass == '009') {
+        this.needCostDate = false
+        this.addSettleRules.costDate[0].required = false
       } else {
-        this.needCostDate = true;
-        this.addSettleRules.costDate[0].required = true;
+        this.needCostDate = true
+        this.addSettleRules.costDate[0].required = true
       }
     },
     async changeProjectClass() {
       const SettleEnum = {
         // 客房
-        "0034": {
-          selects: "roomcostProjects",
+        '0034': {
+          selects: 'roomcostProjects'
         },
         // 会场
-        "0049": {
-          selects: "meetingcostProjects",
+        '0049': {
+          selects: 'meetingcostProjects'
         },
         // 酒店内餐饮
-        "0050": {
-          selects: "foodcostProjects",
+        '0050': {
+          selects: 'foodcostProjects'
         },
         // 酒店外餐饮
-        "0051": {
-          selects: "otherfoodcostProjects",
+        '0051': {
+          selects: 'otherfoodcostProjects'
         },
         // 大交通
-        "003": {
-          selects: "transportationcostProjects",
+        '003': {
+          selects: 'transportationcostProjects'
         },
         // 地面交通
-        "006": {
-          selects: "carcostProjects",
+        '006': {
+          selects: 'carcostProjects'
         },
         // 其他服务
-        "009": {
-          selects: "othercostProjects",
-        },
-      };
-
-      if (this.addSettleInfo.projectClass == "009") {
-        this.needCostDate = false;
-        this.addSettleRules.costDate[0].required = false;
-      } else {
-        this.needCostDate = true;
-        this.addSettleRules.costDate[0].required = true;
+        '009': {
+          selects: 'othercostProjects'
+        }
       }
 
-      this.cost_project_load = true;
+      if (this.addSettleInfo.projectClass == '009') {
+        this.needCostDate = false
+        this.addSettleRules.costDate[0].required = false
+      } else {
+        this.needCostDate = true
+        this.addSettleRules.costDate[0].required = true
+      }
+
+      this.cost_project_load = true
       let sendData = {
-        code: this.addSettleInfo.projectClass,
-      };
-      if (this.addSettleInfo.projectClass == "009") {
+        code: this.addSettleInfo.projectClass
+      }
+      if (this.addSettleInfo.projectClass == '009') {
       }
       let cpRep = await this.requestApi({
         url: '/orderform/GetdictionaryList',
         method: 'POST',
-        data: { 
+        data: {
           code: this.addSettleInfo.projectClass,
-          meetingid:
-            this.addSettleInfo.projectClass == "009" ? this.info.meeting_id : "",
-        },
+          meetingid: this.addSettleInfo.projectClass == '009' ? this.info.meeting_id : ''
+        }
       })
 
-      this.cost_project_load = false;
+      this.cost_project_load = false
 
-      this.costProjects = cpRep.map((item) => {
-        item.value = item.code;
-        item.label = item.name;
-        return item;
-      });
+      this.costProjects = cpRep.map(item => {
+        item.value = item.code
+        item.label = item.name
+        return item
+      })
 
-      this[SettleEnum[this.addSettleInfo.projectClass].selects] = cpRep.map(
-        (item) => {
-          item.value = item.code;
-          item.label = item.name;
-          return item;
-        }
-      );
+      this[SettleEnum[this.addSettleInfo.projectClass].selects] = cpRep.map(item => {
+        item.value = item.code
+        item.label = item.name
+        return item
+      })
 
-      this.costProjects.push({ label: "杂费", value: "zafei" });
+      this.costProjects.push({ label: '杂费', value: 'zafei' })
 
-      this.addSettleInfo.costProject = this.costProjects[0].value;
+      this.addSettleInfo.costProject = this.costProjects[0].value
     },
     initCostProject() {
       this.requestApi({
         url: '/orderform/GetdictionaryList',
         method: 'POST',
-        data: { 
-          code: "",
-        },
-      }).then((res) => {
-        let roomcostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "0034";
-        });
-        let meetingcostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "0049";
-        });
-        let foodcostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "0050";
-        });
-        let otherfoodcostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "0051";
-        });
-        let transportationcostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "003";
-        });
-        let carcostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "006";
-        });
-        let othercostProjects = res.filter((item) => {
-          return item.event_dictionary_code == "009";
-        });
+        data: {
+          code: ''
+        }
+      }).then(res => {
+        let roomcostProjects = res.filter(item => {
+          return item.event_dictionary_code == '0034'
+        })
+        let meetingcostProjects = res.filter(item => {
+          return item.event_dictionary_code == '0049'
+        })
+        let foodcostProjects = res.filter(item => {
+          return item.event_dictionary_code == '0050'
+        })
+        let otherfoodcostProjects = res.filter(item => {
+          return item.event_dictionary_code == '0051'
+        })
+        let transportationcostProjects = res.filter(item => {
+          return item.event_dictionary_code == '003'
+        })
+        let carcostProjects = res.filter(item => {
+          return item.event_dictionary_code == '006'
+        })
+        let othercostProjects = res.filter(item => {
+          return item.event_dictionary_code == '009'
+        })
 
-        this.roomcostProjects = roomcostProjects.map((item) => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-        this.meetingcostProjects = meetingcostProjects.map((item) => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-        this.foodcostProjects = foodcostProjects.map((item) => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-        this.otherfoodcostProjects = otherfoodcostProjects.map((item) => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-        this.transportationcostProjects = transportationcostProjects.map(
-          (item) => {
-            item.label = item.name;
-            item.value = item.code;
-            return item;
-          }
-        );
-        this.carcostProjects = carcostProjects.map((item) => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-        this.othercostProjects = othercostProjects.map((item) => {
-          item.label = item.name;
-          item.value = item.code;
-          return item;
-        });
-      });
+        this.roomcostProjects = roomcostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+        this.meetingcostProjects = meetingcostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+        this.foodcostProjects = foodcostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+        this.otherfoodcostProjects = otherfoodcostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+        this.transportationcostProjects = transportationcostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+        this.carcostProjects = carcostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+        this.othercostProjects = othercostProjects.map(item => {
+          item.label = item.name
+          item.value = item.code
+          return item
+        })
+      })
     },
     addSettle() {
-      let self = this;
+      let self = this
 
       const SettleEnum = {
         // 客房
-        "0034": {
-          dataList: "roomlist",
-          addBusinessBlock: "addroomBusiness",
-          addDataBlock: "addroom",
-          selects: "roomcostProjects",
+        '0034': {
+          dataList: 'roomlist',
+          addBusinessBlock: 'addroomBusiness',
+          addDataBlock: 'addroom',
+          selects: 'roomcostProjects'
         },
         // 会场
-        "0049": {
-          dataList: "conferencelist",
-          addBusinessBlock: "addconferenceBusiness",
-          addDataBlock: "addconference",
-          selects: "meetingcostProjects",
+        '0049': {
+          dataList: 'conferencelist',
+          addBusinessBlock: 'addconferenceBusiness',
+          addDataBlock: 'addconference',
+          selects: 'meetingcostProjects'
         },
         // 酒店内餐饮
-        "0050": {
-          dataList: "foodlist",
-          addBusinessBlock: "addfoodBusiness",
-          addDataBlock: "addfood",
-          selects: "foodcostProjects",
+        '0050': {
+          dataList: 'foodlist',
+          addBusinessBlock: 'addfoodBusiness',
+          addDataBlock: 'addfood',
+          selects: 'foodcostProjects'
         },
         // 酒店外餐饮
-        "0051": {
-          dataList: "otherfoodlist",
-          addBusinessBlock: "addotherfoodBusiness",
-          addDataBlock: "addotherfood",
-          selects: "otherfoodcostProjects",
+        '0051': {
+          dataList: 'otherfoodlist',
+          addBusinessBlock: 'addotherfoodBusiness',
+          addDataBlock: 'addotherfood',
+          selects: 'otherfoodcostProjects'
         },
         // 大交通
-        "003": {
-          dataList: "transportationlist",
-          addBusinessBlock: "addstransportationBusiness",
-          addDataBlock: "addstransportation",
-          selects: "transportationcostProjects",
+        '003': {
+          dataList: 'transportationlist',
+          addBusinessBlock: 'addstransportationBusiness',
+          addDataBlock: 'addstransportation',
+          selects: 'transportationcostProjects'
         },
         // 地面交通
-        "006": {
-          dataList: "carlist",
-          addBusinessBlock: "addcarBusiness",
-          addDataBlock: "addcar",
-          selects: "carcostProjects",
+        '006': {
+          dataList: 'carlist',
+          addBusinessBlock: 'addcarBusiness',
+          addDataBlock: 'addcar',
+          selects: 'carcostProjects'
         },
         // 其他服务
-        "009": {
-          dataList: "otherlist",
-          addBusinessBlock: "addsundryBusiness",
-          addDataBlock: "addsundry",
-          selects: "othercostProjects",
-        },
-      };
+        '009': {
+          dataList: 'otherlist',
+          addBusinessBlock: 'addsundryBusiness',
+          addDataBlock: 'addsundry',
+          selects: 'othercostProjects'
+        }
+      }
 
       const costProjectEnem = {
-        "0034": 1,
-        "0049": 2,
-        "0050": 3,
-        "0051": 7,
-        "003": 4,
-        "006": 5,
-        "009": 6,
-      };
+        '0034': 1,
+        '0049': 2,
+        '0050': 3,
+        '0051': 7,
+        '003': 4,
+        '006': 5,
+        '009': 6
+      }
 
-      this.$refs.addSettleInfo.validate((valid) => {
+      this.$refs.addSettleInfo.validate(valid => {
         if (valid) {
-          let enumObj = SettleEnum[this.addSettleInfo.projectClass];
+          let enumObj = SettleEnum[this.addSettleInfo.projectClass]
           if (enumObj) {
-            this[enumObj.selects] = [...this.costProjects];
+            this[enumObj.selects] = [...this.costProjects]
 
-            if (this.addSettleInfo.costProject == "zafei") {
-              this.addOther(costProjectEnem[this.addSettleInfo.projectClass]);
+            if (this.addSettleInfo.costProject == 'zafei') {
+              this.addOther(costProjectEnem[this.addSettleInfo.projectClass])
             } else {
-              if (
-                this.info[enumObj.dataList] &&
-                this.info[enumObj.dataList].length
-              ) {
+              if (this.info[enumObj.dataList] && this.info[enumObj.dataList].length) {
                 // 有分类
-                if (this.addSettleInfo.projectClass == "009") {
+                if (this.addSettleInfo.projectClass == '009') {
                   // 如果是“其他服务”
-                  this[enumObj.addDataBlock](true);
+                  this[enumObj.addDataBlock](true)
                 } else {
                   // 常规类型
-                  let filterDate = this.info[enumObj.dataList].filter(
-                    (item) => {
-                      return (
-                        this.addSettleInfo.costDate ==
-                        moment(item.date).format("YYYY-MM-DD")
-                      );
-                    }
-                  );
+                  let filterDate = this.info[enumObj.dataList].filter(item => {
+                    return this.addSettleInfo.costDate == moment(item.date).format('YYYY-MM-DD')
+                  })
                   if (filterDate && filterDate.length) {
                     // 日期相同
-                    this[enumObj.addDataBlock](filterDate[0], true);
+                    this[enumObj.addDataBlock](filterDate[0], true)
                   } else {
-                    this[enumObj.addBusinessBlock](true);
+                    this[enumObj.addBusinessBlock](true)
                   }
                 }
               } else {
-                this[enumObj.addBusinessBlock](true);
+                this[enumObj.addBusinessBlock](true)
               }
             }
           }
-          this.addSettleShow = false;
+          this.addSettleShow = false
         }
-      });
+      })
     },
     async excelDownload() {
       if (this.$route.params.issubmit == 1) {
         // await this.draft() // 先保存草稿
-        this.info.settlement_status = this.status_draft;
-        await this.save(2);
+        this.info.settlement_status = this.status_draft
+        await this.save(2)
       } else {
         //导出excel
-        var name = "DMC结算单";
+        var name = 'DMC结算单'
         this.excelExport(
-          "/Template/GetTemplate",
+          '/Template/GetTemplate',
           {
             eventid: this.info.event_info.id,
             type: 4,
-            param: this.$route.params.id,
+            param: this.$route.params.id
           },
           name
-        );
+        )
       }
     },
     // 下载结算确认单
     async downloadSettlementConfirm() {
       if (this.$route.params.issubmit == 1) {
         // await this.draft() // 先保存草稿
-        this.info.settlement_status = this.status_draft;
-        await this.save(1);
+        this.info.settlement_status = this.status_draft
+        await this.save(1)
       } else {
-        var name = "结算确认单";
+        var name = '结算确认单'
         this.excelExport(
-          "/Template/GetTemplate",
+          '/Template/GetTemplate',
           {
             eventid: this.info.event_info.id,
             type: 6,
-            param: this.$route.params.id,
+            param: this.$route.params.id
           },
           name
-        );
+        )
       }
     },
     // 上传文件
     handleChangeAttach(file, fileList, type) {
-      const isLt30M = file.size / 1024 / 1024 < 30;
+      const isLt30M = file.size / 1024 / 1024 < 30
 
       if (!this.limitsEffect(file)) {
         //后缀名不符合的在文件列表中删除该文件
         this.arrayList.forEach((item, index) => {
-          if (type == item.type)
-            this.$refs.upload[index].handleRemove(file, fileList, type);
-        });
-        return;
+          if (type == item.type) this.$refs.upload[index].handleRemove(file, fileList, type)
+        })
+        return
       }
       if (!isLt30M) {
-        this.$message.error("上传附件大小不能超过 30MB!");
+        this.$message.error('上传附件大小不能超过 30MB!')
         // 取消时在文件列表中删除该文件
         this.arrayList.forEach((item, index) => {
-          if (type == item.type)
-            this.$refs.upload[index].handleRemove(file, fileList, type);
-        });
-        return;
+          if (type == item.type) this.$refs.upload[index].handleRemove(file, fileList, type)
+        })
+        return
       }
       this.arrayList.forEach((e, index) => {
         if (type == e.type) {
-          e.fileList = fileList;
+          e.fileList = fileList
         }
-      });
-      this.initFileRename();
+      })
+      this.initFileRename()
     },
     handleRemoveAttach(file, fileList, type) {
       this.arrayList.forEach((e, index) => {
         if (type == e.type) {
-          e.fileList = fileList;
+          e.fileList = fileList
         }
-      });
-      this.initFileRename();
+      })
+      this.initFileRename()
       //console.log(this.fileList);
     },
     // 点击图片预览
     getImg($event) {
-      debugger;
-      console.log($event);
-      console.log($event.target.currentSrc); //拿到图片的src
-      let currentSrc = $event.target.currentSrc;
+      debugger
+      console.log($event)
+      console.log($event.target.currentSrc) //拿到图片的src
+      let currentSrc = $event.target.currentSrc
       let file = {
-        value: currentSrc,
-      };
+        value: currentSrc
+      }
       if (currentSrc) {
         //添加预览图片的事件
-        this.$hevueImgPreview(currentSrc);
+        this.$hevueImgPreview(currentSrc)
       }
     },
     handlePreview(file) {
       // debugger
-      if (!file.url) return;
+      if (!file.url) return
       // 获取文件后缀名
-      let suffix = file.url.substring(file.url.lastIndexOf(".") + 1);
+      let suffix = file.url.substring(file.url.lastIndexOf('.') + 1)
       // doc、docx、xls、xlsx、xlsm、pdf、ppt、pptx、jpeg、jpg、png、txt
-      let types1 = ["pdf", "jpeg", "jpg", "png", "txt"];
-      let types2 = ["docx", "doc", "xls", "xlsx", "xlsm", "ppt", "pptx"];
-      file.url = file.url.replace(/http:/, "https:");
-      this.downloadUrl = file.url;
+      let types1 = ['pdf', 'jpeg', 'jpg', 'png', 'txt']
+      let types2 = ['docx', 'doc', 'xls', 'xlsx', 'xlsm', 'ppt', 'pptx']
+      file.url = file.url.replace(/http:/, 'https:')
+      this.downloadUrl = file.url
       if (types2.includes(suffix)) {
-        this.downloadUrl =
-          "https://view.officeapps.live.com/op/view.aspx?src=" +
-          encodeURIComponent(file.url);
+        this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(file.url)
       } else if (types1.includes(suffix)) {
-        this.downloadUrl = file.url;
+        this.downloadUrl = file.url
       } else {
-        this.$message.info("文件格式不支持预览，下载后查看");
+        this.$message.info('文件格式不支持预览，下载后查看')
       }
       // this.downloadUrl= 'https://view.xdocin.com/view?src=' + encodeURIComponent(file.url)
       setTimeout(() => {
-        this.$refs.a_click.click();
-      }, 100);
+        this.$refs.a_click.click()
+      }, 100)
     },
     //给每个文件添加重命名按钮
     initFileRename() {
-      var _this = this;
+      var _this = this
       //在dom元素加载完毕后调用
       this.$nextTick(() => {
-        var list =
-          document.getElementsByClassName("el-upload-list__item-name") || null;
+        var list = document.getElementsByClassName('el-upload-list__item-name') || null
         Array.from(list).forEach((element, index, array) => {
-          var text = element.innerText;
-          if (!element.getElementsByTagName("span")[0]) {
+          var text = element.innerText
+          if (!element.getElementsByTagName('span')[0]) {
             //创建重命名按钮
-            element.innerHTML +=
-              "<span style='color:#199ED8;cursor: pointer;'>重命名</span>";
+            element.innerHTML += "<span style='color:#199ED8;cursor: pointer;'>重命名</span>"
           }
           //添加点击事件
-          element
-            .getElementsByTagName("span")[0]
-            .addEventListener("click", function (ev) {
-              ev.stopPropagation(); //阻止事件冒泡，父级元素，a标签就不会触发事件
-              _this.rename = true;
-              _this.fileName = text.slice(0, text.lastIndexOf("."));
-              _this.suffix = text.slice(text.lastIndexOf("."));
-              /* var node=document.getElementsByClassName('el-upload-list__item');
+          element.getElementsByTagName('span')[0].addEventListener('click', function(ev) {
+            ev.stopPropagation() //阻止事件冒泡，父级元素，a标签就不会触发事件
+            _this.rename = true
+            _this.fileName = text.slice(0, text.lastIndexOf('.'))
+            _this.suffix = text.slice(text.lastIndexOf('.'))
+            /* var node=document.getElementsByClassName('el-upload-list__item');
 							node.forEach(e=>{
 								console.log(e)
 							}) */
 
-              console.log(
-                element.getElementsByTagName("span")[0].parentNode.parentNode
-                  .parentNode
-              );
-            });
-        });
-      });
+            console.log(element.getElementsByTagName('span')[0].parentNode.parentNode.parentNode)
+          })
+        })
+      })
     },
     fileRename(file, index, file_index) {
-      this.rename = true;
-      this.updateIndex = index;
-      this.updateFileIndex = file_index;
-      this.fileName = file.name.slice(0, file.name.lastIndexOf("."));
-      this.suffix = file.name.slice(file.name.lastIndexOf("."));
+      this.rename = true
+      this.updateIndex = index
+      this.updateFileIndex = file_index
+      this.fileName = file.name.slice(0, file.name.lastIndexOf('.'))
+      this.suffix = file.name.slice(file.name.lastIndexOf('.'))
     },
     //文件重命名保存
     saveFileName() {
-      this.arrayList[this.updateIndex].fileList[this.updateFileIndex].name =
-        this.fileName + this.suffix; //页面文件显示名
+      this.arrayList[this.updateIndex].fileList[this.updateFileIndex].name = this.fileName + this.suffix //页面文件显示名
       this.info.attachlist.forEach((e, i) => {
         //给已上传的文件重命名
-        if (
-          e.id ==
-          this.arrayList[this.updateIndex].fileList[this.updateFileIndex].id
-        ) {
-          this.info.attachlist[i].filename = this.fileName + this.suffix;
+        if (e.id == this.arrayList[this.updateIndex].fileList[this.updateFileIndex].id) {
+          this.info.attachlist[i].filename = this.fileName + this.suffix
         }
-      });
+      })
       if (this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw) {
         //给未上传文件重命名
-        const copyFile = new File(
-          [this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw],
-          this.fileName + this.suffix,
-          {
-            // uid:this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.uid,
-            lastModified:
-              this.arrayList[this.updateIndex].fileList[this.updateFileIndex]
-                .raw.lastModified,
-            lastModifiedDate:
-              this.arrayList[this.updateIndex].fileList[this.updateFileIndex]
-                .raw.lastModifiedDate,
-            type: this.arrayList[this.updateIndex].fileList[
-              this.updateFileIndex
-            ].raw.type,
-          }
-        );
-        this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw =
-          copyFile;
+        const copyFile = new File([this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw], this.fileName + this.suffix, {
+          // uid:this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.uid,
+          lastModified: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.lastModified,
+          lastModifiedDate: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.lastModifiedDate,
+          type: this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw.type
+        })
+        this.arrayList[this.updateIndex].fileList[this.updateFileIndex].raw = copyFile
       }
-      this.rename = false;
+      this.rename = false
     },
     //删除附件
     deleteFile(file, index, file_index, arrayLength) {
       if (file_index == arrayLength) {
-        this.isFail = 0;
+        this.isFail = 0
       }
-      this.arrayList[index].fileList.splice(file_index, 1);
+      this.arrayList[index].fileList.splice(file_index, 1)
     },
     // 添加杂费
     addOther(type) {
@@ -4355,34 +3597,32 @@ export default {
         type,
         price: 0, //单价
         count: 0, //数量
-        comments: "", //结算说明
-        content: "", //杂费项名称
+        comments: '', //结算说明
+        content: '', //杂费项名称
         isnotservice: 0, //0不计入服务费 1计入服务费
         settlementservice_taxrate: 0, //杂费项服务费率
         lineoroffline: 0, //线下
-        sumprice: 0,
-      });
+        sumprice: 0
+      })
     },
     // 删除杂费
     delOther(key) {
       //this.info.sundrieslist.splice(key, 1);
       if (this.info.sundrieslist.length == 1) {
-        this.info.sundrieslist[0].isdelete = 1;
+        this.info.sundrieslist[0].isdelete = 1
       } else {
-        this.info.sundrieslist = this.info.sundrieslist.filter(
-          (w) => w.id != key
-        );
+        this.info.sundrieslist = this.info.sundrieslist.filter(w => w.id != key)
       }
     },
     // 添加客房
     async addroom(node, addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "0034";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '0034'
+        await this.changeProjectClass()
       }
       node.roomlists.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        roomtypename: "",
+        roomtypename: '',
         totalprice: 0,
         unitprice: 0,
         roomcount: 0,
@@ -4390,22 +3630,20 @@ export default {
         settlement_inside_roomcount: 0,
         outside_roomcount: 0,
         settlement_outside_roomcount: 0,
-        settlement_unitprice: "0",
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: '',
         lineoroffline: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     findCostProjectByKey(value) {
-      let filter = this.costProjects.filter((item) => {
-        return value == item.value;
-      });
-      return filter && filter.length ? filter[0] : null;
+      let filter = this.costProjects.filter(item => {
+        return value == item.value
+      })
+      return filter && filter.length ? filter[0] : null
     },
     addroomBusiness(addBlock) {
       // if(!addBlock) {
@@ -4414,11 +3652,11 @@ export default {
       // }
 
       this.info.roomlist.push({
-        date: moment(this.addSettleInfo.costDate).format("YYYY/MM/DD"),
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
         roomlists: [
           {
             settlement_itemid: this.addSettleInfo.costProject,
-            roomtypename: "",
+            roomtypename: '',
             totalprice: 0,
             unitprice: 0,
             roomcount: 0,
@@ -4426,47 +3664,43 @@ export default {
             settlement_inside_roomcount: 0,
             outside_roomcount: 0,
             settlement_outside_roomcount: 0,
-            settlement_unitprice: "0",
-            settlement_itemname: this.findCostProjectByKey(
-              this.addSettleInfo.costProject
-            ).label,
-            settlement_count: "0",
-            settlement_comments: "",
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: '',
             lineoroffline: 0,
             quotationsumprice: 0,
-            settlementsumprice: 0,
-          },
-        ],
-      });
+            settlementsumprice: 0
+          }
+        ]
+      })
       this.info.roomlist = this.info.roomlist.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
     },
     // 删除客房
     delroom(node, key) {
-      node.roomlists.splice(key, 1);
+      node.roomlists.splice(key, 1)
     },
     // 添加会场
     async addconference(node, addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "0049";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '0049'
+        await this.changeProjectClass()
       }
       node.conferencelists.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        is_important: "",
+        is_important: '',
         price: 0,
         count: 0,
-        settlement_price: "0",
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_price: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: '',
         lineoroffline: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     addconferenceBusiness(addBlock) {
       // if(!addBlock) {
@@ -4474,55 +3708,51 @@ export default {
       // 	this.changeProjectClass();
       // }
       this.info.conferencelist.push({
-        date: moment(this.addSettleInfo.costDate).format("YYYY/MM/DD"),
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
         conferencelists: [
           {
             settlement_itemid: this.addSettleInfo.costProject,
-            is_important: "",
+            is_important: '',
             price: 0,
             count: 0,
-            settlement_price: "0",
-            settlement_itemname: this.findCostProjectByKey(
-              this.addSettleInfo.costProject
-            ).label,
-            settlement_count: "0",
-            settlement_comments: "",
+            settlement_price: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: '',
             lineoroffline: 0,
             quotationsumprice: 0,
-            settlementsumprice: 0,
-          },
-        ],
-      });
+            settlementsumprice: 0
+          }
+        ]
+      })
       this.info.conferencelist = this.info.conferencelist.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
     },
     // 删除会场
     delconference(node, key) {
-      node.conferencelists.splice(key, 1);
+      node.conferencelists.splice(key, 1)
     },
     // 添加餐饮
     async addfood(node, addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "0050";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '0050'
+        await this.changeProjectClass()
       }
       node.foodlists.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        foodtypename: "",
-        addresstype: "0",
+        foodtypename: '',
+        addresstype: '0',
         personcount: 0,
         price: 0,
-        settlement_unitprice: "0",
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: '',
         lineoroffline: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     addfoodBusiness(addBlock) {
       // if(!addBlock) {
@@ -4530,57 +3760,53 @@ export default {
       // 	this.changeProjectClass();
       // }
       this.info.foodlist.push({
-        date: moment(this.addSettleInfo.costDate).format("YYYY/MM/DD"),
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
         foodlists: [
           {
             settlement_itemid: this.addSettleInfo.costProject,
-            foodtypename: "",
-            addresstype: "0",
+            foodtypename: '',
+            addresstype: '0',
             personcount: 0,
             price: 0,
-            settlement_unitprice: "0",
-            settlement_itemname: this.findCostProjectByKey(
-              this.addSettleInfo.costProject
-            ).label,
-            settlement_count: "0",
-            settlement_comments: "",
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: '',
             lineoroffline: 0,
             quotationsumprice: 0,
-            settlementsumprice: 0,
-          },
-        ],
-      });
+            settlementsumprice: 0
+          }
+        ]
+      })
 
       this.info.foodlist = this.info.foodlist.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
     },
     // 删除餐饮
     delfood(node, key) {
-      node.foodlists.splice(key, 1);
+      node.foodlists.splice(key, 1)
     },
     // 添加酒店外餐饮
     async addotherfood(node, addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "0051";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '0051'
+        await this.changeProjectClass()
       }
       node.foodlists.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        foodtypename: "",
-        addresstype: "0",
+        foodtypename: '',
+        addresstype: '0',
         personcount: 0,
         price: 0,
-        settlement_unitprice: "0",
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: '',
         lineoroffline: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     addotherfoodBusiness(addBlock) {
       // if(!addBlock) {
@@ -4588,56 +3814,52 @@ export default {
       // 	this.changeProjectClass();
       // }
       this.info.otherfoodlist.push({
-        date: moment(this.addSettleInfo.costDate).format("YYYY/MM/DD"),
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
         foodlists: [
           {
             settlement_itemid: this.addSettleInfo.costProject,
-            foodtypename: "",
-            addresstype: "0",
+            foodtypename: '',
+            addresstype: '0',
             personcount: 0,
             price: 0,
-            settlement_unitprice: "0",
-            settlement_itemname: this.findCostProjectByKey(
-              this.addSettleInfo.costProject
-            ).label,
-            settlement_count: "0",
-            settlement_comments: "",
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: '',
             lineoroffline: 0,
             quotationsumprice: 0,
-            settlementsumprice: 0,
-          },
-        ],
-      });
+            settlementsumprice: 0
+          }
+        ]
+      })
 
       this.info.otherfoodlist = this.info.otherfoodlist.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
     },
     // 删除酒店外餐饮
     delotherfood(node, key) {
-      node.foodlists.splice(key, 1);
+      node.foodlists.splice(key, 1)
     },
     // 添加大交通
     async addstransportation(node, addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "003";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '003'
+        await this.changeProjectClass()
       }
       node.tranlists.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        joinname: "",
+        joinname: '',
         passengercount: 0,
         unitprice: 0,
-        settlement_unitprice: "0",
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: '',
         lineoroffline: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     addstransportationBusiness(addBlock) {
       // if(!addBlock) {
@@ -4645,57 +3867,51 @@ export default {
       // 	this.changeProjectClass();
       // }
       this.info.transportationlist.push({
-        date: moment(this.addSettleInfo.costDate).format("YYYY/MM/DD"),
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
         tranlists: [
           {
             settlement_itemid: this.addSettleInfo.costProject,
-            joinname: "",
+            joinname: '',
             passengercount: 0,
             unitprice: 0,
-            settlement_unitprice: "0",
-            settlement_itemname: this.findCostProjectByKey(
-              this.addSettleInfo.costProject
-            ).label,
-            settlement_count: "0",
-            settlement_comments: "",
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: '',
             lineoroffline: 0,
             quotationsumprice: 0,
-            settlementsumprice: 0,
-          },
-        ],
-      });
+            settlementsumprice: 0
+          }
+        ]
+      })
 
-      this.info.transportationlist = this.info.transportationlist.sort(
-        (a, b) => {
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
-        }
-      );
+      this.info.transportationlist = this.info.transportationlist.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
     },
     // 删除大交通
     delstransportation(node, key) {
-      node.tranlists.splice(key, 1);
+      node.tranlists.splice(key, 1)
     },
     // 添加市内交通
     async addcar(node, addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "006";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '006'
+        await this.changeProjectClass()
       }
       node.carlists.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        purposename: "",
+        purposename: '',
         carcount: 0,
         price: 0,
-        settlement_unitprice: "0",
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+        settlement_count: '0',
+        settlement_comments: '',
         lineoroffline: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     addcarBusiness(addBlock) {
       // if(!addBlock) {
@@ -4703,41 +3919,39 @@ export default {
       // 	this.changeProjectClass();
       // }
       this.info.carlist.push({
-        date: moment(this.addSettleInfo.costDate).format("YYYY/MM/DD"),
+        date: moment(this.addSettleInfo.costDate).format('YYYY/MM/DD'),
         carlists: [
           {
             settlement_itemid: this.addSettleInfo.costProject,
-            purposename: "",
+            purposename: '',
             carcount: 0,
             price: 0,
-            settlement_unitprice: "0",
-            settlement_itemname: this.findCostProjectByKey(
-              this.addSettleInfo.costProject
-            ).label,
-            settlement_count: "0",
-            settlement_comments: "",
+            settlement_unitprice: '0',
+            settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
+            settlement_count: '0',
+            settlement_comments: '',
             lineoroffline: 0,
             quotationsumprice: 0,
-            settlementsumprice: 0,
-          },
-        ],
-      });
+            settlementsumprice: 0
+          }
+        ]
+      })
 
       this.info.carlist = this.info.carlist.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
+      })
     },
     // 删除市内交通
     delcar(node, key) {
-      node.carlists.splice(key, 1);
+      node.carlists.splice(key, 1)
     },
     //添加其他
     async addsundry(addBlock) {
       if (!addBlock) {
-        this.addSettleInfo.projectClass = "009";
-        await this.changeProjectClass();
+        this.addSettleInfo.projectClass = '009'
+        await this.changeProjectClass()
       }
-      let finfItem = this.findCostProjectByKey(this.addSettleInfo.costProject);
+      let finfItem = this.findCostProjectByKey(this.addSettleInfo.costProject)
       let addData = {
         settlement_itemid: this.addSettleInfo.costProject,
         settlement_itemname: finfItem.label,
@@ -4746,34 +3960,34 @@ export default {
         offerparticipatecount: 0,
         offerservicedaycount: 0,
         price: 0,
-        settlement_unitprice: "0",
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_count: '0',
+        settlement_comments: '',
         isnotservice: finfItem.isnotservice,
         service_taxrate: 0,
         lineoroffline: 0,
         settlementservice_taxrate: 0,
         quotationsumprice: 0,
         settlementsumprice: 0,
-        two_level_code: "",
-      };
+        two_level_code: ''
+      }
 
       //给其他项名称赋值
       this.othercostProjects.forEach((item, index) => {
         // debugger
-        console.log(this.addSettleInfo.costProject);
+        console.log(this.addSettleInfo.costProject)
         if (this.addSettleInfo.costProject == item.code) {
           // debugger
-          addData.servicetypename = item.name;
+          addData.servicetypename = item.name
 
-          addData.detail = item.detail;
-          addData.two_level_code = ""; // 清空二级分类
+          addData.detail = item.detail
+          addData.two_level_code = '' // 清空二级分类
           // debugger
-          addData.isnotservice = item.isnotservice;
+          addData.isnotservice = item.isnotservice
         }
-      });
+      })
 
-      this.info.otherlist.push(addData);
+      this.info.otherlist.push(addData)
     },
     addsundryBusiness(addBlock) {
       // if(!addBlock) {
@@ -4782,1025 +3996,846 @@ export default {
       // }
       this.info.otherlist.push({
         settlement_itemid: this.addSettleInfo.costProject,
-        settlement_itemname: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
+        settlement_itemname: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
         servicetype: this.addSettleInfo.costProject,
-        servicetypename: this.findCostProjectByKey(
-          this.addSettleInfo.costProject
-        ).label,
+        servicetypename: this.findCostProjectByKey(this.addSettleInfo.costProject).label,
         offerparticipatecount: 0,
         offerservicedaycount: 0,
         price: 0,
-        settlement_unitprice: "0",
-        settlement_count: "0",
-        settlement_comments: "",
+        settlement_unitprice: '0',
+        settlement_count: '0',
+        settlement_comments: '',
         isnotservice: 0,
         service_taxrate: 0,
         lineoroffline: 0,
         settlementservice_taxrate: 0,
         quotationsumprice: 0,
-        settlementsumprice: 0,
-      });
+        settlementsumprice: 0
+      })
     },
     //删除其他
     delsother(node, key) {
-      this.info.otherlist.splice(key, 1);
+      this.info.otherlist.splice(key, 1)
     },
     submit() {
       //提交结算单
       //表单验证
       if (!this.validate()) {
-        return;
+        return
       }
       /* if (!this.fileList1.length && !this.fileList2.length && !this.fileList3.length && !this.fileList4.length) {
 				this.$message.error('请上传结算凭证、合同扫描件、水单、其他');
 				return;
 			} */
       //确认结算单后，上传发票，结算单状态不变
-      if (this.info.settlement_status != this.status_confirm)
-        this.info.settlement_status = this.status_tobeconfirmed;
+      if (this.info.settlement_status != this.status_confirm) this.info.settlement_status = this.status_tobeconfirmed
       if (this.info.event_info.pocode) {
-        this.save();
+        this.save()
       } else {
-        this.$confirm(
-          "当前会议活动未录入PO，不能提交结算单，请您先在“我的会议”-》查看详情-》录入PO 后，再返回当前页面提交结算单！",
-          "提示",
-          {
-            confirmButtonText: "确定",
-            // cancelButtonText: '取消',
-            center: true,
-            showCancelButton: false,
-          }
-        )
+        this.$confirm('当前会议活动未录入PO，不能提交结算单，请您先在“我的会议”-》查看详情-》录入PO 后，再返回当前页面提交结算单！', '提示', {
+          confirmButtonText: '确定',
+          // cancelButtonText: '取消',
+          center: true,
+          showCancelButton: false
+        })
           .then(() => {
-            this.draft();
-            this.$router.go(-1);
+            this.draft()
+            this.$router.go(-1)
           })
-          .catch(() => {});
+          .catch(() => {})
       }
       // this.save();
     },
     async draft() {
       //保存草稿箱
       //确认结算单后，上传发票，结算单状态不变
-      this.info.settlement_status = this.status_draft;
-      await this.save();
+      this.info.settlement_status = this.status_draft
+      await this.save()
     },
-    differenceShowErrorMessage: function () {
-      let html = "";
-      this.errormsg.forEach((msg) => {
-        html += "<p style='padding:5px;'>" + msg + "</p>";
-      });
+    differenceShowErrorMessage: function() {
+      let html = ''
+      this.errormsg.forEach(msg => {
+        html += "<p style='padding:5px;'>" + msg + '</p>'
+      })
       this.$message({
         message: html,
         dangerouslyUseHTMLString: true,
-        type: "error",
-        lockScroll: false,
-      });
+        type: 'error',
+        lockScroll: false
+      })
     },
-    validate: function () {
-      this.errormsg = [];
-      this.checkRoomDifference;
-      this.checkConferenceDifference;
-      this.checkFoodDifference;
-      this.checkOtherFoodDifference;
-      this.checkTransportationDifference;
-      this.checkCarDifference;
-      this.checkOtherDifference;
+    validate: function() {
+      this.errormsg = []
+      this.checkRoomDifference
+      this.checkConferenceDifference
+      this.checkFoodDifference
+      this.checkOtherFoodDifference
+      this.checkTransportationDifference
+      this.checkCarDifference
+      this.checkOtherDifference
 
-      if (this.errormsg.length > 0) this.differenceShowErrorMessage();
-      return this.errormsg.length == 0;
+      if (this.errormsg.length > 0) this.differenceShowErrorMessage()
+      return this.errormsg.length == 0
     },
     // 保存
     save(downloadType) {
       //客户驳回结算单,清空结算单id
-      if (this.info.pre_settlement_status === this.status_reject)
-        this.info.settlement_sheet_id = null;
+      if (this.info.pre_settlement_status === this.status_reject) this.info.settlement_sheet_id = null
 
       //大交通项的名称赋值
       this.info.transportationlist.forEach((e, i) => {
         e.tranlists.forEach((item, index) => {
           this.info.trantypelist.forEach((itemc, indexc) => {
             if (item.settlement_itemid == itemc.trancode) {
-              if (
-                !this.info.transportationlist[i].tranlists[index]
-                  .settlement_itemname
-              ) {
-                this.info.transportationlist[i].tranlists[
-                  index
-                ].settlement_itemname = itemc.tranname;
+              if (!this.info.transportationlist[i].tranlists[index].settlement_itemname) {
+                this.info.transportationlist[i].tranlists[index].settlement_itemname = itemc.tranname
               }
             }
-          });
-        });
-      });
+          })
+        })
+      })
 
       //大交通杂费的名称赋值
       this.intercitytrafficincidental.forEach((e, i) => {
         this.info.trantypelist.forEach((item, index) => {
           if (e.itemcode == item.trancode) {
-            this.intercitytrafficincidental[i].content = item.tranname;
+            this.intercitytrafficincidental[i].content = item.tranname
           }
-        });
-      });
+        })
+      })
 
-      this.info.settlement_settlementsheetexplain = this.arrayList[0].remark; //结算单说明
-      this.info.settlement_confirmmail = this.arrayList[1].remark; //确认邮件说明
-      this.info.settlement_po = this.arrayList[2].remark; //po单说明
-      this.info.settlement_invoice = this.arrayList[3].remark; //供应商发票说明
-      this.info.settlement_voucher = this.arrayList[4].remark; //住宿发票说明
-      this.info.settlement_contract = this.arrayList[5].remark; //餐饮发票说明
-      this.info.settlement_waterbill = this.arrayList[6].remark; //会场发票说明
-      this.info.settlement_outsidefoodinvoiceexplain = this.arrayList[7].remark; //酒店外餐饮发票说明
-      this.info.settlement_registinvoiceexplain = this.arrayList[8].remark; //注册费发票说明
-      this.info.settlement_carinvoiceexplain = this.arrayList[9].remark; //用车发票说明
-      this.info.settlement_productsvoiceexplain = this.arrayList[10].remark; //制作物发票说明
-      this.info.settlement_insureinvoiceexplain = this.arrayList[11].remark; //保险发票说明
-      this.info.settlement_signexplain = this.arrayList[12].remark; //签到发票说明
-      this.info.settlement_photoexplain = this.arrayList[13].remark; //照片说明
-      this.info.settlement_other = this.arrayList[14].remark; //其他说明
+      this.info.settlement_settlementsheetexplain = this.arrayList[0].remark //结算单说明
+      this.info.settlement_confirmmail = this.arrayList[1].remark //确认邮件说明
+      this.info.settlement_po = this.arrayList[2].remark //po单说明
+      this.info.settlement_invoice = this.arrayList[3].remark //供应商发票说明
+      this.info.settlement_voucher = this.arrayList[4].remark //住宿发票说明
+      this.info.settlement_contract = this.arrayList[5].remark //餐饮发票说明
+      this.info.settlement_waterbill = this.arrayList[6].remark //会场发票说明
+      this.info.settlement_outsidefoodinvoiceexplain = this.arrayList[7].remark //酒店外餐饮发票说明
+      this.info.settlement_registinvoiceexplain = this.arrayList[8].remark //注册费发票说明
+      this.info.settlement_carinvoiceexplain = this.arrayList[9].remark //用车发票说明
+      this.info.settlement_productsvoiceexplain = this.arrayList[10].remark //制作物发票说明
+      this.info.settlement_insureinvoiceexplain = this.arrayList[11].remark //保险发票说明
+      this.info.settlement_signexplain = this.arrayList[12].remark //签到发票说明
+      this.info.settlement_photoexplain = this.arrayList[13].remark //照片说明
+      this.info.settlement_other = this.arrayList[14].remark //其他说明
 
       // 直采服务费为 拜耳规则，直采服务费总额赋值
       if (this.info.zhicai_service == 1) {
-        this.info.settlement_advance_amount = this.servicePrice[9];
-        this.info.settlement_advance_proportion = 100;
+        this.info.settlement_advance_amount = this.servicePrice[9]
+        this.info.settlement_advance_proportion = 100
       }
 
-      let urlsList = [
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-        { urLs: [] },
-      ];
+      let urlsList = [{ urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }, { urLs: [] }]
       //组装本次上传数据
       urlsList.forEach((itemc, indexc) => {
         if (this.arrayList[indexc]) {
-          let thisfileList = this.arrayList[indexc].fileList.filter(
-            (w) => w.uid != ""
-          );
+          let thisfileList = this.arrayList[indexc].fileList.filter(w => w.uid != '')
           if (
-            this.arrayList.filter((e) => {
-              return e.arrayLength != null;
+            this.arrayList.filter(e => {
+              return e.arrayLength != null
             }).length == 1
           ) {
-            var tag = null;
-            var sign = null;
+            var tag = null
+            var sign = null
             this.arrayList.forEach((e, i) => {
               if (e.arrayLength != null) {
-                tag = i;
+                tag = i
               }
-            });
+            })
 
-            if (
-              this.arrayList[indexc].fileList.length > 0 &&
-              (indexc > tag || indexc == tag)
-            ) {
+            if (this.arrayList[indexc].fileList.length > 0 && (indexc > tag || indexc == tag)) {
               this.arrayList[indexc].fileList.forEach((item, index) => {
                 // if(index>sign || index==sign){
                 itemc.urLs.push({
                   key: item.uid,
-                  file: item.raw,
-                });
+                  file: item.raw
+                })
                 // }
-              });
+              })
             }
           } else {
             if (this.arrayList[indexc].fileList.length > 0) {
-              this.arrayList[indexc].fileList.forEach((item) => {
+              this.arrayList[indexc].fileList.forEach(item => {
                 itemc.urLs.push({
                   key: item.uid,
-                  file: item.raw,
-                });
-              });
+                  file: item.raw
+                })
+              })
             }
           }
         }
-      });
-      this.isFail = 1;
+      })
+      this.isFail = 1
       this.arrayList.forEach((e, i) => {
-        this.arrayList[i].arrayLength = null;
-      });
+        this.arrayList[i].arrayLength = null
+      })
 
       upload(urlsList[0].urLs)
-        .then((res) => {
-          console.log(res);
+        .then(res => {
+          console.log(res)
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[0].arrayLength = res.tag;
+            this.arrayList[0].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[0].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[0].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[0].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[0].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[0].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[0].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
+          })
 
-          return upload(urlsList[1].urLs);
+          return upload(urlsList[1].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[1].arrayLength = res.tag;
+            this.arrayList[1].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[1].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
-            return;
+            })
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[1].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[1].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[1].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[1].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[1].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[2].urLs);
+          })
+          return upload(urlsList[2].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[2].arrayLength = res.tag;
+            this.arrayList[2].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[2].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[2].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[2].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[2].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[2].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[2].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[3].urLs);
+          })
+          return upload(urlsList[3].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[3].arrayLength = res.tag;
+            this.arrayList[3].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[3].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[3].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[3].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[3].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[3].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[3].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[4].urLs);
+          })
+          return upload(urlsList[4].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[4].arrayLength = res.tag;
+            this.arrayList[4].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[4].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[4].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[4].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[4].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[4].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[4].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[5].urLs);
+          })
+          return upload(urlsList[5].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[5].arrayLength = res.tag;
+            this.arrayList[5].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[5].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[5].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[5].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[5].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[5].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[5].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[6].urLs);
+          })
+          return upload(urlsList[6].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[6].arrayLength = res.tag;
+            this.arrayList[6].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[6].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[6].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[6].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[6].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[6].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[6].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[7].urLs);
+          })
+          return upload(urlsList[7].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[7].arrayLength = res.tag;
+            this.arrayList[7].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[7].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[7].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[7].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[7].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[7].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[7].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[8].urLs);
+          })
+          return upload(urlsList[8].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[8].arrayLength = res.tag;
+            this.arrayList[8].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[8].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[8].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[8].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[8].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[8].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[8].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[9].urLs);
+          })
+          return upload(urlsList[9].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[9].arrayLength = res.tag;
+            this.arrayList[9].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[9].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[9].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[9].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[9].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[9].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[9].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[10].urLs);
+          })
+          return upload(urlsList[10].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[10].arrayLength = res.tag;
+            this.arrayList[10].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[10].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[10].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[10].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[10].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[10].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[10].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[11].urLs);
+          })
+          return upload(urlsList[11].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[11].arrayLength = res.tag;
+            this.arrayList[11].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[11].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[11].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[11].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[11].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[11].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[11].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[12].urLs);
+          })
+          return upload(urlsList[12].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[12].arrayLength = res.tag;
+            this.arrayList[12].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[12].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[12].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[12].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[12].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[12].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[12].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[13].urLs);
+          })
+          return upload(urlsList[13].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[13].arrayLength = res.tag;
+            this.arrayList[13].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[13].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[13].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[13].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[13].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[13].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[13].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          return upload(urlsList[14].urLs);
+          })
+          return upload(urlsList[14].urLs)
         })
-        .then((res) => {
+        .then(res => {
           //上传网络中断
           if (res && res.tag != undefined) {
             //失败文件下标标记
-            this.arrayList[14].arrayLength = res.tag;
+            this.arrayList[14].arrayLength = res.tag
             //防止重复上传
-            res.uploadImageList.forEach((item) => {
+            res.uploadImageList.forEach(item => {
               if (item) {
                 this.info.attachlist.push({
                   filetype: this.arrayList[14].type,
                   filepath: item.FilePath,
                   filename: item.OriginalFileName,
-                  create_date: item.create_date
-                    ? getFormatDate(item.create_date)
-                    : "",
-                });
+                  create_date: item.create_date ? getFormatDate(item.create_date) : ''
+                })
               }
-            });
+            })
 
-            return;
+            return
           }
           //验证已上传文件是否被删除
           if (this.info.attachlist && this.info.attachlist.length > 0) {
-            this.info.attachlist.forEach((item) => {
-              if (
-                this.arrayList[14].fileList.filter((w) => w.id == item.id)
-                  .length == 0 &&
-                item.filetype == this.arrayList[14].type
-              )
-                item.delete = true;
-            });
+            this.info.attachlist.forEach(item => {
+              if (this.arrayList[14].fileList.filter(w => w.id == item.id).length == 0 && item.filetype == this.arrayList[14].type) item.delete = true
+            })
           }
-          res.forEach((item) => {
+          res.forEach(item => {
             if (item) {
               this.info.attachlist.push({
                 filetype: this.arrayList[14].type,
                 filepath: item.FilePath,
                 filename: item.OriginalFileName,
-                create_date: item.create_date
-                  ? getFormatDate(item.create_date)
-                  : "",
-              });
+                create_date: item.create_date ? getFormatDate(item.create_date) : ''
+              })
             }
-          });
-          this.info.attachlist.forEach((item) => {
-            item.create_date = item.create_date
-              ? getFormatDate(item.create_date)
-              : "";
-          });
+          })
+          this.info.attachlist.forEach(item => {
+            item.create_date = item.create_date ? getFormatDate(item.create_date) : ''
+          })
           // 排序
           if (this.info.roomlist) {
-            this.info.roomlist.forEach((item) => {
+            this.info.roomlist.forEach(item => {
               for (let i = 0; i < item.roomlists.length; i++) {
-                item.roomlists[i].indexs = i + 1;
+                item.roomlists[i].indexs = i + 1
               }
-            });
+            })
           }
           if (this.info.conferencelist) {
-            this.info.conferencelist.forEach((item) => {
+            this.info.conferencelist.forEach(item => {
               for (let i = 0; i < item.conferencelists.length; i++) {
-                item.conferencelists[i].indexs = i + 1;
+                item.conferencelists[i].indexs = i + 1
               }
-            });
+            })
           }
           if (this.info.foodlist) {
-            this.info.foodlist.forEach((item) => {
+            this.info.foodlist.forEach(item => {
               for (let i = 0; i < item.foodlists.length; i++) {
-                item.foodlists[i].indexs = i + 1;
+                item.foodlists[i].indexs = i + 1
               }
-            });
+            })
           }
           if (this.info.otherfoodlist) {
-            this.info.otherfoodlist.forEach((item) => {
+            this.info.otherfoodlist.forEach(item => {
               for (let i = 0; i < item.foodlists.length; i++) {
-                item.foodlists[i].indexs = i + 1;
+                item.foodlists[i].indexs = i + 1
               }
-            });
+            })
           }
           if (this.info.transportationlist) {
-            this.info.transportationlist.forEach((item) => {
+            this.info.transportationlist.forEach(item => {
               for (let i = 0; i < item.tranlists.length; i++) {
-                item.tranlists[i].indexs = i + 1;
+                item.tranlists[i].indexs = i + 1
               }
-            });
+            })
           }
           if (this.info.carlist) {
-            this.info.carlist.forEach((item) => {
+            this.info.carlist.forEach(item => {
               for (let i = 0; i < item.carlists.length; i++) {
-                item.carlists[i].indexs = i + 1;
+                item.carlists[i].indexs = i + 1
               }
-            });
+            })
           }
           if (this.info.otherlist) {
             for (let i = 0; i < this.info.otherlist.length; i++) {
-              this.info.otherlist[i].indexs = i + 1;
+              this.info.otherlist[i].indexs = i + 1
             }
           }
           return this.requestApi({
             url: '/OfflineSettlement/DMCOnlineSubmit',
             method: 'POST',
-            data: this.info,
+            data: this.info
           })
         })
-        .then((res) => {
+        .then(res => {
           if (res) {
             if (downloadType == 1) {
               // 下载结算确认单
-              var name = "结算确认单";
+              var name = '结算确认单'
               this.excelExport(
-                "/Template/GetTemplate",
+                '/Template/GetTemplate',
                 {
                   eventid: this.info.event_info.id,
                   type: 6,
-                  param: this.$route.params.id,
+                  param: this.$route.params.id
                 },
                 name
-              );
+              )
             } else if (downloadType == 2) {
               // 下载结算 excel
               //导出excel
-              var name = "DMC结算单";
+              var name = 'DMC结算单'
               this.excelExport(
-                "/Template/GetTemplate",
+                '/Template/GetTemplate',
                 {
                   eventid: this.info.event_info.id,
                   type: 4,
-                  param: this.$route.params.id,
+                  param: this.$route.params.id
                 },
                 name
-              );
+              )
             }
             this.$message({
-              message: "保存成功！",
-              type: "success",
-            });
+              message: '保存成功！',
+              type: 'success'
+            })
             this.$router.push({
-              name: "orderInfo",
+              name: 'orderInfo',
               params: {
-                id: this.info.orderform_id,
-              },
-            });
-            /* this.$router.push({
-						  name: "orderInfo",
-						  params: {
-						    id: this.info.orderform_id,
-						  },
-						}); */
+                id: this.info.orderform_id
+              }
+            })
           } else {
             this.$message({
-              message: "保存失败！",
-              type: "error",
-            });
+              message: '保存失败！',
+              type: 'error'
+            })
           }
-        });
+        })
     },
     changeOtherSel(other, key, id) {
-      let filter = this.othercostProjects.filter((ele) => {
-        return ele.code == id;
-      });
-      other.settlement_itemname = filter[0].name;
+      let filter = this.othercostProjects.filter(ele => {
+        return ele.code == id
+      })
+      other.settlement_itemname = filter[0].name
 
-      other.isnotservice = filter[0].isnotservice;
+      other.isnotservice = filter[0].isnotservice
 
       // console.log('--????-');
       // console.log(this.info.otherlist[key]);
@@ -5815,191 +4850,183 @@ export default {
       //给其他项名称赋值
       this.othercostProjects.forEach((item, index) => {
         if (other.settlement_itemid == item.code) {
-          other.servicetypename = item.name;
+          other.servicetypename = item.name
 
-          other.detail = item.detail.filter((element) => {
-            return element.detail_type !== "0";
-          });
-          other.two_level_code = ""; // 清空二级分类
+          other.detail = item.detail.filter(element => {
+            return element.detail_type !== '0'
+          })
+          other.two_level_code = '' // 清空二级分类
           // debugger
-          other.isnotservice = item.isnotservice;
+          other.isnotservice = item.isnotservice
         }
-      });
+      })
       //给其他项税率、是否计入服务费赋值
       this.info.eventinfoother.forEach((item, index) => {
         if (other.settlement_itemid == item.othercode) {
-          this.info.otherlist[key].settlementservice_taxrate = item.servicerate;
-          this.info.otherlist[key].isnotservice = item.iscalservice;
-          console.log(this.info.otherlist[key].isnotservice, item.iscalservice);
+          this.info.otherlist[key].settlementservice_taxrate = item.servicerate
+          this.info.otherlist[key].isnotservice = item.iscalservice
+          console.log(this.info.otherlist[key].isnotservice, item.iscalservice)
         }
-      });
+      })
     },
     initInfo() {
       this.info.roomlist.forEach((item, index) => {
-        item.roomlists.forEach((itemc) => {
+        item.roomlists.forEach(itemc => {
           // debugger
           if (itemc.quoted_price_room_id && this.info.id == null) {
             //设置默认值，结算金额，数量默认为报价金额，数量
-            itemc.settlement_unitprice = positiveFloatSix(itemc.unitprice);
+            itemc.settlement_unitprice = positiveFloatSix(itemc.unitprice)
 
-            if (this.info.is_Inside_outside == "0") {
-              itemc.settlement_count = itemc.provide_count;
-              itemc.settlement_inside_roomcount = 0;
-              itemc.settlement_outside_roomcount = itemc.provide_count;
+            if (this.info.is_Inside_outside == '0') {
+              itemc.settlement_count = itemc.provide_count
+              itemc.settlement_inside_roomcount = 0
+              itemc.settlement_outside_roomcount = itemc.provide_count
             }
-            if (this.info.is_Inside_outside == "1") {
-              itemc.settlement_count = itemc.provide_count;
-              itemc.settlement_inside_roomcount = itemc.inside_roomcount;
-              itemc.settlement_outside_roomcount = itemc.outside_roomcount;
+            if (this.info.is_Inside_outside == '1') {
+              itemc.settlement_count = itemc.provide_count
+              itemc.settlement_inside_roomcount = itemc.inside_roomcount
+              itemc.settlement_outside_roomcount = itemc.outside_roomcount
             }
           }
-        });
-      });
+        })
+      })
       this.info.conferencelist.forEach((item, index) => {
-        item.conferencelists.forEach((itemc) => {
+        item.conferencelists.forEach(itemc => {
           if (itemc.quoted_price_conference_id && this.info.id == null) {
             //设置默认值，结算金额，数量默认为报价金额，数量
-            itemc.settlement_price = positiveFloatSix(itemc.price);
-            itemc.settlement_count = positiveFloat(itemc.count);
+            itemc.settlement_price = positiveFloatSix(itemc.price)
+            itemc.settlement_count = positiveFloat(itemc.count)
           }
-        });
-      });
+        })
+      })
       this.info.foodlist.forEach((item, index) => {
-        item.foodlists.forEach((itemc) => {
+        item.foodlists.forEach(itemc => {
           if (itemc.quoted_price_food_id && this.info.id == null) {
             //设置默认值，结算金额，数量默认为报价金额，数量
-            itemc.settlement_unitprice = positiveFloatSix(itemc.price);
-            itemc.settlement_count = positiveFloat(itemc.personcount);
+            itemc.settlement_unitprice = positiveFloatSix(itemc.price)
+            itemc.settlement_count = positiveFloat(itemc.personcount)
           }
-        });
-      });
+        })
+      })
       this.info.otherfoodlist.forEach((item, index) => {
-        item.foodlists.forEach((itemc) => {
+        item.foodlists.forEach(itemc => {
           if (itemc.quoted_price_food_id && this.info.id == null) {
             //设置默认值，结算金额，数量默认为报价金额，数量
-            itemc.settlement_unitprice = positiveFloatSix(itemc.price);
-            itemc.settlement_count = positiveFloat(itemc.personcount);
+            itemc.settlement_unitprice = positiveFloatSix(itemc.price)
+            itemc.settlement_count = positiveFloat(itemc.personcount)
           }
-        });
-      });
+        })
+      })
       this.info.transportationlist.forEach((item, index) => {
-        item.tranlists.forEach((itemc) => {
+        item.tranlists.forEach(itemc => {
           if (itemc.quoted_price_transportation_id && this.info.id == null) {
             //设置默认值，结算金额，数量默认为报价金额，数量
-            itemc.settlement_unitprice = positiveFloatSix(itemc.unitprice);
-            itemc.settlement_count = positiveFloat(itemc.passengercount);
+            itemc.settlement_unitprice = positiveFloatSix(itemc.unitprice)
+            itemc.settlement_count = positiveFloat(itemc.passengercount)
           }
-        });
-      });
+        })
+      })
       this.info.carlist.forEach((item, index) => {
-        item.carlists.forEach((itemc) => {
+        item.carlists.forEach(itemc => {
           if (itemc.quoted_price_car_id && this.info.id == null) {
             //设置默认值，结算金额，数量默认为报价金额，数量
-            itemc.settlement_unitprice = positiveFloatSix(itemc.price);
-            itemc.settlement_count = positiveFloat(itemc.carcount);
+            itemc.settlement_unitprice = positiveFloatSix(itemc.price)
+            itemc.settlement_count = positiveFloat(itemc.carcount)
           }
-        });
-      });
+        })
+      })
       this.info.otherlist.forEach((item, index) => {
         if (item.quoted_price_other_id && this.info.id == null) {
           //设置默认值，结算金额，数量默认为报价金额，数量
-          item.settlement_unitprice = positiveFloatSix(item.price);
-          item.settlement_count =
-            positiveFloat(item.offerservicedaycount) *
-            positiveFloat(item.offerparticipatecount);
+          item.settlement_unitprice = positiveFloatSix(item.price)
+          item.settlement_count = positiveFloat(item.offerservicedaycount) * positiveFloat(item.offerparticipatecount)
         }
-      });
+      })
       if (this.info.id == null) {
         //设置默认值，结算金额，比例默认为报价金额，比例
-        this.info.settlement_advance_amount =
-          this.info.quoted_travelagency_payment_money;
-        this.info.settlement_advance_proportion =
-          this.info.quoted_travelagency_payment_proportion;
-        this.info.settlement_taxrate = this.info.taxrate; // 报价税费比例 赋值给 结算税费比例
+        this.info.settlement_advance_amount = this.info.quoted_travelagency_payment_money
+        this.info.settlement_advance_proportion = this.info.quoted_travelagency_payment_proportion
+        this.info.settlement_taxrate = this.info.taxrate // 报价税费比例 赋值给 结算税费比例
         if (!this.info.settlement_advance_amount) {
           //结算直采金额
-          this.info.settlement_advance_amount = 0;
+          this.info.settlement_advance_amount = 0
         }
         if (!this.info.settlement_advance_proportion) {
           //结算直采比例
-          this.info.settlement_advance_proportion = 0;
+          this.info.settlement_advance_proportion = 0
         }
       }
-      if (this.info.orderstatus == "0020-1") {
-        this.showPriceInfo = false;
+      if (this.info.orderstatus == '0020-1') {
+        this.showPriceInfo = false
       }
-    },
+    }
   },
   mounted() {
-    this.initCostProject();
+    this.initCostProject()
     this.requestApi({
       url: '/OfflineSettlement/DMCOnlineInfo',
       method: 'POST',
       data: {
-        orderformid: this.$route.params.id,
-      },
-    }).then((res) => {
-      this.info = res;
-      console.log(res);
-      if (
-        this.info.event_info_configure.service_fee_ratio == 0 ||
-        this.info.sheet_fzc_service == null
-      ) {
-        this.info.sheet_fzc_service = this.info.fzc_service; // 不支持服务费比例修改，服务费比例设置为 报价的服务费比例
+        orderformid: this.$route.params.id
       }
-      this.initInfo();
+    }).then(res => {
+      this.info = res
+      console.log(res)
+      if (this.info.event_info_configure.service_fee_ratio == 0 || this.info.sheet_fzc_service == null) {
+        this.info.sheet_fzc_service = this.info.fzc_service // 不支持服务费比例修改，服务费比例设置为 报价的服务费比例
+      }
+      this.initInfo()
       if (this.info.attachlist && this.info.attachlist.length > 0) {
-        this.info.attachlist.forEach((item) => {
+        this.info.attachlist.forEach(item => {
           this.arrayList.forEach((e, i) => {
             if (item.filetype == e.type) {
               this.arrayList[i].fileList.push({
                 id: item.id,
-                uid: "",
+                uid: '',
                 name: item.filename,
                 url: this.info.fileuploaddomin + item.filepath,
                 update_time: item.update_time,
-                create_date: item.create_date,
-              });
+                create_date: item.create_date
+              })
             }
-          });
-        });
+          })
+        })
       }
-      this.arrayList[0].remark = this.info.settlement_settlementsheetexplain; //结算单说明
-      this.arrayList[1].remark = this.info.settlement_confirmmail; //确认邮件说明
-      this.arrayList[2].remark = this.info.settlement_po; //po单说明
-      this.arrayList[3].remark = this.info.settlement_invoice; //供应商发票说明
-      this.arrayList[4].remark = this.info.settlement_voucher; //住宿发票说明
-      this.arrayList[5].remark = this.info.settlement_contract; //餐饮发票说明
-      this.arrayList[6].remark = this.info.settlement_waterbill; //会场发票说明
-      this.arrayList[7].remark =
-        this.info.settlement_outsidefoodinvoiceexplain; //酒店外餐饮发票说明
-      this.arrayList[8].remark = this.info.settlement_registinvoiceexplain; //注册费发票说明
-      this.arrayList[9].remark = this.info.settlement_carinvoiceexplain; //用车发票说明
-      this.arrayList[10].remark = this.info.settlement_productsvoiceexplain; //制作物发票说明
-      this.arrayList[11].remark = this.info.settlement_insureinvoiceexplain; //保险发票说明
-      this.arrayList[12].remark = this.info.settlement_signexplain; //签到发票说明
-      this.arrayList[13].remark = this.info.settlement_photoexplain; //照片说明
-      this.arrayList[14].remark = this.info.settlement_other; //其他说明
+      this.arrayList[0].remark = this.info.settlement_settlementsheetexplain //结算单说明
+      this.arrayList[1].remark = this.info.settlement_confirmmail //确认邮件说明
+      this.arrayList[2].remark = this.info.settlement_po //po单说明
+      this.arrayList[3].remark = this.info.settlement_invoice //供应商发票说明
+      this.arrayList[4].remark = this.info.settlement_voucher //住宿发票说明
+      this.arrayList[5].remark = this.info.settlement_contract //餐饮发票说明
+      this.arrayList[6].remark = this.info.settlement_waterbill //会场发票说明
+      this.arrayList[7].remark = this.info.settlement_outsidefoodinvoiceexplain //酒店外餐饮发票说明
+      this.arrayList[8].remark = this.info.settlement_registinvoiceexplain //注册费发票说明
+      this.arrayList[9].remark = this.info.settlement_carinvoiceexplain //用车发票说明
+      this.arrayList[10].remark = this.info.settlement_productsvoiceexplain //制作物发票说明
+      this.arrayList[11].remark = this.info.settlement_insureinvoiceexplain //保险发票说明
+      this.arrayList[12].remark = this.info.settlement_signexplain //签到发票说明
+      this.arrayList[13].remark = this.info.settlement_photoexplain //照片说明
+      this.arrayList[14].remark = this.info.settlement_other //其他说明
 
-      this.arrayList[0].dissent = this.info.dissent_settlementsheetexplain; //结算单说明
-      this.arrayList[1].dissent = this.info.dissent_confirmmail; //确认邮件说明
-      this.arrayList[2].dissent = this.info.dissent_po; //po单说明
-      this.arrayList[3].dissent = this.info.dissent_invoice; //供应商发票说明
-      this.arrayList[4].dissent = this.info.dissent_voucher; //住宿发票说明
-      this.arrayList[5].dissent = this.info.dissent_contract; //餐饮发票说明
-      this.arrayList[6].dissent = this.info.dissent_waterbill; //会场发票说明
-      this.arrayList[7].dissent = this.info.dissent_outsidefoodinvoiceexplain; //酒店外餐饮发票说明
-      this.arrayList[8].dissent = this.info.dissent_registinvoiceexplain; //注册费发票说明
-      this.arrayList[9].dissent = this.info.dissent_carinvoiceexplain; //用车发票说明
-      this.arrayList[10].dissent = this.info.dissent_productsvoiceexplain; //制作物发票说明
-      this.arrayList[11].dissent = this.info.dissent_insureinvoiceexplain; //保险发票说明
-      this.arrayList[12].dissent = this.info.dissent_signexplain; //签到发票说明
-      this.arrayList[13].dissent = this.info.dissent_photoexplain; //照片说明
-      this.arrayList[14].dissent = this.info.dissent_other; //其他说明
-      this.initFileRename();
-    });
-  },
-};
+      this.arrayList[0].dissent = this.info.dissent_settlementsheetexplain //结算单说明
+      this.arrayList[1].dissent = this.info.dissent_confirmmail //确认邮件说明
+      this.arrayList[2].dissent = this.info.dissent_po //po单说明
+      this.arrayList[3].dissent = this.info.dissent_invoice //供应商发票说明
+      this.arrayList[4].dissent = this.info.dissent_voucher //住宿发票说明
+      this.arrayList[5].dissent = this.info.dissent_contract //餐饮发票说明
+      this.arrayList[6].dissent = this.info.dissent_waterbill //会场发票说明
+      this.arrayList[7].dissent = this.info.dissent_outsidefoodinvoiceexplain //酒店外餐饮发票说明
+      this.arrayList[8].dissent = this.info.dissent_registinvoiceexplain //注册费发票说明
+      this.arrayList[9].dissent = this.info.dissent_carinvoiceexplain //用车发票说明
+      this.arrayList[10].dissent = this.info.dissent_productsvoiceexplain //制作物发票说明
+      this.arrayList[11].dissent = this.info.dissent_insureinvoiceexplain //保险发票说明
+      this.arrayList[12].dissent = this.info.dissent_signexplain //签到发票说明
+      this.arrayList[13].dissent = this.info.dissent_photoexplain //照片说明
+      this.arrayList[14].dissent = this.info.dissent_other //其他说明
+      this.initFileRename()
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -6304,7 +5331,7 @@ table {
   top: 20px;
   right: 10px;
 }
-/deep/ .objectionDetailStyle {
+::deep .objectionDetailStyle {
   img {
     max-width: 100%;
   }

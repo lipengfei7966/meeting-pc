@@ -90,19 +90,19 @@ export default {
         return false
       }
       // debugger
-      let hasmenu = false;
-      this.permissionMenus.forEach(item => {
-        if(item.children) {
-          item.children.forEach(menu => { 
-            if (menu.name == route.name){
-               hasmenu = true;
-            }
-          })
-        }
-      })
-      if(hasmenu){
-        this.$store.dispatch('addVisitedViews', route)
-      }
+      // let hasmenu = false;
+      // this.permissionMenus.forEach(item => {
+      //   if(item.children) {
+      //     item.children.forEach(menu => {
+      //       if (menu.name == route.name){
+      //          hasmenu = true;
+      //       }
+      //     })
+      //   }
+      // })
+      // if(hasmenu){
+      this.$store.dispatch('addVisitedViews', route)
+      // }
     },
     // 关闭
     removeTab(targetName) {
@@ -117,7 +117,7 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      this.$store.dispatch('delVisitedViews', view).then((views) => {
+      this.$store.dispatch('delVisitedViews', view).then(views => {
         if (view.path === this.$route.path) {
           const latestView = views.slice(-1)[0]
           if (latestView) {

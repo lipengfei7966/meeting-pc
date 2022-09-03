@@ -1871,10 +1871,10 @@ export default {
 				if(e.id==taxId){
 					return e.outtaxrate
 				}
-				
+
 			})
 		},
-		 */
+	*/
   },
 
   computed: {

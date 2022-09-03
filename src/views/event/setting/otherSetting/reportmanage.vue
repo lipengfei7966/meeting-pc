@@ -81,177 +81,183 @@
 </template>
 
 <script>
-
-
 export default {
-    data: function(){
-        return {
-			id: '',
-			reportname: '',
-			pageIndex: 1,
-			pageSize: 10,
-			tableInfo: {
-				EvetModels: [],
-				pageInfo: {
-					totalCount: 0
-				}
-			},
-			batchList: [],
-
-			dialogVisible: false,
-			grid: {
-				reportname: ''
-			},
-			gridResult: { 
-				EvetModels: []
-			},
-			chooseList: []
-			
+  data: function() {
+    return {
+      id: '',
+      reportname: '',
+      pageIndex: 1,
+      pageSize: 10,
+      tableInfo: {
+        EvetModels: [],
+        pageInfo: {
+          totalCount: 0
         }
-    },
-	mounted() {
-		this.id = this.$route.query.id;
-		this.getReportGroupList();
-	},
-    methods: {
-		// 获取列表数据
-		getReportGroupList() {
-			this.$api.GetReportGroupList({
-				usergroup_id: this.id,
-				reportname: this.reportname,
-				pageIndex: this.pageIndex,
-				pageSize: this.pageSize
-			},'POST').then(res => {
-				this.tableInfo = res;
-			});
-		},
-		// 全选按钮
-		userSelection(row) {
-			this.batchList = row;
-		},
-		query() {
-			this.getReportGroupList();
-		},
-		// 重置查询
-		reset() {
-			this.reportname = '';
-			this.pageIndex = 1;
-			this.pageSize = 10;
-			this.getReportGroupList();
-		},
-		// 批量删除
-		batchDel() {
-			if(!this.batchList.length) {
-				this.$message.success('未选中需要操作的记录！');
-				return false;
-			}
-			this.$confirm('是否将选中报表权限移除？', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-        	}).then(() => {
-				let users = [];
-				this.batchList.forEach(element => {
-					users.push(element.reportid);
-				});
-				this.$api.DeleteReportDate({
-					usergroup_id: this.id,
-					reportid: users.join(',')
-				},'POST').then(res => {
-					if(res) {
-						this.$message.success('删除成功');
-					}
-					this.batchList = [];
-					this.reset();
-				});
+      },
+      batchList: [],
 
-			});		
-
-			
-		},
-		delUser(index, row) {
-			this.$confirm('是否将当前报表权限移除?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-        	}).then(() => {
-				this.$api.DeleteReportDate({
-					usergroup_id: this.id,
-					reportid: row.reportid
-				},'POST').then(res => {
-					if(res) {
-						this.$message.success('删除成功');
-					}
-					this.reset();
-				});
-			});	
-
-
-			
-		},
-		currentChange(page) {
-			this.pageIndex = page;
-			this.getReportGroupList();
-		},
-		
-		getUserlist(isShow) {
-			this.$api.GetReportList(this.grid, 'POST').then(res => {
-				res.EvetModels = res.EvetModels.map(item => {
-					item.chooseSave = 0;
-					return item;
-				});
-				this.gridResult = res;
-
-				
-				if(isShow) {
-					this.dialogVisible = true;
-				}
-			});
-
-
-		},
-		addUser() {
-			this.getUserlist(true);
-		},
-		handleSelectionChange(list) {
-			this.chooseList = list;
-		},
-		queryGrid() {
-			this.getUserlist();
-		},
-		handleClose() {
-			this.resetSearch();
-			this.dialogVisible = false;
-		},
-		resetSearch() {
-			this.grid = {
-				reportname: ''
-			};
-			this.chooseList = [];
-		},
-		saveGrid() {
-			if(!this.chooseList.length) {
-				this.$message.success('请先选择报表');
-				return false;
-			}
-
-			let users = [];
-			this.chooseList.forEach(element => {
-				users.push(element.id);
-			});
-			this.$api.PostReportList({
-				usergroup_id: this.id,
-				reportid: users.join(',')
-			},'POST').then(res => {
-				this.$message.success(res.info);
-
-				this.handleClose();
-				this.reset();
-
-			});
-		}
-		
+      dialogVisible: false,
+      grid: {
+        reportname: ''
+      },
+      gridResult: {
+        EvetModels: []
+      },
+      chooseList: []
     }
+  },
+  mounted() {
+    this.id = this.$route.query.id
+    this.getReportGroupList()
+  },
+  methods: {
+    // 获取列表数据
+    getReportGroupList() {
+      this.$api
+        .GetReportGroupList(
+          {
+            usergroup_id: this.id,
+            reportname: this.reportname,
+            pageIndex: this.pageIndex,
+            pageSize: this.pageSize
+          },
+          'POST'
+        )
+        .then(res => {
+          this.tableInfo = res
+        })
+    },
+    // 全选按钮
+    userSelection(row) {
+      this.batchList = row
+    },
+    query() {
+      this.getReportGroupList()
+    },
+    // 重置查询
+    reset() {
+      this.reportname = ''
+      this.pageIndex = 1
+      this.pageSize = 10
+      this.getReportGroupList()
+    },
+    // 批量删除
+    batchDel() {
+      if (!this.batchList.length) {
+        this.$message.success('未选中需要操作的记录！')
+        return false
+      }
+      this.$confirm('是否将选中报表权限移除？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let users = []
+        this.batchList.forEach(element => {
+          users.push(element.reportid)
+        })
+        this.$api
+          .DeleteReportDate(
+            {
+              usergroup_id: this.id,
+              reportid: users.join(',')
+            },
+            'POST'
+          )
+          .then(res => {
+            if (res) {
+              this.$message.success('删除成功')
+            }
+            this.batchList = []
+            this.reset()
+          })
+      })
+    },
+    delUser(index, row) {
+      this.$confirm('是否将当前报表权限移除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$api
+          .DeleteReportDate(
+            {
+              usergroup_id: this.id,
+              reportid: row.reportid
+            },
+            'POST'
+          )
+          .then(res => {
+            if (res) {
+              this.$message.success('删除成功')
+            }
+            this.reset()
+          })
+      })
+    },
+    currentChange(page) {
+      this.pageIndex = page
+      this.getReportGroupList()
+    },
+
+    getUserlist(isShow) {
+      this.$api.GetReportList(this.grid, 'POST').then(res => {
+        res.EvetModels = res.EvetModels.map(item => {
+          item.chooseSave = 0
+          return item
+        })
+        this.gridResult = res
+
+        if (isShow) {
+          this.dialogVisible = true
+        }
+      })
+    },
+    addUser() {
+      this.getUserlist(true)
+    },
+    handleSelectionChange(list) {
+      this.chooseList = list
+    },
+    queryGrid() {
+      this.getUserlist()
+    },
+    handleClose() {
+      this.resetSearch()
+      this.dialogVisible = false
+    },
+    resetSearch() {
+      this.grid = {
+        reportname: ''
+      }
+      this.chooseList = []
+    },
+    saveGrid() {
+      if (!this.chooseList.length) {
+        this.$message.success('请先选择报表')
+        return false
+      }
+
+      let users = []
+      this.chooseList.forEach(element => {
+        users.push(element.id)
+      })
+      this.$api
+        .PostReportList(
+          {
+            usergroup_id: this.id,
+            reportid: users.join(',')
+          },
+          'POST'
+        )
+        .then(res => {
+          this.$message.success(res.info)
+
+          this.handleClose()
+          this.reset()
+        })
+    }
+  }
 }
 </script>
 

@@ -31,7 +31,6 @@
 
 <script>
 
-
 export default {
     components: { },
     data: function(){
@@ -45,7 +44,7 @@ export default {
 				}
 			},
 		}
-			
+
     },
 	mounted(){
 		this.getList();
@@ -126,19 +125,19 @@ export default {
 					this.$message.success('删除成功');
 					this.pageIndex = 1;
 					this.pageSize = 10;
-					this.getList() 
-	
+					this.getList()
+
 				}).catch(() => {
-					
+
 				});
 			});
-			
+
 		},
 		currentChange(page) {
 			this.pageIndex = page;
 			this.getList();
 		},
-		
+
     }
 }
 </script>

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
 export default {
   props: ['meetinglist'],
   mounted() {
@@ -14,24 +14,23 @@ export default {
   methods: {
     cendertype(data = []) {
       let dataList = data.EventTypes
-      console.log(data.EventTypes,'21312313123214321432');
-      var chartDom = document.getElementById('pink');
-      var myChart = echarts.init(chartDom);
-      var option;
-      
+      console.log(data.EventTypes, '21312313123214321432')
+      var chartDom = document.getElementById('pink')
+      var myChart = echarts.init(chartDom)
+      var option
 
       option = {
         title: {
           text: '',
           subtext: '',
-          left: 'center',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item'
         },
         tooltip: {
           trigger: 'item',
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
 
         series: [
@@ -42,7 +41,7 @@ export default {
             left: '20%',
             // data:group,
             data: [
-              { value: dataList[0].Amount, name: dataList[0].EventTypeName },
+              { value: dataList[0].Amount, name: dataList[0].EventTypeName }
               // { value: 735, name: '外部会议' },
               // { value: 580, name: '内部会议' },
               // { value: '', name: '' },
@@ -52,22 +51,22 @@ export default {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-              },
-            },
-          },
-        ],
-      };
-      option && myChart.setOption(option);
-    },
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      option && myChart.setOption(option)
+    }
   },
   watch: {
     meetinglist(val = []) {
-      console.log(val, 'valvalvalvalvalvalppppp');
-      this.cendertype(val);
-    },
-  },
-};
+      console.log(val, 'valvalvalvalvalvalppppp')
+      this.cendertype(val)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

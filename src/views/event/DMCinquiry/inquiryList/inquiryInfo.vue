@@ -408,133 +408,136 @@
 /**
  * @page 活动询价单详情
  */
-import projectAdded from '@/components/event/project-added.vue';
-import { guid,positiveInteger, positiveFloat, positiveFloatSix, formatDate, formatNum, getNextDateFormat,getFormatDate,CompareDate } from '@/utils/common';
+import projectAdded from '@/components/event/project-added.vue'
+import { guid, positiveInteger, positiveFloat, positiveFloatSix, formatDate, formatNum, getNextDateFormat, getFormatDate, CompareDate } from '@/utils/common'
 export default {
-	name: 'ItineraryInfo',
-	components: { projectAdded },
-	data() {
-		return {
-			info: {},
-			addProjectStatus: false, // 编辑/添加开关
-			itemData: null // 单条数据
-		};
-	},
-	methods: {
-		positiveFloat,
-		anewquotation(){
-			let _this =this;
-			_this.$confirm('是否确定更新报价?', '提示', {
+  name: 'ItineraryInfo',
+  components: { projectAdded },
+  data() {
+    return {
+      info: {},
+      addProjectStatus: false, // 编辑/添加开关
+      itemData: null // 单条数据
+    }
+  },
+  methods: {
+    positiveFloat,
+    anewquotation() {
+      let _this = this
+      _this
+        .$confirm('是否确定更新报价?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-					_this.$api.AnewQuotation(
-						{
-							id: _this.info.object_id
-						},
-						"POST"
-					).then((res) => {
-						if(!res){
-							this.$message({
-								message: "不能修改报价单!",
-								type: 'error'
-							});
-							return;
-						}
-						_this.goquotedprice();
-						
-					});
         })
-		},
-		// 查看报价
-		checkquotation(){
-			let id = this.info.history_quotationprice.at(-1).id // 获取最新报价ID
-			let routeData = this.$router.resolve({ name: 'DMCquotedprice', params: { id: id, isSubmit: 0 } });
-			window.open(routeData.href, '_blank'); //跳转新页面
-		},
-		// 添加/修改
-		projectSave(params) {
+        .then(() => {
+          _this.$api
+            .AnewQuotation(
+              {
+                id: _this.info.object_id
+              },
+              'POST'
+            )
+            .then(res => {
+              if (!res) {
+                this.$message({
+                  message: '不能修改报价单!',
+                  type: 'error'
+                })
+                return
+              }
+              _this.goquotedprice()
+            })
+        })
+    },
+    // 查看报价
+    checkquotation() {
+      let id = this.info.history_quotationprice.at(-1).id // 获取最新报价ID
+      let routeData = this.$router.resolve({ name: 'DMCquotedprice', params: { id: id, isSubmit: 0 } })
+      window.open(routeData.href, '_blank') //跳转新页面
+    },
+    // 添加/修改
+    projectSave(params) {
       this.requestApi({
         url: '/scheduling/projectsave',
         method: 'POST',
-        data: params,
+        data: params
       }).then(res => {
-				this.$message({
-					message: params.id ? '修改成功！' : '添加成功！',
-					type: 'success'
-				});
-				this.$router.push({ name: 'ItineraryManagement', params: { id: this.info.project_id } });
-			});
-		},
-		Quotedprice(id, isSubmit) {
-			//let routeData = this.$router.resolve({ path: "quotedprice/" + id + "/" + isSubmit});
-			let routeData = this.$router.resolve({ name: 'DMCquotedprice', params: { id: id, isSubmit: isSubmit } });
-			window.open(routeData.href, '_blank'); //跳转新页面
-		},
-		Orderform() {
-			// let routeData = this.$router.resolve({ name: "orderInfo", params: { id:this.info.orderform_id }});
-			// window.open(routeData.href, "_blank");//跳转新页面
+        this.$message({
+          message: params.id ? '修改成功！' : '添加成功！',
+          type: 'success'
+        })
+        this.$router.push({ name: 'ItineraryManagement', params: { id: this.info.project_id } })
+      })
+    },
+    Quotedprice(id, isSubmit) {
+      //let routeData = this.$router.resolve({ path: "quotedprice/" + id + "/" + isSubmit});
+      let routeData = this.$router.resolve({ name: 'DMCquotedprice', params: { id: id, isSubmit: isSubmit } })
+      window.open(routeData.href, '_blank') //跳转新页面
+    },
+    Orderform() {
+      // let routeData = this.$router.resolve({ name: "orderInfo", params: { id:this.info.orderform_id }});
+      // window.open(routeData.href, "_blank");//跳转新页面
 
-			this.$router.push({ name: 'orderInfo', params: { id: this.info.orderform_id } });
-		},
-		project() {
-			if (this.info.project_id) {
-				this.$router.push({ name: 'ItineraryManagement', params: { id: this.info.project_id } });
-			} else {
-				this.addProjectStatus = true;
-				//this.$router.push({name: "addStroke",params: { id: this.info.orderform_id },});
-			}
-		},
-		refusequoted() {
-			this.$prompt('请输入您谢绝报价的理由', '谢绝报价', {
-				confirmButtonText: '确定谢绝报价',
-				showCancelButton: false,
-				inputPattern: /\S/,
-				inputErrorMessage: '请填写谢绝报价的理由',
-				inputType: 'textarea'
-			})
-				.then(({ value }) => {
+      this.$router.push({ name: 'orderInfo', params: { id: this.info.orderform_id } })
+    },
+    project() {
+      if (this.info.project_id) {
+        this.$router.push({ name: 'ItineraryManagement', params: { id: this.info.project_id } })
+      } else {
+        this.addProjectStatus = true
+        //this.$router.push({name: "addStroke",params: { id: this.info.orderform_id },});
+      }
+    },
+    refusequoted() {
+      this.$prompt('请输入您谢绝报价的理由', '谢绝报价', {
+        confirmButtonText: '确定谢绝报价',
+        showCancelButton: false,
+        inputPattern: /\S/,
+        inputErrorMessage: '请填写谢绝报价的理由',
+        inputType: 'textarea'
+      })
+        .then(({ value }) => {
           this.requestApi({
             url: '/inquirysheet/Refusequoted',
             method: 'POST',
             data: {
               id: this.info.object_id,
               reason: value
-            },
+            }
           }).then(res => {
             this.$message({
               message: '已拒绝报价',
               type: 'success'
-            });
-            location.reload();
-          });
-				})
-				.catch(() => {});
-		},
-		goquotedprice(type) {
-			this.$router.push({
-				name: 'DMCquotedprice',
-				params: {
-					id: this.info.object_id,
-					isSubmit: 1,
-					type: type // 重新报价传值1,
-				}
-			});
-		}
-	},
-	mounted() {
+            })
+            location.reload()
+          })
+        })
+        .catch(() => {})
+    },
+    goquotedprice(type) {
+      this.$router.push({
+        name: 'DMCquotedprice',
+        params: {
+          id: this.info.object_id,
+          isSubmit: 1,
+          type: type // 重新报价传值1,
+        }
+      })
+    }
+  },
+  mounted() {
     this.requestApi({
       url: '/inquirysheet/info',
       method: 'POST',
       data: {
         id: this.$route.params.id
-      },
+      }
     }).then(res => {
-      this.info = res;
-    });
-	}
-};
+      this.info = res
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

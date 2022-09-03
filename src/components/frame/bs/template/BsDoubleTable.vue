@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container tree-form-table">
+  <div class="bs-container app-container tree-form-table">
     <!-- 内容 -->
     <div class='left-content'>
       <div class='title' :title='treeTableData.form.treeName'>{{treeTableData.form.treeName}}</div>

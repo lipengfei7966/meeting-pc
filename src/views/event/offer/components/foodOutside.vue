@@ -53,34 +53,36 @@
 </template>
 
 <script>
-import { positiveFloat, } from '@/utils/common';
-  export default {
-    name: "food",
-    props:['foodOutsideList', 'additional','isCollectOffer','allQuoteInfo',"hotelInfo"],
-    data() {
-      return{
-        showPart: true,
-      }
-    },
-    computed:{
-      offlineFoodOutsideTotalMoney(){
-        let money = 0;
-        this.allQuoteInfo.offline_quoted_price_others_food.forEach(element => {
-          money += element.totalprice
-        });
-        return money
-      },
-    },
-    methods: {
-      positiveFloat,
-      getDateTotal(data) {
-        // debugger
-        return data.data.reduce((p, n) => {
+import { positiveFloat } from '@/utils/common'
+export default {
+  name: 'food',
+  props: ['foodOutsideList', 'additional', 'isCollectOffer', 'allQuoteInfo', 'hotelInfo'],
+  data() {
+    return {
+      showPart: true
+    }
+  },
+  computed: {
+    offlineFoodOutsideTotalMoney() {
+      let money = 0
+      this.allQuoteInfo.offline_quoted_price_others_food.forEach(element => {
+        money += element.totalprice
+      })
+      return money
+    }
+  },
+  methods: {
+    positiveFloat,
+    getDateTotal(data) {
+      // debugger
+      return data.data
+        .reduce((p, n) => {
           return p + n.total_price
-        }, 0).toFixed(2)
-      }
+        }, 0)
+        .toFixed(2)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='treeTableDialog'>
       <!-- 头部 -->
       <title-contain titleName='打印预览' @TitleFun="$emit('closeHandler')" />

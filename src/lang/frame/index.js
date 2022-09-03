@@ -36,7 +36,7 @@ import zhFunc from '@/lang/frame/base/modules/func_zh'
 
 // 会议系统
 import enEvent from '@/lang/frame/base/modules/event_en'
-import zhEvent from '@/lang/frame/base/modules/event_zh'
+// import zhEvent from '@/lang/frame/base/modules/event_zh'
 
 const messages = {
   en: {

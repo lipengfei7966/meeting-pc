@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="bs-container app-container">
     <bs-form ref='bsForm' :form='form' @closeDialog='closeCallback'></bs-form>
     <bs-table ref='bsTable' :mainData='mainData' @initCallback='initCallback'>
       <template slot='isException' slot-scope='scope'>

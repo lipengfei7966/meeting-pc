@@ -253,16 +253,16 @@
 /**
  * @page 酒店列表
  */
-import qualificationAdded from "@/components/event/qualification-added.vue";
+import qualificationAdded from '@/components/event/qualification-added.vue'
 export default {
-  name: "Qualification",
+  name: 'Qualification',
   components: { qualificationAdded },
   data() {
     return {
       // type
       routeType: null,
       //city
-      routeCity:null,
+      routeCity: null,
       // 已选择询价酒店列表
       HotelSelectedList: [],
       // 筛选类型
@@ -272,12 +272,12 @@ export default {
         brand: null,
         venuearea: null,
         venuepeoplenumber: null,
-        roomprice: null,
+        roomprice: null
       },
       // 状态
       statusList: {
         cityStatus: false, //选择城市是否展开,
-        brandStatus: false, //酒店品牌是否展开,
+        brandStatus: false //酒店品牌是否展开,
       },
       // 列表参数筛选
       listFormData: {
@@ -290,113 +290,103 @@ export default {
         venue_max_people_number: null,
         room_min_avg_price: null,
         room_max_avg_price: null,
-        keyword: "",
+        keyword: '',
         isagreement: false,
-        iscollection:false,
+        iscollection: false,
         Page: 1,
-        Rows: 10,
+        Rows: 10
       },
       // 酒店列表
       hotel: {
         Counts: 0,
         CurrentPage: 0,
         List: [],
-        PageCount: 0,
-      },
-    };
+        PageCount: 0
+      }
+    }
   },
   computed: {
     // 字母分类酒店品牌
     letterBrand() {
-      let data = [];
-      let filtersName = [
-        "A,B,C",
-        "D,E,F",
-        "G,H,I",
-        "G,K,L",
-        "M,N,O",
-        "P,Q,X",
-        "Y,Z",
-      ];
-      filtersName.forEach((item) => {
-        let key = item.replace(",/g", "");
+      let data = []
+      let filtersName = ['A,B,C', 'D,E,F', 'G,H,I', 'G,K,L', 'M,N,O', 'P,Q,X', 'Y,Z']
+      filtersName.forEach(item => {
+        let key = item.replace(',/g', '')
         data.push({
           key,
-          list: this.type.brand.filter(
-            (i) => item.split(",").indexOf(i.pinyin_initials) != -1
-          ),
-        });
-      });
-      return data;
-    },
+          list: this.type.brand.filter(i => item.split(',').indexOf(i.pinyin_initials) != -1)
+        })
+      })
+      return data
+    }
   },
   methods: {
     Inquiry() {
-      var type=0;
-      if(this.$route.params.type == "addintentionhotel"){
-        type=2;
+      var type = 0
+      if (this.$route.params.type == 'addintentionhotel') {
+        type = 2
         this.requestApi({
-					url: '/procurementprocess/Selectintentionhotel',
-					method: 'POST',
-					data: { hotel: this.HotelSelectedList },
-				}).then((res) => {
+          url: '/procurementprocess/Selectintentionhotel',
+          method: 'POST',
+          data: { hotel: this.HotelSelectedList }
+        }).then(res => {
           // this.$router.push({
           //   name: "ServiceProviderProcurement",
           //   params: { id: this.$route.params.id },
           // });
-        });
-      }else{
-        type=1;
-        if(this.HotelSelectedList.length === 0){
-          this.$message({ message: "至少选择一家酒店",   type: "warning", });  
-          return;
+        })
+      } else {
+        type = 1
+        if (this.HotelSelectedList.length === 0) {
+          this.$message({ message: '至少选择一家酒店', type: 'warning' })
+          return
         }
         this.requestApi({
-					url: '/procurementprocess/selecthotel',
-					method: 'POST',
-					data: { hotel: this.HotelSelectedList },
-				}).then((res) => {
+          url: '/procurementprocess/selecthotel',
+          method: 'POST',
+          data: { hotel: this.HotelSelectedList }
+        }).then(res => {
           // this.$router.push({
           //   name: "HotelProcurement",
           //   params: { id: this.$route.params.id },
           // });
-        });
+        })
       }
       this.$router.push({
-        name: "HotelProcurement",
-        params: { id: this.$route.params.id,type },
-      });
+        name: 'HotelProcurement',
+        params: { id: this.$route.params.id, type }
+      })
     },
-    cancel(item){
-      let index = this.HotelSelectedList.findIndex((i) => i.hotelid == item.hotelid);
+    cancel(item) {
+      let index = this.HotelSelectedList.findIndex(i => i.hotelid == item.hotelid)
       if (index > -1) {
-         this.HotelSelectedList.splice(index, 1);
+        this.HotelSelectedList.splice(index, 1)
       }
     },
     selected(item) {
       console.log(item)
-      let index = this.HotelSelectedList.findIndex((i) => i.hotelid == item.id);
+      let index = this.HotelSelectedList.findIndex(i => i.hotelid == item.id)
       if (index == -1) {
         this.HotelSelectedList.push({
           hotelid: item.id,
           hotelname: item.name,
-          hotelemail:item.email,
-          hotelecontacts:item.contacts,
-          hoteletelephone:item.telephone,
-          sendemail:true,
-          receptionist:{
+          hotelemail: item.email,
+          hotelecontacts: item.contacts,
+          hoteletelephone: item.telephone,
+          sendemail: true,
+          receptionist: {
             id: item.receptionist_id,
-            contacts:item.receptionist_contacts,
-            telephone:item.receptionist_telephone,
-            email:item.receptionist_email
+            contacts: item.receptionist_contacts,
+            telephone: item.receptionist_telephone,
+            email: item.receptionist_email
           }
-        });
+        })
       } else {
-        this.HotelSelectedList.splice(index, 1);
+        this.HotelSelectedList.splice(index, 1)
       }
     },
     jumpInfo(id) {
-      this.$router.push({ name: "hotelInfo", params: { id } });
+      this.$router.push({ name: 'hotelInfo', params: { id } })
       // let routeData = this.$router.resolve({ name: "hotelInfo", params: { id } });
       // window.open(routeData.href, "_blank");//跳转新页面
     },
@@ -404,200 +394,183 @@ export default {
       this.requestApi({
         url: '/hotel/list',
         method: 'POST',
-        data: this.listFormData,
-      }).then((res) => {
-        this.hotel = res || this.hotel;
-      });
+        data: this.listFormData
+      }).then(res => {
+        this.hotel = res || this.hotel
+      })
     },
     sizeChange(value) {
-      this.listFormData.Page = value;
-      this.getList();
+      this.listFormData.Page = value
+      this.getList()
     },
     selectedCity(code) {
-      if(code){
-        if(this.listFormData.city.findIndex(item => item.code === code) == -1)
-          this.listFormData.city.push({code});
-        else
-          this.listFormData.city =  this.listFormData.city.filter(item => item.code != code) 
-      }
-      else
-        this.listFormData.city =[];
-      this.listFormData.Page =1;
-      this.getList();
+      if (code) {
+        if (this.listFormData.city.findIndex(item => item.code === code) == -1) this.listFormData.city.push({ code })
+        else this.listFormData.city = this.listFormData.city.filter(item => item.code != code)
+      } else this.listFormData.city = []
+      this.listFormData.Page = 1
+      this.getList()
     },
     selectedsitetype(code) {
       //this.listFormData.sitetype = [{ code }];
-      if(code)
-      {
-        if(this.listFormData.sitetype.findIndex(item => item.code === code) == -1)
-          this.listFormData.sitetype.push({code});
-        else
-          this.listFormData.sitetype = this.listFormData.sitetype.filter(item => item.code != code) 
-      }
-      else
-        this.listFormData.sitetype =[];
-      this.listFormData.Page =1;
-      this.getList();
+      if (code) {
+        if (this.listFormData.sitetype.findIndex(item => item.code === code) == -1) this.listFormData.sitetype.push({ code })
+        else this.listFormData.sitetype = this.listFormData.sitetype.filter(item => item.code != code)
+      } else this.listFormData.sitetype = []
+      this.listFormData.Page = 1
+      this.getList()
     },
     selectedbrand(id) {
       //this.listFormData.brand = [{ id }];
-      if(id){
-        if(this.listFormData.brand.findIndex(item => item.id === id) == -1)
-          this.listFormData.brand.push({id});
-        else
-          this.listFormData.brand = this.listFormData.brand.filter(item => item.id != id) 
-      }
-      else
-        this.listFormData.brand=[];
-      this.listFormData.Page =1;
-      this.getList();
+      if (id) {
+        if (this.listFormData.brand.findIndex(item => item.id === id) == -1) this.listFormData.brand.push({ id })
+        else this.listFormData.brand = this.listFormData.brand.filter(item => item.id != id)
+      } else this.listFormData.brand = []
+      this.listFormData.Page = 1
+      this.getList()
     },
     selectedarea(min, max) {
-      this.listFormData.venue_min_area = min;
-      this.listFormData.venue_max_area = max;
-      this.listFormData.Page =1;
-      this.getList();
+      this.listFormData.venue_min_area = min
+      this.listFormData.venue_max_area = max
+      this.listFormData.Page = 1
+      this.getList()
     },
     selectedvenue(min, max) {
-      this.listFormData.venue_min_people_number = min;
-      this.listFormData.venue_max_people_number = max;
-      this.listFormData.Page =1;
-      this.getList();
+      this.listFormData.venue_min_people_number = min
+      this.listFormData.venue_max_people_number = max
+      this.listFormData.Page = 1
+      this.getList()
     },
     selectedroom(min, max) {
-      this.listFormData.room_min_avg_price = min;
-      this.listFormData.room_max_avg_price = max;
-      this.listFormData.Page =1;
-      this.getList();
+      this.listFormData.room_min_avg_price = min
+      this.listFormData.room_max_avg_price = max
+      this.listFormData.Page = 1
+      this.getList()
     },
-    searchall(){
-      this.listFormData.isagreement=false;
-      this.listFormData.iscollection=false;
-      this.listFormData.Page =1;
-      this.getList() 
+    searchall() {
+      this.listFormData.isagreement = false
+      this.listFormData.iscollection = false
+      this.listFormData.Page = 1
+      this.getList()
     },
-    searchagreement(){
-      this.listFormData.isagreement=true;
-      this.listFormData.iscollection=false;
-      this.listFormData.Page =1;
-      this.getList() 
+    searchagreement() {
+      this.listFormData.isagreement = true
+      this.listFormData.iscollection = false
+      this.listFormData.Page = 1
+      this.getList()
     },
-    searchcollection(){
-      this.listFormData.isagreement=false;
-      this.listFormData.iscollection=true;
-      this.listFormData.Page =1;
-      this.getList() 
+    searchcollection() {
+      this.listFormData.isagreement = false
+      this.listFormData.iscollection = true
+      this.listFormData.Page = 1
+      this.getList()
     },
-    collection(item){
+    collection(item) {
       this.requestApi({
         url: '/hotel/Collection',
         method: 'POST',
-        data: { id: item.id },
-      }).then((res) => {
-        item.iscollection =1;
-        if(this.listFormData.iscollection){
-          this.listFormData.Page =1;
-          this.getList();
+        data: { id: item.id }
+      }).then(res => {
+        item.iscollection = 1
+        if (this.listFormData.iscollection) {
+          this.listFormData.Page = 1
+          this.getList()
         }
-      });
+      })
     },
-    cancelcollection(item){
+    cancelcollection(item) {
       this.requestApi({
         url: '/hotel/CancelCollection',
         method: 'POST',
-        data: { id: item.id },
-      }).then((res) => {
-        item.iscollection =0;
-         if(this.listFormData.iscollection){
-           this.listFormData.Page =1;
-            this.getList();
-         }
-      });
-    },
+        data: { id: item.id }
+      }).then(res => {
+        item.iscollection = 0
+        if (this.listFormData.iscollection) {
+          this.listFormData.Page = 1
+          this.getList()
+        }
+      })
+    }
   },
   mounted() {
     //addhotel 酒店采购
     //addintentionhotel 服务商包含酒店采购 意向采购
-    this.routeCity =this.$route.params.city;
-    if(this.routeCity)
-      this.selectedCity(this.routeCity)
-    
-    this.routeType = this.$route.params.type;
-    if (this.routeType =="addhotel") {
+    this.routeCity = this.$route.params.city
+    if (this.routeCity) this.selectedCity(this.routeCity)
+
+    this.routeType = this.$route.params.type
+    if (this.routeType == 'addhotel') {
       this.requestApi({
         url: '/procurementprocess/getselecthotel',
         method: 'POST',
-        data: { },
-      }).then((res) => {
-        if(res.length>0)
-          this.HotelSelectedList = res;
-        else
-          this.HotelSelectedList =[];
-      });
-    }else{
+        data: {}
+      }).then(res => {
+        if (res.length > 0) this.HotelSelectedList = res
+        else this.HotelSelectedList = []
+      })
+    } else {
       this.requestApi({
         url: '/procurementprocess/getselectintentionhotel',
         method: 'POST',
-        data: { },
-      }).then((res) => {
-        if(res.length>0)
-          this.HotelSelectedList = res;
-        else
-          this.HotelSelectedList =[];
-      });
+        data: {}
+      }).then(res => {
+        if (res.length > 0) this.HotelSelectedList = res
+        else this.HotelSelectedList = []
+      })
     }
 
-    this.getList();
+    this.getList()
     this.requestApi({
       url: '/serviceprovider/city',
       method: 'POST',
-      data: { },
-    }).then((res) => {
-      this.type.city = res.city;
-      return this.requestApi({
+      data: {}
+    })
+      .then(res => {
+        this.type.city = res.city
+        return this.requestApi({
           url: '/hotel/sitetype',
           method: 'POST',
-          data: { },
+          data: {}
         })
-
-    }).then((res) => {
-        this.type.sitetype = res;
+      })
+      .then(res => {
+        this.type.sitetype = res
         return this.requestApi({
           url: '/hotel/brand',
           method: 'POST',
-          data: { },
+          data: {}
         })
       })
-      .then((res) => {
-        this.type.brand = res;
+      .then(res => {
+        this.type.brand = res
         return this.requestApi({
           url: '/hotel/venuearea',
           method: 'POST',
-          data: { },
+          data: {}
         })
       })
-      .then((res) => {
-        this.type.venuearea = res;
-        
+      .then(res => {
+        this.type.venuearea = res
+
         return this.requestApi({
           url: '/hotel/venuepeoplenumber',
           method: 'POST',
-          data: { },
+          data: {}
         })
       })
-      .then((res) => {
-        this.type.venuepeoplenumber = res;
+      .then(res => {
+        this.type.venuepeoplenumber = res
         return this.requestApi({
           url: '/hotel/roomprice',
           method: 'POST',
-          data: { },
+          data: {}
         })
       })
-      .then((res) => {
-        this.type.roomprice = res;
-      });
-  },
-};
+      .then(res => {
+        this.type.roomprice = res
+      })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -805,7 +778,7 @@ export default {
               }
             }
             .collection {
-              background: url(require('@/assets/images/badge.png'));
+              //  background: url(require('@/assets/images/badge.png'));
               width: 20px;
               height: 20px;
               display: inline-block;
@@ -813,7 +786,7 @@ export default {
               background-size: cover;
             }
             .notcollection {
-              background: url(require('@/assets/images/notbadge.png'));
+              // background: url(require('@/assets/images/notbadge.png'));
               width: 20px;
               height: 20px;
               display: inline-block;

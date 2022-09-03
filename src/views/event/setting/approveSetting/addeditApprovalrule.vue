@@ -42,7 +42,6 @@
 
 <script>
 
-
 export default {
     components: { },
     data: function(){
@@ -67,7 +66,7 @@ export default {
 		if(this.type == '2') {
 			this.title = this.$route.query.id ? '编辑中标审批规则' : '新建中标审批规则';
 		}
-		
+
 		this.GetAllCompany();
 	},
     methods: {
@@ -96,9 +95,9 @@ export default {
 								this.customChoose.push(filter[0].shortname);
 							}
 						}
-						
+
 					});
-					
+
 				}
 			});
 
@@ -110,7 +109,6 @@ export default {
 			}
 
 			let approvalCompany = [];
-
 
 			for(let i=0; i<this.customChoose.length; i++) {
 				for(let j=0; j<this.customList.length; j++) {
@@ -137,9 +135,9 @@ export default {
 					this.$router.push({
 						name: "approveSetting"
 					});
-					
+
 				}
-				
+
 			});
 		},
 		cancel() {
@@ -151,9 +149,9 @@ export default {
 					type: this.type
 				}
 			});
-			
+
 		}
-		
+
     }
 }
 </script>

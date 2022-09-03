@@ -5,31 +5,31 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
 export default {
-  props:['Report'],
+  props: ['Report'],
   mounted() {
-    this.percentage();
+    this.percentage()
   },
   methods: {
     percentage(data = []) {
-      let Budget=data.Budget && data.Budget.Price
-      let SignContract=data.SignContract && data.SignContract.Price
-      let ActualOutlay=data.ActualOutlay && data.ActualOutlay.Price
-      let ContractSaving=data.ContractSaving && data.ContractSaving.Price
-      let ActualOutlaySaving=data.ActualOutlaySaving && data.ActualOutlaySaving.Price
-      var chartDom = document.getElementById('twoone');
-      var myChart = echarts.init(chartDom);
-      var option;
+      let Budget = data.Budget && data.Budget.Price
+      let SignContract = data.SignContract && data.SignContract.Price
+      let ActualOutlay = data.ActualOutlay && data.ActualOutlay.Price
+      let ContractSaving = data.ContractSaving && data.ContractSaving.Price
+      let ActualOutlaySaving = data.ActualOutlaySaving && data.ActualOutlaySaving.Price
+      var chartDom = document.getElementById('twoone')
+      var myChart = echarts.init(chartDom)
+      var option
 
       option = {
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
           top: '5%',
-          left: 'center',
+          left: 'center'
         },
         series: [
           {
@@ -40,21 +40,21 @@ export default {
             itemStyle: {
               borderRadius: 10,
               borderColor: '#fff',
-              borderWidth: 2,
+              borderWidth: 2
             },
             label: {
               show: false,
-              position: 'center',
+              position: 'center'
             },
             emphasis: {
               label: {
                 show: true,
                 fontSize: '40',
-                fontWeight: 'bold',
-              },
+                fontWeight: 'bold'
+              }
             },
             labelLine: {
-              show: false,
+              show: false
             },
             data: [
               { value: ActualOutlay && ActualOutlay.PriceRoom, name: '客房' },
@@ -64,25 +64,22 @@ export default {
               { value: ActualOutlay && ActualOutlay.PriceCar, name: '地面交通' },
               { value: ActualOutlay && ActualOutlay.PriceOther, name: '其他' },
               { value: ActualOutlay && ActualOutlay.PriceServiceCharge, name: '服务费' },
-              { value: ActualOutlay && ActualOutlay.PriceTaxation, name: '税费' },
-            ],
-            
-          },
-          
-        ],
-        
-      };
+              { value: ActualOutlay && ActualOutlay.PriceTaxation, name: '税费' }
+            ]
+          }
+        ]
+      }
 
-      option && myChart.setOption(option);
-    },
+      option && myChart.setOption(option)
+    }
   },
   watch: {
     Report(val = []) {
-      console.log(val,'valllllllllll');
-      this.percentage(val);
-    },
+      console.log(val, 'valllllllllll')
+      this.percentage(val)
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

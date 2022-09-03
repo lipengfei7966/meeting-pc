@@ -206,37 +206,37 @@
 
 <script>
 import inputFilter from '@/assets/js/filter'
-import { validatePhone,validateEMail } from '@/assets/js/validator'
-import { MAINHOST, } from "@/config";
-import {limitsEffect} from "@/utils/uploadRestrictions.js"
+import { validatePhone, validateEMail } from '@/assets/js/validator'
+import { MAINHOST } from '@/config'
+import { limitsEffect } from '@/utils/uploadRestrictions.js'
 
 export default {
-  name: "createEvent",
+  name: 'createEvent',
   data() {
     return {
-      fileList:[],
-      UploadFilesUrl: MAINHOST + "/MeetingMa/UploadFiles",
-      uploadList:{}, // 附件信息
-      eventId:'',
-      limitDate:new Date(),
+      fileList: [],
+      UploadFilesUrl: MAINHOST + '/MeetingMa/UploadFiles',
+      uploadList: {}, // 附件信息
+      eventId: '',
+      limitDate: new Date(),
       addContactDialog: false, //添加客户联系人弹窗
-      contactInfo:{
-        id:"",
-        name:'',
-        phone:'',
-        mailbox:'',
-        customer_id:"",
-        company_id:""
+      contactInfo: {
+        id: '',
+        name: '',
+        phone: '',
+        mailbox: '',
+        customer_id: '',
+        company_id: ''
       },
-      contactRules:{
+      contactRules: {
         name: [{ required: true, message: '请输入联系人姓名', trigger: 'blur' }],
         phone: [
           { required: true, message: '请输入联系人电话', trigger: 'blur' },
-          { pattern:/^((0\d{2,3}-\d{7,8})|(1[3567849]\d{9}))$/, message: "请输入合法手机号/电话号", trigger: "blur" }
+          { pattern: /^((0\d{2,3}-\d{7,8})|(1[3567849]\d{9}))$/, message: '请输入合法手机号/电话号', trigger: 'blur' }
         ],
         mailbox: [
           { required: true, message: '请输入联系人邮箱', trigger: 'blur' },
-          {validator:validateEMail, trigger: "blur"},
+          { validator: validateEMail, trigger: 'blur' }
           // { pattern:/^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g, message: "请输入正确的邮箱", trigger: "blur"}
         ],
         customer_id: [{ required: true, message: '请选择部门', trigger: 'change' }],
@@ -245,7 +245,7 @@ export default {
       hisDialog: false,
       hisStartDialog: false,
       demandDialog: false,
-      hisStartDate:'',// 复制会议 开始时间
+      hisStartDate: '', // 复制会议 开始时间
       container_height: document.documentElement.clientHeight - 20,
       eventList: [],
       cityList: [],
@@ -255,7 +255,7 @@ export default {
       activityList: [],
       departmentList: [],
       serviceList: [],
-      cityLisy:[],
+      cityLisy: [],
       rules: {
         attendee_no: [{ required: true, message: '请输入参会人数', trigger: 'blur' }],
         external_number: [{ required: true, message: '请输入外部人数', trigger: 'blur' }],
@@ -268,16 +268,16 @@ export default {
         activity_type: [{ required: true, message: '请选择活动类型', trigger: 'change' }],
         event_city: [{ required: true, message: '请选择会议城市', trigger: 'change' }],
         company_contacts: [{ required: true, message: '请选择客户联系人', trigger: 'change' }],
-        departmentName: [{ required: true, message: '客户联系人必须有所属部门', trigger: ['blur','change'] }],
+        departmentName: [{ required: true, message: '客户联系人必须有所属部门', trigger: ['blur', 'change'] }],
         //food_limit: [{ required: true, message: '请选择餐标限制', trigger: 'change' }],
-        event_startdate: [{required: true, message: '请选择日期', trigger: 'change' }],
+        event_startdate: [{ required: true, message: '请选择日期', trigger: 'change' }],
         event_enddate: [{ required: true, message: '请选择日期', trigger: 'change' }],
         service_type: [{ required: true, message: '请选择服务类型', trigger: 'change' }],
-        invoice_type: [{ required: true, message: '请选择发票类型', trigger: 'change' }],
+        invoice_type: [{ required: true, message: '请选择发票类型', trigger: 'change' }]
       },
       baseMeet: {
-        event_name:'',
-        tourist_group_type:'1',
+        event_name: '',
+        tourist_group_type: '1',
         oldEventId: '',
         company_id: '',
         activity_type: '',
@@ -297,18 +297,18 @@ export default {
         invoice_type: 1,
         is_duty_free: '',
         department: '',
-        departmentName:'',
+        departmentName: '',
         event_city: '',
-        document_attachments_file_path:[],
-        files:[],
-        fileInfos:[],
-        service_provider_id:'',
-        online_meeting:false, // 是否线上会议
-        meeting_place:"", // 会议地点
+        document_attachments_file_path: [],
+        files: [],
+        fileInfos: [],
+        service_provider_id: '',
+        online_meeting: false, // 是否线上会议
+        meeting_place: '', // 会议地点
         is_hotel: false,
-        meeting_type: 0, // DMC创建会议：1
+        meeting_type: 0 // DMC创建会议：1
       },
-      pageInfo:{
+      pageInfo: {
         totalCount: 0
       },
       createDate: new Date().getTime(),
@@ -316,227 +316,229 @@ export default {
       page: 1,
       hisId: '',
       hisItem: '',
-      his_startDate:'',
-      newEventId:'',// 新会议id
-      newEventName:'',// 新会议name
+      his_startDate: '',
+      newEventId: '', // 新会议id
+      newEventName: '', // 新会议name
       pickerStart: {
-        disabledDate :(time)=>{
-          return time.getTime() < Date.now() - 8.64e7;
-         // if (this.baseMeet.event_startdate) {
-         //    return time.getTime() < new Date(this.baseMeet.event_startdate).getTime();
-         //  }
-         //  return time.getTime() <= new Date(this.baseMeet.event_enddate).getTime() - 8.64e7;
+        disabledDate: time => {
+          return time.getTime() < Date.now() - 8.64e7
+          // if (this.baseMeet.event_startdate) {
+          //    return time.getTime() < new Date(this.baseMeet.event_startdate).getTime();
+          //  }
+          //  return time.getTime() <= new Date(this.baseMeet.event_enddate).getTime() - 8.64e7;
         }
       },
       pickerEnd: {
-         disabledDate :(time)=> {
-          if (this.baseMeet.event_enddate){
-            return time.getTime() <= new Date(this.baseMeet.event_startdate).getTime()- 8.64e7 || time.getTime() <= new Date(this.baseMeet.createDate).getTime() - 8.64e7;
+        disabledDate: time => {
+          if (this.baseMeet.event_enddate) {
+            return time.getTime() <= new Date(this.baseMeet.event_startdate).getTime() - 8.64e7 || time.getTime() <= new Date(this.baseMeet.createDate).getTime() - 8.64e7
           }
-          return time.getTime() >= new Date(this.event_startdate).getTime() - 8.64e7;
-          }
-      },
+          return time.getTime() >= new Date(this.event_startdate).getTime() - 8.64e7
+        }
+      }
     }
   },
   directives: {
     inputFilter
   },
-  watch:{
-    'baseMeet.company_id':{
-      deep:true,
-      handler:function(newV,oldV){
+  watch: {
+    'baseMeet.company_id': {
+      deep: true,
+      handler: function(newV, oldV) {
         // this.contactInfo.company_id = newV
         // this.getCustomerConfig(2)
       }
     },
-    'baseMeet.company_contacts':{
-      deep:true,
-      handler:function(newV,oldV){
+    'baseMeet.company_contacts': {
+      deep: true,
+      handler: function(newV, oldV) {
         // this.getContact()
       }
     },
-    'baseMeet.online_meeting':{
-      deep:true,
-      handler:function(newV,oldV){
-        if(newV){
-          this.rules.event_city[0].required = false;
-          this.baseMeet.event_city = '';
-        }else{
-          this.rules.event_city[0].required = true;
+    'baseMeet.online_meeting': {
+      deep: true,
+      handler: function(newV, oldV) {
+        if (newV) {
+          this.rules.event_city[0].required = false
+          this.baseMeet.event_city = ''
+        } else {
+          this.rules.event_city[0].required = true
         }
       }
     },
-    'baseMeet.inside_number':{
-      deep:true,
-      handler:function(newV,oldV){
-        if(Number(newV) && newV> 0){
-          this.rules.external_number[0].required = false;
-          this.baseMeet.attendee_no = Number(newV) + Number(this.baseMeet.external_number);
-        }else{
-          
+    'baseMeet.inside_number': {
+      deep: true,
+      handler: function(newV, oldV) {
+        if (Number(newV) && newV > 0) {
+          this.rules.external_number[0].required = false
+          this.baseMeet.attendee_no = Number(newV) + Number(this.baseMeet.external_number)
+        } else {
           this.baseMeet.inside_number = ''
-          this.baseMeet.attendee_no = this.baseMeet.external_number;
+          this.baseMeet.attendee_no = this.baseMeet.external_number
         }
       }
     },
-    'baseMeet.external_number':{
-      deep:true,
-      handler:function(newV,oldV){
-        if(Number(newV) && newV> 0){
-          this.rules.inside_number[0].required = false;
-          this.baseMeet.attendee_no = Number(newV) + Number(this.baseMeet.inside_number) ;
-        }else{
-          this.baseMeet.external_number = '';
-          this.baseMeet.attendee_no = this.baseMeet.inside_number;
+    'baseMeet.external_number': {
+      deep: true,
+      handler: function(newV, oldV) {
+        if (Number(newV) && newV > 0) {
+          this.rules.inside_number[0].required = false
+          this.baseMeet.attendee_no = Number(newV) + Number(this.baseMeet.inside_number)
+        } else {
+          this.baseMeet.external_number = ''
+          this.baseMeet.attendee_no = this.baseMeet.inside_number
         }
       }
-    },
+    }
   },
   created() {
-    this.getCustomerList();
-    this.getCityList();
+    this.getCustomerList()
+    this.getCityList()
     // this.getHistoryEvent();
-    this.getServiceType();
+    this.getServiceType()
   },
   mounted() {
-    this.$nextTick(()=>{
-      let query = this.$route.query;
-      if(query && query.type && query.type === 'edit') {
-        this.eventId = this.$route.query.id;
-        this.baseMeet.id = this.$route.query.id;
-        this.baseMeet.event_num = this.$route.query.event_num;
+    this.$nextTick(() => {
+      let query = this.$route.query
+      if (query && query.type && query.type === 'edit') {
+        this.eventId = this.$route.query.id
+        this.baseMeet.id = this.$route.query.id
+        this.baseMeet.event_num = this.$route.query.event_num
         this.getEventDetail()
-      }else {
+      } else {
         this.eventId = ''
       }
     })
   },
   methods: {
     // 获取会议基本信息
-    getEventDetail(){
+    getEventDetail() {
       this.requestApi({
-          url: '/CustomerConfiguration/Get_event_info',
-          method: 'get',
-          data: {eventId:this.baseMeet.event_num,eventSearchType: this.$route.query.eventSearchType},
-        }).then(res => {
+        url: '/CustomerConfiguration/Get_event_info',
+        method: 'get',
+        data: { eventId: this.baseMeet.event_num, eventSearchType: this.$route.query.eventSearchType }
+      }).then(res => {
         // debugger
-        if(res.EventModels) {
-          this.baseMeet = res.EventModels[0];
-          this.fileList = []; // 附件列表赋值
+        if (res.EventModels) {
+          this.baseMeet = res.EventModels[0]
+          this.fileList = [] // 附件列表赋值
           this.baseMeet.fileInfos.forEach(file => {
-            this.fileList.push({id:file.id,name:file.file_name, url:file.file_path})
+            this.fileList.push({ id: file.id, name: file.file_name, url: file.file_path })
           })
-          this.baseMeet.tourist_group_type = this.baseMeet.tourist_group_type.toString();
+          this.baseMeet.tourist_group_type = this.baseMeet.tourist_group_type.toString()
         }
 
-        if( this.baseMeet.company_id){
+        if (this.baseMeet.company_id) {
           this.requestApi({
             url: '/MeetingMa/GetCustomerContactList',
             method: 'get',
-            data: { id: this.baseMeet.company_id, type:1},
-          }).then(res=>{
-            if(res && res !== true) {
-              this.customerContactList = res;
-              let ContactInfo = this.customerContactList.find(item => { return item.id == this.baseMeet.company_contacts });
-              this.baseMeet.email = ContactInfo.mailbox;
-              this.baseMeet.phone = ContactInfo.phone;
+            data: { id: this.baseMeet.company_id, type: 1 }
+          }).then(res => {
+            if (res && res !== true) {
+              this.customerContactList = res
+              let ContactInfo = this.customerContactList.find(item => {
+                return item.id == this.baseMeet.company_contacts
+              })
+              this.baseMeet.email = ContactInfo.mailbox
+              this.baseMeet.phone = ContactInfo.phone
               // debugger
               this.getContactInfo(ContactInfo.id)
               // this.getContact()
-            }else {
-              this.customerContactList = [];
+            } else {
+              this.customerContactList = []
             }
-          });
+          })
         }
         console.log(this.baseMeet)
       })
     },
     // 切换客户、公司
-    getCustomerConfig(type,addContact) {
-      if(type === 2) {
-        this.baseMeet.company_contacts = '';
-        this.baseMeet.department = '';
-        this.baseMeet.departmentName = '';
-        this.baseMeet.email = '';
-        this.baseMeet.phone = '';
-        this.baseMeet.activity_type = '';
-        this.baseMeet.food_limit = '';
+    getCustomerConfig(type, addContact) {
+      if (type === 2) {
+        this.baseMeet.company_contacts = ''
+        this.baseMeet.department = ''
+        this.baseMeet.departmentName = ''
+        this.baseMeet.email = ''
+        this.baseMeet.phone = ''
+        this.baseMeet.activity_type = ''
+        this.baseMeet.food_limit = ''
         this.requestApi({
           url: '/MeetingMa/GetCustomerContactList',
           method: 'post',
-          data: { id: this.baseMeet.company_id, type:1},
-        }).then(res=>{
-          if(res && res !== true) {
-            this.customerContactList = res;
+          data: { id: this.baseMeet.company_id, type: 1 }
+        }).then(res => {
+          if (res && res !== true) {
+            this.customerContactList = res
             // 新增联系人成功调用查询联系人接口
-            if(addContact){
+            if (addContact) {
               this.getContact()
             }
-          }else {
-            this.customerContactList = [];
+          } else {
+            this.customerContactList = []
           }
-        });
+        })
       } else if (type === 1) {
-        this.contactInfo.customer_id = '';
+        this.contactInfo.customer_id = ''
         this.requestApi({
           url: '/MeetingMa/GetDepartmenty',
           method: 'post',
-          data: {CompanyID:this.contactInfo.company_id},
+          data: { CompanyID: this.contactInfo.company_id }
         }).then(res => {
-          if(res && res!== true){
+          if (res && res !== true) {
             this.departmentList = res
           } else {
-            this.$message.warning('请配置该公司部门');
+            this.$message.warning('请配置该公司部门')
             this.contactInfo.customer_id = ''
           }
         })
       }
-
     },
     //选择客户联系人
     getContact() {
       debugger
-      let data = this.customerContactList.filter(item => { return item.id == this.baseMeet.company_contacts });
-      this.baseMeet.activity_type = '';
-      this.baseMeet.food_limit = '';
-      if(data[0]){
-        this.baseMeet.email = data[0].mailbox;
-        this.baseMeet.phone = data[0].phone;
+      let data = this.customerContactList.filter(item => {
+        return item.id == this.baseMeet.company_contacts
+      })
+      this.baseMeet.activity_type = ''
+      this.baseMeet.food_limit = ''
+      if (data[0]) {
+        this.baseMeet.email = data[0].mailbox
+        this.baseMeet.phone = data[0].phone
         this.getContactInfo(data[0].id)
-      }else{
-        this.baseMeet.email = '';
-        this.baseMeet.phone = '';
+      } else {
+        this.baseMeet.email = ''
+        this.baseMeet.phone = ''
         this.getContactInfo('')
       }
-
     },
     // 客户联系人所属信息
-    getContactInfo(id){
+    getContactInfo(id) {
       this.requestApi({
         url: '/MeetingMa/GetCustomerContactEdit',
         method: 'post',
-        data: {ContactID: id},
+        data: { ContactID: id }
       }).then(res => {
-        if(res) {
-            this.baseMeet.department = res.departmentyid;
-            // this.baseMeet.departmentName = res.shortname;
-            this.$set(this.baseMeet,'departmentName',res.shortname)
-            if(id){ // 如果选了客户联系人，有客户联系人ID
-              this.getMeetingType(res.departmentyid);
-            }else{
-              this.activityList = [];
-            }
+        if (res) {
+          this.baseMeet.department = res.departmentyid
+          // this.baseMeet.departmentName = res.shortname;
+          this.$set(this.baseMeet, 'departmentName', res.shortname)
+          if (id) {
+            // 如果选了客户联系人，有客户联系人ID
+            this.getMeetingType(res.departmentyid)
+          } else {
+            this.activityList = []
+          }
         }
       })
     },
-     // 活动类型
-    getMeetingType(id){
-      let params ={};
-      if(id){
+    // 活动类型
+    getMeetingType(id) {
+      let params = {}
+      if (id) {
         params = {
           DepartmentyID: id
         }
-      }else{
+      } else {
         params = {
           CompanyID: this.baseMeet.company_id
         }
@@ -544,17 +546,19 @@ export default {
       this.requestApi({
         url: '/MeetingMa/GetMeetingTypeShow',
         method: 'post',
-        data: params,
+        data: params
       }).then(res => {
         this.activityList = res
-      });
+      })
     },
 
     // 选择活动类型
-    selectActive(){
+    selectActive() {
       debugger
-      let data = this.activityList.find(item => {return this.baseMeet.activity_type == item.id});
-      this.baseMeet.food_limit = data?data.meal_label:'';
+      let data = this.activityList.find(item => {
+        return this.baseMeet.activity_type == item.id
+      })
+      this.baseMeet.food_limit = data ? data.meal_label : ''
     },
     // 是否线上会议切换
     // online_meetingChange(e){
@@ -565,242 +569,236 @@ export default {
     //     this.rules.event_city[0].required = true;
     //   }
     // },
-    timeStart(){
-      if(this.baseMeet.event_startdate>this.baseMeet.event_enddate){
-       return this.baseMeet.event_enddate=this.baseMeet.event_startdate
+    timeStart() {
+      if (this.baseMeet.event_startdate > this.baseMeet.event_enddate) {
+        return (this.baseMeet.event_enddate = this.baseMeet.event_startdate)
       }
     },
-    getServiceType(){
+    getServiceType() {
       this.requestApi({
         url: '/MeetingMa/GetServiceType',
         method: 'post',
-        data: {},
+        data: {}
       }).then(res => {
-        this.serviceList = res;
-        if(!this.baseMeet.service_type){
-          this.baseMeet.service_type = this.serviceList[0].id // 取默认值： 会议等非旅游服务 
+        this.serviceList = res
+        if (!this.baseMeet.service_type) {
+          this.baseMeet.service_type = this.serviceList[0].id // 取默认值： 会议等非旅游服务
           // 会议等非旅游服务  发票类型 默认专票
           this.baseMeet.invoice_type = 1
         }
-        
       })
     },
     // 服务类型切换
-    serviceTypeChange(value){
+    serviceTypeChange(value) {
       debugger
-      if(value == '456d1027-413b-11ec-9db6-fa163ed463f8'){ // 会议等非旅游服务
+      if (value == '456d1027-413b-11ec-9db6-fa163ed463f8') {
+        // 会议等非旅游服务
         // 发票类型 默认专票
         this.baseMeet.invoice_type = 1
-      }else if(value == '59266863-413b-11ec-9db6-fa163ed463f8'){ // 旅游服务
+      } else if (value == '59266863-413b-11ec-9db6-fa163ed463f8') {
+        // 旅游服务
         // 发票类型 默认普票
-         this.baseMeet.invoice_type = 0
+        this.baseMeet.invoice_type = 0
       }
     },
-    addContactDialogTap(){
-      this.addContactDialog = true;
-      this.contactInfo = {id:"", name:'', phone:'', mailbox:'', customer_id:"", company_id:""};
-      this.contactInfo.company_id = this.baseMeet.company_id;
-      this.getCustomerConfig(1);
+    addContactDialogTap() {
+      this.addContactDialog = true
+      this.contactInfo = { id: '', name: '', phone: '', mailbox: '', customer_id: '', company_id: '' }
+      this.contactInfo.company_id = this.baseMeet.company_id
+      this.getCustomerConfig(1)
     },
     // 添加客户联系人
-     addContactTap(formName) {
-      this.$refs.contactInfo.validate((valid) => {
+    addContactTap(formName) {
+      this.$refs.contactInfo.validate(valid => {
         if (valid) {
           this.requestApi({
             url: '/MeetingMa/CustomerContactSava',
             method: 'post',
-            data: {Parameter: JSON.stringify(this.contactInfo)},
+            data: { Parameter: JSON.stringify(this.contactInfo) }
           }).then(res => {
-            if(res) {
-              this.addContactDialog = false;
-              this.$message.success('添加成功');
-              this.getCustomerConfig(2,'addContactSuccess');
-              this.baseMeet.company_contacts = res;
+            if (res) {
+              this.addContactDialog = false
+              this.$message.success('添加成功')
+              this.getCustomerConfig(2, 'addContactSuccess')
+              this.baseMeet.company_contacts = res
             }
           })
         }
       })
     },
-    
+
     // 创建会议0 保存草稿1
     subEvent(id) {
-      this.baseMeet.event_status = id;
-      if(id === 0){
-        localStorage.setItem('event_city_code', this.baseMeet.event_city);
-        this.$refs["baseMeet"].validate((valid) => {
-          if(valid){
-            this.baseMeet.event_enddate = this.baseMeet.event_enddate.slice(0,10) + ' 23:59:59'
-            if(this.eventId){
-              this.baseMeet.id = this.eventId;
+      this.baseMeet.event_status = id
+      if (id === 0) {
+        localStorage.setItem('event_city_code', this.baseMeet.event_city)
+        this.$refs['baseMeet'].validate(valid => {
+          if (valid) {
+            this.baseMeet.event_enddate = this.baseMeet.event_enddate.slice(0, 10) + ' 23:59:59'
+            if (this.eventId) {
+              this.baseMeet.id = this.eventId
               this.requestApi({
                 url: '/CustomerConfiguration/Update_event_info',
                 method: 'post',
-                data: this.baseMeet,
+                data: this.baseMeet
               }).then(res => {
-                if(res){
-                  this.demandDialog = true;
-                  this.newEventId = this.$route.query.id || this.eventId;
-                  this.newEventName = this.$route.query.name || this.baseMeet.event_name;
+                if (res) {
+                  this.demandDialog = true
+                  this.newEventId = this.$route.query.id || this.eventId
+                  this.newEventName = this.$route.query.name || this.baseMeet.event_name
                 }
-                
               })
-            }else{
+            } else {
               this.requestApi({
                 url: '/CustomerConfiguration/Create_event_info',
                 method: 'post',
-                data: this.baseMeet,
+                data: this.baseMeet
               }).then(res => {
-                if(res){
-                  this.demandDialog = true;
-                  this.newEventId = res.eventId;
-                  this.newEventName = res.eventName;
+                if (res) {
+                  this.demandDialog = true
+                  this.newEventId = res.eventId
+                  this.newEventName = res.eventName
                 }
               })
             }
-          }else{
+          } else {
             this.$message.warning('请完善会议信息')
           }
         })
       } else {
-        if(this.eventId){
-          this.baseMeet.id = this.eventId;
+        if (this.eventId) {
+          this.baseMeet.id = this.eventId
           this.requestApi({
             url: '/CustomerConfiguration/Update_event_info',
             method: 'post',
-            data: this.baseMeet,
+            data: this.baseMeet
           }).then(res => {
             this.$message.success('已保存至草稿')
-            
           })
-        }else{
+        } else {
           this.requestApi({
             url: '/CustomerConfiguration/Create_event_info',
             method: 'post',
-            data: this.baseMeet,
+            data: this.baseMeet
           }).then(res => {
             this.eventId = res.eventId
             this.$message.success('已保存至草稿')
           })
         }
       }
-
     },
-    fileLimit(file){
-      const isLt30M = file.size / 1024 / 1024 < 30;
+    fileLimit(file) {
+      const isLt30M = file.size / 1024 / 1024 < 30
       if (!isLt30M) {
-				this.$message.error('上传附件大小不能超过 30MB!');
-				return false;
-			}
-        return limitsEffect(file) 
+        this.$message.error('上传附件大小不能超过 30MB!')
+        return false
+      }
+      return limitsEffect(file)
     },
     // 上传文件
     uploadFile(e) {
-      this.uploadList = e;
+      this.uploadList = e
       // this.fileList = [{name:e.title, url: e.weburl}];
-      if(!this.baseMeet.fileInfos){
+      if (!this.baseMeet.fileInfos) {
         this.baseMeet.fileInfos = []
       }
       // this.baseMeet.files.push({name:e.title, url: e.weburl});
-      this.baseMeet.fileInfos.push({id:'',file_name:e.title, file_path: e.weburl});
+      this.baseMeet.fileInfos.push({ id: '', file_name: e.title, file_path: e.weburl })
     },
     // 文件删除
     deleteFile(file, fileList) {
-      this.baseMeet.fileInfos = [];
+      this.baseMeet.fileInfos = []
       fileList.forEach(file => {
-        if(file.id){
-          this.baseMeet.fileInfos.push({id:file.id, file_name: file.name, file_path: file.url});
-        }else{
-          this.baseMeet.fileInfos.push({id: '', file_name: file.name, file_path: file.response.weburl});
+        if (file.id) {
+          this.baseMeet.fileInfos.push({ id: file.id, file_name: file.name, file_path: file.url })
+        } else {
+          this.baseMeet.fileInfos.push({ id: '', file_name: file.name, file_path: file.response.weburl })
         }
-      });
+      })
       // this.waitUpload = e;
     },
     // 下载文件
-    downloadFile(file){
-      let downloadUrl = file.response?file.response.weburl:file.url;
-      window.open(downloadUrl, "_blank");
+    downloadFile(file) {
+      let downloadUrl = file.response ? file.response.weburl : file.url
+      window.open(downloadUrl, '_blank')
     },
 
-    goDemand(){
-      this.$router.push({name:'EventDemand',query:{id: this.newEventId, name: this.newEventName}})
+    goDemand() {
+      this.$router.push({ name: 'EventDemand', query: { id: this.newEventId, name: this.newEventName } })
     },
     goDetail() {
-      this.$router.push({name:'eventDetail',query:{id: this.newEventId, name: this.newEventName}})
+      this.$router.push({ name: 'eventDetail', query: { id: this.newEventId, name: this.newEventName } })
     },
     // 获取客户列表l
     getCustomerList() {
       this.requestApi({
         url: '/UserGroupmanagement/GetCustomerEventInfoPost',
         method: 'post',
-        data: {},
-      }).then((res) => {
+        data: {}
+      }).then(res => {
         this.customerList = res
       })
     },
-    
-    
-   
-    
-    
+
     // 获取城市
     getCityList() {
       this.requestApi({
         url: '/CustomerConfiguration/GetCitys',
-        method: 'GET',
-      }).then((res) => {
+        method: 'GET'
+      }).then(res => {
         this.cityList = res
       })
     },
     // 获取会议历史
-    getHistoryEvent(){
+    getHistoryEvent() {
       this.requestApi({
         url: '/CustomerConfiguration/Get_event_info',
         method: 'GET',
-        data: {page:this.page,pageSize:this.pageSize}
-      }).then(res =>{
-        this.eventList = res.EventModels;
+        data: { page: this.page, pageSize: this.pageSize }
+      }).then(res => {
+        this.eventList = res.EventModels
         this.pageInfo = res.pageInfo
       })
     },
     // 上一步
-    preStep(){
-      this.hisDialog = true;
-      this.hisStartDialog = false;
+    preStep() {
+      this.hisDialog = true
+      this.hisStartDialog = false
     },
     //复制会议
     copyEvent(data, type) {
-      if(type === 1){
-        localStorage.setItem('event_city_code', data.event_city);
-        this.hisItem = data;
-        this.hisDialog = false;
-        this.hisStartDialog = true;
+      if (type === 1) {
+        localStorage.setItem('event_city_code', data.event_city)
+        this.hisItem = data
+        this.hisDialog = false
+        this.hisStartDialog = true
       } else {
-        if(!this.hisStartDate){
-          this.$message.warning('请选择时间！');
+        if (!this.hisStartDate) {
+          this.$message.warning('请选择时间！')
           return
         }
         this.requestApi({
-        url: '/CustomerConfiguration/CopyEventInfo',
-        method: 'POST',
-        data: {id: this.hisItem.id,eventStartDate: this.hisStartDate}
-      }).then(res => {
-          this.hisStartDialog = false;
-          this.demandDialog = true;
+          url: '/CustomerConfiguration/CopyEventInfo',
+          method: 'POST',
+          data: { id: this.hisItem.id, eventStartDate: this.hisStartDate }
+        }).then(res => {
+          this.hisStartDialog = false
+          this.demandDialog = true
           this.newEventId = res.newEventId
         })
       }
     },
-    
+
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-      this.pageSize = val;
-      this.getHistoryEvent();
+      console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.getHistoryEvent()
     },
     handleCurrentChange(val) {
-      this.page = val;
-      console.log(`当前页: ${val}`);
-      this.getHistoryEvent();
-    },
+      this.page = val
+      console.log(`当前页: ${val}`)
+      this.getHistoryEvent()
+    }
   }
 }
 </script>
@@ -824,16 +822,16 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  // /deep/ .el-input__inner, .el-date-editor {width: 500px !important}
-  .attendee_no /deep/ .el-input {
+  // ::deep .el-input__inner, .el-date-editor {width: 500px !important}
+  .attendee_no ::deep .el-input {
     width: 50%;
   }
 
-  /deep/ .el-table__body-wrapper {
+  ::deep .el-table__body-wrapper {
     overflow-y: auto;
   }
 
-  /deep/ .el-table__fixed-right {
+  ::deep .el-table__fixed-right {
     overflow-y: hidden;
   }
 

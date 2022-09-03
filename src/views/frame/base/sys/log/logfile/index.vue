@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="bs-container app-container">
     <header id="elHead" :style="{ width: clientWidth < 1366 && !app.isScreenFull ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-form @submit.native.prevent label-position="left" :inline="true" class="header-form-inline">
         <el-row :gutter="20" style="width: 94%">
@@ -145,7 +145,7 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           data: node.level === 0 ? {} : node.data
         }
-      }).then((response) => {
+      }).then(response => {
         if (response.status) {
           const filelist = []
           for (const file of response.data) {

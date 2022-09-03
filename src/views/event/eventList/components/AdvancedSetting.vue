@@ -122,11 +122,11 @@ export default {
       regulate: false,
       control: true,
       widget: false,
-      userList:[],
-      username:'GHQ243',
-      createUser:{},
-      tableData:[]
-    };
+      userList: [],
+      username: 'GHQ243',
+      createUser: {},
+      tableData: []
+    }
   },
   mounted() {
     this.GetMeetingPersonnels()
@@ -136,61 +136,60 @@ export default {
   },
   methods: {
     handleRemove(type) {
-      this.exhibit = !this.exhibit;
-      this.demonstrate = !this.demonstrate;
-      if(this.exhibit ==false && this.demonstrate == true){
-        this.MeetingSetUp(type);
+      this.exhibit = !this.exhibit
+      this.demonstrate = !this.demonstrate
+      if (this.exhibit == false && this.demonstrate == true) {
+        this.MeetingSetUp(type)
       }
-      
     },
-    abolishOne(){
-      this.exhibit = !this.exhibit;
-      this.demonstrate = !this.demonstrate;
+    abolishOne() {
+      this.exhibit = !this.exhibit
+      this.demonstrate = !this.demonstrate
     },
     handleRemovd(type) {
-      this.exhibito = !this.exhibito;
-      this.demonstrated = !this.demonstrated;
-      if(this.exhibito ==false && this.demonstrated == true){
-        this.MeetingSetUp(type);
+      this.exhibito = !this.exhibito
+      this.demonstrated = !this.demonstrated
+      if (this.exhibito == false && this.demonstrated == true) {
+        this.MeetingSetUp(type)
       }
     },
-    abolishTwo(){
-      this.exhibito = !this.exhibito;
-      this.demonstrated = !this.demonstrated;
-    },  
+    abolishTwo() {
+      this.exhibito = !this.exhibito
+      this.demonstrated = !this.demonstrated
+    },
     supporterr(type) {
-      this.supporter = !this.supporter;
-      this.supporters = !this.supporters;
-       if(this.supporters ==false && this.supporter == true){
-        this.MeetingSetUp(type);
+      this.supporter = !this.supporter
+      this.supporters = !this.supporters
+      if (this.supporters == false && this.supporter == true) {
+        this.MeetingSetUp(type)
       }
     },
-     abolishThree(){
-      this.supporter = !this.supporter;
-      this.supporters = !this.supporters;
-    }, 
+    abolishThree() {
+      this.supporter = !this.supporter
+      this.supporters = !this.supporters
+    },
     dominated(type) {
-      this.dominate = !this.dominate;
-      this.regulate = !this.regulate;
-       if(this.regulate ==false && this.dominate == true){
-        this.MeetingSetUp(type);
+      this.dominate = !this.dominate
+      this.regulate = !this.regulate
+      if (this.regulate == false && this.dominate == true) {
+        this.MeetingSetUp(type)
       }
     },
-    abolishFour(){
-      this.dominate = !this.dominate;
-      this.regulate = !this.regulate;
-    }, 
+    abolishFour() {
+      this.dominate = !this.dominate
+      this.regulate = !this.regulate
+    },
     widgeted(type) {
-      this.control = !this.control;
-      this.widget = !this.widget;
-       if(this.widget ==false && this.control == true){
-        this.MeetingSetUp(type);
+      this.control = !this.control
+      this.widget = !this.widget
+      if (this.widget == false && this.control == true) {
+        this.MeetingSetUp(type)
       }
     },
-    abolishFive(){
-      this.control = !this.control;
-      this.widget = !this.widget;
-    }, 
+    abolishFive() {
+      this.control = !this.control
+      this.widget = !this.widget
+    },
     // MeetingSetUp
     MeetingSetUp(type) {
       this.requestApi({
@@ -201,44 +200,44 @@ export default {
             // meeting_id: 'df0259a4-16c1-11ec-ba42-fa163ed463f8', //	会议ID
             meeting_id: this.$route.query.id, //	会议ID
             type: type, //	1是创建人，2是负责人，3是会议助理，4是采购人，5是合规(结算人)
-            username: this.username, //用户账号
-          }),
-        },
-      }).then((res) => {
-        if(res && res === true){
+            username: this.username //用户账号
+          })
+        }
+      }).then(res => {
+        if (res && res === true) {
           location.reload()
         }
-      });
+      })
     },
     infoReplaceRecord() {
       this.requestApi({
         url: '/MeetingMa/InfoReplaceRecord',
         method: 'post',
-        data: { MeetingID: this.$route.query.id },
-      }).then((res) => {
-        this.tableData=res
-      });
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
+        this.tableData = res
+      })
     },
     getUser() {
       this.requestApi({
         url: '/MeetingMa/GetUser',
         method: 'post',
-        data: {  },
-      }).then((res) => {
-        this.userList=res
-      });
+        data: {}
+      }).then(res => {
+        this.userList = res
+      })
     },
     GetMeetingPersonnels() {
       this.requestApi({
         url: '/MeetingMa/GetMeetingPersonnels',
         method: 'post',
-        data: {MeetingID:this.$route.query.id},
-      }).then((res) => {
-          this.createUser=res[0]
-        });
-    },
-  },
-};
+        data: { MeetingID: this.$route.query.id }
+      }).then(res => {
+        this.createUser = res[0]
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

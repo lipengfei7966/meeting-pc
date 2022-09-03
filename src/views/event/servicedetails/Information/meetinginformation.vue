@@ -23,15 +23,15 @@
 export default {
   data() {
     return {
-      conferenceHiding:true,//点击加减显示隐藏
+      conferenceHiding: true //点击加减显示隐藏
     }
   },
-  methods:{
-    aaa(){
+  methods: {
+    aaa() {
       this.conferenceHiding = !this.conferenceHiding
-    },
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">

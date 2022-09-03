@@ -157,38 +157,37 @@
 </template>
 
 <script>
-import { positiveFloat, } from '@/utils/common';
-  export default {
-    name: "event",
-    props:['eventList', 'additional','isCollectOffer','allQuoteInfo',"hotelInfo"],
-    data() {
-      return{
-        showPart: true,
-        carList: [],
-      }
-    },
-    computed:{
-      getDateTotal: () => {
-        return function(item){
-          let money = 0;
-          item.build.forEach(element => {
-            money += element.price
-          })
-          item.equipment.forEach(element => {
-            money += element.price
-          })
-          item.rentalCosts.forEach(element => {
-            money += element.price
-          })
-          return this.positiveFloat(money)
-        }
-        
-      },
-    },
-    methods:{
-      positiveFloat
+import { positiveFloat } from '@/utils/common'
+export default {
+  name: 'event',
+  props: ['eventList', 'additional', 'isCollectOffer', 'allQuoteInfo', 'hotelInfo'],
+  data() {
+    return {
+      showPart: true,
+      carList: []
     }
+  },
+  computed: {
+    getDateTotal: () => {
+      return function(item) {
+        let money = 0
+        item.build.forEach(element => {
+          money += element.price
+        })
+        item.equipment.forEach(element => {
+          money += element.price
+        })
+        item.rentalCosts.forEach(element => {
+          money += element.price
+        })
+        return this.positiveFloat(money)
+      }
+    }
+  },
+  methods: {
+    positiveFloat
   }
+}
 </script>
 
 <style lang="scss" scoped>

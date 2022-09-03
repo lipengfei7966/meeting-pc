@@ -109,327 +109,342 @@
 </template>
 
 <script>
-	/**
-	 * @page 基本信息管理
-	 */
-	import upload from "@/utils/upload";
-	
-	import {
-		validatePhone,
-		validateTelphone,
-		validatePhoneTwo,
-		validateEMail,
-		validateURL
-	} from '@/assets/js/validator'
-	export default {
-		name: "BasicInformationManagement",
-		data() {
-			return {
-				ruleForm: {
-					company_name: "",
-					company_address: "",
-					about_us: "",
-					company_profile: "",
-					company_phone: "",
-					company_fax: "",
-					company_email: "",
-					customer_service_name: "",
-					customer_service_telephone_numbers: "",
-					customer_service_QQ_number: "",
-					company_website: "",
-					special_note: "",
-					company_logo: "",
-					picture: "",
-					city:"",
-				},
-				rules: {
-					company_name: [{
-						required: true,
-						message: "请输入公司名称",
-						trigger: "change"
-					}, ],
-					company_address: [{
-						required: true,
-						message: "请输入公司地址",
-						trigger: "change"
-					}, ],
-					about_us: [{
-						required: true,
-						message: "请填写关于我们",
-						trigger: "change"
-					}, ],
-					company_profile: [{
-						required: true,
-						message: "请填写公司介绍",
-						trigger: "change"
-					}, ],
-					company_phone: [{
-						required: true,
-						message: "请输入公司电话",
-						trigger: "change"
-					}, {
-						validator: validatePhoneTwo,
-						trigger: "blur"
-					}],
-					company_fax: [{
-						required: true,
-						message: "请输入公司传真",
-						trigger: "change"
-					}, {
-						validator: validateTelphone,
-						trigger: "blur"
-					}],
-					company_email: [{
-						required: true,
-						message: "请输入公司邮箱",
-						trigger: "change"
-					}, {
-						validator: validateEMail,
-						trigger: "blur"
-					}],
-					customer_service_telephone_numbers: [{
-						required: true,
-						message: "请输入客服电话",
-						trigger: "change"
-					}, {
-						validator: validatePhoneTwo,
-						trigger: "blur"
-					}],
-					customer_service_QQ_number: [{
-						required: true,
-						message: "请输入客服QQ",
-						trigger: "change"
-					}, ],
-					company_website: [{
-						validator: validateURL,
-						trigger: "change"
-					}],
-					company_logo: [{
-						required: true,
-						message: "请上传公司LOGO",
-						trigger: "change"
-					}, ],
-					picture: [{
-						required: true,
-						message: "请上传图片",
-						trigger: "change"
-					}],
-				},
-				// 待上传 公司logo
-				wait_for_logo: null,
-				// 待上传 图片
-				wait_for_image: null,
-				type: {
-					city: null,
-					sitetype: null,
-					brand: null,
-					venuearea: null,
-					venuepeoplenumber: null,
-					roomprice: null,
-				},
-				listFormData: {
-					city: [],
-					// sitetype: [],
-					// brand: [],
-					// venue_min_area: null,
-					// venue_max_area: null,
-					// venue_min_people_number: null,
-					// venue_max_people_number: null,
-					// room_min_avg_price: null,
-					// room_max_avg_price: null,
-					keyword: "",
-					isagreement: false,
-					Page: 1,
-					Rows: 10
-				},
-				statusList: {
-					cityStatus: false, //选择城市是否展开,
-					brandStatus: false, //酒店品牌是否展开,
-				},
-				cityName:'',
-			};
-		},
-		computed: {
-			picture_if_image() {
-				return String(this.ruleForm.picture).IsPicture();
-			},
-			company_logo_if_image() {
-				return String(this.ruleForm.company_logo).IsPicture();
-			},
-		},
-		methods: {
-			// 保存1
-			save() {
-				this.$refs["ruleForm"].validate((valid) => {
-					if (valid) {
-						var city=''
-            var cityname=''
-						this.listFormData.city.forEach((val,index)=>{
-							if(index==this.listFormData.city.length-1){
-								city+=val.code
-                cityname+=val.AbbreviationName
-							}else{
-								city+=val.code+','
-                cityname+=val.AbbreviationName+','
-							}
-						})
-						this.ruleForm.city=city
-            this.ruleForm.cityname=cityname
-						
-						//组装本次上传数据
-						// 验证成功
-						upload([{
-								key: "company_logo",
-								file: this.ruleForm.company_logo
-							}])
-							.then((res) => {
-								console.log(res)
-								if (res[0])
-									this.ruleForm.company_logo = res[0].FilePath
-								return upload([{
-									key: "picture",
-									file: this.ruleForm.picture
-								}]);
-							})
-							.then((res) => {
-								console.log(res)
-								if (res[0])
-									this.ruleForm.picture = res[0].FilePath
-								return this.requestApi({
-                    url: '/serviceprovider/save',
-                    method: 'POST',
-                    data: this.ruleForm,
-                  });
-							})
-							// 提交
-							.then((res) => {
-								this.$message({
-									message: "保存成功！",
-									type: "success",
-								});
-							});
-					} else {
-						console.log("error submit!!");
-						return false;
-					}
-				});
-			},
-			// 上传LOGO
-			handlePreviewLogo(file) {
-				//保存消息图片
-				const isJPG = file.raw.type === 'image/jpeg';
-				const isPNG = file.raw.type === 'image/png';
-				const isLt500K = file.size / 1024 < 500;
-				if ((!isJPG && !isPNG) || !isLt500K) {
-					if (!isJPG || !isPNG)
-						this.$message.error('上传公司LOGO只能是 JPG 或者 PNG 格式!');
-					else
-						this.$message.error('上传公司LOGO大小不能超过 500KB!');
-					// 取消时在文件列表中删除该文件
-					this.$refs.upload.handleRemove(file);
-					return;
-				}
-				// file 文件
-				this.ruleForm.company_logo = file.raw;
-			},
-			// 上传图片
-			handlePreviewImage(file) {
-				//保存消息图片
-				const isJPG = file.raw.type === 'image/jpeg';
-				const isPNG = file.raw.type === 'image/png';
-				const isLt500K = file.size / 1024 < 500;
-				if ((!isJPG && !isPNG) || !isLt500K) {
-					if (!isJPG || !isPNG)
-						this.$message.error('上传图片只能是 JPG 或者 PNG 格式!');
-					else
-						this.$message.error('上传图片大小不能超过 500KB!');
-					// 取消时在文件列表中删除该文件
-					this.$refs.upload.handleRemove(file);
-					return;
-				}
-				// file 文件
-				this.ruleForm.picture = file.raw;
-			},
-			selectedCity(code,AbbreviationName) {
-				//this.listFormData.city = [{ code }];
-				if (code) {
-					if (this.listFormData.city.findIndex(item => item.code === code) == -1){
-						if (this.listFormData.city.length <10) {
-							this.listFormData.city.push({
-								code,
-								AbbreviationName
-							});
-							var list=''
-							this.listFormData.city.forEach((val,index)=>{
-								if(this.listFormData.city.length-1==index){
-									list+=val.AbbreviationName
-								}else{
-									list+=val.AbbreviationName+','
-								}
-								
-							})
-							this.cityName=list
-						} else {
-							this.$message({
-								showClose: true,
-								message: '最多可选十座城市',
-								type: 'warning'
-							});
-						}
-					}else{
-						this.listFormData.city = this.listFormData.city.filter(item => item.code != code)
-						this.listFormData.city = this.listFormData.city.filter(item => item.AbbreviationName != AbbreviationName)
-						var list=''
-						this.listFormData.city.forEach((val,index)=>{
-							if(this.listFormData.city.length-1==index){
-								list+=val.AbbreviationName
-							}else{
-								list+=val.AbbreviationName+','
-							}
-							
-						})
-						this.cityName=list
-					}
-						
-				} else
-					this.listFormData.city = [];
-			},
-		},
-		mounted() {
+/**
+ * @page 基本信息管理
+ */
+import upload from '@/utils/upload'
+
+import { validatePhone, validateTelphone, validatePhoneTwo, validateEMail, validateURL } from '@/assets/js/validator'
+export default {
+  name: 'BasicInformationManagement',
+  data() {
+    return {
+      ruleForm: {
+        company_name: '',
+        company_address: '',
+        about_us: '',
+        company_profile: '',
+        company_phone: '',
+        company_fax: '',
+        company_email: '',
+        customer_service_name: '',
+        customer_service_telephone_numbers: '',
+        customer_service_QQ_number: '',
+        company_website: '',
+        special_note: '',
+        company_logo: '',
+        picture: '',
+        city: ''
+      },
+      rules: {
+        company_name: [
+          {
+            required: true,
+            message: '请输入公司名称',
+            trigger: 'change'
+          }
+        ],
+        company_address: [
+          {
+            required: true,
+            message: '请输入公司地址',
+            trigger: 'change'
+          }
+        ],
+        about_us: [
+          {
+            required: true,
+            message: '请填写关于我们',
+            trigger: 'change'
+          }
+        ],
+        company_profile: [
+          {
+            required: true,
+            message: '请填写公司介绍',
+            trigger: 'change'
+          }
+        ],
+        company_phone: [
+          {
+            required: true,
+            message: '请输入公司电话',
+            trigger: 'change'
+          },
+          {
+            validator: validatePhoneTwo,
+            trigger: 'blur'
+          }
+        ],
+        company_fax: [
+          {
+            required: true,
+            message: '请输入公司传真',
+            trigger: 'change'
+          },
+          {
+            validator: validateTelphone,
+            trigger: 'blur'
+          }
+        ],
+        company_email: [
+          {
+            required: true,
+            message: '请输入公司邮箱',
+            trigger: 'change'
+          },
+          {
+            validator: validateEMail,
+            trigger: 'blur'
+          }
+        ],
+        customer_service_telephone_numbers: [
+          {
+            required: true,
+            message: '请输入客服电话',
+            trigger: 'change'
+          },
+          {
+            validator: validatePhoneTwo,
+            trigger: 'blur'
+          }
+        ],
+        customer_service_QQ_number: [
+          {
+            required: true,
+            message: '请输入客服QQ',
+            trigger: 'change'
+          }
+        ],
+        company_website: [
+          {
+            validator: validateURL,
+            trigger: 'change'
+          }
+        ],
+        company_logo: [
+          {
+            required: true,
+            message: '请上传公司LOGO',
+            trigger: 'change'
+          }
+        ],
+        picture: [
+          {
+            required: true,
+            message: '请上传图片',
+            trigger: 'change'
+          }
+        ]
+      },
+      // 待上传 公司logo
+      wait_for_logo: null,
+      // 待上传 图片
+      wait_for_image: null,
+      type: {
+        city: null,
+        sitetype: null,
+        brand: null,
+        venuearea: null,
+        venuepeoplenumber: null,
+        roomprice: null
+      },
+      listFormData: {
+        city: [],
+        // sitetype: [],
+        // brand: [],
+        // venue_min_area: null,
+        // venue_max_area: null,
+        // venue_min_people_number: null,
+        // venue_max_people_number: null,
+        // room_min_avg_price: null,
+        // room_max_avg_price: null,
+        keyword: '',
+        isagreement: false,
+        Page: 1,
+        Rows: 10
+      },
+      statusList: {
+        cityStatus: false, //选择城市是否展开,
+        brandStatus: false //酒店品牌是否展开,
+      },
+      cityName: ''
+    }
+  },
+  computed: {
+    picture_if_image() {
+      return String(this.ruleForm.picture).IsPicture()
+    },
+    company_logo_if_image() {
+      return String(this.ruleForm.company_logo).IsPicture()
+    }
+  },
+  methods: {
+    // 保存1
+    save() {
+      this.$refs['ruleForm'].validate(valid => {
+        if (valid) {
+          var city = ''
+          var cityname = ''
+          this.listFormData.city.forEach((val, index) => {
+            if (index == this.listFormData.city.length - 1) {
+              city += val.code
+              cityname += val.AbbreviationName
+            } else {
+              city += val.code + ','
+              cityname += val.AbbreviationName + ','
+            }
+          })
+          this.ruleForm.city = city
+          this.ruleForm.cityname = cityname
+
+          //组装本次上传数据
+          // 验证成功
+          upload([
+            {
+              key: 'company_logo',
+              file: this.ruleForm.company_logo
+            }
+          ])
+            .then(res => {
+              console.log(res)
+              if (res[0]) this.ruleForm.company_logo = res[0].FilePath
+              return upload([
+                {
+                  key: 'picture',
+                  file: this.ruleForm.picture
+                }
+              ])
+            })
+            .then(res => {
+              console.log(res)
+              if (res[0]) this.ruleForm.picture = res[0].FilePath
+              return this.requestApi({
+                url: '/serviceprovider/save',
+                method: 'POST',
+                data: this.ruleForm
+              })
+            })
+            // 提交
+            .then(res => {
+              this.$message({
+                message: '保存成功！',
+                type: 'success'
+              })
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    // 上传LOGO
+    handlePreviewLogo(file) {
+      //保存消息图片
+      const isJPG = file.raw.type === 'image/jpeg'
+      const isPNG = file.raw.type === 'image/png'
+      const isLt500K = file.size / 1024 < 500
+      if ((!isJPG && !isPNG) || !isLt500K) {
+        if (!isJPG || !isPNG) this.$message.error('上传公司LOGO只能是 JPG 或者 PNG 格式!')
+        else this.$message.error('上传公司LOGO大小不能超过 500KB!')
+        // 取消时在文件列表中删除该文件
+        this.$refs.upload.handleRemove(file)
+        return
+      }
+      // file 文件
+      this.ruleForm.company_logo = file.raw
+    },
+    // 上传图片
+    handlePreviewImage(file) {
+      //保存消息图片
+      const isJPG = file.raw.type === 'image/jpeg'
+      const isPNG = file.raw.type === 'image/png'
+      const isLt500K = file.size / 1024 < 500
+      if ((!isJPG && !isPNG) || !isLt500K) {
+        if (!isJPG || !isPNG) this.$message.error('上传图片只能是 JPG 或者 PNG 格式!')
+        else this.$message.error('上传图片大小不能超过 500KB!')
+        // 取消时在文件列表中删除该文件
+        this.$refs.upload.handleRemove(file)
+        return
+      }
+      // file 文件
+      this.ruleForm.picture = file.raw
+    },
+    selectedCity(code, AbbreviationName) {
+      //this.listFormData.city = [{ code }];
+      if (code) {
+        if (this.listFormData.city.findIndex(item => item.code === code) == -1) {
+          if (this.listFormData.city.length < 10) {
+            this.listFormData.city.push({
+              code,
+              AbbreviationName
+            })
+            var list = ''
+            this.listFormData.city.forEach((val, index) => {
+              if (this.listFormData.city.length - 1 == index) {
+                list += val.AbbreviationName
+              } else {
+                list += val.AbbreviationName + ','
+              }
+            })
+            this.cityName = list
+          } else {
+            this.$message({
+              showClose: true,
+              message: '最多可选十座城市',
+              type: 'warning'
+            })
+          }
+        } else {
+          this.listFormData.city = this.listFormData.city.filter(item => item.code != code)
+          this.listFormData.city = this.listFormData.city.filter(item => item.AbbreviationName != AbbreviationName)
+          var list = ''
+          this.listFormData.city.forEach((val, index) => {
+            if (this.listFormData.city.length - 1 == index) {
+              list += val.AbbreviationName
+            } else {
+              list += val.AbbreviationName + ','
+            }
+          })
+          this.cityName = list
+        }
+      } else this.listFormData.city = []
+    }
+  },
+  mounted() {
+    this.requestApi({
+      url: '/serviceprovider/info',
+      method: 'POST',
+      data: {}
+    }).then(res => {
+      this.ruleForm = res
       this.requestApi({
-        url: '/serviceprovider/info',
+        url: '/serviceprovider/city',
         method: 'POST',
-        data: {},
-      }).then((res) => {
-				this.ruleForm = res;
-        this.requestApi({
-          url: '/serviceprovider/city',
-          method: 'POST',
-          data: {},
-        }).then((res) => {
-					this.type.city = res.city;
-					var result=[]
-					if(!this.ruleForm.city.toString().includes(',')){
-					  result=new Array(this.ruleForm.city)
-					}else{
-					  result=this.ruleForm.city.split(',')
-					}
-					let list=JSON.parse(JSON.stringify(this.type.city))
-					var name={}
-					list.splice(0,1)
-					result.forEach((val,index)=>{
-						list.forEach((value,i)=>{
-							name=value.city_list.find(e=>e.code==val)
-							if(name){
-								this.selectedCity(val,name.AbbreviationName)
-							}
-						})
-						
-					})
-				})
-			});
-		},
-	};
+        data: {}
+      }).then(res => {
+        this.type.city = res.city
+        var result = []
+        if (!this.ruleForm.city.toString().includes(',')) {
+          result = new Array(this.ruleForm.city)
+        } else {
+          result = this.ruleForm.city.split(',')
+        }
+        let list = JSON.parse(JSON.stringify(this.type.city))
+        var name = {}
+        list.splice(0, 1)
+        result.forEach((val, index) => {
+          list.forEach((value, i) => {
+            name = value.city_list.find(e => e.code == val)
+            if (name) {
+              this.selectedCity(val, name.AbbreviationName)
+            }
+          })
+        })
+      })
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

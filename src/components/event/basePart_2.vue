@@ -429,8 +429,6 @@ export default {
         })
       }
 
-      
-      
     },
     Service() { // 会议基本信息
       this.requestApi({

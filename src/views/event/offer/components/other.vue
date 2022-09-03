@@ -47,28 +47,28 @@
 </template>
 
 <script>
-import { positiveFloat, } from '@/utils/common';
-  export default {
-    name: "other",
-    props:['otherList', 'additional','isCollectOffer','allQuoteInfo',"hotelInfo"],
-    data() {
-      return{
-        showPart: true,
-      }
-    },
-    computed:{
-      offlineOthersTotalMoney(){
-        let money = 0;
-        this.allQuoteInfo.offline_quoted_price_others.forEach(element => {
-          money += (element.price*element.offerparticipatecount*element.offerservicedaycount)
-        });
-        return money
-      },
-    },
-    methods:{
-      positiveFloat
+import { positiveFloat } from '@/utils/common'
+export default {
+  name: 'other',
+  props: ['otherList', 'additional', 'isCollectOffer', 'allQuoteInfo', 'hotelInfo'],
+  data() {
+    return {
+      showPart: true
     }
+  },
+  computed: {
+    offlineOthersTotalMoney() {
+      let money = 0
+      this.allQuoteInfo.offline_quoted_price_others.forEach(element => {
+        money += element.price * element.offerparticipatecount * element.offerservicedaycount
+      })
+      return money
+    }
+  },
+  methods: {
+    positiveFloat
   }
+}
 </script>
 
 <style lang="scss" scoped>
