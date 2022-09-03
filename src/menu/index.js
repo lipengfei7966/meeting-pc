@@ -26,7 +26,7 @@ export const constantMenuMap = [
         firstParent: 'example'
       }
     }]
-  },
+  }
   // {
   //   name: 'event',
   //   meta: {
@@ -81,121 +81,121 @@ export const constantMenuMap = [
   //     }
   //   ]
   // },
-  {
-    name: 'DMCevent',
-    meta: {
-      title: 'DMCevent',
-      icon: 'table',
-      isFirstParent: true
-    },
-    hidden: false,
-    children: [
-      {
-        name: 'DMCcreateEvent',
-        meta: {
-          title: 'DMCcreateEvent',
-          firstParent: 'DMCevent'
-        }
-      },
-      {
-        name: 'DMCEventList',
-        meta: {
-          title: 'DMCEventList',
-          firstParent: 'DMCevent'
-        }
-      },
-      {
-        name: 'DMCinquiryList',
-        meta: {
-          title: 'DMCinquiryList',
-          firstParent: 'DMCevent'
-        }
-      },
-      {
-        name: 'DMCbasicInfoManage',
-        meta: {
-          title: 'DMCbasicInfoManage',
-          firstParent: 'DMCevent'
-        }
-      },
-      {
-        name: 'DMCorderList',
-        meta: {
-          title: 'DMCorderList',
-          firstParent: 'DMCevent'
-        }
-      },
-      {
-        name: 'DMCmemberManage',
-        meta: {
-          title: 'DMCmemberManage',
-          firstParent: 'DMCevent'
-        }
-      },
-      {
-        name: 'DMCitineraryList',
-        meta: {
-          title: 'DMCitineraryList',
-          firstParent: 'DMCevent'
-        }
-      }
-    ]
-  },
-  {
-    name: 'systemSetting',
-    meta: {
-      title: 'systemSetting',
-      icon: 'Tshezhi',
-      isFirstParent: true
-    },
-    hidden: false,
-    children: [
-      {
-        name: 'clientMemberManage',
-        meta: {
-          title: 'clientMemberManage',
-          firstParent: 'systemSetting'
-        }
-      },
-      {
-        name: 'approveSetting',
-        meta: {
-          title: 'approveSetting',
-          firstParent: 'systemSetting'
-        }
-      },
-      {
-        name: 'otherSetting',
-        meta: {
-          title: 'otherSetting',
-          firstParent: 'systemSetting'
-        }
-      },
-      {
-        name: 'relatedPersonSetting',
-        meta: {
-          title: 'relatedPersonSetting',
-          firstParent: 'systemSetting'
-        }
-      }
-    ]
-  },
-  {
-    name: 'resourceCenter',
-    meta: {
-      title: 'resourceCenter',
-      icon: 'table',
-      isFirstParent: true
-    },
-    hidden: false,
-    children: [
-      {
-        name: 'siteResource',
-        meta: {
-          title: 'siteResource',
-          firstParent: 'resourceCenter'
-        }
-      }
-    ]
-  }
+  // {
+  //   name: 'DMCevent',
+  //   meta: {
+  //     title: 'DMCevent',
+  //     icon: 'table',
+  //     isFirstParent: true
+  //   },
+  //   hidden: false,
+  //   children: [
+  //     {
+  //       name: 'DMCcreateEvent',
+  //       meta: {
+  //         title: 'DMCcreateEvent',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     },
+  //     {
+  //       name: 'DMCEventList',
+  //       meta: {
+  //         title: 'DMCEventList',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     },
+  //     {
+  //       name: 'DMCinquiryList',
+  //       meta: {
+  //         title: 'DMCinquiryList',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     },
+  //     {
+  //       name: 'DMCbasicInfoManage',
+  //       meta: {
+  //         title: 'DMCbasicInfoManage',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     },
+  //     {
+  //       name: 'DMCorderList',
+  //       meta: {
+  //         title: 'DMCorderList',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     },
+  //     {
+  //       name: 'DMCmemberManage',
+  //       meta: {
+  //         title: 'DMCmemberManage',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     },
+  //     {
+  //       name: 'DMCitineraryList',
+  //       meta: {
+  //         title: 'DMCitineraryList',
+  //         firstParent: 'DMCevent'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   name: 'systemSetting',
+  //   meta: {
+  //     title: 'systemSetting',
+  //     icon: 'Tshezhi',
+  //     isFirstParent: true
+  //   },
+  //   hidden: false,
+  //   children: [
+  //     {
+  //       name: 'clientMemberManage',
+  //       meta: {
+  //         title: 'clientMemberManage',
+  //         firstParent: 'systemSetting'
+  //       }
+  //     },
+  //     {
+  //       name: 'approveSetting',
+  //       meta: {
+  //         title: 'approveSetting',
+  //         firstParent: 'systemSetting'
+  //       }
+  //     },
+  //     {
+  //       name: 'otherSetting',
+  //       meta: {
+  //         title: 'otherSetting',
+  //         firstParent: 'systemSetting'
+  //       }
+  //     },
+  //     {
+  //       name: 'relatedPersonSetting',
+  //       meta: {
+  //         title: 'relatedPersonSetting',
+  //         firstParent: 'systemSetting'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   name: 'resourceCenter',
+  //   meta: {
+  //     title: 'resourceCenter',
+  //     icon: 'table',
+  //     isFirstParent: true
+  //   },
+  //   hidden: false,
+  //   children: [
+  //     {
+  //       name: 'siteResource',
+  //       meta: {
+  //         title: 'siteResource',
+  //         firstParent: 'resourceCenter'
+  //       }
+  //     }
+  //   ]
+  // }
 ]

@@ -26,6 +26,10 @@ export default {
         if (this.tenantCodeHash) {
           iframeSrc = iframeSrc + '&tenantCode=' + this.tenantCodeHash
         }
+        //内部页面
+        if (iframeSrc.indexOf('#/') === 0) {
+          iframeSrc = iframeSrc + '&inn=true'
+        }
         route.meta.src = iframeSrc
       }
     })
