@@ -66,14 +66,17 @@
 <script>
 import station from '@/components/MicroStation/station'
 import settingUp from '@/components/MicroStation/settingUp'
-// import settingUp from '@/components/MicroStation/settingUp'
-// import settingUp from '@/components/MicroStation/settingUp'
-// import settingUp from '@/components/MicroStation/settingUp'
+import baseMap from '@/components/MicroStation/baseMap'
+import slideshowManage from '@/components/MicroStation/slideshowManage'
+import titleManage from '@/components/MicroStation/titleManage'
 export default {
   name: 'microStationManagement',
   components: {
     station,
-    settingUp
+    settingUp,
+    baseMap,
+    slideshowManage,
+    titleManage
   },
   data() {
     return {
