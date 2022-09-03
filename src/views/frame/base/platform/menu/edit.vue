@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='maxColumnsDialog'>
       <!-- 头部 -->
       <TitleContain :titleName="dialogTitle" @TitleFun="$emit('closeHandler')" />
