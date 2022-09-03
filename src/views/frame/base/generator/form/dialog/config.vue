@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' :style="{width: this.sidebar.opened ? '1166px' : '1326px'}">
       <title-contain titleName="弹窗代码定义" @TitleFun="$emit('closeHandler')"></title-contain>
 
