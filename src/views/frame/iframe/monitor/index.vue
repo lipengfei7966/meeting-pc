@@ -3,9 +3,7 @@
 </template>
 
 <script>
-import {
-  getToken
-} from '@/utils/frame/base/auth'
+import { getToken } from '@/utils/frame/base/auth'
 
 export default {
   name: 'iframe',
@@ -20,7 +18,11 @@ export default {
 
     if (this.iframeSrc) {
       const token = this.iframeSrc.indexOf('?') > -1 ? '&' : '?'
-      this.iframeSrc = this.iframeSrc + token + 'bpmToken=' + getToken()
+      this.iframeSrc = this.iframeSrc + token
+      //内部页面
+      if (this.iframeSrc.indexOf('#/') === 0) {
+        this.iframeSrc = this.iframeSrc + '&inn=true'
+      }
     }
     this.fullscreenLoading = true
   },

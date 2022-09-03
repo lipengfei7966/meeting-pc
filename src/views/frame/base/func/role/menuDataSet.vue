@@ -92,7 +92,7 @@ export default {
     param: Object
   },
   computed: {
-    ...mapGetters(['permissionRouters', 'sidebar', 'clientWidth', 'clientHeight']),
+    ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       return this.clientWidth > 1355 ? this.clientHeight - 650 : this.clientHeight - 660 // 防止底部滚动条遮挡
     },

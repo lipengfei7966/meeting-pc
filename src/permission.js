@@ -77,6 +77,7 @@ router.beforeEach(async (to, from, next) => {
             }))
             next(getLoginUrl())
           } else {
+            console.log(to)
             // 取得用户信息
             const userInfo = await store.dispatch('GetUser')
             // 初始化字典、物资属性字段取得和 初始化路由

@@ -3,9 +3,7 @@
 </template>
 
 <script>
-import {
-  getToken
-} from '@/utils/frame/base/auth'
+import { getToken } from '@/utils/frame/base/auth'
 
 export default {
   name: 'myiframeView',
@@ -25,7 +23,7 @@ export default {
       iframeSrc = this.getUrlPath()
     }
     const token = iframeSrc.indexOf('?') > -1 ? '&' : '?'
-    this.urlPath = iframeSrc + token + 'bpmToken=' + getToken()
+    this.urlPath = iframeSrc + token
   },
   mounted() {
     this.iframeInit()
@@ -35,7 +33,7 @@ export default {
   },
   props: ['routerPath'],
   watch: {
-    routerPath: function (val) {
+    routerPath: function(val) {
       this.urlPath = this.getUrlPath()
     }
   },
@@ -53,13 +51,11 @@ export default {
               const tabs = Array.from(this.$store.state.tagsView.visitedViews)
               tabs.forEach((tab, index) => {
                 if (tab.name === this.$route.name) {
-                  this.$store
-                    .dispatch('delVisitedViews', this.$route)
-                    .then(this.$router.push(tabs[index - 1].fullPath))
+                  this.$store.dispatch('delVisitedViews', this.$route).then(this.$router.push(tabs[index - 1].fullPath))
                 }
               })
             }
-          } catch (error) { }
+          } catch (error) {}
           this.fullscreenLoading = false
         })
       } else {
@@ -70,18 +66,16 @@ export default {
               const tabs = Array.from(this.$store.state.tagsView.visitedViews)
               tabs.forEach((tab, index) => {
                 if (tab.name === this.$route.name) {
-                  this.$store
-                    .dispatch('delVisitedViews', this.$route)
-                    .then(this.$router.push(tabs[index - 1].fullPath))
+                  this.$store.dispatch('delVisitedViews', this.$route).then(this.$router.push(tabs[index - 1].fullPath))
                 }
               })
             }
-          } catch (error) { }
+          } catch (error) {}
           this.fullscreenLoading = false
         }
       }
     },
-    getUrlPath: function () {
+    getUrlPath: function() {
       let url = window.location.href
       url = url.replace('/iframeViewModel', '')
       return url

@@ -6,7 +6,8 @@ export const eventRoute = [
     component: () => import('@/views/event/createEvent/index'),
     meta: {
       title: 'createEvent',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -15,7 +16,8 @@ export const eventRoute = [
     component: () => import('@/views/event/eventList/index'),
     meta: {
       title: 'eventList',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -24,7 +26,8 @@ export const eventRoute = [
     component: () => import('@/views/event/eventList/eventDetail'),
     meta: {
       title: 'eventDetail',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -33,7 +36,8 @@ export const eventRoute = [
     component: () => import('@/views/event/eventList/components/AdvancedSetting'),
     meta: {
       title: 'advancedsetting',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -42,7 +46,8 @@ export const eventRoute = [
     component: () => import('@/views/event/EventDemand/index'),
     meta: {
       title: 'EventDemand',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 线下报价
@@ -52,7 +57,8 @@ export const eventRoute = [
     component: () => import('@/views/event/belowQuotation/index'),
     meta: {
       title: 'belowQuotation',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
 
@@ -63,7 +69,8 @@ export const eventRoute = [
     component: () => import('@/views/event/servicedetails/index'),
     meta: {
       title: 'servicedetails',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 比价页详情
@@ -73,7 +80,8 @@ export const eventRoute = [
     component: () => import('@/views/event/comparisonPrice/index'),
     meta: {
       title: 'comparisonPrice',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 查看报价
@@ -83,7 +91,8 @@ export const eventRoute = [
     component: () => import('@/views/event/offer/index'),
     meta: {
       title: 'offer',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 查看汇总报价
@@ -93,7 +102,8 @@ export const eventRoute = [
     component: () => import('@/views/event/offer/collectOffer'),
     meta: {
       title: 'collectOffer',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 查看订单
@@ -103,7 +113,8 @@ export const eventRoute = [
     component: () => import('@/views/event/provider/index'),
     meta: {
       title: 'provider',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 查看结算单
@@ -113,7 +124,8 @@ export const eventRoute = [
     component: () => import('@/views/event/msd/index'),
     meta: {
       title: 'msd',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -122,7 +134,8 @@ export const eventRoute = [
     component: () => import('@/views/event/approveOrderManage/index'),
     meta: {
       title: 'approveOrderManage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -131,7 +144,8 @@ export const eventRoute = [
     component: () => import('@/views/event/parameter/index'),
     meta: {
       title: 'parameter',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -140,7 +154,8 @@ export const eventRoute = [
     component: () => import('@/views/event/approve/index'),
     meta: {
       title: 'approve',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 中标审批详情
@@ -150,7 +165,8 @@ export const eventRoute = [
     component: () => import('@/views/event/approve/biddingDetail'),
     meta: {
       title: 'biddingDetail',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 中标审批完成详情
@@ -160,7 +176,8 @@ export const eventRoute = [
     component: () => import('@/views/event/approve/biddedDetail'),
     meta: {
       title: 'biddedDetail',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -169,7 +186,8 @@ export const eventRoute = [
     component: () => import('@/views/event/reporting/index'),
     meta: {
       title: 'reporting',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
 
   },
@@ -180,7 +198,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCcreateEvent/index'),
     meta: {
       title: 'DMCcreateEvent',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -189,7 +208,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCEventList/index'),
     meta: {
       title: 'DMCEventList',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -198,7 +218,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCEventList/DMCEventDetail'),
     meta: {
       title: 'DMCEventDetail',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -207,7 +228,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCEventDemand/index'),
     meta: {
       title: 'DMCEventDemand',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -216,7 +238,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCinquiry/inquiryList/index'),
     meta: {
       title: 'DMCinquiryList',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -225,7 +248,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCinquiry/inquiryList/inquiryInfo'),
     meta: {
       title: 'DMCinquiryInfo',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -234,7 +258,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCquotedprice/index'),
     meta: {
       title: 'DMCquotedprice',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -243,7 +268,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCbasicInfoManage/index'),
     meta: {
       title: 'DMCbasicInfoManage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -252,7 +278,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCorder/orderList/index'),
     meta: {
       title: 'DMCorderList',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -261,7 +288,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCorder/orderList/orderInfo'),
     meta: {
       title: 'orderInfo',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -270,7 +298,8 @@ export const eventRoute = [
     component: () => import('@/views/event/settleAccounts/index'),
     meta: {
       title: 'settleAccounts',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -279,7 +308,8 @@ export const eventRoute = [
     component: () => import('@/views/event/settleAccounts/settleAccounts_Hotel'),
     meta: {
       title: 'settleAccounts_Hotel',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -288,7 +318,8 @@ export const eventRoute = [
     component: () => import('@/views/event/settleAccounts/offlineSettlement'),
     meta: {
       title: 'offlineSettlement',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -297,7 +328,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCorder/orderList/index'),
     meta: {
       title: 'DMCmemberManage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -306,7 +338,8 @@ export const eventRoute = [
     component: () => import('@/views/event/DMCitineraryList/itineraryList/index'),
     meta: {
       title: 'DMCitineraryList',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
 
   },
@@ -317,7 +350,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/clientMemberManage/index'),
     meta: {
       title: 'clientMemberManage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -326,7 +360,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/approveSetting/index'),
     meta: {
       title: 'approveSetting',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 中标审批流配置
@@ -336,7 +371,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/approveSetting/outbid'),
     meta: {
       title: 'outbid',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 结算审批流配置
@@ -346,7 +382,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/approveSetting/settlementSheet'),
     meta: {
       title: 'settlementSheet',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 新增编辑结算审批规则
@@ -356,7 +393,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/approveSetting/addeditApprovalrule'),
     meta: {
       title: 'addeditApprovalrule',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 添加审批步骤
@@ -366,7 +404,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/approveSetting/approvalsteps'),
     meta: {
       title: 'approvalsteps',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -375,7 +414,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/index'),
     meta: {
       title: 'otherSetting',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 报价结算规则配置
@@ -385,7 +425,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/quotationSettlementEditor'),
     meta: {
       title: 'quotationSettlementEditor',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 附加信息配置
@@ -395,7 +436,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/otherMessageSeetingEditor'),
     meta: {
       title: 'otherMessageSeetingEditor',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 数据权限配置--新增组
@@ -405,7 +447,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/addeditUsergroup'),
     meta: {
       title: 'addeditUsergroup',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 数据权限配置--组员管理
@@ -415,7 +458,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/membermanage'),
     meta: {
       title: 'membermanage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 数据权限配置--客户权限管理
@@ -425,7 +469,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/customermanage'),
     meta: {
       title: 'customermanage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 数据权限配置--客户权限管理
@@ -435,7 +480,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/otherSetting/reportmanage'),
     meta: {
       title: 'reportmanage',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -444,7 +490,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/relatedPersonSetting/index'),
     meta: {
       title: 'relatedPersonSetting',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 会议助理-新增、编辑
@@ -454,7 +501,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/relatedPersonSetting/assistant/assistantAdd'),
     meta: {
       title: 'assistantAdd',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 会议合规人-新增、编辑
@@ -464,7 +512,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/relatedPersonSetting/compliance/complianceAdd'),
     meta: {
       title: 'complianceAdd',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 会议负责人-新增、编辑
@@ -474,7 +523,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/relatedPersonSetting/header/addPrincipal'),
     meta: {
       title: 'addPrincipal',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   // 会议采购人-新增、编辑
@@ -484,7 +534,8 @@ export const eventRoute = [
     component: () => import('@/views/event/setting/relatedPersonSetting/procurement/procurementAdd'),
     meta: {
       title: 'procurementAdd',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
 
   },
@@ -495,7 +546,8 @@ export const eventRoute = [
     component: () => import('@/views/event/resourceCenter/siteResource/index'),
     meta: {
       title: 'siteResource',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -504,7 +556,8 @@ export const eventRoute = [
     component: () => import('@/views/event/resourceCenter/siteResource/HotelProcurement'),
     meta: {
       title: 'HotelProcurement',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -513,7 +566,8 @@ export const eventRoute = [
     component: () => import('@/views/event/resourceCenter/siteResource/SendSuccess'),
     meta: {
       title: 'hotelSendSuccess',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -522,7 +576,8 @@ export const eventRoute = [
     component: () => import('@/views/event/ServiceProvider/index'),
     meta: {
       title: 'ServiceProvider',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -531,7 +586,8 @@ export const eventRoute = [
     component: () => import('@/views/event/resourceCenter/siteResource/info.vue'),
     meta: {
       title: 'hotelInfo',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -540,7 +596,8 @@ export const eventRoute = [
     component: () => import('@/views/event/ServiceProvider/ServiceProviderProcurement.vue'),
     meta: {
       title: 'ServiceProviderProcurement',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   },
   {
@@ -549,7 +606,8 @@ export const eventRoute = [
     component: () => import('@/views/event/ServiceProvider/SendSuccess.vue'),
     meta: {
       title: 'SendSuccess',
-      noCache: true
+      noCache: true,
+      cmms: true
     }
   }
 
