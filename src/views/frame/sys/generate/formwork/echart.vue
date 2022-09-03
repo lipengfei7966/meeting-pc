@@ -195,7 +195,7 @@ export default {
 
       if (this.mainData.initSearch) {
         this.$nextTick(() => {
-          this.getList()
+          this.$refs.bsTable.lazyTable()
         })
       }
     } else {

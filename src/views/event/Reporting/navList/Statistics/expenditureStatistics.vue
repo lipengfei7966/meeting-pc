@@ -104,135 +104,133 @@
 </template>
 
 <script>
-import BrokenLineOne from '@/components/event/brokenLineOne';
-import requestApi from '@/utils/requestData'
+import BrokenLineOne from '@/components/event/brokenLineOne'
+
 export default {
-	props: ['pice'],
-	data() {
-		return {
-			dateListed: [
-				
-			],
-			monthList: [
-				{
-					id: '1',
-					datem: '1'
-				},
-				{
-					id: '2',
-					datem: '2'
-				},
-				{
-					id: '3',
-					datem: '3'
-				},
-				{
-					id: '4',
-					datem: '4'
-				},
-				{
-					id: '5',
-					datem: '5'
-				},
-				{
-					id: '6',
-					datem: '6'
-				},
-				{
-					id: '7',
-					datem: '7'
-				},
-				{
-					id: '8',
-					datem: '8'
-				},
-				{
-					id: '9',
-					datem: '9'
-				},
-				{
-					id: '10',
-					datem: '10'
-				},
-				{
-					id: '11',
-					datem: '11'
-				},
-				{
-					id: '12',
-					datem: '12'
-				}
-			],
-			contacts: [],
-			picelist: [],
-			dateList: [],
-			customers:[],
-			conferMetting: [],
-			mettingStartYear: new Date(new Date().setMonth(new Date().getMonth()-3)).getFullYear(), //搜索会议开始年份的默认值
-			mettingStartMonth: new Date(new Date().setMonth(new Date().getMonth()-3)).getMonth()+1, //搜索会议开始月份的默认值
-			mettingEndYear: new Date().getFullYear(), //搜索会议结束年份的默认值
-			mettingEndMonth: new Date().getMonth()+1, //搜索会议结束月份的默认值
-			meetingType: null, //搜索会议类型的默认值
-			creator: null, //搜索负责人的默认值
-			costType: null ,//搜索费用类型默认值
-			customer:0,//搜索客户的默认值
-		};
-	},
-	mounted() {
-		var timeList=new Date().getFullYear()-2019
-		for (var i = 0; i < timeList+1; i++) {
-			this.dateListed.push({id:i+1,datey:2019+i})
-		}
-		this.costStatistics();
-		// this.dictionaryTable();
-		this.getCustomerContacts();
-		this.getCustomers()
-	},
-	methods: {
-		//会议类型
-		getEventType(){
-      requestApi({
+  props: ['pice'],
+  data() {
+    return {
+      dateListed: [],
+      monthList: [
+        {
+          id: '1',
+          datem: '1'
+        },
+        {
+          id: '2',
+          datem: '2'
+        },
+        {
+          id: '3',
+          datem: '3'
+        },
+        {
+          id: '4',
+          datem: '4'
+        },
+        {
+          id: '5',
+          datem: '5'
+        },
+        {
+          id: '6',
+          datem: '6'
+        },
+        {
+          id: '7',
+          datem: '7'
+        },
+        {
+          id: '8',
+          datem: '8'
+        },
+        {
+          id: '9',
+          datem: '9'
+        },
+        {
+          id: '10',
+          datem: '10'
+        },
+        {
+          id: '11',
+          datem: '11'
+        },
+        {
+          id: '12',
+          datem: '12'
+        }
+      ],
+      contacts: [],
+      picelist: [],
+      dateList: [],
+      customers: [],
+      conferMetting: [],
+      mettingStartYear: new Date(new Date().setMonth(new Date().getMonth() - 3)).getFullYear(), //搜索会议开始年份的默认值
+      mettingStartMonth: new Date(new Date().setMonth(new Date().getMonth() - 3)).getMonth() + 1, //搜索会议开始月份的默认值
+      mettingEndYear: new Date().getFullYear(), //搜索会议结束年份的默认值
+      mettingEndMonth: new Date().getMonth() + 1, //搜索会议结束月份的默认值
+      meetingType: null, //搜索会议类型的默认值
+      creator: null, //搜索负责人的默认值
+      costType: null, //搜索费用类型默认值
+      customer: 0 //搜索客户的默认值
+    }
+  },
+  mounted() {
+    var timeList = new Date().getFullYear() - 2019
+    for (var i = 0; i < timeList + 1; i++) {
+      this.dateListed.push({ id: i + 1, datey: 2019 + i })
+    }
+    this.costStatistics()
+    // this.dictionaryTable();
+    this.getCustomerContacts()
+    this.getCustomers()
+  },
+  methods: {
+    //会议类型
+    getEventType() {
+      this.requestApi({
         url: '/CustomerConfiguration/GetEventType',
         method: 'POST',
-        data: {companyid:this.customer },
+        data: { companyid: this.customer }
       }).then(res => {
-			  this.conferMetting = res
-			})
-		},
-		//客户
-		getCustomers(){
-      requestApi({
+        this.conferMetting = res
+      })
+    },
+    //客户
+    getCustomers() {
+      this.requestApi({
         url: '/MeetingMa/GetCompany',
         method: 'POST',
-        data: { },
+        data: {}
       }).then(res => {
-			  this.customers = res
-			})
-		},
-		//负责人
-		getCustomerContacts() {
-      requestApi({
+        this.customers = res
+      })
+    },
+    //负责人
+    getCustomerContacts() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
-        data: { },
+        data: {}
       }).then(res => {
-				this.contacts = res;
-			});
-		},
-		//获取字典表
-		dictionaryTable() {
-      requestApi({
+        this.contacts = res
+      })
+    },
+    //获取字典表
+    dictionaryTable() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_dictionary_detail',
         method: 'GET',
-        data: { event_dictionary_code: '0035' },
+        data: { event_dictionary_code: '0035' }
       }).then(res => {
-					this.conferMetting = res;
-					console.log(this.conferMetting, 'wqeqweqwewqeqq');
-				});
-		},
-		//
-		costStatistics() {
-      requestApi({
+        this.conferMetting = res
+        console.log(this.conferMetting, 'wqeqweqwewqeqq')
+      })
+    },
+    //
+    costStatistics() {
+      this.requestApi({
         url: '/CustomerConfiguration/SpendAnalysisInfo',
         method: 'GET',
         data: {
@@ -244,25 +242,25 @@ export default {
           SubmitUser: this.creator,
           CostType: this.costType,
           CompanyId: this.customer
-        },
+        }
       }).then(res => {
-					this.dateList = res.infos;
-				});
-		},
-		search() {
-			this.costStatistics();
-			this.$emit('hotelExpenses',this.mettingStartYear,this.mettingStartMonth,this.mettingEndYear,this.mettingEndMonth)
-		}
-	},
-	components: {
-		BrokenLineOne
-	},
-	watch: {
-		pice(val = []) {
-			this.picelist = val;
-		}
-	}
-};
+        this.dateList = res.infos
+      })
+    },
+    search() {
+      this.costStatistics()
+      this.$emit('hotelExpenses', this.mettingStartYear, this.mettingStartMonth, this.mettingEndYear, this.mettingEndMonth)
+    }
+  },
+  components: {
+    BrokenLineOne
+  },
+  watch: {
+    pice(val = []) {
+      this.picelist = val
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

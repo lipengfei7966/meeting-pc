@@ -75,7 +75,7 @@ export default {
       padding-top: 60px;
       .el-tabs.el-tabs--top.el-tabs--border-card > .el-tabs__header.is-top {
         .el-tabs__nav-scroll {
-          height: 55px;
+          // height: 55px;
           padding: 16px 20px 0;
           background-color: #626e95;
           .el-tabs__nav {

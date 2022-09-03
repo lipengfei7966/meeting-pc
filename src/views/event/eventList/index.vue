@@ -204,7 +204,7 @@
 
 <script>
 import {formatDate} from '@/utils/common';
-import requestApi from '@/utils/requestData'
+
 export default {
   name: "eventList",
   data(){
@@ -263,13 +263,16 @@ export default {
     this.getBuyerOptions();
     this.company();
     this.getCityList();
-   
+
   },
   methods:{
     formatDate,
     goDetail(val){
 		console.log(val)
-      this.$router.push({path:'/EventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
+    // this.$store.dispatch('delVisitedViews', this.$route).then(() => {
+      this.$router.push({name:'eventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
+    // })
+
     },
     // 编辑基本信息
     editBaseTap(rowInfo){
@@ -293,7 +296,7 @@ export default {
       //   this.customerList = res
       // });
       // 替换成权限控制
-      requestApi({
+      this.requestApi({
         url: '/UserGroupmanagement/GetCustomerEventInfoPost',
         method: 'post',
         data: {},
@@ -310,7 +313,7 @@ export default {
     },
     // 获取城市
     getCityList() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetCitys',
         method: 'GET',
       }).then((res) => {
@@ -329,7 +332,7 @@ export default {
       let right = this.$refs['eventTypeName'+data.$index].getBoundingClientRect().right
       this.$refs.newMessageBox.style.top = top+'px';
       // debugger
-      
+
       this.$nextTick(res => {
         let megBoxWidth = this.$refs.newMessageBox.offsetWidth;
       this.$refs.newMessageBox.style.left = (right - megBoxWidth)+'px'
@@ -365,7 +368,7 @@ export default {
         }
         this.event_date = [] // 查询条件-时间重置
       }
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_info',
         method: 'GET',
         data: this.eventSearch,
@@ -392,7 +395,7 @@ export default {
       this.eventSearch.event_settlement = '';
       this.eventSearch.cvent_no = '';
       this.eventSearch.pr = '';
-      
+
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -410,7 +413,7 @@ export default {
       this.getDataList();
     },
     getBuyerOptions(){
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
         data: {},

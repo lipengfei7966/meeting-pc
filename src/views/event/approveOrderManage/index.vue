@@ -237,62 +237,62 @@
 </template>
 
 <script>
-import {  positiveFloat, formatDate, } from '@/utils/common';
-import requestApi from '@/utils/requestData'
+import { positiveFloat, formatDate } from '@/utils/common'
+
 export default {
-  data(){
-    return{
-      newMessageShow:false,
+  data() {
+    return {
+      newMessageShow: false,
       showMoreSearch: true,
       dialogVisible: false,
       // 更改用户信息
-      updateInfo:{
-        approve_id:'', // 审批id
-        type:'', //1结算2报价
-        user:'', // 分配的用户，多个以逗号分隔
-        key_id:'' // type为1传结算id，2报价id
+      updateInfo: {
+        approve_id: '', // 审批id
+        type: '', //1结算2报价
+        user: '', // 分配的用户，多个以逗号分隔
+        key_id: '' // type为1传结算id，2报价id
       },
-      userOptionsList:[],
-      messageList:[],
-      event_date:[], // 查询条件会议时间
-      submit_date:[], // 查询条件提交时间
-      eventSearch:{
-        event_num:'',
-        event_name:'',
-        po:'',
-        pr:'',
+      userOptionsList: [],
+      messageList: [],
+      event_date: [], // 查询条件会议时间
+      submit_date: [], // 查询条件提交时间
+      eventSearch: {
+        event_num: '',
+        event_name: '',
+        po: '',
+        pr: '',
         type: '',
-        step:'',
+        step: '',
         approval_name: '',
-        approval_status:'',
+        approval_status: '',
         page_size: 10,
         page_index: 1,
         event_startdate: '', // 会议开始时间
-        event_enddate:'', // 会议结束时间
-        submit_begin:'', // 提交开始时间
-        submit_end:'', // 提交结算时间
+        event_enddate: '', // 会议结束时间
+        submit_begin: '', // 提交开始时间
+        submit_end: '' // 提交结算时间
       },
-      pageInfo:{
+      pageInfo: {
         totalCount: 0
       },
-      dataList:[],
-      buyerOptions: [], // 采购负责人下拉列表
+      dataList: [],
+      buyerOptions: [] // 采购负责人下拉列表
     }
   },
-  computed:{
-    isCanTurn(){
-      return function(row){
+  computed: {
+    isCanTurn() {
+      return function(row) {
         // debugger
-        return ['初次提交','重新提交','已补充材料'].includes(row.approce_status)
+        return ['初次提交', '重新提交', '已补充材料'].includes(row.approce_status)
       }
     }
   },
-  mounted(){
-    this.GetUser();
-    this.getDataList();
+  mounted() {
+    this.GetUser()
+    this.getDataList()
     this.getBuyerOptions()
   },
-  methods:{
+  methods: {
     formatDate,
     positiveFloat,
 
@@ -300,121 +300,123 @@ export default {
     topTableSort({ column, prop, order }) {
       debugger
       if (column) {
-        this.eventSearch.sortField = prop; // 排序字段
-        if (order == "descending") {
-          this.eventSearch.isSort = 1  //0顺序 1倒叙
-        }else if (order == "ascending") {
-          this.orderBy = 1;
-          this.eventSearch.isSort = 0  //0顺序 1倒叙
-        }else {
+        this.eventSearch.sortField = prop // 排序字段
+        if (order == 'descending') {
+          this.eventSearch.isSort = 1 //0顺序 1倒叙
+        } else if (order == 'ascending') {
+          this.orderBy = 1
+          this.eventSearch.isSort = 0 //0顺序 1倒叙
+        } else {
           this.eventSearch.isSort = ''
         }
-        this.getDataList();
+        this.getDataList()
       }
     },
     tableRowClassName({ row, rowIndex }) {
       // debugger
       if (row.is_overtime === 1) {
-        return "warning-row";
+        return 'warning-row'
       }
-      return "";
+      return ''
     },
-    moneyFormatter(row,col,value){
+    moneyFormatter(row, col, value) {
       // let money = Number(row.开票金额)
-      if(value || value === 0){
+      if (value || value === 0) {
         return this.positiveFloat(value).toFixed(2)
-      }else{
+      } else {
         return ''
       }
     },
-    getDataList(id = 0){
-      if(id === 1){// 点击搜索
+    getDataList(id = 0) {
+      if (id === 1) {
+        // 点击搜索
         this.eventSearch.page_index = 1
-      }else if(id === 2) {
+      } else if (id === 2) {
         this.eventSearch = {
-          event_num:'', // 会议ID
-          event_name:'', // 会议名称
-          po:'', //PO
-          pr:'', // PR
+          event_num: '', // 会议ID
+          event_name: '', // 会议名称
+          po: '', //PO
+          pr: '', // PR
           type: '',
-          step:'',
+          step: '',
           approval_name: '',
-          approval_status:'',
+          approval_status: '',
           event_startdate: '', // 会议开始时间
-          event_enddate:'', // 会议结束时间
-          submit_begin:'', // 提交开始时间
-          submit_end:'', // 提交结算时间
+          event_enddate: '', // 会议结束时间
+          submit_begin: '', // 提交开始时间
+          submit_end: '', // 提交结算时间
           page_size: 10,
-          page_index: 1,
+          page_index: 1
         }
         this.event_date = [] // 查询条件-时间重置
         this.submit_date = [] // 查询条件-时间重置
       }
-      requestApi({
+      this.requestApi({
         url: '/ApproveSheet/GetApproveSheetList',
         method: 'post',
-        data: this.eventSearch,
-      }).then((res) => {
-        this.dataList = res.EvetModels;
-        this.pageInfo = res.pageInfo;
-      });
+        data: this.eventSearch
+      }).then(res => {
+        this.dataList = res.EvetModels
+        this.pageInfo = res.pageInfo
+      })
     },
-    getBuyerOptions(){
-      requestApi({
+    getBuyerOptions() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'get',
-        data: {},
-      }).then( res => {
-        this.buyerOptions = res;
+        data: {}
+      }).then(res => {
+        this.buyerOptions = res
         // console.log(res)
       })
     },
-    GetUser(){
-      requestApi({
+    GetUser() {
+      this.requestApi({
         url: '/MeetingMa/GetUser',
-        method: 'post',
+        method: 'post'
       }).then(res => {
         this.userOptionsList = res
       })
     },
-    TurnToSend(row){
-      this.updateInfo.approve_id = row.approve_id;
-      this.updateInfo.type = row.type;
+    TurnToSend(row) {
+      this.updateInfo.approve_id = row.approve_id
+      this.updateInfo.type = row.type
       // type为1则是结算id，2为报价id (后端已区分，直接用)
-      this.updateInfo.key_id = row.foreign_key_id;
-      this.updateInfo.user = '';
-      this.dialogVisible = true;
+      this.updateInfo.key_id = row.foreign_key_id
+      this.updateInfo.user = ''
+      this.dialogVisible = true
     },
     // 保存更改绑定信息
-    saveUpdateInfo(){
-      // UserName = 
+    saveUpdateInfo() {
+      // UserName =
       let sendData = {
         approve_id: this.updateInfo.approve_id,
         type: this.updateInfo.type,
         user: this.updateInfo.user.join(),
-        key_id: this.updateInfo.key_id,
-      };
+        key_id: this.updateInfo.key_id
+      }
       debugger
-      requestApi({
+      this.requestApi({
         url: '/ApproveSheet/EditApproveUser',
         method: 'post',
-        data: sendData,
+        data: sendData
       }).then(res => {
         debugger
-        if(res){
-          this.$message.success('修改成功');
-          this.dialogVisible = false;
-          this.getDataList();
-        }else{
-          this.$message.error('当前环节无法分配！');
+        if (res) {
+          this.$message.success('修改成功')
+          this.dialogVisible = false
+          this.getDataList()
+        } else {
+          this.$message.error('当前环节无法分配！')
         }
       })
     },
-    goDetail(row){
+    goDetail(row) {
       // 1:结算单审批、 2:中标审批
-      if(row.type == 1){
+      if (row.type == 1) {
         this.$router.push({
-          path: '/msd',
+          name: 'msd',
+          // path: '/msd',
           query: {
             id: row.event_info_id, // 会议ID
             orderId: row.ids || '', ////type为1则是订单id，2为服务商id
@@ -423,48 +425,48 @@ export default {
             // sheetId: row.sheetId || '', // 询价单ID
             approveId: row.approve_id || '' // 审批ID
           }
-        });
-      }else if(row.type == 2){
+        })
+      } else if (row.type == 2) {
         this.$router.push({
-          path: "/cmms",
+          name: 'biddedDetail',
+          // path: "/cmms",
           query: {
-            id: row.event_info_id,	// 会议ID
-            ApproveID: row.approve_id,	//审批ID
-            type: '审核通过', // '审核通过/审核不通过'
-          },
-        });
+            id: row.event_info_id, // 会议ID
+            ApproveID: row.approve_id, //审批ID
+            type: '审核通过' // '审核通过/审核不通过'
+          }
+        })
       }
     },
-    changeEventDate(date){
+    changeEventDate(date) {
       // debugger
-      if(date){
-        this.eventSearch.event_startdate = this.formatDate('YYYY-mm-dd', date[0]);
-        this.eventSearch.event_enddate = this.formatDate('YYYY-mm-dd', date[1]);
-      }else{
-        this.eventSearch.event_startdate =  '';
-        this.eventSearch.event_enddate =  '';
+      if (date) {
+        this.eventSearch.event_startdate = this.formatDate('YYYY-mm-dd', date[0])
+        this.eventSearch.event_enddate = this.formatDate('YYYY-mm-dd', date[1])
+      } else {
+        this.eventSearch.event_startdate = ''
+        this.eventSearch.event_enddate = ''
       }
     },
-    changeSubmitDate(date){
-      if(date){
-        this.eventSearch.submit_begin = this.formatDate('YYYY-mm-dd', date[0]);
-        this.eventSearch.submit_end = this.formatDate('YYYY-mm-dd', date[1]);
-      }else{
-        this.eventSearch.submit_begin = '';
-        this.eventSearch.submit_end = '';
+    changeSubmitDate(date) {
+      if (date) {
+        this.eventSearch.submit_begin = this.formatDate('YYYY-mm-dd', date[0])
+        this.eventSearch.submit_end = this.formatDate('YYYY-mm-dd', date[1])
+      } else {
+        this.eventSearch.submit_begin = ''
+        this.eventSearch.submit_end = ''
       }
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-      this.eventSearch.page_size = val;
-      this.getDataList();
+      console.log(`每页 ${val} 条`)
+      this.eventSearch.page_size = val
+      this.getDataList()
     },
     handleCurrentChange(val) {
-      this.eventSearch.page_index = val;
-      console.log(`当前页: ${val}`);
-      this.getDataList();
-    },
-    
+      this.eventSearch.page_index = val
+      console.log(`当前页: ${val}`)
+      this.getDataList()
+    }
   }
 }
 </script>
@@ -484,7 +486,7 @@ export default {
     overflow-y: auto;
     // overflow-x: hidden
   }
-  /deep/ .el-table tr.warning-row {
+  ::deep .el-table tr.warning-row {
     color: red;
   }
 }

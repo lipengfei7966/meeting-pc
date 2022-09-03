@@ -11,22 +11,13 @@
         ></el-input>
       </el-form-item> -->
       <el-form-item label="真实姓名" prop="real_name">
-        <el-input
-          v-model="FormData.real_name"
-          placeholder="真实姓名"
-        ></el-input>
+        <el-input v-model="FormData.real_name" placeholder="真实姓名"></el-input>
       </el-form-item>
       <el-form-item label="手机号码" prop="phone_number">
-        <el-input
-          v-model.number="FormData.phone_number"
-          placeholder="手机号码"
-        ></el-input>
+        <el-input v-model.number="FormData.phone_number" placeholder="手机号码"></el-input>
       </el-form-item>
       <el-form-item label="邮箱地址" prop="contact_email">
-        <el-input
-          v-model="FormData.contact_email"
-          placeholder="邮箱地址"
-        ></el-input>
+        <el-input v-model="FormData.contact_email" placeholder="邮箱地址"></el-input>
       </el-form-item>
       <el-form-item label="是否默认" prop="isdefault">
         <el-radio-group v-model.number="FormData.isdefault">
@@ -94,15 +85,17 @@ export default {
     };
   },
   mounted() {
-    this.$api
-      .memberInfo({ id: this.itemData == null ? "" : this.itemData.id }, "POST")
-      .then((res) => {
-        this.roleList = res.roles_list;
-        if (this.itemData != null) {
-          this.FormData = res.member;
-          this.$set(this.FormData,"roleIds",res.roleIds);
-        }
-      });
+    this.requestApi({
+      url: '/member/info',
+      method: 'POST',
+      data: { id: this.itemData == null ? "" : this.itemData.id }
+    }).then((res) => {
+      this.roleList = res.roles_list;
+      if (this.itemData != null) {
+        this.FormData = res.member;
+        this.$set(this.FormData,"roleIds",res.roleIds);
+      }
+    });
   },
   methods: {
     add() {

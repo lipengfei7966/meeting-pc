@@ -11,32 +11,13 @@
         </el-table-column>
         <el-table-column label="操作" width="240">
           <template slot-scope="scope">
-            <el-button
-              class="tools_btn"
-              size="mini"
-              type="text"
-              @click="select(scope.$index, scope.row)"
-              >查看</el-button
-            >
-            <el-button
-              class="tools_btn"
-              size="mini"
-              type="text"
-              @click="onselected(scope.$index, scope.row)"
-              >选择</el-button
-            >
+            <el-button class="tools_btn" size="mini" type="text" @click="select(scope.$index, scope.row)">查看</el-button>
+            <el-button class="tools_btn" size="mini" type="text" @click="onselected(scope.$index, scope.row)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-pagination
-        class="pages"
-        background
-        layout="prev, pager, next"
-        :total="tableData.Counts"
-        :current-page="tableData.CurrentPage"
-        @current-change="currentChange"
-      >
+      <el-pagination class="pages" background layout="prev, pager, next" :total="tableData.Counts" :current-page="tableData.CurrentPage" @current-change="currentChange">
       </el-pagination>
     </div>
   </div>
@@ -70,51 +51,44 @@ export default {
     },
     // 冻结
     offShelf(index, row) {
-      this.$api
-        .casefrozen(
-          {
-            id: row.id,
-          },
-          "POST"
-        )
-        .then((res) => {
-          this.$message({
-            message: "冻结成功！",
-            type: "success",
-          });
-          this.GetList();
+      this.requestApi({
+        url: '/serviceprovider/casefrozen',
+        method: 'POST',
+        data: { id: row.id }
+      }).then((res) => {
+        this.$message({
+          message: "冻结成功！",
+          type: "success",
         });
+        this.GetList();
+      });
     },
     // 删除
     onDelete(index, row) {
-      this.$api
-        .casedelete(
-          {
-            id: row.id,
-          },
-          "POST"
-        )
-        .then((res) => {
-          this.$message({
-            message: "删除成功！",
-            type: "success",
-          });
-          this.GetList();
+      this.requestApi({
+        url: '/serviceprovider/casedelete',
+        method: 'POST',
+        data: { id: row.id }
+      }).then((res) => {
+        this.$message({
+          message: "删除成功！",
+          type: "success",
         });
+        this.GetList();
+      });
     },
     // 获取列表
     GetList() {
-      this.$api
-        .orderformList(
-          {
-            Page: this.tableData.CurrentPage,
-            Rows: 5,
-          },
-          "POST"
-        )
-        .then((res) => {
-          this.tableData = res;
-        });
+      this.requestApi({
+        url: '/orderform/list',
+        method: 'POST',
+        data: {
+          Page: this.tableData.CurrentPage,
+          Rows: 5,
+        }
+      }).then((res) => {
+        this.tableData = res;
+      });
     },
     // 触发页码
     currentChange(page) {
@@ -123,7 +97,11 @@ export default {
     },
     // 添加/修改
     save(params) {
-      this.$api.casesave(params, "POST").then((res) => {
+      this.requestApi({
+        url: '/serviceprovider/casesave',
+        method: 'POST',
+        data: params
+      }).then((res) => {
         this.$message({
           message: params.id ? "修改成功！" : "添加成功！",
           type: "success",

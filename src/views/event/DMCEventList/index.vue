@@ -185,188 +185,186 @@
 </template>
 
 <script>
-import {formatDate} from '@/utils/common';
-import requestApi from '@/utils/requestData'
+import { formatDate } from '@/utils/common'
+
 export default {
-  name: "eventList",
-  data(){
-    return{
+  name: 'eventList',
+  data() {
+    return {
       showMoreSearch: true,
-      biddingStatus:[
-        {code:'0010-11', name: '结算完成'},
-        {code:'0010-5', name: '会议已创建'},
-        {code:'0010-8', name: '会议进行中'},
-        {code:'0010-6', name: '询价中'},
-        {code:'0010-1', name: '已取消'},
-        {code:'0010-7', name: '已确定供应商'},
-        {code:'0010-9', name: '待结算（尚无结算单）'},
-        {code:'0010-12', name: '会议过期'},
-        {code:'0010-10', name: '结算中（待审核）'},
+      biddingStatus: [
+        { code: '0010-11', name: '结算完成' },
+        { code: '0010-5', name: '会议已创建' },
+        { code: '0010-8', name: '会议进行中' },
+        { code: '0010-6', name: '询价中' },
+        { code: '0010-1', name: '已取消' },
+        { code: '0010-7', name: '已确定供应商' },
+        { code: '0010-9', name: '待结算（尚无结算单）' },
+        { code: '0010-12', name: '会议过期' },
+        { code: '0010-10', name: '结算中（待审核）' }
       ],
       cityList: [],
-      event_date:[],
-      eventSearch:{
-        eventName:'',
-        eventId:'',
-        buyer:'',
-        RFPNo:'',
+      event_date: [],
+      eventSearch: {
+        eventName: '',
+        eventId: '',
+        buyer: '',
+        RFPNo: '',
         po: '',
-        biddingStatus:'',
+        biddingStatus: '',
         pageSize: 10,
         page: 1,
         eventSearchType: '0',
-        tourist_group_no:'',
-        event_city:'',
-        createUser:'',
-        ownerUser:'',
-        event_assistant:'', // 会议助理
-        event_settlement:'', //合规审查人
+        tourist_group_no: '',
+        event_city: '',
+        createUser: '',
+        ownerUser: '',
+        event_assistant: '', // 会议助理
+        event_settlement: '', //合规审查人
         cvent_no: '',
-        pr:'',
+        pr: '',
         event_startdate: '',
-        event_enddate:'',
+        event_enddate: ''
       },
-      customerList:[],
-      pageInfo:{
+      customerList: [],
+      pageInfo: {
         totalCount: 0
       },
-      searchInfo:{
-
-      },
+      searchInfo: {},
       activeName: '0',
-      dataList:[],
+      dataList: [],
       buyerOptions: [], // 采购负责人下拉列表
-      username:'', // 当前登录用户
+      username: '' // 当前登录用户
     }
   },
   mounted() {
-    this.getDataList();
-    this.getBuyerOptions();
-    this.company();
-    this.getCityList();
-	console.log(this.eventSearch)
+    this.getDataList()
+    this.getBuyerOptions()
+    this.company()
+    this.getCityList()
+    console.log(this.eventSearch)
   },
-  methods:{
+  methods: {
     formatDate,
-    goDetail(val){
-		console.log(val)
-      this.$router.push({path:'/DMCEventDetail',query:{id: val.id, name: val.event_name, eventSearchType:this.eventSearch.eventSearchType}})
+    goDetail(val) {
+      console.log(val)
+      this.$router.push({ name: 'DMCEventDetail', query: { id: val.id, name: val.event_name, eventSearchType: this.eventSearch.eventSearchType } })
     },
     // 编辑基本信息
-    editBaseTap(rowInfo){
+    editBaseTap(rowInfo) {
       debugger
       // if(this.isDMC && (this.isShowCancelBtn || this.eventStatu == 0)){
 
-        this.$router.push({
-          name:'DMCcreateEvent',
-          query: {
-            event_num: rowInfo.event_num,
-            id: rowInfo.id,
-            name: rowInfo.name,
-            eventSearchType: this.eventSearch.eventSearchType,
-            type:'edit'
-          }
-        })
+      this.$router.push({
+        name: 'DMCcreateEvent',
+        query: {
+          event_num: rowInfo.event_num,
+          id: rowInfo.id,
+          name: rowInfo.name,
+          eventSearchType: this.eventSearch.eventSearchType,
+          type: 'edit'
+        }
+      })
     },
     // 公司查询
     company() {
       // 替换成权限控制
-      requestApi({
+      this.requestApi({
         url: '/UserGroupmanagement/GetCustomerEventInfoPost',
         method: 'POST',
-        data: {},
+        data: {}
       }).then(res => {
-        this.customerList = res;
-      });
+        this.customerList = res
+      })
     },
-    changeEventDate(date){
+    changeEventDate(date) {
       this.eventSearch.event_startdate = this.formatDate('YYYY-mm-dd', date[0]) ? this.formatDate('YYYY-mm-dd', date[0]) : ''
       this.eventSearch.event_enddate = this.formatDate('YYYY-mm-dd', date[1]) ? this.formatDate('YYYY-mm-dd', date[1]) : ''
     },
     // 获取城市
     getCityList() {
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/GetCitys',
         method: 'GET',
-        data: {},
-      }).then(res =>{
-        this.cityList = res;
+        data: {}
+      }).then(res => {
+        this.cityList = res
       })
     },
-    getDataList(id=0){
-      if(id === 1){// 点击搜索
+    getDataList(id = 0) {
+      if (id === 1) {
+        // 点击搜索
         this.eventSearch.page = 1
-      }else if(id === 2) {
+      } else if (id === 2) {
         this.eventSearch = {
-          eventName:'',
-          eventId:'',
-          buyer:'',
-          RFPNo:'',
+          eventName: '',
+          eventId: '',
+          buyer: '',
+          RFPNo: '',
           po: '',
-          biddingStatus:'',
+          biddingStatus: '',
           pageSize: 10,
           page: 1,
-          tourist_group_no:'',
-          event_city:'',
-          createUser:'',
-          ownerUser:'',
-          event_assistant:'', // 会议助理
-          event_settlement:'', //合规审查人
+          tourist_group_no: '',
+          event_city: '',
+          createUser: '',
+          ownerUser: '',
+          event_assistant: '', // 会议助理
+          event_settlement: '', //合规审查人
           cvent_no: '',
-          pr:'',
+          pr: '',
           event_startdate: '',
-          event_enddate:'',
-          eventSearchType: this.activeName,
+          event_enddate: '',
+          eventSearchType: this.activeName
         }
         this.event_date = [] // 查询条件-时间重置
       }
-      requestApi({
+      this.requestApi({
         url: '/CustomerConfiguration/Get_event_info',
         method: 'GET',
-        data: this.eventSearch,
-      }).then((res) => {
-        this.dataList = res.EventModels;
-        this.pageInfo = res.pageInfo;
-      });
+        data: this.eventSearch
+      }).then(res => {
+        this.dataList = res.EventModels
+        this.pageInfo = res.pageInfo
+      })
     },
-    changeMore(){
-      this.showMoreSearch = !this.showMoreSearch;
-      this.eventSearch.eventId = '';
-      this.eventSearch.tourist_group_no = '';
-      this.eventSearch.po = '';
-      this.eventSearch.RFPNo = '';
-      this.eventSearch.event_city = '';
-      this.eventSearch.createUser = '';
-      this.eventSearch.ownerUser = '';
-      this.eventSearch.buyer = '';
-      this.eventSearch.event_assistant = '';
-      this.eventSearch.event_settlement = '';
-      this.eventSearch.cvent_no = '';
-      this.eventSearch.pr = '';
-      
+    changeMore() {
+      this.showMoreSearch = !this.showMoreSearch
+      this.eventSearch.eventId = ''
+      this.eventSearch.tourist_group_no = ''
+      this.eventSearch.po = ''
+      this.eventSearch.RFPNo = ''
+      this.eventSearch.event_city = ''
+      this.eventSearch.createUser = ''
+      this.eventSearch.ownerUser = ''
+      this.eventSearch.buyer = ''
+      this.eventSearch.event_assistant = ''
+      this.eventSearch.event_settlement = ''
+      this.eventSearch.cvent_no = ''
+      this.eventSearch.pr = ''
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-      this.eventSearch.pageSize = val;
-      this.getDataList();
+      console.log(`每页 ${val} 条`)
+      this.eventSearch.pageSize = val
+      this.getDataList()
     },
     handleCurrentChange(val) {
-      this.eventSearch.page = val;
-      console.log(`当前页: ${val}`);
-      this.getDataList();
+      this.eventSearch.page = val
+      console.log(`当前页: ${val}`)
+      this.getDataList()
     },
-    handleClick(tab, event){
-      this.eventSearch.eventSearchType = this.activeName;
-      this.eventSearch.page = 1;
-      this.getDataList();
+    handleClick(tab, event) {
+      this.eventSearch.eventSearchType = this.activeName
+      this.eventSearch.page = 1
+      this.getDataList()
     },
-    getBuyerOptions(){
-      requestApi({
+    getBuyerOptions() {
+      this.requestApi({
         url: '/CustomerConfiguration/Get_tmc_account_user_account',
         method: 'GET',
-        data: {},
-      }).then( res => {
-        this.buyerOptions = res;
+        data: {}
+      }).then(res => {
+        this.buyerOptions = res
         // console.log(res)
       })
     }

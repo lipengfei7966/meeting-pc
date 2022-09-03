@@ -480,7 +480,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/.el-select .el-input__suffix .el-input__suffix-inner .el-input__icon.blocks {
+::deep.el-select .el-input__suffix .el-input__suffix-inner .el-input__icon.blocks {
   display: inline-block !important;
 }
 </style>

@@ -426,38 +426,42 @@ export default {
 </style>
 
 <style lang='scss'>
-.search {
-  position: fixed;
-  width: 200px;
-  text-align: center;
-  z-index: 1001;
-  .input-search-style {
-    width: 180px;
-    margin-top: 10px;
-    .el-input__suffix {
-      transform: translate(-25px, -2px) !important;
-    }
-    .el-input__inner {
-      height: 30px;
-      border: 1px solid;
-      border-right: none;
-      border-radius: 0;
-      font-size: 14px;
-      color: #fff;
-      border-radius: 3px 0 0 3px;
-      padding: 0 6px;
-    }
-    .el-input__icon {
-      line-height: 34px;
-    }
-    .el-input-group__append {
-      height: 30px;
-      padding: 0 10px;
-      border: 1px solid;
-      border-left: none;
-      border-radius: 0 3px 3px 0;
-      .el-icon-search {
-        cursor: pointer;
+.main-wrapper{
+
+
+  .search {
+    position: fixed;
+    width: 200px;
+    text-align: center;
+    z-index: 1001;
+    .input-search-style {
+      width: 180px;
+      margin-top: 10px;
+      .el-input__suffix {
+        transform: translate(-25px, -2px) !important;
+      }
+      .el-input__inner {
+        height: 30px;
+        border: 1px solid;
+        border-right: none;
+        border-radius: 0;
+        font-size: 14px;
+        color: #fff;
+        border-radius: 3px 0 0 3px;
+        padding: 0 6px;
+      }
+      .el-input__icon {
+        line-height: 34px;
+      }
+      .el-input-group__append {
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid;
+        border-left: none;
+        border-radius: 0 3px 3px 0;
+        .el-icon-search {
+          cursor: pointer;
+        }
       }
     }
   }
