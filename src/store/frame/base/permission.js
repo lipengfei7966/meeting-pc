@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { constantMenuMap } from '@/menu'
-import { constantRouterMap, routeIframe, routeExample, eventRoute } from '@/router'
+import { constantRouterMap, routeIframe, routeExample } from '@/router'
+import { eventRoute } from '@/router/modules/eventRoute'
+
 import { formatRoutes } from '@/utils/frame/base/routeFormate.js'
 
 /**

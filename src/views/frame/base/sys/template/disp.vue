@@ -96,7 +96,7 @@ export default {
       })
 
       const bsEditorFrame = this.$refs.bsEditorFrame
-      bsEditorFrame.addEventListener('bsEditorInit', function(event) {
+      bsEditorFrame.addEventListener('qmEditorInit', function(event) {
         selfThis.template.editorWin = event.detail.editorWin
         if (selfThis.editAble) {
           selfThis.template.editorWin.setMode('disp')
