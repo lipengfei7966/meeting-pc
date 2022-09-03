@@ -65,7 +65,10 @@
 
 <script>
 import station from '@/components/MicroStation/station'
-import settingUp from './settingUp'
+import settingUp from '@/components/MicroStation/settingUp'
+// import settingUp from '@/components/MicroStation/settingUp'
+// import settingUp from '@/components/MicroStation/settingUp'
+// import settingUp from '@/components/MicroStation/settingUp'
 export default {
   name: 'microStationManagement',
   components: {
