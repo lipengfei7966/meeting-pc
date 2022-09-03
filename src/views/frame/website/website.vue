@@ -8,17 +8,17 @@
             <ul class="lookUl">
               <!--  -->
               <li>
-                <div @click="management(1)" style="display: flex; justify-content: space-between; cursor: pointer">
+                <div @click="management(2)" style="display: flex; justify-content: space-between; cursor: pointer">
                   <span>轮播图管理</span>
                 </div>
               </li>
               <li>
-                <div @click="management(2)" style="display: flex; justify-content: space-between; cursor: pointer">
+                <div @click="management(3)" style="display: flex; justify-content: space-between; cursor: pointer">
                   <span>底图管理</span>
                 </div>
               </li>
               <li>
-                <div @click="management(3)" style="display: flex; justify-content: space-between; cursor: pointer">
+                <div @click="management(4)" style="display: flex; justify-content: space-between; cursor: pointer">
                   <span>标题管理</span>
                 </div>
               </li>
@@ -52,6 +52,9 @@
               </span>
             </div>
             <settingUp v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
+            <slideshowManage v-if="isFlag == 2" />
+            <baseMap v-if="isFlag == 3" />
+            <titleManage v-if="isFlag == 4" />
           </div>
         </div>
       </el-tab-pane>
@@ -89,6 +92,7 @@ export default {
       console.log(item, data, type)
     },
     management(val) {
+      this.isFlag = val
       console.log(val)
     },
     featureVal(val) {
