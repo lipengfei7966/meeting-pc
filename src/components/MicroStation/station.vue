@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 import templateOne from '@/components/MicroStation/template_one'
 export default {
   name: 'station',
@@ -43,20 +44,72 @@ export default {
       sonVal: []
     }
   },
+  created() {
+    // debugger
+    console.log(window.document.location.origin)
+  },
   methods: {
     handelClick() {
       // debugger
       if (this.templateVal && this.pitchOn) {
-        this.$router.push({
-          name: 'microStationManagement',
-          query: {
-            //   event_num: this.menus.event_num,
-            //   id: this.$route.query.id,
-            //   name: this.$route.query.name,
-            //   eventSearchType: this.$route.query.eventSearchType,
-            //   type: 'edit'
+        debugger
+        let webpagePicDtoList = [
+          {
+            picDictionary: 'background',
+            picUrl: window.document.location.origin + this.$refs.templateOne.loginBg
           }
+        ]
+        if (this.$refs.templateOne.slideshow.length > 0) {
+          for (let i = 0; i < this.$refs.templateOne.slideshow.length; i++) {
+            // window.document.location.origin + '/' +
+            this.$refs.templateOne.slideshow[i].picUrl = window.document.location.origin + this.$refs.templateOne.slideshow[i].picUrl
+            webpagePicDtoList.push(this.$refs.templateOne.slideshow[i])
+          }
+        }
+        //
+        let webpageButtonDtoList = this.$refs.templateOne.moduleData
+        for (let j = 0; j < webpageButtonDtoList.length; j++) {
+          webpageButtonDtoList[j].icon = window.document.location.origin + webpageButtonDtoList[j].icon
+        }
+        let data = {
+          data: {
+            webpagePicDtoList: webpagePicDtoList,
+            eventCode: '0001',
+            templateCode: this.templateVal,
+            title: this.$refs.templateOne.bigTitle,
+            subTitle: this.$refs.templateOne.smallTitle,
+            webpageButtonDtoList: webpageButtonDtoList
+          },
+          funcOperation: '首次保存数据',
+          funcModule: '首次保存数据'
+        }
+        request({
+          url: '/api/biz/cmsWebpage/save',
+          method: 'POST',
+          data: data
         })
+          .then((res) => {
+            // debugger
+            if (res.data) {
+              console.log(res)
+              // 跳转到编辑界面
+              this.$router.push({
+                name: '/microStationManagement',
+                query: {
+                  id: res.data,
+                  ids: this.$route.query.ids || '0001'
+                }
+              })
+            } else {
+              // 保持当前选模板界面
+              this.$router.push({
+                name: '/optionalModule',
+                query: {}
+              })
+              console.log(res)
+            }
+          })
+          .catch(() => {})
       } else {
         this.$message('请选择一个模板！')
       }

@@ -3,7 +3,7 @@
     <div class="block">
       <el-carousel trigger="click" height="180px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
-          <img :src="`${item.img}`" alt="" style="width: 100%" />
+          <img :src="`${item.picUrl}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
         </el-carousel-item>
       </el-carousel>
@@ -13,11 +13,11 @@
       <p class="p_small">{{ smallTitle }}</p>
       <div>
         <ul class="feature">
-          <li :style="isTrue ? { backgroundColor: backColor } : ''" v-for="(item, index) in moduleData" :key="index" @click.stop="handel(item, index)">
+          <li v-for="(item, index) in moduleData" :key="index" :style="isTrue ? { backgroundColor: item.backgroundColor } : ''" @click.stop="handel(item, index)">
             <div class="conDiv">
               <!-- <i class="el-icon-goods classRgb"></i> -->
-              <img :src="`${item.img}`" alt="" style="width: 100%" />
-              <!-- <p class="classTxt">{{ item.title }}</p> -->
+              <img :src="`${item.icon}`" alt="" style="width: 100%" />
+              <!-- <p class="classTxt">{{ item.content }}</p> -->
             </div>
           </li>
         </ul>
@@ -33,7 +33,8 @@ export default {
   data() {
     return {
       isTrue: true,
-      loginBg: require('./images/底图.jpg'),
+      // loginBg: require('./images/底图.jpg'),
+      loginBg: '/static/meeting/img/baseMap/底图.jpg',
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
       bigTitle: '2022中国人保寿险第十四届高峰会',
@@ -41,39 +42,59 @@ export default {
       pitchOn: false,
       moduleData: [
         {
-          img: require('@/assets/templateIcon/活动日程.png'),
+          // img: require('@/assets/templateIcon/活动日程.png'),
+          icon: '/static/meeting/img/templateIcon/活动日程.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 0,
-          title: '活动日程'
+          title: '活动日程',
+          content: ''
         },
         {
-          img: require('@/assets/templateIcon/荣誉殿堂.png'),
+          // img: require('@/assets/templateIcon/荣誉殿堂.png'),
+          icon: '/static/meeting/img/templateIcon/荣誉殿堂.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 1,
-          title: '荣誉殿堂'
+          title: '荣誉殿堂',
+          content: ''
         },
         {
-          img: require('@/assets/templateIcon/讲师介绍.png'),
+          // img: require('@/assets/templateIcon/讲师介绍.png'),
+          icon: '/static/meeting/img/templateIcon/讲师介绍.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 2,
-          title: '讲师介绍'
+          title: '讲师介绍',
+          content: ''
         },
         {
-          img: require('@/assets/templateIcon/精彩照片.png'),
+          // img: require('@/assets/templateIcon/精彩照片.png'),
+          icon: '/static/meeting/img/templateIcon/精彩照片.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          title: '精彩照片',
           sort: 3,
-          title: '精彩照片'
+          content: ''
         },
         {
-          img: require('@/assets/templateIcon/峰会直播.png'),
+          // img: require('@/assets/templateIcon/峰会直播.png'),
+          icon: '/static/meeting/img/templateIcon/峰会直播.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          title: '峰会直播',
           sort: 4,
-          title: '峰会直播'
+          content: ''
         },
         {
-          img: require('@/assets/templateIcon/抽奖说明.png'),
+          // img: require('@/assets/templateIcon/抽奖说明.png'),
+          icon: '/static/meeting/img/templateIcon/抽奖说明.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          title: '喜从天降',
           sort: 5,
-          title: '喜从天降'
+          content: ''
         }
       ],
       slideshow: [
         {
-          img: require('@/assets/images/banner.png')
+          picDictionary: 'rotation',
+          // picUrl: require('@/assets/images/banner.png')
+          picUrl: '/static/meeting/img/slideshow/banner.png'
         }
       ]
     }

@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 import station from '@/components/MicroStation/station'
 import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
@@ -84,7 +85,8 @@ export default {
   data() {
     return {
       isFlag: 0,
-      Functionality: [{ title: '项目介绍' }, { title: '行程规划' }, { title: '出行指南' }, { title: '意见建议' }, { title: '服务反馈' }, { title: '资费一览' }, { title: '天气' }, { title: '活动时间' }, { title: '参会人员' }]
+      Functionality: [],
+      dataCode: ''
     }
   },
   methods: {
@@ -133,15 +135,37 @@ export default {
     this.$refs.station.isPc = false
   },
   created() {
-    debugger
-    this.requestApi({
-      url: '/biz/cmsWebpage/getByEventCode',
-      method: 'post',
-      data: { code: '0001' }
-    }).then((res) => {
-      debugger
-      console.log(res)
-    })
+    // debugger
+    if (this.$route.query.ids) {
+      request({
+        url: '/api/biz/cmsWebpage/getByEventCode',
+        method: 'POST',
+        data: { data: this.$route.query.ids || '0001', funcModule: '获取网页列表', funcOperation: '获取网页列表' }
+      })
+        .then((res) => {
+          debugger
+          if (res.data) {
+            debugger
+            console.log(res)
+            this.code = res.data.code
+          } else {
+            this.$router.push({
+              name: '/optionalModule',
+              query: {
+                data: this.$route.query.ids || '0001'
+              }
+            })
+            console.log(res)
+          }
+        })
+        .catch(() => {})
+    } else {
+      this.$router.push({
+        name: '/optionalModule',
+        query: {}
+      })
+    }
+    console.log(this.$route)
   }
 }
 </script>
