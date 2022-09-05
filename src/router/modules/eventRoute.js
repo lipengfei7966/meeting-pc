@@ -335,7 +335,7 @@ export const eventRoute = [
   {
     name: 'DMCitineraryList',
     path: '/DMCevent/DMCitineraryList',
-    component: () => import('@/views/event/DMCitineraryList/itineraryList/index'),
+    component: () => import('@/views/event/DMCItineraryList/itineraryList/index'),
     meta: {
       title: 'DMCitineraryList',
       noCache: true,
