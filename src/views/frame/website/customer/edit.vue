@@ -14,15 +14,15 @@ export default {
         styleType: 'medium',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/biz/cmsArticle/get',
-          save: '/api/biz/cmsArticle/save',
-          update: '/api/biz/cmsArticle/update'
+          view: '/api/biz/cmsCustomer/get',
+          save: '/api/biz/cmsCustomer/save',
+          update: '/api/biz/cmsCustomer/update'
         },
 
         formData: [
           {
-            label: 'website.article.edit.articleName',
-            prop: 'articleName',
+            label: 'website.customer.edit.name',
+            prop: 'name',
             element: 'input-validate',
             attrs: {
               clearable: true,
@@ -36,8 +36,8 @@ export default {
             ]
           },
           {
-            label: 'website.article.edit.articleTitle',
-            prop: 'articleTitle',
+            label: 'website.customer.edit.shortName',
+            prop: 'shortName',
             element: 'input-validate',
             attrs: {
               clearable: true,
@@ -51,15 +51,14 @@ export default {
             ]
           },
           {
-            label: 'website.article.edit.customerName',
-            prop: 'customerCode',
+            label: 'website.customer.edit.orgCode',
+            prop: 'customerCompanyCode',
             element: 'base-select',
+            default: this.getDefaultOrgCode(),
             attrs: {
-              clickParent: true,
-              multiple: false,
+              clearable: true,
               cols: 3,
-              data: 'FUNC_ORG',
-              clearable: true
+              data: 'FUNC_ORG'
             },
             validate: [
               {
@@ -67,27 +66,9 @@ export default {
                 trigger: 'change'
               }
             ]
-          },
-          {
-            type: 'datetime',
-            label: 'website.article.edit.eventDate',
-            props: ['eventBeginTime', 'eventEndTime'],
-            default: this.$toolUtil.getLatestWeektime(),
-            attrs: {
-              cols: 3,
-              format: 'yyyy-MM-dd HH:mm:ss',
-              'value-format': 'yyyy-MM-dd HH:mm:ss',
-              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
-            }
-          },
-          {
-            label: 'website.article.edit.eventPlace',
-            prop: 'eventPlace',
-            element: 'input-validate',
-            attrs: {
-              clearable: true,
-              cols: 3
-            }
+            // event: {
+            //   changeAll: this.changeAllOrg
+            // }
           },
         ],
         bottomButtons: [
@@ -132,6 +113,13 @@ export default {
   methods: {
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
+    },
+    getDefaultOrgCode() {
+      if (this.opType === 'add') {
+        return this.param.orgCode
+      } else {
+        return ''
+      }
     }
   }
 }
