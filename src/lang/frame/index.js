@@ -34,10 +34,6 @@ import zhPlatform from '@/lang/frame/base/modules/platform_zh.js'
 import enFunc from '@/lang/frame/base/modules/func_en'
 import zhFunc from '@/lang/frame/base/modules/func_zh'
 
-// 会议系统
-import enEvent from '@/lang/frame/base/modules/event_en'
-// import zhEvent from '@/lang/frame/base/modules/event_zh'
-
 // 微站
 import zhWebsite from '@/lang/frame/website/website_zh'
 import enWebsite from '@/lang/frame/website/website_en'
@@ -55,7 +51,6 @@ const messages = {
     ...enFunc,
     ...enBusinessBpm,
     ...enOffice,
-    ...enEvent,
     ...enWebsite
   },
   zh: {
@@ -70,7 +65,6 @@ const messages = {
     ...zhFunc,
     ...zhBusinessBpm,
     ...zhOffice,
-    ...enEvent,
     ...zhWebsite
   }
 }

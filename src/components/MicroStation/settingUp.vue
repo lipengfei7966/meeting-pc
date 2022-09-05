@@ -8,18 +8,23 @@
         <el-input v-model="ruleForm.subHeading" placeholder="请输入模块副标题"></el-input>
       </el-form-item>
       <el-form-item label="模块类型" prop="moduleType">
-        <el-select v-model="ruleForm.moduleType" placeholder="请选择模块类型" style="width: 100%">
+        <el-select @change="select_" v-model="ruleForm.moduleType" placeholder="请选择模块类型" style="width: 100%">
           <el-option label="站内页面" value="站内页面"></el-option>
           <el-option label="站外链接" value="站外链接"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="选择页面" prop="page">
+      <el-form-item v-if="ruleForm.moduleType == '站内页面'" label="选择页面" prop="page">
         <el-select v-model="ruleForm.page" placeholder="请选择页面" style="width: 80%">
           <el-option label="页面一" value="页面一"></el-option>
           <el-option label="页面二" value="页面二"></el-option>
         </el-select>
         <span style="margin-left: 10px; color: #409eff; cursor: pointer">新增</span>
       </el-form-item>
+      <!--  -->
+      <el-form-item v-else label="站外链接" prop="link">
+        <el-input v-model="ruleForm.link" placeholder="请输入站外链接"></el-input>
+      </el-form-item>
+      <!--  -->
       <el-form-item label="背景设置" prop="back">
         <el-radio-group @change="selectChange" v-model="ruleForm.radio">
           <el-radio :label="1">默认</el-radio>
@@ -39,7 +44,7 @@
       <el-form-item>
         <div>
           <el-button @click="handelClick(1)">返回</el-button>
-          <el-button @click="handelClick(2)" type="primary">保存</el-button>
+          <el-button @click="submitForm('ruleForm')" type="primary">保存</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -63,8 +68,9 @@ export default {
       ruleForm: {
         mainHeading: '',
         subHeading: '',
-        moduleType: '',
+        moduleType: '站内页面',
         page: '',
+        link: '',
         radio: 1
       },
       rules: {
@@ -74,7 +80,8 @@ export default {
         ],
         //         subHeading: [{ required: true, message: '请输入模块副标题', trigger: 'blur' }],
         moduleType: [{ required: true, message: '请选择模块类型', trigger: 'change' }],
-        page: [{ required: true, message: '请选择页面', trigger: 'change' }]
+        page: [{ required: true, message: '请选择页面', trigger: 'change' }],
+        link: [{ required: true, message: '请输入站外链接', trigger: 'blur' }]
       },
       fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }]
     }
@@ -122,10 +129,12 @@ export default {
     },
     handelClick(val) {
       console.log(val)
-      if (val == 1) {
-        this.$emit('onClick')
-      } else {
-      }
+      this.$emit('onClick')
+    },
+    select_(val) {
+      console.log(val)
+      this.ruleForm.page = ''
+      this.ruleForm.link = ''
     }
   }
 }

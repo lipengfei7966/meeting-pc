@@ -106,8 +106,6 @@ import axios from 'axios'
 
 import storage from '@/utils/frame/base/localStorage'
 import session from '@/utils/frame/base/sessionStorage'
-import bpmUtil from '@/utils/frame/bpm/bpmUtil.js'
-import bpmDingUtil from '@/utils/frame/bpm/bpmDingUtil.js'
 
 export default {
   data() {

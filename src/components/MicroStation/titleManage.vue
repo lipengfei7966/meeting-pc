@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; top: 30%; transform: translateY(-30%)">
+  <div style="position: relative; top: 15%; transform: translateY(-30%)">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="主标题" prop="mainTitle">
         <el-input v-model="ruleForm.mainTitle"></el-input>
@@ -43,7 +43,9 @@ export default {
       })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields()
+      // this.$parent.isFlag = 1
+      this.$emit('isFlag_', 0)
+      // this.$refs[formName].resetFields()
     }
   }
 }
