@@ -46,7 +46,7 @@ export default {
   methods: {
     handelClick() {
       // debugger
-      if (this.templateVal) {
+      if (this.templateVal && this.pitchOn) {
         this.$router.push({
           name: 'microStationManagement',
           query: {

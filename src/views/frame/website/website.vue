@@ -3,7 +3,7 @@
     <el-tabs type="border-card" tab-position="left" :stretch="true">
       <el-tab-pane label="模块设置">
         <div style="display: flex; justify-content: space-between">
-          <div class="contents">
+          <div class="contents" style="width: 28%">
             <el-button class="btn" type="success" @click="handelAdd">新增模块</el-button>
             <ul class="lookUl">
               <!--  -->
@@ -23,7 +23,7 @@
                 </div>
               </li>
               <!--  -->
-              <li v-for="(item, index) in Functionality" :key="index">
+              <li v-for="(item, index) in Functionality" :key="index" style="cursor: pointer" @click="addEdit(item, index)">
                 <div style="display: flex; justify-content: space-between">
                   <span>{{ item.title }}</span>
                   <span style="margin-right: 10px">
@@ -38,7 +38,7 @@
               </li>
             </ul>
           </div>
-          <div class="contents">
+          <div class="contents" style="width: 28%">
             <station @featureVal="featureVal" ref="station" />
           </div>
           <div class="contents" style="width: 32%">
@@ -54,7 +54,7 @@
             <settingUp v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
             <slideshowManage v-if="isFlag == 2" />
             <baseMap v-if="isFlag == 3" />
-            <titleManage v-if="isFlag == 4" />
+            <titleManage @isFlag_="isFlag_" v-if="isFlag == 4" />
           </div>
         </div>
       </el-tab-pane>
@@ -119,6 +119,13 @@ export default {
     },
     onClick() {
       this.isFlag = 0
+    },
+    isFlag_(val) {
+      this.isFlag = val
+    },
+    addEdit(val, index) {
+      console.log(val, index)
+      this.isFlag = 1
     }
   },
   mounted() {

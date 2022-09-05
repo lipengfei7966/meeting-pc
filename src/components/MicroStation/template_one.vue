@@ -1,9 +1,10 @@
 <template>
   <div class="contents" :style="{ backgroundImage: 'url(' + loginBg + ')' }">
     <div class="block">
-      <el-carousel trigger="click" height="200px" indicator-position="none">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 class="small">{{ item }}</h3>
+      <el-carousel trigger="click" height="180px" indicator-position="none">
+        <el-carousel-item v-for="(item, index) in slideshow" :key="index">
+          <img :src="require('@/assets/images/banner.png')" alt="" style="width: 100%" />
+          <!-- <h2>{{ index }}</h2> -->
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -15,6 +16,7 @@
           <li :style="isTrue ? { backgroundColor: backColor } : ''" v-for="(item, index) in moduleData" :key="index" @click.stop="handel(item, index)">
             <div class="conDiv">
               <i class="el-icon-goods classRgb"></i>
+              <!-- <img :src="item.img" alt="" style="width: 100%" /> -->
               <p class="classTxt">{{ item.title }}</p>
             </div>
           </li>
@@ -31,7 +33,7 @@ export default {
   data() {
     return {
       isTrue: true,
-      loginBg: require('./images/demo.jpeg'),
+      loginBg: require('./images/底图.jpg'),
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
       bigTitle: '2022中国人保寿险第十四届高峰会',
@@ -39,28 +41,33 @@ export default {
       pitchOn: false,
       moduleData: [
         {
-          img: '',
+          img: '@/assets/templateIcon/活动日程.png',
           title: '活动日程'
         },
         {
-          img: '',
+          img: '@/assets/templateIcon/荣誉殿堂.png',
           title: '荣誉殿堂'
         },
         {
-          img: '',
+          img: '@/assets/templateIcon/讲师介绍.png',
           title: '讲师介绍'
         },
         {
-          img: '',
+          img: '@/assets/templateIcon/精彩照片.png',
           title: '精彩照片'
         },
         {
-          img: '',
+          img: '@/assets/templateIcon/峰会直播.png',
           title: '峰会直播'
         },
         {
-          img: '',
+          img: '@/assets/templateIcon/喜从天降.png',
           title: '喜从天降'
+        }
+      ],
+      slideshow: [
+        {
+          img: '@/assets/images/banner.png'
         }
       ]
     }
@@ -151,11 +158,11 @@ export default {
   margin: 0;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
+// .el-carousel__item:nth-child(2n) {
+//   background-color: #99a9bf;
+// }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
+// .el-carousel__item:nth-child(2n + 1) {
+//   background-color: #d3dce6;
+// }
 </style>
