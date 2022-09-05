@@ -125,8 +125,6 @@ import storage from '@/utils/frame/base/localStorage'
 import session from '@/utils/frame/base/sessionStorage'
 // 导出excel
 import exportExcel from '@/utils/frame/base/downloadExcel'
-import bpmUtil from '@/utils/frame/bpm/bpmUtil.js'
-import bpmDingUtil from '@/utils/frame/bpm/bpmDingUtil.js'
 
 export default {
   data() {

@@ -100,8 +100,6 @@ import session from '@/utils/frame/base/sessionStorage'
 import CryptoJS from 'crypto-js'
 // 导出excel
 import exportExcel from '@/utils/frame/base/downloadExcel'
-import bpmUtil from '@/utils/frame/bpm/bpmUtil.js'
-import bpmDingUtil from '@/utils/frame/bpm/bpmDingUtil.js'
 const registerComponent = data => {
   data.forEach(item => {
     if (item.component && item.element !== 'base-dialog-select' && item.element !== 'base-select') {

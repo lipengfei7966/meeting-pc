@@ -9,10 +9,6 @@ import { notifyError } from '@/utils/frame/base/notifyParams'
 import zhFrameRoute from '@/lang/frame/base/modules/route_zh'
 import enFrameRoute from '@/lang/frame/base/modules/route_en'
 
-// 会议路由
-import zhEventRoute from '@/lang/frame/base/modules/event_zh'
-import enEventRoute from '@/lang/frame/base/modules/event_en'
-
 // proj路由
 
 import session from '@/utils/frame/base/sessionStorage'
@@ -187,16 +183,14 @@ function initRouteName(titleCNameMap, titleENameMap) {
   const zhRoute = {
     route: {
       ...zhFrameRoute,
-      ...titleCNameMap,
-      ...zhEventRoute
+      ...titleCNameMap
     }
   }
   // 路由多语言
   const enRoute = {
     route: {
       ...enFrameRoute,
-      ...titleENameMap,
-      ...enEventRoute
+      ...titleENameMap
     }
   }
   // 路由多语言
