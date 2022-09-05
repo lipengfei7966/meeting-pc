@@ -132,7 +132,17 @@ export default {
     //     debugger
     this.$refs.station.isPc = false
   },
-  created() {}
+  created() {
+    debugger
+    this.requestApi({
+      url: '/biz/cmsWebpage/getByEventCode',
+      method: 'post',
+      data: { code: '0001' }
+    }).then((res) => {
+      debugger
+      console.log(res)
+    })
+  }
 }
 </script>
 

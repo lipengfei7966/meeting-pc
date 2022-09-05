@@ -3,7 +3,7 @@
     <div class="block">
       <el-carousel trigger="click" height="180px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
-          <img :src="require('@/assets/images/banner.png')" alt="" style="width: 100%" />
+          <img :src="`${item.img}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
         </el-carousel-item>
       </el-carousel>
@@ -15,9 +15,9 @@
         <ul class="feature">
           <li :style="isTrue ? { backgroundColor: backColor } : ''" v-for="(item, index) in moduleData" :key="index" @click.stop="handel(item, index)">
             <div class="conDiv">
-              <i class="el-icon-goods classRgb"></i>
-              <!-- <img :src="item.img" alt="" style="width: 100%" /> -->
-              <p class="classTxt">{{ item.title }}</p>
+              <!-- <i class="el-icon-goods classRgb"></i> -->
+              <img :src="`${item.img}`" alt="" style="width: 100%" />
+              <!-- <p class="classTxt">{{ item.title }}</p> -->
             </div>
           </li>
         </ul>
@@ -41,33 +41,39 @@ export default {
       pitchOn: false,
       moduleData: [
         {
-          img: '@/assets/templateIcon/活动日程.png',
+          img: require('@/assets/templateIcon/活动日程.png'),
+          sort: 0,
           title: '活动日程'
         },
         {
-          img: '@/assets/templateIcon/荣誉殿堂.png',
+          img: require('@/assets/templateIcon/荣誉殿堂.png'),
+          sort: 1,
           title: '荣誉殿堂'
         },
         {
-          img: '@/assets/templateIcon/讲师介绍.png',
+          img: require('@/assets/templateIcon/讲师介绍.png'),
+          sort: 2,
           title: '讲师介绍'
         },
         {
-          img: '@/assets/templateIcon/精彩照片.png',
+          img: require('@/assets/templateIcon/精彩照片.png'),
+          sort: 3,
           title: '精彩照片'
         },
         {
-          img: '@/assets/templateIcon/峰会直播.png',
+          img: require('@/assets/templateIcon/峰会直播.png'),
+          sort: 4,
           title: '峰会直播'
         },
         {
-          img: '@/assets/templateIcon/喜从天降.png',
+          img: require('@/assets/templateIcon/抽奖说明.png'),
+          sort: 5,
           title: '喜从天降'
         }
       ],
       slideshow: [
         {
-          img: '@/assets/images/banner.png'
+          img: require('@/assets/images/banner.png')
         }
       ]
     }
