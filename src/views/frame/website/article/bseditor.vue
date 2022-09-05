@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top:5px">
-    <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width:100%;height:100%;border-width:1px"></iframe>
+    <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width:100%;height:30rem;border-width:1px"></iframe>
   </div>
 </template>
 <script>
@@ -34,7 +34,7 @@ export default {
     initDialog() {
       const bsEditorFrame = this.$refs.bsEditorFrame
       const selfThis = this
-      bsEditorFrame.addEventListener('bsEditorInit', function (event) {
+      bsEditorFrame.addEventListener('qmEditorInit', function (event) {
         selfThis.template.editorWin = event.detail.editorWin
         selfThis.template.editorWin.setMode('design')
         if (selfThis.type === 'view') {

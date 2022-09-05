@@ -1,9 +1,11 @@
 <template>
-  <!-- <bs-edit :edit="edit" @closeDialog="handleCloseDialog" ref="bsEdit" @initCallback='handleInitCallback'></bs-edit> -->
-  <bs-route-edit ref="bsEdit" :edit="edit" @closeDialog="handleCloseDialog" @initCallback="initCallback"></bs-route-edit>
+  <bs-edit :edit="edit" @closeDialog="handleCloseDialog" ref="bsEdit" @initCallback='handleInitCallback' :initFun=initFun></bs-edit>
 </template>
 
 <script>
+import Vue from 'vue'
+import request from '@/utils/frame/base/request'
+import { notifySuccess } from '@/utils/frame/base/notifyParams'
 export default {
   name: 'articleEdit',
   data() {
@@ -14,13 +16,13 @@ export default {
         mode: this.opMode,
         param: this.param,
         api: {
-          view: '/api/platform/cfgNotice/get',
-          save: '/api/platform/cfgNotice/save',
-          update: '/api/platform/cfgNotice/update'
+          view: '/api/biz/cmsArticle/get',
+          save: '/api/biz/cmsArticle/save',
+          update: '/api/biz/cmsArticle/update'
         },
         apiData: {
           view(param) {
-            return param.id
+            return param.code
           }
         },
         topButtons: [
@@ -87,6 +89,18 @@ export default {
                   clearable: true,
                   cols: 2
                 }
+              },
+              {
+                label: 'website.article.edit.articlePic',
+                prop: 'articlePic',
+                element: 'image-upload',
+                attrs: {
+                  imageData: {
+                    // tenantCode: this.param.tenantCode
+                  },
+                  disabled: true,
+                  cols: 4
+                }
               }
             ]
           }
@@ -94,8 +108,8 @@ export default {
 
         tabs: [
           {
-            name: 'noticeContent',
-            label: 'sys.notice.form.noticeContent',
+            name: 'articleContent',
+            label: 'website.article.edit.articleContent',
             component: () => import('./bseditor.vue')
           }
         ]
@@ -120,23 +134,33 @@ export default {
   },
   methods: {
     handleCloseDialog(param) {
-      const backName = this.$route.params.back ? this.$route.params.back : 'cfgFleImpExp'
-      this.$store.dispatch('delVisitedViews', this.$route).then(() => {
-        this.$router.push({
-          name: backName,
-          params: Object.assign({}, this.$route.params.backParam, { refresh: !!param })
-        })
-      })
+      this.$emit('closeHandler', param)
     },
     handleInitCallback(data) {
-      const win = this.$loopDOM(this, 'noticeContent')[0].template.editorWin
+      const win = this.$loopDOM(this, 'articleContent')[0].template.editorWin
       if (win) {
-        win.setContent(data.noticeContent)
+        win.setContent(data.articleContent)
+      }
+    },
+    initFun() {
+      const showSite = this.$refs.bsDialog.formData['showSite']
+      if (showSite) {
+        this.$refs.bsDialog.formData['siteSize'] = this.$toolUtil.dataFormat('dataDictFormat', showSite, this.$t('datadict.imgSiteSize'))
+      } else {
+        this.$refs.bsDialog.formData['siteSize'] = ''
+      }
+    },
+    setImageSize() {
+      const showSite = this.$refs.bsDialog.formData['showSite']
+      if (showSite) {
+        this.$refs.bsDialog.formData['siteSize'] = this.$toolUtil.dataFormat('dataDictFormat', showSite, this.$t('datadict.imgSiteSize'))
+      } else {
+        this.$refs.bsDialog.formData['siteSize'] = ''
       }
     },
     onSave() {
       debugger
-      this.$loopDOM(this, 'bsDialogEdit').editForm.noticeContent = this.$loopDOM(this, 'noticeContent')[0].template.editorWin.getContent()
+      this.$loopDOM(this, 'bsDialogEdit').editForm.articleContent = this.$loopDOM(this, 'articleContent')[0].template.editorWin.getContent()
       return true
     }
   }

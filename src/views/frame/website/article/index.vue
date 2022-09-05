@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="bs-container app-container">
     <bs-form ref='bsForm' :form='form'></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
@@ -28,7 +28,7 @@ export default {
         formData: [
           {
             label: 'website.article.query.articleName',
-            prop: 'eventName',
+            prop: 'articleName',
             element: 'input-validate',
             attrs: {
               clearable: true
@@ -47,30 +47,18 @@ export default {
         topBar: [
         {
             name: 'add',
-            type: 'route',
-            routeInfo: () => {
-              return {
-                name: 'articleAdd',
-                type: 'add',
-                params: {
-                  back: 'articleManage'
-                }
-              }
-            }
+            type: 'dialog',
+            $refs: this.$refs,
+            component: () => import('@/views/frame/website/article/editForm.vue')
           },
           {
             name: 'update',
-            type: 'route',
-            routeInfo: () => {
-              return {
-                name: 'articleUpdate',
-                type: 'update',
-                params: {
-                  back: 'articleManage',
-                  code: this.$refs.bsTable.currentRow.code
-                }
-              }
-            }
+            type: 'dialog',
+            $refs: this.$refs,
+            getParam() {
+              return this.$refs.bsTable.currentRow
+            },
+            component: () => import('@/views/frame/website/article/editForm.vue')
           },
           {
             name: 'remove',
@@ -78,17 +66,12 @@ export default {
           },
           {
             name: 'view',
-            type: 'route',
-            routeInfo: () => {
-              return {
-                name: 'articleView',
-                type: 'update',
-                params: {
-                  back: 'articleManage',
-                  code: this.$refs.bsTable.currentRow.code
-                }
-              }
-            }
+            type: 'dialog',
+            $refs: this.$refs,
+            getParam() {
+              return this.$refs.bsTable.currentRow
+            },
+            component: () => import('@/views/frame/website/article/editForm.vue')
           },
           {
             name: 'export',
