@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='max' style="width:900px;">
       <title-contain :titleName='$t("data.warning.warningCond")' @TitleFun="close"></title-contain>
       <main>

@@ -1,5 +1,5 @@
 <template>
-  <div class='dialog-wrapper'>
+  <div class='bs-container dialog-wrapper'>
     <div class='dialog-container' style='width:1000px;'>
       <TitleContain @TitleFun="doClose()" :titleName="$t('file.template.dispTitle')" />
       <div class="dialog-content">
@@ -15,7 +15,7 @@
           </el-row>
         </el-form>
         <div>
-          <iframe ref="bsEditorFrame" src="static/bseditor/index.html" style="width:100%;height:30rem;"></iframe>
+          <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width:100%;height:30rem;"></iframe>
         </div>
       </div>
       <div class="dialog-footer">
@@ -96,7 +96,7 @@ export default {
       })
 
       const bsEditorFrame = this.$refs.bsEditorFrame
-      bsEditorFrame.addEventListener('bsEditorInit', function(event) {
+      bsEditorFrame.addEventListener('qmEditorInit', function(event) {
         selfThis.template.editorWin = event.detail.editorWin
         if (selfThis.editAble) {
           selfThis.template.editorWin.setMode('disp')

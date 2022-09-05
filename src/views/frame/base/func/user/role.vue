@@ -1,6 +1,6 @@
 <template>
 
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='miniColumnsDialog'>
       <!-- 头部 -->
       <TitleContain :titleName="titleName" @TitleFun="close" />
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
 import request from '@/utils/frame/base/request'
 import TitleContain from '@/components/frame/TitleContain'
 
@@ -70,10 +69,9 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           data: this.param
         }
+      }).then(response => {
+        this.tableData = response.data
       })
-        .then(response => {
-          this.tableData = response.data
-        })
     },
     view(index, row) {
       this.$router.push({

@@ -1,5 +1,5 @@
 <template>
-  <div class='dialog-wrapper'>
+  <div class='bs-container dialog-wrapper'>
     <div class='dialog-container' :style="{width: this.sidebar.opened ? '1166px' : '1326px'}">
       <!-- 头部 -->
       <title-contain :titleName="titleName" @TitleFun="cancel"></title-contain>

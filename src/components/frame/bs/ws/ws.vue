@@ -22,22 +22,22 @@ export default {
   },
   methods: {
     initWebSocket() {
-      let tokenStr = this.$store.getters.token
-      if (tokenStr === null || tokenStr === undefined) {
-        tokenStr = getToken()
-      }
-      let wsurl
-      if (process.env.NODE_ENV === 'production') {
-        const host = location.host
-        wsurl = 'ws://' + host + process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
-      } else {
-        wsurl = process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
-      }
-      this.wsconn = new WebSocket(wsurl)
-      this.wsconn.onopen = this.onWsOpen
-      this.wsconn.onclose = this.onWsClose
-      this.wsconn.onerror = this.onWsError
-      this.wsconn.onmessage = this.onWsMessage
+      // let tokenStr = this.$store.getters.token
+      // if (tokenStr === null || tokenStr === undefined) {
+      //   tokenStr = getToken()
+      // }
+      // let wsurl
+      // if (process.env.NODE_ENV === 'production') {
+      //   const host = location.host
+      //   wsurl = 'ws://' + host + process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
+      // } else {
+      //   wsurl = process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
+      // }
+      // this.wsconn = new WebSocket(wsurl)
+      // this.wsconn.onopen = this.onWsOpen
+      // this.wsconn.onclose = this.onWsClose
+      // this.wsconn.onerror = this.onWsError
+      // this.wsconn.onmessage = this.onWsMessage
       // Vue.prototype.$wsconn = this.wsconn
     },
     addWsListener(moduleCode, linstener) {
@@ -80,11 +80,11 @@ export default {
         this.retryCnt = 60
       }
       const timeDelay = 10000 * this.retryCnt
-      setTimeout(() => {
-        this.initWebSocket()
-      }, timeDelay)
+      // setTimeout(() => {
+      //   this.initWebSocket()
+      // }, timeDelay)
     },
-    onWsError(event) { },
+    onWsError(event) {},
     onWsMessage(event) {
       const wsData = JSON.parse(event.data)
       if (this.listenerMap.has(wsData.module)) {
@@ -117,7 +117,7 @@ export default {
     this.$addWsListener('MSG', this.reviceMsg)
     this.initWebSocket()
   },
-  mounted() { },
+  mounted() {},
   destoryed() {
     this.wsconn.close()
     this.$removeWsListener('MSG')
