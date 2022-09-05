@@ -1,16 +1,6 @@
 <template>
   <div class="login-container">
-    <!-- <div class="login-logo">
-      <img :src="loginLogo" class="logo" />
-    </div> -->
     <div>
-      <!-- <div class='login-bg-wrap'>
-        <el-carousel trigger="click">
-          <el-carousel-item v-for="(i, index) in dataImg" :key="index">
-            <img class='login-bg-img' :src='i.img' alt="" :style="{'width': swiperWidth + 'px'}">
-          </el-carousel-item>
-        </el-carousel>
-      </div> -->
       <div class='login-form-wrap' style='top: 16px;'>
         <div class="loginPart"></div>
         <div class='login-form'>
@@ -66,24 +56,13 @@ import { encriptPwd, md5Two } from '@/utils/frame/base/encript.js'
 import session from '@/utils/frame/base/sessionStorage'
 import storage from '@/utils/frame/base/localStorage'
 
-import loginLogo from '@/assets/frame/img/login_logo.png'
-
 // axios访问
 import request from '@/utils/frame/base/request'
 export default {
   components: {},
   name: 'userlogin',
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6 || value.length > 20) {
-        $('.is-required[data-key=password] .el-form-item__content').attr('data-content', this.$t('login.pwdValidateMsg'))
-        callback(new Error())
-      } else {
-        callback()
-      }
-    }
     return {
-      loginLogo: loginLogo,
       loginForm: {
         src: '',
         username: '',
@@ -93,10 +72,13 @@ export default {
         captchaToken: ''
       },
       loginRules: {
-        enterpriseName: [{ required: true, trigger: 'blur' }],
-        username: [{ required: true, trigger: 'blur' }],
-        captcha: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        enterpriseName: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
+        username: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
+        captcha: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
+        password: [
+          { required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') },
+          { min: 6, max: 20, message: this.$t('login.pwdValidateMsg'), trigger: 'blur' }
+        ]
       },
       passwordType: 'password',
       loading: false,
@@ -120,17 +102,16 @@ export default {
     session.remove('userPwd')
     this.loginForm.username = storage.get('opt_user')
     this.loginForm.enterpriseName = storage.get('opt_enterprise')
-    // todo 正式删除 begin
-    if (!this.loginForm.username) {
-      this.loginForm.username = 'admin'
-    }
-    if (!this.loginForm.enterpriseName) {
-      this.loginForm.enterpriseName = process.env.DEFAULT_ENTERPRISE
+    if (process.env.NODE_ENV === 'development') {
+      if (!this.loginForm.username) {
+        this.loginForm.username = 'admin'
+      }
+      if (!this.loginForm.enterpriseName) {
+        this.loginForm.enterpriseName = process.env.DEFAULT_ENTERPRISE
+      }
     }
     this.loginForm.password = ''
     // end
-    // 校验规则提示添加
-    $('.login-container .is-required .el-form-item__content').attr('data-content', this.$t('biz.placeholder.require'))
   },
   methods: {
     loadCaptcha() {

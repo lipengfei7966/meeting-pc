@@ -1,8 +1,8 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <div :class="['logo', {'show': sidebar.opened}]" @click="$router.push('/')">
+    <div :class="['logo', {'show': true}]" @click="$router.push('/')">
       <img src="@/assets/frame/img/logo.png" alt="">
-      <span v-show='sidebar.opened'>数据报表</span>
+      <span>会议系统</span>
     </div>
     <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
       <img src="@/assets/frame/img/hamburger.png" alt="">
@@ -27,7 +27,7 @@
 
     <div class='right-menu'>
       <!-- 推送消息 -->
-      <bs-ws v-if='clientWidth >= 1366'></bs-ws>
+      <!-- <bs-ws v-if='clientWidth >= 1366'></bs-ws> -->
       <!-- 主题换色 -->
       <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
       <!-- 锁屏 -->
@@ -121,8 +121,7 @@ export default {
   data() {
     const validatenewPassword = (rule, value, callback) => {
       if (value.length < 6 || value.length > 20) {
-        $('.updatePW_dialog .is-required[data-key=newPassword] .el-form-item__content').attr('data-content', this.$t('login.pwdValidateMsg'))
-        callback(new Error())
+        callback(new Error(this.$t('login.pwdValidateMsg')))
       } else if (this.modifyPwdInfo.confirmPwd !== '') {
         this.$refs.modifyPwdForm.validateField('confirmPwd')
         callback()
@@ -132,11 +131,9 @@ export default {
     }
     const validateconfirmPassword = (rule, value, callback) => {
       if (value.length < 6 || value.length > 20) {
-        $('.updatePW_dialog .is-required[data-key=confirmPwd] .el-form-item__content').attr('data-content', this.$t('login.pwdValidateMsg'))
-        callback(new Error())
+        callback(new Error(this.$t('login.pwdValidateMsg')))
       } else if (value !== this.modifyPwdInfo.newPassword) {
-        $('.updatePW_dialog .is-required[data-key=confirmPwd] .el-form-item__content').attr('data-content', this.$t('sys.user.mismatchPwd'))
-        callback(new Error())
+        callback(new Error(this.$t('sys.user.mismatchPwd')))
       } else {
         callback()
       }
@@ -160,13 +157,15 @@ export default {
         account: [
           {
             required: true,
-            trigger: 'blur'
+            trigger: 'blur',
+            message: this.$t('biz.placeholder.require')
           }
         ],
         oldPassword: [
           {
             required: true,
-            trigger: 'blur'
+            trigger: 'blur',
+            message: this.$t('biz.placeholder.require')
           }
         ],
         newPassword: [
