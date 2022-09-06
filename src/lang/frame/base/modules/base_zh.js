@@ -154,6 +154,7 @@ export default {
       createPlan: '创建计划',
       createInstruction: '创建指令',
       start: '启动',
+      submitAudit: '提交审核',
       end: '停止',
       loginMd: '登录行情',
       logoutMd: '断开行情',
