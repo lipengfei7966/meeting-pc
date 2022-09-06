@@ -44,7 +44,8 @@
       <el-form-item>
         <div>
           <el-button @click="handelClick(1)">返回</el-button>
-          <el-button @click="submitForm('ruleForm')" type="primary">保存</el-button>
+          <el-button v-if="!isFlag_one" @click="submitForm('ruleForm')" type="primary">保存</el-button>
+          <el-button v-if="isFlag_one" @click="add('ruleForm')" type="primary">新增</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -159,7 +160,25 @@ export default {
     isFlag_one: {
       immediate: true,
       handler(nVal, oVal) {
-        debugger
+        // debugger
+        if (nVal == true) {
+          this.ruleForm = {
+            id: '',
+            sort: '',
+            versionNum: '',
+            webpageCode: '',
+            title: '', //标题
+            subHeading: '',
+            type: '',
+            page: '',
+            link: '',
+            backgroundSetting: '1',
+            content: '',
+            icon: '',
+            fileList: [],
+            backgroundColor: ''
+          }
+        }
         console.log(nVal, oVal)
       }
     }
@@ -194,6 +213,46 @@ export default {
               // debugger
               if (res.data) {
                 this.$message('保存成功')
+                this.$emit('upData')
+              }
+              this.console.log(res)
+            })
+            .catch(() => {})
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    add(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.ruleForm.backgroundSetting == 3) {
+            this.ruleForm.backgroundColor = this.colorValue
+          } else if (this.ruleForm.backgroundSetting == 2) {
+            this.ruleForm.backgroundColor = ''
+          } else {
+            this.ruleForm.backgroundColor = 'rgba(198, 75, 34, 0.2)'
+          }
+          if (this.ruleForm.type == 'article') {
+            this.ruleForm.content = this.ruleForm.page
+          } else {
+            this.ruleForm.content = this.ruleForm.link
+          }
+          this.ruleForm.sort = 6
+          delete this.ruleForm.fileList
+          delete this.ruleForm.link
+          delete this.ruleForm.page
+          console.log(this.ruleForm)
+          request({
+            url: '/api/biz/cmsWebpageButton/save',
+            method: 'POST',
+            data: { data: this.ruleForm, funcModule: '新增模块', funcOperation: '新增模块' }
+          })
+            .then((res) => {
+              // debugger
+              if (res.data) {
+                this.$message('新增成功')
                 this.$emit('upData')
               }
               this.console.log(res)
