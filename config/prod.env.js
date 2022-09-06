@@ -2,7 +2,6 @@
 module.exports = {
   NODE_ENV: '"production"',
   BASE_API: '"/base-api"',
-  BPM_BASE_URL: '"/base-api"',
   WS_API: '"/base-api/ws"',
   PREVIEW_URL: '"/preview/"',
   TOKEN_PREFIX: '"frame-"',
