@@ -61,7 +61,7 @@
 import request from '@/utils/frame/base/request'
 // import ColorPicker from 'el-color-picker-sheldon'
 export default {
-  props: ['dataNum', 'newData', 'isFlag_one'], //接收值
+  props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
   //   },
@@ -117,6 +117,8 @@ export default {
         let submitVal = newValue
         if (submitVal.id) {
           this.ruleForm.id = submitVal.id
+        } else {
+          this.ruleForm.id = ''
         }
         // debugger
         if (submitVal.sort || submitVal.sort == 0) {
@@ -125,11 +127,14 @@ export default {
           } else {
             this.ruleForm.sort = submitVal.sort
           }
+        } else {
+          this.ruleForm.sort = ''
         }
         if (submitVal.title) {
           this.ruleForm.title = submitVal.title
           this.ruleForm.fileList[0].name = submitVal.title + '图标'
         }
+        debugger
         if (submitVal.type) {
           this.ruleForm.type = submitVal.type
           if (submitVal.type == 'article') {
@@ -137,9 +142,15 @@ export default {
           } else if (submitVal.type == 'url') {
             this.ruleForm.link = submitVal.content
           }
+        } else {
+          this.submitVal.type = ''
+          this.ruleForm.page = ''
+          this.ruleForm.link = ''
         }
         if (submitVal.backgroundSetting) {
           this.ruleForm.backgroundSetting = submitVal.backgroundSetting
+        } else {
+          this.ruleForm.backgroundSetting = '1'
         }
         if (submitVal.icon) {
           this.ruleForm.fileList[0].url = submitVal.icon
@@ -147,12 +158,18 @@ export default {
         }
         if (submitVal.versionNum) {
           this.ruleForm.versionNum = submitVal.versionNum
+        } else {
+          this.ruleForm.versionNum = ''
         }
         if (submitVal.webpageCode) {
           this.ruleForm.webpageCode = submitVal.webpageCode
+        } else {
+          this.ruleForm.webpageCode = ''
         }
         if (submitVal.backgroundColor) {
           this.ruleForm.backgroundColor = submitVal.backgroundColor
+        } else {
+          this.ruleForm.backgroundColor = ''
         }
       },
       deep: true
@@ -200,6 +217,7 @@ export default {
           } else {
             this.ruleForm.content = this.ruleForm.link
           }
+          // this.ruleForm.code = this.code
           console.log(this.ruleForm)
           delete this.ruleForm.fileList
           delete this.ruleForm.link
@@ -239,7 +257,8 @@ export default {
           } else {
             this.ruleForm.content = this.ruleForm.link
           }
-          this.ruleForm.sort = 6
+          this.ruleForm.sort = this.dataLength
+          this.ruleForm.webpageCode = this.code
           delete this.ruleForm.fileList
           delete this.ruleForm.link
           delete this.ruleForm.page

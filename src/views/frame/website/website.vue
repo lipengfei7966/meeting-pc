@@ -51,7 +51,7 @@
                 <i class="el-icon-more-outline"></i>
               </span>
             </div>
-            <settingUp @upData="upData" :isFlag_one="isFlag_one" :newData="newData" :dataNum="dataNum" ref="settingUp_" v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
+            <settingUp :code="code" :dataLength="listData.length" @upData="upData" :isFlag_one="isFlag_one" :newData="newData" :dataNum="dataNum" ref="settingUp_" v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
             <slideshowManage v-if="isFlag == 2" />
             <baseMap v-if="isFlag == 3" />
             <titleManage @isFlag_="isFlag_" v-if="isFlag == 4" />
@@ -149,9 +149,10 @@ export default {
           .then((res) => {
             // debugger
             if (res.data) {
-              // debugger
+              debugger
               this.Functionality = res.data.webpageButtonDtoList
               this.listData = res.data.webpageButtonDtoList
+              this.code = res.data.code
               console.log(res)
               this.code = res.data.code
             } else {
