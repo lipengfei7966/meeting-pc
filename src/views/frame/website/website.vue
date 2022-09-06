@@ -39,7 +39,7 @@
             </ul>
           </div>
           <div class="contents" style="width: 28%">
-            <station @featureVal="featureVal" ref="station" />
+            <station :listData="listData" @featureVal="featureVal" ref="station" />
           </div>
           <div class="contents" style="width: 32%">
             <!-- 设置模块、默认不展示 -->
@@ -51,7 +51,7 @@
                 <i class="el-icon-more-outline"></i>
               </span>
             </div>
-            <settingUp v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
+            <settingUp @upData="upData" :isFlag_one="isFlag_one" :newData="newData" :dataNum="dataNum" ref="settingUp_" v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
             <slideshowManage v-if="isFlag == 2" />
             <baseMap v-if="isFlag == 3" />
             <titleManage @isFlag_="isFlag_" v-if="isFlag == 4" />
@@ -86,7 +86,11 @@ export default {
     return {
       isFlag: 0,
       Functionality: [],
-      dataCode: ''
+      dataCode: '',
+      dataNum: '',
+      newData: {},
+      listData: [],
+      isFlag_one: false
     }
   },
   methods: {
@@ -103,21 +107,23 @@ export default {
       console.log(val)
     },
     handelAdd() {
+      this.isFlag_one = true
       this.isFlag = 1
     },
-    newVal(val) {
-      //       debugger
+    newVal(val, dataNum, colorValue) {
+      // debugger
       if (val == 1) {
-        this.$refs.station.watchVal(val)
+        this.$refs.station.watchVal(val, dataNum)
       } else if (val == 2) {
-        this.$refs.station.watchVal(val)
+        this.$refs.station.watchVal(val, dataNum)
       } else if (val == 3) {
-        this.$refs.station.watchVal(val)
+        this.$refs.station.watchVal(val, dataNum, colorValue)
       }
       console.log(val)
     },
-    colorVal(val) {
-      this.$refs.station.colorVal(val)
+    colorVal(val, dataNum) {
+      // debugger
+      this.$refs.station.colorVal(val, dataNum)
     },
     onClick() {
       this.isFlag = 0
@@ -126,8 +132,50 @@ export default {
       this.isFlag = val
     },
     addEdit(val, index) {
-      console.log(val, index)
+      // debugger
+      console.log(val, index, this.Functionality)
       this.isFlag = 1
+      this.isFlag_one = false
+      this.dataNum = index
+      this.newData = val
+    },
+    loadData() {
+      if (this.$route.query.ids || true) {
+        request({
+          url: '/api/biz/cmsWebpage/getByEventCode',
+          method: 'POST',
+          data: { data: this.$route.query.ids || '0001', funcModule: '获取网页列表', funcOperation: '获取网页列表' }
+        })
+          .then((res) => {
+            // debugger
+            if (res.data) {
+              // debugger
+              this.Functionality = res.data.webpageButtonDtoList
+              this.listData = res.data.webpageButtonDtoList
+              console.log(res)
+              this.code = res.data.code
+            } else {
+              this.$router.push({
+                name: '/optionalModule',
+                query: {
+                  data: this.$route.query.ids || '0001'
+                }
+              })
+              console.log(res)
+            }
+          })
+          .catch(() => {})
+      } else {
+        this.$router.push({
+          name: '/optionalModule',
+          query: {}
+        })
+      }
+    },
+    upData() {
+      debugger
+      this.isFlag = 0
+      this.loadData()
     }
   },
   mounted() {
@@ -136,35 +184,7 @@ export default {
   },
   created() {
     // debugger
-    if (this.$route.query.ids) {
-      request({
-        url: '/api/biz/cmsWebpage/getByEventCode',
-        method: 'POST',
-        data: { data: this.$route.query.ids || '0001', funcModule: '获取网页列表', funcOperation: '获取网页列表' }
-      })
-        .then((res) => {
-          debugger
-          if (res.data) {
-            debugger
-            console.log(res)
-            this.code = res.data.code
-          } else {
-            this.$router.push({
-              name: '/optionalModule',
-              query: {
-                data: this.$route.query.ids || '0001'
-              }
-            })
-            console.log(res)
-          }
-        })
-        .catch(() => {})
-    } else {
-      this.$router.push({
-        name: '/optionalModule',
-        query: {}
-      })
-    }
+    this.loadData()
     console.log(this.$route)
   }
 }

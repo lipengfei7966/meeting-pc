@@ -28,6 +28,7 @@
 
 <script>
 export default {
+  props: ['listData'], //接收值
   name: 'station',
   components: {},
   data() {
@@ -99,23 +100,37 @@ export default {
       ]
     }
   },
+  watch: {
+    listData: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        // debugger
+        this.moduleData = newValue
+        console.log(newValue, oldValue, 'dd')
+      },
+      deep: true
+    }
+  },
   methods: {
     handel(item, index) {
       console.log(item, index)
     },
-    watchVal(val) {
-      //       debugger
+    watchVal(val, dataNum, colorValue) {
+      // debugger
       if (val == 1) {
         this.isTrue = true
+        this.moduleData[dataNum].backgroundColor = this.backColor_
       } else if (val == 2) {
         this.isTrue = false
       } else if (val == 3) {
         this.isTrue = true
+        this.moduleData[dataNum].backgroundColor = colorValue
       }
       console.log(val)
     },
-    colorVal(val) {
+    colorVal(val, dataNum) {
       this.backColor = val
+      this.moduleData[dataNum].backgroundColor = val
     }
   },
   mounted() {
