@@ -4,7 +4,6 @@ const prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   BASE_API: '"https://data.ctgbs.com/base-api"',
-  BPM_BASE_URL: '"http://localhost:8080/data"',
   WS_API: '"ws://data.ctgbs.com/base-api/ws"',
   PREVIEW_URL: '"http://localhost/preview/"',
   TOKEN_PREFIX: '"dev-"',

@@ -1,12 +1,6 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <transition name="el-fade-in-linear">
-      <div class="loading">
-        <div class="line"></div>
-        <p>加载中...</p>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -26,7 +20,7 @@ export default {
       this.$store.dispatch('resetSize')
     })
     $(document).ready(function() {
-      $(document).on('mouseover', '.is-required.is-error .el-form-item__content div', function() {
+      $(document).on('mouseover', '.bs-container .is-required.is-error .el-form-item__content div', function() {
         const errorMsg =
           $(this)
             .parent('.el-form-item__content')
@@ -50,13 +44,13 @@ export default {
           .show()
           .css('opacity', 1)
       })
-      $(document).on('mouseover', '.is-required.is-error .el-form-item__content > .el-form-item__errors', function() {
+      $(document).on('mouseover', '.bs-container .is-required.is-error .el-form-item__content > .el-form-item__errors', function() {
         $(this)
           .parent('.el-form-item__content')
           .find('.el-form-item__errors')
           .hide()
       })
-      $(document).on('mouseout', '.is-required.is-error .el-form-item__content > div', function() {
+      $(document).on('mouseout', '.bs-container .is-required.is-error .el-form-item__content > div', function() {
         $(this)
           .parent('.el-form-item__content')
           .find('.el-form-item__errors')
@@ -66,12 +60,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.routerView {
-  height: 100vh;
-  ::deep .el-table th.gutter {
-    width: 0 !important;
-    display: table-cell !important;
-  }
-}
-</style>

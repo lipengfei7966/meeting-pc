@@ -1,70 +1,140 @@
 <template>
-  <div class="contents">
+  <div class="contents" :style="{ backgroundImage: 'url(' + loginBg + ')' }">
     <div class="block">
-    <el-carousel trigger="click" height="200px" indicator-position="none">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <h3 class="small">{{ item }}</h3>
-      </el-carousel-item>
-    </el-carousel>
-  </div>
-  <div>
-    <p class="p_big">{{bigTitle}}</p>
-    <p class="p_small">{{smallTitle}}</p>
-    <div>
-          <ul class="feature">
-          <li v-for="(item,index) in moduleData" :key="index" @click.stop="handel(item,index)">
-          <div class="conDiv">
-          <i class="el-icon-goods classRgb"></i>
-          <p class="classTxt">{{item.title}}</p>
-          </div>
-          </li>
-          </ul>
+      <el-carousel trigger="click" height="180px" indicator-position="none">
+        <el-carousel-item v-for="(item, index) in slideshow" :key="index">
+          <img :src="`${item.picUrl}`" alt="" style="width: 100%" />
+          <!-- <h2>{{ index }}</h2> -->
+        </el-carousel-item>
+      </el-carousel>
     </div>
-  </div>
+    <div>
+      <p class="p_big">{{ bigTitle }}</p>
+      <p class="p_small">{{ smallTitle }}</p>
+      <div>
+        <ul class="feature">
+          <li v-for="(item, index) in moduleData" :key="index" :style="isTrue ? { backgroundColor: item.backgroundColor } : ''" @click.stop="handel(item, index)">
+            <div class="conDiv">
+              <!-- <i class="el-icon-goods classRgb"></i> -->
+              <img :src="`${item.icon}`" alt="" style="width: 100%" />
+              <!-- <p class="classTxt">{{ item.content }}</p> -->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['listData'], //接收值
   name: 'station',
   components: {},
   data() {
     return {
-      bigTitle: '大标题xxxxx会议',
-      smallTitle: '小标题xxxx地点',
+      isTrue: true,
+      // loginBg: require('./images/底图.jpg'),
+      loginBg: '/static/meeting/img/baseMap/底图.jpg',
+      backColor: 'rgba(198, 75, 34, 0.2)',
+      backColor_: 'rgba(198, 75, 34, 0.2)',
+      bigTitle: '2022中国人保寿险第十四届高峰会',
+      smallTitle: '中国-武汉',
       pitchOn: false,
       moduleData: [
         {
-          img: '',
-          title: '活动日程'
+          // img: require('@/assets/templateIcon/活动日程.png'),
+          icon: '/static/meeting/img/templateIcon/活动日程.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          sort: 0,
+          title: '活动日程',
+          content: ''
         },
         {
-          img: '',
-          title: '荣誉殿堂'
+          // img: require('@/assets/templateIcon/荣誉殿堂.png'),
+          icon: '/static/meeting/img/templateIcon/荣誉殿堂.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          sort: 1,
+          title: '荣誉殿堂',
+          content: ''
         },
         {
-          img: '',
-          title: '讲师介绍'
+          // img: require('@/assets/templateIcon/讲师介绍.png'),
+          icon: '/static/meeting/img/templateIcon/讲师介绍.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          sort: 2,
+          title: '讲师介绍',
+          content: ''
         },
         {
-          img: '',
-          title: '精彩照片'
+          // img: require('@/assets/templateIcon/精彩照片.png'),
+          icon: '/static/meeting/img/templateIcon/精彩照片.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          title: '精彩照片',
+          sort: 3,
+          content: ''
         },
         {
-          img: '',
-          title: '峰会直播'
+          // img: require('@/assets/templateIcon/峰会直播.png'),
+          icon: '/static/meeting/img/templateIcon/峰会直播.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          title: '峰会直播',
+          sort: 4,
+          content: ''
         },
         {
-          img: '',
-          title: '喜从天降'
+          // img: require('@/assets/templateIcon/抽奖说明.png'),
+          icon: '/static/meeting/img/templateIcon/抽奖说明.png',
+          backgroundColor: 'rgba(198, 75, 34, 0.2)',
+          title: '喜从天降',
+          sort: 5,
+          content: ''
+        }
+      ],
+      slideshow: [
+        {
+          picDictionary: 'rotation',
+          // picUrl: require('@/assets/images/banner.png')
+          picUrl: '/static/meeting/img/slideshow/banner.png'
         }
       ]
+    }
+  },
+  watch: {
+    listData: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        // debugger
+        this.moduleData = newValue
+        console.log(newValue, oldValue, 'dd')
+      },
+      deep: true
     }
   },
   methods: {
     handel(item, index) {
       console.log(item, index)
+    },
+    watchVal(val, dataNum, colorValue) {
+      // debugger
+      if (val == 1) {
+        this.isTrue = true
+        this.moduleData[dataNum].backgroundColor = this.backColor_
+      } else if (val == 2) {
+        this.isTrue = false
+      } else if (val == 3) {
+        this.isTrue = true
+        this.moduleData[dataNum].backgroundColor = colorValue
+      }
+      console.log(val)
+    },
+    colorVal(val, dataNum) {
+      this.backColor = val
+      this.moduleData[dataNum].backgroundColor = val
     }
+  },
+  mounted() {
+    this.$emit('feature', this.moduleData)
   }
 }
 </script>
@@ -87,7 +157,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background-image: url('./images/demo.jpeg');
+  //   background-image: url('./images/demo.jpeg');
   background-size: 100% 100%;
 }
 .feature {
@@ -101,7 +171,7 @@ export default {
     cursor: pointer;
     width: 30%;
     height: 12vh;
-    background-color: rgba(198, 75, 34, 0.2);
+    //     background-color: rgba(198, 75, 34, 0.2);
     //     border: 1px solid red;
     margin-bottom: 10px;
   }
@@ -130,11 +200,11 @@ export default {
   margin: 0;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
+// .el-carousel__item:nth-child(2n) {
+//   background-color: #99a9bf;
+// }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
+// .el-carousel__item:nth-child(2n + 1) {
+//   background-color: #d3dce6;
+// }
 </style>

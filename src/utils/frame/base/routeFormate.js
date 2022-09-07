@@ -112,7 +112,6 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-              // 0902
             } else if (component.includes('views/frame/website/')) {
               require([`@/views/frame/website/${component.split('views/frame/website/')[1]}.vue`], resolve, e => {
                 Notification(
@@ -121,6 +120,7 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
+              // 0902
             } else {
               if (process.env.NODE_ENV === 'development') {
                 if (component.includes('views/example/')) {

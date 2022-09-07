@@ -71,8 +71,7 @@ export default {
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6 || value.length > 20) {
-        $('.is-required[data-key=password] .el-form-item__content').attr('data-content', this.$t('login.pwdValidateMsg'))
-        callback(new Error())
+        callback(new Error(this.$t('login.pwdValidateMsg')))
       } else {
         callback()
       }
@@ -81,14 +80,14 @@ export default {
       loginLogo: loginLogo,
       loginForm: {
         src: '',
-        username: 'admin',
+        username: '',
         password: '',
         captcha: '',
         captchaToken: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
-        captcha: [{ required: true, trigger: 'blur' }],
+        username: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
+        captcha: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',

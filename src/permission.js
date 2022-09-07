@@ -9,10 +9,6 @@ import { notifyError } from '@/utils/frame/base/notifyParams'
 import zhFrameRoute from '@/lang/frame/base/modules/route_zh'
 import enFrameRoute from '@/lang/frame/base/modules/route_en'
 
-// 会议路由
-import zhEventRoute from '@/lang/frame/base/modules/event_zh'
-import enEventRoute from '@/lang/frame/base/modules/event_en'
-
 // proj路由
 
 import session from '@/utils/frame/base/sessionStorage'
@@ -77,7 +73,6 @@ router.beforeEach(async (to, from, next) => {
             }))
             next(getLoginUrl())
           } else {
-            console.log(to)
             // 取得用户信息
             const userInfo = await store.dispatch('GetUser')
             // 初始化字典、物资属性字段取得和 初始化路由
@@ -188,16 +183,14 @@ function initRouteName(titleCNameMap, titleENameMap) {
   const zhRoute = {
     route: {
       ...zhFrameRoute,
-      ...titleCNameMap,
-      ...zhEventRoute
+      ...titleCNameMap
     }
   }
   // 路由多语言
   const enRoute = {
     route: {
       ...enFrameRoute,
-      ...titleENameMap,
-      ...enEventRoute
+      ...titleENameMap
     }
   }
   // 路由多语言

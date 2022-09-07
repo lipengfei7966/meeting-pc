@@ -9,7 +9,7 @@ export default {
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6 || value.length > 20) {
-        $('.el-col[data-key=password] .is-required .el-form-item__content').attr('data-content', this.$t('login.pwdValidateMsg'))
+        $('.el-col[data-key=password] .is-required .el-form-item__content').attr('data-content')
         callback(new Error())
       } else {
         callback()
