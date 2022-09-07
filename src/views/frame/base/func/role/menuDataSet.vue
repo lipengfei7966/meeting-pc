@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='max' style="width:900px;">
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="cancel"></title-contain>
@@ -92,7 +92,7 @@ export default {
     param: Object
   },
   computed: {
-    ...mapGetters(['permissionRouters', 'sidebar', 'clientWidth', 'clientHeight']),
+    ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       return this.clientWidth > 1355 ? this.clientHeight - 650 : this.clientHeight - 660 // 防止底部滚动条遮挡
     },

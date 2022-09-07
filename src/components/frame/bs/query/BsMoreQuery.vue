@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='treeTableDialog' ref='treeTableDialog' style='width:900px;'>
       <!-- 头部 -->
       <title-contain titleName='高级查询' @screenChange="setTableHeight" @TitleFun="$emit('closeHandler')"></title-contain>

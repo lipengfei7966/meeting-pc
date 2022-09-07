@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="bs-container app-container">
     <bs-form ref='bsForm' :form='form'></bs-form>
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>
@@ -109,7 +109,7 @@ export default {
             {
               prop: 'remark',
               width: '360',
-              sortable:false,
+              sortable: false,
               label: 'func.approvalGroup.list.remark'
             }
           ]

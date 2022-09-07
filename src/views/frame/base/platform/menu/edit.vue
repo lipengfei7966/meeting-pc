@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
     <div class='dialog-container' type='maxColumnsDialog'>
       <!-- 头部 -->
       <TitleContain :titleName="dialogTitle" @TitleFun="$emit('closeHandler')" />
@@ -69,7 +69,11 @@
             <el-col :span="8">
               <el-form-item label="图标" prop='icon'>
                 <el-select v-model="formData.icon" size='mini' clearable filterable>
-                  <el-option v-for="item in $store.state.app.icons" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  <el-option label="无" value=""></el-option>
+                  <el-option v-for="item in $store.state.app.icons" :key="item.value" :label="item.label" :value="item.value">
+                    <span style="float: left;">{{ item.label }}</span>
+                    <svg-icon style="float: right;" :icon-class="item.value" />
+                  </el-option>
                 </el-select>
               </el-form-item>
             </el-col>

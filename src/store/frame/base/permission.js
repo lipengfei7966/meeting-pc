@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { constantMenuMap } from '@/menu'
-import { constantRouterMap, routeIframe, routeExample, eventRoute } from '@/router'
+import { constantRouterMap, routeIframe, routeExample } from '@/router'
 import { formatRoutes } from '@/utils/frame/base/routeFormate.js'
 
 /**
@@ -73,11 +73,8 @@ const permission = {
   mutations: {
     SET_ROUTERS: (state, routers) => {
       if (process.env.NODE_ENV === 'development') {
-        state.addRouters = routers.concat(routeExample).concat(eventRoute)
-        state.routers = constantRouterMap.concat(routeExample).concat(routers).concat(eventRoute)
-
-        // state.addRouters = routers.concat(eventRoute)
-        // state.routers = constantRouterMap.concat(eventRoute).concat(routers)
+        state.addRouters = routers.concat(routeExample)
+        state.routers = constantRouterMap.concat(routeExample).concat(routers)
       } else if (process.env.NODE_ENV === 'production') {
         state.addRouters = routers
         state.routers = constantRouterMap.concat(routers)

@@ -1,16 +1,14 @@
 <template>
-  <div class="app-container">
+  <div class="bs-container app-container">
     <bs-form ref='bsForm' :form='form'></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>
 </template>
 <script>
-
 export default {
   name: 'msgChannel',
-  components: {
-  },
+  components: {},
   data() {
     return {
       form: {
@@ -28,7 +26,6 @@ export default {
             usingFlag: '',
             msgChannelName: null,
             msgSupplierName: null
-
           }
         },
         formData: [
@@ -57,7 +54,8 @@ export default {
             attrs: {
               clearable: true
             }
-          }]
+          }
+        ]
       },
 
       mainData: {
@@ -67,27 +65,30 @@ export default {
         },
         initSearch: true,
         isTopBar: true,
-        topBar: [{
-          name: 'add',
-          type: 'dialog',
-          component: () =>
-            import('./edit.vue')
-        }, {
-          name: 'update',
-          type: 'dialog',
-          getParam: () => {
-            return this.$refs.bsTable.currentRow.msgChannelCode
+        topBar: [
+          {
+            name: 'add',
+            type: 'dialog',
+            component: () => import('./edit.vue')
           },
-          component: () =>
-            import('./edit.vue')
-        }, {
-          name: 'remove',
-          getParam: () => {
-            return this.$refs.bsTable.currentRow.msgChannelCode
+          {
+            name: 'update',
+            type: 'dialog',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.msgChannelCode
+            },
+            component: () => import('./edit.vue')
+          },
+          {
+            name: 'remove',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.msgChannelCode
+            }
+          },
+          {
+            name: 'refresh'
           }
-        }, {
-          name: 'refresh'
-        }],
+        ],
         isColset: true,
         table: {
           id: this.$route.meta.title,
@@ -120,14 +121,11 @@ export default {
             pageSizes: [20, 40, 60, 80, 100]
           }
         }
-
       }
     }
   },
 
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 
