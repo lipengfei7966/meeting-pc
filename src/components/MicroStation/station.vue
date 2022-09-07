@@ -7,7 +7,7 @@
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
       <li @click="handel(1)" :class="pitchOn ? 'template_one' : ''">
-        <templateOne @feature="feature" ref="templateOne"></templateOne>
+        <templateOne :listData="listData" @feature="feature" ref="templateOne"></templateOne>
       </li>
       <!-- <li>模板二</li>
       <li>模板三</li>
@@ -32,6 +32,7 @@
 import request from '@/utils/frame/base/request'
 import templateOne from '@/components/MicroStation/template_one'
 export default {
+  props: ['listData'], //接收值
   name: 'station',
   components: {
     templateOne
@@ -44,6 +45,16 @@ export default {
       sonVal: []
     }
   },
+  // watch: {
+  //   listData: {
+  //     immediate: true,
+  //     handler(newValue, oldValue) {
+  //       debugger
+  //       console.log(newValue, oldValue)
+  //     },
+  //     deep: true
+  //   }
+  // },
   created() {
     // debugger
     console.log(window.document.location.origin)
@@ -52,7 +63,7 @@ export default {
     handelClick() {
       // debugger
       if (this.templateVal && this.pitchOn) {
-        debugger
+        // debugger
         let webpagePicDtoList = [
           {
             picDictionary: 'background',
@@ -132,19 +143,20 @@ export default {
       this.$emit('featureVal', this.sonVal)
       console.log(val)
     },
-    watchVal(val) {
+    watchVal(val, dataNum, colorValue) {
       //       debugger
       if (val == 1) {
-        this.$refs.templateOne.watchVal(val)
+        this.$refs.templateOne.watchVal(val, dataNum)
       } else if (val == 2) {
-        this.$refs.templateOne.watchVal(val)
+        this.$refs.templateOne.watchVal(val, dataNum)
       } else if (val == 3) {
-        this.$refs.templateOne.watchVal(val)
+        this.$refs.templateOne.watchVal(val, dataNum, colorValue)
       }
       console.log(val)
     },
-    colorVal(val) {
-      this.$refs.templateOne.colorVal(val)
+    colorVal(val, dataNum) {
+      // debugger
+      this.$refs.templateOne.colorVal(val, dataNum)
     }
   }
 }
