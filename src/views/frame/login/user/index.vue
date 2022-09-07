@@ -162,7 +162,7 @@ $light_gray: #eee;
   height: 810px;
   margin: 90px auto 0;
   // background-color: $bg;
-  background: url('../../../../assets/image/loginBg1.png') no-repeat;
+  background: url('~@/assets/image/loginBg1.png') no-repeat;
   background-size: 100%;
   overflow: hidden;
 
@@ -177,7 +177,7 @@ $light_gray: #eee;
   .loginPart {
     width: 373px;
     height: 570px;
-    background: url('../../../../assets/image/loginBg2.png');
+    background: url('~@/assets/image/loginBg2.png');
   }
 
   .login-form {

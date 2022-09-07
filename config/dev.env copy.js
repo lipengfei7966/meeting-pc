@@ -3,7 +3,7 @@ const { merge } = require('webpack-merge')
 const prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BASE_API: '"https://data.ctgbs.com/base-api"',
+  BASE_API: '"https://cmms-test.ctgbs.com/cmms-api"',
   WS_API: '"ws://data.ctgbs.com/base-api/ws"',
   PREVIEW_URL: '"http://localhost/preview/"',
   TOKEN_PREFIX: '"dev-"',
