@@ -28,18 +28,18 @@
                   <span>{{ item.title }}</span>
                   <span style="margin-right: 10px">
                     <!-- 上移 -->
-                    <el-button type="text" @click="handelClick(item, Functionality, 0)"><i class="el-icon-caret-top"></i></el-button>
+                    <el-button type="text" @click.stop="handelClick(item, Functionality, 0)"><i class="el-icon-caret-top"></i></el-button>
                     <!-- 下移 -->
-                    <el-button type="text" @click="handelClick(item, Functionality, 1)"><i class="el-icon-caret-bottom"></i></el-button>
+                    <el-button type="text" @click.stop="handelClick(item, Functionality, 1)"><i class="el-icon-caret-bottom"></i></el-button>
                     <!-- 删除 -->
-                    <el-button type="text" @click="handelClick(item, Functionality, 2)"><i class="el-icon-delete"></i></el-button>
+                    <el-button type="text" @click.stop="handelClick(item, Functionality, 2)"><i class="el-icon-delete"></i></el-button>
                   </span>
                 </div>
               </li>
             </ul>
           </div>
           <div class="contents" style="width: 28%">
-            <station :listData="listData" @featureVal="featureVal" ref="station" />
+            <station :title_="title_" :subTitle="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
           </div>
           <div class="contents" style="width: 32%">
             <!-- 设置模块、默认不展示 -->
@@ -52,9 +52,9 @@
               </span>
             </div>
             <settingUp :code="code" :dataLength="listData.length" @upData="upData" :isFlag_one="isFlag_one" :newData="newData" :dataNum="dataNum" ref="settingUp_" v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
-            <slideshowManage v-if="isFlag == 2" />
-            <baseMap v-if="isFlag == 3" />
-            <titleManage @isFlag_="isFlag_" v-if="isFlag == 4" />
+            <slideshowManage @upData_="upData_" :webpagePicDtoList="webpagePicDtoList" :code="code" v-if="isFlag == 2" />
+            <baseMap :code="code" @upData_="upData_" :webpagePicDtoList="webpagePicDtoList" v-if="isFlag == 3" />
+            <titleManage :title_="title_" :subTitle="subTitle" :code="code" @upData_="upData_" @isFlag_="isFlag_" v-if="isFlag == 4" />
           </div>
         </div>
       </el-tab-pane>
@@ -87,15 +87,75 @@ export default {
       isFlag: 0,
       Functionality: [],
       dataCode: '',
+      dataCode_: '',
       dataNum: '',
+      code: '',
       newData: {},
       listData: [],
-      isFlag_one: false
+      isFlag_one: false,
+      webpagePicDtoList: [],
+      title_: '',
+      subTitle: ''
     }
   },
   methods: {
     handelClick(item, data, type) {
-      console.log(item, data, type)
+      if (type == 0) {
+        if (item.sort == 0) {
+          this.$message.warning('无法上移')
+        } else {
+          request({
+            url: '/api/biz/cmsWebpageButton/move',
+            method: 'POST',
+            data: { data: { id: item.id, moveType: 1, webpageCode: item.webpageCode }, funcModule: '按钮上移', funcOperation: '按钮上移' }
+          })
+            .then((res) => {
+              if (res.data) {
+                this.$message('上移成功')
+                this.loadData()
+              } else {
+                this.$message('上移失败')
+              }
+            })
+            .catch(() => {})
+        }
+        console.log(item, data, type)
+      } else if (type == 1) {
+        if (item.sort == data.length - 1) {
+          this.$message.warning('无法下移')
+        } else {
+          request({
+            url: '/api/biz/cmsWebpageButton/move',
+            method: 'POST',
+            data: { data: { id: item.id, moveType: -1, webpageCode: item.webpageCode }, funcModule: '按钮下移', funcOperation: '按钮下移' }
+          })
+            .then((res) => {
+              if (res.data) {
+                this.$message('下移成功')
+                this.loadData()
+              } else {
+                this.$message('下移失败')
+              }
+            })
+            .catch(() => {})
+        }
+        console.log(item, data, type)
+      } else if (type == 2) {
+        request({
+          url: '/api/biz/cmsWebpageButton/remove',
+          method: 'POST',
+          data: { data: item.id, funcModule: '按钮删除', funcOperation: '按钮删除' }
+        })
+          .then((res) => {
+            if (res.data) {
+              this.$message('删除成功')
+              this.loadData()
+            } else {
+              this.$message('删除失败')
+            }
+          })
+          .catch(() => {})
+      }
     },
     management(val) {
       this.isFlag = val
@@ -133,7 +193,7 @@ export default {
     },
     addEdit(val, index) {
       // debugger
-      console.log(val, index, this.Functionality)
+      // console.log(val, index, this.Functionality)
       this.isFlag = 1
       this.isFlag_one = false
       this.dataNum = index
@@ -149,9 +209,12 @@ export default {
           .then((res) => {
             // debugger
             if (res.data) {
-              debugger
+              // debugger
               this.Functionality = res.data.webpageButtonDtoList
               this.listData = res.data.webpageButtonDtoList
+              this.webpagePicDtoList = res.data.webpagePicDtoList
+              this.title_ = res.data.title
+              this.subTitle = res.data.subTitle
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
@@ -174,8 +237,11 @@ export default {
       }
     },
     upData() {
-      debugger
+      // debugger
       this.isFlag = 0
+      this.loadData()
+    },
+    upData_() {
       this.loadData()
     }
   },

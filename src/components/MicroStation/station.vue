@@ -7,7 +7,7 @@
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
       <li @click="handel(1)" :class="pitchOn ? 'template_one' : ''">
-        <templateOne :listData="listData" @feature="feature" ref="templateOne"></templateOne>
+        <templateOne :title_="title_" :subTitle="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @feature="feature" ref="templateOne"></templateOne>
       </li>
       <!-- <li>模板二</li>
       <li>模板三</li>
@@ -32,7 +32,7 @@
 import request from '@/utils/frame/base/request'
 import templateOne from '@/components/MicroStation/template_one'
 export default {
-  props: ['listData'], //接收值
+  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle'], //接收值
   name: 'station',
   components: {
     templateOne
@@ -45,16 +45,16 @@ export default {
       sonVal: []
     }
   },
-  // watch: {
-  //   listData: {
-  //     immediate: true,
-  //     handler(newValue, oldValue) {
-  //       debugger
-  //       console.log(newValue, oldValue)
-  //     },
-  //     deep: true
-  //   }
-  // },
+  watch: {
+    // webpagePicDtoList: {
+    //   immediate: true,
+    //   handler(newValue, oldValue) {
+    //     debugger
+    //     console.log(newValue, oldValue)
+    //   },
+    //   deep: true
+    // }
+  },
   created() {
     // debugger
     console.log(window.document.location.origin)
@@ -87,8 +87,8 @@ export default {
             webpagePicDtoList: webpagePicDtoList,
             eventCode: '0001',
             templateCode: this.templateVal,
-            title: this.$refs.templateOne.bigTitle,
-            subTitle: this.$refs.templateOne.smallTitle,
+            title: this.$refs.templateOne.title,
+            subTitle: this.$refs.templateOne.subTitle,
             webpageButtonDtoList: webpageButtonDtoList
           },
           funcOperation: '首次保存数据',
