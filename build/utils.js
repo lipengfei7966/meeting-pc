@@ -32,28 +32,56 @@ exports.cssLoaders = function (options) {
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
+    // const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
-    if (loader) {
-      loaders.push({
+    // if (loader) {
+    //   loaders.push({
+    //     loader: loader + '-loader',
+    //     options: Object.assign({}, loaderOptions, {
+    //       sourceMap: options.sourceMap
+    //     })
+    //   })
+    // }
+
+    // // Extract CSS when that option is specified
+    // // (which is the case during production build)
+    // if (options.extract) {
+    //   // return ExtractTextPlugin.extract({
+    //   //   use: loaders,
+    //   //   fallback: 'vue-style-loader'
+    //   // })
+    //   return [MiniCssExtractPlugin.loader].concat(loaders)
+    // } else {
+    //   return ['vue-style-loader'].concat(loaders)
+    // }
+
+    const loaders = []
+    if (options.extract) { 
+      // loaders.push(MiniCssExtractPlugin.loader)
+      /********************* 划重点 *************************/
+      loaders.push({ 
+        loader:MiniCssExtractPlugin.loader,
+        options: { 
+          publicPath: '../../'
+        }
+      })
+      /********************* 划重点 *************************/
+    } else { 
+      loaders.push('vue-style-loader')
+    }
+    loaders.push(cssLoader)
+    if (options.usePostCSS) { 
+      loaders.push(postcssLoader)
+    }
+    if (loader) { 
+      loaders.push({ 
         loader: loader + '-loader',
-        options: Object.assign({}, loaderOptions, {
+        options: Object.assign({ }, loaderOptions, { 
           sourceMap: options.sourceMap
         })
       })
     }
-
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
-    if (options.extract) {
-      // return ExtractTextPlugin.extract({
-      //   use: loaders,
-      //   fallback: 'vue-style-loader'
-      // })
-      return [MiniCssExtractPlugin.loader].concat(loaders)
-    } else {
-      return ['vue-style-loader'].concat(loaders)
-    }
+    return loaders
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
