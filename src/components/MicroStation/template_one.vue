@@ -104,7 +104,7 @@ export default {
     listData: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
+        // debugger
         if (newValue) {
           this.moduleData = newValue
           console.log(newValue, oldValue, 'dd')
@@ -115,7 +115,7 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
+        // debugger
         if (newValue) {
           newValue.forEach((element, index) => {
             if (element.picDictionary == 'background') {

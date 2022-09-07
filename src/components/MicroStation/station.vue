@@ -56,7 +56,6 @@ export default {
     // }
   },
   created() {
-    // debugger
     console.log(window.document.location.origin)
   },
   methods: {
