@@ -3,15 +3,13 @@
 
     <bs-form ref='bsForm' :form='form'></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <template v-if='true||$route.name === $options.name || ( $route.meta && $route.meta.componentName === $options.name)'>
-      <bs-table ref='bsTable' :mainData='mainData'>
-        <!-- isException 此列特殊处理-->
-        <template slot='isException' slot-scope='scope'>
-          <el-tag size="mini" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
-          <el-tag size="mini" v-else type="success">{{$t('sys.log.success')}}</el-tag>
-        </template>
-      </bs-table>
-    </template>
+    <bs-table ref='bsTable' :mainData='mainData'>
+      <!-- isException 此列特殊处理-->
+      <template slot='isException' slot-scope='scope'>
+        <el-tag size="mini" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
+        <el-tag size="mini" v-else type="success">{{$t('sys.log.success')}}</el-tag>
+      </template>
+    </bs-table>
 
   </div>
 </template>
