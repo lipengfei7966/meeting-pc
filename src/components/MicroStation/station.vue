@@ -7,7 +7,7 @@
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
       <li @click="handel(1)" :class="pitchOn ? 'template_one' : ''">
-        <templateOne :title_="title_" :subTitle="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @feature="feature" ref="templateOne"></templateOne>
+        <templateOne :title_="title_" :subTitle_="subTitle_" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @feature="feature" ref="templateOne"></templateOne>
       </li>
       <!-- <li>模板二</li>
       <li>模板三</li>
@@ -32,7 +32,7 @@
 import request from '@/utils/frame/base/request'
 import templateOne from '@/components/MicroStation/template_one'
 export default {
-  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle'], //接收值
+  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle_'], //接收值
   name: 'station',
   components: {
     templateOne

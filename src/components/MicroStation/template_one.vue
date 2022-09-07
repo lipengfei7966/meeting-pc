@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle'], //接收值
+  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle_'], //接收值
   name: 'station',
   components: {},
   data() {
@@ -104,9 +104,11 @@ export default {
     listData: {
       immediate: true,
       handler(newValue, oldValue) {
-        // debugger
-        this.moduleData = newValue
-        console.log(newValue, oldValue, 'dd')
+        debugger
+        if (newValue) {
+          this.moduleData = newValue
+          console.log(newValue, oldValue, 'dd')
+        }
       },
       deep: true
     },
@@ -114,29 +116,35 @@ export default {
       immediate: true,
       handler(newValue, oldValue) {
         debugger
-        newValue.forEach((element, index) => {
-          if (element.picDictionary == 'background') {
-            this.loginBg = element.url
-          }
-        })
-        console.log(newValue, oldValue, 'dd')
+        if (newValue) {
+          newValue.forEach((element, index) => {
+            if (element.picDictionary == 'background') {
+              this.loginBg = element.url
+            }
+          })
+          console.log(newValue, oldValue, 'dd')
+        }
       },
       deep: true
     },
     title_: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
-        this.title = nVal
-        console.log(nVal, oVal)
+        if (nVal) {
+          // debugger
+          this.title = nVal
+          console.log(nVal, oVal)
+        }
       }
     },
-    subTitle: {
+    subTitle_: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
-        this.subTitle = nVal
-        console.log(nVal, oVal)
+        if (nVal) {
+          // debugger
+          this.subTitle = nVal
+          console.log(nVal, oVal)
+        }
       }
     }
   },

@@ -39,7 +39,7 @@
             </ul>
           </div>
           <div class="contents" style="width: 28%">
-            <station :title_="title_" :subTitle="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
+            <station :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
           </div>
           <div class="contents" style="width: 32%">
             <!-- 设置模块、默认不展示 -->
