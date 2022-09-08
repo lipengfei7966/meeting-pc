@@ -115,14 +115,19 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(newValue, oldValue) {
-        // debugger
+        debugger
         if (newValue) {
+          let arr = []
           newValue.forEach((element, index) => {
             if (element.picDictionary == 'background') {
               this.loginBg = element.url
+            } else {
+              debugger
+              arr.push(element)
             }
           })
-          console.log(newValue, oldValue, 'dd')
+          this.slideshow = arr
+          console.log(newValue, oldValue, this.slideshow, 'dd')
         }
       },
       deep: true
