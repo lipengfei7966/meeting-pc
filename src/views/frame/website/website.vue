@@ -231,7 +231,7 @@ export default {
           .catch(() => {})
       } else {
         this.$router.push({
-          name: '/optionalModule',
+          name: '/station',
           params: {}
         })
       }
