@@ -220,7 +220,7 @@ export default {
               this.code = res.data.code
             } else {
               this.$router.push({
-                name: '/optionalModule',
+                name: 'station',
                 params: {
                   data: this.$route.params.ids
                 }
@@ -231,7 +231,7 @@ export default {
           .catch(() => {})
       } else {
         this.$router.push({
-          name: '/station',
+          name: 'station',
           params: {}
         })
       }
