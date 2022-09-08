@@ -32,7 +32,8 @@ export default {
       this.dialogVisible = true
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      this.$message.warning('请删除已存在图片后再进行上传操作')
     },
     //
     handleUploadForm(param) {
