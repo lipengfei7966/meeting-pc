@@ -207,7 +207,7 @@ export default {
           data: { data: this.$route.params.ids, funcModule: '获取网页列表', funcOperation: '获取网页列表' }
         })
           .then((res) => {
-            debugger
+            // debugger
             if (res.data) {
               // debugger
               this.Functionality = res.data.webpageButtonDtoList
