@@ -185,7 +185,7 @@ export default {
   methods: {
     doDesign() {
       this.$router.push({
-        name: 'station',
+        name: 'microStationManagement',
         params: {
           type: 'detailSet',
           back: 'roleManage',
