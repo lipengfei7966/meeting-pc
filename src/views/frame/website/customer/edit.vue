@@ -14,9 +14,9 @@ export default {
         styleType: 'medium',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/biz/cmsCustomer/get',
-          save: '/api/biz/cmsCustomer/save',
-          update: '/api/biz/cmsCustomer/update'
+          view: '/api/base/cmsCustomer/get',
+          save: '/api/base/cmsCustomer/save',
+          update: '/api/base/cmsCustomer/update'
         },
 
         formData: [

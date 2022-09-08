@@ -42,8 +42,8 @@ export default {
 
       mainData: {
         api: {
-          search: '/api/biz/cmsCustomer/page',
-          doDelete: '/api/biz/cmsCustomer/remove'
+          search: '/api/base/cmsCustomer/page',
+          doDelete: '/api/base/cmsCustomer/remove'
         },
         initSearch: true,
         isTopBar: true,
