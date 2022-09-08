@@ -207,10 +207,10 @@ export default {
           data: { data: this.$route.params.ids, funcModule: '获取网页列表', funcOperation: '获取网页列表' }
         })
           .then((res) => {
-            // debugger
             if (res.data) {
               // debugger
               this.Functionality = res.data.webpageButtonDtoList
+              // debugger
               this.listData = res.data.webpageButtonDtoList
               this.webpagePicDtoList = res.data.webpagePicDtoList
               this.title_ = res.data.title
