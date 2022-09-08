@@ -7,8 +7,10 @@
 </template>
 
 <script>
+  // 日期格式化方法
+import { dateFormate } from '@/utils/frame/base/index'
 export default {
-  name: 'articleManage',
+  name: 'customerManage',
   data() {
     return {
       form: {
@@ -22,14 +24,15 @@ export default {
           type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
+          defaultSortString: 'code.desc',
           data: {
             usingFlag: ''
           }
         },
         formData: [
           {
-            label: 'website.article.query.articleName',
-            prop: 'articleName',
+            label: 'website.customer.query.name',
+            prop: 'name',
             element: 'input-validate',
             attrs: {
               clearable: true
@@ -40,26 +43,32 @@ export default {
 
       mainData: {
         api: {
-          search: '/api/biz/cmsArticle/page',
-          doDelete: '/api/biz/cmsArticle/remove'
+          search: '/api/base/cmsCustomer/page',
+          doDelete: '/api/base/cmsCustomer/remove'
         },
         initSearch: true,
         isTopBar: true,
         topBar: [
-        {
+          {
             name: 'add',
             type: 'dialog',
-            $refs: this.$refs,
-            component: () => import('@/views/frame/website/article/editForm.vue')
+            component: () => import('./edit.vue')
           },
           {
             name: 'update',
             type: 'dialog',
-            $refs: this.$refs,
-            getParam() {
+            component: () => import('./edit.vue'),
+            getParam: () => {
               return this.$refs.bsTable.currentRow
-            },
-            component: () => import('@/views/frame/website/article/editForm.vue')
+            }
+          },
+          {
+            name: 'view',
+            type: 'dialog',
+            component: () => import('./edit.vue'),
+            getParam: () => {
+              return this.$refs.bsTable.currentRow
+            }
           },
           {
             name: 'remove',
@@ -68,21 +77,7 @@ export default {
             }
           },
           {
-            name: 'view',
-            type: 'dialog',
-            $refs: this.$refs,
-            getParam() {
-              return this.$refs.bsTable.currentRow
-            },
-            component: () => import('@/views/frame/website/article/editForm.vue')
-          },
-          {
-            name: 'export',
-            $refs: this.$refs
-          },
-          {
-            name: 'refresh',
-            $refs: this.$refs
+            name: 'refresh'
           }
         ],
         isColset: true,
@@ -90,12 +85,16 @@ export default {
           id: this.$route.meta.title + 'ff',
           cols: [
             {
-              prop: 'articleName',
-              label: 'website.article.list.articleName'
+              prop: 'name',
+              label: 'website.customer.list.name'
             },
             {
-              label: 'website.article.list.articleTitle',
-              prop: 'articleTitle'
+              label: 'website.customer.list.shortName',
+              prop: 'shortName'
+            },
+            {
+              label: 'website.customer.list.customerCompanyName',
+              prop: 'customerCompanyName'
             }
           ]
         },

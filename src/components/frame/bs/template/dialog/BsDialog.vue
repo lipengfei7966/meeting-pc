@@ -19,14 +19,14 @@
                 <template v-if='f.props instanceof Array'>
                   <el-row :gutter="0">
                     <el-col :span="11">
-                      <el-form-item :prop="f.props[0]">
+                      <el-form-item :prop="f.props[0]" :required='f.validate instanceof Array && f.validate[0].required'>
                         <el-date-picker v-model="formData[f.props[0]]" v-bind='f.attrs' @change="(date) => changeStartTime(date, f.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore)' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
                         </el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="2" align='center'>~</el-col>
                     <el-col :span="11">
-                      <el-form-item :prop="f.props[1]">
+                      <el-form-item :prop="f.props[1]" :required='f.validate instanceof Array && f.validate[0].required'>
                         <el-date-picker v-model="formData[f.props[1]]" v-bind='f.attrs' @change="(date) => changeEndTime(date, f.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore)' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
                         </el-date-picker>
                       </el-form-item>

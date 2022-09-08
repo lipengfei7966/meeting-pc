@@ -1,9 +1,10 @@
 <template>
   <div class="contents">
-    <templateOne ref="templateOne" v-if="isState == 0" />
+    <templateOne ref="templateOne" v-if="isState == 0" :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" />
   </div>
 </template>        
 <script>
+import request from '@/utils/frame/base/request'
 import templateOne from '@/components/MicroStation/template_one'
 export default {
   name: 'stencilManagement',
@@ -12,12 +13,36 @@ export default {
   },
   data() {
     return {
-      isState: 0
+      isState: 0,
+      title_: '',
+      subTitle: '',
+      listData: [],
+      webpagePicDtoList: []
     }
   },
+  created() {
+    this.loadData()
+  },
   methods: {
-    handelEdit() {},
-    handelAdd() {}
+    loadData() {
+      // debugger
+      request({
+        url: '/api/biz/cmsWebpage/getByEventCode',
+        method: 'POST',
+        data: { data: this.$route.query.ids || '0001', funcModule: '获取网页列表', funcOperation: '获取网页列表' }
+      })
+        .then((res) => {
+          debugger
+          if (res.data) {
+            this.title_ = res.data.title
+            this.subTitle = res.data.subTitle
+            this.listData = res.data.webpageButtonDtoList
+            this.webpagePicDtoList = res.data.webpagePicDtoList
+          } else {
+          }
+        })
+        .catch(() => {})
+    }
   }
 }
 </script>
