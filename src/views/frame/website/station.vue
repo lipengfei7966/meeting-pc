@@ -66,20 +66,20 @@ export default {
         let webpagePicDtoList = [
           {
             picDictionary: 'background',
-            picUrl: window.document.location.origin + this.$refs.templateOne.loginBg
+            picUrl: this.$refs.templateOne.loginBg
           }
         ]
         if (this.$refs.templateOne.slideshow.length > 0) {
           for (let i = 0; i < this.$refs.templateOne.slideshow.length; i++) {
             // window.document.location.origin + '/' +
-            this.$refs.templateOne.slideshow[i].picUrl = window.document.location.origin + this.$refs.templateOne.slideshow[i].picUrl
+            this.$refs.templateOne.slideshow[i].picUrl = this.$refs.templateOne.slideshow[i].picUrl
             webpagePicDtoList.push(this.$refs.templateOne.slideshow[i])
           }
         }
         //
         let webpageButtonDtoList = this.$refs.templateOne.moduleData
         for (let j = 0; j < webpageButtonDtoList.length; j++) {
-          webpageButtonDtoList[j].icon = window.document.location.origin + webpageButtonDtoList[j].icon
+          webpageButtonDtoList[j].icon = webpageButtonDtoList[j].icon
         }
         debugger
         let data = {
