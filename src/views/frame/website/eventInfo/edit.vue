@@ -43,7 +43,7 @@ export default {
               clickParent: true,
               multiple: false,
               cols: 3,
-              data: 'FUNC_ORG',
+              data: 'CUSTOMER',
               clearable: true
             },
             validate: [
@@ -63,7 +63,13 @@ export default {
               format: 'yyyy-MM-dd HH:mm',
               'value-format': 'yyyy-MM-dd HH:mm:ss',
               pickerOptions: this.$toolUtil.getDefaultPickerOptions()
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
           {
             label: 'website.eventInfo.edit.eventPlace',
@@ -72,7 +78,13 @@ export default {
             attrs: {
               clearable: true,
               cols: 3
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
         ],
         bottomButtons: [

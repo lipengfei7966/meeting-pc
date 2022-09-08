@@ -41,6 +41,22 @@ export default {
         articlePic: '文章首图',
         articleContent: '文章内容'
       }
+    },
+    customer: {
+      title: '客户管理',
+      query: {
+        name: '客户名称'
+      },
+      list: {
+        name: '客户名称',
+        shortName: '客户简称',
+        customerCompanyName: '客户归属'
+      },
+      edit: {
+        name: '客户名称',
+        shortName: '客户简称',
+        orgCode: '客户归属'
+      }
     }
   }
 }
