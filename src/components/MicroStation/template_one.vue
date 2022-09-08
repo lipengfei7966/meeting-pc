@@ -150,6 +150,7 @@ export default {
   },
   methods: {
     handel(item, index) {
+      debugger
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {

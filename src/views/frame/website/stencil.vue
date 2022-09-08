@@ -1,6 +1,6 @@
 <template>
   <div class="contents">
-    <templateOne ref="templateOne" v-if="isState == 0" :title_="title_" :subTitle_="subTitle" />
+    <templateOne ref="templateOne" v-if="isState == 0" :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" />
   </div>
 </template>        
 <script>
@@ -15,7 +15,9 @@ export default {
     return {
       isState: 0,
       title_: '',
-      subTitle: ''
+      subTitle: '',
+      listData: [],
+      webpagePicDtoList: []
     }
   },
   created() {
@@ -34,6 +36,8 @@ export default {
           if (res.data) {
             this.title_ = res.data.title
             this.subTitle = res.data.subTitle
+            this.listData = res.data.webpageButtonDtoList
+            this.webpagePicDtoList = res.data.webpagePicDtoList
           } else {
           }
         })
