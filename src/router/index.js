@@ -28,124 +28,124 @@ meta : {
   noCache: true               如果设置为true ,则不会被 <keep-alive> 缓存(默认 false)
 }
  */
-export const routeExample = [
-  {
-    path: '/example',
-    name: 'example',
-    component: Layout,
-    meta: {
-      title: 'example'
-    },
-    children: [
-      {
-        name: 'indexDemo',
-        path: 'indexDemo',
-        component: () => import('@/views/example/indexDemo/index'),
-        meta: {
-          title: 'indexDemo',
-          noCache: true
-        }
-      },
-      {
-        name: 'tableTabsDemo',
-        path: 'tableTabsDemo',
-        component: () => import('@/views/example/tableTabsDemo/index'),
-        meta: {
-          title: 'tableTabsDemo',
-          noCache: true
-        }
-      },
-      {
-        name: 'editTagDemo',
-        path: 'editTagDemo',
-        component: () => import('@/views/example/indexDemo/editForm'),
-        meta: {
-          title: 'editTagDemo',
-          noCache: true,
-          multiple: false
-        },
-        hidden: true
-      },
-      {
-        name: 'dialogDemo',
-        path: 'dialogDemo',
-        component: () => import('@/views/example/dialogDemo/index'),
-        meta: {
-          title: 'dialogDemo'
-        }
-      },
-      {
-        name: 'treeSearchDemo',
-        path: 'treeSearchDemo',
-        component: () => import('@/views/example/treeSearchDemo/index'),
-        meta: {
-          title: 'treeSearchDemo'
-        }
-      },
-      {
-        name: 'spanTableDemo',
-        path: 'spanTableDemo',
-        component: () => import('@/views/example/spanTableDemo/index'),
-        meta: {
-          title: 'spanTableDemo'
-        }
-      },
-      {
-        name: 'spanTableThDemo',
-        path: 'spanTableThDemo',
-        component: () => import('@/views/example/spanTableThDemo/index'),
-        meta: {
-          title: 'spanTableThDemo'
-        }
-      },
-      {
-        name: 'editSpanTableDemo',
-        path: 'editSpanTableDemo',
-        component: () => import('@/views/example/editSpanTableDemo'),
-        meta: {
-          title: 'editSpanTableDemo'
-        }
-      },
-      {
-        name: 'timeLineDemo',
-        path: 'timeLineDemo',
-        component: () => import('@/views/example/timeLineDemo'),
-        meta: {
-          title: 'timeLineDemo'
-        }
+export const routeExample = [{
+  path: '/example',
+  name: 'example',
+  component: Layout,
+  meta: {
+    title: 'example'
+  },
+  children: [
+    {
+      name: 'indexDemo',
+      path: 'indexDemo',
+      component: () => import('@/views/example/indexDemo/index'),
+      meta: {
+        title: 'indexDemo',
+        noCache: true
       }
-      // {
-      //   name: 'generateEchart',
-      //   path: 'generate/echart',
-      //   component: () =>
-      // import('@/views/frame/sys/generate/echart/index'),
-      //   meta: {
-      //     title: '图表生成',
-      //     icon: 'svg-name'
-      //   }
-      // }, {
-      //   name: 'generateReport',
-      //   path: 'generate/report',
-      //   component: () =>
-      // import('@/views/frame/sys/generate/report/index'),
-      //   meta: {
-      //     title: '报表生成',
-      //     icon: 'svg-name'
-      //   }
-      // },
-      // {
-      //   name: 'generateEchartReport',
-      //   path: 'generate/echartReport',
-      //   component: () =>
-      // import('@/views/frame/sys/generate/echartReport/index'),
-      //   meta: {
-      //     title: '图报表生成',
-      //     icon: 'svg-name'
-      //   }
-      // },
-    ]
-  }
-]
+    },
+    {
+      name: 'tableTabsDemo',
+      path: 'tableTabsDemo',
+      component: () => import('@/views/example/tableTabsDemo/index'),
+      meta: {
+        title: 'tableTabsDemo',
+        noCache: true
+      }
+    },
+    {
+      name: 'editTagDemo',
+      path: 'editTagDemo',
+      component: () => import('@/views/example/indexDemo/editForm'),
+      meta: {
+        title: 'editTagDemo',
+        noCache: true,
+        multiple: false
+      },
+      hidden: true
+    },
+    {
+      name: 'dialogDemo',
+      path: 'dialogDemo',
+      component: () => import('@/views/example/dialogDemo/index'),
+      meta: {
+        title: 'dialogDemo'
+      }
+    },
+    {
+      name: 'treeSearchDemo',
+      path: 'treeSearchDemo',
+      component: () => import('@/views/example/treeSearchDemo/index'),
+      meta: {
+        title: 'treeSearchDemo'
+      }
+    },
+    {
+      name: 'spanTableDemo',
+      path: 'spanTableDemo',
+      component: () => import('@/views/example/spanTableDemo/index'),
+      meta: {
+        title: 'spanTableDemo'
+      }
+    },
+    {
+      name: 'spanTableThDemo',
+      path: 'spanTableThDemo',
+      component: () => import('@/views/example/spanTableThDemo/index'),
+      meta: {
+        title: 'spanTableThDemo'
+      }
+    },
+    {
+      name: 'editSpanTableDemo',
+      path: 'editSpanTableDemo',
+      component: () => import('@/views/example/editSpanTableDemo'),
+      meta: {
+        title: 'editSpanTableDemo'
+      }
+    },
+    {
+      name: 'timeLineDemo',
+      path: 'timeLineDemo',
+      component: () => import('@/views/example/timeLineDemo'),
+      meta: {
+        title: 'timeLineDemo'
+      }
+    }
+    // {
+    //   name: 'generateEchart',
+    //   path: 'generate/echart',
+    //   component: () =>
+    // import('@/views/frame/sys/generate/echart/index'),
+    //   meta: {
+    //     title: '图表生成',
+    //     icon: 'svg-name'
+    //   }
+    // }, {
+    //   name: 'generateReport',
+    //   path: 'generate/report',
+    //   component: () =>
+    // import('@/views/frame/sys/generate/report/index'),
+    //   meta: {
+    //     title: '报表生成',
+    //     icon: 'svg-name'
+    //   }
+    // },
+    // {
+    //   name: 'generateEchartReport',
+    //   path: 'generate/echartReport',
+    //   component: () =>
+    // import('@/views/frame/sys/generate/echartReport/index'),
+    //   meta: {
+    //     title: '图报表生成',
+    //     icon: 'svg-name'
+    //   }
+    // },
+
+  ]
+}]
+
 export const constantRouterMap = [
   {
     path: '/login',

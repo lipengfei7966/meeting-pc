@@ -29,7 +29,7 @@ exports.cssLoaders = function(options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders(loader, loaderOptions) {
+  function generateLoaders (loader, loaderOptions) {
     // const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     // if (loader) {
@@ -54,27 +54,27 @@ exports.cssLoaders = function(options) {
     // }
 
     const loaders = []
-    if (options.extract) {
+    if (options.extract) { 
       // loaders.push(MiniCssExtractPlugin.loader)
       /********************* 划重点 *************************/
-      loaders.push({
-        loader: MiniCssExtractPlugin.loader,
-        options: {
+      loaders.push({ 
+        loader:MiniCssExtractPlugin.loader,
+        options: { 
           publicPath: '../../'
         }
       })
       /********************* 划重点 *************************/
-    } else {
+    } else { 
       loaders.push('vue-style-loader')
     }
     loaders.push(cssLoader)
-    if (options.usePostCSS) {
+    if (options.usePostCSS) { 
       loaders.push(postcssLoader)
     }
-    if (loader) {
-      loaders.push({
+    if (loader) { 
+      loaders.push({ 
         loader: loader + '-loader',
-        options: Object.assign({}, loaderOptions, {
+        options: Object.assign({ }, loaderOptions, { 
           sourceMap: options.sourceMap
         })
       })
