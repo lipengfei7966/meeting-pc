@@ -150,7 +150,12 @@ export default {
   },
   methods: {
     handel(item, index) {
-      debugger
+      // debugger
+      if (item.type == 'url') {
+        window.location.href = item.content
+      } else {
+        this.$message('暂无页面资源！')
+      }
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {
