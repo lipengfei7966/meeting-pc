@@ -177,24 +177,24 @@ export const constantRouterMap = [
     hidden: true
   },
   // 0902
-  {
-    path: '/microStationManagement',
-    name: '/microStationManagement',
-    component: () => import('@/views/frame/website/website'),
-    hidden: true
-  },
-  {
-    path: '/stencilManagement',
-    name: '/stencilManagement',
-    component: () => import('@/views/frame/website/stencil'),
-    hidden: true
-  },
-  {
-    path: '/optionalModule',
-    name: '/optionalModule',
-    component: () => import('@/components/MicroStation/station'),
-    hidden: true
-  },
+  // {
+  //   path: '/microStationManagement',
+  //   name: '/microStationManagement',
+  //   component: () => import('@/views/frame/website/website'),
+  //   hidden: true
+  // },
+  // {
+  //   path: '/stencilManagement',
+  //   name: '/stencilManagement',
+  //   component: () => import('@/views/frame/website/stencil'),
+  //   hidden: true
+  // },
+  // {
+  //   path: '/optionalModule',
+  //   name: '/optionalModule',
+  //   component: () => import('@/components/MicroStation/station'),
+  //   hidden: true
+  // },
   {
     path: '/404',
     name: '404',

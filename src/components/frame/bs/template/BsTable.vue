@@ -338,8 +338,6 @@ export default {
         this.doRefresh(true)
       }
     }
-  },
-  mounted() {
     this.hasLayout = this.mainData.hasLayout === undefined ? true : this.mainData.hasLayout
     this.tableComputed()
     if (this.hasLayout) {
@@ -471,6 +469,7 @@ export default {
     },
     // 按钮事件自定义
     triggerEvent(button) {
+      debugger
       if (button.event && typeof button.event === 'function') {
         button.event(button)
       } else if (this.baseEvent[button.name]) {
