@@ -3,14 +3,14 @@
     <div class="block">
       <el-carousel trigger="click" height="180px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
-          <img :src="`${item.picUrl}`" alt="" style="width: 100%" />
+          <img :src="`${item.url}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
         </el-carousel-item>
       </el-carousel>
     </div>
     <div>
-      <p class="p_big">{{ bigTitle }}</p>
-      <p class="p_small">{{ smallTitle }}</p>
+      <p class="p_big">{{ title }}</p>
+      <p class="p_small">{{ subTitle }}</p>
       <div>
         <ul class="feature">
           <li v-for="(item, index) in moduleData" :key="index" :style="isTrue ? { backgroundColor: item.backgroundColor } : ''" @click.stop="handel(item, index)">
@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  props: ['listData'], //接收值
+  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle_'], //接收值
   name: 'station',
   components: {},
   data() {
@@ -38,8 +38,8 @@ export default {
       loginBg: '/static/meeting/img/baseMap/底图.jpg',
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
-      bigTitle: '2022中国人保寿险第十四届高峰会',
-      smallTitle: '中国-武汉',
+      title: '2022中国人保寿险第十四届高峰会',
+      subTitle: '中国-武汉',
       pitchOn: false,
       moduleData: [
         {
@@ -94,8 +94,8 @@ export default {
       slideshow: [
         {
           picDictionary: 'rotation',
-          // picUrl: require('@/assets/images/banner.png')
-          picUrl: '/static/meeting/img/slideshow/banner.png'
+          // url: require('@/assets/images/banner.png')
+          url: '/static/meeting/img/slideshow/banner.png'
         }
       ]
     }
@@ -105,14 +105,52 @@ export default {
       immediate: true,
       handler(newValue, oldValue) {
         // debugger
-        this.moduleData = newValue
-        console.log(newValue, oldValue, 'dd')
+        if (newValue) {
+          this.moduleData = newValue
+          console.log(newValue, oldValue, 'dd')
+        }
       },
       deep: true
+    },
+    webpagePicDtoList: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        // debugger
+        if (newValue) {
+          newValue.forEach((element, index) => {
+            if (element.picDictionary == 'background') {
+              this.loginBg = element.url
+            }
+          })
+          console.log(newValue, oldValue, 'dd')
+        }
+      },
+      deep: true
+    },
+    title_: {
+      immediate: true,
+      handler(nVal, oVal) {
+        if (nVal) {
+          // debugger
+          this.title = nVal
+          console.log(nVal, oVal)
+        }
+      }
+    },
+    subTitle_: {
+      immediate: true,
+      handler(nVal, oVal) {
+        if (nVal) {
+          // debugger
+          this.subTitle = nVal
+          console.log(nVal, oVal)
+        }
+      }
     }
   },
   methods: {
     handel(item, index) {
+      debugger
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {

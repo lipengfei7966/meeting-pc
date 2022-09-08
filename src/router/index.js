@@ -210,19 +210,18 @@ export const constantRouterMap = [
   {
     name: 'reportFormwork',
     path: '/preview/report/:id',
-    component: () =>
-      import('@/views/frame/sys/generate/formwork/report'),
+    component: () => import('@/views/frame/sys/generate/formwork/report'),
     meta: {
       title: '报表一览',
       includeFlag: true,
       icon: 'svg-name'
     },
     hidden: true
-  }, {
+  },
+  {
     name: 'echartFormwork',
     path: '/preview/echart/:id',
-    component: () =>
-      import('@/views/frame/sys/generate/formwork/echart'),
+    component: () => import('@/views/frame/sys/generate/formwork/echart'),
     meta: {
       title: '图表一览',
       includeFlag: true,
@@ -307,16 +306,17 @@ export const routeIframe = {
   ]
 }
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  routes: constantRouterMap,
-  scrollBehavior(to, from, savedPosition) {
-    return {
-      x: 100,
-      y: 100
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    routes: constantRouterMap,
+    scrollBehavior(to, from, savedPosition) {
+      return {
+        x: 100,
+        y: 100
+      }
     }
-  }
-})
+  })
 
 const router = createRouter()
 

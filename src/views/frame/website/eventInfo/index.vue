@@ -1,13 +1,13 @@
 <template>
   <div class="bs-container app-container">
-    <bs-form ref='bsForm' :form='form'></bs-form>
+    <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref='bsTable' :mainData='mainData'></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
 
 <script>
-  // 日期格式化方法
+// 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 export default {
   name: 'eventInfoManage',
@@ -101,7 +101,7 @@ export default {
             i18n: '微站设计',
             routeInfo: () => {
               return {
-                name: 'roleDetail',
+                name: 'microStationManagement',
                 params: {
                   type: 'detailSet',
                   back: 'roleManage',
