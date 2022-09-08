@@ -12,6 +12,7 @@ export default {
   data() {
     return {
       form: {
+        moreShowFlg: false,
         listQuery: {
           current: 1,
           size: 20,
