@@ -82,7 +82,9 @@ Vue.component('title-contain', titleContain)
 // 列设置
 import elTableColumnSet from '@/components/frame/ColumnSet'
 Vue.component('el-table-column-set', elTableColumnSet)
-
+// 取色器
+import vcolorpicker from 'vcolorpicker'
+Vue.use(vcolorpicker)
 // 基础模板组件
 const path = require('path')
 const bsTmp = require.context('./components/frame/bs/template', true, /\.vue$/)

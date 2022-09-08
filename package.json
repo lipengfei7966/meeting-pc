@@ -32,6 +32,7 @@
     "screenfull": "^3.3.2",
     "sortablejs": "^1.15.0",
     "umy-ui": "1.1.6",
+    "vcolorpicker": "^1.1.0",
     "vue": "2.6.11",
     "vue-calendar-component": "^2.8.2",
     "vue-i18n": "^7.6.0",

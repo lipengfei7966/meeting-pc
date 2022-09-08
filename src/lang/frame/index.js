@@ -34,6 +34,10 @@ import zhPlatform from '@/lang/frame/base/modules/platform_zh.js'
 import enFunc from '@/lang/frame/base/modules/func_en'
 import zhFunc from '@/lang/frame/base/modules/func_zh'
 
+// 微站
+import zhWebsite from '@/lang/frame/website/website_zh'
+import enWebsite from '@/lang/frame/website/website_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -46,7 +50,8 @@ const messages = {
     ...enPlatform,
     ...enFunc,
     ...enBusinessBpm,
-    ...enOffice
+    ...enOffice,
+    ...enWebsite
   },
   zh: {
     ...zhBase,
@@ -59,7 +64,8 @@ const messages = {
     ...zhPlatform,
     ...zhFunc,
     ...zhBusinessBpm,
-    ...zhOffice
+    ...zhOffice,
+    ...zhWebsite
   }
 }
 
