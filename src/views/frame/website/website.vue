@@ -149,7 +149,9 @@ export default {
           .then((res) => {
             if (res.data) {
               this.$message('删除成功')
+              //
               this.loadData()
+              this.isFlag = 0
             } else {
               this.$message('删除失败')
             }

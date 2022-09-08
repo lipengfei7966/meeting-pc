@@ -97,7 +97,7 @@ export default {
       pageLists: [],
       classify: [],
       // process.env.BASE_API +
-      uploadUrl: '/api/obs/file/uploadImg'
+      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg'
     }
   },
   computed: {
@@ -313,7 +313,8 @@ export default {
       console.log(file)
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      this.$message.warning('请删除已存在图片后再进行上传操作')
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
