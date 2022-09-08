@@ -96,7 +96,8 @@ export default {
       },
       pageLists: [],
       classify: [],
-      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg'
+      // process.env.BASE_API +
+      uploadUrl: '/api/obs/file/uploadImg'
     }
   },
   computed: {
