@@ -15,7 +15,8 @@ export default {
   props: ['code', 'webpagePicDtoList'], //接收值
   data() {
     return {
-      uploadUrl: process.env.BASE_API + '/api/biz/cmsWebpagePic/uploadBackgroundPic',
+      // process.env.BASE_API +
+      uploadUrl: '/api/biz/cmsWebpagePic/uploadBackgroundPic',
       dialogImageUrl: '',
       dialogVisible: false,
       webpagePicDtoList_: []

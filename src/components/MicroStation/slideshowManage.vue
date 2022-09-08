@@ -13,7 +13,8 @@ export default {
   props: ['code', 'webpagePicDtoList'], //接收值
   data() {
     return {
-      uploadUrl: process.env.BASE_API + '/api/biz/cmsWebpagePic/uploadRotationPic',
+      // process.env.BASE_API +
+      uploadUrl: '/api/biz/cmsWebpagePic/uploadRotationPic',
       webpagePicDtoList_: []
       // fileList: [
       //   { name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
