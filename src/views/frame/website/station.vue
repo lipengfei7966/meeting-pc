@@ -108,7 +108,7 @@ export default {
               console.log(res)
               // 跳转到编辑界面
               this.$router.push({
-                name: '/microStationManagement',
+                name: 'microStationManagement',
                 params: {
                   ids: ids
                   // ids: this.$route.params.ids
@@ -117,7 +117,7 @@ export default {
             } else {
               // 保持当前选模板界面
               this.$router.push({
-                name: '/optionalModule',
+                name: 'station',
                 params: {}
               })
               console.log(res)
