@@ -81,10 +81,11 @@ export default {
         for (let j = 0; j < webpageButtonDtoList.length; j++) {
           webpageButtonDtoList[j].icon = window.document.location.origin + webpageButtonDtoList[j].icon
         }
+        debugger
         let data = {
           data: {
             webpagePicDtoList: webpagePicDtoList,
-            eventCode: '0001',
+            eventCode: this.$route.params.data,
             templateCode: this.templateVal,
             title: this.$refs.templateOne.title,
             subTitle: this.$refs.templateOne.subTitle,
@@ -100,21 +101,24 @@ export default {
         })
           .then((res) => {
             // debugger
+            debugger
+            console.log(this.$route.params)
+            let ids = this.$route.params.data
             if (res.data) {
               console.log(res)
               // 跳转到编辑界面
               this.$router.push({
                 name: '/microStationManagement',
-                query: {
-                  id: res.data,
-                  ids: this.$route.query.ids || '0001'
+                params: {
+                  ids: ids
+                  // ids: this.$route.params.ids
                 }
               })
             } else {
               // 保持当前选模板界面
               this.$router.push({
                 name: '/optionalModule',
-                query: {}
+                params: {}
               })
               console.log(res)
             }
