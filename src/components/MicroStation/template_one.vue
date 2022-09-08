@@ -35,7 +35,7 @@ export default {
     return {
       isTrue: true,
       // loginBg: require('./images/底图.jpg'),
-      loginBg: '/pc/static/meeting/img/baseMap/底图.jpg',
+      loginBg: '/static/meeting/img/baseMap/底图.jpg',
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
       title: '2022中国人保寿险第十四届高峰会',
@@ -44,7 +44,7 @@ export default {
       moduleData: [
         {
           // img: require('@/assets/templateIcon/活动日程.png'),
-          icon: '/pc/static/meeting/img/templateIcon/活动日程.png',
+          icon: '/static/meeting/img/templateIcon/活动日程.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 0,
           title: '活动日程',
@@ -52,7 +52,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/荣誉殿堂.png'),
-          icon: '/pc/static/meeting/img/templateIcon/荣誉殿堂.png',
+          icon: '/static/meeting/img/templateIcon/荣誉殿堂.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 1,
           title: '荣誉殿堂',
@@ -60,7 +60,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/讲师介绍.png'),
-          icon: '/pc/static/meeting/img/templateIcon/讲师介绍.png',
+          icon: '/static/meeting/img/templateIcon/讲师介绍.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 2,
           title: '讲师介绍',
@@ -68,7 +68,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/精彩照片.png'),
-          icon: '/pc/static/meeting/img/templateIcon/精彩照片.png',
+          icon: '/static/meeting/img/templateIcon/精彩照片.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '精彩照片',
           sort: 3,
@@ -76,7 +76,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/峰会直播.png'),
-          icon: '/pc/static/meeting/img/templateIcon/峰会直播.png',
+          icon: '/static/meeting/img/templateIcon/峰会直播.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '峰会直播',
           sort: 4,
@@ -84,7 +84,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/抽奖说明.png'),
-          icon: '/pc/static/meeting/img/templateIcon/抽奖说明.png',
+          icon: '/static/meeting/img/templateIcon/抽奖说明.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '喜从天降',
           sort: 5,
@@ -95,7 +95,7 @@ export default {
         {
           picDictionary: 'rotation',
           // url: require('@/assets/images/banner.png')
-          url: '/pc/static/meeting/img/slideshow/banner.png'
+          url: '/static/meeting/img/slideshow/banner.png'
         }
       ]
     }
@@ -104,8 +104,12 @@ export default {
     listData: {
       immediate: true,
       handler(newValue, oldValue) {
-        // debugger
         if (newValue) {
+          newValue.forEach((item) => {
+            if (item.icon.indexOf('http') == -1) {
+              item.icon = window.document.location.origin + item.icon
+            }
+          })
           this.moduleData = newValue
           console.log(newValue, oldValue, 'dd')
         }
@@ -115,15 +119,24 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
+        // debugger
         if (newValue) {
           let arr = []
           newValue.forEach((element, index) => {
             if (element.picDictionary == 'background') {
-              this.loginBg = element.url
+              if (element.url.indexOf('http') == -1) {
+                this.loginBg = window.document.location.origin + element.url
+              } else {
+                this.loginBg = element.url
+              }
             } else {
-              debugger
-              arr.push(element)
+              if (element.url.indexOf('http') == -1) {
+                element.url = window.document.location.origin + element.url
+                arr.push(element)
+              } else {
+                arr.push(element)
+              }
+              // debugger
             }
           })
           this.slideshow = arr

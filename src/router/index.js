@@ -193,7 +193,7 @@ export const constantRouterMap = [
   // {
   //   path: '/optionalModule',
   //   name: '/optionalModule',
-  //   component: () => import('@/components/MicroStation/station'),
+  //   component: () => import('@/views/frame/website/station'),
   //   hidden: true
   // },
   {

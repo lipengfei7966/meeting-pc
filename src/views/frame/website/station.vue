@@ -66,13 +66,13 @@ export default {
         let webpagePicDtoList = [
           {
             picDictionary: 'background',
-            picUrl: this.$refs.templateOne.loginBg
+            url: this.$refs.templateOne.loginBg
           }
         ]
         if (this.$refs.templateOne.slideshow.length > 0) {
           for (let i = 0; i < this.$refs.templateOne.slideshow.length; i++) {
             // window.document.location.origin + '/' +
-            this.$refs.templateOne.slideshow[i].picUrl = this.$refs.templateOne.slideshow[i].picUrl
+            this.$refs.templateOne.slideshow[i].url = this.$refs.templateOne.slideshow[i].url
             webpagePicDtoList.push(this.$refs.templateOne.slideshow[i])
           }
         }
@@ -81,7 +81,7 @@ export default {
         for (let j = 0; j < webpageButtonDtoList.length; j++) {
           webpageButtonDtoList[j].icon = webpageButtonDtoList[j].icon
         }
-        debugger
+        // debugger
         let data = {
           data: {
             webpagePicDtoList: webpagePicDtoList,
@@ -101,7 +101,7 @@ export default {
         })
           .then((res) => {
             // debugger
-            debugger
+            // debugger
             console.log(this.$route.params)
             let ids = this.$route.params.data
             if (res.data) {
