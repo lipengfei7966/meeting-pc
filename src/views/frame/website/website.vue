@@ -28,18 +28,18 @@
                   <span>{{ item.title }}</span>
                   <span style="margin-right: 10px">
                     <!-- 上移 -->
-                    <el-button type="text" @click="handelClick(item, Functionality, 0)"><i class="el-icon-caret-top"></i></el-button>
+                    <el-button type="text" @click.stop="handelClick(item, Functionality, 0)"><i class="el-icon-caret-top"></i></el-button>
                     <!-- 下移 -->
-                    <el-button type="text" @click="handelClick(item, Functionality, 1)"><i class="el-icon-caret-bottom"></i></el-button>
+                    <el-button type="text" @click.stop="handelClick(item, Functionality, 1)"><i class="el-icon-caret-bottom"></i></el-button>
                     <!-- 删除 -->
-                    <el-button type="text" @click="handelClick(item, Functionality, 2)"><i class="el-icon-delete"></i></el-button>
+                    <el-button type="text" @click.stop="handelClick(item, Functionality, 2)"><i class="el-icon-delete"></i></el-button>
                   </span>
                 </div>
               </li>
             </ul>
           </div>
           <div class="contents" style="width: 28%">
-            <station @featureVal="featureVal" ref="station" />
+            <station :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
           </div>
           <div class="contents" style="width: 32%">
             <!-- 设置模块、默认不展示 -->
@@ -51,10 +51,10 @@
                 <i class="el-icon-more-outline"></i>
               </span>
             </div>
-            <settingUp v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
-            <slideshowManage v-if="isFlag == 2" />
-            <baseMap v-if="isFlag == 3" />
-            <titleManage @isFlag_="isFlag_" v-if="isFlag == 4" />
+            <settingUp :code="code" :dataLength="listData.length" @upData="upData" :isFlag_one="isFlag_one" :newData="newData" :dataNum="dataNum" ref="settingUp_" v-if="isFlag == 1" @newVal="newVal" @colorVal="colorVal" @onClick="onClick" />
+            <slideshowManage @upData_="upData_" :webpagePicDtoList="webpagePicDtoList" :code="code" v-if="isFlag == 2" />
+            <baseMap :code="code" @upData_="upData_" :webpagePicDtoList="webpagePicDtoList" v-if="isFlag == 3" />
+            <titleManage :title_="title_" :subTitle="subTitle" :code="code" @upData_="upData_" @isFlag_="isFlag_" v-if="isFlag == 4" />
           </div>
         </div>
       </el-tab-pane>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 import station from '@/components/MicroStation/station'
 import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
@@ -84,12 +85,77 @@ export default {
   data() {
     return {
       isFlag: 0,
-      Functionality: [{ title: '项目介绍' }, { title: '行程规划' }, { title: '出行指南' }, { title: '意见建议' }, { title: '服务反馈' }, { title: '资费一览' }, { title: '天气' }, { title: '活动时间' }, { title: '参会人员' }]
+      Functionality: [],
+      dataCode: '',
+      dataCode_: '',
+      dataNum: '',
+      code: '',
+      newData: {},
+      listData: [],
+      isFlag_one: false,
+      webpagePicDtoList: [],
+      title_: '',
+      subTitle: ''
     }
   },
   methods: {
     handelClick(item, data, type) {
-      console.log(item, data, type)
+      if (type == 0) {
+        if (item.sort == 0) {
+          this.$message.warning('无法上移')
+        } else {
+          request({
+            url: '/api/biz/cmsWebpageButton/move',
+            method: 'POST',
+            data: { data: { id: item.id, moveType: 1, webpageCode: item.webpageCode }, funcModule: '按钮上移', funcOperation: '按钮上移' }
+          })
+            .then((res) => {
+              if (res.data) {
+                this.$message('上移成功')
+                this.loadData()
+              } else {
+                this.$message('上移失败')
+              }
+            })
+            .catch(() => {})
+        }
+        console.log(item, data, type)
+      } else if (type == 1) {
+        if (item.sort == data.length - 1) {
+          this.$message.warning('无法下移')
+        } else {
+          request({
+            url: '/api/biz/cmsWebpageButton/move',
+            method: 'POST',
+            data: { data: { id: item.id, moveType: -1, webpageCode: item.webpageCode }, funcModule: '按钮下移', funcOperation: '按钮下移' }
+          })
+            .then((res) => {
+              if (res.data) {
+                this.$message('下移成功')
+                this.loadData()
+              } else {
+                this.$message('下移失败')
+              }
+            })
+            .catch(() => {})
+        }
+        console.log(item, data, type)
+      } else if (type == 2) {
+        request({
+          url: '/api/biz/cmsWebpageButton/remove',
+          method: 'POST',
+          data: { data: item.id, funcModule: '按钮删除', funcOperation: '按钮删除' }
+        })
+          .then((res) => {
+            if (res.data) {
+              this.$message('删除成功')
+              this.loadData()
+            } else {
+              this.$message('删除失败')
+            }
+          })
+          .catch(() => {})
+      }
     },
     management(val) {
       this.isFlag = val
@@ -101,21 +167,23 @@ export default {
       console.log(val)
     },
     handelAdd() {
+      this.isFlag_one = true
       this.isFlag = 1
     },
-    newVal(val) {
-      //       debugger
+    newVal(val, dataNum, colorValue) {
+      // debugger
       if (val == 1) {
-        this.$refs.station.watchVal(val)
+        this.$refs.station.watchVal(val, dataNum)
       } else if (val == 2) {
-        this.$refs.station.watchVal(val)
+        this.$refs.station.watchVal(val, dataNum)
       } else if (val == 3) {
-        this.$refs.station.watchVal(val)
+        this.$refs.station.watchVal(val, dataNum, colorValue)
       }
       console.log(val)
     },
-    colorVal(val) {
-      this.$refs.station.colorVal(val)
+    colorVal(val, dataNum) {
+      // debugger
+      this.$refs.station.colorVal(val, dataNum)
     },
     onClick() {
       this.isFlag = 0
@@ -124,8 +192,57 @@ export default {
       this.isFlag = val
     },
     addEdit(val, index) {
-      console.log(val, index)
+      // debugger
+      // console.log(val, index, this.Functionality)
       this.isFlag = 1
+      this.isFlag_one = false
+      this.dataNum = index
+      this.newData = val
+    },
+    loadData() {
+      if (this.$route.query.ids || true) {
+        request({
+          url: '/api/biz/cmsWebpage/getByEventCode',
+          method: 'POST',
+          data: { data: this.$route.query.ids || '0001', funcModule: '获取网页列表', funcOperation: '获取网页列表' }
+        })
+          .then((res) => {
+            // debugger
+            if (res.data) {
+              // debugger
+              this.Functionality = res.data.webpageButtonDtoList
+              this.listData = res.data.webpageButtonDtoList
+              this.webpagePicDtoList = res.data.webpagePicDtoList
+              this.title_ = res.data.title
+              this.subTitle = res.data.subTitle
+              this.code = res.data.code
+              console.log(res)
+              this.code = res.data.code
+            } else {
+              this.$router.push({
+                name: '/optionalModule',
+                query: {
+                  data: this.$route.query.ids || '0001'
+                }
+              })
+              console.log(res)
+            }
+          })
+          .catch(() => {})
+      } else {
+        this.$router.push({
+          name: '/optionalModule',
+          query: {}
+        })
+      }
+    },
+    upData() {
+      // debugger
+      this.isFlag = 0
+      this.loadData()
+    },
+    upData_() {
+      this.loadData()
     }
   },
   mounted() {
@@ -133,15 +250,9 @@ export default {
     this.$refs.station.isPc = false
   },
   created() {
-    debugger
-    this.requestApi({
-      url: '/biz/cmsWebpage/getByEventCode',
-      method: 'post',
-      data: { code: '0001' }
-    }).then((res) => {
-      debugger
-      console.log(res)
-    })
+    // debugger
+    this.loadData()
+    console.log(this.$route)
   }
 }
 </script>

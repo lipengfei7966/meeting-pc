@@ -7,7 +7,7 @@
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
       <li @click="handel(1)" :class="pitchOn ? 'template_one' : ''">
-        <templateOne @feature="feature" ref="templateOne"></templateOne>
+        <templateOne :title_="title_" :subTitle_="subTitle_" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @feature="feature" ref="templateOne"></templateOne>
       </li>
       <!-- <li>模板二</li>
       <li>模板三</li>
@@ -29,8 +29,10 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 import templateOne from '@/components/MicroStation/template_one'
 export default {
+  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle_'], //接收值
   name: 'station',
   components: {
     templateOne
@@ -43,20 +45,81 @@ export default {
       sonVal: []
     }
   },
+  watch: {
+    // webpagePicDtoList: {
+    //   immediate: true,
+    //   handler(newValue, oldValue) {
+    //     debugger
+    //     console.log(newValue, oldValue)
+    //   },
+    //   deep: true
+    // }
+  },
+  created() {
+    console.log(window.document.location.origin)
+  },
   methods: {
     handelClick() {
       // debugger
       if (this.templateVal && this.pitchOn) {
-        this.$router.push({
-          name: 'microStationManagement',
-          query: {
-            //   event_num: this.menus.event_num,
-            //   id: this.$route.query.id,
-            //   name: this.$route.query.name,
-            //   eventSearchType: this.$route.query.eventSearchType,
-            //   type: 'edit'
+        // debugger
+        let webpagePicDtoList = [
+          {
+            picDictionary: 'background',
+            picUrl: window.document.location.origin + this.$refs.templateOne.loginBg
           }
+        ]
+        if (this.$refs.templateOne.slideshow.length > 0) {
+          for (let i = 0; i < this.$refs.templateOne.slideshow.length; i++) {
+            // window.document.location.origin + '/' +
+            this.$refs.templateOne.slideshow[i].picUrl = window.document.location.origin + this.$refs.templateOne.slideshow[i].picUrl
+            webpagePicDtoList.push(this.$refs.templateOne.slideshow[i])
+          }
+        }
+        //
+        let webpageButtonDtoList = this.$refs.templateOne.moduleData
+        for (let j = 0; j < webpageButtonDtoList.length; j++) {
+          webpageButtonDtoList[j].icon = window.document.location.origin + webpageButtonDtoList[j].icon
+        }
+        let data = {
+          data: {
+            webpagePicDtoList: webpagePicDtoList,
+            eventCode: '0001',
+            templateCode: this.templateVal,
+            title: this.$refs.templateOne.title,
+            subTitle: this.$refs.templateOne.subTitle,
+            webpageButtonDtoList: webpageButtonDtoList
+          },
+          funcOperation: '首次保存数据',
+          funcModule: '首次保存数据'
+        }
+        request({
+          url: '/api/biz/cmsWebpage/save',
+          method: 'POST',
+          data: data
         })
+          .then((res) => {
+            // debugger
+            if (res.data) {
+              console.log(res)
+              // 跳转到编辑界面
+              this.$router.push({
+                name: '/microStationManagement',
+                query: {
+                  id: res.data,
+                  ids: this.$route.query.ids || '0001'
+                }
+              })
+            } else {
+              // 保持当前选模板界面
+              this.$router.push({
+                name: '/optionalModule',
+                query: {}
+              })
+              console.log(res)
+            }
+          })
+          .catch(() => {})
       } else {
         this.$message('请选择一个模板！')
       }
@@ -79,19 +142,20 @@ export default {
       this.$emit('featureVal', this.sonVal)
       console.log(val)
     },
-    watchVal(val) {
+    watchVal(val, dataNum, colorValue) {
       //       debugger
       if (val == 1) {
-        this.$refs.templateOne.watchVal(val)
+        this.$refs.templateOne.watchVal(val, dataNum)
       } else if (val == 2) {
-        this.$refs.templateOne.watchVal(val)
+        this.$refs.templateOne.watchVal(val, dataNum)
       } else if (val == 3) {
-        this.$refs.templateOne.watchVal(val)
+        this.$refs.templateOne.watchVal(val, dataNum, colorValue)
       }
       console.log(val)
     },
-    colorVal(val) {
-      this.$refs.templateOne.colorVal(val)
+    colorVal(val, dataNum) {
+      // debugger
+      this.$refs.templateOne.colorVal(val, dataNum)
     }
   }
 }

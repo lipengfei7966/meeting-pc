@@ -16,15 +16,9 @@ export default {
           current: 1,
           size: 20,
           isPage: true,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
-          orderByField: 'key',
-          data: {
-            usingFlag: ''
-          }
+          data: {}
         },
         formData: [
           {

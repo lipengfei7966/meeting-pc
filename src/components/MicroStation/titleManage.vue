@@ -16,7 +16,9 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
+  props: ['code', 'title_', 'subTitle'], //接收值
   data() {
     return {
       ruleForm: {
@@ -31,11 +33,47 @@ export default {
       }
     }
   },
+  watch: {
+    title_: {
+      immediate: true,
+      handler(nVal, oVal) {
+        // debugger
+        this.ruleForm.mainTitle = nVal
+        console.log(nVal, oVal)
+      }
+    },
+    subTitle: {
+      immediate: true,
+      handler(nVal, oVal) {
+        // debugger
+        this.ruleForm.miniTitle = nVal
+        console.log(nVal, oVal)
+      }
+    }
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          // alert('submit!')
+          //
+          request({
+            url: '/api/biz/cmsWebpage/updateTitle',
+            method: 'POST',
+            data: { data: { code: this.code, title: this.ruleForm.mainTitle, subTitle: this.ruleForm.miniTitle }, funcOperation: '保存标题', funcModule: '保存标题' }
+          })
+            .then((data) => {
+              if (data) {
+                // debugger
+                this.$message('标题保存成功')
+                this.$emit('upData_')
+              } else {
+                this.$message('标题保存失败')
+              }
+              loading.close()
+            })
+            .catch(() => {})
+          //
         } else {
           console.log('error submit!!')
           return false
