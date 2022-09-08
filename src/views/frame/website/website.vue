@@ -200,14 +200,14 @@ export default {
       this.newData = val
     },
     loadData() {
-      if (this.$route.query.ids || true) {
+      if (this.$route.params.ids) {
         request({
           url: '/api/biz/cmsWebpage/getByEventCode',
           method: 'POST',
-          data: { data: this.$route.query.ids || '0001', funcModule: '获取网页列表', funcOperation: '获取网页列表' }
+          data: { data: this.$route.params.ids, funcModule: '获取网页列表', funcOperation: '获取网页列表' }
         })
           .then((res) => {
-            // debugger
+            debugger
             if (res.data) {
               // debugger
               this.Functionality = res.data.webpageButtonDtoList
@@ -221,8 +221,8 @@ export default {
             } else {
               this.$router.push({
                 name: '/optionalModule',
-                query: {
-                  data: this.$route.query.ids || '0001'
+                params: {
+                  data: this.$route.params.ids
                 }
               })
               console.log(res)
@@ -232,7 +232,7 @@ export default {
       } else {
         this.$router.push({
           name: '/optionalModule',
-          query: {}
+          params: {}
         })
       }
     },

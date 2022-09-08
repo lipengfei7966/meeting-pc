@@ -99,13 +99,14 @@ export default {
             name: 'design',
             type: 'route',
             i18n: '微站设计',
+            event: this.doDesign,
             routeInfo: () => {
               return {
                 name: 'microStationManagement',
                 params: {
                   type: 'detailSet',
                   back: 'roleManage',
-                  code: this.$refs.bsTable.currentRow.code
+                  ids: this.$refs.bsTable.currentRow.code
                 }
               }
             }
@@ -178,6 +179,18 @@ export default {
           }
         }
       }
+    }
+  },
+  methods: {
+    doDesign() {
+      this.$router.push({
+        name: 'microStationManagement',
+        params: {
+          type: 'detailSet',
+          back: 'roleManage',
+          ids: this.$refs.bsTable.currentRow.code
+        }
+      })
     }
   }
 }
