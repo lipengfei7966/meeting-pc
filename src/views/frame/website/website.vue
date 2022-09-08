@@ -68,7 +68,7 @@
 
 <script>
 import request from '@/utils/frame/base/request'
-import station from '@/components/MicroStation/station'
+import station from './station'
 import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
 import slideshowManage from '@/components/MicroStation/slideshowManage'
@@ -220,7 +220,7 @@ export default {
               this.code = res.data.code
             } else {
               this.$router.push({
-                name: '/optionalModule',
+                name: 'station',
                 params: {
                   data: this.$route.params.ids
                 }
@@ -231,7 +231,7 @@ export default {
           .catch(() => {})
       } else {
         this.$router.push({
-          name: '/optionalModule',
+          name: 'station',
           params: {}
         })
       }
