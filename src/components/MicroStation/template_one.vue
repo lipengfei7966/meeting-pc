@@ -35,7 +35,7 @@ export default {
     return {
       isTrue: true,
       // loginBg: require('./images/底图.jpg'),
-      loginBg: '/static/meeting/img/baseMap/底图.jpg',
+      loginBg: '/static/meeting/img/baseMap/底图.jpg' ? '/static/meeting/img/baseMap/底图.jpg' : '/pc/static/meeting/img/baseMap/底图.jpg',
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
       title: '2022中国人保寿险第十四届高峰会',
@@ -44,7 +44,7 @@ export default {
       moduleData: [
         {
           // img: require('@/assets/templateIcon/活动日程.png'),
-          icon: '/static/meeting/img/templateIcon/活动日程.png',
+          icon: '/static/meeting/img/templateIcon/活动日程.png' ? '/static/meeting/img/templateIcon/活动日程.png' : '/pc/static/meeting/img/templateIcon/活动日程.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 0,
           title: '活动日程',
@@ -52,7 +52,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/荣誉殿堂.png'),
-          icon: '/static/meeting/img/templateIcon/荣誉殿堂.png',
+          icon: '/static/meeting/img/templateIcon/荣誉殿堂.png' ? '/static/meeting/img/templateIcon/荣誉殿堂.png' : '/pc/static/meeting/img/templateIcon/荣誉殿堂.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 1,
           title: '荣誉殿堂',
@@ -60,7 +60,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/讲师介绍.png'),
-          icon: '/static/meeting/img/templateIcon/讲师介绍.png',
+          icon: '/static/meeting/img/templateIcon/讲师介绍.png' ? '/static/meeting/img/templateIcon/讲师介绍.png' : '/pc/static/meeting/img/templateIcon/讲师介绍.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 2,
           title: '讲师介绍',
@@ -68,7 +68,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/精彩照片.png'),
-          icon: '/static/meeting/img/templateIcon/精彩照片.png',
+          icon: '/static/meeting/img/templateIcon/精彩照片.png' ? '/static/meeting/img/templateIcon/精彩照片.png' : '/pc/static/meeting/img/templateIcon/精彩照片.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '精彩照片',
           sort: 3,
@@ -76,7 +76,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/峰会直播.png'),
-          icon: '/static/meeting/img/templateIcon/峰会直播.png',
+          icon: '/static/meeting/img/templateIcon/峰会直播.png' ? '/static/meeting/img/templateIcon/峰会直播.png' : '/pc/static/meeting/img/templateIcon/峰会直播.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '峰会直播',
           sort: 4,
@@ -84,7 +84,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/抽奖说明.png'),
-          icon: '/static/meeting/img/templateIcon/抽奖说明.png',
+          icon: '/static/meeting/img/templateIcon/抽奖说明.png' ? '/static/meeting/img/templateIcon/抽奖说明.png' : '/pc/static/meeting/img/templateIcon/抽奖说明.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '喜从天降',
           sort: 5,
@@ -95,7 +95,7 @@ export default {
         {
           picDictionary: 'rotation',
           // url: require('@/assets/images/banner.png')
-          url: '/static/meeting/img/slideshow/banner.png'
+          url: '/static/meeting/img/slideshow/banner.png' ? '/static/meeting/img/slideshow/banner.png' : '/pc/static/meeting/img/slideshow/banner.png'
         }
       ]
     }
@@ -150,7 +150,12 @@ export default {
   },
   methods: {
     handel(item, index) {
-      debugger
+      // debugger
+      if (item.type == 'url') {
+        window.location.href = item.content
+      } else {
+        this.$message('暂无页面资源！')
+      }
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {
