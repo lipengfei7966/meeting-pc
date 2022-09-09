@@ -112,11 +112,6 @@ export default {
           this.moduleData = newValue
           // }
           console.log(newValue, oldValue, 'dd')
-          // newValue.forEach((item) => {
-          //   if (item.icon.indexOf('http') == -1) {
-          //     item.icon = window.document.location.origin + item.icon
-          //   }
-          // })
         }
       },
       deep: true
@@ -188,13 +183,16 @@ export default {
       if (val == 1) {
         // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = this.backColor_
+        this.moduleData[dataNum].backgroundSetting = val
       } else if (val == 2) {
         // this.isTrue = true
         console.log(this.moduleData[dataNum])
         this.moduleData[dataNum].backgroundColor = ''
+        this.moduleData[dataNum].backgroundSetting = val
       } else if (val == 3) {
         // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = colorValue
+        this.moduleData[dataNum].backgroundSetting = val
       }
       console.log(val)
     },
