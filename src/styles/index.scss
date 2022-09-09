@@ -1,9 +1,9 @@
 @import './frame/mixin.scss';
 @import './frame/element-ui.scss'; // element reset
-@import './frame/element-ui-new.scss'; // element reset
 @import './frame/sidebar.scss'; // 侧边栏
 @import './frame/theme.scss'; // 主题文件
 @import './frame/table-page.scss'; // 通用表格
+@import './frame/element-ui-new.scss'; // element reset
 @import './frame/dialog-common.scss'; // 通用弹窗
 @import './frame/tree.scss'; // 树形图
 @import './frame/login.scss'; // 登录
@@ -111,9 +111,11 @@ code {
   line-height: 36px;
   font-size: 15px;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+
   a {
     color: #337ab7;
     cursor: pointer;
+
     &:hover {
       color: rgb(32, 160, 255);
     }
@@ -135,18 +137,21 @@ li {
   margin-left: 10px;
   font-weight: bold;
 }
+
 .short {
   color: #0fc117;
   margin-left: 10px;
   font-weight: bold;
 }
+
 // 媒体查询
 @media screen and (min-width: 0) and (max-width: 1366px) {
   .el-form-item__content {
-    .el-radio + .el-radio {
+    .el-radio+.el-radio {
       margin-left: 15px !important;
     }
   }
+
   .el-row .el-textarea-item .el-form-item__content {
     width: 476px !important;
   }
@@ -156,16 +161,20 @@ li {
   .el-select {
     width: 100%;
   }
+
   .el-input-number {
     width: 100%;
   }
+
   .el-autocomplete {
     width: 100%;
   }
+
   .multiple-radio {
-    .el-radio + .el-radio {
+    .el-radio+.el-radio {
       margin-left: 8px !important;
     }
+
     .el-radio__label {
       padding-left: 2px !important;
     }
@@ -174,9 +183,10 @@ li {
 
 @media screen and (min-width: 1920px) {
   .multiple-radio {
-    .el-radio + .el-radio {
+    .el-radio+.el-radio {
       margin-left: 30px !important;
     }
+
     .el-radio__label {
       padding-left: 2px !important;
     }

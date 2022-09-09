@@ -6,95 +6,108 @@
       clear: both;
     }
   }
-  
+
   @mixin scrollBar {
     &::-webkit-scrollbar-track-piece {
       background: #d3dce6;
     }
+
     &::-webkit-scrollbar {
       width: 10px;
       height: 10px;
     }
+
     &::-webkit-scrollbar-thumb {
       background: #99a9bf;
       border-radius: 20px;
     }
   }
-  
+
   @mixin relative {
     position: relative;
     width: 100%;
     height: 100%;
   }
-  
+
   @mixin pct($pct) {
     width: #{$pct};
     position: relative;
     margin: 0 auto;
   }
-  
+
   @mixin triangle($width, $height, $color, $direction) {
     $width: $width/2;
     $color-border-style: $height solid $color;
     $transparent-border-style: $width solid transparent;
     height: 0;
     width: 0;
+
     @if $direction==up {
       border-bottom: $color-border-style;
       border-left: $transparent-border-style;
       border-right: $transparent-border-style;
     }
+
     @else if $direction==right {
       border-left: $color-border-style;
       border-top: $transparent-border-style;
       border-bottom: $transparent-border-style;
     }
+
     @else if $direction==down {
       border-top: $color-border-style;
       border-left: $transparent-border-style;
       border-right: $transparent-border-style;
     }
+
     @else if $direction==left {
       border-right: $color-border-style;
       border-top: $transparent-border-style;
       border-bottom: $transparent-border-style;
     }
   }
-  
+
   @include clearfix;
   position: relative;
   padding: 3px;
   padding-bottom: 0;
 
   // 头部
-  & > header {
+  &>header {
     background: #fff;
     border: 1px solid #ababab;
     border-radius: 5px;
     margin-bottom: 5px;
+
     // form版面
     .header-form-inline {
       position: relative;
       padding: 3px 10px;
+
       .el-row {
         .el-form-item-more {
           display: flex;
           margin-top: 2px;
           height: 27px;
+
           .el-form-item-more-left {
             width: 96px;
+
             .el-input--small .el-input__inner {
               border-top-right-radius: 0;
               border-bottom-right-radius: 0;
             }
           }
+
           .el-form-item-more-right {
             flex: 1;
+
             .el-input--small .el-input__inner {
               border-top-left-radius: 0;
               border-bottom-left-radius: 0;
             }
           }
+
           .el-input--small .el-input__inner,
           .el-input--small .el-input__icon {
             height: 24px;
@@ -103,6 +116,7 @@
             font-size: 12px;
           }
         }
+
         .more-query {
           display: inline-block;
           margin-top: 8px;
@@ -110,10 +124,12 @@
           cursor: pointer;
         }
       }
+
       .search-btn {
         position: absolute;
         right: 16px;
         top: 5px;
+
         .el-button--small {
           font-size: 12px;
           border-radius: 3px;
@@ -121,6 +137,7 @@
           float: right;
         }
       }
+
       .expand {
         position: absolute;
         right: 30px;
@@ -133,6 +150,7 @@
         border-bottom: 1px solid #ababab;
         cursor: pointer;
         z-index: 99;
+
         &:before {
           content: '';
           display: block;
@@ -148,6 +166,7 @@
           border-bottom: 1px solid #ababab;
           cursor: pointer;
         }
+
         &:after {
           content: '';
           display: block;
@@ -163,6 +182,7 @@
           border-bottom: 1px solid #ababab;
           cursor: pointer;
         }
+
         i {
           cursor: pointer;
         }
@@ -171,7 +191,7 @@
   }
 
   // 表格的样式
-  & > main {
+  &>main {
     .top-operate {
       position: relative;
       width: calc(100% - 83px);
@@ -179,26 +199,34 @@
       z-index: 99;
       margin-bottom: 3px;
       overflow-x: auto;
+
       &::-webkit-scrollbar {
-        display: none; /* Chrome Safari */
+        display: none;
+        /* Chrome Safari */
       }
+
       .el-row {
         position: absolute;
         transition: transform .3s;
+
         div {
+
           // flex-shrink: 0;
           .el-button {
             padding: 6px 10px;
           }
-          .el-button + .el-button {
+
+          .el-button+.el-button {
             margin-left: -2px;
           }
         }
       }
     }
+
     .table-content {
       // border: 1px solid;
     }
+
     .bottom-operate {
       background: #fff;
       height: 36px;
@@ -206,11 +234,13 @@
       border: 1px solid #ababab;
       border-top: none;
       border-radius: 0 0 5px 5px;
+
       .bottom-operate-left {
         float: left;
         color: #606266;
         margin-left: 15px;
       }
+
       .bottom-operate-right {
         float: right;
         font-size: 12px;
@@ -218,15 +248,19 @@
         margin-right: 5px;
       }
     }
+
     .tabs-operate {
       margin-top: 5px;
+
       .el-button--mini {
         padding: 6px 9px;
       }
     }
+
     .el-table {
       margin-top: 3px;
     }
+
     .bs_echarts {
       width: 100%;
       min-height: 500px;
@@ -235,6 +269,7 @@
       border: 1px solid #ababab;
       border-radius: 5px;
     }
+
     .el-tabs {
       margin-bottom: 5px;
     }
@@ -242,32 +277,39 @@
 
   &.edit-page-style {
     padding-bottom: 22px;
-    & > .top-operate {
+
+    &>.top-operate {
       position: fixed;
       width: 100%;
       background: var(--contentBg);
       padding: 3px 0;
       z-index: 99;
       margin: -3px 0 3px 0;
+
       .el-button {
         padding: 6px 10px;
       }
-      .el-button + .el-button {
+
+      .el-button+.el-button {
         margin-left: -2px;
       }
-      & + header {
+
+      &+header {
         margin-top: 30px;
       }
     }
-    & > .top-steps {
+
+    &>.top-steps {
       width: 100%;
       background: var(--contentBg);
       padding: 3px 0;
       z-index: 99;
       margin: 30px 0 3px 0;
     }
-    & > header {
+
+    &>header {
       border-radius: 0;
+
       // form头部
       .form-title {
         width: 100%;
@@ -278,11 +320,13 @@
         color: #666666;
         font-weight: 900;
         background-color: #f5f7fa;
+
         i {
           float: right;
           margin: 5px;
           cursor: pointer;
         }
+
         &::before {
           display: inline-block;
           vertical-align: top;
@@ -292,15 +336,19 @@
           margin-right: 7px;
         }
       }
+
       // 表格内容
       .edit-header-table {
         padding: 0 5px 5px;
+
         .tabs-operate {
           margin-top: 5px;
+
           .el-button--mini {
             padding: 6px 9px;
           }
         }
+
         .el-table {
           margin-top: 3px;
           border: 1px solid;
