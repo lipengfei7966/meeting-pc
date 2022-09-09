@@ -3,14 +3,14 @@
     <div class="block">
       <el-carousel trigger="click" height="180px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
-          <img :src="`${item.picUrl}`" alt="" style="width: 100%" />
+          <img :src="`${item.url}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
         </el-carousel-item>
       </el-carousel>
     </div>
     <div>
-      <p class="p_big">{{ bigTitle }}</p>
-      <p class="p_small">{{ smallTitle }}</p>
+      <p class="p_big">{{ title }}</p>
+      <p class="p_small">{{ subTitle }}</p>
       <div>
         <ul class="feature">
           <li v-for="(item, index) in moduleData" :key="index" :style="isTrue ? { backgroundColor: item.backgroundColor } : ''" @click.stop="handel(item, index)">
@@ -28,23 +28,23 @@
 
 <script>
 export default {
-  props: ['listData'], //接收值
+  props: ['listData', 'webpagePicDtoList', 'title_', 'subTitle_'], //接收值
   name: 'station',
   components: {},
   data() {
     return {
       isTrue: true,
       // loginBg: require('./images/底图.jpg'),
-      loginBg: '/static/meeting/img/baseMap/底图.jpg',
+      loginBg: 'static/meeting/img/baseMap/底图.jpg',
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
-      bigTitle: '2022中国人保寿险第十四届高峰会',
-      smallTitle: '中国-武汉',
+      title: '2022中国人保寿险第十四届高峰会',
+      subTitle: '中国-武汉',
       pitchOn: false,
       moduleData: [
         {
           // img: require('@/assets/templateIcon/活动日程.png'),
-          icon: '/static/meeting/img/templateIcon/活动日程.png',
+          icon: 'static/meeting/img/templateIcon/活动日程.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 0,
           title: '活动日程',
@@ -52,7 +52,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/荣誉殿堂.png'),
-          icon: '/static/meeting/img/templateIcon/荣誉殿堂.png',
+          icon: 'static/meeting/img/templateIcon/荣誉殿堂.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 1,
           title: '荣誉殿堂',
@@ -60,7 +60,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/讲师介绍.png'),
-          icon: '/static/meeting/img/templateIcon/讲师介绍.png',
+          icon: 'static/meeting/img/templateIcon/讲师介绍.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 2,
           title: '讲师介绍',
@@ -68,7 +68,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/精彩照片.png'),
-          icon: '/static/meeting/img/templateIcon/精彩照片.png',
+          icon: 'static/meeting/img/templateIcon/精彩照片.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '精彩照片',
           sort: 3,
@@ -76,7 +76,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/峰会直播.png'),
-          icon: '/static/meeting/img/templateIcon/峰会直播.png',
+          icon: 'static/meeting/img/templateIcon/峰会直播.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '峰会直播',
           sort: 4,
@@ -84,7 +84,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/抽奖说明.png'),
-          icon: '/static/meeting/img/templateIcon/抽奖说明.png',
+          icon: 'static/meeting/img/templateIcon/抽奖说明.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '喜从天降',
           sort: 5,
@@ -94,8 +94,8 @@ export default {
       slideshow: [
         {
           picDictionary: 'rotation',
-          // picUrl: require('@/assets/images/banner.png')
-          picUrl: '/static/meeting/img/slideshow/banner.png'
+          // url: require('@/assets/images/banner.png')
+          url: 'static/meeting/img/slideshow/banner.png'
         }
       ]
     }
@@ -104,27 +104,95 @@ export default {
     listData: {
       immediate: true,
       handler(newValue, oldValue) {
-        // debugger
-        this.moduleData = newValue
-        console.log(newValue, oldValue, 'dd')
+        if (newValue) {
+          debugger
+          // console.log(window.document.location)
+          console.log(newValue, oldValue)
+          // if (newValue.backColor) {
+          this.moduleData = newValue
+          // }
+          console.log(newValue, oldValue, 'dd')
+        }
       },
       deep: true
+    },
+    webpagePicDtoList: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        // debugger
+        if (newValue) {
+          let arr = []
+          newValue.forEach((element, index) => {
+            if (element.picDictionary == 'background') {
+              // if (element.url.indexOf('http') == -1) {
+              //   this.loginBg = window.document.location.origin + element.url
+              // } else {
+              //   this.loginBg = element.url
+              // }
+              this.loginBg = element.url
+            } else {
+              // if (element.url.indexOf('http') == -1) {
+              //   element.url = window.document.location.origin + element.url
+              //   arr.push(element)
+              // } else {
+              //   arr.push(element)
+              // }
+              arr.push(element)
+              // debugger
+            }
+          })
+          this.slideshow = arr
+          console.log(newValue, oldValue, this.slideshow, 'dd')
+        }
+      },
+      deep: true
+    },
+    title_: {
+      immediate: true,
+      handler(nVal, oVal) {
+        if (nVal) {
+          // debugger
+          this.title = nVal
+          console.log(nVal, oVal)
+        }
+      }
+    },
+    subTitle_: {
+      immediate: true,
+      handler(nVal, oVal) {
+        if (nVal) {
+          // debugger
+          this.subTitle = nVal
+          console.log(nVal, oVal)
+        }
+      }
     }
   },
   methods: {
     handel(item, index) {
+      // debugger
+      if (item.type == 'url') {
+        window.location.href = item.content
+      } else {
+        this.$message('暂无页面资源！')
+      }
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {
-      // debugger
+      debugger
       if (val == 1) {
-        this.isTrue = true
+        // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = this.backColor_
+        this.moduleData[dataNum].backgroundSetting = val
       } else if (val == 2) {
-        this.isTrue = false
+        // this.isTrue = true
+        console.log(this.moduleData[dataNum])
+        this.moduleData[dataNum].backgroundColor = ''
+        this.moduleData[dataNum].backgroundSetting = val
       } else if (val == 3) {
-        this.isTrue = true
+        // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = colorValue
+        this.moduleData[dataNum].backgroundSetting = val
       }
       console.log(val)
     },

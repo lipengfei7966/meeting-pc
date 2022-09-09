@@ -96,6 +96,7 @@ export default {
       },
       pageLists: [],
       classify: [],
+      // process.env.BASE_API +
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg'
     }
   },
@@ -113,63 +114,66 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
-        console.log(newValue, oldValue)
-        let submitVal = newValue
-        if (submitVal.id) {
-          this.ruleForm.id = submitVal.id
-        } else {
-          this.ruleForm.id = ''
-        }
         // debugger
-        if (submitVal.sort || submitVal.sort == 0) {
-          if (submitVal.sort == 0) {
-            this.ruleForm.sort = 0
+        console.log(newValue, oldValue)
+        if (newValue) {
+          let submitVal = newValue
+          if (submitVal.id) {
+            this.ruleForm.id = submitVal.id
           } else {
-            this.ruleForm.sort = submitVal.sort
+            this.ruleForm.id = ''
           }
-        } else {
-          this.ruleForm.sort = ''
-        }
-        if (submitVal.title) {
-          this.ruleForm.title = submitVal.title
-          this.ruleForm.fileList[0].name = submitVal.title + '图标'
-        }
-        debugger
-        if (submitVal.type) {
-          this.ruleForm.type = submitVal.type
-          if (submitVal.type == 'article') {
-            this.ruleForm.page = submitVal.content
-          } else if (submitVal.type == 'url') {
-            this.ruleForm.link = submitVal.content
+          // debugger
+          if (submitVal.sort || submitVal.sort == 0) {
+            if (submitVal.sort == 0) {
+              this.ruleForm.sort = 0
+            } else {
+              this.ruleForm.sort = submitVal.sort
+            }
+          } else {
+            this.ruleForm.sort = ''
           }
-        } else {
-          this.submitVal.type = ''
-          this.ruleForm.page = ''
-          this.ruleForm.link = ''
-        }
-        if (submitVal.backgroundSetting) {
-          this.ruleForm.backgroundSetting = submitVal.backgroundSetting
-        } else {
-          this.ruleForm.backgroundSetting = '1'
-        }
-        if (submitVal.icon) {
-          this.ruleForm.fileList[0].url = submitVal.icon
-          this.ruleForm.icon = submitVal.icon
-        }
-        if (submitVal.versionNum) {
-          this.ruleForm.versionNum = submitVal.versionNum
-        } else {
-          this.ruleForm.versionNum = ''
-        }
-        if (submitVal.webpageCode) {
-          this.ruleForm.webpageCode = submitVal.webpageCode
-        } else {
-          this.ruleForm.webpageCode = ''
-        }
-        if (submitVal.backgroundColor) {
-          this.ruleForm.backgroundColor = submitVal.backgroundColor
-        } else {
-          this.ruleForm.backgroundColor = ''
+          if (submitVal.title) {
+            this.ruleForm.title = submitVal.title
+            this.ruleForm.fileList[0].name = submitVal.title + '图标'
+          }
+          // debugger
+          if (submitVal.type) {
+            this.ruleForm.type = submitVal.type
+            if (submitVal.type == 'article') {
+              this.ruleForm.page = submitVal.content
+            } else if (submitVal.type == 'url') {
+              this.ruleForm.link = submitVal.content
+            }
+          } else {
+            this.ruleForm.type = ''
+            this.ruleForm.page = ''
+            this.ruleForm.link = ''
+          }
+          if (submitVal.backgroundSetting) {
+            this.ruleForm.backgroundSetting = submitVal.backgroundSetting
+          } else {
+            this.ruleForm.backgroundSetting = '1'
+          }
+          if (submitVal.icon) {
+            this.ruleForm.fileList[0].url = submitVal.icon
+            this.ruleForm.icon = submitVal.icon
+          }
+          if (submitVal.versionNum) {
+            this.ruleForm.versionNum = submitVal.versionNum
+          } else {
+            this.ruleForm.versionNum = ''
+          }
+          if (submitVal.webpageCode) {
+            this.ruleForm.webpageCode = submitVal.webpageCode
+          } else {
+            this.ruleForm.webpageCode = ''
+          }
+          if (submitVal.backgroundColor) {
+            this.ruleForm.backgroundColor = submitVal.backgroundColor
+          } else {
+            this.ruleForm.backgroundColor = ''
+          }
         }
       },
       deep: true
@@ -288,6 +292,7 @@ export default {
     },
     selectChange(val) {
       // console.log(val)
+      // debugger
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
@@ -309,7 +314,8 @@ export default {
       console.log(file)
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      this.$message.warning('请删除已存在图片后再进行上传操作')
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)

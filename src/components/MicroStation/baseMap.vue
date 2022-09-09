@@ -1,21 +1,7 @@
 <template>
   <div style="text-align: center; margin-top: 50px">
-    <el-upload action="#" list-type="picture-card" :auto-upload="false" :limit="1" :on-exceed="handleExceed">
-      <i slot="default" class="el-icon-plus"></i>
-      <div slot="file" slot-scope="{ file }">
-        <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-        <span class="el-upload-list__item-actions">
-          <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-            <i class="el-icon-zoom-in"></i>
-          </span>
-          <!-- <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleDownload(file)">
-            <i class="el-icon-download"></i>
-          </span> -->
-          <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
-            <i class="el-icon-delete"></i>
-          </span>
-        </span>
-      </div>
+    <el-upload action list-type="picture-card" :headers="httpHeaders" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+      <i class="el-icon-plus"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="" />
@@ -24,31 +10,86 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
+  props: ['code', 'webpagePicDtoList'], //接收值
   data() {
     return {
+      // process.env.BASE_API +
+      uploadUrl: '/api/biz/cmsWebpagePic/uploadBackgroundPic',
       dialogImageUrl: '',
       dialogVisible: false,
-      disabled: false
+      webpagePicDtoList_: []
     }
   },
   methods: {
-    handleRemove(file) {
-      console.log(file)
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
     },
     handlePictureCardPreview(file) {
+      debugger
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
-    handleDownload(file) {
-      console.log(file)
-    },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
+      this.$message.warning('请删除已存在图片后再进行上传操作')
+    },
+    //
+    handleUploadForm(param) {
+      // debugger
+      let thiz = this
+      let formData = new FormData()
+      formData.append('webpageCode', this.code) // 额外参数
+      formData.append('file', param.file)
+      let loading = thiz.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: thiz.uploadUrl,
+        method: 'POST',
+        data: formData
+      })
+        .then((data) => {
+          if (data) {
+            thiz.$message('上传文件成功')
+            this.$emit('upData_')
+          } else {
+            thiz.$message('上传文件失败')
+          }
+          loading.close()
+        })
+        .catch(() => {})
+      console.log(param)
+    }
+  },
+  computed: {
+    httpHeaders() {
+      return {
+        Authorization: 'Bearer ' + this.$store.getters.token
+      }
+    }
+  },
+  watch: {
+    webpagePicDtoList: {
+      immediate: true,
+      handler(nVal, oVal) {
+        // debugger
+        this.webpagePicDtoList_ = []
+        nVal.forEach((element, index) => {
+          if (element.picDictionary == 'background') {
+            this.webpagePicDtoList_.push(element)
+          }
+        })
+        console.log(nVal, oVal)
+      }
     }
   }
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 </style>

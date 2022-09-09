@@ -1,5 +1,5 @@
 <template>
-  <bs-dialog :dialog="dialog" @closeDialog="handleCloseDialog"></bs-dialog>
+  <bs-dialog :dialog='dialog' @closeDialog='handleCloseDialog'></bs-dialog>
 </template>
 
 <script>
@@ -14,19 +14,19 @@ export default {
         styleType: 'medium',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/biz/cmsEventInfo/get',
-          save: '/api/biz/cmsEventInfo/save',
-          update: '/api/biz/cmsEventInfo/update'
+          view: '/api/base/cmsCustomer/get',
+          save: '/api/base/cmsCustomer/save',
+          update: '/api/base/cmsCustomer/update'
         },
 
         formData: [
           {
-            label: 'website.eventInfo.edit.eventName',
-            prop: 'eventName',
+            label: 'website.customer.edit.name',
+            prop: 'name',
             element: 'input-validate',
             attrs: {
               clearable: true,
-              cols: 3
+              cols: 3,
             },
             validate: [
               {
@@ -36,15 +36,29 @@ export default {
             ]
           },
           {
-            label: 'website.eventInfo.edit.customerName',
-            prop: 'customerCode',
-            element: 'base-select',
+            label: 'website.customer.edit.shortName',
+            prop: 'shortName',
+            element: 'input-validate',
             attrs: {
-              clickParent: true,
-              multiple: false,
+              clearable: true,
               cols: 3,
-              data: 'CUSTOMER',
-              clearable: true
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: 'website.customer.edit.orgCode',
+            prop: 'customerCompanyCode',
+            element: 'base-select',
+            default: this.getDefaultOrgCode(),
+            attrs: {
+              clearable: true,
+              cols: 3,
+              data: 'FUNC_ORG'
             },
             validate: [
               {
@@ -52,40 +66,10 @@ export default {
                 trigger: 'change'
               }
             ]
+            // event: {
+            //   changeAll: this.changeAllOrg
+            // }
           },
-          {
-            type: 'datetime',
-            label: 'website.eventInfo.edit.eventDate',
-            props: ['eventBeginTime', 'eventEndTime'],
-            default: this.$toolUtil.getLatestWeektime(),
-            attrs: {
-              cols: 3,
-              format: 'yyyy-MM-dd HH:mm',
-              'value-format': 'yyyy-MM-dd HH:mm:ss',
-              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
-            label: 'website.eventInfo.edit.eventPlace',
-            prop: 'eventPlace',
-            element: 'input-validate',
-            attrs: {
-              clearable: true,
-              cols: 3
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          }
         ],
         bottomButtons: [
           {
@@ -129,6 +113,13 @@ export default {
   methods: {
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
+    },
+    getDefaultOrgCode() {
+      if (this.opType === 'add') {
+        return this.param.orgCode
+      } else {
+        return ''
+      }
     }
   }
 }
