@@ -30,6 +30,14 @@
       <!-- <bs-ws v-if='clientWidth >= 1366'></bs-ws> -->
       <!-- 主题换色 -->
       <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
+
+      <!-- 全屏 -->
+      <div class='screenfull' :title="$t('navbar.screenfull')" @click="handleClickFull" v-if='clientWidth >= 1366'>
+        <span class="right-menu-item" style='font-size:16px;'>
+          <svg-icon icon-class="fullscreen" style="margin-right:0"></svg-icon>
+        </span>
+      </div>
+
       <!-- 锁屏 -->
       <div class='size' :title="$t('navbar.lock')" @click="onLock" v-if='clientWidth >= 1366'>
         <span class="right-menu-item" style='font-size:16px;'>
@@ -47,9 +55,9 @@
             </span>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item divided>
+            <!-- <el-dropdown-item divided>
               <span @click="handleClickLan" class='inlineBlock'>{{$t('navbar.lang')}}</span>
-            </el-dropdown-item>
+            </el-dropdown-item> -->
             <el-dropdown-item divided>
               <span @click="handleChangePwd" class='inlineBlock'>{{$t('navbar.changePwd')}}</span>
             </el-dropdown-item>
@@ -58,6 +66,13 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+      </div>
+
+      <!-- 国际化 -->
+      <div class='translate' :title="$t('navbar.lang')" @click="handleClickLan" v-if='clientWidth >= 1366'>
+        <span class="right-menu-item" style='font-size:16px;'>
+          <svg-icon icon-class="translate" style="margin-right:0"></svg-icon>
+        </span>
       </div>
     </div>
 
@@ -107,6 +122,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import session from '@/utils/frame/base/sessionStorage'
+import screenfull from 'screenfull'
 import { md5Two, encriptPwd } from '@/utils/frame/base/encript.js'
 import ThemePicker from '@/components/frame/ThemePicker'
 import { BsWs } from '@/components/frame/bs/ws'
@@ -276,6 +292,17 @@ export default {
         })
       }
     },
+    // 全屏
+    handleClickFull() {
+      if (!screenfull.enabled) {
+        this.$message({
+          message: '浏览器不支持',
+          type: 'warning'
+        })
+        return false
+      }
+      screenfull.toggle()
+    },
     // 登出
     logout() {
       const loginUrl = getLoginUrl()
@@ -426,8 +453,8 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
-  height: 50px;
-  line-height: 50px;
+  height: 48px;
+  line-height: 48px;
   border-radius: 0px !important;
   .logo {
     float: left;
@@ -455,8 +482,8 @@ export default {
   .hamburger-container {
     float: left;
     width: 48px;
-    height: 50px;
-    line-height: 50px;
+    height: 48px;
+    line-height: 48px;
     text-align: center;
     background: transparent;
     cursor: pointer;
@@ -477,8 +504,8 @@ export default {
 
   .business-module {
     float: left;
-    height: 50px;
-    line-height: 50px;
+    height: 48px;
+    line-height: 48px;
     overflow: hidden;
     .module {
       .svg-icon {
@@ -489,7 +516,7 @@ export default {
       width: 140px;
       height: 100%;
       text-align: center;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
       user-select: none;
     }
@@ -498,7 +525,7 @@ export default {
   .more-module {
     position: relative;
     float: left;
-    height: 50px;
+    height: 48px;
     margin-left: 20px;
     text-align: center;
     cursor: pointer;
@@ -508,8 +535,8 @@ export default {
     .el-icon-more {
       display: inline-block;
       vertical-align: top;
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 48px;
       font-size: 18px;
       &::before {
         position: absolute;
@@ -529,8 +556,8 @@ export default {
     .right-menu-item {
       float: left;
       width: 40px;
-      height: 50px;
-      line-height: 50px;
+      height: 48px;
+      line-height: 48px;
       text-align: center;
       background: transparent;
       cursor: pointer;
@@ -557,8 +584,8 @@ export default {
     }
     .size {
       float: left;
-      height: 50px;
-      line-height: 50px;
+      height: 48px;
+      line-height: 48px;
       color: #fff;
       font-size: 14px;
       cursor: pointer;
@@ -566,16 +593,29 @@ export default {
         width: 32px;
       }
     }
+    .screenfull {
+      float: left;
+      height: 48px;
+      line-height: 48px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      .svg-icon {
+        width: 15px;
+        height: 15px;
+      }
+    }
     .user {
       float: left;
-      height: 50px;
-      line-height: 50px;
+      height: 48px;
+      line-height: 48px;
       margin-left: 5px;
+      margin-right: 20px;
       color: #fff;
       font-size: 14px;
       cursor: pointer;
       .user-title {
-        height: 50px;
+        height: 48px;
         img {
           width: 24px;
           height: 24px;
@@ -586,8 +626,8 @@ export default {
         .el-dropdown-link {
           display: inline-block;
           max-width: 100px;
-          height: 50px;
-          line-height: 50px !important;
+          height: 48px;
+          line-height: 48px !important;
           text-align: center;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -600,6 +640,18 @@ export default {
           width: 100%;
           height: 100%;
         }
+      }
+    }
+    .translate {
+      float: left;
+      height: 48px;
+      line-height: 48px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      .svg-icon {
+        width: 20px;
+        height: 20px;
       }
     }
   }
