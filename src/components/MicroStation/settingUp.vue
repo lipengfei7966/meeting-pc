@@ -292,6 +292,7 @@ export default {
     },
     selectChange(val) {
       // console.log(val)
+      // debugger
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
