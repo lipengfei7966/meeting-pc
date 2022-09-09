@@ -172,7 +172,7 @@ $dark_gray: #889aa4;
 $light_gray: #eee;
 
 .login-container {
-  width: 1440px;
+  width: 100%;
   height: 100%;
   margin: 0px auto 0;
   background: url(/static/img/loginBg1.7df4d37.png) no-repeat;
