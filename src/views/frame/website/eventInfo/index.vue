@@ -184,7 +184,8 @@ export default {
   },
   mounted() {
     // debugger
-    // this.$refs.bsTable.rowHeight = '38'
+    this.$refs.bsTable.isHeight = false
+    this.$refs.bsTable.rowHeight = 38
   },
   methods: {
     doDesign() {

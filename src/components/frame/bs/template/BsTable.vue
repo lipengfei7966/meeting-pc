@@ -45,8 +45,8 @@
       :header-cell-class-name="handleHeaderClass"
       :key="key"
       :tree-config="treeConfig"
-      :height="tableHeight"
-      :row-height="38"
+      :height="isHeight ? tableHeight : ''"
+      :row-height="rowHeight"
       :row-id="mainData.table.rowKey || 'id'"
       :data-changes-scroll-top="false"
       :pagination-show="false"
@@ -261,7 +261,8 @@ export default {
         }
       },
       // 默认表高度
-      rowHeight: '24'
+      rowHeight: '24',
+      isHeight: true
     }
   },
   inject: ['app'],
