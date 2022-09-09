@@ -106,14 +106,17 @@ export default {
       handler(newValue, oldValue) {
         if (newValue) {
           debugger
-          console.log(window.document.location)
+          // console.log(window.document.location)
+          console.log(newValue, oldValue)
+          // if (newValue.backColor) {
+          this.moduleData = newValue
+          // }
+          console.log(newValue, oldValue, 'dd')
           // newValue.forEach((item) => {
           //   if (item.icon.indexOf('http') == -1) {
           //     item.icon = window.document.location.origin + item.icon
           //   }
           // })
-          this.moduleData = newValue
-          console.log(newValue, oldValue, 'dd')
         }
       },
       deep: true
@@ -181,14 +184,16 @@ export default {
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {
-      // debugger
+      debugger
       if (val == 1) {
-        this.isTrue = true
+        // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = this.backColor_
       } else if (val == 2) {
-        this.isTrue = false
+        // this.isTrue = true
+        console.log(this.moduleData[dataNum])
+        this.moduleData[dataNum].backgroundColor = ''
       } else if (val == 3) {
-        this.isTrue = true
+        // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = colorValue
       }
       console.log(val)
