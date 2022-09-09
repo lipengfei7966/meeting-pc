@@ -1,55 +1,82 @@
 <template>
   <!-- 下面的主题内容 各个弹出框 -->
-  <main :style="{'width': hasLayout ? ( clientWidth < 1366 ? (this.sidebar.opened && !app.isScreenFull ? '1163px' : '1323px') : 'auto') : 'auto'}">
-
+  <main :style="{ width: hasLayout ? (clientWidth < 1366 ? (this.sidebar.opened && !app.isScreenFull ? '1163px' : '1323px') : 'auto') : 'auto' }">
     <!-- 顶部按钮 -->
-    <div class='top-operate' v-if='mainData.isTopBar' ref='btnWrapper' @wheel.prevent="handleScroll">
-      <el-row type='flex' ref='btnContainer'>
-        <slot name='add'></slot>
-        <slot name='upload'></slot>
+    <div class="top-operate" v-if="mainData.isTopBar" ref="btnWrapper" @wheel.prevent="handleScroll">
+      <el-row type="flex" ref="btnContainer">
+        <slot name="add"></slot>
+        <slot name="upload"></slot>
         <div>
-          <el-button v-db-click size="mini" @click='doRefresh(true)' style='margin-right:3px;'>
-            <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
+          <el-button v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
+            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
           </el-button>
         </div>
-        <div v-for='(btn, index) in mainData.topBar' :key='index'>
-          <template v-if='btn.name !== "query"'>
-            <el-dropdown v-if='btn.name === "more"' @command="triggerEvent">
-              <el-button v-db-click size="mini" style='margin-right: 3px;' v-permissionMultiple="btn.list">
+        <div v-for="(btn, index) in mainData.topBar" :key="index">
+          <template v-if="btn.name !== 'query'">
+            <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
+              <el-button v-db-click size="mini" style="margin-right: 3px" v-permissionMultiple="btn.list">
                 <svg-icon :icon-class="btn.iconName || 'set'"></svg-icon>
                 {{ $t(btn.i18n || 'biz.btn.moreButton') }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :key='index' v-for='(b, index) in btn.list' :command="b" v-permission="b.permitName ? b.permitName : [b.name]">
-                  <svg-icon :icon-class="b.iconName || baseEvent[b.name] && baseEvent[b.name].iconName"></svg-icon>
-                  {{ $t(b.i18n) || baseEvent[b.name] && $t(baseEvent[b.name].i18n) }}
+                <el-dropdown-item :key="index" v-for="(b, index) in btn.list" :command="b" v-permission="b.permitName ? b.permitName : [b.name]">
+                  <svg-icon :icon-class="b.iconName || (baseEvent[b.name] && baseEvent[b.name].iconName)"></svg-icon>
+                  {{ $t(b.i18n) || (baseEvent[b.name] && $t(baseEvent[b.name].i18n)) }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button v-else-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-bind='btn.attrs' v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
-              <svg-icon :icon-class="(btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName) ? (btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName) : 'set'"></svg-icon>
-              {{ $t(btn.i18n) || baseEvent[btn.name] && $t(baseEvent[btn.name].i18n) }}
+            <el-button v-else-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
+              <svg-icon :icon-class="btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) ? btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) : 'set'"></svg-icon>
+              {{ $t(btn.i18n) || (baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)) }}
             </el-button>
           </template>
         </div>
       </el-row>
     </div>
     <!-- 列设置 -->
-    <u-table use-virtual :highlight-current-row='highlightCurrentRow' fixed-columns-roll ref="singleTable" :row-class-name="mainData.table.RowClassName" :sort-orders="['descending', 'ascending', null]" :header-cell-class-name="handleHeaderClass" :key='key' :tree-config="treeConfig" :height="tableHeight" :row-height="24" :row-id="mainData.table.rowKey || 'id'" :data-changes-scroll-top='false' :pagination-show='false' stripe border v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" :show-summary='mainData.table.showSummary' :summary-method="mainData.table.defineSummaryFun || getSummaries" :span-method="mainData.table.defineSpanFun?mainData.table.defineSpanFun:arraySpanMethod" @current-change="handleSelectRow" @selection-change="handleSelectionChange" @row-click='handleClick' @sort-change="handleSortChange" @row-dblclick="handleDblClick">
-      <u-table-column align='center' type="index" width="50" fixed :label='$t("table.id")' v-if="mainData.table.showIndex"></u-table-column>
+    <u-table
+      use-virtual
+      :highlight-current-row="highlightCurrentRow"
+      fixed-columns-roll
+      ref="singleTable"
+      :row-class-name="mainData.table.RowClassName"
+      :sort-orders="['descending', 'ascending', null]"
+      :header-cell-class-name="handleHeaderClass"
+      :key="key"
+      :tree-config="treeConfig"
+      :height="tableHeight"
+      :row-height="38"
+      :row-id="mainData.table.rowKey || 'id'"
+      :data-changes-scroll-top="false"
+      :pagination-show="false"
+      stripe
+      border
+      v-loading="loading"
+      element-loading-spinner="el-icon-loading"
+      :element-loading-text="$t('route.load')"
+      :show-summary="mainData.table.showSummary"
+      :summary-method="mainData.table.defineSummaryFun || getSummaries"
+      :span-method="mainData.table.defineSpanFun ? mainData.table.defineSpanFun : arraySpanMethod"
+      @current-change="handleSelectRow"
+      @selection-change="handleSelectionChange"
+      @row-click="handleClick"
+      @sort-change="handleSortChange"
+      @row-dblclick="handleDblClick"
+    >
+      <u-table-column align="center" type="index" width="50" fixed :label="$t('table.id')" v-if="mainData.table.showIndex"></u-table-column>
       <u-table-column align="center" type="selection" width="55" :fixed="mainData.table.selectionFixed" v-if="mainData.table.showCheckbox"></u-table-column>
-      <slot name='cols' v-if='mainData.table.defineContent'></slot>
+      <slot name="cols" v-if="mainData.table.defineContent"></slot>
       <template v-else>
         <template v-for="(col, index) in formThead">
           <!-- 树列表默认第一列为展开收起列 -->
-          <u-table-column :tree-node="mainData.table.rowKey && index === 0" :key="col.prop" v-if='col.isShow' v-bind='col' :label='$t(col.label)' :fixed='col.fixed' :sortable='mainData.table.sortable && col.sortable' show-overflow-tooltip>
-            <template slot-scope='scope'>
-              <slot v-if="col.isSlot" :name="col.prop" :row='scope.row' :col='col'></slot>
-              <template :style='col.style' v-else>
-                <span v-if='col.formatter'>{{ col.formatter(scope.row, scope.column, scope.row[col.dataProp?col.dataProp:col.prop], scope.$index) }}</span>
-                <span v-else-if='!col.format'>{{ scope.row[col.dataProp?col.dataProp:col.prop] }}</span>
-                <span v-else>{{ dataFormat(col.format.func, scope.row[col.dataProp?col.dataProp:col.prop], col.format.dict, col.format.dictType, scope.row) }}</span>
+          <u-table-column :tree-node="mainData.table.rowKey && index === 0" :key="col.prop" v-if="col.isShow" v-bind="col" :label="$t(col.label)" :fixed="col.fixed" :sortable="mainData.table.sortable && col.sortable" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <slot v-if="col.isSlot" :name="col.prop" :row="scope.row" :col="col"></slot>
+              <template :style="col.style" v-else>
+                <span v-if="col.formatter">{{ col.formatter(scope.row, scope.column, scope.row[col.dataProp ? col.dataProp : col.prop], scope.$index) }}</span>
+                <span v-else-if="!col.format">{{ scope.row[col.dataProp ? col.dataProp : col.prop] }}</span>
+                <span v-else>{{ dataFormat(col.format.func, scope.row[col.dataProp ? col.dataProp : col.prop], col.format.dict, col.format.dictType, scope.row) }}</span>
               </template>
             </template>
           </u-table-column>
@@ -57,20 +84,16 @@
       </template>
     </u-table>
     <!-- 底部按钮 -->
-    <div class='bottom-operate'>
-      <div class='bottom-operate-left' v-if='mainData.isColset'>
-        <el-table-column-set :id='mainData.table.id' :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent='handleLockChange'></el-table-column-set>
+    <div class="bottom-operate">
+      <div class="bottom-operate-left" v-if="mainData.isColset">
+        <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
       </div>
-      <div class='bottom-operate-right' v-show='emptyTextVisible'>
-        <svg-icon icon-class='point' style='color:#E6A23C;'></svg-icon>{{$t('table.emptyText')}}
-      </div>
+      <div class="bottom-operate-right" v-show="emptyTextVisible"><svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}</div>
       <!-- 分页 -->
-      <el-pagination v-if='!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show' small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100,300]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
-      </el-pagination>
+      <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100, 300]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
     </div>
     <!-- 编辑弹窗 -->
-    <view-form-table v-if='dialogDetailVisible' @closeHandler='dialogHandler' :param='param' :moduleCode='moduleCode' :opType='opType' :opMode='opMode'></view-form-table>
-
+    <view-form-table v-if="dialogDetailVisible" @closeHandler="dialogHandler" :param="param" :moduleCode="moduleCode" :opType="opType" :opMode="opMode"></view-form-table>
   </main>
 </template>
 
@@ -236,7 +259,9 @@ export default {
           iconName: 'print',
           i18n: 'biz.btn.print'
         }
-      }
+      },
+      // 默认表高度
+      rowHeight: '24'
     }
   },
   inject: ['app'],
@@ -268,7 +293,7 @@ export default {
       this.tableComputed()
     },
     tableCols(valArr) {
-      this.formThead = valArr.filter(i => {
+      this.formThead = valArr.filter((i) => {
         if (i.checkFlag) {
           return !!+i.checkFlag
         } else {
@@ -288,7 +313,7 @@ export default {
   },
   beforeMount() {
     if (this.mainData.topBar) {
-      this.mainData.topBar.forEach(v => {
+      this.mainData.topBar.forEach((v) => {
         this.$set(v, 'loading', false)
       })
     }
@@ -306,7 +331,7 @@ export default {
       this.highlightCurrentRow = false
     }
     // 列设置
-    this.mainData.table.cols.forEach(v => {
+    this.mainData.table.cols.forEach((v) => {
       // 根据isShow字段判断是否显示
       if (v.isShow === undefined) {
         v.isShow = true
@@ -403,7 +428,7 @@ export default {
         method: 'POST',
         data: this.$parent.form.listQuery
       })
-        .then(response => {
+        .then((response) => {
           this.loading = false
           if (this.$parent.$refs.bsForm) {
             this.$parent.$refs.bsForm.loading = false
@@ -530,21 +555,21 @@ export default {
           data: this.mainData.table.id || this.$route.name
         }
       })
-        .then(res => {
+        .then((res) => {
           if (res.data.length === 0) {
-            this.tableCols.forEach(col => {
+            this.tableCols.forEach((col) => {
               col.checkFlag = '1'
             })
             this.key++
-            this.checked = this.mainData.table.cols.map(v => {
+            this.checked = this.mainData.table.cols.map((v) => {
               return v.prop
             })
             this.$nextTick(() => {
               this.$refs.singleTable.reloadData(this.tableData)
             })
           } else {
-            res.data.forEach(col => {
-              this.tableCols.forEach(c => {
+            res.data.forEach((col) => {
+              this.tableCols.forEach((c) => {
                 if (col.itemId === c.prop) {
                   c.checkFlag = col.checkFlag
                   c.sortNo = col.sortNo
@@ -574,8 +599,8 @@ export default {
           return
         }
 
-        const values = data.map(item => Number(item[column.property]))
-        const filterCol = this.mainData.table.cols.filter(col => col.prop === column.property)[0]
+        const values = data.map((item) => Number(item[column.property]))
+        const filterCol = this.mainData.table.cols.filter((col) => col.prop === column.property)[0]
 
         if (filterCol && filterCol.summary) {
           if (filterCol.format && filterCol.format.func) {
@@ -635,8 +660,8 @@ export default {
             this.$notify(notifyInfo({ msg: '操作验证不通过，不可以进行当前操作' }))
           }
           return false
-        } else if (Array.isArray(result) && result.map(v => v.result).includes(false)) {
-          const index = result.map(v => v.result).indexOf(false)
+        } else if (Array.isArray(result) && result.map((v) => v.result).includes(false)) {
+          const index = result.map((v) => v.result).indexOf(false)
           if (result[index].msg) {
             this.$notify(notifyInfo({ msg: result[index].msg }))
           }
@@ -673,7 +698,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -696,7 +721,7 @@ export default {
       if (buttonInfo.getParam) {
         deleteData = buttonInfo.getParam(this.currentRow)
       } else if (this.currentRow instanceof Array) {
-        deleteData = this.currentRow.map(v => v.id)
+        deleteData = this.currentRow.map((v) => v.id)
       } else {
         deleteData = this.currentRow.id
       }
@@ -714,7 +739,7 @@ export default {
               funcOperation: this.funcOperationI18n
             }
           })
-            .then(response => {
+            .then((response) => {
               this.$notify(notifySuccess({ msg: this.operationMsgInfo }))
               this.loading = false
               this.doRefresh()
@@ -752,7 +777,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -787,7 +812,7 @@ export default {
         if (buttonInfo.getParam) {
           setData = buttonInfo.getParam(this.currentRow)
         } else if (this.currentRow instanceof Array) {
-          setData = this.currentRow.map(v => v.id)
+          setData = this.currentRow.map((v) => v.id)
         } else {
           setData = this.currentRow.id
         }
@@ -805,7 +830,7 @@ export default {
                 funcOperation: this.funcOperationI18n
               }
             })
-              .then(response => {
+              .then((response) => {
                 this.$notify(notifySuccess({ msg: this.operationMsgInfo }))
                 this.loading = false
                 this.doRefresh()
@@ -836,7 +861,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -896,7 +921,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -956,7 +981,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -1017,7 +1042,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -1078,7 +1103,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -1201,7 +1226,7 @@ export default {
         param.excelInfo['name'] = this.$t('route.' + this.$route.meta.title)
       }
       const titleData = []
-      this.mainData.table.cols.map(col => {
+      this.mainData.table.cols.map((col) => {
         if (col.label) {
           titleData.push({
             name: this.$t(col.label),
@@ -1222,7 +1247,7 @@ export default {
         },
         responseType: 'blob'
       })
-        .then(response => {
+        .then((response) => {
           if (!response.data) {
           } else {
             const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -1235,7 +1260,7 @@ export default {
             link.remove()
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
@@ -1246,10 +1271,10 @@ export default {
       } else {
         exportExcel({
           fileName: this.$t('route.' + this.$route.meta.title),
-          header: this.mainData.table.cols.map(col => {
+          header: this.mainData.table.cols.map((col) => {
             if (col.label) return this.$t(col.label)
           }),
-          filterVal: this.mainData.table.cols.map(col => {
+          filterVal: this.mainData.table.cols.map((col) => {
             if (col.format) {
               return {
                 val: col.prop,
@@ -1279,11 +1304,11 @@ export default {
     },
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.mainData.table.cols.filter(col => col.prop === prop)[0].sortProp || prop
+      const sortProp = this.mainData.table.cols.filter((col) => col.prop === prop)[0].sortProp || prop
       if (this.mainData.table.sortable && this.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'
-          let result = this.ordersList.find(e => e.prop === prop)
+          let result = this.ordersList.find((e) => e.prop === prop)
           if (result) {
             result.sort = asc
             result.order = order
@@ -1316,13 +1341,13 @@ export default {
     },
     getSortString() {
       let sortString = ''
-      this.ordersList.forEach(function(column) {
+      this.ordersList.forEach(function (column) {
         sortString = sortString + column.sortProp + column.sort + ','
       })
       return sortString
     },
     handleHeaderClass({ column }) {
-      let result = this.ordersList.find(e => e.prop === column.property)
+      let result = this.ordersList.find((e) => e.prop === column.property)
 
       if (result) {
         column.order = result.order
@@ -1367,7 +1392,7 @@ export default {
     },
     // 双击行跳转查看详情
     handleDblClick(row) {
-      const buttonInfo = this.mainData.topBar.filter(v => v.allowDblClick || v.name === 'view')[0]
+      const buttonInfo = this.mainData.topBar.filter((v) => v.allowDblClick || v.name === 'view')[0]
       if (buttonInfo) {
         this.currentRow = row
         if (buttonInfo.event) {
