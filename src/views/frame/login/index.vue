@@ -1,9 +1,11 @@
 <template>
   <div class="login-container">
     <div>
-      <div class="login-form-wrap" style="top: 16px">
-        <div class="loginPart"></div>
-        <div class="login-form">
+      <div class='login-form-wrap' style='top: 16px;'>
+        <div class="loginPart">
+          <img class="logo" src="@/assets/image/loginBg3.png" alt="" srcset="">
+        </div>
+        <div class='login-form'>
           <el-form :model="loginForm" :rules="loginRules" class="form" ref="loginForm" label-position="left">
             <div class="title">
               {{ $t('login.login') }}
@@ -197,6 +199,9 @@ $light_gray: #eee;
     width: 373px;
     height: 570px;
     background: url('~@/assets/image/loginBg2.png');
+    .logo {
+      margin: 37px 122px;
+    }
   }
 
   .login-form {
