@@ -78,6 +78,8 @@ export default {
         }
         //
         let webpageButtonDtoList = this.$refs.templateOne.moduleData
+        debugger
+        console.log(window.document.location.origin)
         for (let j = 0; j < webpageButtonDtoList.length; j++) {
           webpageButtonDtoList[j].icon = webpageButtonDtoList[j].icon
         }
@@ -136,7 +138,7 @@ export default {
       if (val == 1) {
         this.pitchOn = !this.pitchOn
         //       debugger
-        this.templateVal = val
+        this.templateVal = 'Sudoku_1'
       }
       console.log(val)
     },
