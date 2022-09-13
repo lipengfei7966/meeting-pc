@@ -184,7 +184,9 @@ export default {
   },
   mounted() {
     // debugger
+    // 不设置表格高度
     this.$refs.bsTable.isHeight = false
+    // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
   },
   methods: {
