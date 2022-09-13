@@ -4,13 +4,15 @@
 	<meta charset="utf-8" />
 	<title>选择图片</title>
 	<script charset="utf-8" src="../../dialogs/internal.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<style>
 		body {
 			font-size:14px;
 			font-family:SimSun;
 		}
 	</style>
-	<script>
+	<script >
+// import request from '@/utils/frame/base/request'
 		function changeSrcType(obj) {
 			if (obj.value == "L") {
 				document.getElementById("imgSrcL").style.display = "";
@@ -23,17 +25,41 @@
 			}
 		}
 		function uploadImg(e) {
+			debugger
+			var arr = sessionStorage.getItem('dev-user-key');
+			console.log(arr);
+			// 
 			var imgFile = e.target.files[0]; //获取图片文件
 			if (!imgFile.type.startsWith("image/")) {
 				alert("请选择图片文件");
 				return;
 			}
-			var reader = new FileReader();
-			reader.addEventListener("load", function (evt) {
-				document.getElementById("previewDiv").style.backgroundImage = "url('" + evt.target.result + "')";
-				document.getElementById("previewDiv").setAttribute("imgSrc", "L");
-			});
-			reader.readAsDataURL(imgFile);
+      const formData = new FormData();
+      formData.append('file', imgFile);
+			// 
+			$.ajax({
+				headers:{
+					Authorization:arr
+		},
+    //请求方式
+    type:'POST',
+    //发送请求的地址
+    url:'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg',
+    //服务器返回的数据类型
+    dataType:'json',
+		processData: false,
+    contentType: false,
+    //发送到服务器的数据，对象必须为key/value的格式，jquery会自动转换为字符串格式
+    data:formData,
+    success:function(data){
+        //请求成功函数内容
+				document.getElementById("previewDiv").style.backgroundImage = "url('" + data.data.filePath + "')";
+			      document.getElementById("previewDiv").setAttribute("imgSrc", "W");
+    },
+    error:function(jqXHR){
+        //请求失败函数内容
+    }
+});
 		}
 		function setImgUrl(obj) {
 			document.getElementById("previewDiv").style.backgroundImage = "url('" + obj.value + "')";
