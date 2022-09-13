@@ -1,14 +1,14 @@
 <template>
-  <section class="app-main" ref='appMain'>
-    <div v-show="!($route.meta.src)">
+  <section class="app-main" ref="appMain">
+    <div v-show="!$route.meta.src">
       <keep-alive :include="cachedViews">
         <router-view :key="key"></router-view>
       </keep-alive>
     </div>
     <iframeTmp v-show="$route.meta.src"></iframeTmp>
-    <backToTop v-show='showBackToTop' :dom='$refs.appMain'></backToTop>
-    <div class="footer-copyright" :style="{'bottom': clientWidth < 1366 ? '17px': '0'}">
-    </div>
+    <backToTop v-show="showBackToTop" :dom="$refs.appMain"></backToTop>
+    <!-- <div class="footer-copyright" :style="{'bottom': clientWidth < 1366 ? '17px': '0'}">
+    </div> -->
   </section>
 </template>
 
