@@ -1,7 +1,7 @@
 <template>
   <div class="contents" :style="{ backgroundImage: 'url(' + loginBg + ')' }">
     <div class="block">
-      <el-carousel trigger="click" height="180px" indicator-position="none">
+      <el-carousel trigger="click" height="280px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
           <img :src="`${item.url}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
@@ -9,8 +9,8 @@
       </el-carousel>
     </div>
     <div>
-      <p class="p_big">{{ title }}</p>
-      <p class="p_small">{{ subTitle }}</p>
+      <!-- <p class="p_big">{{ title }}</p>
+      <p class="p_small">{{ subTitle }}</p> -->
       <div>
         <ul class="feature">
           <li v-for="(item, index) in moduleData" :key="index" :style="isTrue ? { backgroundColor: item.backgroundColor } : ''" @click.stop="handel(item, index)">
