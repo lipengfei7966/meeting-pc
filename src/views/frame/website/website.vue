@@ -58,10 +58,18 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="页面管理">页面管理</el-tab-pane>
+      <!-- <el-tab-pane label="页面管理">页面管理</el-tab-pane>
       <el-tab-pane label="图片集">图片集</el-tab-pane>
-      <el-tab-pane label="访问权限">访问权限</el-tab-pane>
-      <el-tab-pane label="分享设置">分享设置</el-tab-pane>
+      <el-tab-pane label="访问权限">访问权限</el-tab-pane> -->
+      <el-tab-pane label="分享设置">
+        <div style="width: 100%; height: 80vh">
+          <div class="qrCode" style="width: 37%; padding-top: 5vh; margin: 5vh auto; height: 62vh; text-align: center; box-shadow: 0 2px 12px 0 lightgray">
+            <!-- :logoSrc="logo" -->
+            <span style="font-size: 18px; margin: 20px 0px; display: block">请使用移动设备扫描二维码</span>
+            <vue-qr :text="imgUrl" :size="250" :logoScale="0.2"> </vue-qr>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -73,6 +81,7 @@ import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
 import slideshowManage from '@/components/MicroStation/slideshowManage'
 import titleManage from '@/components/MicroStation/titleManage'
+import VueQr from 'vue-qr'
 export default {
   name: 'microStationManagement',
   components: {
@@ -80,7 +89,8 @@ export default {
     settingUp,
     baseMap,
     slideshowManage,
-    titleManage
+    titleManage,
+    VueQr
   },
   data() {
     return {
@@ -95,7 +105,10 @@ export default {
       isFlag_one: false,
       webpagePicDtoList: [],
       title_: '',
-      subTitle: ''
+      subTitle: '',
+      imgUrl: 'https://baidu.com',
+      // logo: require('@/assets/tea_128.png')
+      userData: {}
     }
   },
   methods: {
@@ -211,7 +224,7 @@ export default {
           .then((res) => {
             // debugger
             if (res.data) {
-              // debugger
+              this.userData = res.data
               this.Functionality = res.data.webpageButtonDtoList
               this.listData = res.data.webpageButtonDtoList
               this.webpagePicDtoList = res.data.webpagePicDtoList
@@ -220,6 +233,18 @@ export default {
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
+              debugger
+              //
+              // 处理地址问题
+              let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-h5-test.ctgbs.com'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms-h5.ctgbs.com'
+              }
+              //
+              this.imgUrl = `${url}/#/pages/${this.userData.templateCode}/index?tenantCode=${this.userData.tenantCode}&code=${this.code}`
+              console.log(this.imgUrl, window.location.host)
             } else {
               this.$router.push({
                 name: 'station',
@@ -252,8 +277,8 @@ export default {
     this.$refs.station.isPc = false
   },
   created() {
-    // debugger
     this.loadData()
+    // console.log(this.userData)
     console.log(this.$route)
   }
 }
@@ -283,5 +308,11 @@ export default {
 .btn {
   float: right;
   margin: 15px 0px;
+}
+.qrCode:hover {
+  background-color: rgb(38, 97, 172);
+}
+.qrCode {
+  transition: all 1000ms ease, top 1s ease;
 }
 </style>

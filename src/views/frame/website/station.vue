@@ -136,7 +136,7 @@ export default {
       if (val == 1) {
         this.pitchOn = !this.pitchOn
         //       debugger
-        this.templateVal = val
+        this.templateVal = 'Sudoku_1'
       }
       console.log(val)
     },
