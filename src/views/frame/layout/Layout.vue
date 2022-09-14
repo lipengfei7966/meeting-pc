@@ -11,7 +11,7 @@
       </div>
       <sidebar class="sidebar-container"></sidebar>
       <div class="main-container">
-        <div class="tags-view" :style="{'left': isCollapse ? '40px' : '200px', 'display': isScreenFull ? 'none' : 'block'}">
+        <div class="tags-view" :style="{'left': isCollapse ? '40px' : '192px', 'display': isScreenFull ? 'none' : 'block'}">
           <tags-view ref='tagsView'></tags-view>
         </div>
         <div id="app-main" :style="{height: contentHeight}">
@@ -354,17 +354,17 @@ export default {
     position: fixed;
     top: 0;
     width: 100%;
-    line-height: 50px;
+    line-height: 48px;
     z-index: 1001;
   }
   .main-wrapper {
-    padding-top: 50px;
+    padding-top: 48px;
     .main-container {
       min-height: 100%;
-      margin-left: 200px;
+      margin-left: 192px;
       .tags-view {
         position: fixed;
-        top: 50px;
+        top: 48px;
         left: 200px;
         right: 0;
         z-index: 999;
@@ -432,7 +432,7 @@ export default {
 .main-wrapper {
   .search {
     position: fixed;
-    width: 200px;
+    width: 192px;
     text-align: center;
     z-index: 1001;
     .input-search-style {
