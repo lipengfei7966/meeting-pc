@@ -86,8 +86,8 @@ export default {
       },
       rules: {
         title: [
-          { required: true, message: '请输入模块标题', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入模块标题', trigger: 'blur' }
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         //         subHeading: [{ required: true, message: '请输入模块副标题', trigger: 'blur' }],
         type: [{ required: true, message: '请选择模块类型', trigger: 'change' }],
@@ -135,7 +135,9 @@ export default {
           }
           if (submitVal.title) {
             this.ruleForm.title = submitVal.title
-            this.ruleForm.fileList[0].name = submitVal.title + '图标'
+            if (submitVal.icon) {
+              this.ruleForm.fileList[0].name = submitVal.title + '图标'
+            }
           }
           // debugger
           if (submitVal.type) {
@@ -156,8 +158,11 @@ export default {
             this.ruleForm.backgroundSetting = '1'
           }
           if (submitVal.icon) {
+            debugger
             this.ruleForm.fileList[0].url = submitVal.icon
             this.ruleForm.icon = submitVal.icon
+          } else {
+            this.ruleForm.fileList = []
           }
           if (submitVal.versionNum) {
             this.ruleForm.versionNum = submitVal.versionNum
@@ -309,6 +314,7 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)
+      this.ruleForm.icon = ''
     },
     handlePreview(file) {
       console.log(file)

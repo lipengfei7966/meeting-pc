@@ -271,7 +271,10 @@ export default {
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
-              debugger
+              // debugger
+              if (res.data.name) {
+                this.ruleForm.mainTitle = res.data.name
+              }
               //
               // 处理地址问题
               let url = ''
@@ -313,10 +316,12 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          debugger
+          console.log(valid, formName)
           request({
             url: '/api/biz/cmsWebpage/updateName',
             method: 'POST',
-            data: { data: { name: this.resetForm.mainTitle, code: this.code }, funcModule: '修改名称', funcOperation: '修改名称' }
+            data: { data: { name: this.ruleForm.mainTitle, code: this.code }, funcModule: '修改名称', funcOperation: '修改名称' }
           })
             .then((res) => {
               if (res.data) {
