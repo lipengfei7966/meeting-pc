@@ -1,47 +1,45 @@
 <template>
   <div class="login-container">
     <div>
-      <div class='login-form-wrap' style='top: 16px;'>
+      <div class="login-form-wrap" style="top: 16px">
         <div class="loginPart"></div>
-        <div class='login-form'>
+        <div class="login-form">
           <el-form :model="loginForm" :rules="loginRules" class="form" ref="loginForm" label-position="left">
             <div class="title">
-              {{$t('login.login')}}
+              {{ $t('login.login') }}
             </div>
-            <el-form-item prop="username" data-key='username'>
+            <el-form-item prop="username" data-key="username">
               <el-input name="username" type="text" v-model="loginForm.username" :placeholder="$t('login.username')" />
             </el-form-item>
 
-            <el-form-item prop="password" data-key='password'>
+            <el-form-item prop="password" data-key="password">
               <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="off" :placeholder="$t('login.password')" />
             </el-form-item>
             <el-row :gutter="10">
               <el-col :span="14">
                 <el-form-item prop="captcha">
-                  <el-input type="text" v-model="loginForm.captcha" :maxlength='4' auto-complete="off" :placeholder="$t('login.captcha')" style="width: 100%;" @keyup.enter.native="handleLogin"></el-input>
+                  <el-input type="text" v-model="loginForm.captcha" :maxlength="4" auto-complete="off" :placeholder="$t('login.captcha')" style="width: 100%" @keyup.enter.native="handleLogin"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item>
-                  <el-image style="height:30px;vertical-align:top;" :src="loginForm.src">
-                    <div slot="placeholder" class="image-slot">
-                      {{$t('biz.route.load')}}<span class="dot">...</span>
-                    </div>
+                  <el-image style="height: 30px; vertical-align: top" :src="loginForm.src">
+                    <div slot="placeholder" class="image-slot">{{ $t('biz.route.load') }}<span class="dot">...</span></div>
                   </el-image>
                 </el-form-item>
               </el-col>
               <el-col :span="2">
-                <i class='el-icon-refresh pointer' style='font-size:16px;margin-top:5px;' alt="如果看不清楚，请单击刷新！" @click="loadCaptcha"></i>
+                <i class="el-icon-refresh pointer" style="font-size: 16px; margin-top: 5px" alt="如果看不清楚，请单击刷新！" @click="loadCaptcha"></i>
               </el-col>
             </el-row>
 
-            <el-button class='login-btn' type="primary" :loading="loading" @click.native.prevent="handleLogin">
-              {{$t('login.login')}}
+            <el-button class="login-btn" type="primary" :loading="loading" @click.native.prevent="handleLogin">
+              {{ $t('login.login') }}
             </el-button>
           </el-form>
         </div>
       </div>
-      <div class='login-tip'></div>
+      <div class="login-tip"></div>
     </div>
   </div>
 </template>
@@ -105,7 +103,7 @@ export default {
         method: 'POST',
         data: {}
       })
-        .then(response => {
+        .then((response) => {
           if (response.data) {
             this.loginForm.captchaToken = response.data.token
             this.loginForm.src = 'data:image/jpeg;base64,' + response.data.img
@@ -116,7 +114,7 @@ export default {
         })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
           const userInfo = {

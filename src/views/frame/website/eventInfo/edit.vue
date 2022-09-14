@@ -1,5 +1,5 @@
 <template>
-  <bs-dialog :dialog='dialog' @closeDialog='handleCloseDialog'></bs-dialog>
+  <bs-dialog :dialog="dialog" @closeDialog="handleCloseDialog"></bs-dialog>
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
             element: 'input-validate',
             attrs: {
               clearable: true,
-              cols: 3,
+              cols: 3
             },
             validate: [
               {
@@ -85,7 +85,7 @@ export default {
                 trigger: 'blur'
               }
             ]
-          },
+          }
         ],
         bottomButtons: [
           {

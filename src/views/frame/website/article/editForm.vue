@@ -1,5 +1,5 @@
 <template>
-  <bs-edit :edit="edit" @closeDialog="handleCloseDialog" ref="bsEdit" @initCallback='handleInitCallback' :initFun=initFun></bs-edit>
+  <bs-edit :edit="edit" @closeDialog="handleCloseDialog" ref="bsEdit" @initCallback="handleInitCallback" :initFun="initFun"></bs-edit>
 </template>
 
 <script>
@@ -89,18 +89,18 @@ export default {
                   clearable: true,
                   cols: 2
                 }
-              // },
-              // {
-              //   label: 'website.article.edit.articlePic',
-              //   prop: 'articlePic',
-              //   element: 'image-upload',
-              //   attrs: {
-              //     imageData: {
-              //       // tenantCode: this.param.tenantCode
-              //     },
-              //     disabled: true,
-              //     cols: 4
-              //   }
+                // },
+                // {
+                //   label: 'website.article.edit.articlePic',
+                //   prop: 'articlePic',
+                //   element: 'image-upload',
+                //   attrs: {
+                //     imageData: {
+                //       // tenantCode: this.param.tenantCode
+                //     },
+                //     disabled: true,
+                //     cols: 4
+                //   }
               }
             ]
           }
