@@ -1,7 +1,7 @@
 <template>
   <div class="contents" :style="{ backgroundImage: 'url(' + loginBg + ')' }">
     <div class="block">
-      <el-carousel trigger="click" height="180px" indicator-position="none">
+      <el-carousel trigger="click" height="280px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
           <img :src="`${item.url}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
@@ -9,8 +9,8 @@
       </el-carousel>
     </div>
     <div>
-      <p class="p_big">{{ title }}</p>
-      <p class="p_small">{{ subTitle }}</p>
+      <!-- <p class="p_big">{{ title }}</p>
+      <p class="p_small">{{ subTitle }}</p> -->
       <div>
         <ul class="feature">
           <li v-for="(item, index) in moduleData" :key="index" :style="isTrue ? { backgroundColor: item.backgroundColor } : ''" @click.stop="handel(item, index)">
@@ -35,7 +35,7 @@ export default {
     return {
       isTrue: true,
       // loginBg: require('./images/底图.jpg'),
-      loginBg: 'static/meeting/img/baseMap/底图.jpg',
+      loginBg: 'static/meeting/img/baseMap/dt.jpg',
       backColor: 'rgba(198, 75, 34, 0.2)',
       backColor_: 'rgba(198, 75, 34, 0.2)',
       title: '2022中国人保寿险第十四届高峰会',
@@ -44,7 +44,7 @@ export default {
       moduleData: [
         {
           // img: require('@/assets/templateIcon/活动日程.png'),
-          icon: 'static/meeting/img/templateIcon/活动日程.png',
+          icon: 'static/meeting/img/templateIcon/hdrc.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 0,
           title: '活动日程',
@@ -52,7 +52,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/荣誉殿堂.png'),
-          icon: 'static/meeting/img/templateIcon/荣誉殿堂.png',
+          icon: 'static/meeting/img/templateIcon/rydt.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 1,
           title: '荣誉殿堂',
@@ -60,7 +60,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/讲师介绍.png'),
-          icon: 'static/meeting/img/templateIcon/讲师介绍.png',
+          icon: 'static/meeting/img/templateIcon/jsjs.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           sort: 2,
           title: '讲师介绍',
@@ -68,7 +68,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/精彩照片.png'),
-          icon: 'static/meeting/img/templateIcon/精彩照片.png',
+          icon: 'static/meeting/img/templateIcon/jczp.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '精彩照片',
           sort: 3,
@@ -76,7 +76,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/峰会直播.png'),
-          icon: 'static/meeting/img/templateIcon/峰会直播.png',
+          icon: 'static/meeting/img/templateIcon/fhzb.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '峰会直播',
           sort: 4,
@@ -84,7 +84,7 @@ export default {
         },
         {
           // img: require('@/assets/templateIcon/抽奖说明.png'),
-          icon: 'static/meeting/img/templateIcon/抽奖说明.png',
+          icon: 'static/meeting/img/templateIcon/cjsm.png',
           backgroundColor: 'rgba(198, 75, 34, 0.2)',
           title: '喜从天降',
           sort: 5,

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-tabs type="border-card" tab-position="left" :stretch="true">
-      <el-tab-pane label="模块设置">
+    <el-tabs type="border-card" tab-position="left" :stretch="true" v-model="activeName">
+      <el-tab-pane label="模块设置" name="one">
         <div style="display: flex; justify-content: space-between">
           <div class="contents" style="width: 28%">
             <el-button class="btn" type="success" @click="handelAdd">新增模块</el-button>
@@ -58,10 +58,46 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="页面管理">页面管理</el-tab-pane>
+      <!-- <el-tab-pane label="页面管理">页面管理</el-tab-pane>
       <el-tab-pane label="图片集">图片集</el-tab-pane>
-      <el-tab-pane label="访问权限">访问权限</el-tab-pane>
-      <el-tab-pane label="分享设置">分享设置</el-tab-pane>
+      <el-tab-pane label="访问权限">访问权限</el-tab-pane> -->
+      <el-tab-pane label="分享设置" name="two">
+        <div style="width: 100%; height: 80vh">
+          <!-- <div class="qrCode" style="width: 37%; padding-top: 5vh; margin: 5vh auto; height: 62vh; text-align: center; box-shadow: 0 2px 12px 0 lightgray">
+            <span style="font-size: 18px; margin: 20px 0px; display: block">请使用移动设备扫描二维码</span>
+            <vue-qr :text="imgUrl" :size="250" :logoScale="0.2"> </vue-qr>
+          </div> -->
+          <div class="qr">
+            <div style="position: relative; top: 15%; right: 10px; transform: translateY(-30%)">
+              <el-form style="padding-top: 120px" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="微站名称" prop="mainTitle">
+                  <el-input placeholder="请输入微站名称" v-model="ruleForm.mainTitle"></el-input>
+                </el-form-item>
+                <el-form-item label="" prop="">
+                  <div>
+                    <p>微站链接：</p>
+                    <el-tooltip :content="imgUrl">
+                      <span>{{ imgUrl | commentEllipsis(imgUrl) }}</span>
+                    </el-tooltip>
+                    <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">复制链接</span>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <div>
+                    <vue-qr :text="imgUrl" :size="200"> </vue-qr>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <div>
+                    <el-button @click="resetForm('ruleForm')">返回</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+                  </div>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -73,6 +109,7 @@ import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
 import slideshowManage from '@/components/MicroStation/slideshowManage'
 import titleManage from '@/components/MicroStation/titleManage'
+import VueQr from 'vue-qr'
 export default {
   name: 'microStationManagement',
   components: {
@@ -80,7 +117,8 @@ export default {
     settingUp,
     baseMap,
     slideshowManage,
-    titleManage
+    titleManage,
+    VueQr
   },
   data() {
     return {
@@ -95,7 +133,20 @@ export default {
       isFlag_one: false,
       webpagePicDtoList: [],
       title_: '',
-      subTitle: ''
+      subTitle: '',
+      imgUrl: 'https://baidu.com',
+      // logo: require('@/assets/tea_128.png')
+      userData: {},
+      ruleForm: {
+        mainTitle: ''
+      },
+      rules: {
+        mainTitle: [
+          { required: true, message: '请输入微站名称', trigger: 'blur' }
+          // { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
+        ]
+      },
+      activeName: 'one'
     }
   },
   methods: {
@@ -210,7 +261,7 @@ export default {
         })
           .then((res) => {
             if (res.data) {
-              // debugger
+              this.userData = res.data
               this.Functionality = res.data.webpageButtonDtoList
               // debugger
               this.listData = res.data.webpageButtonDtoList
@@ -220,6 +271,21 @@ export default {
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
+              // debugger
+              if (res.data.name) {
+                this.ruleForm.mainTitle = res.data.name
+              }
+              //
+              // 处理地址问题
+              let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-h5-test.ctgbs.com'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms-h5.ctgbs.com'
+              }
+              //
+              this.imgUrl = `${url}/#/pages/${this.userData.templateCode}/index?tenantCode=${this.userData.tenantCode}&code=${this.code}`
+              console.log(this.imgUrl, window.location.host)
             } else {
               this.$router.push({
                 name: 'station',
@@ -245,15 +311,66 @@ export default {
     },
     upData_() {
       this.loadData()
+    },
+    //
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          debugger
+          console.log(valid, formName)
+          request({
+            url: '/api/biz/cmsWebpage/updateName',
+            method: 'POST',
+            data: { data: { name: this.ruleForm.mainTitle, code: this.code }, funcModule: '修改名称', funcOperation: '修改名称' }
+          })
+            .then((res) => {
+              if (res.data) {
+                this.$message('修改成功')
+                this.loadData()
+              } else {
+                this.$message('修改失败')
+              }
+            })
+            .catch(() => {})
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.activeName = 'one'
+    },
+    copyTxt() {
+      var copyTest = this.imgUrl
+      var inputTest = document.createElement('input')
+      inputTest.value = copyTest
+      document.body.appendChild(inputTest)
+      inputTest.select()
+      document.execCommand('Copy')
+      inputTest.className = 'oInput'
+      inputTest.style.display = 'none'
+      this.$message.success('复制成功')
     }
   },
   mounted() {
     //     debugger
     this.$refs.station.isPc = false
   },
+  filters: {
+    commentEllipsis(value) {
+      if (value.length != undefined) {
+        if (value.length > 25) {
+          return value.slice(0, 24) + '...'
+        } else {
+          return value
+        }
+      }
+    }
+  },
   created() {
-    // debugger
     this.loadData()
+    // console.log(this.userData)
     console.log(this.$route)
   }
 }
@@ -283,5 +400,21 @@ export default {
 .btn {
   float: right;
   margin: 15px 0px;
+}
+.qrCode:hover {
+  background-color: rgb(38, 97, 172);
+}
+.qrCode {
+  transition: all 1000ms ease, top 1s ease;
+}
+.qr {
+  width: 35%;
+  height: 80vh;
+  // border: 1px solid red;
+  margin: 0 auto;
+  box-shadow: 0 2px 12px 0 lightgray;
+}
+.qr:hover {
+  box-shadow: 0 2px 22px 0 lightgray;
 }
 </style>
