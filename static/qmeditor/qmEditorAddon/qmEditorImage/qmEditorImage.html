@@ -4,7 +4,8 @@
 	<meta charset="utf-8" />
 	<title>选择图片</title>
 	<script charset="utf-8" src="../../dialogs/internal.js"></script>
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<!-- jquery.min.js -->
+	<script type="text/javascript" src="../../dialogs/jquery.js"></script>
 	<style>
 		body {
 			font-size:14px;
@@ -60,6 +61,9 @@
         //请求失败函数内容
     }
 });
+// 
+
+// 
 		}
 		function setImgUrl(obj) {
 			document.getElementById("previewDiv").style.backgroundImage = "url('" + obj.value + "')";
