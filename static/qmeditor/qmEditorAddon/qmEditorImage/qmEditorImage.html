@@ -37,24 +37,15 @@
 			}
       const formData = new FormData();
       formData.append('file', imgFile);
-			// 处理地址问题
-			debugger
-			let url = ''
-              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
-                url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
-              } else if (window.location.host == 'cmms.ctgbs.com') {
-                url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
-              }
-              //
 			// 
 			$.ajax({
 				headers:{
-					Authorization: 'Bearer ' + arr
+					Authorization: 'Bearer' + arr
 		},
     //请求方式
     type:'POST',
     //发送请求的地址
-    url:url,
+    url:'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg',
     //服务器返回的数据类型
     dataType:'json',
 		processData: false,
