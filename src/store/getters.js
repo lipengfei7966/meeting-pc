@@ -4,14 +4,11 @@ const getters = {
   language: state => state.app.language,
   clientWidth: state => state.app.clientSize.width,
   clientHeight: state => state.app.clientSize.height,
-  btnControllMap: state => state.app.btnControllMap,
-  moduleNames: state => state.app.moduleNames,
   // tagsView
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
 
   dataDictList: state => state.app.dataDictList,
-  isNewTag: state => state.tagsView.isNewTag,
   // user
   token: state => state.user.token,
   tenantCodeHash: state => state.user.tenantCodeHash,
@@ -38,13 +35,7 @@ const getters = {
   dashboardRefresh: state => state.dashboard.refresh,
   dashboardMap: state => state.dashboard.dashboardMap,
   // sys
-  remoteSelectData: state => state.sys.remoteSelectData,
-  // haiqin
-  dashboardRpt: state => state.dashboard.dashboardRpt,
-  authorizationList: state => state.authorization.authorizationList,
-  precision: state => state.projSys.precision,
-  revertFlag: state => state.projSys.revertFlag,
-  clauseReadFlag: state => state.projSys.clauseReadFlag
+  remoteSelectData: state => state.sys.remoteSelectData
 }
 
 export default getters
