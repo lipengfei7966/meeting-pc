@@ -181,12 +181,7 @@ export default {
       // 是否显示暂无数据
       emptyTextVisible: true,
       emptyTextVisibleLv2: true,
-      // 编辑页控制显示隐藏
-      dialogDetailVisible: false,
-      // 取消审核弹窗显示隐藏
-      dialogCancelAuditVisible: false,
-      // 撤回审核弹窗显示隐藏
-      dialogWithdrawAuditVisible: false,
+
       // 最大化时是否显示顶部标签栏
       tagViewVisible: false,
       // 全局按钮方法
@@ -1125,64 +1120,7 @@ export default {
       }
       this.dialogDetailVisible = false
     },
-    // /**
-    //  * 启动[钉钉]审批
-    //  * @param {Object} inputFormInfo 手动输入信息
-    //  */
-    // startAuditByDingTalk(inputFormInfo) {
-    //   this.loading = true
-    //   const inputParam = this.param
-    //   let bpmVarParamList = []
-    //   bpmUtil.addVarParam(bpmVarParamList, inputParam.uk)
-    //   bpmUtil.addVarParam(bpmVarParamList, inputParam.todotext)
-    //   const auditDataParam = bpmUtil.createAduitParam(this.moduleCode, inputParam.uk.value, bpmVarParamList, inputFormInfo)
-    //   bpmUtil.auditByDingTalk(
-    //     auditDataParam,
-    //     this,
-    //     responseData => {
-    //       this.$notify(notifySuccess({ msg: this.$t('biz.msg.submitSuccess') }))
-    //       this.getList()
-    //     },
-    //     () => {
-    //       this.getList()
-    //     },
-    //     () => {
-    //       this.getList()
-    //     }
-    //   )
-    // },
-    /**
-     * 启动[activity]审批
-     */
-    startAuditByActiviti(query) {
-      this.loading = true
-      query.push(this.param.uk)
-      query.push(this.param.todotext)
-      if (this.param.bpmParms) {
-        query = query.concat(this.param.bpmParms)
-      }
-      const nextUserObj = {
-        bpmVariableParamList: query,
-        moduleCode: this.moduleCode
-      }
 
-      request({
-        url: this.mainData.api.submit ? this.mainData.api.submit : '/api/bpm/processInstance/startApproveProcessByModuleCode',
-        method: 'POST',
-        data: {
-          data: nextUserObj,
-          funcModule: this.$t('route.' + this.$route.meta.title),
-          funcOperation: this.$t('biz.btn.submitAudit')
-        }
-      })
-        .then(response => {
-          this.$notify(notifySuccess({ msg: this.$t('biz.msg.submitSuccess') }))
-          this.getList()
-        })
-        .catch(() => {
-          this.getList()
-        })
-    },
     // 导出excel
     exportfunc() {
       this.loading = true

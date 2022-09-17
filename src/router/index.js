@@ -81,68 +81,8 @@ export const routeExample = [
         meta: {
           title: 'treeSearchDemo'
         }
-      },
-      {
-        name: 'spanTableDemo',
-        path: 'spanTableDemo',
-        component: () => import('@/views/example/spanTableDemo/index'),
-        meta: {
-          title: 'spanTableDemo'
-        }
-      },
-      {
-        name: 'spanTableThDemo',
-        path: 'spanTableThDemo',
-        component: () => import('@/views/example/spanTableThDemo/index'),
-        meta: {
-          title: 'spanTableThDemo'
-        }
-      },
-      {
-        name: 'editSpanTableDemo',
-        path: 'editSpanTableDemo',
-        component: () => import('@/views/example/editSpanTableDemo'),
-        meta: {
-          title: 'editSpanTableDemo'
-        }
-      },
-      {
-        name: 'timeLineDemo',
-        path: 'timeLineDemo',
-        component: () => import('@/views/example/timeLineDemo'),
-        meta: {
-          title: 'timeLineDemo'
-        }
       }
-      // {
-      //   name: 'generateEchart',
-      //   path: 'generate/echart',
-      //   component: () =>
-      // import('@/views/frame/sys/generate/echart/index'),
-      //   meta: {
-      //     title: '图表生成',
-      //     icon: 'svg-name'
-      //   }
-      // }, {
-      //   name: 'generateReport',
-      //   path: 'generate/report',
-      //   component: () =>
-      // import('@/views/frame/sys/generate/report/index'),
-      //   meta: {
-      //     title: '报表生成',
-      //     icon: 'svg-name'
-      //   }
-      // },
-      // {
-      //   name: 'generateEchartReport',
-      //   path: 'generate/echartReport',
-      //   component: () =>
-      // import('@/views/frame/sys/generate/echartReport/index'),
-      //   meta: {
-      //     title: '图报表生成',
-      //     icon: 'svg-name'
-      //   }
-      // },
+
     ]
   }
 ]
