@@ -1,6 +1,15 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
+    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
+        <template v-for='tab in mainData.tabs'>
+          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
+            <span slot="label">{{$t(tab.label)}} </span>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
+    </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
@@ -32,7 +41,7 @@ export default {
         formData: [
           {
             label: 'website.signupContact.query.meetCode',
-            prop: 'meetCode',
+            prop: 'eventCode',
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
@@ -46,6 +55,11 @@ export default {
       },
 
       mainData: {
+        tabs: [
+          { name: '2', label: '全部' },
+          { name: '0', label: '未办证' },
+          { name: '1', label: '已办证' }
+        ],
         api: {
           search: '/api/register/singnupContactCertificate/page',
           doDelete: '/api/register/singnupContactCertificate/remove'
@@ -57,9 +71,20 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '新增参会人',
-            component: () => import('./edit.vue'),
+            component: () => import('../component/signupContactSelect.vue'),
+            validate: () => {
+              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
+                return false
+              }else{
+                return true
+              }
+            },
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return {
+                eventCode: this.form.listQuery.data.eventCode,
+                sceneCode: this.form.listQuery.data.sceneCode,
+                type: "contactCertificate"
+              }
             }
           },
           // {

@@ -4,8 +4,8 @@
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
-          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
-            <span slot="label">{{$t(tab.label)}} </span>
+          <el-tab-pane :key='tab.code' :index='tab.code' :name="tab.code">
+            <span slot="label">{{$t(tab.name)}} </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -19,7 +19,7 @@
 // 日期格式化方法
 import { notifyInfo } from '@/utils/frame/base/notifyParams'
 export default {
-  name: 'signupSignin',
+  name: 'signupSigninSet',
   data() {
     return {
       form: {
@@ -41,12 +41,13 @@ export default {
         formData: [
           {
             label: 'website.signupContact.query.meetCode',
-            prop: 'eventCode',
+            prop: 'meetCode',
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
               clearable: true
             },
+            default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
             }
@@ -61,8 +62,8 @@ export default {
           { name: '1', label: '已签到' }
         ],
         api: {
-          search: '/api/register/signupSignin/page',
-          doDelete: '/api/register/signupSignin/remove'
+          search: '/api/register/signupContact/page',
+          doDelete: '/api/register/signupContact/remove'
         },
         initSearch: false,
         isTopBar: true,
@@ -73,7 +74,7 @@ export default {
             i18n: '新增参会人',
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
+              if (!this.form.listQuery.data.meetCode || this.form.listQuery.data.meetCode === '') {
                 return false
               }else{
                 return true
@@ -81,7 +82,7 @@ export default {
             },
             getParam: () => {
               return {
-                eventCode: this.form.listQuery.data.eventCode,
+                meetCode: this.form.listQuery.data.meetCode,
                 sceneCode: this.form.listQuery.data.sceneCode,
                 type: "signin"
               }
@@ -108,12 +109,6 @@ export default {
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
             }
-          },
-          {
-            name: 'record',
-            type: 'route',
-            i18n: '签到设置',
-            event: this.doSet
           },
           {
             name: 'record',
@@ -206,6 +201,22 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
+    request({
+          url: '/api/dd/selectData/list',
+          method: 'POST',
+          data: {
+            data: {
+              type: 'DICTYPE',
+              queryParams: {
+                blockType: this.block.blockType
+              }
+            },
+            funcModule: '会议字典',
+            funcOperation: '查询列表'
+          }
+        }).then(response => {
+          this.mainData.tabs = response.data
+        })
   },
   methods: {
     onChangeAll(params) {
@@ -221,18 +232,9 @@ export default {
         }
       })
     },
-    doSet() {
-      this.$router.push({
-        name: 'signupSigninSet',
-        params: {
-          back: 'signupSignin',
-          data: this.form.listQuery.data.eventCode
-        }
-      })
-    },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.signFlag = tab.name
+      this.form.listQuery.data.sceneCode = tab.code
       this.$refs.bsTable.getList({ name: 'search' })
     },
   }

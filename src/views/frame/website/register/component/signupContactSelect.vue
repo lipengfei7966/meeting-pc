@@ -23,6 +23,20 @@ export default {
         formData: [
           {
             label: 'website.signupContact.query.meetCode',
+            prop: 'eventCode',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
+              clearable: true,
+              disabled: true
+            },
+            default: this.param.eventCode,
+            event: {
+              changeAll: this.onChangeAll
+            }
+          },
+          {
+            label: 'website.signupContact.query.meetCode',
             prop: 'meetCode',
             element: 'base-select',
             attrs: {
@@ -30,10 +44,25 @@ export default {
               clearable: true,
               disabled: true
             },
-            default: this.param,
+            default: this.param.eventCode,
             event: {
               changeAll: this.onChangeAll
             }
+          },
+          {
+            label: '场景',
+            prop: 'sceneCode',
+            element: 'base-select',
+            attrs: {
+              data: 'DICTYPE', // 统一基础档案组件，传值data区分
+              clearable: true,
+              disabled: true
+            },
+            default: this.param.sceneCode,
+            event: {
+              changeAll: this.onChangeAll
+            },
+            isShow: this.param.sceneCode && this.param.sceneCode!=''
           },
           {
             label: 'website.signupContact.query.name',
@@ -112,6 +141,11 @@ export default {
               {
                 prop: 'createDate',
                 label: 'website.signupContact.list.createDate'
+              },
+              {
+                prop: 'meetCode',
+                label: 'website.signupContact.list.createDate',
+                isShow: false
               }
             ]
           }
@@ -165,17 +199,20 @@ export default {
         // 操作员账户
         const roleCodeArr = []
         this.$refs.bsTable.multipleSelection.forEach(select => {
-          roleCodeArr.push(select.code)
+          debugger
+          roleCodeArr.push({
+            contactCode: select.code,
+            eventCode: this.param.eventCode,
+            sceneCode: this.param.sceneCode
+          })
         })
         this.loading = true
+        let url = this.param.type === 'signin'?'/api/register/signupContactSceneRel/save':'/api/register/singnupContactCertificate/save'
         request({
-          url: '/api/warn/role/save',
+          url: url,
           method: 'POST',
           data: {
-            data: {
-              warningCode: this.param.warningCode,
-              roleCodeList: roleCodeArr
-            },
+            data: roleCodeArr,
             funcModule: this.$t('route.' + this.$route.meta.title),
             funcOperation: this.$t('biz.btn.save')
           }
