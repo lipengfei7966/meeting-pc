@@ -214,6 +214,11 @@ export default {
           data: this.$refs.bsTable.currentRow
         }
       })
+    },
+    handleTabClick(tab, event) {
+      this.currentRow = null
+      this.form.listQuery.data.certificateFlag = tab.name
+      this.$refs.bsTable.getList({ name: 'search' })
     }
   },
 }
