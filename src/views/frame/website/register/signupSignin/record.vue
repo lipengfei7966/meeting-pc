@@ -7,8 +7,6 @@
 </template>
 
 <script>
-// 日期格式化方法
-import { dateFormate } from '@/utils/frame/base/index'
 export default {
   name: 'signupSigninRecord',
   data() {
@@ -26,9 +24,18 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            usingFlag: ''
+            code: this.$route.params.data.code
           }
-        }
+        },
+        formData: [
+          {
+            label: 'website.signupSignin.query.code',
+            prop: 'code',
+            element: 'el-input',
+            default: this.$route.params.data.code,
+            isShow: false
+          }
+        ]
       },
 
       mainData: {

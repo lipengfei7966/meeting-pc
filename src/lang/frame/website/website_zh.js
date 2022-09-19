@@ -61,6 +61,7 @@ export default {
     signupContact: {
       title: '参会人管理',
       query: {
+        name: '姓名',
         meetCode: '会议名称'
       },
       list: {

@@ -56,19 +56,21 @@ export default {
           {
             name: 'add',
             type: 'dialog',
-            component: () => import('./edit.vue'),
+            i18n: '新增参会人',
+            component: () => import('../component/signupContactSelect.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              debugger
+              return this.form.listQuery.data.meetCode
             }
           },
-          {
-            name: 'update',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
+          // {
+          //   name: 'update',
+          //   type: 'dialog',
+          //   component: () => import('./edit.vue'),
+          //   getParam: () => {
+          //     return this.$refs.bsTable.currentRow
+          //   }
+          // },
           {
             name: 'view',
             type: 'dialog',

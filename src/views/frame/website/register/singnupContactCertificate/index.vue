@@ -56,27 +56,28 @@ export default {
           {
             name: 'add',
             type: 'dialog',
+            i18n: '新增参会人',
             component: () => import('./edit.vue'),
             getParam: () => {
               return this.$refs.bsTable.currentRow
             }
           },
-          {
-            name: 'update',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
-          {
-            name: 'view',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
+          // {
+          //   name: 'update',
+          //   type: 'dialog',
+          //   component: () => import('./edit.vue'),
+          //   getParam: () => {
+          //     return this.$refs.bsTable.currentRow
+          //   }
+          // },
+          // {
+          //   name: 'view',
+          //   type: 'dialog',
+          //   component: () => import('./edit.vue'),
+          //   getParam: () => {
+          //     return this.$refs.bsTable.currentRow
+          //   }
+          // },
           {
             name: 'remove',
             getParam: () => {

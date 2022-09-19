@@ -7,8 +7,6 @@
 </template>
 
 <script>
-// 日期格式化方法
-import { dateFormate } from '@/utils/frame/base/index'
 export default {
   name: 'singnupContactCertificateRecord',
   data() {
@@ -26,9 +24,18 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            usingFlag: ''
+            usingFlag: this.$route.params.data
           }
-        }
+        },
+        formData: [
+          {
+            label: 'website.singnupContactCertificate.query.code',
+            prop: 'code',
+            element: 'el-input',
+            default: this.$route.params.data.code,
+            isShow: false
+          }
+        ]
       },
 
       mainData: {
@@ -36,7 +43,7 @@ export default {
           search: '/api/register/singnupContactCertificate/page',
           doDelete: '/api/register/singnupContactCertificate/remove'
         },
-        initSearch: false,
+        initSearch: true,
         isTopBar: true,
         topBar: [
           {
