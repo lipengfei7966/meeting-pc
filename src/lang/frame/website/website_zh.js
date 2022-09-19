@@ -57,6 +57,35 @@ export default {
         shortName: '客户简称',
         orgCode: '客户归属'
       }
+    },
+    signupContact: {
+      title: '参会人管理',
+      query: {
+        meetCode: '会议名称'
+      },
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        createDate: '报名时间'
+      },
+      edit: {
+        meetCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态'
+      }
     }
   }
 }
