@@ -62,7 +62,7 @@ export default {
       title: '参会人管理',
       query: {
         name: '姓名',
-        meetCode: '会议名称'
+        eventCode: '会议名称'
       },
       list: {
         name: '姓名',
@@ -78,7 +78,7 @@ export default {
         createDate: '报名时间'
       },
       edit: {
-        meetCode: '会议名称',
+        eventCode: '会议名称',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -109,7 +109,7 @@ export default {
         createDate: '报名时间'
       },
       edit: {
-        meetCode: '会议名称',
+        eventCode: '会议名称',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -139,7 +139,7 @@ export default {
         createDate: '报名时间'
       },
       edit: {
-        meetCode: '会议名称',
+        eventCode: '会议名称',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',

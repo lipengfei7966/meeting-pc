@@ -22,7 +22,7 @@ export default {
         moreShowFlg: false,
         formData: [
           {
-            label: 'website.signupContact.query.meetCode',
+            label: 'website.signupContact.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -36,8 +36,8 @@ export default {
             }
           },
           {
-            label: 'website.signupContact.query.meetCode',
-            prop: 'meetCode',
+            label: 'website.signupContact.query.eventCode',
+            prop: 'eventCode',
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
@@ -141,11 +141,6 @@ export default {
               {
                 prop: 'createDate',
                 label: 'website.signupContact.list.createDate'
-              },
-              {
-                prop: 'meetCode',
-                label: 'website.signupContact.list.createDate',
-                isShow: false
               }
             ]
           }

@@ -21,8 +21,8 @@ export default {
 
         formData: [
           {
-            label: 'website.signupContact.edit.meetCode',
-            prop: 'meetCode',
+            label: 'website.signupContact.edit.eventCode',
+            prop: 'eventCode',
             element: 'base-select',
             attrs: {
               multiple: false,

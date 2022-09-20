@@ -40,7 +40,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.meetCode',
+            label: 'website.signupContact.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -67,11 +67,31 @@ export default {
         initSearch: false,
         isTopBar: true,
         topBar: [
+          // {
+          //   name: 'add',
+          //   type: 'dialog',
+          //   i18n: '新增参会人',
+          //   component: () => import('../component/signupContactSelect.vue'),
+          //   validate: () => {
+          //     if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
+          //       return false
+          //     }else{
+          //       return true
+          //     }
+          //   },
+          //   getParam: () => {
+          //     return {
+          //       eventCode: this.form.listQuery.data.eventCode,
+          //       sceneCode: this.form.listQuery.data.sceneCode,
+          //       type: "contactCertificate"
+          //     }
+          //   }
+          // },
           {
             name: 'add',
             type: 'dialog',
             i18n: '新增参会人',
-            component: () => import('../component/signupContactSelect.vue'),
+            component: () => import('../signupContact/edit.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
@@ -80,11 +100,7 @@ export default {
               }
             },
             getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode,
-                sceneCode: this.form.listQuery.data.sceneCode,
-                type: "contactCertificate"
-              }
+              return this.$refs.bsTable.currentRow
             }
           },
           // {

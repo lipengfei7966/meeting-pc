@@ -39,8 +39,8 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.meetCode',
-            prop: 'meetCode',
+            label: 'website.signupContact.query.eventCode',
+            prop: 'eventCode',
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
@@ -74,7 +74,7 @@ export default {
             i18n: '新增参会人',
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
-              if (!this.form.listQuery.data.meetCode || this.form.listQuery.data.meetCode === '') {
+              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
               }else{
                 return true
@@ -82,7 +82,7 @@ export default {
             },
             getParam: () => {
               return {
-                meetCode: this.form.listQuery.data.meetCode,
+                eventCode: this.form.listQuery.data.eventCode,
                 sceneCode: this.form.listQuery.data.sceneCode,
                 type: "signin"
               }

@@ -21,8 +21,8 @@ export default {
 
         formData: [
           {
-            label: 'website.signupContact.edit.meetCode',
-            prop: 'meetCode',
+            label: 'website.signupContact.edit.eventCode',
+            prop: 'eventCode',
             element: 'base-select',
             attrs: {
               multiple: false,
@@ -100,7 +100,8 @@ export default {
           {
             label: 'website.signupContact.edit.contactType',
             prop: 'contactType',
-            element: 'input-validate',
+            element: 'base-select',
+            list: this.$t('datadict.contantType'),
             attrs: {
               clearable: true,
               cols: 3

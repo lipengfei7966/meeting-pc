@@ -31,8 +31,8 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.meetCode',
-            prop: 'meetCode',
+            label: 'website.signupContact.query.eventCode',
+            prop: 'eventCode',
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
