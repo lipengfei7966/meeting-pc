@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'singnupContactCertificateRecord',
+  name: 'signupCertificatePrintRecord',
   data() {
     return {
       form: {
@@ -29,7 +29,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.singnupContactCertificate.query.code',
+            label: 'website.signupCertificatePrint.query.code',
             prop: 'code',
             element: 'el-input',
             default: this.$route.params.data.code,
@@ -40,8 +40,8 @@ export default {
 
       mainData: {
         api: {
-          search: '/api/register/singnupContactCertificate/page',
-          doDelete: '/api/register/singnupContactCertificate/remove'
+          search: '/api/register/signupCertificatePrint/page',
+          doDelete: '/api/register/signupCertificatePrint/remove'
         },
         initSearch: true,
         isTopBar: true,

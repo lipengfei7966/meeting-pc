@@ -19,7 +19,7 @@
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 export default {
-  name: 'singnupContactCertificate',
+  name: 'signupCertificate',
   data() {
     return {
       form: {
@@ -61,8 +61,8 @@ export default {
           { name: '1', label: '已办证' }
         ],
         api: {
-          search: '/api/register/singnupContactCertificate/page',
-          doDelete: '/api/register/singnupContactCertificate/remove'
+          search: '/api/register/signupCertificate/page',
+          doDelete: '/api/register/signupCertificate/remove'
         },
         initSearch: false,
         isTopBar: true,
