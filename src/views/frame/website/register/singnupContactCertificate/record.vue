@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
   name: 'singnupContactCertificateRecord',
   data() {
@@ -44,7 +45,7 @@ export default {
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
               clearable: true,
-              disabled: true
+              disabled: true
             },
             default: this.$route.params.data,
             event: {
@@ -55,11 +56,7 @@ export default {
       },
 
       mainData: {
-        tabs: [
-          { name: '2', label: '全部' },
-          { name: '0', label: '默认' },
-          { name: '1', label: 'VIP证件' }
-        ],
+        tabs: [],
         api: {
           search: '/api/register/signupCertificatePrint/page',
           doDelete: '/api/register/signupCertificatePrint/remove'
@@ -157,24 +154,30 @@ export default {
           method: 'POST',
           data: {
             data: {
+              queryParams: {type: "1"},
               type: 'DICTYPE'
             },
             funcModule: '会议字典',
             funcOperation: '查询列表'
           }
         }).then(response => {
-          this.mainData.tabs = response.data
+          debugger
+          response.data.forEach(element => {
+            this.mainData.tabs.push({
+              label: element.name,
+              name: element.code
+            })
+          });
         })
   },
   methods: {
     onChangeAll(params) {
       debugger
       this.$refs.bsTable.doRefresh();
-    }
-    ,
+    },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.contactType = tab.name
+      this.form.listQuery.data.certificateType = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     }
   }
