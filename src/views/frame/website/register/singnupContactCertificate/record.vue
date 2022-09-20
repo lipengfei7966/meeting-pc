@@ -152,6 +152,19 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
+    request({
+          url: '/api/dd/selectData/list',
+          method: 'POST',
+          data: {
+            data: {
+              type: 'DICTYPE'
+            },
+            funcModule: '会议字典',
+            funcOperation: '查询列表'
+          }
+        }).then(response => {
+          this.mainData.tabs = response.data
+        })
   },
   methods: {
     onChangeAll(params) {

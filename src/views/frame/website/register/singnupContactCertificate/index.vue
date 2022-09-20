@@ -223,6 +223,11 @@ export default {
       this.$refs.bsTable.doRefresh();
     },
     toRecord() {
+      debugger
+      if(this.form.listQuery.data.eventCode==""){
+        this.$message.warning('请选择会议')
+        return
+      }
       this.$router.push({
         name: 'singnupContactCertificateRecord',
         params: {
