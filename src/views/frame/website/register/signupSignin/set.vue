@@ -16,8 +16,7 @@
 </template>
 
 <script>
-// 日期格式化方法
-import { notifyInfo } from '@/utils/frame/base/notifyParams'
+import request from '@/utils/frame/base/request'
 export default {
   name: 'signupSigninSet',
   data() {
@@ -45,7 +44,8 @@ export default {
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true
+              clearable: true,
+              disabled: true
             },
             default: this.$route.params.data,
             event: {
@@ -206,10 +206,7 @@ export default {
           method: 'POST',
           data: {
             data: {
-              type: 'DICTYPE',
-              queryParams: {
-                blockType: this.block.blockType
-              }
+              type: 'DICTYPE'
             },
             funcModule: '会议字典',
             funcOperation: '查询列表'
