@@ -227,7 +227,7 @@ export default {
         name: 'singnupContactCertificateRecord',
         params: {
           back: 'singnupContactCertificate',
-          data: this.$refs.bsTable.currentRow
+          data: this.form.listQuery.data.eventCode
         }
       })
     },

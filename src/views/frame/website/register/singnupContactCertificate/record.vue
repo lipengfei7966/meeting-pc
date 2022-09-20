@@ -1,6 +1,15 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
+    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
+        <template v-for='tab in mainData.tabs'>
+          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
+            <span slot="label">{{$t(tab.label)}} </span>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
+    </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
@@ -8,7 +17,7 @@
 
 <script>
 export default {
-  name: 'signupCertificatePrintRecord',
+  name: 'singnupContactCertificateRecord',
   data() {
     return {
       form: {
@@ -24,21 +33,33 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            usingFlag: this.$route.params.data
+            eventCode: this.$route.params.data
           }
         },
         formData: [
           {
-            label: 'website.signupCertificatePrint.query.code',
-            prop: 'code',
-            element: 'el-input',
-            default: this.$route.params.data.code,
-            isShow: false
+            label: 'website.signupContact.query.eventCode',
+            prop: 'eventCode',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
+              clearable: true,
+              disabled: true
+            },
+            default: this.$route.params.data,
+            event: {
+              changeAll: this.onChangeAll
+            }
           }
         ]
       },
 
       mainData: {
+        tabs: [
+          { name: '2', label: '全部' },
+          { name: '0', label: '默认' },
+          { name: '1', label: 'VIP证件' }
+        ],
         api: {
           search: '/api/register/signupCertificatePrint/page',
           doDelete: '/api/register/signupCertificatePrint/remove'
@@ -136,6 +157,12 @@ export default {
     onChangeAll(params) {
       debugger
       this.$refs.bsTable.doRefresh();
+    }
+    ,
+    handleTabClick(tab, event) {
+      this.currentRow = null
+      this.form.listQuery.data.contactType = tab.name
+      this.$refs.bsTable.getList({ name: 'search' })
     }
   }
 }
