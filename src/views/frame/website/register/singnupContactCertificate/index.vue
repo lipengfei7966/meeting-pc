@@ -225,11 +225,11 @@ export default {
   },
   methods: {
     onChangeAll(params) {
-      debugger
+      // debugger
       this.$refs.bsTable.doRefresh();
     },
     toRecord() {
-      debugger
+      // debugger
       if(this.form.listQuery.data.eventCode==""){
         this.$message.warning('请选择会议')
         return
@@ -243,7 +243,7 @@ export default {
       })
     },
     toSetting() {
-      debugger
+      // debugger
       if(this.form.listQuery.data.eventCode==""){
         this.$message.warning('请选择会议')
         return

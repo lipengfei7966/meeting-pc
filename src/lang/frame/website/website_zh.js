@@ -87,8 +87,7 @@ export default {
         contactType: '参会人类型',
         certificateFlag: '办证状态'
       }
-    }
-    ,
+    },
     signupCertificate: {
       title: '办证管理',
       query: {
@@ -118,8 +117,7 @@ export default {
         contactType: '参会人类型',
         certificateFlag: '办证状态'
       }
-    }
-    ,
+    },
     signupCertificatePrint: {
       title: '办证记录管理',
       query: {
