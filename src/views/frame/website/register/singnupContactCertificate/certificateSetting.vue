@@ -158,7 +158,6 @@ export default {
       contactTypeArrayList: [],
       certificateTypeList:[], // 证件类型下拉
       bgiUrl:'',
-      imgUploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
       dialog:false,
       printSetform: {
         certificateContent: [],
@@ -277,7 +276,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       request({
-        url: thiz.imgUploadUrl,
+        url: '/api/obs/file/uploadImg',
         method: 'POST',
         data: formData
       }).then((data) => {
