@@ -59,7 +59,8 @@ export default {
             element: 'input-validate',
             attrs: {
               clearable: true,
-              cols: 3
+              cols: 3,
+              validateType: 'phone'
             },
             validate: [
               {
@@ -74,7 +75,8 @@ export default {
             element: 'input-validate',
             attrs: {
               clearable: true,
-              cols: 3
+              cols: 3,
+              validateType: 'email'
             },
             validate: [
               {
