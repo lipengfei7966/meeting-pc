@@ -23,16 +23,14 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {
-            code: this.$route.params.data.code
-          }
+          data: {}
         },
         formData: [
           {
             label: 'website.signupSignin.query.code',
-            prop: 'code',
+            prop: 'eventCode',
             element: 'el-input',
-            default: this.$route.params.data.code,
+            default: this.$route.params.data,
             isShow: false
           }
         ]
@@ -40,8 +38,8 @@ export default {
 
       mainData: {
         api: {
-          search: '/api/register/signupContact/page',
-          doDelete: '/api/register/signupContact/remove'
+          search: '/api/register/signupSignin/listSigninRecord',
+          doDelete: '/api/register/signupSignin/remove'
         },
         initSearch: false,
         isTopBar: true,
@@ -53,65 +51,49 @@ export default {
         isColset: true,
         table: {
           cols: [
-            {
+          {
               prop: 'name',
-              label: 'website.signupContact.list.name'
+              label: 'website.signupSignin.list.name'
             },
             {
               prop: 'mobile',
-              label: 'website.signupContact.list.mobile'
+              label: 'website.signupSignin.list.mobile'
             },
             {
               prop: 'email',
-              label: 'website.signupContact.list.email'
+              label: 'website.signupSignin.list.email'
             },
             {
               prop: 'department',
-              label: 'website.signupContact.list.department'
+              label: 'website.signupSignin.list.department'
             },
             {
               prop: 'code',
-              label: 'website.signupContact.list.code'
+              label: 'website.signupSignin.list.code'
             },
             {
               prop: 'contactType',
-              label: 'website.signupContact.list.contactType',
+              label: 'website.signupSignin.list.contactType',
               align: 'center',
               format: {
                 dict: this.$t('datadict.contantType')
               }
             },
             {
-              prop: 'certificateFlag',
-              label: 'website.signupContact.list.certificateFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.certificateFlag')
-              }
+              prop: 'sceneName',
+              label: 'website.signupSignin.list.sceneName'
             },
             {
-              prop: 'signFlag',
-              label: 'website.signupContact.list.signFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.signFlag')
-              }
+              prop: 'signupData',
+              label: 'website.signupSignin.list.signupData'
             },
             {
-              prop: 'signNum',
-              label: 'website.signupContact.list.signNum'
-            },
-            {
-              prop: 'checkFlag',
-              label: 'website.signupContact.list.checkFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.checkFlag')
-              }
+              prop: 'signinWay',
+              label: 'website.signupSignin.list.signinWay'
             },
             {
               prop: 'createDate',
-              label: 'website.signupContact.list.createDate'
+              label: 'website.signupSignin.list.createDate'
             }
           ]
         },

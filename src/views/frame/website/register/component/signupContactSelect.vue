@@ -36,20 +36,6 @@ export default {
             }
           },
           {
-            label: 'website.signupContact.query.eventCode',
-            prop: 'eventCode',
-            element: 'base-select',
-            attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true,
-              disabled: true
-            },
-            default: this.param.eventCode,
-            event: {
-              changeAll: this.onChangeAll
-            }
-          },
-          {
             label: '场景',
             prop: 'sceneCode',
             element: 'base-select',
@@ -77,7 +63,7 @@ export default {
         mainData: {
           initSearch: true,
           api: {
-            search: '/api/register/signupContact/page'
+            search: '/api/register/signupContactSceneRel/listSceneContactPage'
           },
           table: {
             showCheckbox: true,

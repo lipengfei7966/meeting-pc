@@ -146,6 +146,21 @@ export default {
         contactType: '参会人类型',
         certificateFlag: '办证状态'
       }
+    },
+    signupSignin: {
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        signinStatus: '签到状态',
+        signupData: '签到时间',
+        signinWay: '签到方式',
+        sceneName: '场景名称',
+        createDate: '报名时间'
+      }
     }
   }
 }
