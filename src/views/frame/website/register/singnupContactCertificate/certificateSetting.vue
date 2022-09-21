@@ -17,8 +17,8 @@
             </el-form-item>
 
             <el-form-item label="应用于">
-              <el-checkbox-group v-model="printSetform.contactTypeArray">
-                <el-checkbox :label="item.dictItemName" v-for="(item,index) in contactTypeArrayList" :key="index"></el-checkbox>
+              <el-checkbox-group v-model="printSetform.contactTypeArray" @change="contactTypeArrayChange">
+                <el-checkbox :label="item.dictItemVal" v-for="(item,index) in contactTypeArrayList" :key="index"> {{ item.dictItemName }} </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="打印区域(mm)">
@@ -308,6 +308,7 @@ export default {
       this.left = e.clientX + 'px'
       this.top = e.clientY + 'px'
     },
+
     certificateContentChange(certificateContent){
       // this.list = []
        // 网格上的数据获取
