@@ -135,7 +135,7 @@ export default {
           //     return this.$refs.bsTable.currentRow
           //   }
           // },
-          
+
           {
             name: 'remove',
             getParam: () => {
@@ -246,7 +246,6 @@ export default {
           response.data.forEach((item, key) => {
             this.mainData.tabs.push(item);
           });
-          
           //this.mainData.tabs = response.data
         })
     },

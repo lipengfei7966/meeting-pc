@@ -48,7 +48,7 @@ export default {
             isShow:false
           }
         ],
-        bottomButtons: [ 
+        bottomButtons: [
           {
             name: 'biz.btn.save',
             event: 'save',

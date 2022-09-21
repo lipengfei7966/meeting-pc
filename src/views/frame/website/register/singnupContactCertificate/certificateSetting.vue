@@ -8,9 +8,9 @@
           <el-form ref="printSetform" :model="printSetform" label-width="100px" label-position="left">
             <el-form-item label="证件类型">
               <div style="display:flex; justify-content: space-between;">
-                <el-select v-model="printSetform.code" style="width: 150px" placeholder="请选择活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="printSetform.certificateType" style="width: 150px" placeholder="请选择活动区域">
+                  <el-option v-for="(item,index) in certificateTypeList" :key="index" :label="item.name" :value="item.code"></el-option>
+
                 </el-select>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="dialogFormVisible = true">新增证件类型</el-button>
               </div>
@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item label="背景图">
               <el-checkbox v-model="printSetform.printBackgroundFlg" :true-label="1" :false-label="0">打印背景图</el-checkbox>
-              <el-upload style="float: right; padding: 3px 0" class="upload-demo" :limit="1" :on-exceed="fileLimitCount" ref="upload" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess" :file-list="fileList" :auto-upload="true">
+              <el-upload style="float: right; padding: 3px 0" :limit="1" :on-exceed="fileLimitCount" ref="upload" action :http-request="handleUploadForm" :on-success="uploadSuccess" :file-list="fileList" :show-file-list="false" :auto-upload="true">
                 <el-button type="text">上传背景图</el-button>
               </el-upload>
             </el-form-item>
@@ -69,7 +69,7 @@
 
     <div class="printPreview">
       <h2>证件预览</h2>
-      <el-card class="box-card" :style="'background:' + bgiUrl? `url( ${bgiUrl} )` : ' rgba(242, 242, 242, 1);'" ref="printTest" id="printTest">
+      <el-card class="box-card" style="background:rgba(242, 242, 242, 1);" ref="printTest" id="printTest">
         <!-- <div>
           <p class="printItem" v-for="(dictItemVal,index) in printSetform.certificateContent" :key="index">
             {{ certificateContentList.find(item => {return dictItemVal == item.dictItemVal}).dictItemName }}
@@ -77,12 +77,10 @@
           <vue-qr v-if="false" text="test" :size="200"> </vue-qr>
         </div> -->
 
-        <el-button @click="doPrint">打印</el-button>
-
-        <div class="p-event" id="print" style="border: 1px solid red; box-sizing: border-box; height: 500px; width: 100%;position: relative;">
+        <div class="p-event" id="print" :style="`background-image:url(${bgiUrl})`">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
-              <p :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight }" @click.right.prevent="openMenu($event)" @click="checkItem(item)">
+              <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign }" @click="checkItem(item)">
                 {{ item.name }}
                 <!-- {{ certificateContentList.find(item => {return dictItemVal == item.dictItemVal}).dictItemName }} -->
               </p>
@@ -93,7 +91,7 @@
       </el-card>
       <p style="margin-top: 15px;margin-right:40px">
         <span>尺寸：{{printSetform.printWight/10}}cm * {{printSetform.printHeight/10}}cm</span>
-        <el-button style="float: right; padding: 3px 0" type="text" v-print="'#printTest'">打印测试页</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="doPrint">打印测试页</el-button>
       </p>
     </div>
 
@@ -101,24 +99,32 @@
       <h2>内容设置</h2>
       <el-card class="box-card">
         <el-form :model="form" label-width="100px" label-position="left">
-          <el-form-item label="修改内容" :label-width="formLabelWidth">
+          <el-form-item label="修改内容">
             <el-select v-model="form.name" @change="changeName();changeVal()">
               <el-option v-for="(item,index) in list" :label="item.label" :key="index+item.label" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="修改类型" :label-width="formLabelWidth">
+          <el-form-item label="修改类型">
             <el-select v-model="form.selectVal" @change="changeHeight">
               <el-option label="字体大小" value="fontSize"></el-option>
               <el-option label="行高设置" key="index+item.value" value="lineHeight"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="值" :label-width="formLabelWidth">
+          <el-form-item label="大小">
             <el-select v-model="form.fontSize" @change="changeVal">
               <el-option v-for="(item,index) in sizeList" :key="index+item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="值" :label-width="formLabelWidth">
-            <el-color-picker v-model="form.color" @change="changeVal"></el-color-picker>
+          <el-form-item label="对齐方式">
+            <el-select v-model="form.textAlign" @change="changeVal">
+              <el-option label="靠左对齐" value="left"></el-option>
+              <el-option label="居中对齐" value="center"></el-option>
+              <el-option label="靠右对齐" value="right"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="字体颜色">
+            <el-color-picker class="setColor" v-model="form.color" @change="changeVal"></el-color-picker>
+            <!-- <el-color-picker v-model="form.color"></el-color-picker> -->
           </el-form-item>
         </el-form>
       </el-card>
@@ -136,36 +142,6 @@
       </div>
     </el-dialog>
 
-    <el-drawer title="" :before-close="handleClose" :visible.sync="dialog" direction="rtl" custom-class="demo-drawer" ref="drawer">
-      <div class="demo-drawer__content">
-        <el-form :model="form">
-          <el-form-item label="修改内容" :label-width="formLabelWidth">
-            <el-select v-model="form.name" @change="changeName();changeVal()">
-              <el-option v-for="(item,index) in list" :label="item.label" :key="index+item.label" :value="item.name"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="修改类型" :label-width="formLabelWidth">
-            <el-select v-model="form.selectVal" @change="changeHeight">
-              <el-option label="字体大小" value="fontSize"></el-option>
-              <el-option label="行高设置" key="index+item.value" value="lineHeight"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="值" :label-width="formLabelWidth">
-            <el-select v-model="form.fontSize" @change="changeVal">
-              <el-option v-for="(item,index) in sizeList" :key="index+item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="值" :label-width="formLabelWidth">
-            <el-color-picker v-model="form.color" @change="changeVal"></el-color-picker>
-          </el-form-item>
-        </el-form>
-        <div class="demo-drawer__footer">
-          <el-button @click="dialog = false">取 消</el-button>
-          <el-button type="primary" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
-        </div>
-      </div>
-    </el-drawer>
-
   </div>
 </template>
 
@@ -180,12 +156,14 @@ export default {
       dialogFormVisible: false, // 新增证件类型弹窗
       certificateContentList: [],
       contactTypeArrayList: [],
+      certificateTypeList:[], // 证件类型下拉
       bgiUrl:'',
+      imgUploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
       dialog:false,
       printSetform: {
         certificateContent: [],
         "certificateLayout": "1232132",
-        "code": "0009",
+        "certificateType": "0009",
         "contactTypeArray": [],
         "maxPrintNumber": 10,
         "meetCode": "1231",
@@ -211,7 +189,8 @@ export default {
         name: '',
         fontSize: '',
         selectVal: '',
-        color: '',
+        textAlign: '',
+        color: '#000',
         paddingTop: 20,
         paddingBottom: 0,
         paddingLeft: 0,
@@ -227,6 +206,26 @@ export default {
     }
   },
   async mounted() {
+    request({
+      url: '/api/dd/selectData/list',
+      method: 'POST',
+      data: {
+        data: {
+          queryParams: {type: "1"},
+          type: 'CETIFICATETYPE'
+        },
+        funcModule: '会议字典',
+        funcOperation: '查询列表'
+      }
+    }).then(response => {
+      this.certificateTypeList = response.data
+      // response.data.forEach(element => {
+      //   this.certificateTypeList.push({
+      //     label: element.name,
+      //     name: element.code
+      //   })
+      // });
+    })
     // 获取参会人类型数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -265,10 +264,37 @@ export default {
     // }
   },
   methods: {
+    handleUploadForm(param) {
+      // debugger
+      let thiz = this
+      let formData = new FormData()
+      // formData.append('webpageCode', '') // 额外参数
+      formData.append('file', param.file)
+      let loading = thiz.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: thiz.imgUploadUrl,
+        method: 'POST',
+        data: formData
+      }).then((data) => {
+        if (data) {
+          debugger
+          thiz.$message('上传文件成功')
+          this.bgiUrl = data.data.filePath
+        } else {
+          thiz.$message('上传文件失败')
+        }
+        loading.close()
+      })
+    },
     checkItem(item){
       this.form.name = item.name;
       // debugger
-      this.changeName()
+      this.changeName(item)
       this.changeVal()
     },
     openMenu(e) {
@@ -283,19 +309,38 @@ export default {
       this.left = e.clientX + 'px'
       this.top = e.clientY + 'px'
     },
-    certificateContentChange(){
-      this.list = []
+    certificateContentChange(certificateContent){
+      // this.list = []
        // 网格上的数据获取
        this.printSetform.certificateContent.forEach(dictItemVal => {
         let item = this.certificateContentList.find(item => {return dictItemVal == item.dictItemVal})
-        this.list.push({
-          name: item.dictItemName, // 表名对应的值
-          label: item.dictItemName, // 表名
-          fontSize: '16px', // 默认字体
-          lineHeight: 'normal', // 默认行高
-          color: '#000000', // 默认颜色
-          x: Math.floor(Math.random() * (400 - 10)) + 10, // x默认值
-          y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
+
+        let isIncludes = this.list.some(listItem => {
+          return listItem.name == item.dictItemName
+        })
+          // debugger
+        if(!isIncludes){
+          this.list.push({
+            name: item.dictItemName, // 表名对应的值
+            label: item.dictItemName, // 表名
+            fontSize: '16px', // 默认字体
+            lineHeight: 'normal', // 默认行高
+            color: '#000000', // 默认颜色
+            x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
+            y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
+          })
+        }
+
+        // 删除已取消值
+        this.list.forEach((listItem,listIndex) => {
+          let listIncludes = certificateContent.some(contentItem => {
+            let item = this.certificateContentList.find(item => {return contentItem == item.dictItemVal})
+
+            return listItem.name == item.dictItemName
+          })
+          if(!listIncludes) {
+            this.list.splice(listIndex,1)
+          }
         })
        });
     },
@@ -321,9 +366,10 @@ export default {
       this.y = y
     },
     /** 选择列下拉框 */
-    changeName() {
-      this.form.fontSize = ''
-      this.form.color = ''
+    changeName(item) {
+      this.form.fontSize = item.fontSize || '16px'
+      this.form.color = item.color ||'#000'
+      this.form.textAlign = item.textAlign ||''
     },
     changeHeight() {
       this.form.fontSize = ''
@@ -332,6 +378,7 @@ export default {
     changeVal() {
       if (this.form.name && this.form.fontSize && this.form.selectVal === 'fontSize') { this.commonMethod('fontSize') }
       if (this.form.name && this.form.fontSize && this.form.selectVal === 'lineHeight') { this.commonMethod('lineHeight') }
+      if (this.form.name && this.form.textAlign ) { this.commonMethod('textAlign') }
       if (this.form.name && this.form.color) { this.commonMethod('color') }
     },
     /** 公共的设置样式方法 */
@@ -340,6 +387,8 @@ export default {
         if (it.label === this.form.name) {
           if (val === 'lineHeight') {
             it[val] = this.form.fontSize
+          } else if( val === 'textAlign'){  // 对齐方式
+            it[val] = this.form.textAlign
           } else {
             it[val] = this.form[val]
           }
@@ -385,6 +434,9 @@ export default {
       debugger
     },
     create(){
+      // 数组转化字符串
+      this.printSetform.contactTypeArray = this.printSetform.contactTypeArray.join(',')
+      this.printSetform.certificateContent = this.printSetform.certificateContent.join(',')
       request({
         url: '/api/register/signupCertificate/save',
         method: 'POST',
@@ -435,12 +487,20 @@ export default {
   background-color: rgba(242, 242, 242, 1);
 }
 .printItem {
-  width: 60%;
+  width: 100%;
+  height: 100%;
   background-color: #fff;
-  margin: 5px auto;
+  /* margin: 5px auto;
   font-size: 16px;
   font-weight: bold;
   line-height: 35px;
-  text-align: center;
+  text-align: center; */
+}
+.p-event {
+  border: 1px solid red;
+  box-sizing: border-box;
+  height: 500px;
+  width: 100%;
+  position: relative;
 }
 </style>
