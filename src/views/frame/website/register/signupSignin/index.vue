@@ -35,7 +35,6 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            usingFlag: ''
           }
         },
         formData: [
@@ -61,8 +60,8 @@ export default {
           { name: '1', label: '已签到' }
         ],
         api: {
-          search: '/api/register/signupSignin/page',
-          doDelete: '/api/register/signupSignin/remove'
+          search: '/api/register/signupContactSceneRel/page',
+          doDelete: '/api/register/signupContactSceneRel/remove'
         },
         initSearch: false,
         isTopBar: true,
@@ -111,20 +110,20 @@ export default {
           //     return this.$refs.bsTable.currentRow
           //   }
           // },
-          {
-            name: 'view',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
-          {
-            name: 'remove',
-            getParam: () => {
-              return this.$refs.bsTable.currentRow.code
-            }
-          },
+          // {
+          //   name: 'view',
+          //   type: 'dialog',
+          //   component: () => import('./edit.vue'),
+          //   getParam: () => {
+          //     return this.$refs.bsTable.currentRow
+          //   }
+          // },
+          // {
+          //   name: 'remove',
+          //   getParam: () => {
+          //     return this.$refs.bsTable.currentRow.code
+          //   }
+          // },
           {
             name: 'record',
             type: 'route',
@@ -233,7 +232,7 @@ export default {
         name: 'signupSigninRecord',
         params: {
           back: 'signupSignin',
-          data: this.$refs.bsTable.currentRow
+          data: this.form.listQuery.data.eventCode
         }
       })
     },
