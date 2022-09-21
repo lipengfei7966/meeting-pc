@@ -58,7 +58,7 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return this.form.listQuery.data.eventCode
             }
           },
           {

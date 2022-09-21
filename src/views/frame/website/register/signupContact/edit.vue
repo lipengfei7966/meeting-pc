@@ -24,6 +24,7 @@ export default {
             label: 'website.signupContact.edit.eventCode',
             prop: 'eventCode',
             element: 'base-select',
+            default: this.param,
             attrs: {
               multiple: false,
               cols: 3,
