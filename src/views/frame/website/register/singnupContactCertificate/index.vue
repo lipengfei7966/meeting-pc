@@ -132,6 +132,12 @@ export default {
             event: this.toRecord
           },
           {
+            name: 'certificateSave',
+            type: 'route',
+            i18n: '办证',
+            event: this.toSaveRecord
+          },
+          {
             name: 'certificateSet',
             type: 'route',
             i18n: '办证设置',
@@ -230,6 +236,19 @@ export default {
     },
     toRecord() {
       debugger
+      if(this.form.listQuery.data.eventCode==""){
+        this.$message.warning('请选择会议')
+        return
+      }
+      this.$router.push({
+        name: 'singnupContactCertificateRecord',
+        params: {
+          back: 'singnupContactCertificate',
+          data: this.form.listQuery.data.eventCode
+        }
+      })
+    },
+    toSaveRecord() {
       if(this.form.listQuery.data.eventCode==""){
         this.$message.warning('请选择会议')
         return
