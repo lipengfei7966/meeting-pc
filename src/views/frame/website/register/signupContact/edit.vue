@@ -24,6 +24,7 @@ export default {
             label: 'website.signupContact.edit.eventCode',
             prop: 'eventCode',
             element: 'base-select',
+            default: this.param,
             attrs: {
               multiple: false,
               cols: 3,
@@ -58,7 +59,8 @@ export default {
             element: 'input-validate',
             attrs: {
               clearable: true,
-              cols: 3
+              cols: 3,
+              validateType: 'phone'
             },
             validate: [
               {
@@ -73,7 +75,8 @@ export default {
             element: 'input-validate',
             attrs: {
               clearable: true,
-              cols: 3
+              cols: 3,
+              validateType: 'email'
             },
             validate: [
               {
