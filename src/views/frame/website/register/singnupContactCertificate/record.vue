@@ -1,14 +1,24 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
+    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
+        <template v-for='tab in mainData.tabs'>
+          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
+            <span slot="label">{{$t(tab.label)}} </span>
+          </el-tab-pane>
+        </template>
+      </el-tabs>
+    </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
-  name: 'signupCertificatePrintRecord',
+  name: 'singnupContactCertificateRecord',
   data() {
     return {
       form: {
@@ -24,21 +34,29 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            usingFlag: this.$route.params.data
+            eventCode: this.$route.params.data
           }
         },
         formData: [
           {
-            label: 'website.signupCertificatePrint.query.code',
-            prop: 'code',
-            element: 'el-input',
-            default: this.$route.params.data.code,
-            isShow: false
+            label: 'website.signupContact.query.eventCode',
+            prop: 'eventCode',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
+              clearable: true,
+              disabled: true
+            },
+            default: this.$route.params.data,
+            event: {
+              changeAll: this.onChangeAll
+            }
           }
         ]
       },
 
       mainData: {
+        tabs: [],
         api: {
           search: '/api/register/signupCertificatePrint/page',
           doDelete: '/api/register/signupCertificatePrint/remove'
@@ -131,11 +149,36 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
+    request({
+          url: '/api/dd/selectData/list',
+          method: 'POST',
+          data: {
+            data: {
+              queryParams: {type: "1"},
+              type: 'CETIFICATETYPE'
+            },
+            funcModule: '会议字典',
+            funcOperation: '查询列表'
+          }
+        }).then(response => {
+          debugger
+          response.data.forEach(element => {
+            this.mainData.tabs.push({
+              label: element.name,
+              name: element.code
+            })
+          });
+        })
   },
   methods: {
     onChangeAll(params) {
       debugger
       this.$refs.bsTable.doRefresh();
+    },
+    handleTabClick(tab, event) {
+      this.currentRow = null
+      this.form.listQuery.data.certificateType = tab.name
+      this.$refs.bsTable.getList({ name: 'search' })
     }
   }
 }
