@@ -12,7 +12,6 @@ const app = {
       width: document.documentElement.clientWidth,
       height: document.documentElement.clientHeight
     },
-    btnControllMap: {},
     icons: [],
     dataDictList: {}
   },
@@ -33,11 +32,7 @@ const app = {
       state.clientSize.width = document.documentElement.clientWidth
       state.clientSize.height = document.documentElement.clientHeight
     },
-    SET_BUTTONAUTH(state, res) {
-      if (res.moduleName) {
-        state.btnControllMap[res.moduleName] = res.data
-      }
-    },
+
     SET_ICONS(state, icons) {
       state.icons = icons.map(v => ({ label: path.basename(v, '.svg'), value: path.basename(v, '.svg') }))
     },

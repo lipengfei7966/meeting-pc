@@ -158,12 +158,7 @@ export default {
       emptyTextVisible: true,
       // 编辑页控制显示隐藏
       dialogDetailVisible: false,
-      // 取消审核弹窗显示隐藏
-      dialogCancelAuditVisible: false,
-      // 撤回审核弹窗显示隐藏
-      dialogWithdrawAuditVisible: false,
-      // 审核流程
-      dialogAuditDefineVisible: false,
+
       // 最大化时是否显示顶部标签栏
       tagViewVisible: false,
       // 全局按钮方法
@@ -1009,38 +1004,7 @@ export default {
       }
       this.dialogDetailVisible = false
     },
-    startAuditByActiviti(query) {
-      this.loading = true
-      query.push(this.param.uk)
-      query.push(this.param.todotext)
-      if (this.param.bpmParms) {
-        query = query.concat(this.param.bpmParms)
-      }
-      //必须要有 bpmProcessDefinitionKey
-      const nextUserObj = {
-        bpmVariableParamList: query,
-        moduleCode: this.moduleCode,
-        bpmProcessDefinitionKey: this.param.bpmProcessDefinitionKey,
-        bpmType: this.param.bpmType
-      }
 
-      request({
-        url: this.mainData.api.submit ? this.mainData.api.submit : '/api/bpm/processInstance/startApproveProcessByModuleCode',
-        method: 'POST',
-        data: {
-          data: nextUserObj,
-          funcModule: this.$t('route.' + this.$route.meta.title),
-          funcOperation: this.$t('biz.btn.submitAudit')
-        }
-      })
-        .then(response => {
-          this.$notify(notifySuccess({ msg: this.$t('biz.msg.submitSuccess') }))
-          this.getList()
-        })
-        .catch(() => {
-          this.getList()
-        })
-    },
     // 处理升序
     handleAscending(column) {
       this.$refs.singleTable.sort(column.prop, 'ascending')

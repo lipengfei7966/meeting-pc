@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const ORIGINAL_THEME = storage.get('theme') || '#2661AC' // default color
+const ORIGINAL_THEME = storage.get('theme') || '#265588' // default color
 import themeData from './theme.json'
 import generateColors from '@/utils/frame/base/color'
 import storage from '@/utils/frame/base/localStorage'
