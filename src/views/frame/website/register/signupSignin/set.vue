@@ -33,9 +33,7 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {
-            usingFlag: ''
-          }
+          data: {}
         },
         formData: [
           {
@@ -56,27 +54,60 @@ export default {
       },
 
       mainData: {
-        tabs: [
-          { name: '2', label: '全部' },
-          { name: '0', label: '未签到' },
-          { name: '1', label: '已签到' }
-        ],
+        tabs: [],
         api: {
-          search: '/api/register/signupContact/page',
-          doDelete: '/api/register/signupContact/remove'
+          search: '/api/register/signupSignin/page',
+          doDelete: '/api/register/signupContactSceneRel/remove'
         },
         initSearch: false,
         isTopBar: true,
         topBar: [
           {
             name: 'add',
+            i18n:'添加场景',
             type: 'dialog',
-            i18n: '新增参会人',
+            component: () => import('./sceneAdd.vue'),
+            getParam: () => {
+              return this.form.listQuery.data.eventCode
+            }
+          },
+          {
+            name: 'removeScene',
+            i18n: '删除场景',
+            event: this.removeScene,
+            type: 'dialog',
+            getParam: () => {
+              return this.form.listQuery.data.sceneCode
+            },
+            validate: () => {
+              if (this.$refs.bsTable.length>0) {
+                this.$alert('无法删除场景', '删除场景', { confirmButtonText: '确定'});
+                return false
+              }
+            }
+          },
+          {
+            name: 'addSign',
+            i18n:'签到',
+            type: 'dialog',
+            event:this.signAdd,
+            getParam: () => {
+              return this.form.listQuery.data.eventCode
+            }
+          },
+          {
+            name: 'add',
+            type: 'dialog',
+            i18n: '添加参会人',
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
-              }else{
+              }else if(this.form.listQuery.data.sceneCode=='' || this.form.listQuery.data.sceneCode==undefined){
+                this.$alert('默认场景无法添加参会人', '添加参会人', { confirmButtonText: '确定'});
+                return false;
+              }
+              else{
                 return true
               }
             },
@@ -96,26 +127,27 @@ export default {
           //     return this.$refs.bsTable.currentRow
           //   }
           // },
-          {
-            name: 'view',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
+          // {
+          //   name: 'view',
+          //   type: 'dialog',
+          //   component: () => import('./edit.vue'),
+          //   getParam: () => {
+          //     return this.$refs.bsTable.currentRow
+          //   }
+          // },
+          
           {
             name: 'remove',
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
             }
           },
-          {
-            name: 'record',
-            type: 'route',
-            i18n: '签到记录',
-            event: this.toRecord
-          },
+          // {
+          //   name: 'record',
+          //   type: 'route',
+          //   i18n: '签到记录',
+          //   event: this.toRecord
+          // },
           {
             name: 'refresh'
           }
@@ -125,63 +157,47 @@ export default {
           cols: [
             {
               prop: 'name',
-              label: 'website.signupContact.list.name'
+              label: 'website.signupSignin.list.name'
             },
             {
               prop: 'mobile',
-              label: 'website.signupContact.list.mobile'
+              label: 'website.signupSignin.list.mobile'
             },
             {
               prop: 'email',
-              label: 'website.signupContact.list.email'
+              label: 'website.signupSignin.list.email'
             },
             {
               prop: 'department',
-              label: 'website.signupContact.list.department'
+              label: 'website.signupSignin.list.department'
             },
             {
               prop: 'code',
-              label: 'website.signupContact.list.code'
+              label: 'website.signupSignin.list.code'
             },
             {
               prop: 'contactType',
-              label: 'website.signupContact.list.contactType',
+              label: 'website.signupSignin.list.contactType',
               align: 'center',
               format: {
                 dict: this.$t('datadict.contantType')
               }
             },
             {
-              prop: 'certificateFlag',
-              label: 'website.signupContact.list.certificateFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.certificateFlag')
-              }
+              prop: 'signinStatus',
+              label: 'website.signupSignin.list.signinStatus'
             },
             {
-              prop: 'signFlag',
-              label: 'website.signupContact.list.signFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.signFlag')
-              }
+              prop: 'signupData',
+              label: 'website.signupSignin.list.signupData'
             },
             {
-              prop: 'signNum',
-              label: 'website.signupContact.list.signNum'
-            },
-            {
-              prop: 'checkFlag',
-              label: 'website.signupContact.list.checkFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.checkFlag')
-              }
+              prop: 'signinWay',
+              label: 'website.signupSignin.list.signinWay'
             },
             {
               prop: 'createDate',
-              label: 'website.signupContact.list.createDate'
+              label: 'website.signupSignin.list.createDate'
             }
           ]
         },
@@ -201,21 +217,69 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
-    request({
-          url: '/api/dd/selectData/list',
+    this.sceneList();
+  },
+  methods: {
+    dialogHandler(){
+      debugger;
+      this.sceneList();
+    },
+    sceneList(){
+      request({
+          url: '/api/register/signupDictype/page',
           method: 'POST',
           data: {
             data: {
-              type: 'DICTYPE'
+              type: '2',
+              eventCode:this.form.listQuery.data.eventCode
             },
             funcModule: '会议字典',
             funcOperation: '查询列表'
           }
         }).then(response => {
-          this.mainData.tabs = response.data
+          this.mainData.tabs=[];
+          this.mainData.tabs.push({
+            code:'',
+            name:'默认'
+          })
+          debugger;
+          response.data.forEach((item, key) => {
+            this.mainData.tabs.push(item);
+          });
+          
+          //this.mainData.tabs = response.data
         })
-  },
-  methods: {
+    },
+    signAdd(){
+      if (this.$refs.bsTable.currentRow.signinStatus=='已签到') {
+        this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定'});
+        return
+      }
+      request({
+            url: '/api/register/signupSignin/save',
+            method: 'POST',
+            data: {
+              data:{
+                eventCode:this.form.listQuery.data.eventCode,
+                contactSceneCode:this.$refs.bsTable.currentRow.code
+              },
+              funcModule: this.$t('route.' + this.$route.meta.title),
+              funcOperation: this.$t('biz.btn.check')
+            }
+          })
+          .then(response => {
+            if (response.status && response.msgText) {
+              this.$notify(
+                notifyError({
+                  msg: response.msgText
+                })
+              )
+            } else {
+              this.sceneList();
+            }
+          })
+            .catch(() => {})
+    },
     onChangeAll(params) {
       debugger
       this.$refs.bsTable.doRefresh();
@@ -230,10 +294,38 @@ export default {
       })
     },
     handleTabClick(tab, event) {
+
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.code
+      this.form.listQuery.data.sceneCode = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     },
+    removeScene() {
+      if (this.form.listQuery.data.sceneCode==''|| this.form.listQuery.data.sceneCode==undefined) {
+        this.$alert('无法删除默认场景', '场景删除', { confirmButtonText: '确定'});
+        return
+      };
+      request({
+            url: '/api/register/signupDictype/remove',
+            method: 'POST',
+            data: {
+              data:  this.form.listQuery.data.sceneCode,
+              funcModule: this.$t('route.' + this.$route.meta.title),
+              funcOperation: this.$t('biz.btn.check')
+            }
+          })
+          .then(response => {
+            if (response.status && response.msgText) {
+              this.$notify(
+                notifyError({
+                  msg: response.msgText
+                })
+              )
+            } else {
+              this.sceneList();
+            }
+          })
+            .catch(() => {})
+    }
   }
 }
 </script>

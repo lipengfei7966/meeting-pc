@@ -77,7 +77,7 @@ export default {
         mainData: {
           initSearch: true,
           api: {
-            search: '/api/register/signupContact/page'
+            search: '/api/register/signupContactSceneRel/listSceneContactPage'
           },
           table: {
             showCheckbox: true,
