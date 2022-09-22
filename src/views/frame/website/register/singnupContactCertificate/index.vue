@@ -215,6 +215,10 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
+      if (this.$refs.bsTable.currentRow==null) {
+        this.$message.warning('请选择参会人')
+        return
+      }
       var bsQueryExtras = []
       this.$refs.bsTable.tableData.forEach(item => {
           bsQueryExtras.push({
@@ -223,26 +227,24 @@ export default {
             eventCode: item.eventCode
           })
         })
-        debugger
-        console.log(this.$refs.bsTable.currentRow);
       console.log(bsQueryExtras)
       request({
           url: '/api/register/signupCertificatePrint/save',
           method: 'POST',
           data: {
-            data: {
-              queryParams: bsQueryExtras
-            },
+            data: this.$refs.bsTable.currentRow,
             funcModule: '办证',
             funcOperation: '查询列表'
           }
         }).then(response => {
-          response.data.forEach(element => {
-            this.mainData.tabs.push({
-              label: element.name,
-              name: element.code
-            })
-          });
+          debugger
+          console.log(response.data);
+          if(response.data.certificateFlag){
+            this.$message.success(response.data.msg)
+          }
+          else{
+            this.$message.warning(response.data.msg)
+          }
         })
     },
     toSetting() {
