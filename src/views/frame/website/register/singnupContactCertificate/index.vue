@@ -228,9 +228,7 @@ export default {
           url: '/api/register/signupCertificatePrint/save',
           method: 'POST',
           data: {
-            data: {
-              queryParams: this.$refs.bsTable.currentRow
-            },
+            data: this.$refs.bsTable.currentRow,
             funcModule: '办证',
             funcOperation: '查询列表'
           }
