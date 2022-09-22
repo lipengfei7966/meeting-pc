@@ -60,7 +60,7 @@
 
             <el-form-item>
               <el-button type="primary" @click="create">立即创建</el-button>
-              <el-button>取消</el-button>
+              <el-button @click="back">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -162,7 +162,7 @@ export default {
       printSetform: {
         certificateContent: [],
         "certificateLayout": "1232132",
-        "certificateType": "0009",
+        "certificateType": "0",
         "contactTypeArray": [],
         "maxPrintNumber": 10,
         "meetCode": "1231",
@@ -205,26 +205,7 @@ export default {
     }
   },
   async mounted() {
-    request({
-      url: '/api/dd/selectData/list',
-      method: 'POST',
-      data: {
-        data: {
-          queryParams: {type: "1"},
-          type: 'CETIFICATETYPE'
-        },
-        funcModule: '会议字典',
-        funcOperation: '查询列表'
-      }
-    }).then(response => {
-      this.certificateTypeList = response.data
-      // response.data.forEach(element => {
-      //   this.certificateTypeList.push({
-      //     label: element.name,
-      //     name: element.code
-      //   })
-      // });
-    })
+    this.getCertificateType();
     // 获取参会人类型数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -248,21 +229,31 @@ export default {
     for (let i = 12; i <= 48; i++) {
       this.sizeList.push({ label: `${i}px`, value: `${i}px` })
     }
-    // 网格上的数据获取
-    // for (const dictItemVal of this.printSetform.certificateContent) {
-    //   let item = this.printSetform.certificateContent.find(item => {return dictItemVal == item.dictItemVal}).dictItemName
-    //   this.list.push({
-    //     name: item.dictItemName, // 表名对应的值
-    //     label: item.dictItemName, // 表名
-    //     fontSize: '16px', // 默认字体
-    //     lineHeight: 'normal', // 默认行高
-    //     color: '#000000', // 默认颜色
-    //     x: Math.floor(Math.random() * (800 - 10)) + 10, // x默认值
-    //     y: Math.floor(Math.random() * (450 - 10)) + 10 // y 默认值
-    //   })
-    // }
   },
   methods: {
+    // 返回上级
+    back(){
+      this.$router.replace({
+        name: 'singnupContactCertificate',
+      })
+    },
+    // 获取证件类型下拉选项
+    getCertificateType(){
+      request({
+        url: '/api/dd/selectData/list',
+        method: 'POST',
+        data: {
+          data: {
+            queryParams: {type: "1"},
+            type: 'DICTYPE'
+          },
+          funcModule: '会议字典',
+          funcOperation: '查询列表'
+        }
+      }).then(response => {
+        this.certificateTypeList = response.data
+      })
+    },
     handleUploadForm(param) {
       // debugger
       let thiz = this
@@ -407,10 +398,10 @@ export default {
         }
       }).then((res) => {
         if (res.data) {
+          this.getCertificateType();
+          this.dialogFormVisible = false;
+
           this.$message('新增成功')
-          //
-          this.loadData()
-          this.isFlag = 0
         } else {
           this.$message('新增失败')
         }
@@ -448,9 +439,6 @@ export default {
       }).then((res) => {
         if (res.data) {
           this.$message('创建成功')
-          //
-          this.loadData()
-          this.isFlag = 0
         } else {
           this.$message('创建失败')
         }
