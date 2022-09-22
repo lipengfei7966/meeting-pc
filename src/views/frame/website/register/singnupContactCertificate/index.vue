@@ -86,7 +86,7 @@ export default {
               }
             },
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return this.form.listQuery.data.eventCode
             }
           },
           {
