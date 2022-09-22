@@ -66,34 +66,34 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style  scoped>
 .el-color-picker {
-  .el-color-picker__trigger {
-    width: 40px !important;
-    height: 50px !important;
-    line-height: 50px !important;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    .el-color-picker__color {
-      border: none;
-      border-radius: 0;
-      background: none;
-      .el-color-picker__color-inner {
-        background: url('../../../assets/frame/img/skin.png') no-repeat center 15px;
-        background-color: transparent !important;
-      }
-    }
-    .el-color-picker__icon {
-      display: none;
-    }
-  }
 }
-.theme-picker-dropdown {
+.el-color-picker /deep/ .el-color-picker__trigger {
+  width: 40px !important;
+  height: 50px !important;
+  line-height: 50px !important;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.el-color-picker /deep/ .el-color-picker__color {
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+.el-color-picker /deep/ .el-color-picker__color-inner {
+  background: url('../../../assets/frame/img/skin.png') no-repeat center 15px;
+  background-color: transparent !important;
+}
+.el-color-picker /deep/ .el-color-picker__icon {
+  display: none;
+}
+/* .theme-picker-dropdown {
   .el-color-dropdown__btns {
-    .el-color-dropdown__link-btn {
-      display: none !important;
-    }
   }
+} */
+.theme-picker-dropdown /deep/ .el-color-dropdown__link-btn {
+  display: none !important;
 }
 </style>

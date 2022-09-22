@@ -36,20 +36,6 @@ export default {
             }
           },
           {
-            label: 'website.signupContact.query.eventCode',
-            prop: 'eventCode',
-            element: 'base-select',
-            attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true,
-              disabled: true
-            },
-            default: this.param.eventCode,
-            event: {
-              changeAll: this.onChangeAll
-            }
-          },
-          {
             label: '场景',
             prop: 'sceneCode',
             element: 'base-select',
@@ -62,7 +48,7 @@ export default {
             event: {
               changeAll: this.onChangeAll
             },
-            isShow: this.param.sceneCode && this.param.sceneCode!=''
+            isShow: this.param.sceneCode && this.param.sceneCode != ''
           },
           {
             label: 'website.signupContact.query.name',
@@ -77,7 +63,7 @@ export default {
         mainData: {
           initSearch: true,
           api: {
-            search: '/api/register/signupContact/page'
+            search: '/api/register/signupContactSceneRel/listSceneContactPage'
           },
           table: {
             showCheckbox: true,
@@ -168,9 +154,7 @@ export default {
       }
     }
   },
-  mounted() {
-    debugger
-  },
+  mounted() {},
   methods: {
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
@@ -194,7 +178,6 @@ export default {
         // 操作员账户
         const roleCodeArr = []
         this.$refs.bsTable.multipleSelection.forEach(select => {
-          debugger
           roleCodeArr.push({
             contactCode: select.code,
             eventCode: this.param.eventCode,
@@ -202,7 +185,7 @@ export default {
           })
         })
         this.loading = true
-        let url = this.param.type === 'signin'?'/api/register/signupContactSceneRel/save':'/api/register/singnupContactCertificate/save'
+        let url = this.param.type === 'signin' ? '/api/register/signupContactSceneRel/save' : '/api/register/singnupContactCertificate/save'
         request({
           url: url,
           method: 'POST',

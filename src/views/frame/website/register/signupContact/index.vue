@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
@@ -35,12 +35,18 @@ export default {
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true
             },
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           }
         ]
       },
@@ -162,17 +168,10 @@ export default {
       }
     }
   },
-  mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
-  },
+  mounted() {},
   methods: {
     onChangeAll(params) {
-      debugger
-      this.$refs.bsTable.doRefresh();
+      this.$refs.bsTable.doRefresh()
     }
   }
 }
