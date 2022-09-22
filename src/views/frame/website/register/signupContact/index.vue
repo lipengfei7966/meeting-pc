@@ -40,7 +40,13 @@ export default {
             },
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           }
         ]
       },

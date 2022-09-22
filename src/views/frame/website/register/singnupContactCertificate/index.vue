@@ -49,7 +49,13 @@ export default {
             },
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           }
         ]
       },
@@ -67,26 +73,6 @@ export default {
         initSearch: false,
         isTopBar: true,
         topBar: [
-          // {
-          //   name: 'add',
-          //   type: 'dialog',
-          //   i18n: '新增参会人',
-          //   component: () => import('../component/signupContactSelect.vue'),
-          //   validate: () => {
-          //     if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-          //       return false
-          //     }else{
-          //       return true
-          //     }
-          //   },
-          //   getParam: () => {
-          //     return {
-          //       eventCode: this.form.listQuery.data.eventCode,
-          //       sceneCode: this.form.listQuery.data.sceneCode,
-          //       type: "contactCertificate"
-          //     }
-          //   }
-          // },
           {
             name: 'add',
             type: 'dialog',
@@ -103,22 +89,6 @@ export default {
               return this.$refs.bsTable.currentRow
             }
           },
-          // {
-          //   name: 'update',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
-          // {
-          //   name: 'view',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
           {
             name: 'remove',
             getParam: () => {
