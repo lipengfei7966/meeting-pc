@@ -230,11 +230,8 @@ export default {
       })
     },
     handleTabClick(tab, event) {
-      if (tab.name == '') {
-
-      }
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.name
+      this.form.listQuery.data.sceneCode = tab.code
       this.$refs.bsTable.getList({ name: 'search' })
     },
   }

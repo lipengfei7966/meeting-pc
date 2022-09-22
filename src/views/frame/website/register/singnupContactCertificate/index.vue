@@ -18,6 +18,7 @@
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import request from '@/utils/frame/base/request'
 export default {
   name: 'signupCertificate',
   data() {
@@ -149,6 +150,7 @@ export default {
         ],
         isColset: true,
         table: {
+          showCheckbox: true,
           cols: [
             {
               prop: 'name',
@@ -231,11 +233,9 @@ export default {
   },
   methods: {
     onChangeAll(params) {
-      debugger
       this.$refs.bsTable.doRefresh();
     },
     toRecord() {
-      debugger
       if(this.form.listQuery.data.eventCode==""){
         this.$message.warning('请选择会议')
         return
@@ -253,16 +253,37 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      this.$router.push({
-        name: 'singnupContactCertificateRecord',
-        params: {
-          back: 'singnupContactCertificate',
-          data: this.form.listQuery.data.eventCode
-        }
-      })
+      var bsQueryExtras = []
+      this.$refs.bsTable.tableData.forEach(item => {
+          bsQueryExtras.push({
+            code: item.code,
+            contactTypeArray: item.contactType,
+            eventCode: item.eventCode
+          })
+        })
+        debugger
+        console.log(this.$refs.bsTable.currentRow);
+      console.log(bsQueryExtras)
+      request({
+          url: '/api/register/signupCertificatePrint/save',
+          method: 'POST',
+          data: {
+            data: {
+              queryParams: bsQueryExtras
+            },
+            funcModule: '办证',
+            funcOperation: '查询列表'
+          }
+        }).then(response => {
+          response.data.forEach(element => {
+            this.mainData.tabs.push({
+              label: element.name,
+              name: element.code
+            })
+          });
+        })
     },
     toSetting() {
-      debugger
       if(this.form.listQuery.data.eventCode==""){
         this.$message.warning('请选择会议')
         return

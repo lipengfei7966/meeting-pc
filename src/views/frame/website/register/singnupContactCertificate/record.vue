@@ -155,13 +155,12 @@ export default {
           data: {
             data: {
               queryParams: {type: "1"},
-              type: 'CETIFICATETYPE'
+              type: 'DICTYPE'
             },
             funcModule: '会议字典',
             funcOperation: '查询列表'
           }
         }).then(response => {
-          debugger
           response.data.forEach(element => {
             this.mainData.tabs.push({
               label: element.name,
@@ -172,7 +171,6 @@ export default {
   },
   methods: {
     onChangeAll(params) {
-      debugger
       this.$refs.bsTable.doRefresh();
     },
     handleTabClick(tab, event) {
