@@ -383,7 +383,7 @@ export default {
     },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.name
+      this.form.listQuery.data.sceneCode = tab.code
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {
