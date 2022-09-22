@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
@@ -64,7 +64,7 @@ export default {
         topBar: [
           {
             name: 'add',
-            i18n:'添加场景',
+            i18n: '添加场景',
             type: 'dialog',
             component: () => import('./sceneAdd.vue'),
             getParam: () => {
@@ -80,17 +80,17 @@ export default {
               return this.form.listQuery.data.sceneCode
             },
             validate: () => {
-              if (this.$refs.bsTable.length>0) {
-                this.$alert('无法删除场景', '删除场景', { confirmButtonText: '确定'});
+              if (this.$refs.bsTable.length > 0) {
+                this.$alert('无法删除场景', '删除场景', { confirmButtonText: '确定' })
                 return false
               }
             }
           },
           {
             name: 'addSign',
-            i18n:'签到',
+            i18n: '签到',
             type: 'dialog',
-            event:this.signAdd,
+            event: this.signAdd,
             getParam: () => {
               return this.form.listQuery.data.eventCode
             }
@@ -103,11 +103,10 @@ export default {
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
-              }else if(this.form.listQuery.data.sceneCode=='' || this.form.listQuery.data.sceneCode==undefined){
-                this.$alert('默认场景无法添加参会人', '添加参会人', { confirmButtonText: '确定'});
-                return false;
-              }
-              else{
+              } else if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
+                this.$alert('默认场景无法添加参会人', '添加参会人', { confirmButtonText: '确定' })
+                return false
+              } else {
                 return true
               }
             },
@@ -115,7 +114,7 @@ export default {
               return {
                 eventCode: this.form.listQuery.data.eventCode,
                 sceneCode: this.form.listQuery.data.sceneCode,
-                type: "signin"
+                type: 'signin'
               }
             }
           },
@@ -212,76 +211,69 @@ export default {
     }
   },
   mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
-    this.sceneList();
+    this.sceneList()
   },
   methods: {
-    dialogHandler(){
-      debugger;
-      this.sceneList();
+    dialogHandler() {
+      this.sceneList()
     },
-    sceneList(){
+    sceneList() {
       request({
-          url: '/api/register/signupDictype/page',
-          method: 'POST',
+        url: '/api/register/signupDictype/page',
+        method: 'POST',
+        data: {
           data: {
-            data: {
-              type: '2',
-              eventCode:this.form.listQuery.data.eventCode
-            },
-            funcModule: '会议字典',
-            funcOperation: '查询列表'
-          }
-        }).then(response => {
-          this.mainData.tabs=[];
-          this.mainData.tabs.push({
-            code:'',
-            name:'默认'
-          })
-          debugger;
-          response.data.forEach((item, key) => {
-            this.mainData.tabs.push(item);
-          });
-          //this.mainData.tabs = response.data
+            type: '2',
+            eventCode: this.form.listQuery.data.eventCode
+          },
+          funcModule: '会议字典',
+          funcOperation: '查询列表'
+        }
+      }).then(response => {
+        this.mainData.tabs = []
+        this.mainData.tabs.push({
+          code: '',
+          name: '默认'
         })
+
+        response.data.forEach((item, key) => {
+          this.mainData.tabs.push(item)
+        })
+        //this.mainData.tabs = response.data
+      })
     },
-    signAdd(){
-      if (this.$refs.bsTable.currentRow.signinStatus=='已签到') {
-        this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定'});
+    signAdd() {
+      if (this.$refs.bsTable.currentRow.signinStatus == '已签到') {
+        this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定' })
         return
       }
       request({
-            url: '/api/register/signupSignin/save',
-            method: 'POST',
-            data: {
-              data:{
-                eventCode:this.form.listQuery.data.eventCode,
-                contactSceneCode:this.$refs.bsTable.currentRow.code
-              },
-              funcModule: this.$t('route.' + this.$route.meta.title),
-              funcOperation: this.$t('biz.btn.check')
-            }
-          })
-          .then(response => {
-            if (response.status && response.msgText) {
-              this.$notify(
-                notifyError({
-                  msg: response.msgText
-                })
-              )
-            } else {
-              this.sceneList();
-            }
-          })
-            .catch(() => {})
+        url: '/api/register/signupSignin/save',
+        method: 'POST',
+        data: {
+          data: {
+            eventCode: this.form.listQuery.data.eventCode,
+            contactSceneCode: this.$refs.bsTable.currentRow.code
+          },
+          funcModule: this.$t('route.' + this.$route.meta.title),
+          funcOperation: this.$t('biz.btn.check')
+        }
+      })
+        .then(response => {
+          if (response.status && response.msgText) {
+            this.$notify(
+              notifyError({
+                msg: response.msgText
+              })
+            )
+          } else {
+            this.sceneList()
+          }
+        })
+        .catch(() => {})
     },
     onChangeAll(params) {
-      debugger
-      this.$refs.bsTable.doRefresh();
+      this.$refs.bsTable.doRefresh()
     },
     toRecord() {
       this.$router.push({
@@ -293,37 +285,36 @@ export default {
       })
     },
     handleTabClick(tab, event) {
-
       this.currentRow = null
       this.form.listQuery.data.sceneCode = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {
-      if (this.form.listQuery.data.sceneCode==''|| this.form.listQuery.data.sceneCode==undefined) {
-        this.$alert('无法删除默认场景', '场景删除', { confirmButtonText: '确定'});
+      if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
+        this.$alert('无法删除默认场景', '场景删除', { confirmButtonText: '确定' })
         return
-      };
+      }
       request({
-            url: '/api/register/signupDictype/remove',
-            method: 'POST',
-            data: {
-              data:  this.form.listQuery.data.sceneCode,
-              funcModule: this.$t('route.' + this.$route.meta.title),
-              funcOperation: this.$t('biz.btn.check')
-            }
-          })
-          .then(response => {
-            if (response.status && response.msgText) {
-              this.$notify(
-                notifyError({
-                  msg: response.msgText
-                })
-              )
-            } else {
-              this.sceneList();
-            }
-          })
-            .catch(() => {})
+        url: '/api/register/signupDictype/remove',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.sceneCode,
+          funcModule: this.$t('route.' + this.$route.meta.title),
+          funcOperation: this.$t('biz.btn.check')
+        }
+      })
+        .then(response => {
+          if (response.status && response.msgText) {
+            this.$notify(
+              notifyError({
+                msg: response.msgText
+              })
+            )
+          } else {
+            this.sceneList()
+          }
+        })
+        .catch(() => {})
     }
   }
 }

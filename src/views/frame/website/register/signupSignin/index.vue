@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
@@ -34,8 +34,7 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {
-          }
+          data: {}
         },
         formData: [
           {
@@ -43,8 +42,8 @@ export default {
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true
             },
             event: {
               changeAll: this.onChangeAll
@@ -60,6 +59,7 @@ export default {
       },
 
       mainData: {
+        isTabBar: true,
         tabs: [
           { name: '2', label: '全部' },
           { name: '0', label: '未签到' },
@@ -80,7 +80,7 @@ export default {
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
-              }else{
+              } else {
                 return true
               }
             },
@@ -179,17 +179,10 @@ export default {
       }
     }
   },
-  mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
-  },
+  mounted() {},
   methods: {
     onChangeAll(params) {
-      debugger
-      this.$refs.bsTable.doRefresh();
+      this.$refs.bsTable.doRefresh()
     },
     toRecord() {
       this.$router.push({
@@ -213,7 +206,7 @@ export default {
       this.currentRow = null
       this.form.listQuery.data.signFlag = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
-    },
+    }
   }
 }
 </script>

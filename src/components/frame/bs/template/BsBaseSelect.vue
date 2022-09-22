@@ -89,11 +89,6 @@ export default {
     attrs: {
       type: Object,
       default() {
-        // {
-        //     data: String, 数据类型，必须
-        //     params: String[], 附加参数，可选
-        //     dispField: String 显示字段，可选
-        // }
         return {}
       }
     }
@@ -103,8 +98,6 @@ export default {
       //深度监听后当这个对象内属性值发生变化也会执行handler。
       deep: true,
       handler(newAttrs, oldAttrs) {
-        //console.log('newAttrs:' + JSON.stringify(newAttrs))
-        //console.log('oldAttrs:' + JSON.stringify(oldAttrs))
         this.initData()
       }
     },
@@ -265,6 +258,13 @@ export default {
         }
       } else if (this.attrs.datadict) {
         this.list = this.$t('datadict.' + this.attrs.datadict)
+      }
+      if (this.attrs.isDefault) {
+        if (this.list && this.list.length > 0) {
+          if (this.newValue === null || this.newValue === '') {
+            this.change(this.list[0].code)
+          }
+        }
       }
     },
     // 判断基础档案下拉数据是否被删除，若删除则不赋值

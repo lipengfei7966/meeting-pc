@@ -466,7 +466,7 @@ export default {
           this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
         }
         if (this.mainData.isTabBar) {
-          this.tableHeight = this.tableHeight - 40
+          this.tableHeight = this.tableHeight - 30
         }
       }
     },

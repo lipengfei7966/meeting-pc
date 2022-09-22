@@ -1,7 +1,7 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
           <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
@@ -44,8 +44,8 @@ export default {
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true
             },
             event: {
               changeAll: this.onChangeAll
@@ -61,6 +61,7 @@ export default {
       },
 
       mainData: {
+        isTabBar: true,
         tabs: [
           { name: '2', label: '全部' },
           { name: '0', label: '未办证' },
@@ -81,12 +82,12 @@ export default {
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
-              }else{
+              } else {
                 return true
               }
             },
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return this.form.listQuery.data.eventCode
             }
           },
           {
@@ -193,20 +194,16 @@ export default {
     }
   },
   mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
+    //
   },
   methods: {
     onChangeAll(params) {
-      // debugger
-      this.$refs.bsTable.doRefresh();
+      //
+      this.$refs.bsTable.doRefresh()
     },
     toRecord() {
-      // debugger
-      if(this.form.listQuery.data.eventCode==""){
+      //
+      if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
@@ -219,7 +216,7 @@ export default {
       })
     },
     toSaveRecord() {
-      if(this.form.listQuery.data.eventCode==""){
+      if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
@@ -232,8 +229,8 @@ export default {
       })
     },
     toSetting() {
-      // debugger
-      if(this.form.listQuery.data.eventCode==""){
+      //
+      if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
@@ -250,6 +247,6 @@ export default {
       this.form.listQuery.data.certificateFlag = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     }
-  },
+  }
 }
 </script>

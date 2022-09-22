@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
@@ -144,36 +144,29 @@ export default {
     }
   },
   mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
     request({
-          url: '/api/dd/selectData/list',
-          method: 'POST',
-          data: {
-            data: {
-              queryParams: {type: "1"},
-              type: 'CETIFICATETYPE'
-            },
-            funcModule: '会议字典',
-            funcOperation: '查询列表'
-          }
-        }).then(response => {
-          debugger
-          response.data.forEach(element => {
-            this.mainData.tabs.push({
-              label: element.name,
-              name: element.code
-            })
-          });
+      url: '/api/dd/selectData/list',
+      method: 'POST',
+      data: {
+        data: {
+          queryParams: { type: '1' },
+          type: 'CETIFICATETYPE'
+        },
+        funcModule: '会议字典',
+        funcOperation: '查询列表'
+      }
+    }).then(response => {
+      response.data.forEach(element => {
+        this.mainData.tabs.push({
+          label: element.name,
+          name: element.code
         })
+      })
+    })
   },
   methods: {
     onChangeAll(params) {
-      debugger
-      this.$refs.bsTable.doRefresh();
+      this.$refs.bsTable.doRefresh()
     },
     handleTabClick(tab, event) {
       this.currentRow = null
