@@ -17,7 +17,7 @@
             </el-form-item>
 
             <el-form-item label="应用于">
-              <el-checkbox-group v-model="printSetform.contactTypeArray" @change="contactTypeArrayChange">
+              <el-checkbox-group v-model="printSetform.contactTypeArray">
                 <el-checkbox :label="item.dictItemVal" v-for="(item,index) in contactTypeArrayList" :key="index"> {{ item.dictItemName }} </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -77,7 +77,8 @@
           <vue-qr v-if="false" text="test" :size="200"> </vue-qr>
         </div> -->
 
-        <div class="p-event" id="print" :style="`background-image:url(${bgiUrl})`">
+        <div class="p-event" id="print">
+          <img v-show="bgiUrl && printSetform.printBackgroundFlg" :src="bgiUrl" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
               <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign }" @click="checkItem(item)">
