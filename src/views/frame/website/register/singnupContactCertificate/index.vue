@@ -1,7 +1,7 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
           <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
@@ -18,6 +18,7 @@
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import request from '@/utils/frame/base/request'
 export default {
   name: 'signupCertificate',
   data() {
@@ -44,17 +45,24 @@ export default {
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true
             },
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           }
         ]
       },
 
       mainData: {
+        isTabBar: true,
         tabs: [
           { name: '2', label: '全部' },
           { name: '0', label: '未办证' },
@@ -67,58 +75,15 @@ export default {
         initSearch: false,
         isTopBar: true,
         topBar: [
-          // {
-          //   name: 'add',
-          //   type: 'dialog',
-          //   i18n: '新增参会人',
-          //   component: () => import('../component/signupContactSelect.vue'),
-          //   validate: () => {
-          //     if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-          //       return false
-          //     }else{
-          //       return true
-          //     }
-          //   },
-          //   getParam: () => {
-          //     return {
-          //       eventCode: this.form.listQuery.data.eventCode,
-          //       sceneCode: this.form.listQuery.data.sceneCode,
-          //       type: "contactCertificate"
-          //     }
-          //   }
-          // },
           {
             name: 'add',
             type: 'dialog',
             i18n: '新增参会人',
             component: () => import('../signupContact/edit.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-                return false
-              }else{
-                return true
-              }
-            },
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return this.form.listQuery.data.eventCode
             }
           },
-          // {
-          //   name: 'update',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
-          // {
-          //   name: 'view',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
           {
             name: 'remove',
             getParam: () => {
@@ -149,6 +114,7 @@ export default {
         ],
         isColset: true,
         table: {
+          showCheckbox: true,
           cols: [
             {
               prop: 'name',
@@ -223,20 +189,16 @@ export default {
     }
   },
   mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
+    //
   },
   methods: {
     onChangeAll(params) {
-      // debugger
-      this.$refs.bsTable.doRefresh();
+      //
+      this.$refs.bsTable.doRefresh()
     },
     toRecord() {
-      // debugger
-      if(this.form.listQuery.data.eventCode==""){
+      //
+      if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
@@ -249,21 +211,41 @@ export default {
       })
     },
     toSaveRecord() {
-      if(this.form.listQuery.data.eventCode==""){
+      if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
-      this.$router.push({
-        name: 'singnupContactCertificateRecord',
-        params: {
-          back: 'singnupContactCertificate',
-          data: this.form.listQuery.data.eventCode
-        }
-      })
+      var bsQueryExtras = []
+      this.$refs.bsTable.tableData.forEach(item => {
+          bsQueryExtras.push({
+            code: item.code,
+            contactTypeArray: item.contactType,
+            eventCode: item.eventCode
+          })
+        })
+      console.log(bsQueryExtras)
+      request({
+          url: '/api/register/signupCertificatePrint/save',
+          method: 'POST',
+          data: {
+            data: {
+              queryParams: this.$refs.bsTable.currentRow
+            },
+            funcModule: '办证',
+            funcOperation: '查询列表'
+          }
+        }).then(response => {
+          response.data.forEach(element => {
+            this.mainData.tabs.push({
+              label: element.name,
+              name: element.code
+            })
+          });
+        })
     },
     toSetting() {
-      // debugger
-      if(this.form.listQuery.data.eventCode==""){
+      //
+      if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
@@ -280,6 +262,6 @@ export default {
       this.form.listQuery.data.certificateFlag = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     }
-  },
+  }
 }
 </script>

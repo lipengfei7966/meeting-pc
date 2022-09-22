@@ -156,29 +156,29 @@ export default {
       dialogFormVisible: false, // 新增证件类型弹窗
       certificateContentList: [],
       contactTypeArrayList: [],
-      certificateTypeList:[], // 证件类型下拉
-      bgiUrl:'',
-      dialog:false,
+      certificateTypeList: [], // 证件类型下拉
+      bgiUrl: '',
+      dialog: false,
       printSetform: {
         certificateContent: [],
-        "certificateLayout": "1232132",
-        "certificateType": "0",
-        "contactTypeArray": [],
-        "maxPrintNumber": 10,
-        "meetCode": "1231",
-        "optDeptCode": "3123132",
-        "optEmployeeCode": "3123132",
-        "optOrganCode": "31231",
-        "printBackground": "13132132",
+        certificateLayout: '1232132',
+        certificateType: '0009',
+        contactTypeArray: [],
+        maxPrintNumber: 10,
+        meetCode: '1231',
+        optDeptCode: '3123132',
+        optEmployeeCode: '3123132',
+        optOrganCode: '31231',
+        printBackground: '13132132',
         printBackgroundFlg: 0,
-        "printHeight": 118,
-        "printWight": 80
+        printHeight: 118,
+        printWight: 80
       },
-      certificateTypeform:{
-        name:'',
+      certificateTypeform: {
+        name: ''
       },
       printInfo: [],
-      fileList:[],
+      fileList: [],
 
       width: 0,
       height: 0,
@@ -196,7 +196,8 @@ export default {
         paddingRight: 0
       },
       sizeList: [], // 字体号数组
-      apiArr: [ // 后期从接口中获取name集合
+      apiArr: [
+        // 后期从接口中获取name集合
         { name: '公司名称' },
         { name: '抬头' },
         { name: '公司简介' }
@@ -211,7 +212,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.contactTypeArrayList = res.data
     })
 
@@ -220,8 +221,8 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'CERTIFICATE_CONTENT', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
-      // debugger
+    }).then(res => {
+      //
       this.certificateContentList = res.data
     })
 
@@ -255,7 +256,7 @@ export default {
       })
     },
     handleUploadForm(param) {
-      // debugger
+      //
       let thiz = this
       let formData = new FormData()
       // formData.append('webpageCode', '') // 额外参数
@@ -270,9 +271,8 @@ export default {
         url: '/api/obs/file/uploadImg',
         method: 'POST',
         data: formData
-      }).then((data) => {
+      }).then(data => {
         if (data) {
-          debugger
           thiz.$message('上传文件成功')
           this.bgiUrl = data.data.filePath
         } else {
@@ -281,14 +281,13 @@ export default {
         loading.close()
       })
     },
-    checkItem(item){
-      this.form.name = item.name;
-      // debugger
+    checkItem(item) {
+      this.form.name = item.name
+      //
       this.changeName(item)
       this.changeVal()
     },
     openMenu(e) {
-      debugger
       this.closeTarget = e.target.id.split('-')[1]
       // 首页不允许关闭
       if (this.closeTarget === '/dashboard' || e.target.className === 'el-tabs__nav-scroll') {
@@ -300,17 +299,19 @@ export default {
       this.top = e.clientY + 'px'
     },
 
-    certificateContentChange(certificateContent){
+    certificateContentChange(certificateContent) {
       // this.list = []
-       // 网格上的数据获取
-       this.printSetform.certificateContent.forEach(dictItemVal => {
-        let item = this.certificateContentList.find(item => {return dictItemVal == item.dictItemVal})
+      // 网格上的数据获取
+      this.printSetform.certificateContent.forEach(dictItemVal => {
+        let item = this.certificateContentList.find(item => {
+          return dictItemVal == item.dictItemVal
+        })
 
         let isIncludes = this.list.some(listItem => {
           return listItem.name == item.dictItemName
         })
-          // debugger
-        if(!isIncludes){
+        //
+        if (!isIncludes) {
           this.list.push({
             name: item.dictItemName, // 表名对应的值
             label: item.dictItemName, // 表名
@@ -323,17 +324,19 @@ export default {
         }
 
         // 删除已取消值
-        this.list.forEach((listItem,listIndex) => {
+        this.list.forEach((listItem, listIndex) => {
           let listIncludes = certificateContent.some(contentItem => {
-            let item = this.certificateContentList.find(item => {return contentItem == item.dictItemVal})
+            let item = this.certificateContentList.find(item => {
+              return contentItem == item.dictItemVal
+            })
 
             return listItem.name == item.dictItemName
           })
-          if(!listIncludes) {
-            this.list.splice(listIndex,1)
+          if (!listIncludes) {
+            this.list.splice(listIndex, 1)
           }
         })
-       });
+      })
     },
     /** 打印方法 */
     doPrint() {
@@ -359,18 +362,26 @@ export default {
     /** 选择列下拉框 */
     changeName(item) {
       this.form.fontSize = item.fontSize || '16px'
-      this.form.color = item.color ||'#000'
-      this.form.textAlign = item.textAlign ||''
+      this.form.color = item.color || '#000'
+      this.form.textAlign = item.textAlign || ''
     },
     changeHeight() {
       this.form.fontSize = ''
     },
     /** 下拉框改变的时候进行动态设置样式 */
     changeVal() {
-      if (this.form.name && this.form.fontSize && this.form.selectVal === 'fontSize') { this.commonMethod('fontSize') }
-      if (this.form.name && this.form.fontSize && this.form.selectVal === 'lineHeight') { this.commonMethod('lineHeight') }
-      if (this.form.name && this.form.textAlign ) { this.commonMethod('textAlign') }
-      if (this.form.name && this.form.color) { this.commonMethod('color') }
+      if (this.form.name && this.form.fontSize && this.form.selectVal === 'fontSize') {
+        this.commonMethod('fontSize')
+      }
+      if (this.form.name && this.form.fontSize && this.form.selectVal === 'lineHeight') {
+        this.commonMethod('lineHeight')
+      }
+      if (this.form.name && this.form.textAlign) {
+        this.commonMethod('textAlign')
+      }
+      if (this.form.name && this.form.color) {
+        this.commonMethod('color')
+      }
     },
     /** 公共的设置样式方法 */
     commonMethod(val) {
@@ -378,7 +389,8 @@ export default {
         if (it.label === this.form.name) {
           if (val === 'lineHeight') {
             it[val] = this.form.fontSize
-          } else if( val === 'textAlign'){  // 对齐方式
+          } else if (val === 'textAlign') {
+            // 对齐方式
             it[val] = this.form.textAlign
           } else {
             it[val] = this.form[val]
@@ -387,16 +399,16 @@ export default {
       }
     },
     // 新增证件类型提交
-    certificateTypeSubmit(){
+    certificateTypeSubmit() {
       request({
         url: '/api/register/signupDictype/save',
         method: 'POST',
         data: {
-          data:this.certificateTypeform,
+          data: this.certificateTypeform,
           funcModule: '获取模块类型',
           funcOperation: '获取模块类型'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.data) {
           this.getCertificateType();
           this.dialogFormVisible = false;
@@ -407,24 +419,22 @@ export default {
         }
       })
     },
-    fileLimitCount(files, fileList){
-       this.$message.warning('背景图只能上传一张')
+    fileLimitCount(files, fileList) {
+      this.$message.warning('背景图只能上传一张')
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      this.$refs.upload.submit()
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      console.log(file, fileList)
     },
     handlePreview(file) {
-      debugger
-      console.log(file);
+      console.log(file)
     },
-    uploadSuccess(response, file, fileList){
+    uploadSuccess(response, file, fileList) {
       console.log(this.fileList)
-      debugger
     },
-    create(){
+    create() {
       // 数组转化字符串
       this.printSetform.contactTypeArray = this.printSetform.contactTypeArray.join(',')
       this.printSetform.certificateContent = this.printSetform.certificateContent.join(',')
@@ -436,7 +446,7 @@ export default {
           funcModule: '获取模块类型',
           funcOperation: '获取模块类型'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.data) {
           this.$message('创建成功')
         } else {
@@ -445,7 +455,7 @@ export default {
       })
     },
     // 打印预览页
-    printPage(){
+    printPage() {
       window.print()
     }
   }
