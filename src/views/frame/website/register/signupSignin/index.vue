@@ -194,6 +194,10 @@ export default {
       })
     },
     doSet() {
+      if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
+        this.$message.warning('请选择会议')
+        return
+      }
       this.$router.push({
         name: 'signupSigninSet',
         params: {
