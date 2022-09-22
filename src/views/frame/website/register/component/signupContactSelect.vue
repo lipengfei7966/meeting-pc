@@ -48,7 +48,7 @@ export default {
             event: {
               changeAll: this.onChangeAll
             },
-            isShow: this.param.sceneCode && this.param.sceneCode!=''
+            isShow: this.param.sceneCode && this.param.sceneCode != ''
           },
           {
             label: 'website.signupContact.query.name',
@@ -154,9 +154,7 @@ export default {
       }
     }
   },
-  mounted() {
-    debugger
-  },
+  mounted() {},
   methods: {
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
@@ -180,7 +178,6 @@ export default {
         // 操作员账户
         const roleCodeArr = []
         this.$refs.bsTable.multipleSelection.forEach(select => {
-          debugger
           roleCodeArr.push({
             contactCode: select.code,
             eventCode: this.param.eventCode,
@@ -188,7 +185,7 @@ export default {
           })
         })
         this.loading = true
-        let url = this.param.type === 'signin'?'/api/register/signupContactSceneRel/save':'/api/register/singnupContactCertificate/save'
+        let url = this.param.type === 'signin' ? '/api/register/signupContactSceneRel/save' : '/api/register/singnupContactCertificate/save'
         request({
           url: url,
           method: 'POST',
