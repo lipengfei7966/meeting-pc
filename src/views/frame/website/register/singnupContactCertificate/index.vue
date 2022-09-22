@@ -18,6 +18,7 @@
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import request from '@/utils/frame/base/request'
 export default {
   name: 'signupCertificate',
   data() {
@@ -79,13 +80,6 @@ export default {
             type: 'dialog',
             i18n: '新增参会人',
             component: () => import('../signupContact/edit.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-                return false
-              } else {
-                return true
-              }
-            },
             getParam: () => {
               return this.form.listQuery.data.eventCode
             }
@@ -120,6 +114,7 @@ export default {
         ],
         isColset: true,
         table: {
+          showCheckbox: true,
           cols: [
             {
               prop: 'name',
@@ -220,13 +215,35 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      this.$router.push({
-        name: 'singnupContactCertificateRecord',
-        params: {
-          back: 'singnupContactCertificate',
-          data: this.form.listQuery.data.eventCode
-        }
-      })
+      var bsQueryExtras = []
+      this.$refs.bsTable.tableData.forEach(item => {
+          bsQueryExtras.push({
+            code: item.code,
+            contactTypeArray: item.contactType,
+            eventCode: item.eventCode
+          })
+        })
+        debugger
+        console.log(this.$refs.bsTable.currentRow);
+      console.log(bsQueryExtras)
+      request({
+          url: '/api/register/signupCertificatePrint/save',
+          method: 'POST',
+          data: {
+            data: {
+              queryParams: bsQueryExtras
+            },
+            funcModule: '办证',
+            funcOperation: '查询列表'
+          }
+        }).then(response => {
+          response.data.forEach(element => {
+            this.mainData.tabs.push({
+              label: element.name,
+              name: element.code
+            })
+          });
+        })
     },
     toSetting() {
       //

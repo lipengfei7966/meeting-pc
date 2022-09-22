@@ -150,7 +150,7 @@ export default {
       data: {
         data: {
           queryParams: { type: '1' },
-          type: 'CETIFICATETYPE'
+          type: 'DICTYPE'
         },
         funcModule: '会议字典',
         funcOperation: '查询列表'
