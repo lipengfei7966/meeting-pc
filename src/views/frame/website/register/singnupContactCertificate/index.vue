@@ -223,15 +223,13 @@ export default {
             eventCode: item.eventCode
           })
         })
-        debugger
-        console.log(this.$refs.bsTable.currentRow);
       console.log(bsQueryExtras)
       request({
           url: '/api/register/signupCertificatePrint/save',
           method: 'POST',
           data: {
             data: {
-              queryParams: bsQueryExtras
+              queryParams: this.$refs.bsTable.currentRow
             },
             funcModule: '办证',
             funcOperation: '查询列表'
