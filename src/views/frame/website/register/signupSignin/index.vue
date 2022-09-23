@@ -112,7 +112,6 @@ export default {
               }
             },
             getParam: () => {
-              
               return {eventCode:this.form.listQuery.data.eventCode,contactCode:this.$refs.bsTable.currentRow.code}
             }
           },

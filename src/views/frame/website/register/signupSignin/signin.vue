@@ -17,7 +17,6 @@
           api: {
             save: '/api/register/signupSignin/save',
           },
-  
           formData: [
           {
             label: '场景',
@@ -63,7 +62,7 @@
             isShow:false
           }
           ],
-          bottomButtons: [ 
+          bottomButtons: [
             {
               name: 'biz.btn.save',
               event: 'save',
