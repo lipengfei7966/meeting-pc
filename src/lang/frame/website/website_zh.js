@@ -134,7 +134,7 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        createDate: '报名时间'
+        createDate: '办证时间'
       },
       edit: {
         eventCode: '会议名称',

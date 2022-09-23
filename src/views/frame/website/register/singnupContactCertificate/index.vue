@@ -69,8 +69,7 @@ export default {
           { name: '1', label: '已办证' }
         ],
         api: {
-          search: '/api/register/signupCertificate/page',
-          doDelete: '/api/register/signupCertificate/remove'
+          search: '/api/register/signupCertificate/page'
         },
         initSearch: false,
         isTopBar: true,
@@ -85,9 +84,11 @@ export default {
             }
           },
           {
-            name: 'remove',
+            name: 'update',
+            type: 'dialog',
+            component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow.code
+              return this.$refs.bsTable.currentRow[0]
             }
           },
           {
@@ -151,18 +152,6 @@ export default {
               format: {
                 dict: this.$t('datadict.certificateFlag')
               }
-            },
-            {
-              prop: 'signFlag',
-              label: 'website.signupContact.list.signFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.signFlag')
-              }
-            },
-            {
-              prop: 'signNum',
-              label: 'website.signupContact.list.signNum'
             },
             {
               prop: 'checkFlag',
