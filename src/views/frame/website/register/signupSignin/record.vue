@@ -115,16 +115,16 @@ export default {
               label: 'website.signupSignin.list.sceneName'
             },
             {
-              prop: 'signupData',
-              label: 'website.signupSignin.list.signupData'
+              prop: 'createDate',
+              label: 'website.signupSignin.list.createDate'
             },
             {
               prop: 'signinWay',
               label: 'website.signupSignin.list.signinWay'
             },
             {
-              prop: 'createDate',
-              label: 'website.signupSignin.list.createDate'
+              prop: 'signupData',
+              label: 'website.signupSignin.list.signupData'
             }
           ]
         },
