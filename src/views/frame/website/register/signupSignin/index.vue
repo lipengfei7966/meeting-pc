@@ -89,6 +89,15 @@ export default {
             }
           },
           {
+            name: 'update',
+            type: 'dialog',
+            i18n: '修改参会人',
+            component: () => import('../signupContact/edit.vue'),
+            getParam: () => {
+              return this.$refs.bsTable.currentRow
+            }
+          },
+          {
             name: 'add',
             type: 'dialog',
             i18n: '签到',

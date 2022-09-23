@@ -248,13 +248,15 @@ export default {
       //   this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定'});
       //   return
       // }
+      console.log(this.$refs.bsTable.currentRow)
       request({
             url: '/api/register/signupSignin/save',
             method: 'POST',
             data: {
               data:{
                 eventCode:this.form.listQuery.data.eventCode,
-                contactSceneCode:this.$refs.bsTable.currentRow.code,
+                contactCode:this.$refs.bsTable.currentRow.contactCode,
+                sceneCode:this.$refs.bsTable.currentRow.sceneCode,
                 signinWay:"pc"
               },
               funcModule: this.$t('route.' + this.$route.meta.title),

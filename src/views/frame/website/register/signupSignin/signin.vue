@@ -20,12 +20,19 @@
   
           formData: [
           {
-            label: '用户场景',
-            prop: 'contactSceneCode',
+            label: '场景',
+            prop: 'sceneCode',
             element: 'base-select',
-            list:[],
             attrs: {
+              data: "DICTYPE",
+              params: {
+                type:"2",
+                eventCode:this.param.eventCode
+              },
               clearable: true
+            },
+            event: {
+              changeAll: this.onChangeAll
             },
             validate: [
               {
@@ -39,6 +46,13 @@
             prop: 'signinWay',
             element: 'input-validate',
             default:"pc",
+            isShow:false
+          },
+          {
+            label: '',
+            prop: 'contactCode',
+            element: 'input-validate',
+            default:this.param.contactCode,
             isShow:false
           },
           {
@@ -75,36 +89,10 @@
         }
       }
     },
-    mounted() {
-        this.sceneSelectList();
-    },
+
     methods: {
         handleCloseDialog(param) {
             this.$emit('closeHandler', param);
-        },
-        sceneSelectList(){
-            request({
-                url: '/api/register/signupContactSceneRel/listSceneSelect',
-                method: 'POST',
-                data: {
-                    data: 
-                    {
-                        contactCode: this.param.contactCode,
-                        eventCode:this.param.eventCode
-                    },
-                    funcModule: '会议字典',
-                    funcOperation: '查询场景参会人列表'
-                }
-                }).then(response => {
-                this.dialog.formData[0].list=[]
-                response.data.forEach((item, key) => {
-                    var selectData={
-                        label:item.name,
-                        value:item.code
-                    }
-                    this.dialog.formData[0].list.push(selectData)
-                })
-            })
         }
     }
   }
