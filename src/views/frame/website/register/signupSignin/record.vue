@@ -27,11 +27,42 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupSignin.query.code',
+            label: 'website.signupContact.query.eventCode',
             prop: 'eventCode',
-            element: 'el-input',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
+              clearable: true,
+              disabled: true
+            },
             default: this.$route.params.data,
-            isShow: false
+            event: {
+              changeAll: this.onChangeAll
+            }
+          },
+          {
+            label: '场景',
+            prop: 'sceneCode',
+            element: 'base-select',
+            attrs: {
+              data: "DICTYPE",
+              params: {
+                type:"2",
+                eventCode:this.$route.params.data
+              },
+              clearable: true
+            },
+            event: {
+              changeAll: this.onChangeAll
+            }
+          },
+          {
+            label: 'website.signupContact.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
           }
         ]
       },
@@ -107,7 +138,15 @@ export default {
       }
     }
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    // debugger
+    // 不设置表格高度
+    this.$refs.bsTable.isHeight = false
+    // 设置行高为38
+    this.$refs.bsTable.rowHeight = 38
+    console.log(this.form.listQuery.data);
+  },
+  methods: {
+  }
 }
 </script>
