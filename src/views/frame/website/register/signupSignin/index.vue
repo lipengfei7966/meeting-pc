@@ -194,6 +194,25 @@ export default {
             }
           },
           {
+            name: 'add',
+            type: 'dialog',
+            i18n: '签到',
+            component: () => import('../signupSignin/signin.vue'),
+            validate: () => {
+              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === ''
+                  || this.$refs.bsTable.currentRow==null) {
+                //this.$notify(notifyInfo({ msg: '请选择会议和人员' }));
+                return false
+              }else{
+                return true
+              }
+            },
+            getParam: () => {
+              
+              return {eventCode:this.form.listQuery.data.eventCode,contactCode:this.$refs.bsTable.currentRow.code}
+            }
+          },
+          {
             name: 'record',
             type: 'route',
             i18n: '签到设置',
