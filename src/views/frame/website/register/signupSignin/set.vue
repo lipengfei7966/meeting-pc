@@ -82,7 +82,7 @@ export default {
             },
             validate: () => {
               if (this.$refs.bsTable.length > 0) {
-                this.$alert('无法删除场景', '删除场景', { confirmButtonText: '确定' })
+                this.$notify(notifyInfo({ msg: '无法删除场景' }));
                 return false
               }
             }
@@ -105,7 +105,7 @@ export default {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
               } else if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-                this.$alert('默认场景无法添加参会人', '添加参会人', { confirmButtonText: '确定' })
+                this.$notify(notifyInfo({ msg: '默认场景无法添加参会人' }));
                 return false
               } else {
                 return true
@@ -293,14 +293,17 @@ export default {
     },
     removeScene() {
       if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-        this.$alert('无法删除默认场景', '场景删除', { confirmButtonText: '确定' })
+        this.$notify(notifyInfo({ msg: '无法删除默认场景' }));
         return
       }
       if ( this.form.listQuery.data.sceneCode == undefined) {
-        this.$alert('无法获取场景code', '场景删除', { confirmButtonText: '确定' })
+        this.$notify(notifyInfo({ msg: '无法获取场景code' }));
         return
       }
-      request({
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', 
+      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => 
+      { 
+        request({
         url: '/api/register/signupDictype/remove',
         method: 'POST',
         data: {
@@ -321,6 +324,9 @@ export default {
           }
         })
         .catch(() => {})
+        this.$message({ type: 'success', message: '删除成功!' }); 
+      }).catch(() => { this.$message({ type: 'info', message: '已取消删除' }); });
+      
     }
   }
 }
