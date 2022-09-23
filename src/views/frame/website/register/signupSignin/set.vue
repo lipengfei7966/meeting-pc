@@ -232,6 +232,11 @@ export default {
         }
       }).then(response => {
         this.mainData.tabs = []
+        this.mainData.tabs.push({
+          code: '',
+          name: '默认'
+        })
+
         response.data.forEach((item, key) => {
           this.mainData.tabs.push(item)
         })
