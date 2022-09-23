@@ -153,13 +153,14 @@ export default {
         mobile: '手机',
         email: '邮箱',
         department: '单位',
-        code: '参会人编码',
+        contactCode: '参会人编码',
         contactType: '参会人类型',
         signinStatus: '签到状态',
         createDate: '签到时间',
         signinWay: '签到方式',
         sceneName: '场景名称',
-        signupData: '报名时间'
+        signupData: '报名时间',
+        title:"添加参会人"
 
       }
     },

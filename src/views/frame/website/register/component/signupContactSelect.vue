@@ -18,7 +18,7 @@ export default {
     return {
       dialog: {
         param: this.param,
-        titleName: this.$t('func.api.title'),
+        titleName: this.$t('website.signupSignin.list.title'),
         moreShowFlg: false,
         formData: [
           {
