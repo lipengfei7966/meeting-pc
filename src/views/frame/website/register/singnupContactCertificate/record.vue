@@ -108,18 +108,6 @@ export default {
               }
             },
             {
-              prop: 'signFlag',
-              label: 'website.signupContact.list.signFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.signFlag')
-              }
-            },
-            {
-              prop: 'signNum',
-              label: 'website.signupContact.list.signNum'
-            },
-            {
               prop: 'checkFlag',
               label: 'website.signupContact.list.checkFlag',
               align: 'center',
