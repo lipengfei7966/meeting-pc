@@ -1,6 +1,7 @@
 <template>
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
+
     <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
@@ -12,6 +13,15 @@
     </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+
+    <div>
+
+      <div v-for="(item,index) in tableData" :key="index" :id="'content'+ index" class="content">
+        <div class="p-event" v-html="item.certificateLayout"></div>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
@@ -19,8 +29,9 @@
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
+import Print from 'print-js'
 export default {
-  name: 'signupCertificate',
+  name: 'singnupContactCertificate',
   data() {
     return {
       form: {
@@ -87,15 +98,10 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow[0]
-            },
-            validate: () => {
-              if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length!=1) {
-                return false
-              }else{
-                return true
-              }
-            },
+              return this.$refs.bsTable.currentRow.code
+            }
+          },
+          {
             msg: '请选择一条数据'
           },
           {
@@ -108,7 +114,7 @@ export default {
             name: 'certificateSave',
             type: 'route',
             i18n: '办证',
-            event: this.toSaveRecord
+            event: this.print
           },
           {
             name: 'certificateSet',
@@ -181,10 +187,68 @@ export default {
             pageSizes: [20, 40, 60, 80, 100]
           }
         }
-      }
+      },
+      tableData:[],
+      certificateContentList:[],
+      certificateLayout: `
+        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
+          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-br\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
+          <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              单位名称\n              </p>
+        </div>
+        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(101px, 59px); width: 174px; height: 43px; z-index: auto; user-select: auto;\">
+          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-br\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
+          <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              姓名\n              </p>
+        </div>
+        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(105px, 218px); width: 174px; height: 43px; z-index: auto; user-select: auto;\">
+          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-br\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
+          <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              手机\n              </p>
+        </div>
+        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(106px, 295px); width: 166px; height: 43px; z-index: auto; user-select: auto;\">
+          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
+          <div class=\"handle handle-br\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
+          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
+          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
+           <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              证件号码\n              </p>
+        </div>`
     }
   },
-  mounted() {},
+  mounted() {
+    //
+    // 获取打印类型数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'CERTIFICATE_CONTENT', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then(res => {
+      //
+      this.certificateContentList = res.data
+    })
+  },
   methods: {
     onChangeAll(params) {
       //
@@ -204,6 +268,72 @@ export default {
         }
       })
     },
+    //给div添加样式,调出打印界面
+    print() {
+      const styleSheet = `<style>
+      @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
+        body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
+        .content {width: 80mm;height: 118mm;margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+        .draggable {position:absolute}
+        .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
+        .p-event { border: 1px solid red; box-sizing: border-box; position: relative; }
+      </style>`
+      this.tableData = this.$refs.bsTable.currentRow || []
+      if(this.tableData.length == 0){
+        this.$message.warning('请选择办证人员')
+        return
+      }
+      this.tableData.forEach(item => {
+        item.certificateLayout = this.certificateLayout
+
+        item.certificateLayout = item.certificateLayout.replace('姓名',item.name)
+        item.certificateLayout = item.certificateLayout.replace('单位名称',item.department)
+        item.certificateLayout = item.certificateLayout.replace('手机',item.mobile)
+        item.certificateLayout = item.certificateLayout.replace('邮箱',item.email)
+        item.certificateLayout = item.certificateLayout.replace('参会人编码',item.code)
+        item.certificateLayout = item.certificateLayout.replace('职务','')
+        item.certificateLayout = item.certificateLayout.replace('地址','')
+      })
+      const that = this
+      const data = this.tableData
+      const params = {}
+      console.log('this.printDoubleData: ', this.$refs.bsTable.tableData)
+      //打印
+      var newWin = window.open('') //新打开一个空窗口
+      this.$nextTick(() => {
+        data.map((item, i) => {
+          var imageToPrint = document.getElementById('content' + i) //获取需要打印的内容
+          // console.log('imageToPrint: ', imageToPrint)
+          newWin.document.write(imageToPrint.outerHTML) //将需要打印的内容添加进新的窗口
+        })
+        newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
+        newWin.document.close() //在IE浏览器中使用必须添加这一句
+        newWin.focus() //在IE浏览器中使用必须添加这一句
+        if (data.length == 1) {
+            params.name = data[0].name
+            params.code = data[0].code
+            params.mobile = data[0].mobile
+            params.issuingResult = 1
+        } else if (data.length > 1) {
+            params.issuingResult = 1
+            const certificatePrintList = []
+            data.map((item) => {
+                certificatePrintList.push({ name: item.name, code: item.code, mobile: item.mobile })
+            })
+            params.certificatePrintList = certificatePrintList
+        }
+
+        setTimeout(function () {
+            newWin.print() //打开打印窗口
+            // newWin.close() //关闭打印窗口s
+            // issueUpdate(params).then(() => {
+            //     that.fetch()
+            //     that.$message.success('打印结束')
+            // })
+        }, 100)
+      })
+
+    },
     toSaveRecord() {
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
@@ -221,7 +351,7 @@ export default {
             eventCode: item.eventCode
           })
         })
-      console.log(bsQueryExtras)
+      console.log(this.$refs.bsTable.tableData)
       request({
           url: '/api/register/signupCertificatePrint/save',
           method: 'POST',
@@ -263,3 +393,16 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.p-event {
+  border: 1px solid red;
+  box-sizing: border-box;
+  height: 500px;
+  width: 100%;
+  position: relative;
+}
+.draggable {
+  transform: translateY(0);
+}
+</style>
