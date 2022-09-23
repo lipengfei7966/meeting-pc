@@ -17,6 +17,7 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import { notifyInfo } from '@/utils/frame/base/notifyParams'
 export default {
   name: 'signupSigninSet',
   data() {
@@ -242,35 +243,34 @@ export default {
         //this.mainData.tabs = response.data
       })
     },
-    signAdd() {
-      if (this.$refs.bsTable.currentRow.signinStatus == '已签到') {
-        this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定' })
-        return
-      }
+    signAdd(){
+      // if (this.$refs.bsTable.currentRow.signinStatus=='已签到') {
+      //   this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定'});
+      //   return
+      // }
       request({
-        url: '/api/register/signupSignin/save',
-        method: 'POST',
-        data: {
-          data: {
-            eventCode: this.form.listQuery.data.eventCode,
-            contactSceneCode: this.$refs.bsTable.currentRow.code
-          },
-          funcModule: this.$t('route.' + this.$route.meta.title),
-          funcOperation: this.$t('biz.btn.check')
-        }
-      })
-        .then(response => {
-          if (response.status && response.msgText) {
-            this.$notify(
-              notifyError({
-                msg: response.msgText
-              })
-            )
-          } else {
-            this.sceneList()
-          }
-        })
-        .catch(() => {})
+            url: '/api/register/signupSignin/save',
+            method: 'POST',
+            data: {
+              data:{
+                eventCode:this.form.listQuery.data.eventCode,
+                contactSceneCode:this.$refs.bsTable.currentRow.code,
+                signinWay:"pc"
+              },
+              funcModule: this.$t('route.' + this.$route.meta.title),
+              funcOperation: this.$t('biz.btn.check')
+            }
+          })
+          .then(response => {
+            debugger;
+            if (response.status) {
+              this.$refs.bsTable.doRefresh();
+              this.$notify(notifyInfo({ msg: '签到成功' }));
+            } else {
+              this.sceneList();
+            }
+          })
+            .catch(() => {})
     },
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
@@ -286,12 +286,16 @@ export default {
     },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.code
+      this.form.listQuery.data.sceneCode = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {
       if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
         this.$alert('无法删除默认场景', '场景删除', { confirmButtonText: '确定' })
+        return
+      }
+      if ( this.form.listQuery.data.sceneCode == undefined) {
+        this.$alert('无法获取场景code', '场景删除', { confirmButtonText: '确定' })
         return
       }
       request({
