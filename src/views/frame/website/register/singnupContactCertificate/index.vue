@@ -31,7 +31,7 @@ import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import Print from 'print-js'
 export default {
-  name: 'signupCertificate',
+  name: 'singnupContactCertificate',
   data() {
     return {
       form: {
