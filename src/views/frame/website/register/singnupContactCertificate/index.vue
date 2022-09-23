@@ -22,8 +22,6 @@
 
     </div>
 
-    <div class="p-event" v-html="certificateLayout"></div>
-
   </div>
 </template>
 
@@ -103,6 +101,7 @@ export default {
               return this.$refs.bsTable.currentRow.code
             }
           },
+          {
             msg: '请选择一条数据'
           },
           {
