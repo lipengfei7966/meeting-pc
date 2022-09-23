@@ -313,18 +313,18 @@ export default {
         }
       })
         .then(response => {
-          if (response.status && response.msgText) {
+          if (response.status) {
             this.$notify(
               notifyError({
                 msg: response.msgText
               })
             )
+            this.$message({ type: 'success', message: '删除成功!' }); 
           } else {
             this.sceneList()
           }
         })
         .catch(() => {})
-        this.$message({ type: 'success', message: '删除成功!' }); 
       }).catch(() => { this.$message({ type: 'info', message: '已取消删除' }); });
       
     }
