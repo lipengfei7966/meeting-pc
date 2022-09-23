@@ -215,6 +215,10 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
+      if (this.$refs.bsTable.currentRow==null) {
+        this.$message.warning('请选择参会人')
+        return
+      }
       var bsQueryExtras = []
       this.$refs.bsTable.tableData.forEach(item => {
           bsQueryExtras.push({
@@ -233,12 +237,14 @@ export default {
             funcOperation: '查询列表'
           }
         }).then(response => {
-          response.data.forEach(element => {
-            this.mainData.tabs.push({
-              label: element.name,
-              name: element.code
-            })
-          });
+          debugger
+          console.log(response.data);
+          if(response.data.certificateFlag){
+            this.$message.success(response.data.msg)
+          }
+          else{
+            this.$message.warning(response.data.msg)
+          }
         })
     },
     toSetting() {
