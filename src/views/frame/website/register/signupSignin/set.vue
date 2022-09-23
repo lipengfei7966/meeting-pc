@@ -172,8 +172,8 @@ export default {
               label: 'website.signupSignin.list.department'
             },
             {
-              prop: 'code',
-              label: 'website.signupSignin.list.code'
+              prop: 'contactCode',
+              label: 'website.signupSignin.list.contactCode'
             },
             {
               prop: 'contactType',
