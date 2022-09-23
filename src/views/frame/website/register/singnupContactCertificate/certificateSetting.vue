@@ -8,7 +8,7 @@
           <el-form ref="printSetform" :model="printSetform" label-width="100px" label-position="left">
             <el-form-item label="证件类型">
               <div style="display:flex; justify-content: space-between;">
-                <el-select v-model="printSetform.certificateType" style="width: 150px" placeholder="请选择活动区域">
+                <el-select v-model="printSetform.certificateType" style="width: 150px" @change="certificateTypeChange" placeholder="请选择活动区域">
                   <el-option v-for="(item,index) in certificateTypeList" :key="index" :label="item.name" :value="item.code"></el-option>
 
                 </el-select>
@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item label="背景图">
               <el-checkbox v-model="printSetform.printBackgroundFlg" :true-label="1" :false-label="0">打印背景图</el-checkbox>
-              <el-upload style="float: right; padding: 3px 0" :limit="1" :on-exceed="fileLimitCount" ref="upload" action :http-request="handleUploadForm" :on-success="uploadSuccess" :file-list="fileList" :show-file-list="false" :auto-upload="true">
+              <el-upload style="float: right; padding: 3px 0" accept="image/*" :limit="1" :on-exceed="fileLimitCount" :before-upload="handleBeforeUpload" ref="upload" action :http-request="handleUploadForm" :on-success="uploadSuccess" :file-list="fileList" :show-file-list="false" :auto-upload="true">
                 <el-button type="text">上传背景图</el-button>
               </el-upload>
             </el-form-item>
@@ -69,7 +69,7 @@
 
     <div class="printPreview">
       <h2>证件预览</h2>
-      <el-card class="box-card" style="background:rgba(242, 242, 242, 1);" ref="printTest" id="printTest">
+      <el-card class="printPreview-box-card" style="background:rgba(242, 242, 242, 1);" ref="printTest" id="printTest">
         <!-- <div>
           <p class="printItem" v-for="(dictItemVal,index) in printSetform.certificateContent" :key="index">
             {{ certificateContentList.find(item => {return dictItemVal == item.dictItemVal}).dictItemName }}
@@ -77,7 +77,7 @@
           <vue-qr v-if="false" text="test" :size="200"> </vue-qr>
         </div> -->
 
-        <div class="p-event" id="print">
+        <div class="p-event" id="print" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto'}">
           <img v-show="bgiUrl && printSetform.printBackgroundFlg" :src="bgiUrl" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
@@ -162,15 +162,16 @@ export default {
       dialog: false,
       printSetform: {
         certificateContent: [],
-        certificateLayout: '1232132',
-        certificateType: '0009',
+        certificatePreview: '',
+        certificateLayout: '',
+        certificateType: '0',
         contactTypeArray: [],
         maxPrintNumber: 10,
-        meetCode: '1231',
-        optDeptCode: '3123132',
-        optEmployeeCode: '3123132',
-        optOrganCode: '31231',
-        printBackground: '13132132',
+        eventCode:  this.$route.params.data,
+        optDeptCode: '',
+        optEmployeeCode: '',
+        optOrganCode: '',
+        printBackground: '',
         printBackgroundFlg: 0,
         printHeight: 118,
         printWight: 80
@@ -208,6 +209,7 @@ export default {
   },
   async mounted() {
     this.getCertificateType();
+    this.printSetformInit();
     // 获取参会人类型数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -233,6 +235,29 @@ export default {
     }
   },
   methods: {
+    certificateTypeChange(val){
+      this.printSetformInit(val)
+    },
+    printSetformInit(code){
+      request({
+        url: '/api/register/signupCertificate/get',
+        method: 'POST',
+        data: {
+          data: {
+            eventCode: code ? '' : this.$route.params.data,
+            certificateType: code || ''
+          },
+          funcModule: '获取模块类型',
+          funcOperation: '获取模块类型'
+        }
+      }).then(res => {
+        debugger
+        this.printSetform = res.data
+        this.printSetform.contactTypeArray = this.printSetform.contactTypeArray.split(',')
+        this.printSetform.certificateContent = this.printSetform.certificateContent.split(',')
+        this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
+      })
+    },
     // 返回上级
     back(){
       this.$router.replace({
@@ -303,10 +328,17 @@ export default {
     certificateContentChange(certificateContent) {
       // this.list = []
       // 网格上的数据获取
+      // debugger
+      if(certificateContent.length == 0){
+        this.list = []
+      }
+
       this.printSetform.certificateContent.forEach(dictItemVal => {
         let item = this.certificateContentList.find(item => {
           return dictItemVal == item.dictItemVal
         })
+
+        if(!item) return
 
         let isIncludes = this.list.some(listItem => {
           return listItem.name == item.dictItemName
@@ -319,8 +351,10 @@ export default {
             fontSize: '16px', // 默认字体
             lineHeight: 'normal', // 默认行高
             color: '#000000', // 默认颜色
-            x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
-            y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
+            x: 10, // x默认值
+            // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
+            y: this.list.length * 50// y 默认值
+            // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
           })
         }
 
@@ -423,6 +457,17 @@ export default {
     fileLimitCount(files, fileList) {
       this.$message.warning('背景图只能上传一张')
     },
+    handleBeforeUpload(file){
+      var img = file.name.substring(file.name.lastIndexOf('.') + 1)
+      const suffix = img === 'jpg'
+      const suffix2 = img === 'png'
+      const suffix3 = img === 'jpeg'
+      const isLt1M = file.size / 1024 / 1024 < 1;
+      if (!suffix && !suffix2 && !suffix3) {
+          this.$message.error("只能上传图片！");
+          return false
+      }
+    },
     submitUpload() {
       this.$refs.upload.submit()
     },
@@ -436,9 +481,13 @@ export default {
       console.log(this.fileList)
     },
     create() {
+      debugger
       // 数组转化字符串
       this.printSetform.contactTypeArray = this.printSetform.contactTypeArray.join(',')
       this.printSetform.certificateContent = this.printSetform.certificateContent.join(',')
+      this.printSetform.certificatePreview = JSON.stringify(this.list)
+
+      this.printSetform.certificateLayout = document.getElementById('print').innerHTML
       request({
         url: '/api/register/signupCertificate/save',
         method: 'POST',
@@ -479,6 +528,12 @@ export default {
 .content .printPreview {
   background-size: cover;
 }
+.printPreview-box-card {
+  min-width: 400px;
+  min-height: 600px;
+  margin-right: 40px;
+  background-color: rgba(242, 242, 242, 1);
+}
 .content .box-card {
   width: 400px;
   min-height: 600px;
@@ -489,6 +544,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #fff;
+  word-wrap: break-word;
   /* margin: 5px auto;
   font-size: 16px;
   font-weight: bold;
@@ -498,7 +554,7 @@ export default {
 .p-event {
   border: 1px solid red;
   box-sizing: border-box;
-  height: 500px;
+  min-height: 500px;
   width: 100%;
   position: relative;
 }
