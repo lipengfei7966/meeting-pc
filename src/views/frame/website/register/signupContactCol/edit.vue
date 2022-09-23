@@ -14,9 +14,9 @@ export default {
         styleType: 'medium',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/register/SignupContactCol/get',
-          save: '/api/register/SignupContactCol/save',
-          update: '/api/register/SignupContactCol/update'
+          view: '/api/register/signupContact/get',
+          save: '/api/register/signupContact/save',
+          update: '/api/register/signupContact/update'
         },
 
         formData: [
@@ -24,6 +24,8 @@ export default {
             label: 'website.signupContactCol.edit.eventCode',
             prop: 'eventCode',
             element: 'base-select',
+
+            default: this.param,
             attrs: {
               multiple: false,
               cols: 3,
@@ -38,7 +40,7 @@ export default {
             ]
           },
           {
-            label: 'website.signupContactCol.list.mapCode',
+            label: 'website.signupContactCol.edit.mapCode',
             prop: 'mapCode',
             element: 'input-validate',
             attrs: {
@@ -53,7 +55,7 @@ export default {
             ]
           },
           {
-            label: 'website.signupContactCol.list.mapName',
+            label: 'website.signupContactCol.edit.mapName',
             prop: 'mapName',
             element: 'input-validate',
             attrs: {
@@ -68,7 +70,7 @@ export default {
             ]
           },
           {
-            label: 'website.signupContactCol.list.mapComp',
+            label: 'website.signupContactCol.edit.mapComp',
             prop: 'mapComp',
             element: 'base-select',
             list: this.$t('datadict.mapComp'),
@@ -84,7 +86,23 @@ export default {
             ]
           },
           {
-            label: 'website.signupContactCol.list.mapType',
+            label: 'website.signupContactCol.edit.mapType',
+            prop: 'mapType',
+            element: 'base-select',
+            list: this.$t('datadict.yesNo'),
+            attrs: {
+              clearable: true,
+              cols: 3
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            label: 'website.signupContactCol.edit.mapRequired',
             prop: 'mapRequired',
             element: 'base-select',
             list: this.$t('datadict.yesNo'),
@@ -100,24 +118,8 @@ export default {
             ]
           },
           {
-            label: 'website.signupContactCol.list.mapRequired',
-            prop: 'mapRequired',
-            element: 'base-select',
-            list: this.$t('datadict.yesNo'),
-            attrs: {
-              clearable: true,
-              cols: 3
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
-            label: 'website.signupContactCol.list.mapSort',
-            prop: 'mapRequired',
+            label: 'website.signupContactCol.edit.mapSort',
+            prop: 'mapSort',
             element: 'input-validate',
             attrs: {
               clearable: true,

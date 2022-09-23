@@ -35,9 +35,7 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {
-            usingFlag: ''
-          }
+          data: {}
         },
         formData: [
           {
@@ -46,7 +44,8 @@ export default {
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
-              isDefault: true
+              isDefault: true,
+              clearable: false
             },
             event: {
               changeAll: this.onChangeAll
@@ -89,7 +88,15 @@ export default {
             component: () => import('./edit.vue'),
             getParam: () => {
               return this.$refs.bsTable.currentRow[0]
-            }
+            },
+            validate: () => {
+              if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length!=1) {
+                return false
+              }else{
+                return true
+              }
+            },
+            msg: '请选择一条数据'
           },
           {
             name: 'record',
@@ -177,9 +184,7 @@ export default {
       }
     }
   },
-  mounted() {
-    //
-  },
+  mounted() {},
   methods: {
     onChangeAll(params) {
       //

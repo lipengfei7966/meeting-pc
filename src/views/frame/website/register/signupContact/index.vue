@@ -36,7 +36,8 @@ export default {
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
-              isDefault: true
+              isDefault: true,
+              clearable: false
             },
             event: {
               changeAll: this.onChangeAll

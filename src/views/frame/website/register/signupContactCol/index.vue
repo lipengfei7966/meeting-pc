@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
@@ -9,6 +9,7 @@
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import request from '@/utils/frame/base/request'
 export default {
   name: 'signupContactCol',
   data() {
@@ -18,7 +19,7 @@ export default {
         listQuery: {
           current: 1,
           size: 20,
-          isPage: true,
+          isPage: false,
           importance: undefined,
           title: undefined,
           type: undefined,
@@ -35,12 +36,18 @@ export default {
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
-              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分
-              clearable: true
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true
             },
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           }
         ]
       },
@@ -54,12 +61,10 @@ export default {
         isTopBar: true,
         topBar: [
           {
-            name: 'add',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
+            name: 'initialize',
+            type: 'route',
+            i18n: '初始化表单',
+            event: this.initialize
           },
           {
             name: 'update',
@@ -75,12 +80,6 @@ export default {
             component: () => import('./edit.vue'),
             getParam: () => {
               return this.$refs.bsTable.currentRow
-            }
-          },
-          {
-            name: 'remove',
-            getParam: () => {
-              return this.$refs.bsTable.currentRow.code
             }
           },
           {
@@ -127,28 +126,37 @@ export default {
               label: 'website.signupContactCol.list.mapSort'
             }
           ]
-        },
-        bottomBar: {
-          pagination: {
-            show: true,
-            layout: 'total, sizes, prev, pager, next, jumper',
-            pageSizes: [20, 40, 60, 80, 100]
-          }
         }
       }
     }
   },
-  mounted() {
-    // debugger
-    // 不设置表格高度
-    this.$refs.bsTable.isHeight = false
-    // 设置行高为38
-    this.$refs.bsTable.rowHeight = 38
-  },
+  mounted() {},
   methods: {
     onChangeAll(params) {
-      debugger
       this.$refs.bsTable.doRefresh()
+    },
+    initialize() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      request({
+        url: '/api/register/signupContactCol/initialize',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '表单设置',
+          funcOperation: '表单初始化'
+        }
+      })
+        .then((response) => {
+          this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
+          this.loading = false
+          this.handleCloseDialog(true)
+        })
+        .catch(() => {
+          this.$refs.bsTable.doRefresh()
+        })
     }
   }
 }
