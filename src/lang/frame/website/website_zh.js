@@ -134,7 +134,7 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        createDate: '报名时间'
+        createDate: '办证时间'
       },
       edit: {
         eventCode: '会议名称',
@@ -156,10 +156,11 @@ export default {
         code: '参会人编码',
         contactType: '参会人类型',
         signinStatus: '签到状态',
-        signupData: '签到时间',
+        createDate: '签到时间',
         signinWay: '签到方式',
         sceneName: '场景名称',
-        createDate: '报名时间'
+        signupData: '报名时间'
+
       }
     },
     signupContactCol: {
