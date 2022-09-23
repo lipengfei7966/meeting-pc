@@ -156,10 +156,35 @@ export default {
         code: '参会人编码',
         contactType: '参会人类型',
         signinStatus: '签到状态',
-        signupData: '签到时间',
+        createDate: '签到时间',
         signinWay: '签到方式',
         sceneName: '场景名称',
-        createDate: '报名时间'
+        signupData: '报名时间'
+
+      }
+    },
+    signupContactCol: {
+      title: '表单管理',
+      query: {
+        name: '姓名',
+        eventCode: '会议名称'
+      },
+      list: {
+        mapCode: '名称',
+        mapName: '显示名称',
+        mapComp: '组件类型',
+        mapRequired: '必填',
+        mapType: '启用',
+        mapSort: '顺序'
+      },
+      edit: {
+        eventCode: '会议名称',
+        mapCode: '名称',
+        mapName: '显示名称',
+        mapComp: '组件类型',
+        mapType: '启用',
+        mapRequired: '必填',
+        mapSort: '顺序'
       }
     }
   }
