@@ -314,15 +314,12 @@ export default {
       })
         .then(response => {
           if (response.status) {
-            this.$notify(
-              notifyError({
-                msg: response.msgText
-              })
-            )
-            this.$message({ type: 'success', message: '删除成功!' }); 
+            this.$notify(notifyInfo({ msg: '删除成功' }));
+            this.sceneList();
           } else {
-            this.sceneList()
+            this.sceneList();
           }
+
         })
         .catch(() => {})
       }).catch(() => { this.$message({ type: 'info', message: '已取消删除' }); });
