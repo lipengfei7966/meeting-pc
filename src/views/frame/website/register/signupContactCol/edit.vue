@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { is } from 'bluebird'
+
 export default {
   name: 'roleEdit',
   data() {
@@ -27,6 +29,7 @@ export default {
 
             default: this.param,
             attrs: {
+              disabled: true,
               multiple: false,
               cols: 3,
               data: 'EVENT_INFO',
@@ -41,9 +44,11 @@ export default {
           },
           {
             label: 'website.signupContactCol.edit.mapCode',
+
             prop: 'mapCode',
             element: 'input-validate',
             attrs: {
+              disabled: true,
               clearable: true,
               cols: 3
             },
@@ -59,6 +64,7 @@ export default {
             prop: 'mapName',
             element: 'input-validate',
             attrs: {
+              disabled: this.param.mapBase === '2' ? true : false,
               clearable: true,
               cols: 3
             },
@@ -74,6 +80,56 @@ export default {
             prop: 'mapComp',
             element: 'base-select',
             list: this.$t('datadict.mapComp'),
+            attrs: {
+              clearable: true,
+              cols: 3
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            prop: 'mapBase',
+            label: 'website.signupContactCol.list.mapBase',
+            element: 'base-select',
+            list: this.$t('datadict.mapBase'),
+            attrs: {
+              disabled: true,
+              clearable: true,
+              cols: 3
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+
+          {
+            prop: 'mapCompAttr',
+            label: 'website.signupContactCol.list.mapCompAttr',
+            element: 'base-select',
+            list: this.$t('datadict.mapCompAttr'),
+            attrs: {
+              disabled: true,
+              clearable: true,
+              cols: 3
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
+            prop: 'enumLable',
+            label: 'website.signupContactCol.list.enumLable',
+            element: 'input-validate',
             attrs: {
               clearable: true,
               cols: 3
@@ -121,7 +177,9 @@ export default {
             label: 'website.signupContactCol.edit.mapSort',
             prop: 'mapSort',
             element: 'input-validate',
+
             attrs: {
+              disabled: this.param.mapBase === '2' ? true : false,
               clearable: true,
               cols: 3
             },
