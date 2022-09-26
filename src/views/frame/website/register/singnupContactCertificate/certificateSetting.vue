@@ -59,7 +59,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="create">立即创建</el-button>
+              <el-button type="primary" @click="create"> {{ printSetform.id ? '确定':'立即创建'}}</el-button>
               <el-button @click="back">取消</el-button>
             </el-form-item>
           </el-form>
@@ -168,9 +168,6 @@ export default {
         contactTypeArray: [],
         maxPrintNumber: 10,
         eventCode:  this.$route.params.data,
-        optDeptCode: '',
-        optEmployeeCode: '',
-        optOrganCode: '',
         printBackground: '',
         printBackgroundFlg: 1,
         printHeight: 118,
@@ -245,7 +242,7 @@ export default {
         method: 'POST',
         data: {
           data: {
-            eventCode: code ? '' : this.$route.params.data,
+            eventCode: this.$route.params.data,
             certificateType: code || ''
           },
           funcModule: '获取模块类型',
