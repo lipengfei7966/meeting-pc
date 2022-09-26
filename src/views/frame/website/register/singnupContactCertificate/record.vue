@@ -34,7 +34,8 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            eventCode: this.$route.params.data
+            eventCode: this.$route.params.data,
+            certificateType: "0"
           }
         },
         formData: [
