@@ -283,17 +283,24 @@ export default {
         this.$message.warning('请选择办证人员')
         return
       }
+      let isCanPrint = true
       this.tableData.forEach(item => {
-        item.certificateLayout = this.certificateLayout
-
-        item.certificateLayout = item.certificateLayout.replace('姓名',item.name)
-        item.certificateLayout = item.certificateLayout.replace('单位名称',item.department)
-        item.certificateLayout = item.certificateLayout.replace('手机',item.mobile)
-        item.certificateLayout = item.certificateLayout.replace('邮箱',item.email)
-        item.certificateLayout = item.certificateLayout.replace('参会人编码',item.code)
-        item.certificateLayout = item.certificateLayout.replace('职务','')
-        item.certificateLayout = item.certificateLayout.replace('地址','')
+        // item.certificateLayout = this.certificateLayout
+        if(item.certificateLayout){
+          item.certificateLayout = item.certificateLayout.replace('姓名',item.name)
+          item.certificateLayout = item.certificateLayout.replace('单位名称',item.department)
+          item.certificateLayout = item.certificateLayout.replace('手机',item.mobile)
+          item.certificateLayout = item.certificateLayout.replace('邮箱',item.email)
+          item.certificateLayout = item.certificateLayout.replace('参会人编码',item.code)
+          item.certificateLayout = item.certificateLayout.replace('职务','')
+          item.certificateLayout = item.certificateLayout.replace('地址','')
+        }else{
+          this.$message.warning(`${item.name} 未添加证件模板`)
+          isCanPrint = false
+        }
+        
       })
+      if (!isCanPrint) return
       const that = this
       const data = this.tableData
       const params = {}
