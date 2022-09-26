@@ -96,7 +96,7 @@ export default {
           {
             name: 'update',
             type: 'dialog',
-            component: () => import('./edit.vue'),
+            component: () => import('../signupContact/edit.vue'),
             getParam: () => {
               return this.$refs.bsTable.currentRow[0]
             },
@@ -106,9 +106,7 @@ export default {
               }else{
                 return true
               }
-            }
-          },
-          {
+            },
             msg: '请选择一条数据'
           },
           {
