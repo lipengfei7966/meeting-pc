@@ -78,7 +78,7 @@
         </div> -->
 
         <div class="p-event" id="print" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto'}">
-          <img v-show="bgiUrl && printSetform.printBackgroundFlg" :src="bgiUrl" alt="" style="position:absolute;width:100%;height:100%">
+          <img v-show="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
               <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign }" @click="checkItem(item)">
@@ -158,7 +158,7 @@ export default {
       certificateContentList: [],
       contactTypeArrayList: [],
       certificateTypeList: [], // 证件类型下拉
-      bgiUrl: '',
+      // bgiUrl: '',
       dialog: false,
       printSetform: {
         certificateContent: [],
@@ -197,12 +197,7 @@ export default {
         paddingRight: 0
       },
       sizeList: [], // 字体号数组
-      apiArr: [
-        // 后期从接口中获取name集合
-        { name: '公司名称' },
-        { name: '抬头' },
-        { name: '公司简介' }
-      ],
+      apiArr: [],
       list: [] // apiArr带上所有属性的集合
     }
   },
@@ -321,7 +316,7 @@ export default {
       }).then(data => {
         if (data) {
           thiz.$message('上传文件成功')
-          this.bgiUrl = data.data.filePath
+          this.printSetform.printBackground = data.data.filePath
         } else {
           thiz.$message('上传文件失败')
         }
