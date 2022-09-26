@@ -1,7 +1,7 @@
 <template>
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
           <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
@@ -43,7 +43,8 @@ export default {
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
-              isDefault: true
+              isDefault: true,
+              clearable: false
             },
             event: {
               changeAll: this.onChangeAll
@@ -112,7 +113,6 @@ export default {
               }
             },
             getParam: () => {
-              
               return {eventCode:this.form.listQuery.data.eventCode,contactCode:this.$refs.bsTable.currentRow.code}
             }
           },

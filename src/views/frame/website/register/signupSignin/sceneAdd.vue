@@ -76,7 +76,8 @@ export default {
   },
   methods: {
     handleCloseDialog(param) {
-      this.$emit('closeHandler', param)
+      this.$parent.$parent.sceneList();
+      this.$emit('closeHandler', param);
     }
   }
 }
