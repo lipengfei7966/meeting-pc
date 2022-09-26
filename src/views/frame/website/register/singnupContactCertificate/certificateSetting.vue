@@ -177,7 +177,8 @@ export default {
         printWight: 80
       },
       certificateTypeform: {
-        name: ''
+        name: '',
+        type: '1'
       },
       printInfo: [],
       fileList: [],
@@ -252,10 +253,29 @@ export default {
         }
       }).then(res => {
         debugger
-        this.printSetform = res.data
-        this.printSetform.contactTypeArray = this.printSetform.contactTypeArray.split(',')
-        this.printSetform.certificateContent = this.printSetform.certificateContent.split(',')
-        this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
+        if(res.data){
+          this.printSetform = res.data
+          this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
+          this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
+          this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
+        }else{
+          this.printSetform = {
+            certificateContent: [],
+            certificatePreview: '',
+            certificateLayout: '',
+            certificateType: code || '0',
+            contactTypeArray: [],
+            maxPrintNumber: 10,
+            eventCode:  this.$route.params.data,
+            optDeptCode: '',
+            optEmployeeCode: '',
+            optOrganCode: '',
+            printBackground: '',
+            printBackgroundFlg: 0,
+            printHeight: 118,
+            printWight: 80
+          }
+        }
       })
     },
     // 返回上级
@@ -333,44 +353,55 @@ export default {
         this.list = []
       }
 
-      this.printSetform.certificateContent.forEach(dictItemVal => {
+      this.printSetform.certificateContent.forEach((dictItemVal,dictIndex) => {
         let item = this.certificateContentList.find(item => {
           return dictItemVal == item.dictItemVal
         })
-
-        if(!item) return
-
-        let isIncludes = this.list.some(listItem => {
-          return listItem.name == item.dictItemName
-        })
-        //
-        if (!isIncludes) {
-          this.list.push({
-            name: item.dictItemName, // 表名对应的值
-            label: item.dictItemName, // 表名
-            fontSize: '16px', // 默认字体
-            lineHeight: 'normal', // 默认行高
-            color: '#000000', // 默认颜色
-            x: 10, // x默认值
-            // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
-            y: this.list.length * 50// y 默认值
-            // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
-          })
-        }
-
-        // 删除已取消值
-        this.list.forEach((listItem, listIndex) => {
-          let listIncludes = certificateContent.some(contentItem => {
-            let item = this.certificateContentList.find(item => {
-              return contentItem == item.dictItemVal
-            })
-
+        // debugger
+        
+        // if(!item) return
+        if(item) {
+          let isIncludes = this.list.some(listItem => {
             return listItem.name == item.dictItemName
           })
-          if (!listIncludes) {
-            this.list.splice(listIndex, 1)
+          //
+          if (!isIncludes) {
+            this.list.push({
+              name: item.dictItemName, // 表名对应的值
+              label: item.dictItemName, // 表名
+              fontSize: '16px', // 默认字体
+              lineHeight: 'normal', // 默认行高
+              color: '#000000', // 默认颜色
+              x: 10, // x默认值
+              // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
+              y: this.list.length * 50// y 默认值
+              // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
+            })
+          }else{
+            // 删除已取消值
+            this.list.forEach((listItem, listIndex) => {
+              // debugger
+              let listIncludes = certificateContent.some(contentItem => {
+                let item = this.certificateContentList.find(item => {
+                  return contentItem == item.dictItemVal
+                })
+
+                return listItem.name == item.dictItemName
+              })
+              if (!listIncludes) {
+                this.list.splice(listIndex, 1)
+              }
+            })
           }
-        })
+
+          
+        }else{
+          this.printSetform.certificateContent.splice(dictIndex,1);
+          this.certificateContentChange(this.printSetform.certificateContent)
+        }
+        
+
+        
       })
     },
     /** 打印方法 */
