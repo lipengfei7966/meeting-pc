@@ -22,23 +22,14 @@
             label: '场景',
             prop: 'sceneCode',
             element: 'base-select',
-            attrs: {
-              data: "DICTYPE",
-              params: {
-                type:"2",
-                eventCode:this.param.eventCode
-              },
-              clearable: true
-            },
+            list:[{label:'默认',value:''}],
             event: {
               changeAll: this.onChangeAll
             },
-            validate: [
-              {
-                required: true,
-                trigger: 'change'
-              }
-            ]
+            attrs: {
+              default:true,
+              clearable: false
+            }
           },
           {
             label: '',
@@ -88,10 +79,45 @@
         }
       }
     },
-
+    mounted(){
+        this.sceneSelect();
+    },
     methods: {
         handleCloseDialog(param) {
             this.$emit('closeHandler', param);
+            //this.sceneSelect();
+        },
+        sceneSelect(){
+            console.log(this.dialog.formData[0].list)
+
+            request({
+                url: '/api/register/signupContactSceneRel/listSceneSelect',
+                method: 'POST',
+                data: {
+                    data:{
+                        eventCode:this.param.eventCode,
+                        contactCode:this.param.contactCode
+                    },
+                funcModule: this.$t('route.' + this.$route.meta.title),
+                funcOperation: this.$t('biz.btn.check')
+                }
+            })
+            .then(response => {
+                debugger;
+                if (response.status) {
+                    var selectList = [{label:'默认',value:''}];
+                    response.data.forEach(t=>{
+                        var json = {label:t.name,value:t.code};
+                        selectList.push(json);
+                    });
+                    console.log(this.dialog.formData[0].list)
+                    this.dialog.formData[0].list=selectList;
+
+                } else {
+
+                }
+            })
+            .catch(() => {})
         }
     }
   }
