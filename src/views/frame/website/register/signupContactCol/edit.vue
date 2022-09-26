@@ -14,9 +14,9 @@ export default {
         styleType: 'medium',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/register/signupContact/get',
-          save: '/api/register/signupContact/save',
-          update: '/api/register/signupContact/update'
+          view: '/api/register/signupContactCol/get',
+          save: '/api/register/signupContactCol/save',
+          update: '/api/register/signupContactCol/update'
         },
 
         formData: [
