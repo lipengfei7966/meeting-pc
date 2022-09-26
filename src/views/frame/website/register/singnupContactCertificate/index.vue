@@ -98,7 +98,14 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow.code
+              return this.$refs.bsTable.currentRow[0]
+            },
+            validate: () => {
+              if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length!=1) {
+                return false
+              }else{
+                return true
+              }
             }
           },
           {
