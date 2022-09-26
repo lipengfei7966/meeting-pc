@@ -14,8 +14,7 @@
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
-    <div>
-
+    <div v-show="false">
       <div v-for="(item,index) in tableData" :key="index" :id="'content'+ index" class="content">
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
@@ -281,7 +280,7 @@ export default {
         .content {width: 80mm;height: 118mm;margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
         .draggable {position:absolute}
         .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
-        .p-event { border: 1px solid red; box-sizing: border-box; position: relative; }
+        .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
       if(this.tableData.length == 0){
@@ -307,7 +306,6 @@ export default {
         
       })
       if (!isCanPrint) return
-
       var bsQueryExtras = []
       this.$refs.bsTable.tableData.forEach(item => {
           bsQueryExtras.push({
@@ -360,7 +358,7 @@ export default {
 
             setTimeout(function () {
                 newWin.print() //打开打印窗口
-                // newWin.close() //关闭打印窗口s
+                // newWin.close() //关闭打印窗口
                 // issueUpdate(params).then(() => {
                 //     that.fetch()
                 //     that.$message.success('打印结束')
