@@ -25,7 +25,7 @@ export default {
           type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
-          defaultSortString: 'code.desc',
+          defaultSortString: 'mapSort.asc',
           data: {
             usingFlag: ''
           }
@@ -106,12 +106,25 @@ export default {
               }
             },
             {
-              prop: 'mapRequired',
-              label: 'website.signupContactCol.list.mapRequired',
+              prop: 'mapBase',
+              label: 'website.signupContactCol.list.mapBase',
               align: 'center',
               format: {
-                dict: this.$t('datadict.yesNo')
+                dict: this.$t('datadict.mapBase')
               }
+            },
+
+            {
+              prop: 'mapCompAttr',
+              label: 'website.signupContactCol.list.mapCompAttr',
+              align: 'center',
+              format: {
+                dict: this.$t('datadict.mapCompAttr')
+              }
+            },
+            {
+              prop: 'mapCompAttr',
+              label: 'website.signupContactCol.list.enumLable'
             },
             {
               prop: 'mapType',
