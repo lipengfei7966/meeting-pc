@@ -136,7 +136,7 @@ export default {
             },
             validate: [
               {
-                required: true,
+                required: this.param.mapComp === '3' ? true : false,
                 trigger: 'blur'
               }
             ]
