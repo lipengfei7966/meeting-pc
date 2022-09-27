@@ -9,6 +9,7 @@
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import axios from 'axios'
 export default {
   name: 'signupContact',
   data() {
@@ -55,7 +56,8 @@ export default {
       mainData: {
         api: {
           search: '/api/register/signupContact/page',
-          doDelete: '/api/register/signupContact/remove'
+          doDelete: '/api/register/signupContact/remove',
+          export: '/api/register/signupContactCol/exportModel'
         },
         initSearch: false,
         isTopBar: true,
@@ -96,6 +98,29 @@ export default {
             name: 'remove',
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
+            }
+          },
+          {
+            name: 'export',
+            i18n: '导出',
+            event: this.exportExcel
+          },
+          {
+            name: 'upload',
+            i18n: '导入',
+            atrrs: {
+              uploadUrl: process.env.BASE_API + '/api/register/signupContactCol/exportImport', // 文件上传url
+              showFileList: false, // 是否展示上传文件，默认false
+              accept: '*', // 初始化文件选择类型，默认*
+              multiple: false, // 是否可选择多文件，默认false
+              disabled: false, // 是否不可操作，默认false
+              notifyFlag: false, // 是否弹出通知，默认true
+              paramData: {}, // 参数，默认{}
+              beforeUploadCallback: this.idCardOcrBeforeUploadCallback, // 文件上传前回调
+              progressCallback: this.idCardOcrProgressCallback, // 文件上传时回调
+              successCallback: this.idCardOcrSuccessCallback, // 成功回调
+              errorCallback: this.idCardOcrErrorCallback, // 异常回调
+              changeCallback: this.idCardOcrChangeCallback // 文件状态改变回调
             }
           },
           {
@@ -180,7 +205,43 @@ export default {
   mounted() {},
   methods: {
     onChangeAll(params) {
+      this.mainData.topBar[5].atrrs.paramData={
+        eventCode: this.form.listQuery.data.eventCode
+      }
       this.$refs.bsTable.doRefresh()
+    },
+    exportExcel(){
+      axios({
+        method: 'post',
+        url: process.env.BASE_API + this.mainData.api.export,
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '参会人管理',
+          funcOperation: '模板导出'
+        },
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters.token
+          // lang: storage.get('language') || 'zh',
+          // module: session.get('auditModule') || ''
+        },
+        responseType: 'blob'
+      })
+        .then(response => {
+          if (!response.data) {
+          } else {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = url
+            link.setAttribute('download', '参会人导入模板.xlsx')
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }

@@ -91,8 +91,19 @@ export default {
     signupCertificate: {
       title: '办证管理',
       query: {
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
         certificateFlag: '办证状态',
-        meetName: '会议名称'
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        contactCode: '参会人code',
+        createDate: '报名时间'
       },
       list: {
         name: '姓名',
@@ -102,6 +113,7 @@ export default {
         code: '参会人编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
+        certificateNum: '办证次数',
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
@@ -121,7 +133,19 @@ export default {
     signupCertificatePrint: {
       title: '办证记录管理',
       query: {
-        contactType: '证件类型'
+        contactType: '证件类型',
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        contactCode: '参会人code',
+        createDate: '报名时间'
       },
       list: {
         name: '姓名',
@@ -147,18 +171,18 @@ export default {
         certificateFlag: '办证状态'
       }
     },
-    signin:{
+    signin: {
       query: {
-        eventCode:'会议名称',
+        eventCode: '会议名称',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
         department: '单位',
         contactCode: '参会人编码',
         contactType: '参会人类型',
-        certificateFlag:'办证状态',
-        signFlag:'签到状态',
-        createDate:'报名时间'
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        createDate: '报名时间'
       }
     },
     signupSignin: {
@@ -223,9 +247,7 @@ export default {
     },
     customerContact: {
       title: '客户联系人管理',
-      query: {
-       
-      },
+      query: {},
       list: {
         code: '客户联系人编码',
         name: '姓名',
@@ -241,8 +263,8 @@ export default {
         mobile: '手机',
         email: '邮箱',
         departmentCode: '部门',
-        customerCode: '客户',
+        customerCode: '客户'
       }
-    },
+    }
   }
 }
