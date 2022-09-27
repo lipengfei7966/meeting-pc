@@ -1,5 +1,4 @@
 #app {
-
   // 侧边栏
   .sidebar-container {
     height: 100%;
@@ -9,10 +8,9 @@
     left: 0;
     width: 192px;
     font-size: 0px;
-    z-index: 1001;
+    // z-index: 1001;
     overflow: hidden;
     padding: 26px 0 89px;
-
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out,
         0s padding-right ease-in-out;
@@ -50,7 +48,7 @@
 
   .hide-sidebar {
     .sidebar-container {
-      width: 40px !important;
+      width: 50px !important;
     }
 
     .main-container {

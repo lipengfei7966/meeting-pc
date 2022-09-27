@@ -7,7 +7,8 @@
 @import './frame/dialog-common.scss'; // 通用弹窗
 @import './frame/tree.scss'; // 树形图
 @import './frame/login.scss'; // 登录
-
+@import './frame/tags-view.scss'; //顶部导航
+// @import './frame/bs-form.scss'; //通用表单
 :root {
   --navFontColor: #ffffff; // 导航栏右侧字体颜色
   --menuBg: #3e6db5; // 一级颜色
@@ -179,6 +180,12 @@ li {
       padding-left: 2px !important;
     }
   }
+}
+
+.bs-container[data-v-aed456d2]{
+  width: calc(100% - 10px) !important;
+//   left: 10px !important;
+//   overflow: hidden;
 }
 
 @media screen and (min-width: 1920px) {

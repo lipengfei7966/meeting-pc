@@ -4,14 +4,21 @@
       <navbar @selectModule='moduleChange'></navbar>
     </div>
     <div class="main-wrapper">
-      <div class='search' v-if='!isCollapse'>
+      <!-- 搜索 -->
+      <!-- <div class='search' v-if='!isCollapse'>
         <el-input v-model="input" class='input-search-style' clearable @keyup.enter.native="doSearch" @clear="doSearch">
           <i class='el-icon-search' slot='append' @click='doSearch'></i>
         </el-input>
+      </div> -->
+      <div class="left-menu">
+        <sidebar class="sidebar-container"></sidebar>
+        <!-- 收缩左侧菜单栏 -->
+        <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
+          <img src="@/assets/frame/img/hamburger.png" alt="">
+        </div>
       </div>
-      <sidebar class="sidebar-container"></sidebar>
       <div class="main-container">
-        <div class="tags-view" :style="{'left': isCollapse ? '40px' : '192px', 'display': isScreenFull ? 'none' : 'block'}">
+        <div class="tags-view" :style="{'left': isCollapse ? '50px' : '192px', 'display': isScreenFull ? 'none' : 'block'}">
           <tags-view ref='tagsView'></tags-view>
         </div>
         <div id="app-main" :style="{height: contentHeight}">
@@ -168,6 +175,9 @@ export default {
           this.moduleName = l.meta.firstParent
         }
       })
+    },
+    toggleSideBar() {
+      this.$store.dispatch('toggleSideBar')
     },
     // 关闭通用事件
     close() {
@@ -430,40 +440,67 @@ export default {
 
 <style lang='scss'>
 .main-wrapper {
-  .search {
-    position: fixed;
-    width: 192px;
+  position: relative;
+  height: 100%;
+  // .search {
+  //   position: fixed;
+  //   width: 192px;
+  //   text-align: center;
+  //   z-index: 1001;
+  //   .input-search-style {
+  //     width: 180px;
+  //     margin-top: 10px;
+  //     .el-input__suffix {
+  //       transform: translate(-25px, -2px) !important;
+  //     }
+  //     .el-input__inner {
+  //       height: 30px;
+  //       border: 1px solid;
+  //       border-right: none;
+  //       border-radius: 0;
+  //       font-size: 14px;
+  //       color: #fff;
+  //       border-radius: 3px 0 0 3px;
+  //       padding: 0 6px;
+  //     }
+  //     .el-input__icon {
+  //       line-height: 34px;
+  //     }
+  //     .el-input-group__append {
+  //       height: 30px;
+  //       padding: 0 10px;
+  //       border: 1px solid;
+  //       border-left: none;
+  //       border-radius: 0 3px 3px 0;
+  //       .el-icon-search {
+  //         cursor: pointer;
+  //       }
+  //     }
+  //   }
+  // }
+  .left-menu{
+    float: left;
+    width: 50px;
+    height: 100%;
+  }
+  .hamburger-container {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
     text-align: center;
-    z-index: 1001;
-    .input-search-style {
-      width: 180px;
-      margin-top: 10px;
-      .el-input__suffix {
-        transform: translate(-25px, -2px) !important;
-      }
-      .el-input__inner {
-        height: 30px;
-        border: 1px solid;
-        border-right: none;
-        border-radius: 0;
-        font-size: 14px;
-        color: #fff;
-        border-radius: 3px 0 0 3px;
-        padding: 0 6px;
-      }
-      .el-input__icon {
-        line-height: 34px;
-      }
-      .el-input-group__append {
-        height: 30px;
-        padding: 0 10px;
-        border: 1px solid;
-        border-left: none;
-        border-radius: 0 3px 3px 0;
-        .el-icon-search {
-          cursor: pointer;
-        }
-      }
+    background: transparent;
+    cursor: pointer;
+    transform: rotate(0);
+    transition: transform 0.38s;
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    img {
+      width: 12px;
+      height: 11px;
     }
   }
 }
