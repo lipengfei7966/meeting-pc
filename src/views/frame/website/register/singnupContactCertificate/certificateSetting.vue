@@ -80,8 +80,8 @@
         <div class="p-event" id="print" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
-            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
-              <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign }" @click="checkItem(item)">
+            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width" :h="item.height" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
+              <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign, width:item.width+'px', height: item.height+'px' }" @mousedown="checkItem(item)">
                 {{ item.name }}
                 <!-- {{ certificateContentList.find(item => {return dictItemVal == item.dictItemVal}).dictItemName }} -->
               </p>
@@ -164,7 +164,7 @@ export default {
         certificateContent: [],
         certificatePreview: '',
         certificateLayout: '',
-        certificateType: '',
+        certificateType: '0001',
         contactTypeArray: [],
         maxPrintNumber: 10,
         eventCode:  this.$route.params.data,
@@ -256,7 +256,7 @@ export default {
             certificateContent: [],
             certificatePreview: '',
             certificateLayout: '',
-            certificateType: code || '',
+            certificateType: code || '0001',
             contactTypeArray: [],
             maxPrintNumber: 10,
             eventCode:  this.$route.params.data,
@@ -273,9 +273,11 @@ export default {
     },
     // 返回上级
     back(){
-      this.$router.replace({
-        name: 'singnupContactCertificate',
-      })
+      this.$store.dispatch('delVisitedViews', this.$route).then(() => {
+          this.$router.push({
+            name: 'singnupContactCertificate'
+          })
+        })
     },
     // 获取证件类型下拉选项
     getCertificateType(){
@@ -323,12 +325,7 @@ export default {
         loading.close()
       })
     },
-    checkItem(item) {
-      this.form.name = item.name
-      //
-      this.changeName(item)
-      this.changeVal()
-    },
+    
     openMenu(e) {
       this.closeTarget = e.target.id.split('-')[1]
       // 首页不允许关闭
@@ -368,6 +365,8 @@ export default {
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
+              width: '',
+              height: '',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
               y: this.list.length * 50// y 默认值
@@ -412,14 +411,34 @@ export default {
       return false
     },
     onResize: function(x, y, width, height) {
+      // debugger
+      let changeItem = this.list.find(item => {
+        return item.name == this.form.name
+      })
+      changeItem.x = x;
+      changeItem.y = y;
+      changeItem.width = width;
+      changeItem.height = height;
       this.x = x
       this.y = y
       this.width = width
       this.height = height
     },
     onDrag: function(x, y) {
+      let changeItem = this.list.find(item => {
+        return item.name == this.form.name
+      })
+      // debugger
+      changeItem.x = x;
+      changeItem.y = y;
+      // debugger
       this.x = x
       this.y = y
+    },
+    checkItem(item) {
+      this.form.name = item.name
+      this.changeName(item)
+      this.changeVal()
     },
     /** 选择列下拉框 */
     changeName(item) {
