@@ -40,7 +40,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.eventCode',
+            label: 'website.signupCertificatePrint.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -51,6 +51,66 @@ export default {
             default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: []
+          },
+          {
+            type: 'datetime',
+            label: 'website.signupCertificatePrint.query.createDate',
+            prop: 'createDate',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
             }
           }
         ]
