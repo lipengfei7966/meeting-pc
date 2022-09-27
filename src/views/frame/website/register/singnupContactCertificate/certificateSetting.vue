@@ -256,7 +256,7 @@ export default {
             certificateContent: [],
             certificatePreview: '',
             certificateLayout: '',
-            certificateType: code || '0',
+            certificateType: code || '',
             contactTypeArray: [],
             maxPrintNumber: 10,
             eventCode:  this.$route.params.data,
