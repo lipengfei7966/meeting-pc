@@ -4,9 +4,10 @@
       <img src="@/assets/frame/img/logo.png" alt="">
       <span>会议系统</span>
     </div>
-    <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
+    <!-- 收缩 -->
+    <!-- <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
       <img src="@/assets/frame/img/hamburger.png" alt="">
-    </div>
+    </div> -->
     <div class='business-module' :style="{'width': moduleWidth + 'px'}">
       <div :class="[menu.name === activeModule || menu.name === app.moduleName ?  'module active' : 'module']" v-for='menu in permissionMenus.slice(0, Math.floor(moduleWidth / 140))' :key="menu.name" @click='moduleClick(menu.name)'>
         <svg-icon :icon-class="menu.meta.icon || ''"></svg-icon>{{ generateTitle(menu.meta.title) }}
@@ -28,6 +29,11 @@
     <div class='right-menu'>
       <!-- 推送消息 -->
       <!-- <bs-ws v-if='clientWidth >= 1366'></bs-ws> -->
+      <div class='search' v-if='!isCollapse'>
+        <i class='el-icon-search' slot='append' @click='doSearch'></i>
+        <el-input v-model="input" class='input-search-style' clearable @keyup.enter.native="doSearch" @clear="doSearch"></el-input>
+      </div>
+
       <!-- 主题换色 -->
       <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
 
@@ -155,6 +161,7 @@ export default {
       }
     }
     return {
+      input: '',
       logoSrc: imgSrc,
       dialogFormVisible: false,
       lockPwd: '',
@@ -231,6 +238,20 @@ export default {
     }
   },
   methods: {
+    doSearch() {
+    //   // 防止多次连续搜索
+    //   if (this.searchLoading) return
+    //   this.searchLoading = true
+
+    //   const filterPermissionMenu = this.permissionMenus.filter(menu => menu.name === this.moduleName)[0].children
+
+    //   if (this.input.trim() === '') {
+    //     this.showAll(filterPermissionMenu)
+    //   } else {
+    //     this.showSearch(filterPermissionMenu)
+    //   }
+    //   this.searchLoading = false
+    },
     logo() {
       request({
         url: '/api/img/logo',
@@ -456,6 +477,8 @@ export default {
   height: 48px;
   line-height: 48px;
   border-radius: 0px !important;
+  width: 100%;
+  display: flex;
   .logo {
     float: left;
     width: 40px;
@@ -505,6 +528,7 @@ export default {
   .business-module {
     float: left;
     height: 48px;
+    flex: 1;
     line-height: 48px;
     overflow: hidden;
     .module {
@@ -548,14 +572,13 @@ export default {
   }
 
   .right-menu {
-    float: right;
     margin-right: 20px;
     font-size: 18px;
     color: #ffffff;
     user-select: none;
     .right-menu-item {
       float: left;
-      width: 40px;
+      width: 48px;
       height: 48px;
       line-height: 48px;
       text-align: center;
@@ -659,6 +682,52 @@ export default {
 </style>
 
 <style lang='scss'>
+  
+.search {
+    // position: fixed;
+    float: left;
+    // width: 192px;
+    text-align: center;
+    .el-input{
+      width:160px;
+      background: transparent;
+    }
+
+    .el-icon-search {
+          cursor: pointer;
+          margin-right: 12px;
+        }
+    .input-search-style {
+      height: 30px;
+      padding-top: 0 !important;
+      .el-input__inner {
+        height: 30px;
+        border: 1px solid #fff;
+        border-radius: 0;
+        font-size: 14px;
+        color: #fff;
+        border-radius: 3px 0 0 3px;
+        background: transparent;
+        padding: 0 6px;
+      }
+      .el-input__inner:focus{
+        border: 1px solid #fff !important;
+      }
+      .el-input__icon {
+        line-height: 34px;
+      }
+      .el-input-group__append {
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid;
+        border-left: none;
+        border-radius: 0 3px 3px 0;
+        background: transparent;
+        
+      }
+    }
+  }
+
 .el-dropdown-menu {
   margin: 0 !important;
   padding: 0 !important;

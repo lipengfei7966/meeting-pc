@@ -1,13 +1,13 @@
-
 // 覆盖一些element-ui样式
 .bs-container {
+  margin-top: 15px !important;
+  width: 100%;
   .el-upload {
     display: block;
     input[type='file'] {
       display: none !important;
     }
   }
-
   .el-upload__input {
     display: none;
   }

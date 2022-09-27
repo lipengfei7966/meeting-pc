@@ -3,6 +3,7 @@
     .navbar {
       background: var(--menuBg) !important;
       .business-module {
+        // width: 50% !important;
         .module {
           color: var(--menuFont);
           &:hover {
@@ -15,6 +16,9 @@
           }
         }
       }
+      .hamburger-container {
+        width: 50px;
+      } 
       .more-module {
         .el-icon-more {
           color: var(--menuFont);
@@ -24,6 +28,8 @@
         }
       }
       .right-menu {
+        width: 24%;
+        margin-right: 0 !important;
         .el-dropdown {
           span {
             color: var(--navFontColor);
@@ -65,10 +71,20 @@
     }
     .sidebar-container {
       background: var(--menuBg);
+      padding-top: 0 !important;
+      top: 50px !important;
       .el-menu {
         background-color:var(--menuBg) !important;
+        //左侧菜单一级标题
+        .el-submenu__title{
+          height: 38px !important;
+          line-height: 38px !important;
+        }
       }
+      //左侧菜单子级选项
       .el-menu-item {
+        height: 38px !important;
+        line-height: 38px !important;
         background-color: var(--menuItemBg) !important;
         color: var(--menuFont) !important;
         &:hover {

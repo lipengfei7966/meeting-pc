@@ -1,0 +1,78 @@
+.tags-view{
+        background: #fff;
+        height: 40px !important;
+        .tags-view-wrapper{
+            height: 40px !important;
+            width: 99% !important;
+            margin: 0 auto;
+        }
+        .tags-view-container,.scroll-wrapper,.el-tabs__nav-scroll,.tabs-style,.el-tabs__header,.el-tabs__nav-wrap{
+            height: 40px !important;
+            background: #ffffff;
+            .el-tabs__nav-scroll{
+                background: #ffffff;
+                .el-tabs__nav{
+                    border: none;
+                }
+                // 小标签
+                .el-tabs__item {
+                    margin: 4px;
+                    background: #fff !important;
+                    border: 1px solid #d8dce4 !important;
+                    line-height: 32px !important;
+                    height: 32px !important;
+                    font-size: 10px !important;
+                    color: #797979 !important;
+                    .el-icon-close{
+                        color: #cccccc !important;
+                        background: none !important;
+                        height: none;
+                        width: 14px !important;
+                        overflow:visible;
+                    }
+                }
+                .el-tabs__item:hover{
+                    width: auto !important;
+                }
+                // 选中
+                .is-active{
+                    border: 1px solid var(--menuHover) !important;
+                    background: var(--menuHover) !important;
+                    color: #e7f3ff !important;
+                    .el-icon-close{
+                        color: #ffffff !important;
+                    }
+                }
+            }
+        }
+        // 下箭头
+        .menu-drop{
+            display: none;
+        }
+        // 分页左右箭头
+        .el-tabs__nav-next,.el-tabs__nav-prev{
+            margin: 4px !important;
+            line-height: 32px !important;
+            border: 1px solid #d8dce4 !important;
+        }
+        // 左
+        .el-tabs__nav-prev{
+            box-shadow: 2px 0 10px #ccc !important;
+        }
+        // 右
+        .el-tabs__nav-next{
+            box-shadow: -2px 0 10px #ccc !important;
+        }
+        .contextmenu{
+            li{
+                color: #636363 !important;
+            }
+            &>li:hover{
+                background: #e6f7ff !important;
+                color: #6ab4ff !important;
+            }
+            li:last-child{
+                border: none;
+            }
+        }
+    }

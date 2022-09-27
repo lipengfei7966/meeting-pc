@@ -1,5 +1,6 @@
 // 覆盖一些element-ui样式
 .bs-new-container {
+  margin-top: 15px !important;
   .el-upload {
     display: block;
 
@@ -7,7 +8,6 @@
       display: none !important;
     }
   }
-
   .el-upload__input {
     display: none;
   }
@@ -569,7 +569,6 @@
   .el-table tr:hover {
     background-color: transparent !important;
   }
-
   .el-table .el-table__empty-text {
     display: none !important;
   }
