@@ -89,7 +89,9 @@ export default {
             i18n: '新增参会人',
             component: () => import('../signupContact/edit.vue'),
             getParam: () => {
-              return this.form.listQuery.data.eventCode
+              return {
+                eventCode: this.form.listQuery.data.eventCode
+              }
             }
           },
           {
@@ -97,7 +99,10 @@ export default {
             type: 'dialog',
             component: () => import('../signupContact/edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow[0]
+              return {
+                eventCode: this.form.listQuery.data.eventCode,
+                code: this.$refs.bsTable.currentRow[0].code
+              }
             },
             validate: () => {
               if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length!=1) {

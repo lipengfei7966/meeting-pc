@@ -65,7 +65,9 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.form.listQuery.data.eventCode
+              return {
+                eventCode: this.form.listQuery.data.eventCode
+              }
             }
           },
           {
@@ -73,7 +75,10 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return {
+                eventCode: this.form.listQuery.data.eventCode,
+                code: this.$refs.bsTable.currentRow.code
+              }
             }
           },
           {
@@ -81,7 +86,10 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return {
+                eventCode: this.form.listQuery.data.eventCode,
+                code: this.$refs.bsTable.currentRow.code
+              }
             }
           },
           {
