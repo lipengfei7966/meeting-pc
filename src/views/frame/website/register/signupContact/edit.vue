@@ -12,7 +12,7 @@ export default {
         type: this.opType,
         param: this.param,
         api: {
-          view: '/api/register/signupContact/get',
+          view: '/api/register/signupContact/getByContactCode',
           save: '/api/register/signupContact/save',
           update: '/api/register/signupContact/update'
         },

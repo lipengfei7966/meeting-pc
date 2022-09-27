@@ -159,6 +159,20 @@ export default {
         certificateFlag: '办证状态'
       }
     },
+    signin:{
+      query: {
+        eventCode:'会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        contactCode: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag:'办证状态',
+        signFlag:'签到状态',
+        createDate:'报名时间'
+      }
+    },
     signupSignin: {
       list: {
         name: '姓名',
@@ -204,6 +218,43 @@ export default {
         mapRequired: '必填',
         mapSort: '顺序'
       }
-    }
+    },
+    department: {
+      list: {
+        code: '编码',
+        name: '部门名称',
+        parentCode: '部门父节点',
+        customerCode: '客户',
+        createDate: '创建时间'
+      },
+      edit: {
+        name: '部门名称',
+        parentCode: '部门父节点',
+        customerCode: '客户'
+      }
+    },
+    customerContact: {
+      title: '客户联系人管理',
+      query: {
+       
+      },
+      list: {
+        code: '客户联系人编码',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '部门',
+        customer: '客户',
+        createDate: '创建时间'
+      },
+      edit: {
+        code: '客户联系人编码',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        departmentCode: '部门',
+        customerCode: '客户',
+      }
+    },
   }
 }
