@@ -363,9 +363,7 @@ export default {
           url: '/api/register/signupDictype/remove',
           method: 'POST',
           data: {
-            data: {
-              code: this.printSetform.certificateType
-            },
+            data: this.printSetform.certificateType,
             funcModule: '获取模块类型',
             funcOperation: '获取模块类型'
           }
