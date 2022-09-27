@@ -1,138 +1,36 @@
 <template>
-  <bs-dialog :dialog="dialog" @closeDialog="handleCloseDialog"></bs-dialog>
+  <bs-dialog-edit v-if='loadAll' v-el-drag-dialog ref='bsEdit' :edit='edit' @closeDialog='handleCloseDialog'></bs-dialog-edit>
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
-  name: 'roleEdit',
   data() {
     return {
-      dialog: {
+      loadAll: false,
+      edit: {
         type: this.opType,
         param: this.param,
-        initType: 'param',
-        styleType: 'medium',
-        titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/register/signupContact/get',
+          view: '/api/register/signupContact/getByContactCode',
           save: '/api/register/signupContact/save',
           update: '/api/register/signupContact/update'
         },
-
-        formData: [
-          {
-            label: 'website.signupContact.edit.eventCode',
-            prop: 'eventCode',
-            element: 'base-select',
-            default: this.param,
-            attrs: {
-              multiple: false,
-              cols: 3,
-              data: 'EVENT_INFO',
-              clearable: true
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'change'
-              }
-            ]
-          },
-          {
-            label: 'website.signupContact.edit.name',
-            prop: 'name',
-            element: 'input-validate',
-            attrs: {
-              clearable: true,
-              cols: 3
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
-            label: 'website.signupContact.edit.mobile',
-            prop: 'mobile',
-            element: 'input-validate',
-            attrs: {
-              clearable: true,
-              cols: 3,
-              validateType: 'phone'
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
-            label: 'website.signupContact.edit.email',
-            prop: 'email',
-            element: 'input-validate',
-            attrs: {
-              clearable: true,
-              cols: 3,
-              validateType: 'email'
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
-            label: 'website.signupContact.edit.department',
-            prop: 'department',
-            element: 'input-validate',
-            attrs: {
-              clearable: true,
-              cols: 3
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
-          },
-          {
-            label: 'website.signupContact.edit.contactType',
-            prop: 'contactType',
-            element: 'base-select',
-            list: this.$t('datadict.contantType'),
-            attrs: {
-              clearable: true,
-              cols: 3
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'blur'
-              }
-            ]
+        apiData: {
+          view(param) {
+            return param.code
           }
-        ],
-        bottomButtons: [
+        },
+        topButtons: [
           {
-            name: 'biz.btn.close',
-            event: 'close',
-            isShow: ['view'],
-            attrs: {
-              type: 'primary'
-            }
-          },
-          {
+            iconName: 'cancel',
             name: 'biz.btn.cancel',
             event: 'cancel',
             isShow: ['add', 'update']
           },
           {
             name: 'biz.btn.save',
+            iconName: 'save',
             event: 'save',
             showLoading: true,
             isShow: ['add', 'update'],
@@ -140,7 +38,19 @@ export default {
               type: 'primary'
             }
           }
-        ]
+        ],
+        // 若只存在一个主信息则formData的值可接受Array
+        formData: {
+          part1: {
+            titleName: '基本信息',
+            content: []
+          },
+          part2: {
+            titleName: '扩展字段',
+            dtoKey: 'signupContactDtlDto',
+            content: []
+          }
+        }
       }
     }
   },
@@ -150,15 +60,113 @@ export default {
       default: 'add'
     },
     param: {
-      type: [Object, String],
+      type: [String, Object],
       default() {
         return {}
       }
     }
   },
+  mounted(){
+    this.getFormInfo(this.param.eventCode);
+  },
   methods: {
+    // 本页面关闭
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
+    },
+    getFormInfo(eventCode){
+      this.loadAll = false
+      this.edit.formData.part2.content = []
+      this.edit.formData.part1.content = [
+        {
+          label: 'website.signupContact.edit.eventCode',
+          prop: 'eventCode',
+          element: 'base-select',
+          attrs: {
+            multiple: false,
+            data: 'EVENT_INFO',
+            clearable: true,
+            disabled: true
+          },
+          default: eventCode,
+          validate: [
+            {
+              required: true,
+              trigger: 'change'
+            }
+          ],
+          event: {
+            change: this.getFormInfo
+          }
+        },
+        {
+          label: 'website.signupContact.edit.contactType',
+          prop: 'contactType',
+          element: 'base-select',
+          list: this.$t('datadict.contantType'),
+          attrs: {
+            clearable: true
+          },
+          validate: [
+            {
+              required: true,
+              trigger: 'blur'
+            }
+          ]
+        }
+      ]
+      request({
+      url: '/api/register/signupContactCol/page',
+      method: 'POST',
+      data: {
+        data: {
+          eventCode: eventCode
+        },
+        isPage: false,
+        funcModule: '表单配置',
+        funcOperation: '查询列表'
+      }
+      }).then(response => {
+        debugger
+        
+        response.data.forEach(element => {
+          debugger
+          if (element.mapType === '1') {
+            const rs = {
+              label: element.mapName,
+              prop: element.mapCode,
+              element: '',
+              isShow: true,
+              attrs: {},
+              validate: [
+                {
+                  required: element.mapRequired==='1'?true:false,
+                  trigger: 'blur'
+                }
+              ]
+            }
+            if (element.mapComp==='1') {
+              rs.element = 'input-validate'
+            }else if (element.mapComp==='3') {
+              rs.element = 'base-select'
+              rs.attrs = eval('(' + element.enumLable + ')')
+            }else if (element.mapComp==='2') {
+              rs.type = 'date'
+              rs.attrs = {
+                clearable: true,
+                format: 'yyyy-MM-dd',
+                'value-format': 'yyyyMMdd'
+              }
+            }
+            if (element.mapBase === '2') {
+              this.edit.formData.part1.content.push(rs)
+            }else{
+              this.edit.formData.part2.content.push(rs)
+            }
+          }
+        })
+        this.loadAll = true
+      })
     }
   }
 }

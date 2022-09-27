@@ -187,11 +187,17 @@ export default {
         mapCode: '名称',
         mapName: '显示名称',
         mapComp: '组件类型',
+        mapBase: '组件归属',
+        mapCompAttr: '组件属性',
+        enumLable: '字典表code',
         mapRequired: '必填',
         mapType: '启用',
         mapSort: '顺序'
       },
       edit: {
+        mapBase: '组件归属',
+        mapCompAttr: '组件属性',
+        enumLable: '字典表code',
         eventCode: '会议名称',
         mapCode: '名称',
         mapName: '显示名称',

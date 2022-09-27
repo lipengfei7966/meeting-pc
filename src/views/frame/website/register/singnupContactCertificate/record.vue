@@ -138,7 +138,7 @@ export default {
       method: 'POST',
       data: {
         data: {
-          queryParams: { type: '1' },
+          queryParams: { type: '1',eventCode: this.$route.params.data},
           type: 'DICTYPE'
         },
         funcModule: '会议字典',
