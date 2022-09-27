@@ -78,15 +78,10 @@ export default {
             type: 'dialog',
             i18n: '新增参会人',
             component: () => import('../signupContact/edit.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-                return false
-              } else {
-                return true
-              }
-            },
             getParam: () => {
-              return this.form.listQuery.data.eventCode
+              return {
+                eventCode: this.form.listQuery.data.eventCode
+              }
             }
           },
           {
@@ -95,7 +90,10 @@ export default {
             i18n: '修改参会人',
             component: () => import('../signupContact/edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow
+              return {
+                eventCode: this.form.listQuery.data.eventCode,
+                code: this.$refs.bsTable.currentRow.code
+              }
             }
           },
           {
