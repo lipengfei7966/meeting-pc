@@ -50,6 +50,66 @@ export default {
             event: {
               changeAll: this.onChangeAll
             }
+          },
+          {
+            label: 'website.signin.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.signFlag',
+            prop: 'signFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+          },
+          {
+            type: 'datetime',
+            label: 'website.signin.query.createDate',
+            prop: 'createDate',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
           }
         ]
       },
@@ -244,10 +304,10 @@ export default {
       })
     },
     signAdd(){
-      // if (this.$refs.bsTable.currentRow.signinStatus=='已签到') {
-      //   this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定'});
-      //   return
-      // }
+      if (this.$refs.bsTable.currentRow==undefined) {
+        this.$notify(notifyInfo({ msg: '请选择一条数据' }));
+        return
+      }
       console.log(this.$refs.bsTable.currentRow)
       request({
             url: '/api/register/signupSignin/save',

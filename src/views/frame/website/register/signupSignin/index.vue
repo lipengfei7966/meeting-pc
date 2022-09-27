@@ -38,7 +38,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.eventCode',
+            label: 'website.signin.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -55,6 +55,75 @@ export default {
                 trigger: 'blur'
               }
             ]
+          },
+          {
+            label: 'website.signin.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[]
+          },
+          {
+            label: 'website.signin.query.certificateFlag',
+            prop: 'certificateFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'已办证',value:1},{label:'未办证',value:0}]
+          },
+          {
+            type: 'datetime',
+            label: 'website.signin.query.createDate',
+            prop: 'createDate',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
           }
         ]
       },
