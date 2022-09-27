@@ -45,7 +45,9 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {}
+          data: {
+            certificateFlag: "0"
+          }
         },
         formData: [
           {
