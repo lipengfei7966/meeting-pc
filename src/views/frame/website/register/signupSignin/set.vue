@@ -300,9 +300,9 @@ export default {
         this.$notify(notifyInfo({ msg: '无法获取场景code' }));
         return
       }
-      this.$confirm('确认删除?', '提示', 
-      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => 
-      { 
+      this.$confirm('确认删除?', '提示',
+      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() =>
+      {
         request({
         url: '/api/register/signupDictype/remove',
         method: 'POST',
@@ -323,7 +323,6 @@ export default {
         })
         .catch(() => {})
       }).catch(() => { this.$message({ type: 'info', message: '已取消删除' }); });
-      
     }
   }
 }

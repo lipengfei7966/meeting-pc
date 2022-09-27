@@ -308,7 +308,6 @@ export default {
           this.$message.warning(`${item.name} 未添加证件模板`)
           isCanPrint = false
         }
-        
       })
       if (!isCanPrint) return
       var bsQueryExtras = []
@@ -387,7 +386,6 @@ export default {
         this.$message.warning('请选择参会人')
         return
       }
-      
     },
     toSetting() {
       //

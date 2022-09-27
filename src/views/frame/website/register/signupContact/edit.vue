@@ -128,7 +128,6 @@ export default {
       }
       }).then(response => {
         debugger
-        
         response.data.forEach(element => {
           debugger
           if (element.mapType === '1') {
