@@ -78,7 +78,7 @@
         </div> -->
 
         <div class="p-event" id="print" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto'}">
-          <img v-show="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
+          <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
               <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign }" @click="checkItem(item)">
@@ -164,7 +164,7 @@ export default {
         certificateContent: [],
         certificatePreview: '',
         certificateLayout: '',
-        certificateType: '0',
+        certificateType: '',
         contactTypeArray: [],
         maxPrintNumber: 10,
         eventCode:  this.$route.params.data,
@@ -256,7 +256,7 @@ export default {
             certificateContent: [],
             certificatePreview: '',
             certificateLayout: '',
-            certificateType: code || '0',
+            certificateType: code || '',
             contactTypeArray: [],
             maxPrintNumber: 10,
             eventCode:  this.$route.params.data,
