@@ -97,6 +97,35 @@ export default {
             }
           },
           {
+            label: 'website.signin.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: this.$t('datadict.contantType')
+          },
+          {
+            type: 'datetime',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
+          },
+          {
+            label: 'website.signin.query.signinWay',
+            prop: 'signinWay',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'pc',value:'pc'},{label:'扫码签到',value:'scan'}]
+          },
+          {
             type: 'datetime',
             label: 'website.signin.query.createDate',
             prop: 'createDate',
