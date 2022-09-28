@@ -5,15 +5,23 @@
 
       <el-card class="box-card">
         <div>
-          <el-form ref="printSetform" :model="printSetform" label-width="100px" label-position="left">
-            <el-form-item label="证件类型">
+          <el-form ref="printSetform" :model="printSetform" :rules="printSetformRules" label-width="100px" label-position="left">
+            <el-form-item label="证件类型" prop="certificateType">
               <div style="display:flex; justify-content: space-between;">
-                <el-select v-model="printSetform.certificateType" style="width: 150px" @change="certificateTypeChange" placeholder="请选择活动区域">
+                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" placeholder="请选择活动区域">
                   <el-option v-for="(item,index) in certificateTypeList" :key="index" :label="item.name" :value="item.code"></el-option>
 
                 </el-select>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="dialogFormVisible = true">新增证件类型</el-button>
+
               </div>
+            </el-form-item>
+
+            <el-form-item>
+              <div style="display:flex; justify-content: space-between">
+                <el-button type="text" @click="dialogFormVisible = true">新增证件类型</el-button>
+                <el-button v-show="printSetform.certificateType != '0001' " type="text" @click="delCertificateType">删除证件类型</el-button>
+              </div>
+
             </el-form-item>
 
             <el-form-item label="应用于">
@@ -36,7 +44,7 @@
             </el-form-item>
             <el-form-item label="背景图">
               <el-checkbox v-model="printSetform.printBackgroundFlg" :true-label="1" :false-label="0">打印背景图</el-checkbox>
-              <el-upload style="float: right; padding: 3px 0" accept="image/*" :limit="1" :on-exceed="fileLimitCount" :before-upload="handleBeforeUpload" ref="upload" action :http-request="handleUploadForm" :on-success="uploadSuccess" :file-list="fileList" :show-file-list="true" :auto-upload="true">
+              <el-upload style="float: right; padding: 3px 0" accept="image/*" :limit="1" :on-exceed="fileLimitCount" :before-upload="handleBeforeUpload" ref="upload" action :http-request="handleUploadForm" :on-remove="handleRemove" :on-success="uploadSuccess" :file-list="fileList" :show-file-list="true" :auto-upload="true">
                 <el-button type="text">上传背景图</el-button>
               </el-upload>
             </el-form-item>
@@ -52,6 +60,7 @@
                   <el-checkbox-group v-model="printSetform.certificateContent" @change="certificateContentChange">
                     <el-checkbox :label="item.dictItemVal" v-for="(item,index) in certificateContentList" :key="index"> {{ item.dictItemName }}</el-checkbox>
                   </el-checkbox-group>
+
                 </div>
 
               </div>
@@ -81,10 +90,19 @@
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width" :h="item.height" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
-              <p class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign, width:item.width+'px', height: item.height+'px' }" @mousedown="checkItem(item)">
-                {{ item.name }}
-                <!-- {{ certificateContentList.find(item => {return dictItemVal == item.dictItemVal}).dictItemName }} -->
+
+              <p v-if="item.value == 'qrCode' " @mousedown="checkItem(item)">
+                <vue-qr text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
+
+              <p v-else-if="item.value == 'barCode'" @mousedown="checkItem(item)">
+                <vue-barcode class="barCode" value="123123" :width="1" :height="50" style="width:100%"> </vue-barcode>
+              </p>
+
+              <p v-else class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign, width:item.width+'px', height: item.height+'px' }" @mousedown="checkItem(item)">
+                {{ item.name }}
+              </p>
+
             </vue-draggable-resizable>
           </template>
         </div>
@@ -149,6 +167,7 @@
 <script>
 import request from '@/utils/frame/base/request'
 import VueQr from 'vue-qr'
+import VueBarcode from 'vue-barcode';
 export default {
   name: 'certificateSet',
   data() {
@@ -172,6 +191,9 @@ export default {
         printBackgroundFlg: 1,
         printHeight: 118,
         printWight: 80
+      },
+      printSetformRules:{
+        certificateType: [{ required: true, message: '请选择证件类型', trigger: 'change' }]
       },
       certificateTypeform: {
         name: '',
@@ -201,9 +223,14 @@ export default {
       list: [] // apiArr带上所有属性的集合
     }
   },
-  async mounted() {
+  components:{
+    VueQr,
+    VueBarcode
+  },
+  mounted() {
     this.getCertificateType();
     this.printSetformInit();
+
     // 获取参会人类型数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -220,7 +247,13 @@ export default {
       data: { data: 'CERTIFICATE_CONTENT', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       //
+      debugger
       this.certificateContentList = res.data
+      let newItems = [
+        {dictItemName: '编码二维码', dictItemVal: 'qrCode'},
+        {dictItemName: '编码条码', dictItemVal: 'barCode'},
+      ]
+      this.certificateContentList = this.certificateContentList.concat(newItems)
     })
 
     // 字号数组获取
@@ -245,7 +278,7 @@ export default {
           funcOperation: '获取模块类型'
         }
       }).then(res => {
-        debugger
+        this.list = [];
         if(res.data){
           this.printSetform = res.data
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
@@ -299,6 +332,59 @@ export default {
         this.certificateTypeList = response.data
       })
     },
+    // 新增证件类型提交
+    certificateTypeSubmit() {
+      request({
+        url: '/api/register/signupDictype/save',
+        method: 'POST',
+        data: {
+          data: this.certificateTypeform,
+          funcModule: '获取模块类型',
+          funcOperation: '获取模块类型'
+        }
+      }).then(res => {
+        if (res.data) {
+          this.getCertificateType();
+          this.dialogFormVisible = false;
+
+          this.$message.success('新增成功')
+        } else {
+          this.$message.error('新增失败')
+        }
+      })
+    },
+    // 删除证件类型
+    delCertificateType(){
+      this.$confirm('此操作将删除已选证件类型, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        request({
+          url: '/api/register/signupDictype/remove',
+          method: 'POST',
+          data: {
+            data: this.printSetform.certificateType,
+            funcModule: '获取模块类型',
+            funcOperation: '获取模块类型'
+          }
+        }).then(res => {
+          debugger
+          if (res.data) {
+            this.getCertificateType();
+
+            this.printSetform.certificateType = '0001' // 删除后设置默认值
+            this.certificateTypeChange('0001')
+
+            this.$message.success('删除成功')
+          } else {
+            this.$message.error('删除失败')
+          }
+        })
+      }).catch(() => {
+        this.$message.info('已取消删除')
+      });
+    },
     handleUploadForm(param) {
       //
       let thiz = this
@@ -325,7 +411,7 @@ export default {
         loading.close()
       })
     },
-    
+
     openMenu(e) {
       this.closeTarget = e.target.id.split('-')[1]
       // 首页不允许关闭
@@ -339,7 +425,6 @@ export default {
     },
 
     certificateContentChange(certificateContent) {
-      // this.list = []
       // 网格上的数据获取
       // debugger
       if(certificateContent.length == 0){
@@ -350,8 +435,6 @@ export default {
         let item = this.certificateContentList.find(item => {
           return dictItemVal == item.dictItemVal
         })
-        // debugger
-        
         // if(!item) return
         if(item) {
           let isIncludes = this.list.some(listItem => {
@@ -362,6 +445,7 @@ export default {
             this.list.push({
               name: item.dictItemName, // 表名对应的值
               label: item.dictItemName, // 表名
+              value: item.dictItemVal,
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
@@ -388,15 +472,10 @@ export default {
               }
             })
           }
-
-          
         }else{
           this.printSetform.certificateContent.splice(dictIndex,1);
           this.certificateContentChange(this.printSetform.certificateContent)
         }
-        
-
-        
       })
     },
     /** 打印方法 */
@@ -479,27 +558,6 @@ export default {
         }
       }
     },
-    // 新增证件类型提交
-    certificateTypeSubmit() {
-      request({
-        url: '/api/register/signupDictype/save',
-        method: 'POST',
-        data: {
-          data: this.certificateTypeform,
-          funcModule: '获取模块类型',
-          funcOperation: '获取模块类型'
-        }
-      }).then(res => {
-        if (res.data) {
-          this.getCertificateType();
-          this.dialogFormVisible = false;
-
-          this.$message('新增成功')
-        } else {
-          this.$message('新增失败')
-        }
-      })
-    },
     fileLimitCount(files, fileList) {
       this.$message.warning('背景图只能上传一张')
     },
@@ -518,6 +576,7 @@ export default {
       this.$refs.upload.submit()
     },
     handleRemove(file, fileList) {
+      this.printSetform.printBackground = ''
       console.log(file, fileList)
     },
     handlePreview(file) {
@@ -527,7 +586,18 @@ export default {
       console.log(this.fileList)
     },
     create() {
-      debugger
+      let printSetformvalid = false;
+      this.$refs.printSetform.validate((valid) => {
+        // debugger
+        printSetformvalid = valid
+      })
+
+      // 必填校验未通过
+      if(!printSetformvalid){
+        this.$message.warning('请录入必填项')
+        return
+      }
+
       // 数组转化字符串
       this.printSetform.contactTypeArray = this.printSetform.contactTypeArray.join(',')
       this.printSetform.certificateContent = this.printSetform.certificateContent.join(',')
@@ -546,9 +616,9 @@ export default {
         }).then(res => {
           debugger
           if (res.data) {
-            this.$message('创建成功')
+            this.$message.success('创建成功')
           } else {
-            this.$message('创建失败')
+            this.$message.error('创建失败')
           }
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
@@ -571,9 +641,9 @@ export default {
         }).then(res => {
           debugger
           if (res.data) {
-            this.$message('创建成功')
+            this.$message.success('创建成功')
           } else {
-            this.$message('创建失败')
+            this.$message.error('创建失败')
           }
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
@@ -637,7 +707,11 @@ export default {
   border: 1px solid red;
   box-sizing: border-box;
   min-height: 500px;
+  overflow: hidden;
   width: 100%;
   position: relative;
+}
+.barCode /deep/ .vue-barcode-element {
+  width: 100%;
 }
 </style>
