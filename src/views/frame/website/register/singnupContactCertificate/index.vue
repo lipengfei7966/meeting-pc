@@ -14,8 +14,11 @@
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
-    <div v-show="false">
-      <div v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content">
+    <div v-show="false" ref="content">
+      <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content">
+        <p>
+          <vue-qr class="newQR" :text="item.code" :size="200" style="width:100%"> </vue-qr>
+        </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
     </div>
@@ -27,6 +30,8 @@
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import Print from 'print-js'
+import VueQr from 'vue-qr'
+import VueBarcode from 'vue-barcode';
 export default {
   name: 'singnupContactCertificate',
   data() {
@@ -322,6 +327,10 @@ export default {
         </div>`
     }
   },
+  components:{
+    VueQr,
+    VueBarcode
+  },
   mounted() {
     //
     // 获取打印类型数据字典
@@ -370,8 +379,22 @@ export default {
       }
       let isCanPrint = true
 
-      this.tableData.forEach((item) => {
-        // item.certificateLayout = this.certificateLayout
+      
+
+      this.tableData.forEach((item, index) => {
+
+        this.$nextTick(() => {
+          let contents = this.$refs.contents
+          contents.forEach((node, nodeindex) => {
+              let qrCode = node.getElementsByClassName('qrCode')
+              let newQR = node.getElementsByClassName('newQR')[0]
+            if(qrCode.length > 0){
+              qrCode[0].parentNode.appendChild(newQR)
+              qrCode[0].parentNode.removeChild(qrCode[0])
+            }
+          })
+        })
+        
         if (item.certificateLayout) {
           item.certificateLayout = item.certificateLayout.replace('姓名', item.name)
           item.certificateLayout = item.certificateLayout.replace('单位名称', item.department)
@@ -385,6 +408,7 @@ export default {
           isCanPrint = false
         }
       })
+
       if (!isCanPrint) return
       var bsQueryExtras = []
       this.$refs.bsTable.tableData.forEach((item) => {

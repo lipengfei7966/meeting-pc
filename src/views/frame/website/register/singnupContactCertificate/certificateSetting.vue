@@ -89,13 +89,13 @@
         <div class="p-event" id="print" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
-            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width" :h="item.height" :left="form.paddingLeft" :key="item+index" :parent="true" w="auto" h="auto" @dragging="onDrag" @resizing="onResize">
+            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width" :h="item.height" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
-              <p v-if="item.value == 'qrCode' " @mousedown="checkItem(item)">
-                <vue-qr text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
+              <p v-if="item.value == 'qrCode' " id="qrCode" @mousedown="checkItem(item)">
+                <vue-qr class="qrCode" text="printSetform.certificateContent" :size="180" style="width:100%"> </vue-qr>
               </p>
 
-              <p v-else-if="item.value == 'barCode'" @mousedown="checkItem(item)">
+              <p v-else-if="item.value == 'barCode'" id="barCode" @mousedown="checkItem(item)">
                 <vue-barcode class="barCode" value="123123" :width="1" :height="50" style="width:100%"> </vue-barcode>
               </p>
 
