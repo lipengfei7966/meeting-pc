@@ -8,7 +8,7 @@
         <slot name="add"></slot>
         <slot name="upload"></slot>
         <div v-for="(btn, index) in mainData.topBar" :key="index">
-          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='btn.i18n' :permission="btn.permitName" :key='index'></bs-upload>
+          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='btn.i18n' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
           <template v-if="btn.name !== 'query' && btn.name !== 'upload'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
               <el-button v-db-click size="medium" style="margin-right: 3px;margin-top: 3px;height:32px;" v-permissionMultiple="btn.list">
@@ -1436,6 +1436,13 @@ export default {
           rowspan: row[column.property + 'rowSpan'],
           colspan: 1
         }
+      }
+    },
+    // 增行
+    addFile(file) {
+      debugger
+      if (file && file.response && file.response.data) {
+        this.$emit('fileCallback', file.response.data)
       }
     }
   }
