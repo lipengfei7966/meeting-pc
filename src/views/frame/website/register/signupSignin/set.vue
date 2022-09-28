@@ -98,7 +98,7 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[]
+            list: this.$t('datadict.contantType')
           },
           {
             label: 'website.signin.query.signFlag',
@@ -121,8 +121,8 @@ export default {
             }
           },
           {
-            label: 'website.signin.query.signWay',
-            prop: 'signWay',
+            label: 'website.signin.query.signinWay',
+            prop: 'signinWay',
             element: 'base-select',
             attrs: {
               clearable: true

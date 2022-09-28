@@ -194,7 +194,7 @@ export default {
         signFlag: '签到状态',
         createDate: '报名时间',  
         signupData: '签到时间',
-        signWay: '签到方式',
+        signinWay: '签到方式',
       }
     },
     signupSignin: {

@@ -103,7 +103,7 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[]
+            list: this.$t('datadict.contantType')
           },
           {
             type: 'datetime',
@@ -117,8 +117,8 @@ export default {
             }
           },
           {
-            label: 'website.signin.query.signWay',
-            prop: 'signWay',
+            label: 'website.signin.query.signinWay',
+            prop: 'signinWay',
             element: 'base-select',
             attrs: {
               clearable: true
