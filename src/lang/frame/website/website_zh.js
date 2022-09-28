@@ -150,7 +150,7 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
-        contactType: '参会人类型',
+        contactType: '参会人类型1',
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
