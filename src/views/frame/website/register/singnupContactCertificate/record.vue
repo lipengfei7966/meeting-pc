@@ -98,10 +98,10 @@ export default {
             label: 'website.signupCertificatePrint.query.contactType',
             prop: 'contactType',
             element: 'base-select',
+            list: this.$t('datadict.contantType'),
             attrs: {
               clearable: true
-            },
-            list: []
+            }
           },
           {
             type: 'datetime',

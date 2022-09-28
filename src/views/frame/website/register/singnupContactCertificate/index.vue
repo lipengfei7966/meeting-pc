@@ -110,16 +110,15 @@ export default {
             label: 'website.signupCertificate.query.contactType',
             prop: 'contactType',
             element: 'base-select',
+            list: this.$t('datadict.contantType'),
             attrs: {
               clearable: true
-            },
-            list: []
+            }
           },
           {
             label: 'website.signupCertificate.query.certificateFlag',
             prop: 'certificateFlag',
             element: 'base-select',
-            default: '2',
             attrs: {
               clearable: true
             },
