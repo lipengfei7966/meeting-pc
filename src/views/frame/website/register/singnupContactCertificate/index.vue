@@ -31,6 +31,7 @@ export default {
   name: 'singnupContactCertificate',
   data() {
     return {
+      activeName: '2',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -43,9 +44,7 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {
-            certificateFlag: '0'
-          }
+          data: {}
         },
         formData: [
           {
@@ -111,10 +110,10 @@ export default {
             label: 'website.signupCertificate.query.contactType',
             prop: 'contactType',
             element: 'base-select',
+            list: this.$t('datadict.contantType'),
             attrs: {
               clearable: true
-            },
-            list: []
+            }
           },
           {
             label: 'website.signupCertificate.query.certificateFlag',
@@ -124,6 +123,7 @@ export default {
               clearable: true
             },
             list: [
+              { label: '全部', value: 2 },
               { label: '已办证', value: 1 },
               { label: '未办证', value: 0 }
             ]

@@ -102,7 +102,7 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        contactCode: '参会人code',
+        contactCode: '参会人编码',
         createDate: '报名时间'
       },
       list: {
@@ -133,7 +133,7 @@ export default {
     signupCertificatePrint: {
       title: '办证记录管理',
       query: {
-        contactType: '证件类型',
+        certificateType: '证件类型',
         eventCode: '会议名称',
         name: '姓名',
         mobile: '手机',
@@ -144,8 +144,8 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        contactCode: '参会人code',
-        createDate: '报名时间'
+        contactCode: '参会人编码',
+        createDate: '办证时间'
       },
       list: {
         name: '姓名',

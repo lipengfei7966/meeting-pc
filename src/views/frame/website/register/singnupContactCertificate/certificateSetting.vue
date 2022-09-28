@@ -278,6 +278,7 @@ export default {
           funcOperation: '获取模块类型'
         }
       }).then(res => {
+        this.list = [];
         if(res.data){
           this.printSetform = res.data
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
@@ -371,6 +372,10 @@ export default {
           debugger
           if (res.data) {
             this.getCertificateType();
+
+            this.printSetform.certificateType = '0001' // 删除后设置默认值
+            this.certificateTypeChange('0001')
+
             this.$message.success('删除成功')
           } else {
             this.$message.error('删除失败')
