@@ -286,12 +286,15 @@ export default {
           this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
 
           debugger
-          let index = this.printSetform.printBackground.lastIndexOf("/");
-          let filename = this.printSetform.printBackground.substr(index+1)
-          this.fileList.push({
-            name: filename,
-            url: this.printSetform.printBackground,
-          })
+          if(this.printSetform.printBackground){
+
+            let index = this.printSetform.printBackground.lastIndexOf("/");
+            let filename = this.printSetform.printBackground.substr(index+1)
+            this.fileList.push({
+              name: filename,
+              url: this.printSetform.printBackground,
+            })
+          }
         }else{
           this.printSetform = {
             certificateContent: [],
