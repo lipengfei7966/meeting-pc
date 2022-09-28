@@ -17,7 +17,7 @@
     <div v-if="isprint" ref="content">
       <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content" :style="`width: ${item.printWight}mm;height: ${item.printHeight}mm`">
         <p v-show="false">
-          <vue-qr class="newQR" :text="item.code" :size="200" style="width:100%"> </vue-qr>
+          <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
@@ -31,7 +31,7 @@ import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import Print from 'print-js'
 import VueQr from 'vue-qr'
-import VueBarcode from 'vue-barcode';
+import VueBarcode from 'vue-barcode'
 export default {
   name: 'singnupContactCertificate',
   data() {
@@ -161,6 +161,7 @@ export default {
           {
             name: 'update',
             type: 'dialog',
+            i18n: '修改参会人',
             component: () => import('../signupContact/edit.vue'),
             getParam: () => {
               return {
@@ -315,7 +316,7 @@ export default {
         </div>`
     }
   },
-  components:{
+  components: {
     VueQr,
     VueBarcode
   },
@@ -352,7 +353,7 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
-      this.isprint = true;
+      this.isprint = true
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
@@ -369,13 +370,12 @@ export default {
       let isCanPrint = true
 
       this.tableData.forEach((item, index) => {
-
         this.$nextTick(() => {
           let contents = this.$refs.contents
           contents.forEach((node, nodeindex) => {
-              let qrCode = node.getElementsByClassName('qrCode')
-              let newQR = node.getElementsByClassName('newQR')[0]
-            if(qrCode.length > 0){
+            let qrCode = node.getElementsByClassName('qrCode')
+            let newQR = node.getElementsByClassName('newQR')[0]
+            if (qrCode.length > 0) {
               qrCode[0].parentNode.appendChild(newQR)
               qrCode[0].parentNode.removeChild(qrCode[0])
             }
@@ -446,7 +446,7 @@ export default {
               })
               params.certificatePrintList = certificatePrintList
             }
-              this.isprint = false
+            this.isprint = false
             setTimeout(function () {
               newWin.print() //打开打印窗口
               // newWin.close() //关闭打印窗口
