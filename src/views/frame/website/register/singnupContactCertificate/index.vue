@@ -119,10 +119,12 @@ export default {
             label: 'website.signupCertificate.query.certificateFlag',
             prop: 'certificateFlag',
             element: 'base-select',
+            default: '2',
             attrs: {
               clearable: true
             },
             list: [
+              { label: '全部', value: 2 },
               { label: '已办证', value: 1 },
               { label: '未办证', value: 0 }
             ]

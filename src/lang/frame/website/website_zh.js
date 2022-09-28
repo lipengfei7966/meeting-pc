@@ -102,7 +102,7 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        contactCode: '参会人code',
+        contactCode: '参会人编码',
         createDate: '报名时间'
       },
       list: {
@@ -144,8 +144,8 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        contactCode: '参会人code',
-        createDate: '报名时间'
+        contactCode: '参会人编码',
+        createDate: '办证时间'
       },
       list: {
         name: '姓名',
