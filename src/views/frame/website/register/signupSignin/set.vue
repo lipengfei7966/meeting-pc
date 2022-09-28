@@ -189,12 +189,12 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '添加参会人',
+            msg: '默认场景无法添加参会人',
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
               } else if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-                this.$notify(notifyInfo({ msg: '默认场景无法添加参会人' }));
                 return false
               } else {
                 return true
