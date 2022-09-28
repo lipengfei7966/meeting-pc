@@ -2,7 +2,7 @@
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" @fileCallback='fileCallback'></bs-table>
   </div>
 </template>
 
@@ -201,9 +201,7 @@ export default {
               multiple: false, // 是否可选择多文件，默认false
               disabled: false, // 是否不可操作，默认false
               notifyFlag: false, // 是否弹出通知，默认true
-              paramData: {}, // 参数，默认{}
-              handleSuccess: this.handleSuccess, // 成功回调
-              handleError: this.handleError, // 异常回调
+              paramData: {} // 参数，默认{}
             }
           },
           {
@@ -326,17 +324,10 @@ export default {
           console.log(error)
         })
     },
-    handleSuccess(response){
-      this.uploadLoading = false
+    fileCallback(data){
+      debugger
       this.$notify.success({
-        message: response.data,
-        position: 'bottom-right'
-      })
-    },
-    handleError(response){
-      this.uploadLoading = false
-      this.$notify.error({
-        message: response.msgText,
+        message: data,
         position: 'bottom-right'
       })
     }
