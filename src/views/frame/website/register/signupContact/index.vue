@@ -2,7 +2,7 @@
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" @fileCallback='fileCallback'></bs-table>
   </div>
 </template>
 
@@ -49,6 +49,92 @@ export default {
                 trigger: 'blur'
               }
             ]
+          },
+          {
+            label: 'website.signupContact.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.code',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            list: this.$t('datadict.contantType'),
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.certificateFlag',
+            prop: 'certificateFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'已办证',value:1},{label:'未办证',value:0}]
+          },
+          {
+            label: 'website.signupContact.query.signFlag',
+            prop: 'signFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+          },
+          {
+            label: 'website.signupContact.query.signNum',
+            prop: 'signNum',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            type: 'datetime',
+            label: 'website.signupContact.query.createDate',
+            prop: 'createDate',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
           }
         ]
       },
@@ -115,12 +201,7 @@ export default {
               multiple: false, // 是否可选择多文件，默认false
               disabled: false, // 是否不可操作，默认false
               notifyFlag: false, // 是否弹出通知，默认true
-              paramData: {}, // 参数，默认{}
-              beforeUploadCallback: this.idCardOcrBeforeUploadCallback, // 文件上传前回调
-              progressCallback: this.idCardOcrProgressCallback, // 文件上传时回调
-              successCallback: this.idCardOcrSuccessCallback, // 成功回调
-              errorCallback: this.idCardOcrErrorCallback, // 异常回调
-              changeCallback: this.idCardOcrChangeCallback // 文件状态改变回调
+              paramData: {} // 参数，默认{}
             }
           },
           {
@@ -242,6 +323,13 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    fileCallback(data){
+      debugger
+      this.$notify.success({
+        message: data,
+        position: 'bottom-right'
+      })
     }
   }
 }

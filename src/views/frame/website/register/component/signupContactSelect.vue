@@ -196,7 +196,7 @@ export default {
           }
         })
           .then(response => {
-            this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
+            this.$notify(notifySuccess({ msg: this.$t('biz.msg.addSuccess') }))
             this.loading = false
             this.handleCloseDialog(true)
           })
