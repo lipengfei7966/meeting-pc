@@ -31,6 +31,7 @@ export default {
   name: 'singnupContactCertificate',
   data() {
     return {
+      activeName: '2',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -43,9 +44,7 @@ export default {
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
-          data: {
-            certificateFlag: '0'
-          }
+          data: {}
         },
         formData: [
           {

@@ -21,6 +21,7 @@ export default {
   name: 'singnupContactCertificateRecord',
   data() {
     return {
+      activeName: '0001',
       form: {
         moreShowFlg: false,
         listQuery: {
