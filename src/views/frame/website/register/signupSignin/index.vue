@@ -169,11 +169,11 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '签到',
+            msg: '请选择一条数据',
             component: () => import('../signupSignin/signin.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === ''
                   || this.$refs.bsTable.currentRow==null) {
-                //this.$notify(notifyInfo({ msg: '请选择会议和人员' }));
                 return false
               }else{
                 return true

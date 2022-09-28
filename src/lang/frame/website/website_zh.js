@@ -62,7 +62,17 @@ export default {
       title: '参会人管理',
       query: {
         name: '姓名',
-        eventCode: '会议名称'
+        eventCode: '会议名称',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        createDate: '报名时间'
       },
       list: {
         name: '姓名',
@@ -102,7 +112,7 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        contactCode: '参会人code',
+        contactCode: '参会人编码',
         createDate: '报名时间'
       },
       list: {
@@ -144,8 +154,8 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        contactCode: '参会人code',
-        createDate: '报名时间'
+        contactCode: '参会人编码',
+        createDate: '办证时间'
       },
       list: {
         name: '姓名',

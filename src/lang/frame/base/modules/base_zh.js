@@ -251,6 +251,7 @@ export default {
       stepWarn: '当前业务操作无流程引导',
       cancelAuditSuccess: '退审成功',
       insertSuccess: '新增成功',
+      addSuccess: '添加成功',
       updateSuccess: '修改成功',
       copySuccess: '复制成功',
       saveSuccess: '保存成功',

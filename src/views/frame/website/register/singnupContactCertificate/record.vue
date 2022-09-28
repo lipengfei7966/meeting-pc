@@ -21,6 +21,7 @@ export default {
   name: 'singnupContactCertificateRecord',
   data() {
     return {
+      activeName: '0001',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -97,10 +98,10 @@ export default {
             label: 'website.signupCertificatePrint.query.contactType',
             prop: 'contactType',
             element: 'base-select',
+            list: this.$t('datadict.contantType'),
             attrs: {
               clearable: true
-            },
-            list: []
+            }
           },
           {
             type: 'datetime',
