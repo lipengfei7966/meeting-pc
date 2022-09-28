@@ -92,6 +92,15 @@ export default {
             }
           },
           {
+            label: 'website.signin.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[]
+          },
+          {
             label: 'website.signin.query.signFlag',
             prop: 'signFlag',
             element: 'base-select',
@@ -99,6 +108,26 @@ export default {
               clearable: true
             },
             list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+          },
+          {
+            type: 'datetime',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
+          },
+          {
+            label: 'website.signin.query.signWay',
+            prop: 'signWay',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'pc',value:'pc'},{label:'扫码签到',value:'scan'}]
           },
           {
             type: 'datetime',
