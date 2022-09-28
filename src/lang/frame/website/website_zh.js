@@ -192,7 +192,9 @@ export default {
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
-        createDate: '报名时间'
+        createDate: '报名时间',  
+        signupData: '签到时间',
+        signinWay: '签到方式',
       }
     },
     signupSignin: {

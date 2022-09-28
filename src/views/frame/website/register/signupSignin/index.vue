@@ -103,7 +103,7 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[]
+            list: this.$t('datadict.contantType')
           },
           {
             label: 'website.signin.query.certificateFlag',
