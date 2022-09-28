@@ -15,7 +15,7 @@
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
     <div v-if="isprint" ref="content">
-      <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content">
+      <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content" :style="`width: ${item.printWight}mm;height: ${item.printHeight}mm`">
         <p v-show="false">
           <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
@@ -357,7 +357,7 @@ export default {
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
-        .content {width: 80mm;height: 118mm;margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+        .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
         .draggable {position:absolute}
         .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
@@ -449,7 +449,7 @@ export default {
             this.isprint = false
             setTimeout(function () {
               newWin.print() //打开打印窗口
-              newWin.close() //关闭打印窗口
+              // newWin.close() //关闭打印窗口
               // issueUpdate(params).then(() => {
               //     that.fetch()
               //     that.$message.success('打印结束')
