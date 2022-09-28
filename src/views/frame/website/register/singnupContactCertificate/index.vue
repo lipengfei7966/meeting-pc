@@ -14,9 +14,9 @@
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
-    <div v-show="false" ref="content">
+    <div v-if="isprint" ref="content">
       <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content">
-        <p>
+        <p v-show="false">
           <vue-qr class="newQR" :text="item.code" :size="200" style="width:100%"> </vue-qr>
         </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
@@ -266,6 +266,7 @@ export default {
         }
       },
       tableData: [],
+      isprint: false,
       certificateContentList: [],
       certificateLayout: `
         <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
@@ -351,6 +352,7 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
+      this.isprint = true;
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
@@ -366,8 +368,6 @@ export default {
       }
       let isCanPrint = true
 
-      
-
       this.tableData.forEach((item, index) => {
 
         this.$nextTick(() => {
@@ -381,7 +381,7 @@ export default {
             }
           })
         })
-        
+
         if (item.certificateLayout) {
           item.certificateLayout = item.certificateLayout.replace('姓名', item.name)
           item.certificateLayout = item.certificateLayout.replace('单位名称', item.department)
@@ -446,10 +446,10 @@ export default {
               })
               params.certificatePrintList = certificatePrintList
             }
-
+              this.isprint = false
             setTimeout(function () {
               newWin.print() //打开打印窗口
-              // newWin.close() //关闭打印窗口
+              newWin.close() //关闭打印窗口
               // issueUpdate(params).then(() => {
               //     that.fetch()
               //     that.$message.success('打印结束')
