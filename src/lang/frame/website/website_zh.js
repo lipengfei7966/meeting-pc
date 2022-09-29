@@ -267,7 +267,8 @@ export default {
         email: '邮箱',
         department: '部门',
         customer: '客户',
-        createDate: '创建时间'
+        createDate: '创建时间',
+        updateDate:'更新时间'
       },
       edit: {
         code: '客户联系人编码',

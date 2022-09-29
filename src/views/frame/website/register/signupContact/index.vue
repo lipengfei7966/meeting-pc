@@ -188,12 +188,11 @@ export default {
           },
           {
             name: 'export',
-            i18n: '导出',
+            i18n: '导出模板',
             event: this.exportExcel
           },
           {
             name: 'upload',
-            i18n: '导入',
             atrrs: {
               uploadUrl: process.env.BASE_API + '/api/register/signupContactCol/exportImport', // 文件上传url
               showFileList: false, // 是否展示上传文件，默认false
@@ -203,6 +202,10 @@ export default {
               notifyFlag: false, // 是否弹出通知，默认true
               paramData: {} // 参数，默认{}
             }
+          },
+          {
+            name: 'export',
+            i18n: '导出'
           },
           {
             name: 'refresh'
