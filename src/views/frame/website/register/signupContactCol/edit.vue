@@ -179,7 +179,7 @@ export default {
             element: 'input-validate',
 
             attrs: {
-              disabled: this.param.mapBase === '2' ? true : false,
+              disabled: true,
               clearable: true,
               cols: 3
             },

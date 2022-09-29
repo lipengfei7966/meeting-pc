@@ -105,7 +105,7 @@ export default {
           element: 'base-select',
           list: this.$t('datadict.contantType'),
           attrs: {
-            clearable: true
+            clearable: true,
           },
           validate: [
             {
@@ -130,7 +130,7 @@ export default {
         debugger
         response.data.forEach(element => {
           debugger
-          if (element.mapType === '1') {
+          if (element.mapType === '1' && element.mapCode !== 'contactType') {
             const rs = {
               label: element.mapName,
               prop: element.mapCode,
@@ -148,7 +148,7 @@ export default {
               rs.element = 'input-validate'
             }else if (element.mapComp==='3') {
               rs.element = 'base-select'
-              rs.attrs = eval('(' + element.enumLable + ')')
+                rs.attrs = eval('(' + element.enumLable + ')')
             }else if (element.mapComp==='2') {
               rs.type = 'date'
               rs.attrs = {
