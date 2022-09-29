@@ -58,7 +58,7 @@
                 <p>证件内容</p>
                 <div style="border: 1px solid;padding: 10px">
                   <el-checkbox-group v-model="printSetform.certificateContent" @change="certificateContentChange">
-                    <el-checkbox :label="item.dictItemVal" v-for="(item,index) in certificateContentList" :key="index"> {{ item.dictItemName }}</el-checkbox>
+                    <el-checkbox :label="item.code" v-for="(item,index) in certificateContentList" :key="index"> {{ item.mapName }}</el-checkbox>
                   </el-checkbox-group>
 
                 </div>
@@ -89,7 +89,7 @@
         <div class="p-event" id="print" :key="changecount" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto',backgroundImage:`url(${printSetform.printBackground})`,backgroundSize:'100% 100%'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
-            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width" :h="item.height" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
+            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
               <p v-if="item.value == 'qrCode' " id="qrCode" @mousedown="checkItem(item)">
                 <vue-qr class="qrCode" text="printSetform.certificateContent" :size="180" style="width:100%"> </vue-qr>
@@ -243,16 +243,16 @@ export default {
 
     // 获取打印类型数据字典
     request({
-      url: '/api/sys/dict/listItem',
+      url: '/api/register/signupContactCol/page',
       method: 'POST',
-      data: { data: 'CERTIFICATE_CONTENT', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      data: { data: { eventCode: this.$route.params.data}, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       //
       debugger
       this.certificateContentList = res.data
       let newItems = [
-        {dictItemName: '编码二维码', dictItemVal: 'qrCode'},
-        {dictItemName: '编码条码', dictItemVal: 'barCode'},
+        {mapName: '编码二维码', code: 'qrCode'},
+        {mapName: '编码条码', code: 'barCode'},
       ]
       this.certificateContentList = this.certificateContentList.concat(newItems)
     })
@@ -448,19 +448,20 @@ export default {
 
       this.printSetform.certificateContent.forEach((dictItemVal,dictIndex) => {
         let item = this.certificateContentList.find(item => {
-          return dictItemVal == item.dictItemVal
+          return dictItemVal == item.code
         })
         // if(!item) return
+        // debugger
         if(item) {
           let isIncludes = this.list.some(listItem => {
-            return listItem.name == item.dictItemName
+            return listItem.name == item.mapName
           })
           //
           if (!isIncludes) {
             this.list.push({
-              name: item.dictItemName, // 表名对应的值
-              label: item.dictItemName, // 表名
-              value: item.dictItemVal,
+              name: item.mapName, // 表名对应的值
+              label: item.mapName, // 表名
+              value: item.code,
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
@@ -477,10 +478,13 @@ export default {
               // debugger
               let listIncludes = certificateContent.some(contentItem => {
                 let item = this.certificateContentList.find(item => {
-                  return contentItem == item.dictItemVal
+                  return contentItem == item.code
                 })
-
-                return listItem.name == item.dictItemName
+                if(item){
+                  return listItem.name == item.mapName
+                }else{
+                  return false
+                }
               })
               if (!listIncludes) {
                 this.list.splice(listIndex, 1)
