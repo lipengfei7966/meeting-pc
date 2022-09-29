@@ -33,12 +33,12 @@
               <div style="display: flex">
                 <p style="display: flex">
                   <span>宽</span>
-                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printWight"></el-input>
+                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printWight" @change="WHchange"></el-input>
                 </p>
 
                 <p style="display: flex;margin-left:30px">
                   <span>长</span>
-                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight"></el-input>
+                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @change="WHchange"></el-input>
                 </p>
               </div>
             </el-form-item>
@@ -86,7 +86,7 @@
           <vue-qr v-if="false" text="test" :size="200"> </vue-qr>
         </div> -->
 
-        <div class="p-event" id="print" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto'}">
+        <div class="p-event" id="print" :key="changecount" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto',backgroundImage:`url(${printSetform.printBackground})`,backgroundSize:'100% 100%'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width" :h="item.height" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
@@ -173,6 +173,7 @@ export default {
   data() {
     return {
       summaryData: null,
+      changecount: 0,
       dialogFormVisible: false, // 新增证件类型弹窗
       certificateContentList: [],
       contactTypeArrayList: [],
@@ -262,6 +263,9 @@ export default {
     }
   },
   methods: {
+    WHchange(){
+      this.changecount ++;
+    },
     certificateTypeChange(val){
       this.printSetformInit(val)
     },
@@ -492,12 +496,31 @@ export default {
     /** 打印方法 */
     doPrint() {
       const subOutputRankPrint = document.getElementById('print')
-      const newContent = subOutputRankPrint.innerHTML
-      const oldContent = document.body.innerHTML
-      document.body.innerHTML = newContent
-      window.print()
-      window.location.reload()
-      document.body.innerHTML = oldContent
+      const styleSheet = `<style>
+      @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
+        body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
+        .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+        .draggable {position:absolute}
+        .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
+        .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
+      </style>`
+
+      //打印
+      var newWin = window.open('') //新打开一个空窗口
+      this.$nextTick(() => {
+
+        var imageToPrint = document.getElementById('print') //获取需要打印的内容
+        newWin.document.write(imageToPrint.outerHTML) //将需要打印的内容添加进新的窗口
+
+        newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
+        newWin.document.close() //在IE浏览器中使用必须添加这一句
+        newWin.focus() //在IE浏览器中使用必须添加这一句
+
+        setTimeout(function () {
+          newWin.print() //打开打印窗口
+          // newWin.close() //关闭打印窗口
+        }, 100)
+      })
       return false
     },
     onResize: function(x, y, width, height) {
@@ -509,10 +532,10 @@ export default {
       changeItem.y = y;
       changeItem.width = width;
       changeItem.height = height;
-      this.x = x
-      this.y = y
-      this.width = width
-      this.height = height
+      // this.x = x
+      // this.y = y
+      // this.width = width
+      // this.height = height
     },
     onDrag: function(x, y) {
       let changeItem = this.list.find(item => {
@@ -522,8 +545,8 @@ export default {
       changeItem.x = x;
       changeItem.y = y;
       // debugger
-      this.x = x
-      this.y = y
+      // this.x = x
+      // this.y = y
     },
     checkItem(item) {
       this.form.name = item.name

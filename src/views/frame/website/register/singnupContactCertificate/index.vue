@@ -397,14 +397,6 @@ export default {
       })
 
       if (!isCanPrint) return
-      var bsQueryExtras = []
-      this.$refs.bsTable.tableData.forEach((item) => {
-        bsQueryExtras.push({
-          code: item.code,
-          contactTypeArray: item.contactType,
-          eventCode: item.eventCode
-        })
-      })
 
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
@@ -421,7 +413,6 @@ export default {
           this.$message.success(response.data.msg)
 
           const data = this.tableData
-          const params = {}
           //打印
           var newWin = window.open('') //新打开一个空窗口
           this.$nextTick(() => {
@@ -433,29 +424,12 @@ export default {
             newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
             newWin.document.close() //在IE浏览器中使用必须添加这一句
             newWin.focus() //在IE浏览器中使用必须添加这一句
-            if (data.length == 1) {
-              params.name = data[0].name
-              params.code = data[0].code
-              params.mobile = data[0].mobile
-              params.issuingResult = 1
-            } else if (data.length > 1) {
-              params.issuingResult = 1
-              const certificatePrintList = []
-              data.map((item) => {
-                certificatePrintList.push({ name: item.name, code: item.code, mobile: item.mobile })
-              })
-              params.certificatePrintList = certificatePrintList
-            }
+
             this.isprint = false
             setTimeout(function () {
               newWin.print() //打开打印窗口
-              // newWin.close() //关闭打印窗口
-              // issueUpdate(params).then(() => {
-              //     that.fetch()
-              //     that.$message.success('打印结束')
-              // })
+              newWin.close() //关闭打印窗口
             }, 100)
-            // this.toSaveRecord()
           })
         } else {
           this.$message.warning(response.data.msg)
