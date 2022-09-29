@@ -218,7 +218,7 @@ export default {
     height: 26px;
     white-space: nowrap;
     border-top-left-radius: 5px;
-    overflow: hidden;
+    overflow: visible;
     user-select: none;
     .tags-view-item {
       display: inline-block;

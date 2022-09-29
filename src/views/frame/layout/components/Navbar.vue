@@ -1,8 +1,8 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <div :class="['logo', {'show': true}]" @click="$router.push('/')">
+    <div :style="{'width':!sidebar.opened?'50px':'192px'}" :class="['logo', {'show': true}]" @click="$router.push('/')">
       <img src="@/assets/frame/img/logo.png" alt="">
-      <span>会议系统</span>
+      <span v-show="sidebar.opened" >会议系统</span>
     </div>
     <!-- 收缩 -->
     <!-- <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
@@ -26,13 +26,17 @@
       </el-dropdown>
     </div>
 
-    <div class='right-menu'>
-      <!-- 推送消息 -->
-      <!-- <bs-ws v-if='clientWidth >= 1366'></bs-ws> -->
-      <div class='search' v-if='!isCollapse'>
-        <i class='el-icon-search' slot='append' @click='doSearch'></i>
-        <el-input v-model="input" class='input-search-style' clearable @keyup.enter.native="doSearch" @clear="doSearch"></el-input>
+    <div class='right-menu clearfix'>
+       <!-- 搜索 -->
+       <div class='search'>
+        <el-input v-model="input"  ref="search" class="input-search-style" :style="searchString" clearable @keyup.enter.native="doSearch" @clear="doSearch"></el-input>
+        <i class='el-icon-search' slot='append' @click='openSearch'></i>
+
       </div>
+      
+      <!-- 推送消息 -->
+      <bs-ws v-if='clientWidth >= 1366'></bs-ws>
+      <!-- {{searchActive}} -->
 
       <!-- 主题换色 -->
       <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
@@ -205,7 +209,9 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      searchActive: false,
+      searchString:'',
     }
   },
   inject: ['app'],
@@ -222,6 +228,25 @@ export default {
   watch: {
     'modifyPwdInfo.newPassword'(newValue) {
       this.pwdStrongVal = this.checkStrong(newValue)
+    },
+    'searchActive':{
+      handler(newValue) {
+      // this.openSearch();
+      if(this.searchActive){
+        this.searchString = 'animation:get .3s linear alternate forwards';
+          var searchTime = setTimeout(() => {
+            this.searchString = '';
+            clearTimeout(searchTime)
+          }, 300);
+      }else{
+        this.searchString = 'animation:get .3s linear reverse forwards';
+        var searchTime = setTimeout(() => {
+            this.searchString = 'display:none';
+            clearTimeout(searchTime)
+          }, 300);
+      }
+    },
+    immediate:true
     }
   },
   created() {
@@ -238,19 +263,119 @@ export default {
     }
   },
   methods: {
+    // 打开搜索
+    openSearch(){
+      this.searchActive = !this.searchActive
+      // if(this.searchActive){
+      //   this.searchString = 'animation:get .3s linear alternate forwards';
+      //     var searchTime = setTimeout(() => {
+      //       this.searchString = '';
+      //       clearTimeout(searchTime)
+      //     }, 300);
+      // }else{
+      //   this.searchString = 'animation:get .3s linear reverse forwards';
+      //   var searchTime = setTimeout(() => {
+      //       this.searchString = 'display:none';
+      //       clearTimeout(searchTime)
+      //     }, 300);
+      // }
+    },
+    // 菜单查询
     doSearch() {
     //   // 防止多次连续搜索
-    //   if (this.searchLoading) return
-    //   this.searchLoading = true
-
-    //   const filterPermissionMenu = this.permissionMenus.filter(menu => menu.name === this.moduleName)[0].children
-
-    //   if (this.input.trim() === '') {
-    //     this.showAll(filterPermissionMenu)
-    //   } else {
-    //     this.showSearch(filterPermissionMenu)
-    //   }
-    //   this.searchLoading = false
+      if (this.searchLoading) return
+      this.searchLoading = true
+      console.log(this.$store.state.app.moduleNames,247);
+      const filterPermissionMenu = this.permissionMenus.filter(menu => menu.name === this.$store.state.app.moduleNames)[0].children
+      console.log(filterPermissionMenu,249);
+      if (this.input.trim() === '') {
+        this.showAll(filterPermissionMenu)
+      } else {
+        this.showSearch(filterPermissionMenu)
+      }
+      this.searchLoading = false
+    },
+    showAll(route) {
+      route.forEach(item => {
+        item.hidden = false
+        if (item.children && item.children.length > 0) {
+          this.showAll(item.children)
+        }
+      })
+    },
+    showSearch(route) {
+      route.forEach(item => {
+        item.hidden = true
+        if (
+          item.meta &&
+          this.$t('route.' + item.meta.title)
+            .toLowerCase()
+            .includes(this.input.toLowerCase().trim())
+        ) {
+          item.hidden = false
+        }
+        if (item.children && item.children.length > 0) {
+          const counts = []
+          const count = []
+          item.children.forEach(i => {
+            i.hidden = true
+            if (
+              i.meta &&
+              this.$t('route.' + i.meta.title)
+                .toLowerCase()
+                .includes(this.input.toLowerCase().trim())
+            ) {
+              item.hidden = false
+              i.hidden = false
+              // 计数
+              counts.push(i.meta.title)
+            }
+            if (i.children && i.children.length > 0) {
+              i.children.forEach(r => {
+                r.hidden = true
+                if (
+                  r.meta &&
+                  this.$t('route.' + r.meta.title)
+                    .toLowerCase()
+                    .includes(this.input.toLowerCase().trim())
+                ) {
+                  item.hidden = false
+                  i.hidden = false
+                  r.hidden = false
+                  // 计数
+                  count.push(r.meta.title)
+                }
+              })
+            }
+          })
+          // 规则：
+          // 若只匹配到了一级，则显示所有对应二级和三级
+          // 若只匹配到了二级，则显示对应一级和所有三级
+          if (counts.length === 0 && count.length === 0 && !item.hidden) {
+            item.children.forEach(i => {
+              i.hidden = false
+              if (i.children && i.children.length > 0) {
+                i.children.forEach(r => {
+                  r.hidden = false
+                })
+              }
+            })
+          } else if (counts.length > 0 && count.length === 0) {
+            item.hidden = false
+            item.children.forEach(i => {
+              i.hidden = true
+              if (counts.includes(i.meta.title)) {
+                i.hidden = false
+                if (i.children && i.children.length > 0) {
+                  i.children.forEach(r => {
+                    r.hidden = false
+                  })
+                }
+              }
+            })
+          }
+        }
+      })
     },
     logo() {
       request({
@@ -524,7 +649,6 @@ export default {
     transform: rotate(90deg);
     background: transparent;
   }
-
   .business-module {
     float: left;
     height: 48px;
@@ -545,7 +669,6 @@ export default {
       user-select: none;
     }
   }
-
   .more-module {
     position: relative;
     float: left;
@@ -570,12 +693,13 @@ export default {
       }
     }
   }
-
   .right-menu {
     margin-right: 20px;
     font-size: 18px;
     color: #ffffff;
     user-select: none;
+    // min-width: 502px !important;
+    max-width: 30% !important;
     .right-menu-item {
       float: left;
       width: 48px;
@@ -682,11 +806,12 @@ export default {
 </style>
 
 <style lang='scss'>
-  
 .search {
-    // position: fixed;
     float: left;
-    // width: 192px;
+    position: relative;
+    width: 192px;
+    height: 100%;
+    display: inline-block;
     text-align: center;
     .el-input{
       width:160px;
@@ -696,8 +821,26 @@ export default {
     .el-icon-search {
           cursor: pointer;
           margin-right: 12px;
+          float: right;
+          margin-top: 13px;
         }
+      @keyframes get {
+      from {
+        width: 0px;
+        opacity: 0;
+      }
+
+      to {
+        width:160px;
+        opacity: 1;
+      }
+
+      }
     .input-search-style {
+      float: right;
+      // position: absolute;
+      // right: 0;
+      // top: 0;
       height: 30px;
       padding-top: 0 !important;
       .el-input__inner {

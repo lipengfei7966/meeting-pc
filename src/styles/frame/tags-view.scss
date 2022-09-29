@@ -1,14 +1,20 @@
+
 .tags-view{
-        background: #fff;
+        background: #fff !important;
         height: 40px !important;
         .tags-view-wrapper{
             height: 40px !important;
-            width: 99% !important;
+            width: 100% !important;
             margin: 0 auto;
+        }
+        .tags-view-container{
+            background: #fff;
         }
         .tags-view-container,.scroll-wrapper,.el-tabs__nav-scroll,.tabs-style,.el-tabs__header,.el-tabs__nav-wrap{
             height: 40px !important;
             background: #ffffff;
+            box-shadow: 4px 2px 6px var(--contentBg);
+            margin: 0 !important;
             .el-tabs__nav-scroll{
                 background: #ffffff;
                 .el-tabs__nav{

@@ -11,6 +11,7 @@
             <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
           </el-button>
         </div>
+        
         <div v-for="(btn, index) in mainData.topBar" :key="index">
           <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='$t(btn.i18n)' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
           <template v-if="btn.name !== 'query' && btn.name !== 'upload'">

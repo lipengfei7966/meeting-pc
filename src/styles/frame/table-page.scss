@@ -73,18 +73,25 @@
   padding-bottom: 0;
 
   // 头部
-  &>header {
+  header {
     background: #fff;
-    border: 1px solid #ababab;
+    margin: 10px !important;
+    padding: 10px 20px ;
     border-radius: 5px;
     margin-bottom: 5px;
+    border: none !important;
 
     // form版面
     .header-form-inline {
       position: relative;
       padding: 3px 10px;
 
-      .el-row {
+      .el-form-item, .el-row{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100% !important;
+        margin: 0 !important;
         .el-form-item-more {
           display: flex;
           margin-top: 2px;
@@ -123,31 +130,86 @@
           color: #3e6db5;
           cursor: pointer;
         }
-      }
-
-      .search-btn {
-        position: absolute;
-        right: 16px;
-        top: 5px;
-
+        .el-col{
+            height: 30px;
+            margin: 10px 0 ;
+            .el-form-item__label{
+                width: auto;
+                height: 30px ;
+                text-align: right ;
+                display: block;
+                line-height: 30px ;
+                color: #262626;
+                font-weight: 500;
+            }
+            .el-form-item__content{
+                width: 300px ;
+            }
+            .el-form-item__content,.input-validate,.el-input,input{
+                height: 30px ;
+                .el-input__inner{
+                    height: 30px ;
+                }
+                .el-input__suffix{
+                    transform: translate(0,10%) ;
+                }
+            }
+            input{
+                text-align: left ;
+            }
+        .el-radio-group{
+            height: 30px ;
+            padding-bottom: 8px ;
+        }
+        }
+        .el-col-11{
+            width: 46% ;
+            margin: 0 ;
+        }
+        .el-col-2{
+            margin: 0 ;
+            width: 8% ;
+        }
+        .none{
+            width: 10px ;
+            height: 30px ;
+            padding: 0 ;
+            margin: 5px ;
+        }
+    }
+        // 按钮
+        .button-group{
+          position: absolute;
+          top: auto ;
+          right: 20px ;
+          bottom: 10px ;
+          height: 32px;
+          .button-group-item{
+            float: left;
+            margin: 0 10px !important;
+          }
+          button{
+              height: 32px;
+              padding: 8px 15px !important;
+          }
+        }
         .el-button--small {
           font-size: 12px;
           border-radius: 3px;
-          padding: 5px 9px !important;
+          padding: 5px 9px ;
           float: right;
         }
-      }
 
       .expand {
         position: absolute;
         right: 30px;
-        bottom: -20px;
+        bottom: -30px;
         width: 30px;
         height: 20px;
         line-height: 20px;
         text-align: center;
         background: #ffffff;
-        border-bottom: 1px solid #ababab;
+        // border-bottom: 1px solid #ababab;
         cursor: pointer;
         z-index: 99;
 
@@ -162,8 +224,8 @@
           border-bottom-left-radius: 8px;
           left: -20px;
           top: 0;
-          border-left: 1px solid #ababab;
-          border-bottom: 1px solid #ababab;
+          // border-left: 1px solid #ababab;
+          // border-bottom: 1px solid #ababab;
           cursor: pointer;
         }
 
@@ -178,8 +240,8 @@
           border-bottom-right-radius: 8px;
           top: 0;
           right: -20px;
-          border-right: 1px solid #ababab;
-          border-bottom: 1px solid #ababab;
+          // border-right: 1px solid #ababab;
+          // border-bottom: 1px solid #ababab;
           cursor: pointer;
         }
 
@@ -191,7 +253,13 @@
   }
 
   // 表格的样式
-  &>main {
+  main {
+    background: #fff;
+    margin: 10px ;
+    // margin-top: 30px;
+    padding: 10px 20px ;
+    border-radius: 5px;
+    margin-bottom: 5px;
     .top-operate {
       position: relative;
       width: calc(100% - 83px);
@@ -222,10 +290,6 @@
           }
         }
       }
-    }
-
-    .table-content {
-      // border: 1px solid;
     }
 
     .bottom-operate {
@@ -260,6 +324,29 @@
 
     .el-table {
       margin-top: 3px;
+      // background: #000;
+      border: none !important;
+      width: 100% !important;
+      table,.el-table__header,.has-gutter{
+        width: 100% !important;
+        table-layout: inherit !important;
+        border-collapse: collapse !important;
+      }
+      th,td{
+        border: none !important;
+        text-align: left !important;
+        color: #6b6b6b !important;
+      }
+      tr{
+        height: 40px !important;
+        border-bottom: 1px solid #e8e8e8 !important;
+      }
+      .el-table__header-wrapper,.has-gutter{
+        width: 100% !important;
+      }
+      .el-table__virtual-wrapper{
+        width: 100% !important;
+      }
     }
 
     .bs_echarts {
@@ -280,7 +367,7 @@
     padding-bottom: 22px;
 
     &>.top-operate {
-      position: fixed;
+      // position: fixed;
       width: 100%;
       background: var(--contentBg);
       padding: 3px 0;

@@ -141,11 +141,13 @@ export default {
     if (this.permissionMenus[0]) {
       this.moduleName = this.permissionMenus[0].name
       this.getFirstParentName(this.permissionMenus)
+      console.log(this.permissionMenus)
     }
     // 全屏显示监控
     if (screenfull.enabled) {
       screenfull.on('change', this.screenChange)
     }
+    this.$store.dispatch('setModuleNames',this.moduleName)
   },
   methods: {
     loadCaptcha() {
@@ -166,6 +168,7 @@ export default {
     },
     moduleChange(moduleName) {
       this.moduleName = moduleName
+      this.$store.dispatch('setModuleNames',this.moduleName)
     },
     getFirstParentName(list) {
       list.forEach(l => {
@@ -182,104 +185,6 @@ export default {
     // 关闭通用事件
     close() {
       this.loginVisible = false
-    },
-    // 菜单查询
-    doSearch() {
-      // 防止多次连续搜索
-      if (this.searchLoading) return
-      this.searchLoading = true
-
-      const filterPermissionMenu = this.permissionMenus.filter(menu => menu.name === this.moduleName)[0].children
-
-      if (this.input.trim() === '') {
-        this.showAll(filterPermissionMenu)
-      } else {
-        this.showSearch(filterPermissionMenu)
-      }
-
-      this.searchLoading = false
-    },
-    showAll(route) {
-      route.forEach(item => {
-        item.hidden = false
-        if (item.children && item.children.length > 0) {
-          this.showAll(item.children)
-        }
-      })
-    },
-    showSearch(route) {
-      route.forEach(item => {
-        item.hidden = true
-        if (
-          item.meta &&
-          this.$t('route.' + item.meta.title)
-            .toLowerCase()
-            .includes(this.input.toLowerCase().trim())
-        ) {
-          item.hidden = false
-        }
-        if (item.children && item.children.length > 0) {
-          const counts = []
-          const count = []
-          item.children.forEach(i => {
-            i.hidden = true
-            if (
-              i.meta &&
-              this.$t('route.' + i.meta.title)
-                .toLowerCase()
-                .includes(this.input.toLowerCase().trim())
-            ) {
-              item.hidden = false
-              i.hidden = false
-              // 计数
-              counts.push(i.meta.title)
-            }
-            if (i.children && i.children.length > 0) {
-              i.children.forEach(r => {
-                r.hidden = true
-                if (
-                  r.meta &&
-                  this.$t('route.' + r.meta.title)
-                    .toLowerCase()
-                    .includes(this.input.toLowerCase().trim())
-                ) {
-                  item.hidden = false
-                  i.hidden = false
-                  r.hidden = false
-                  // 计数
-                  count.push(r.meta.title)
-                }
-              })
-            }
-          })
-          // 规则：
-          // 若只匹配到了一级，则显示所有对应二级和三级
-          // 若只匹配到了二级，则显示对应一级和所有三级
-          if (counts.length === 0 && count.length === 0 && !item.hidden) {
-            item.children.forEach(i => {
-              i.hidden = false
-              if (i.children && i.children.length > 0) {
-                i.children.forEach(r => {
-                  r.hidden = false
-                })
-              }
-            })
-          } else if (counts.length > 0 && count.length === 0) {
-            item.hidden = false
-            item.children.forEach(i => {
-              i.hidden = true
-              if (counts.includes(i.meta.title)) {
-                i.hidden = false
-                if (i.children && i.children.length > 0) {
-                  i.children.forEach(r => {
-                    r.hidden = false
-                  })
-                }
-              }
-            })
-          }
-        }
-      })
     },
     // 弹窗登录
     handleLogin() {
@@ -366,6 +271,10 @@ export default {
     width: 100%;
     line-height: 48px;
     z-index: 1001;
+  }
+  .is-active {
+    transform: rotate(90deg);
+    background: transparent;
   }
   .main-wrapper {
     padding-top: 48px;

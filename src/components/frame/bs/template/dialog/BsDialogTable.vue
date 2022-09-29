@@ -91,6 +91,7 @@
                 <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
               </el-col>
             </template>
+            <el-col class="none"></el-col>
           </el-row>
           <!-- 右侧搜索按钮 -->
           <div class="search-btn" v-permission="['query']">
