@@ -91,6 +91,7 @@
     }
 
     .el-menu-item {
+      border-left: 5px solid transparent;
       &>.el-tooltip {
         padding-left: 13px !important;
 

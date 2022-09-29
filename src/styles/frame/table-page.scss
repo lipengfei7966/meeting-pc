@@ -177,22 +177,6 @@
             margin: 5px ;
         }
     }
-        // 按钮
-        .button-group{
-          position: absolute;
-          top: auto ;
-          right: 20px ;
-          bottom: 10px ;
-          height: 32px;
-          .button-group-item{
-            float: left;
-            margin: 0 10px !important;
-          }
-          button{
-              height: 32px;
-              padding: 8px 15px !important;
-          }
-        }
         .el-button--small {
           font-size: 12px;
           border-radius: 3px;
@@ -251,7 +235,26 @@
       }
     }
   }
-
+ // 按钮
+ .button-group{
+  position: absolute;
+  top: auto ;
+  right: 20px ;
+  bottom: 10px ;
+  height: 32px;
+  .button-group-item{
+    float: left !important;
+    margin: 0 10px !important;
+    position: static !important;
+  }
+  button{
+      height: 32px;
+      padding: 8px 15px !important;
+  }
+}
+.button-group :last-child{
+  margin-right: 0 !important;
+}
   // 表格的样式
   main {
     background: #fff;
@@ -296,7 +299,7 @@
       background: #fff;
       height: 36px;
       line-height: 36px;
-      border: 1px solid #ababab;
+      border: none !important;
       border-top: none;
       border-radius: 0 0 5px 5px;
 
@@ -329,6 +332,9 @@
       width: 100% !important;
       table,.el-table__header,.has-gutter{
         width: 100% !important;
+      }
+      table,.el-table__header,.has-gutter{
+        // width: 100% !important;
         table-layout: inherit !important;
         border-collapse: collapse !important;
       }
