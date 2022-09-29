@@ -123,7 +123,7 @@ export default {
               }
             },
             {
-              prop: 'mapCompAttr',
+              prop: 'enumLable',
               label: 'website.signupContactCol.list.enumLable'
             },
             {

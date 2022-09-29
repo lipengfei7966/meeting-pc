@@ -14,10 +14,10 @@
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
-    <div v-show="false" ref="content">
-      <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content">
-        <p>
-          <vue-qr class="newQR" :text="item.code" :size="200" style="width:100%"> </vue-qr>
+    <div v-if="isprint" ref="content">
+      <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content" :style="`width: ${item.printWight}mm;height: ${item.printHeight}mm`">
+        <p v-show="false">
+          <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
@@ -31,7 +31,7 @@ import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import Print from 'print-js'
 import VueQr from 'vue-qr'
-import VueBarcode from 'vue-barcode';
+import VueBarcode from 'vue-barcode'
 export default {
   name: 'singnupContactCertificate',
   data() {
@@ -161,6 +161,7 @@ export default {
           {
             name: 'update',
             type: 'dialog',
+            i18n: '修改参会人',
             component: () => import('../signupContact/edit.vue'),
             getParam: () => {
               return {
@@ -266,6 +267,7 @@ export default {
         }
       },
       tableData: [],
+      isprint: false,
       certificateContentList: [],
       certificateLayout: `
         <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
@@ -314,7 +316,7 @@ export default {
         </div>`
     }
   },
-  components:{
+  components: {
     VueQr,
     VueBarcode
   },
@@ -351,10 +353,11 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
+      this.isprint = true
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
-        .content {width: 80mm;height: 118mm;margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+        .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
         .draggable {position:absolute}
         .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
@@ -366,22 +369,19 @@ export default {
       }
       let isCanPrint = true
 
-      
-
       this.tableData.forEach((item, index) => {
-
         this.$nextTick(() => {
           let contents = this.$refs.contents
           contents.forEach((node, nodeindex) => {
-              let qrCode = node.getElementsByClassName('qrCode')
-              let newQR = node.getElementsByClassName('newQR')[0]
-            if(qrCode.length > 0){
+            let qrCode = node.getElementsByClassName('qrCode')
+            let newQR = node.getElementsByClassName('newQR')[0]
+            if (qrCode.length > 0) {
               qrCode[0].parentNode.appendChild(newQR)
               qrCode[0].parentNode.removeChild(qrCode[0])
             }
           })
         })
-        
+
         if (item.certificateLayout) {
           item.certificateLayout = item.certificateLayout.replace('姓名', item.name)
           item.certificateLayout = item.certificateLayout.replace('单位名称', item.department)
@@ -397,14 +397,6 @@ export default {
       })
 
       if (!isCanPrint) return
-      var bsQueryExtras = []
-      this.$refs.bsTable.tableData.forEach((item) => {
-        bsQueryExtras.push({
-          code: item.code,
-          contactTypeArray: item.contactType,
-          eventCode: item.eventCode
-        })
-      })
 
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
@@ -421,7 +413,6 @@ export default {
           this.$message.success(response.data.msg)
 
           const data = this.tableData
-          const params = {}
           //打印
           var newWin = window.open('') //新打开一个空窗口
           this.$nextTick(() => {
@@ -433,29 +424,12 @@ export default {
             newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
             newWin.document.close() //在IE浏览器中使用必须添加这一句
             newWin.focus() //在IE浏览器中使用必须添加这一句
-            if (data.length == 1) {
-              params.name = data[0].name
-              params.code = data[0].code
-              params.mobile = data[0].mobile
-              params.issuingResult = 1
-            } else if (data.length > 1) {
-              params.issuingResult = 1
-              const certificatePrintList = []
-              data.map((item) => {
-                certificatePrintList.push({ name: item.name, code: item.code, mobile: item.mobile })
-              })
-              params.certificatePrintList = certificatePrintList
-            }
 
+            this.isprint = false
             setTimeout(function () {
               newWin.print() //打开打印窗口
-              // newWin.close() //关闭打印窗口
-              // issueUpdate(params).then(() => {
-              //     that.fetch()
-              //     that.$message.success('打印结束')
-              // })
+              newWin.close() //关闭打印窗口
             }, 100)
-            // this.toSaveRecord()
           })
         } else {
           this.$message.warning(response.data.msg)
