@@ -92,6 +92,15 @@ export default {
             }
           },
           {
+            label: 'website.signin.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: this.$t('datadict.contantType')
+          },
+          {
             label: 'website.signin.query.signFlag',
             prop: 'signFlag',
             element: 'base-select',
@@ -99,6 +108,26 @@ export default {
               clearable: true
             },
             list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+          },
+          {
+            type: 'datetime',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
+          },
+          {
+            label: 'website.signin.query.signinWay',
+            prop: 'signinWay',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'pc',value:'pc'},{label:'扫码签到',value:'scan'}]
           },
           {
             type: 'datetime',
@@ -160,12 +189,12 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '添加参会人',
+            msg: '默认场景无法添加参会人',
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
               } else if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-                this.$notify(notifyInfo({ msg: '默认场景无法添加参会人' }));
                 return false
               } else {
                 return true
