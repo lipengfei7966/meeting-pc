@@ -106,6 +106,13 @@ div:focus {
   }
 }
 
+.hover{
+  background: #e6f7ff !important;
+  &>span{
+  color: #54a9ff !important;
+  }
+}
+
 code {
   padding: 15px 16px;
   display: block;
@@ -145,7 +152,19 @@ li {
   font-weight: bold;
 }
 
+
 // 媒体查询
+@media screen and (min-width: 0) and (max-width: 930px) {
+  .right-menu {
+    min-width:278px;
+  }
+}
+@media screen and (min-width: 1365px) and (max-width: 1920px) {
+  .right-menu {
+    min-width:503px;
+  }
+}
+
 @media screen and (min-width: 0) and (max-width: 1366px) {
   .el-form-item__content {
     .el-radio+.el-radio {

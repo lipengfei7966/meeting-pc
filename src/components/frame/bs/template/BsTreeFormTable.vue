@@ -80,6 +80,7 @@
                 </el-form-item>
               </el-col>
             </template>
+            <el-col class="none"></el-col>
           </el-row>
           <!-- 右侧搜索按钮 -->
           <div class="search-btn" v-permission="['query']">
@@ -944,15 +945,26 @@ export default {
             cursor: pointer;
           }
         }
-        .search-btn {
+        // .search-btn {
+        //   position: absolute;
+        //   right: 16px;
+        //   top: 5px;
+        //   .el-button--small {
+        //     font-size: 12px;
+        //     border-radius: 3px;
+        //     padding: 5px 9px !important;
+        //     float: right;
+        //   }
+        // }
+        .search-btn{
           position: absolute;
-          right: 16px;
-          top: 5px;
-          .el-button--small {
-            font-size: 12px;
-            border-radius: 3px;
-            padding: 5px 9px !important;
-            float: right;
+          top: auto !important;
+          right: 20px !important;
+          bottom: 10px !important;
+          height: 32px;
+          button{
+              height: 32px;
+              padding: 8px 15px !important;
           }
         }
       }

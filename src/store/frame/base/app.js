@@ -13,9 +13,13 @@ const app = {
       height: document.documentElement.clientHeight
     },
     icons: [],
-    dataDictList: {}
+    dataDictList: {},
+    moduleNames: ''
   },
   mutations: {
+    SET_MODULENAMES: (state, moduleNames) => {
+      state.moduleNames = moduleNames
+    },
     TOGGLE_SIDEBAR: state => {
       if (state.sidebar.opened) {
         storage.set('sidebarStatus', 1)
@@ -36,12 +40,16 @@ const app = {
     SET_ICONS(state, icons) {
       state.icons = icons.map(v => ({ label: path.basename(v, '.svg'), value: path.basename(v, '.svg') }))
     },
-
     SET_DATADICT(state, data) {
       state.dataDictList = data
     }
   },
   actions: {
+    setModuleNames({
+      commit
+    }, moduleNames) {
+      commit('SET_MODULENAMES', moduleNames)
+    },
     toggleSideBar({
       commit
     }) {
