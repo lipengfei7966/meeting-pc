@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-container app-container"  :style="{'left': sidebar.opened == 0 ? '10px !important' : '0 !important','width': sidebar.opened == 1 ? '100% !important' : ' calc(100% - 10px) !important'}">
     <bs-form ref='bsForm' :form='form' @closeDialog='closeCallback'></bs-form>
     <bs-table ref='bsTable' :mainData='mainData' @initCallback='initCallback'>
       <template slot='isException' slot-scope='scope'>

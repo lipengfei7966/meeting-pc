@@ -10,11 +10,11 @@
           <i class='el-icon-search' slot='append' @click='doSearch'></i>
         </el-input>
       </div> -->
-      <div class="left-menu">
+      <div id="left-menu" class="left-menu" ref="leftMenu">
         <sidebar class="sidebar-container"></sidebar>
         <!-- 收缩左侧菜单栏 -->
         <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
-          <img src="@/assets/frame/img/hamburger.png" alt="">
+          <img src="@/assets/frame/img/shrink.png" alt="">
         </div>
       </div>
       <div class="main-container">
@@ -273,8 +273,7 @@ export default {
     z-index: 1001;
   }
   .is-active {
-    transform: rotate(90deg);
-    background: transparent;
+    transform: rotate(180deg);
   }
   .main-wrapper {
     padding-top: 48px;
@@ -293,7 +292,7 @@ export default {
         top: 30%;
       }
       .hamburger-container {
-        line-height: 58px;
+        line-height: 57px;
         float: left;
         padding: 0 10px;
       }
@@ -351,42 +350,6 @@ export default {
 .main-wrapper {
   position: relative;
   height: 100%;
-  // .search {
-  //   position: fixed;
-  //   width: 192px;
-  //   text-align: center;
-  //   z-index: 1001;
-  //   .input-search-style {
-  //     width: 180px;
-  //     margin-top: 10px;
-  //     .el-input__suffix {
-  //       transform: translate(-25px, -2px) !important;
-  //     }
-  //     .el-input__inner {
-  //       height: 30px;
-  //       border: 1px solid;
-  //       border-right: none;
-  //       border-radius: 0;
-  //       font-size: 14px;
-  //       color: #fff;
-  //       border-radius: 3px 0 0 3px;
-  //       padding: 0 6px;
-  //     }
-  //     .el-input__icon {
-  //       line-height: 34px;
-  //     }
-  //     .el-input-group__append {
-  //       height: 30px;
-  //       padding: 0 10px;
-  //       border: 1px solid;
-  //       border-left: none;
-  //       border-radius: 0 3px 3px 0;
-  //       .el-icon-search {
-  //         cursor: pointer;
-  //       }
-  //     }
-  //   }
-  // }
   .left-menu{
     float: left;
     width: 50px;
@@ -398,18 +361,18 @@ export default {
     bottom: 0px;
     width: 48px;
     height: 48px;
-    line-height: 48px;
+    line-height: 57px;
     text-align: center;
     background: transparent;
     cursor: pointer;
-    transform: rotate(0);
-    transition: transform 0.38s;
-    &:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
+    // transform: rotate(0);
+    // transition: transform 0.38s;
+    // &:hover {
+    //   background: rgba(255, 255, 255, 0.2);
+    // }
     img {
-      width: 12px;
-      height: 11px;
+      width: 16px;
+      height: 16px;
     }
   }
 }

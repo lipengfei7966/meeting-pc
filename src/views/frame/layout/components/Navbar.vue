@@ -253,6 +253,16 @@ export default {
     this.logo()
   },
   mounted() {
+    // let $vm = this;
+    window.onresize = function(){
+        var leftMenu = document.getElementById('left-menu');
+        // if (!$vm.checkFull()) {
+        //   }
+          window.addEventListener('keydown',()=>{
+            // this.flag = false;
+            leftMenu.style = '';
+          })
+    }
     if (session.get('isLock') === 'yes') {
       this.dialogFormVisible = true
     }
@@ -263,22 +273,16 @@ export default {
     }
   },
   methods: {
+    checkFull() {
+      var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
+      if (isFull === undefined) {
+        isFull = false
+      }
+      return isFull
+    },
     // 打开搜索
     openSearch(){
       this.searchActive = !this.searchActive
-      // if(this.searchActive){
-      //   this.searchString = 'animation:get .3s linear alternate forwards';
-      //     var searchTime = setTimeout(() => {
-      //       this.searchString = '';
-      //       clearTimeout(searchTime)
-      //     }, 300);
-      // }else{
-      //   this.searchString = 'animation:get .3s linear reverse forwards';
-      //   var searchTime = setTimeout(() => {
-      //       this.searchString = 'display:none';
-      //       clearTimeout(searchTime)
-      //     }, 300);
-      // }
     },
     // 菜单查询
     doSearch() {
@@ -440,6 +444,8 @@ export default {
     },
     // 全屏
     handleClickFull() {
+      var leftMenu = document.getElementById('left-menu');
+      leftMenu.style = ''
       if (!screenfull.enabled) {
         this.$message({
           message: '浏览器不支持',
@@ -447,7 +453,8 @@ export default {
         })
         return false
       }
-      screenfull.toggle()
+      screenfull.toggle();
+      leftMenu.style = 'width:0px !important'
     },
     // 登出
     logout() {
