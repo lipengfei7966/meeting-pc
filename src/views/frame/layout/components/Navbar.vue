@@ -29,14 +29,17 @@
     <div class='right-menu clearfix'>
        <!-- 搜索 -->
        <div class='search'>
-        <el-input v-model="input"  ref="search" class="input-search-style" :style="searchString" clearable @keyup.enter.native="doSearch" @clear="doSearch"></el-input>
+        <el-input v-model="input" ref="search"   class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch"></el-input>
+        <!-- <ol class="searchContent" v-if="showSearchContent">
+          <li v-for="route in searchMenu" :key="route.name" :item="route" >
+            {{route.name}}
+          </li>
+        </ol> -->
         <i class='el-icon-search' slot='append' @click='openSearch'></i>
-
       </div>
       
       <!-- 推送消息 -->
       <bs-ws v-if='clientWidth >= 1366'></bs-ws>
-      <!-- {{searchActive}} -->
 
       <!-- 主题换色 -->
       <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
@@ -212,12 +215,15 @@ export default {
       },
       searchActive: false,
       searchString:'',
+      showSearchContent:false,
+      searchMenu:[]
     }
   },
   inject: ['app'],
   components: {
     BsWs,
-    ThemePicker
+    ThemePicker,
+    ...mapGetters(['permissionMenus', 'sidebar']),
   },
   computed: {
     ...mapGetters(['sidebar', 'clientWidth', 'avatar', 'name', 'activeFlag', 'account', 'permissionMenus']),
@@ -271,8 +277,32 @@ export default {
       this.handleChangePwd()
       this.isActive = true
     }
+    this.getList();
   },
   methods: {
+      getList(){
+        var arr = [];
+        function fn (list){
+            list.forEach(item=>{
+              if(item.children){
+                  fn(item.children);
+              }else{
+                arr = [...arr,item];
+              }
+            })
+            return arr;
+        }
+        fn(this.permissionMenus)
+        this.searchMenu = arr;
+      },
+      changeShowSearchContent(){
+        if(this.input == ''){
+          this.showSearchContent = false
+        }else{
+          this.showSearchContent = true
+        }
+        console.log(this.permissionMenus)
+      },
     checkFull() {
       var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
       if (isFull === undefined) {
@@ -663,9 +693,10 @@ export default {
     line-height: 48px;
     overflow: hidden;
     .module {
+      // font-size: 14px;
       .svg-icon {
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
       }
       float: left;
       width: 140px;
@@ -810,6 +841,39 @@ export default {
     }
   }
 }
+.searchContent{
+  width: 160px;
+  height: 160px;
+  position: absolute;
+  bottom: -160px;
+  right: 0;
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 10px #ccc;
+  color: #777;
+  font-size: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  &>li{
+    padding: 0 6px;
+  }
+}
+  /*滚动条样式*/
+  .searchContent::-webkit-scrollbar {
+            width: 4px;    
+            /*height: 4px;*/
+        }
+        .searchContent::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+            background: rgba(0,0,0,0.2);
+        }
+        .searchContent::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+            border-radius: 0;
+            background: rgba(0,0,0,0.1);
+
+        }
 </style>
 
 <style lang='scss'>

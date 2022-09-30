@@ -34,7 +34,7 @@
       padding: 0 3px 3px;
       margin-bottom: 3px;
       border-bottom: 1px solid #ababab;
-      min-height: 31px;
+      // min-height: 31px;
 
       .el-button {
         padding: 6px 10px;
@@ -273,6 +273,7 @@
           width: 100%;
           z-index: 99;
           margin: 5px 0 3px;
+          height: 68px;
 
           .el-row {
             .el-button {

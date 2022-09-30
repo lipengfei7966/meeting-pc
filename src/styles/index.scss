@@ -138,7 +138,9 @@ li {
   background: #f3f4f6;
   border-bottom-left-radius: 5px;
 }
-
+.main-wrapper{
+  max-height: calc(100% - 48px) !important;
+}
 // 多头/空头样式
 .longs {
   color: red;

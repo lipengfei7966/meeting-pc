@@ -95,9 +95,10 @@
                 </el-button>
               </div>
               <div class="button-group-item" @click='expand'>
-                <el-button type="text" :loading="loading" v-db-click>
+                <el-button type="text" class="fold" :loading="loading" v-db-click>
                   {{expandText}}
                 </el-button>
+                <span :class="['jt',{ 't': !expandStatus}]"></span>
               </div>
             </div>
         </el-form>
@@ -999,7 +1000,7 @@ export default {
     & > main {
       .top-operate {
         width: 100% !important;
-        height: 40px !important;
+        // height: 40px !important;
         line-height: 40px;
         z-index: 99;
         margin-bottom: 3px;
