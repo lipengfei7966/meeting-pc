@@ -51,6 +51,16 @@ Vue.use(Storage, {
   storage: 'session' // storage name session, local, memory
 })
 
+import VueDraggableResizable from 'vue-draggable-resizable'
+
+// optionally import default styles
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
+
+// import Print from '@/utils/frame/base/print.js'
+// Vue.use(Print)
+
 // Lazy Table
 import UmyUi from 'umy-ui'
 import 'umy-ui/lib/theme-chalk/index.css'

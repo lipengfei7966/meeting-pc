@@ -57,6 +57,141 @@ export default {
         shortName: '客户简称',
         orgCode: '客户归属'
       }
+    },
+    signupContact: {
+      title: '参会人管理',
+      query: {
+        name: '姓名',
+        eventCode: '会议名称'
+      },
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        createDate: '报名时间'
+      },
+      edit: {
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态'
+      }
+    },
+    signupCertificate: {
+      title: '办证管理',
+      query: {
+        certificateFlag: '办证状态',
+        meetName: '会议名称'
+      },
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        createDate: '报名时间'
+      },
+      edit: {
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态'
+      }
+    },
+    signupCertificatePrint: {
+      title: '办证记录管理',
+      query: {
+        contactType: '证件类型'
+      },
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        createDate: '办证时间'
+      },
+      edit: {
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态'
+      }
+    },
+    signupSignin: {
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        contactCode: '参会人编码',
+        contactType: '参会人类型',
+        signinStatus: '签到状态',
+        createDate: '签到时间',
+        signinWay: '签到方式',
+        sceneName: '场景名称',
+        signupData: '报名时间',
+        title: '添加参会人'
+      }
+    },
+    signupContactCol: {
+      title: '表单管理',
+      query: {
+        name: '姓名',
+        eventCode: '会议名称'
+      },
+      list: {
+        mapCode: '名称',
+        mapName: '显示名称',
+        mapComp: '组件类型',
+        mapBase: '组件归属',
+        mapCompAttr: '组件属性',
+        enumLable: '字典表code',
+        mapRequired: '必填',
+        mapType: '启用',
+        mapSort: '顺序'
+      },
+      edit: {
+        mapBase: '组件归属',
+        mapCompAttr: '组件属性',
+        enumLable: '字典表code',
+        eventCode: '会议名称',
+        mapCode: '名称',
+        mapName: '显示名称',
+        mapComp: '组件类型',
+        mapType: '启用',
+        mapRequired: '必填',
+        mapSort: '顺序'
+      }
     }
   }
 }

@@ -127,29 +127,7 @@
           <el-pagination v-if='!emptyTextVisible' small background layout="total,sizes,prev, pager, next" :current-page="listQuery.current" :page-sizes="[20, 40, 60, 80, 100]" :page-size="listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
           </el-pagination>
         </div>
-        <!-- :data="linkTableData" -->
-        <u-table v-if='dialog.mainData.linkTable' stripe border class='table-content' ref="linkTable" highlight-current-row v-loading="loading" element-loading-spinner="el-icon-loading" style="border:1px solid;margin-top:3px;" :element-loading-text="$t('route.load')" :height='150' @selection-change="handleSelectionChangeLv2" @current-change="handleSelectRowLv2" @row-click='handleClickLv2' @row-dblclick="handleDblClick">
-          <u-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></u-table-column>
-          <u-table-column type="selection" width="55" align="center" :fixed="dialog.mainData.table.selectionFixed" v-if="dialog.mainData.table.showCheckbox"></u-table-column>
-          <template v-for='col in tableColsLv2'>
-            <u-table-column v-if='col.isShow' :key='col.prop' v-bind='col' :label='$t(col.label)' :sortable='dialog.mainData.table.sortable && col.sortable' show-overflow-tooltip>
-              <template slot-scope='scope'>
-                <slot v-if="col.isSlot" :name="col.prop" :row='scope.row'></slot>
-                <div :style='col.style' v-else>
-                  <span v-if='col.formatter'>{{ col.formatter(scope.row, scope.column, scope.row[col.prop], scope.$index) }}</span>
-                  <span v-else-if='!col.format'>{{ scope.row[col.prop] }}</span>
-                  <span v-else>{{ dataFormat(col.format.func, scope.row[col.prop], col.format.dict,col.format.dictType) }}</span>
-                </div>
-              </template>
-            </u-table-column>
-          </template>
-        </u-table>
-        <!-- 底部按钮 -->
-        <div class='bottom-operate' v-if='dialog.mainData.linkTable'>
-          <div class="bottom-operate-left" v-show='emptyTextVisibleLv2'>
-            <svg-icon icon-class="point" style='color:#E6A23C'></svg-icon>{{$t('table.emptyText')}}
-          </div>
-        </div>
+
       </main>
 
       <!-- 底部 -->
@@ -222,8 +200,6 @@ export default {
       multipleSelection: [],
       // 表头列表
       tableCols: [],
-      // 二级列表数据
-      linkTableData: [],
       // 二级列表选中行
       currentRowLv2: [],
       // 二级列表当前多选行
@@ -339,16 +315,6 @@ export default {
       v.sortable = v.sortable === false ? v.sortable : true
       this.tableCols.push(v)
     })
-    if (this.dialog.mainData.linkTable) {
-      this.dialog.mainData.linkTable.cols.forEach(v => {
-        // 根据isShow字段判断是否显示
-        if (v.isShow === undefined) {
-          v.isShow = true
-        }
-        v.sortable = v.sortable === false ? v.sortable : true
-        this.tableColsLv2.push(v)
-      })
-    }
   },
   mounted() {
     // 初始化
@@ -367,9 +333,6 @@ export default {
   },
   methods: {
     getRowKey(row) {
-      // if (this.dialog.mainData.linkTable) {
-      //   return toolUtil.uuid()
-      // }
       if (this.dialog.mainData.table.showCheckbox) {
         if (this.dialog.mainData.table.rowKey) {
           return row[this.dialog.mainData.table.rowKey]
@@ -435,43 +398,6 @@ export default {
       })
     },
 
-    // 二级列表数据请求
-    getLinkList() {
-      this.loadingLv2 = true
-      request({
-        url: this.dialog.mainData.api.search_lv2,
-        method: 'POST',
-        data:
-          this.dialog.mainData.apiData && this.dialog.mainData.apiData.search_lv2
-            ? {
-                funcModule: this.$t('route.' + this.$route.meta.title),
-                funcOperation: this.$t('biz.btn.search'),
-                data: this.dialog.mainData.apiData.search_lv2(this.currentRow)
-              }
-            : {
-                funcModule: this.$t('route.' + this.$route.meta.title),
-                funcOperation: this.$t('biz.btn.search'),
-                data: this.currentRow
-              }
-      })
-        .then(response => {
-          this.loading = false
-          this.linkTableData = response.data
-          // this.total = response.total
-          if (this.total && this.total > 0) {
-            this.emptyTextVisibleLv2 = false
-          } else {
-            this.emptyTextVisibleLv2 = true
-          }
-          this.$nextTick(() => {
-            this.$refs.linkTable.reloadData(this.linkTableData)
-          })
-        })
-        .catch(() => {
-          this.loadingLv2 = false
-        })
-    },
-
     // 返回指定过滤条件结果
     dataFormat(func = 'dataDictFormat', value, list, dictType) {
       if (dictType) {
@@ -510,9 +436,6 @@ export default {
     // 单选
     handleSelectRow(val) {
       this.currentRow = val
-      if (this.dialog.mainData.linkTable) {
-        this.getLinkList()
-      }
     },
 
     handleSelectRowLv2(val) {
@@ -524,10 +447,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.singleTable.toggleRowSelection([{ row }])
       })
-    },
-
-    handleClickLv2(row) {
-      this.$refs.linkTable.toggleRowSelection(row)
     },
 
     // 多选
@@ -580,11 +499,7 @@ export default {
     // 设置列表动态高度
     setTableHeight() {
       $(document).ready(() => {
-        if (this.dialog.mainData.linkTable) {
-          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 303 - this.$refs.formTableDialogHeader.offsetHeight
-        } else {
-          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 115 - this.$refs.formTableDialogHeader.offsetHeight
-        }
+        this.tableHeight = this.$refs.formTableDialog.offsetHeight - 115 - this.$refs.formTableDialogHeader.offsetHeight
       })
     },
 
@@ -618,14 +533,8 @@ export default {
           )
           return
         }
-        if (this.dialog.mainData.linkTable) {
-          this.$emit('closeDialog', {
-            currentRow: this.multipleSelection,
-            currentRowLv2: this.dialog.mainData.linkTable.showCheckbox ? this.multipleSelectionLv2 : this.currentRowLv2
-          })
-        } else {
-          this.$emit('closeDialog', this.multipleSelection)
-        }
+
+        this.$emit('closeDialog', this.multipleSelection)
       } else {
         if (!this.currentRow || this.currentRow.length === 0) {
           this.$notify(
@@ -635,14 +544,8 @@ export default {
           )
           return
         }
-        if (this.dialog.mainData.linkTable) {
-          this.$emit('closeDialog', {
-            currentRow: this.currentRow,
-            currentRowLv2: this.dialog.mainData.linkTable.showCheckbox ? this.multipleSelectionLv2 : this.currentRowLv2
-          })
-        } else {
-          this.$emit('closeDialog', this.currentRow)
-        }
+
+        this.$emit('closeDialog', this.currentRow)
       }
     },
 

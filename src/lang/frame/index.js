@@ -14,19 +14,10 @@ import zhData from '@/lang/frame/base/modules/data_zh'
 import enDashboard from '@/lang/frame/base/modules/dashboard_en'
 import zhDashboard from '@/lang/frame/base/modules/dashboard_zh'
 
-// todo
-import enSource from '@/lang/frame/base/modules/dataSource_en'
-import zhSource from '@/lang/frame/base/modules/dataSource_zh'
 // sys
 import enSys from '@/lang/frame/base/modules/sys_en'
 import zhSys from '@/lang/frame/base/modules/sys_zh'
 
-// 业务流程
-import enBusinessBpm from '@/lang/frame/bpm/businessBpm_en.js'
-import zhBusinessBpm from '@/lang/frame/bpm/businessBpm_zh.js'
-// 个人办公
-import enOffice from '@/lang/frame/bpm/office_en.js'
-import zhOffice from '@/lang/frame/bpm/office_zh.js'
 // 平台
 import enPlatform from '@/lang/frame/base/modules/platform_en.js'
 import zhPlatform from '@/lang/frame/base/modules/platform_zh.js'
@@ -41,7 +32,6 @@ import enWebsite from '@/lang/frame/website/website_en'
 const messages = {
   en: {
     ...enBase,
-    ...enSource,
     ...enMsg,
     ...enFile,
     ...enSys,
@@ -49,13 +39,10 @@ const messages = {
     ...enDashboard,
     ...enPlatform,
     ...enFunc,
-    ...enBusinessBpm,
-    ...enOffice,
     ...enWebsite
   },
   zh: {
     ...zhBase,
-    ...zhSource,
     ...zhMsg,
     ...zhFile,
     ...zhSys,
@@ -63,8 +50,6 @@ const messages = {
     ...zhDashboard,
     ...zhPlatform,
     ...zhFunc,
-    ...zhBusinessBpm,
-    ...zhOffice,
     ...zhWebsite
   }
 }
