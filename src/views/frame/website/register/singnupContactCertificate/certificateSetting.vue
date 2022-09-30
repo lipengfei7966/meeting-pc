@@ -245,11 +245,13 @@ export default {
     request({
       url: '/api/register/signupContactCol/page',
       method: 'POST',
-      data: { data: { eventCode: this.$route.params.data}, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      data: { data: { eventCode: this.$route.params.data}, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       //
       debugger
-      this.certificateContentList = res.data
+      this.certificateContentList = res.data.filter(item => {
+        return item.mapType == '1'
+      })
       let newItems = [
         {mapName: '编码二维码', code: 'qrCode'},
         {mapName: '编码条码', code: 'barCode'},
