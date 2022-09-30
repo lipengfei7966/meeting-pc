@@ -29,7 +29,8 @@
     <div class='right-menu clearfix'>
        <!-- 搜索 -->
        <div class='search'>
-        <el-input v-model="input" ref="search"   class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch"></el-input>
+        <el-input v-model="input" ref="search"   class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch" @focus="showSearchContent = true" @blur="showSearchContent = false"></el-input>
+        <!-- 折叠框 -->
         <!-- <ol class="searchContent" v-if="showSearchContent">
           <li v-for="route in searchMenu" :key="route.name" :item="route" >
             {{route.name}}

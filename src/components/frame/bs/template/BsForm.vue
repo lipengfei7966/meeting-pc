@@ -248,7 +248,6 @@ export default {
   },
   mounted() {
     this.checkQueryCondition()
-    console.log(this.form);
   },
   methods: {
     // 重置
@@ -257,7 +256,8 @@ export default {
         this.form.listQuery.data[k] = ''
       }
       this.items = [];
-      // console.log(this.items);
+      this.expandStatus = process.env.EXPAND_FLG;
+      this.expandText = !this.expandStatus ? '收起' : '展开'
     },
     // 时间变化
     changeDaterangeTime(form) {
