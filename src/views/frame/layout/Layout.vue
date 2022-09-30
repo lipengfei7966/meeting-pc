@@ -148,6 +148,17 @@ export default {
       screenfull.on('change', this.screenChange)
     }
     this.$store.dispatch('setModuleNames',this.moduleName)
+    let bpmModule = sessionStorage.getItem('bpmModule');
+    let checkMenu = localStorage.getItem('checkMenu');
+    if(bpmModule){
+      var ActiveColor = setTimeout(()=>{
+        // this.$refs.aa.itemStyle['border-left'] = '5px solid var(--navFontColor)';
+        let menus = document.getElementById(checkMenu);
+        menus.style="border-left:5px solid var(--navFontColor)"
+        sessionStorage.setItem('firstMenu',menus.id)
+        clearTimeout(ActiveColor);
+      },300)
+    }
   },
   methods: {
     loadCaptcha() {
@@ -180,7 +191,15 @@ export default {
       })
     },
     toggleSideBar() {
-      this.$store.dispatch('toggleSideBar')
+      this.$store.dispatch('toggleSideBar');
+      var ActiveColor = setTimeout(()=>{
+        let checkMenu = localStorage.getItem('checkMenu');
+        let menus = document.getElementById(checkMenu);
+        console.log(menus,31212)
+        menus.style="border-left:5px solid var(--navFontColor)"
+        sessionStorage.setItem('firstMenu',menus.id)
+        clearTimeout(ActiveColor);
+      },300)
     },
     // 关闭通用事件
     close() {
@@ -264,7 +283,7 @@ export default {
 .app-wrapper {
   @include clearfix;
   position: relative;
-  height: 100%;
+  // height: 100%;
   .app-header {
     position: fixed;
     top: 0;
@@ -278,7 +297,8 @@ export default {
   .main-wrapper {
     padding-top: 48px;
     .main-container {
-      min-height: 100%;
+      height: 100% !important;
+      max-height: 100% !important;
       margin-left: 192px;
       .tags-view {
         position: fixed;
@@ -349,11 +369,11 @@ export default {
 <style lang='scss'>
 .main-wrapper {
   position: relative;
-  height: 100%;
+  // height: 100%;/
   .left-menu{
     float: left;
     width: 50px;
-    height: 100%;
+    height: 100px !important;
   }
   .hamburger-container {
     position: absolute;

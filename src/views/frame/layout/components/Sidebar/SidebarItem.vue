@@ -38,7 +38,14 @@ export default {
   methods: {
     generateTitle,
     onCheck(name){
-        // console.log(this.$refs.aa.itemStyle,this.$refs.aa.$attrs['route-data'])
+      var ActiveColor = setTimeout(()=>{
+        var firstMenu = sessionStorage.getItem('firstMenu');
+        var menuItem = document.getElementById(firstMenu);
+        menuItem.style = "";
+        sessionStorage.removeItem('firstMenu')
+        clearTimeout(ActiveColor)
+      },300)
+        localStorage.setItem('checkMenu',name);
         this.$refs.aa.itemStyle['border-left'] = '5px solid var(--navFontColor)';
     },
   }
@@ -48,5 +55,7 @@ export default {
 <style scoped>
 .menu_decorate {
   user-select: none;
+  text-align: left;
+  padding-left: 12px;
 }
 </style>

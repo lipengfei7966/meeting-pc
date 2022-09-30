@@ -110,9 +110,11 @@
             </el-button>
           </div>
           <div class="button-group-item search-btn" @click='expand' v-show='form.moreShowFlg || form.formData.length > 4' v-permission="['query']">
-            <el-button type="text" :loading="loading" v-db-click>
+            <el-button type="text" class="fold" :loading="loading" v-db-click>
               {{expandText}}
             </el-button>
+            <span :class="['jt',{ 't': !expandStatus}]"></span>
+            <!-- <span class="jt t"></span> -->
           </div>
         </div>
       </el-col>
@@ -469,4 +471,5 @@ export default {
     }
   }
 }
+
 </script>

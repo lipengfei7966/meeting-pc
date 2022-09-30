@@ -1,6 +1,7 @@
 // 覆盖一些element-ui样式
 .bs-container {
   margin-top: 15px !important;
+  height: 100% !important;
   background: #f0f2f5 !important;
   .el-upload {
     display: block;
@@ -1162,6 +1163,9 @@
 }
 .el-submenu__title{
   text-align: center !important;
+  .svg-icon-menu{
+    
+  }
 }
 .open-search{
   height: 500px !important;

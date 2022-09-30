@@ -3,15 +3,10 @@
   <main :style="{ width: hasLayout ? (clientWidth < 1366 ? (this.sidebar.opened && !app.isScreenFull ? '1163px' : '1323px') : 'auto') : 'auto' }">
     <!-- 顶部按钮 -->
     <div class="top-operate" v-if="mainData.isTopBar" ref="btnWrapper" @wheel.prevent="handleScroll">
+      <span class="left-title">应用列表</span>
       <el-row type="flex" ref="btnContainer">
         <slot name="add"></slot>
         <slot name="upload"></slot>
-        <div>
-          <el-button v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
-            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
-          </el-button>
-        </div>
-        
         <div v-for="(btn, index) in mainData.topBar" :key="index">
           <template v-if="btn.name !== 'query'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
@@ -33,9 +28,15 @@
             </el-button>
           </template>
         </div>
-        <div class="bottom-operate-left" v-if="mainData.isColset">
-          <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
-        </div>
+       <div class="right-buttons">
+            <span class="line"></span>
+            <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
+              <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
+            </el-button>
+          <div class="bottom-operate-left right-btn" v-if="mainData.isColset">
+            <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
+          </div>
+       </div>
       </el-row>
     </div>
     <!-- 列设置 -->
@@ -1469,8 +1470,45 @@ tr.el-table__row.el-table__row--striped.success-row td {
 }
 .top-operate{
   width: 100% !important;
-  height: 40px !important;
-  line-height: 40px !important;
+  .left-title{
+    border-left: 4px solid #1890ff;
+    font-size: 16px;
+    font-weight: 600;
+    color: #262626;
+    padding-left: 5px;
+  }
+  .right-buttons{
+    // width: 100px;
+    height: 60px;
+    position: relative;
+    padding-left: 36px;
+    &>.right-btn{
+      display: inline-block;
+      margin: 0 18px;
+    }
+    &>.el-button{
+      border: none;
+      svg{
+        width: 16px;
+        height: 16px;
+      }
+    }
+    &>.el-button:hover{
+      background: transparent !important;
+      use{
+        color: #606266 !important;
+      }
+    }
+    .line{
+      width: 1px;
+      height: 24px;
+      background: #ccc;
+      position: absolute;
+      left: 16px;
+      top: 56%;
+      transform: translate(0,-50%);
+    }
+  }
 }
 .el-row--flex {
   // width: 330px !important;

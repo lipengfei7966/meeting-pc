@@ -4,7 +4,7 @@
       <div class="scroll-wrapper" ref="scrollWrapper" style='width:100%;'>
         <div @click.right.prevent="openMenu($event)">
           <el-tabs v-model="activeName" ref='tags' type="card" class='tabs-style' closable @tab-remove="removeTab" @tab-click="handleTabClick">
-            <el-tab-pane ref='tag' v-for="tag in Array.from(visitedViews)" :key="tag.keyPath" :label="generateTitle(tag.tagTitle || tag.title)" :name="tag.keyPath" :data="tag"></el-tab-pane>
+            <el-tab-pane ref='tag' v-for="tag in Array.from(visitedViews)" :key="tag.keyPath" :label="generateTitle(tag.tagTitle || tag.title)" :name="tag.keyPath" :data="tag""></el-tab-pane>
           </el-tabs>
         </div>
       </div>
@@ -158,7 +158,7 @@ export default {
       this.visible = false
     },
     handleTabClick(params) {
-      this.$router.push(params.$attrs.data)
+      this.$router.push(params.$attrs.data);
     },
     triggerMenu(e) {
       e.stopPropagation()
@@ -204,7 +204,9 @@ export default {
         })
         return false
       }
-      screenfull.toggle()
+      screenfull.toggle();
+      let leftMenu = document.getElementById('left-menu');
+      leftMenu.style = 'width:0px !important;'
     }
   }
 }
