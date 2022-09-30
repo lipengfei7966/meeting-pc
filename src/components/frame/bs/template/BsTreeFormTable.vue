@@ -105,6 +105,7 @@
       </header>
       <main>
         <div class="top-operate" v-if="treeTableData.mainData.isTopBar">
+          <span class="left-title">应用列表</span>
           <el-row type='flex'>
             <slot name='add'></slot>
             <slot name='upload'></slot>
