@@ -8,6 +8,7 @@
 @import './frame/tree.scss'; // 树形图
 @import './frame/login.scss'; // 登录
 @import './frame/tags-view.scss'; //顶部导航
+
 // @import './frame/bs-form.scss'; //通用表单
 :root {
   --navFontColor: #ffffff; // 导航栏右侧字体颜色
@@ -106,10 +107,11 @@ div:focus {
   }
 }
 
-.hover{
+.hover {
   background: #e6f7ff !important;
-  &>span{
-  color: #54a9ff !important;
+
+  &>span {
+    color: #54a9ff !important;
   }
 }
 
@@ -139,9 +141,11 @@ li {
   background: #f3f4f6;
   border-bottom-left-radius: 5px;
 }
-.main-wrapper{
+
+.main-wrapper {
   max-height: calc(100% - 48px) !important;
 }
+
 // 多头/空头样式
 .longs {
   color: red;
@@ -154,6 +158,7 @@ li {
   margin-left: 10px;
   font-weight: bold;
 }
+
 // .main-container{
 //   margin-left: 50px !important;
 // }
@@ -162,12 +167,13 @@ li {
 // 媒体查询
 @media screen and (min-width: 0) and (max-width: 930px) {
   .right-menu {
-    min-width:278px;
+    min-width: 278px;
   }
 }
+
 @media screen and (min-width: 1365px) and (max-width: 1920px) {
   .right-menu {
-    min-width:503px;
+    min-width: 503px;
   }
 }
 
@@ -207,10 +213,14 @@ li {
   }
 }
 
-.bs-container[data-v-aed456d2]{
+div[data-v-080c255a] {
+  height: 100% !important;
+}
+
+.bs-container[data-v-aed456d2] {
   width: calc(100% - 10px) !important;
-//   left: 10px !important;
-//   overflow: hidden;
+  //   left: 10px !important;
+  //   overflow: hidden;
 }
 
 @media screen and (min-width: 1920px) {
