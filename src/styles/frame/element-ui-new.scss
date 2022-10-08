@@ -1,6 +1,6 @@
 // 覆盖一些element-ui样式
 .bs-new-container {
-  margin-top: 15px !important;
+  margin-top: 5px !important;
   padding: 10px !important;
   // height: 100% !important;
   background: #f0f2f5 !important;
@@ -107,7 +107,7 @@
   header {
     background: #fff;
     margin: 10px 0 !important;
-    padding: 10px 20px;
+    //padding: 10px 20px;
     border-radius: 5px !important;
     margin-bottom: 5px;
     border: none !important;
@@ -236,7 +236,7 @@
         }
 
         .el-input__inner:focus {
-          border: 1px solid #409eff !important;
+          //border: 1px solid #409eff !important;
           box-shadow: 0 0 7px #70b8ff;
         }
 
@@ -820,7 +820,7 @@
   }
 
   .el-button--medium {
-    padding: 8px 32px !important;
+    padding: 8px 10px !important;
   }
 
   .el-button.el-button--mini.el-button--default:focus {
@@ -833,11 +833,11 @@
     margin-right: 5px !important;
   }
 
-  .el-button.el-button--default.el-button--medium:focus {
-    border-color: #dcdfe6;
-    background: #ffffff;
-    color: #606266;
-  }
+  // .el-button.el-button--default.el-button--medium:focus {
+  //   border-color: #dcdfe6;
+  //   background: #ffffff;
+  //   color: #606266;
+  // }
 
   .el-button:hover svg {
     color: #ffffff !important;
@@ -857,7 +857,7 @@
   .el-pagination {
     float: right;
     height: 22px;
-    margin-top: 6px;
+    margin-top: 10px;
 
     span:not([class*='suffix']) {
       font-size: 14px;
@@ -1365,31 +1365,31 @@
   // }
 
   .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #409eff !important;
+    //background-color: #409eff !important;
     min-width: 26px;
   }
 
   .header-form-inline {
     position: relative;
     padding: 3px 10px;
-    margin: 10px;
+    margin: 5px;
   }
 
   .el-button.el-button--primary.el-button--small {
-    border-color: #409eff !important;
-    background: #409eff !important;
+    //border-color: #409eff !important;
+    //background: #409eff !important;
     height: 32px;
   }
 
   // 表格的样式
   main {
-    padding: 10px 20px !important;
+    padding: 5px 10px !important;
     background: #fff;
 
     .top-operate {
       position: relative;
       width: 100%;
-      height: 68px;
+      height: 48px;
       z-index: 99;
       margin-bottom: 0 !important;
       overflow-x: auto;
@@ -1400,7 +1400,7 @@
 
       &>.left-title {
         display: block;
-        margin-top: 20px;
+        margin-top: 5px;
       }
 
       &+header {
@@ -1422,7 +1422,7 @@
         flex-wrap: wrap;
         width: auto !important;
         margin: 0 !important;
-        line-height: 68px;
+        line-height: 40px;
 
         &>.right-buttons {
           padding-left: 20px;
@@ -1598,8 +1598,8 @@
     // }
 
     .el-button.el-button--primary.el-button--small {
-      border-color: #409eff !important;
-      background: #409eff !important;
+      //border-color: #409eff !important;
+      //background: #409eff !important;
       height: 32px;
     }
   }

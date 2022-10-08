@@ -10,7 +10,7 @@
         <div v-for="(btn, index) in mainData.topBar" :key="index">
           <template v-if="btn.name !== 'query'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
-              <el-button v-db-click size="mini" style="margin-right: 3px" v-permissionMultiple="btn.list">
+              <el-button v-db-click size="medium" style="margin-right: 3px;margin-top: 3px;height:32px;" v-permissionMultiple="btn.list">
                 <svg-icon :icon-class="btn.iconName || 'set'"></svg-icon>
                 {{ $t(btn.i18n || 'biz.btn.moreButton') }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -22,7 +22,7 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button v-else-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
+            <el-button v-else-if="btn.name !== 'refresh'" v-db-click @click="triggerEvent(btn)" style="margin-right: 3px;margin-top: 3px;height:32px;" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
               <svg-icon :icon-class="btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) ? btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) : 'set'"></svg-icon>
               {{ $t(btn.i18n) || (baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)) }}
             </el-button>
@@ -1454,7 +1454,7 @@ tr.el-table__row.el-table__row--striped.success-row td {
   }
   .right-buttons {
     // width: 100px;
-    height: 60px;
+    height: 40px;
     position: relative;
     padding-left: 36px;
     & > .right-btn {
@@ -1476,11 +1476,11 @@ tr.el-table__row.el-table__row--striped.success-row td {
     }
     .line {
       width: 1px;
-      height: 24px;
+      height: 20px;
       background: #ccc;
       position: absolute;
       left: 16px;
-      top: 56%;
+      top: 50%;
       transform: translate(0, -50%);
     }
   }
