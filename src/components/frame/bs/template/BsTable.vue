@@ -28,47 +28,19 @@
             </el-button>
           </template>
         </div>
-       <div class="right-buttons">
-            <span class="line"></span>
-            <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
-              <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
-            </el-button>
+        <div class="right-buttons">
+          <span class="line"></span>
+          <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
+            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
+          </el-button>
           <div class="bottom-operate-left right-btn" v-if="mainData.isColset">
             <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
           </div>
-       </div>
+        </div>
       </el-row>
     </div>
     <!-- 列设置 -->
-    <u-table
-      use-virtual
-      :highlight-current-row="highlightCurrentRow"
-      fixed-columns-roll
-      ref="singleTable"
-      :row-class-name="mainData.table.RowClassName"
-      :sort-orders="['descending', 'ascending', null]"
-      :header-cell-class-name="handleHeaderClass"
-      :key="key"
-      :tree-config="treeConfig"
-      :height="isHeight ? tableHeight : ''"
-      :row-height="rowHeight"
-      :row-id="mainData.table.rowKey || 'id'"
-      :data-changes-scroll-top="false"
-      :pagination-show="false"
-      stripe
-      border
-      v-loading="loading"
-      element-loading-spinner="el-icon-loading"
-      :element-loading-text="$t('route.load')"
-      :show-summary="mainData.table.showSummary"
-      :summary-method="mainData.table.defineSummaryFun || getSummaries"
-      :span-method="mainData.table.defineSpanFun ? mainData.table.defineSpanFun : arraySpanMethod"
-      @current-change="handleSelectRow"
-      @selection-change="handleSelectionChange"
-      @row-click="handleClick"
-      @sort-change="handleSortChange"
-      @row-dblclick="handleDblClick"
-    >
+    <u-table use-virtual :highlight-current-row="highlightCurrentRow" fixed-columns-roll ref="singleTable" :row-class-name="mainData.table.RowClassName" :sort-orders="['descending', 'ascending', null]" :header-cell-class-name="handleHeaderClass" :key="key" :tree-config="treeConfig" :height="isHeight ? tableHeight : ''" :row-height="rowHeight" :row-id="mainData.table.rowKey || 'id'" :data-changes-scroll-top="false" :pagination-show="false" stripe border v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" :show-summary="mainData.table.showSummary" :summary-method="mainData.table.defineSummaryFun || getSummaries" :span-method="mainData.table.defineSpanFun ? mainData.table.defineSpanFun : arraySpanMethod" @current-change="handleSelectRow" @selection-change="handleSelectionChange" @row-click="handleClick" @sort-change="handleSortChange" @row-dblclick="handleDblClick">
       <u-table-column align="center" type="index" width="50" fixed :label="$t('table.id')" v-if="mainData.table.showIndex"></u-table-column>
       <u-table-column align="center" type="selection" width="55" :fixed="mainData.table.selectionFixed" v-if="mainData.table.showCheckbox"></u-table-column>
       <slot name="cols" v-if="mainData.table.defineContent"></slot>
@@ -88,15 +60,13 @@
         </template>
       </template>
     </u-table>
-    <el-alert
-    class="alert-total"
-    title="合计"
-    type="warning"
-    :closable="false">
-  </el-alert>
+    <el-alert class="alert-total" title="合计" type="warning" :closable="false">
+    </el-alert>
     <!-- 底部按钮 -->
     <div class="bottom-operate">
-      <div class="bottom-operate-right" v-show="emptyTextVisible"><svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}</div>
+      <div class="bottom-operate-right" v-show="emptyTextVisible">
+        <svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}
+      </div>
       <!-- 分页 -->
       <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100, 300]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
     </div>
@@ -1474,59 +1444,59 @@ tr.el-table__row.success-row,
 tr.el-table__row.el-table__row--striped.success-row td {
   background: #fff4e9 !important;
 }
-.top-operate{
+.top-operate {
   width: 100% !important;
-  .left-title{
+  .left-title {
     border-left: 4px solid #1890ff;
     font-size: 16px;
     font-weight: 600;
     color: #262626;
     padding-left: 5px;
   }
-  .right-buttons{
+  .right-buttons {
     // width: 100px;
     height: 60px;
     position: relative;
     padding-left: 36px;
-    &>.right-btn{
+    & > .right-btn {
       display: inline-block;
       margin: 0 8px;
     }
-    &>.el-button{
+    & > .el-button {
       border: none;
-      svg{
+      svg {
         width: 16px;
         height: 16px;
       }
     }
-    &>.el-button:hover{
+    & > .el-button:hover {
       background: transparent !important;
-      use{
+      use {
         color: #606266 !important;
       }
     }
-    .line{
+    .line {
       width: 1px;
       height: 24px;
       background: #ccc;
       position: absolute;
       left: 16px;
       top: 56%;
-      transform: translate(0,-50%);
+      transform: translate(0, -50%);
     }
   }
 }
 .el-row--flex {
   // width: 330px !important;
-  position: static !important;
+  position: absolute;
   float: right;
   height: 40px !important;
 }
-.bottom-operate-left{
+.bottom-operate-left {
   float: none;
   margin: 0 10px;
 }
-.el-pagination--small{
+.el-pagination--small {
   float: none !important;
 }
 </style>
