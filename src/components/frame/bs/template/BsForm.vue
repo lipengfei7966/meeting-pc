@@ -100,7 +100,7 @@
       <el-col :span="6">
         <div class="button-group clearfix">
           <div class="button-group-item search-btn" v-permission="['query']">
-            <el-button :loading="loading" @click="onReset" v-db-click>
+            <el-button @click="onReset" v-db-click>
               重置
             </el-button>
           </div>
@@ -110,7 +110,7 @@
             </el-button>
           </div>
           <div class="button-group-item search-btn" @click='expand' v-show='form.moreShowFlg || form.formData.length > 4' v-permission="['query']">
-            <el-button type="text" class="fold" :loading="loading" v-db-click>
+            <el-button type="text" class="fold" v-db-click>
               {{expandText}}
             </el-button>
             <span :class="['jt',{ 't': !expandStatus}]"></span>
@@ -157,7 +157,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
-      expandText:'展开',
+      expandText: '展开',
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},
@@ -251,12 +251,12 @@ export default {
   },
   methods: {
     // 重置
-    onReset(){
+    onReset() {
       for (const k in this.form.listQuery.data) {
         this.form.listQuery.data[k] = ''
       }
-      this.items = [];
-      this.expandStatus = process.env.EXPAND_FLG;
+      this.items = []
+      this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
     },
     // 时间变化
@@ -471,5 +471,4 @@ export default {
     }
   }
 }
-
 </script>
