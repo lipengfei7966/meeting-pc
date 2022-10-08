@@ -99,11 +99,11 @@
       <!-- 右侧搜索按钮 -->
       <el-col :span="6">
         <div class="button-group clearfix">
-            <div class="button-group-item search-btn" v-permission="['query']">
+          <div class="button-group-item search-btn" v-permission="['query']">
             <el-button :loading="loading" @click="onReset" v-db-click>
               重置
             </el-button>
-          </div> 
+          </div>
           <div class="button-group-item search-btn" v-permission="['query']">
             <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
               {{$t('biz.lbl.search')}}
@@ -119,10 +119,10 @@
         </div>
       </el-col>
       <!-- 展开收起 -->
-      <!-- <div class='expand'>
+      <div class='expand' @click="expand()" v-show='form.moreShowFlg || form.formData.length > 4'>
         <i v-if='expandStatus' class='el-icon-arrow-up'></i>
         <i v-else class='el-icon-arrow-down'></i>
-      </div> -->
+      </div>
     </el-form>
     <!-- 二级弹窗 -->
     <view-form ref='viewForm' v-if='dialogSelectVisible' @closeHandler='dialogHandler'></view-form>

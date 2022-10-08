@@ -1,14 +1,19 @@
 // 覆盖一些element-ui样式
 .bs-container {
-  margin-top: 15px !important;
-  height: 100% !important;
-  background: #f0f2f5 !important;
+  margin-top: 20px;
+
   .el-upload {
     display: block;
+
     input[type='file'] {
       display: none !important;
     }
   }
+
+  .button-group {
+    display: none;
+  }
+
   .el-upload__input {
     display: none;
   }
@@ -101,12 +106,43 @@
 
   // form各种表单
   .el-form {
+    .el-col {
+      margin: 4px 0;
+    }
+
+    .expand {
+      bottom: -20px !important;
+      border-bottom: 1px solid #ababab !important;
+
+      &:before {
+        border-left: 1px solid #ababab !important;
+        border-bottom: 1px solid #ababab !important;
+      }
+
+      &:after {
+        border-right: 1px solid #ababab !important;
+        border-bottom: 1px solid #ababab !important;
+      }
+
+      div {
+
+        // flex-shrink: 0;
+        .el-button {
+          padding: 6px 10px;
+        }
+
+        .el-button+.el-button {
+          margin-left: -2px;
+        }
+      }
+    }
+
     .el-form-item {
       display: flex;
       align-items: center;
       width: 100%;
       margin-bottom: 0 !important;
-      min-height: 28px;
+      min-height: 27px;
       text-align: left;
 
       .el-form-item__label {
@@ -114,7 +150,7 @@
         align-items: center;
         float: none;
         width: 96px;
-        height: 28px;
+        height: 27px;
         line-height: 14px;
         font-size: 12px;
         font-weight: 400;
@@ -133,14 +169,10 @@
           font-size: 12px;
           border-radius: 3px;
           color: #000;
-          height: 32px !important;
-          line-height: 32px !important;
+          height: 24px !important;
+          line-height: 24px !important;
           padding: 0 6px;
           border-color: #cccccc;
-        }
-        .el-input__inner:focus{
-          border: 1px solid #409eff !important;
-          box-shadow: 0 0 7px #70b8ff;
         }
 
         .el-input__icon {
@@ -189,11 +221,14 @@
             }
           }
         }
+
         .el-textarea {
           margin-bottom: 2px !important;
+
           textarea {
             padding: 5px 6px;
           }
+
           &.is-disabled {
             .el-textarea__inner {
               background-color: #ffffff;
@@ -347,6 +382,7 @@
   .el-scrollbar__view {
     margin: 0;
     padding: 0;
+
     .el-select-dropdown {
       margin-top: 2px !important;
 
@@ -356,19 +392,10 @@
       }
     }
   }
-  // .el-select-dropdown__list{
-  //   &>.hover{
-  //     background: #000 !important;
-  //   }
-  // }
 
   .el-select-dropdown__item {
     font-size: 12px !important;
   }
-  .hover{
-    background: orange !important;
-  }
-  
 
   .el-select .el-input .el-select__caret {
     font-size: 12px;
@@ -380,7 +407,7 @@
 
   // 多选
   .el-checkbox-group {
-    & + .el-form-item__error {
+    &+.el-form-item__error {
       top: 90% !important;
     }
   }
@@ -413,10 +440,12 @@
   body .el-table th.gutter {
     display: table-cell !important;
   }
-  body .el-table th.gutter:last-of-type { 
-    display: block!important;
-    width: 17px!important; 
+
+  body .el-table th.gutter:last-of-type {
+    display: block !important;
+    width: 17px !important;
   }
+
   .el-table--scrollable-x th.gutter {
     width: 17px !important;
   }
@@ -469,7 +498,7 @@
       height: 24px;
       //display: contents;
 
-      & > div {
+      &>div {
         width: 100%;
         display: inline-block;
         overflow: hidden;
@@ -482,6 +511,7 @@
             width: auto !important;
             font-size: 12px !important;
           }
+
           span {
             .el-tag {
               margin-top: 0;
@@ -490,7 +520,7 @@
         }
       }
 
-      & > a {
+      &>a {
         width: 100%;
         display: inline-block;
         overflow: hidden;
@@ -537,6 +567,7 @@
     color: #e88e8e !important;
     background: #f6ecdc !important;
     padding-bottom: 30px;
+
     .cell {
       text-indent: 20px !important;
     }
@@ -549,19 +580,22 @@
 
   // 针对Tab内容为列表时切换固定列高度发生变化BUG
   .el-tabs {
+
     .el-table__fixed,
     .el-table__fixed-right {
       height: 100% !important;
     }
+
     .el-table--scrollable-y .el-table__fixed-body-wrapper {
       height: calc(100% - 25px) !important;
     }
+
     .el-table--scrollable-x.el-table--scrollable-y .el-table__fixed-body-wrapper {
       height: calc(100% - 42px) !important;
     }
   }
 
-  .el-table__body tr.hover-row > td {
+  .el-table__body tr.hover-row>td {
     background-color: #e2eefb;
   }
 
@@ -629,7 +663,7 @@
   }
 
   //隔行的变色的样式
-  .el-table--striped .el-table__body tr.current-row > td {
+  .el-table--striped .el-table__body tr.current-row>td {
     background: #f7f7f7;
   }
 
@@ -649,7 +683,7 @@
     color: #606266;
   }
 
-  .el-button > span > i {
+  .el-button>span>i {
     margin-right: 5px !important;
   }
 
@@ -851,7 +885,6 @@
 
   .el-tabs__nav-prev {
     left: 3px !important;
-    overflow: visible !important;
   }
 
   .el-tabs__nav-next {
@@ -867,14 +900,14 @@
     border: none !important;
   }
 
-  .el-tabs--border-card > .el-tabs__header {
+  .el-tabs--border-card>.el-tabs__header {
     border: 1px solid #ababab !important;
     border-top: none !important;
     border-right: none !important;
     background-color: #e2e2e2 !important;
   }
 
-  .el-tabs--border-card > .el-tabs__header .el-tabs__item {
+  .el-tabs--border-card>.el-tabs__header .el-tabs__item {
     color: #666666 !important;
     border: 1px solid #ababab !important;
     background-color: #f5f7fa !important;
@@ -885,7 +918,7 @@
     font-weight: 400;
   }
 
-  .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+  .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
     font-weight: 900 !important;
     border-left-color: #ababab !important;
     border-right-color: #ababab !important;
@@ -902,16 +935,16 @@
     }
   }
 
-  .el-tabs--card > .el-tabs__header .el-tabs__item .el-icon-close {
+  .el-tabs--card>.el-tabs__header .el-tabs__item .el-icon-close {
     width: 14px !important;
     top: -2px !important;
   }
 
-  .el-tabs--card > .el-tabs__header .el-tabs__item {
+  .el-tabs--card>.el-tabs__header .el-tabs__item {
     transition: unset !important;
   }
 
-  .el-tabs--border-card > .el-tabs__content {
+  .el-tabs--border-card>.el-tabs__content {
     padding: 0 5px 5px !important;
     border: 1px solid #ababab !important;
     border-top: none !important;
@@ -1005,7 +1038,7 @@
     //   display: none;
     // }
 
-    .el-tree-node__content > .el-checkbox {
+    .el-tree-node__content>.el-checkbox {
       margin-right: 8px !important;
     }
   }
@@ -1155,33 +1188,4 @@
       }
     }
   }
-  .el-button.el-button--primary.el-button--small {
-    border-color: #409eff !important;
-    background: #409eff !important;
-    height: 32px;
-  }
 }
-.el-submenu__title{
-  // text-align: center !important;
-  .svg-icon-menu{
-    
-  }
-}
-.open-search{
-  height: 500px !important;
-  // width: 200px;
-  background: #000 !important;
-  animation: get 2s linear 0s infinite alternate forwards;
-}
-@keyframes get {
-  from {
-   // transform: translateX(0px);
-   opacity: 0;
- }
-
- to {
-   // transform: translateX(1400px);
-   opacity: 1;
- }
-
- }
