@@ -31,11 +31,13 @@
        <div class='search'>
         <el-input v-model="input" ref="search"   class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch" @focus="showSearchContent = true" @blur="showSearchContent = false"></el-input>
         <!-- 折叠框 -->
-        <!-- <ol class="searchContent" v-if="showSearchContent">
-          <li v-for="route in searchMenu" :key="route.name" :item="route" >
-            {{route.name}}
+        <ol class="searchContent" v-if="showSearchContent">
+          <li v-for="item in searchMenu" :key="item.name" v-show='!item.hidden'>
+            <router-link v-if='!item.children' :to="{name:item.name}" :key="item.name">
+                <span v-if="item.meta && item.meta.title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
+            </router-link>
           </li>
-        </ol> -->
+        </ol>
         <i class='el-icon-search' slot='append' @click='openSearch'></i>
       </div>
       
@@ -260,7 +262,6 @@ export default {
     this.logo()
   },
   mounted() {
-    // let $vm = this;
     window.onresize = function(){
         var leftMenu = document.getElementById('left-menu');
         // if (!$vm.checkFull()) {

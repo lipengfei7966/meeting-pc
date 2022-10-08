@@ -1,7 +1,7 @@
 <template>
   <div class="menu-wrapper" v-if='!item.hidden'>
     <router-link v-if='!item.children' :to="{name: item.name}" :key="item.name">
-      <el-menu-item :index="item.name" :id="item.name" :route-data='item.name' :title="generateTitle(item.meta.title)"  @click="onCheck(item.meta.title)" ref="aa">
+      <el-menu-item :index="item.name" :id="item.name" :route-data='item.name' :title="generateTitle(item.meta.title)">
         <svg-icon className='svg-icon-menu' :icon-class="item.meta.icon || 'table'"></svg-icon>
         <span v-if="item.meta && item.meta.title" slot="title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
       </el-menu-item>
@@ -37,17 +37,6 @@ export default {
   },
   methods: {
     generateTitle,
-    onCheck(name){
-      var ActiveColor = setTimeout(()=>{
-        var firstMenu = sessionStorage.getItem('firstMenu');
-        var menuItem = document.getElementById(firstMenu);
-        menuItem.style = "";
-        sessionStorage.removeItem('firstMenu')
-        clearTimeout(ActiveColor)
-      },300)
-        localStorage.setItem('checkMenu',name);
-        this.$refs.aa.itemStyle['border-left'] = '5px solid var(--navFontColor)';
-    },
   }
 }
 </script>
