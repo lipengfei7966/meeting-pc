@@ -91,7 +91,6 @@
     }
 
     .el-menu-item {
-      border-left: 5px solid transparent;
       &>.el-tooltip {
         padding-left: 13px !important;
         .el-submenu__icon-arrow {
@@ -141,7 +140,6 @@
 .el-menu-item {
   height: 34px;
   line-height: 34px;
-  border-left: 5px solid transparent ;
 
   .svg-icon {
     margin-right: 3px !important;
@@ -153,6 +151,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-left: 4px !important;
   }
 }
 
@@ -193,7 +192,7 @@
 }
 
 .el-submenu .el-submenu .el-menu .el-menu-item {
-  padding-left: 31px !important;
+  padding-left: 30px !important;
   padding-right: 25px !important;
   span {
     width: 130px;
@@ -281,5 +280,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-left: 4px !important;
   }
 }

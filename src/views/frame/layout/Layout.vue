@@ -148,17 +148,6 @@ export default {
       screenfull.on('change', this.screenChange)
     }
     this.$store.dispatch('setModuleNames',this.moduleName)
-    let bpmModule = sessionStorage.getItem('bpmModule');
-    let checkMenu = localStorage.getItem('checkMenu');
-    if(bpmModule){
-      var ActiveColor = setTimeout(()=>{
-        // this.$refs.aa.itemStyle['border-left'] = '5px solid var(--navFontColor)';
-        let menus = document.getElementById(checkMenu);
-        menus.style="border-left:5px solid var(--navFontColor)"
-        sessionStorage.setItem('firstMenu',menus.id)
-        clearTimeout(ActiveColor);
-      },300)
-    }
   },
   methods: {
     loadCaptcha() {
@@ -192,14 +181,6 @@ export default {
     },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar');
-      var ActiveColor = setTimeout(()=>{
-        let checkMenu = localStorage.getItem('checkMenu');
-        let menus = document.getElementById(checkMenu);
-        console.log(menus,31212)
-        menus.style="border-left:5px solid var(--navFontColor)"
-        sessionStorage.setItem('firstMenu',menus.id)
-        clearTimeout(ActiveColor);
-      },300)
     },
     // 关闭通用事件
     close() {
