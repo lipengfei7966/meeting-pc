@@ -8,13 +8,13 @@
     background: #ffffff;
     z-index: 1003;
 
-    & > .dialog-title {
+    &>.dialog-title {
       position: relative;
       width: 100%;
       height: 30px;
       line-height: 30px;
       text-align: center;
-      background:#2661AD !important;
+      background: #2661AD !important;
       color: #fff;
       font-size: 14px;
       user-select: none;
@@ -40,7 +40,7 @@
         padding: 6px 10px;
       }
 
-      .el-button + .el-button {
+      .el-button+.el-button {
         margin-left: 3px;
       }
     }
@@ -132,28 +132,31 @@
             cursor: pointer;
           }
         }
-        .search-btn{
+
+        .search-btn {
           position: absolute;
           top: auto !important;
           right: 20px !important;
           bottom: 10px !important;
           height: 32px;
-          button{
-              height: 32px;
-              padding: 8px 15px !important;
+
+          button {
+            height: 32px;
+            padding: 8px 15px !important;
           }
         }
-        // .search-btn {
-          // position: absolute;
-          // right: 16px;
-          // top: 5px;
 
-          // .el-button--small {
-          //   font-size: 12px;
-          //   border-radius: 3px;
-          //   padding: 5px 17px !important;
-          //   float: right;
-          // }
+        // .search-btn {
+        // position: absolute;
+        // right: 16px;
+        // top: 5px;
+
+        // .el-button--small {
+        //   font-size: 12px;
+        //   border-radius: 3px;
+        //   padding: 5px 17px !important;
+        //   float: right;
+        // }
         // }
 
         .expand {
@@ -226,7 +229,7 @@
       }
     }
 
-    & > header {
+    &>header {
       .header-form-inline {
         .search-btn {
           // position: absolute;
@@ -242,6 +245,7 @@
         }
       }
     }
+
     .header-form-inline {
       .search-btn {
         // position: absolute;
@@ -256,6 +260,7 @@
         // }
       }
     }
+
     main {
       margin: 0 3px 3px;
       background: #ffffff;
@@ -280,7 +285,7 @@
               padding: 6px 10px;
             }
 
-            .el-button + .el-button {
+            .el-button+.el-button {
               margin-left: -2px;
             }
           }
@@ -289,6 +294,7 @@
         .table-content {
           // border: 1px solid;
         }
+
         .el-tabs__content .tabs-operate {
           margin-top: 5px;
 
@@ -298,7 +304,7 @@
         }
       }
 
-      & > .bottom-operate {
+      &>.bottom-operate {
         background: #fff;
         height: 36px;
         line-height: 36px;
@@ -315,7 +321,7 @@
       }
     }
 
-    & > .dialog-footer {
+    &>.dialog-footer {
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -339,6 +345,7 @@
     opacity: 0.4;
     z-index: 1002;
   }
+
   // 路由编辑页打开弹窗编辑页样式
   main {
     .el-table {
@@ -356,6 +363,7 @@
   .el-form {
     padding: 10px 20px;
     margin-bottom: 40px;
+
     .el-form-item__content {
       width: 128px;
     }
@@ -369,6 +377,7 @@
   .el-form {
     padding: 10px 20px;
     margin-bottom: 40px;
+
     .el-form-item__content {
       width: 128px;
     }
@@ -382,6 +391,7 @@
   .el-form {
     padding: 10px 20px;
     margin-bottom: 40px;
+
     .el-form-item__content {
       width: 128px;
     }
@@ -406,11 +416,13 @@
 
   main {
     margin-bottom: 42px !important;
+
     .el-table {
       margin-top: 0;
     }
   }
 }
+
 [type='formTabDialog'] {
   width: 1200px;
   //   height: 70vh;
@@ -423,11 +435,13 @@
 
   main {
     margin-bottom: 42px !important;
+
     .el-table {
       margin-top: 0;
     }
   }
 }
+
 [type='treeTableDialog'] {
   width: 1200px;
   height: 70vh;
@@ -437,7 +451,7 @@
   main {
     display: flex;
     height: calc(100% - 77px);
-    min-height: 450px;
+    // min-height: 450px;
 
     .left-content {
       width: 200px;
@@ -490,7 +504,7 @@
       min-width: 985px;
       margin-top: 0;
 
-      & > .bottom-operate {
+      &>.bottom-operate {
         background: #fff;
         height: 36px;
         line-height: 36px;
@@ -512,10 +526,12 @@
 .tabTreeTableDialog {
   height: 426px;
   overflow: hidden;
+
   .tabContent {
     display: flex;
     height: 100%;
     min-height: 425px;
+
     // margin: 0 3px 43px !important;
     .left-content {
       width: 200px;
@@ -568,7 +584,7 @@
       min-width: 985px;
       margin-top: 0;
 
-      & > .bottom-operate {
+      &>.bottom-operate {
         background: #fff;
         height: 36px;
         line-height: 36px;
@@ -586,6 +602,7 @@
     }
   }
 }
+
 [type='treeDialog'] {
   width: 450px;
   overflow: hidden;
