@@ -649,6 +649,7 @@ export default {
     height: 100%;
     text-align: center;
     display: inline-block;
+    // padding-right: 22px;
     cursor: pointer;
     img {
       width: 30px;
