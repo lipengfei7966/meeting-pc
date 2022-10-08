@@ -8,7 +8,7 @@
     </router-link>
     <component :is='item.meta && item.meta.isFirstParent ? "div" : "el-submenu"' v-else :index="item.name" :key="item.name" :title='generateTitle(item.meta.title)' :route-data='item.name'>
       <template slot="title">
-        <svg-icon className='svg-icon-menu' :icon-class="item.meta.icon || 'table'"></svg-icon>
+        <svg-icon className='svg-icon-menu' :icon-class="item.meta.icon || 'table'" ></svg-icon>
         <span v-if="item.meta && item.meta.title" slot="title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
       </template>
       <template v-if="!item.hidden && item.children && item.children.length > 0">

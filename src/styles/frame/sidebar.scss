@@ -162,7 +162,7 @@
 .el-submenu .el-menu-item {
   height: 34px;
   line-height: 34px;
-  padding-left: 30px !important;
+  padding-left: 24px !important;
   padding-right: 10px !important;
   span {
     width: 130px !important;
@@ -181,7 +181,7 @@
 .el-submenu .el-submenu .el-submenu__title {
   height: 34px;
   line-height: 34px;
-  padding-left: 20px !important;
+  padding-left: 14px !important;
 
   span {
     display: inline-block;
@@ -192,7 +192,7 @@
 }
 
 .el-submenu .el-submenu .el-menu .el-menu-item {
-  padding-left: 30px !important;
+  padding-left: 24px !important;
   padding-right: 25px !important;
   span {
     width: 130px;
@@ -225,7 +225,7 @@
     .el-menu-item {
       height: 34px;
       line-height: 34px;
-      padding-left: 36px !important;
+      padding-left: 24px !important;
       span {
         width: 150px !important;
       }
@@ -247,12 +247,12 @@
           .el-submenu__title {
             height: 34px;
             line-height: 34px;
-            padding-left: 20px !important;
+            padding-left: 16px !important;
           }
 
           .el-menu {
             .el-menu-item {
-              padding: 0 30px !important;
+              padding: 0 24px !important;
             }
           }
         }
