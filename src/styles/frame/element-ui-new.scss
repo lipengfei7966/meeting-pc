@@ -860,7 +860,7 @@
     margin-top: 6px;
 
     span:not([class*='suffix']) {
-      font-size: 12px;
+      font-size: 14px;
     }
 
     .el-pagination__sizes {
@@ -1545,6 +1545,7 @@
         line-height: 36px;
         border-radius: 0 0 5px 5px;
         border: none !important;
+        font-size: 14px !important;
 
         .bottom-operate-left {
           float: left;
@@ -1588,6 +1589,7 @@
 
     .bottom-operate {
       border: none !important;
+      font-size: 14px !important;
     }
 
     // .footer-copyright {
