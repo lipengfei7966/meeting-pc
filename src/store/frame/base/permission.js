@@ -63,9 +63,21 @@ function convert(arr) {
   })
 }
 
+function convertShowMenu(arr, menus) {
+  const newArr = arr.filter(item => !item.hidden)
+  newArr.map(item => {
+    if (item.children) {
+      convertShowMenu(item.children, menus)
+    } else {
+      menus.push(item)
+    }
+  })
+}
+
 const permission = {
   state: {
     menus: [],
+    showMenus: [],
     routers: [],
     addRouters: [],
     iframeRouters: routeIframe
@@ -86,6 +98,11 @@ const permission = {
       } else if (process.env.NODE_ENV === 'production') {
         state.menus = convert(menus)
       }
+    },
+    SET_SHOW_MENUS: (state, menus) => {
+      const showMenu = []
+      convertShowMenu(menus, showMenu)
+      state.showMenus = showMenu
     },
     SET_IFRAME: (state, routers) => {
       state.iframeRouters = routers
@@ -111,6 +128,7 @@ const permission = {
           })
           // 菜单生成
           commit('SET_MENUS', menus)
+          commit('SET_SHOW_MENUS', menus)
         }
 
         // 获取后台返回路由

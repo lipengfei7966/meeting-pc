@@ -2,7 +2,7 @@
   <el-menu class="navbar" mode="horizontal">
     <div :style="{'width':!sidebar.opened?'50px':'192px'}" :class="['logo', {'show': true}]" @click="$router.push('/')">
       <img src="@/assets/frame/img/logo.png" alt="">
-      <span v-show="sidebar.opened" >会议系统</span>
+      <span v-show="sidebar.opened">会议系统</span>
     </div>
     <!-- 收缩 -->
     <!-- <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
@@ -27,20 +27,25 @@
     </div>
 
     <div class='right-menu clearfix'>
-       <!-- 搜索 -->
-       <div class='search'>
-        <el-input v-model="input" ref="search"   class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch" @focus="showSearchContent = true" @blur="showSearchContent = false"></el-input>
+      <!-- 搜索 -->
+      <div class='search'>
+        <!-- <el-input v-model="input" ref="search" class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch" @focus="showSearchContent = true" @blur="showSearchContent = false"></el-input> -->
         <!-- 折叠框 -->
-        <ol class="searchContent" v-if="showSearchContent">
+        <!-- <ol class="searchContent" v-if="showSearchContent">
           <li v-for="item in searchMenu" :key="item.name" v-show='!item.hidden'>
             <router-link v-if='!item.children' :to="{name:item.name}" :key="item.name">
-                <span v-if="item.meta && item.meta.title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
+              <span v-if="item.meta && item.meta.title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
             </router-link>
           </li>
-        </ol>
+        </ol> -->
+
+        <el-autocomplete class="input-search-style" :style="searchString" clearable v-model="input" :fetch-suggestions="querySearch" @input="changeShowSearchContent" @focus="showSearchContent = true" @blur="showSearchContent = false" :placeholder="$t('biz.placeholder.choose')" :trigger-on-focus="false" @select="handleSelect">
+          <template slot-scope="{ item }">
+            <div class="name">{{ generateTitle(item.meta.title) }}</div>
+          </template>
+        </el-autocomplete>
         <i class='el-icon-search' slot='append' @click='openSearch'></i>
       </div>
-      
       <!-- 推送消息 -->
       <bs-ws v-if='clientWidth >= 1366'></bs-ws>
 
@@ -217,19 +222,19 @@ export default {
         ]
       },
       searchActive: false,
-      searchString:'',
-      showSearchContent:false,
-      searchMenu:[]
+      searchString: '',
+      showSearchContent: false,
+      searchMenu: []
     }
   },
   inject: ['app'],
   components: {
     BsWs,
     ThemePicker,
-    ...mapGetters(['permissionMenus', 'sidebar']),
+    ...mapGetters(['permissionMenus', 'sidebar'])
   },
   computed: {
-    ...mapGetters(['sidebar', 'clientWidth', 'avatar', 'name', 'activeFlag', 'account', 'permissionMenus']),
+    ...mapGetters(['sidebar', 'clientWidth', 'avatar', 'name', 'activeFlag', 'account', 'permissionMenus', 'showMenus']),
     moduleWidth() {
       return this.clientWidth - (this.sidebar.opened ? 640 : 480)
     }
@@ -238,38 +243,38 @@ export default {
     'modifyPwdInfo.newPassword'(newValue) {
       this.pwdStrongVal = this.checkStrong(newValue)
     },
-    'searchActive':{
+    searchActive: {
       handler(newValue) {
-      // this.openSearch();
-      if(this.searchActive){
-        this.searchString = 'animation:get .3s linear alternate forwards';
+        // this.openSearch();
+        if (this.searchActive) {
+          this.searchString = 'animation:get .3s linear alternate forwards'
           var searchTime = setTimeout(() => {
-            this.searchString = '';
+            this.searchString = ''
             clearTimeout(searchTime)
-          }, 300);
-      }else{
-        this.searchString = 'animation:get .3s linear reverse forwards';
-        var searchTime = setTimeout(() => {
-            this.searchString = 'display:none';
+          }, 300)
+        } else {
+          this.searchString = 'animation:get .3s linear reverse forwards'
+          var searchTime = setTimeout(() => {
+            this.searchString = 'display:none'
             clearTimeout(searchTime)
-          }, 300);
-      }
-    },
-    immediate:true
+          }, 300)
+        }
+      },
+      immediate: true
     }
   },
   created() {
     this.logo()
   },
   mounted() {
-    window.onresize = function(){
-        var leftMenu = document.getElementById('left-menu');
-        // if (!$vm.checkFull()) {
-        //   }
-          window.addEventListener('keydown',()=>{
-            // this.flag = false;
-            leftMenu.style = '';
-          })
+    window.onresize = function() {
+      var leftMenu = document.getElementById('left-menu')
+      // if (!$vm.checkFull()) {
+      //   }
+      window.addEventListener('keydown', () => {
+        // this.flag = false;
+        leftMenu.style = ''
+      })
     }
     if (session.get('isLock') === 'yes') {
       this.dialogFormVisible = true
@@ -279,32 +284,20 @@ export default {
       this.handleChangePwd()
       this.isActive = true
     }
-    this.getList();
+    this.getList()
   },
   methods: {
-      getList(){
-        var arr = [];
-        function fn (list){
-            list.forEach(item=>{
-              if(item.children){
-                  fn(item.children);
-              }else{
-                arr = [...arr,item];
-              }
-            })
-            return arr;
-        }
-        fn(this.permissionMenus)
-        this.searchMenu = arr;
-      },
-      changeShowSearchContent(){
-        if(this.input == ''){
-          this.showSearchContent = false
-        }else{
-          this.showSearchContent = true
-        }
-        console.log(this.permissionMenus)
-      },
+    getList() {
+      this.searchMenu = this.showMenus
+    },
+    changeShowSearchContent() {
+      if (this.input == '') {
+        this.showSearchContent = false
+      } else {
+        this.showSearchContent = true
+      }
+      console.log(this.permissionMenus)
+    },
     checkFull() {
       var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
       if (isFull === undefined) {
@@ -313,30 +306,24 @@ export default {
       return isFull
     },
     // 打开搜索
-    openSearch(){
+    openSearch() {
       this.searchActive = !this.searchActive
     },
     // 菜单查询
     doSearch() {
-    //   // 防止多次连续搜索
+      //   // 防止多次连续搜索
       if (this.searchLoading) return
       this.searchLoading = true
-      console.log(this.$store.state.app.moduleNames,247);
-      const filterPermissionMenu = this.permissionMenus.filter(menu => menu.name === this.$store.state.app.moduleNames)[0].children
-      console.log(filterPermissionMenu,249);
       if (this.input.trim() === '') {
-        this.showAll(filterPermissionMenu)
+        this.showAll(this.searchMenu)
       } else {
-        this.showSearch(filterPermissionMenu)
+        this.showSearch(this.searchMenu)
       }
       this.searchLoading = false
     },
     showAll(route) {
       route.forEach(item => {
         item.hidden = false
-        if (item.children && item.children.length > 0) {
-          this.showAll(item.children)
-        }
       })
     },
     showSearch(route) {
@@ -350,67 +337,30 @@ export default {
         ) {
           item.hidden = false
         }
-        if (item.children && item.children.length > 0) {
-          const counts = []
-          const count = []
-          item.children.forEach(i => {
-            i.hidden = true
-            if (
-              i.meta &&
-              this.$t('route.' + i.meta.title)
-                .toLowerCase()
-                .includes(this.input.toLowerCase().trim())
-            ) {
-              item.hidden = false
-              i.hidden = false
-              // 计数
-              counts.push(i.meta.title)
-            }
-            if (i.children && i.children.length > 0) {
-              i.children.forEach(r => {
-                r.hidden = true
-                if (
-                  r.meta &&
-                  this.$t('route.' + r.meta.title)
-                    .toLowerCase()
-                    .includes(this.input.toLowerCase().trim())
-                ) {
-                  item.hidden = false
-                  i.hidden = false
-                  r.hidden = false
-                  // 计数
-                  count.push(r.meta.title)
-                }
-              })
-            }
-          })
-          // 规则：
-          // 若只匹配到了一级，则显示所有对应二级和三级
-          // 若只匹配到了二级，则显示对应一级和所有三级
-          if (counts.length === 0 && count.length === 0 && !item.hidden) {
-            item.children.forEach(i => {
-              i.hidden = false
-              if (i.children && i.children.length > 0) {
-                i.children.forEach(r => {
-                  r.hidden = false
-                })
-              }
-            })
-          } else if (counts.length > 0 && count.length === 0) {
-            item.hidden = false
-            item.children.forEach(i => {
-              i.hidden = true
-              if (counts.includes(i.meta.title)) {
-                i.hidden = false
-                if (i.children && i.children.length > 0) {
-                  i.children.forEach(r => {
-                    r.hidden = false
-                  })
-                }
-              }
-            })
-          }
-        }
+      })
+    },
+    querySearch(queryString, cb) {
+      var restaurants = this.searchMenu
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    createFilter(queryString) {
+      return restaurant => {
+        return (
+          restaurant.meta &&
+          this.$t('route.' + restaurant.meta.title)
+            .toLowerCase()
+            .toLowerCase()
+            .indexOf(queryString.toLowerCase()) >= 0
+        )
+      }
+    },
+
+    handleSelect(item) {
+      console.log('handleSelect:' + item.name)
+      this.$router.push({
+        name: item.name
       })
     },
     logo() {
@@ -476,7 +426,7 @@ export default {
     },
     // 全屏
     handleClickFull() {
-      var leftMenu = document.getElementById('left-menu');
+      var leftMenu = document.getElementById('left-menu')
       leftMenu.style = ''
       if (!screenfull.enabled) {
         this.$message({
@@ -485,7 +435,7 @@ export default {
         })
         return false
       }
-      screenfull.toggle();
+      screenfull.toggle()
       leftMenu.style = 'width:0px !important'
     },
     // 登出
@@ -844,7 +794,7 @@ export default {
     }
   }
 }
-.searchContent{
+.searchContent {
   width: 160px;
   height: 160px;
   position: absolute;
@@ -857,93 +807,90 @@ export default {
   font-size: 12px;
   overflow-y: auto;
   overflow-x: hidden;
-  &>li{
+  & > li {
     padding: 0 6px;
   }
 }
-  /*滚动条样式*/
-  .searchContent::-webkit-scrollbar {
-            width: 4px;    
-            /*height: 4px;*/
-        }
-        .searchContent::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
-            background: rgba(0,0,0,0.2);
-        }
-        .searchContent::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
-            border-radius: 0;
-            background: rgba(0,0,0,0.1);
-
-        }
+/*滚动条样式*/
+.searchContent::-webkit-scrollbar {
+  width: 4px;
+  /*height: 4px;*/
+}
+.searchContent::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+.searchContent::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
 </style>
 
 <style lang='scss'>
 .search {
-    float: left;
-    position: relative;
-    width: 192px;
-    height: 100%;
-    display: inline-block;
-    text-align: center;
-    .el-input{
-      width:160px;
-      background: transparent;
+  float: left;
+  position: relative;
+  width: 192px;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  .el-input {
+    width: 160px;
+    background: transparent;
+  }
+
+  .el-icon-search {
+    cursor: pointer;
+    margin-right: 12px;
+    float: right;
+    margin-top: 13px;
+  }
+  @keyframes get {
+    from {
+      width: 0px;
+      opacity: 0;
     }
 
-    .el-icon-search {
-          cursor: pointer;
-          margin-right: 12px;
-          float: right;
-          margin-top: 13px;
-        }
-      @keyframes get {
-      from {
-        width: 0px;
-        opacity: 0;
-      }
-
-      to {
-        width:160px;
-        opacity: 1;
-      }
-
-      }
-    .input-search-style {
-      float: right;
-      // position: absolute;
-      // right: 0;
-      // top: 0;
-      height: 30px;
-      padding-top: 0 !important;
-      .el-input__inner {
-        height: 30px;
-        border: 1px solid #fff;
-        border-radius: 0;
-        font-size: 14px;
-        color: #fff;
-        border-radius: 3px 0 0 3px;
-        background: transparent;
-        padding: 0 6px;
-      }
-      .el-input__inner:focus{
-        border: 1px solid #fff !important;
-      }
-      .el-input__icon {
-        line-height: 34px;
-      }
-      .el-input-group__append {
-        height: 30px;
-        padding: 0 10px;
-        border: 1px solid;
-        border-left: none;
-        border-radius: 0 3px 3px 0;
-        background: transparent;
-        
-      }
+    to {
+      width: 160px;
+      opacity: 1;
     }
   }
+  .input-search-style {
+    float: right;
+    // position: absolute;
+    // right: 0;
+    // top: 0;
+    height: 30px;
+    padding-top: 0 !important;
+    .el-input__inner {
+      height: 30px;
+      border: 1px solid #fff;
+      border-radius: 0;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 3px 0 0 3px;
+      background: transparent;
+      padding: 0 6px;
+    }
+    .el-input__inner:focus {
+      border: 1px solid #fff !important;
+    }
+    .el-input__icon {
+      line-height: 34px;
+    }
+    .el-input-group__append {
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid;
+      border-left: none;
+      border-radius: 0 3px 3px 0;
+      background: transparent;
+    }
+  }
+}
 
 .el-dropdown-menu {
   margin: 0 !important;
