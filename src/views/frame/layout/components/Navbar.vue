@@ -836,6 +836,9 @@ export default {
   height: 100%;
   display: inline-block;
   text-align: center;
+  .el-autocomplete {
+    width: auto !important;
+  }
   .el-input {
     width: 160px;
     background: transparent;

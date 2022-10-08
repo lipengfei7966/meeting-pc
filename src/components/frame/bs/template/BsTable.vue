@@ -60,8 +60,7 @@
         </template>
       </template>
     </u-table>
-    <el-alert class="alert-total" title="合计" type="warning" :closable="false">
-    </el-alert>
+    <!-- <el-alert class="alert-total" title="合计" type="warning" :closable="false"></el-alert> -->
     <!-- 底部按钮 -->
     <div class="bottom-operate">
       <div class="bottom-operate-right" v-show="emptyTextVisible">
@@ -1489,7 +1488,6 @@ tr.el-table__row.el-table__row--striped.success-row td {
 .el-row--flex {
   // width: 330px !important;
   position: absolute;
-  float: right;
   height: 40px !important;
 }
 .bottom-operate-left {
