@@ -1,18 +1,9 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
 
     <bs-form ref='bsForm' :form='form'></bs-form>
-    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
-        <template v-for='tab in mainData.tabs'>
-          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
-            <span slot="label">{{$t(tab.label)}} </span>
-          </el-tab-pane>
-        </template>
-      </el-tabs>
-    </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref='bsTable' :mainData='mainData' @initCallback='initCallback'>
+    <bs-table ref='bsTable' :mainData='mainData'>
       <!-- isException 此列特殊处理-->
       <template slot='isException' slot-scope='scope'>
         <el-tag size="mini" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
@@ -28,7 +19,6 @@ export default {
   name: 'loginLog',
   data() {
     return {
-      activeName: 'all',
       form: {
         listQuery: {
           current: 1,
@@ -81,16 +71,10 @@ export default {
         ]
       },
       mainData: {
-        tabs: [
-          { name: 'all', label: '全部' },
-          { name: 'sucess', label: '成功' },
-          { name: 'error', label: '异常' }
-        ],
         api: {
           search: '/api/sys/log/login'
         },
         isTopBar: true,
-        isTabBar: true,
         topBar: [
           {
             name: 'export'
@@ -157,22 +141,14 @@ export default {
       }
     }
   },
-  methods: {
-    handleTabClick(tab, event) {
-      this.currentRow = null
-      if (tab.name === 'all') {
-        this.form.listQuery.data.isException = ''
-      } else if (tab.name === 'error') {
-        this.form.listQuery.data.isException = '1'
-      } else {
-        this.form.listQuery.data.isException = ''
-      }
-      this.$refs.bsTable.getList({ name: 'search' })
-    },
-    initCallback() {
-      console.log('initCallback')
-    }
-  }
+  mounted() {
+    // debugger
+    // 不设置表格高度
+    this.$refs.bsTable.isHeight = false
+    // 设置行高为38
+    this.$refs.bsTable.rowHeight = 38
+  },
+  methods: {}
 }
 </script>
 
