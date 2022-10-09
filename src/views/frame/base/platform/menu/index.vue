@@ -429,6 +429,10 @@ export default {
       }
     }
   },
+  mounted() {
+    // 设置表格高度
+    this.$refs.bsTable.isHeight = true
+  },
   methods: {
     exportRoute() {
       axios({

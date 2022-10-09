@@ -218,6 +218,9 @@ export default {
     setTimeout(() => {
       this.alertShow = false
     }, 6000)
+
+    // 设置表格高度
+    this.$refs.bsTable.isHeight = true
   },
   methods: {
     syncMenu() {
