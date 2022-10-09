@@ -1450,7 +1450,7 @@ tr.el-table__row.el-table__row--striped.success-row td {
     font-size: 16px;
     font-weight: 600;
     color: #262626;
-    padding-left: 5px;
+    padding-left: 10px;
   }
   .right-buttons {
     // width: 100px;
