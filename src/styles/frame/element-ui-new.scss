@@ -907,7 +907,7 @@
   .dialog-container {
     .dialog-title {
       height: 46px !important;
-      font-size: 18px !important;
+      font-size: 16px !important;
       text-align: left !important;
       padding: 0 20px;
       line-height: 46px !important;
@@ -1046,6 +1046,8 @@
   }
 
   // tabs
+
+
   .el-tabs__nav-next,
   .el-tabs__nav-prev {
     line-height: 26px; // 标签页高度
@@ -1074,30 +1076,36 @@
     border-top: none !important;
     border-right: none !important;
     background-color: #e2e2e2 !important;
+    height: 46px !important;
   }
 
   .el-tabs--border-card>.el-tabs__header .el-tabs__item {
-    color: #666666 !important;
     border: 1px solid #ababab !important;
     background-color: #f5f7fa !important;
     border-top-width: 2px !important;
     margin-right: 5px;
+    color: #333333;
+    height: 48px !important;
+    line-height: 48px !important;
+  }
+
+  .el-tabs--border-card>.el-tabs__header .el-tabs__item:hover {
+    color: var(--menuBg);
   }
 
   .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
-    font-weight: 900 !important;
-    border-left-color: #ababab !important;
-    border-right-color: #ababab !important;
-    border-bottom: none !important;
-    background: #ffffff !important;
+    // font-weight: 900 !important;
+    border-top-color: transparent !important;
+    color: var(--menuBg) !important;
 
-    &::before {
+    &::after {
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       content: '';
       width: 100%;
       height: 2px;
+      background: var(--menuBg);
     }
   }
 
@@ -1111,16 +1119,38 @@
   }
 
   .el-tabs--border-card>.el-tabs__content {
-    padding: 0 5px 5px !important;
-    border: 1px solid #ababab !important;
-    border-top: none !important;
+    border-top: 1px solid #ebeef5 !important;
   }
+
 
   .app-container {
     .el-tabs__item {
       height: 30px;
       line-height: 30px;
       font-weight: 400;
+    }
+  }
+
+  .el-tabs {
+    margin-top: 0 !important;
+    background: #fff;
+    // height: 48px !important;
+
+    .el-tabs__header {
+      background: #fff !important;
+      border: none !important;
+
+      .el-tabs__item {
+        border: none !important;
+        border-radius: 0px !important;
+        background: transparent !important;
+      }
+    }
+
+    .el-tabs__content {
+      // border: none !important;
+      background: #fff;
+      padding: 2px !important;
     }
   }
 
@@ -1411,6 +1441,8 @@
     //background: #409eff !important;
     height: 32px;
   }
+
+
 
   // 表格的样式
   main {
