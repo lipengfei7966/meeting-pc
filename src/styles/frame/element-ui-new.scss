@@ -140,8 +140,8 @@
         text-align: right;
         display: block;
         line-height: 30px;
-        color: #262626;
-        font-weight: 500;
+        color: #252525;
+        font-weight: 600;
         font-size: 14px;
       }
 
@@ -211,9 +211,9 @@
         width: 96px;
         height: 28px;
         font-size: 14px;
-        color: #606266;
+        color: #333333;
         line-height: 28px;
-        font-weight: 400;
+        font-weight: 500;
         text-align: right !important;
       }
 
@@ -226,9 +226,9 @@
         }
 
         .el-input__inner {
-          font-size: 12px;
+          font-size: 14px;
           border-radius: 3px;
-          color: #000;
+          color: #414141;
           height: 32px !important;
           line-height: 32px !important;
           padding: 0 6px;
@@ -1172,12 +1172,16 @@
     }
   }
 
+  .tree-wrapper {
+    margin: 4px 18px;
+  }
+
   // tree
   .el-tree {
     font-size: 12px !important;
 
     span {
-      font-size: 12px !important;
+      font-size: 14px !important;
     }
 
     .el-button--mini,
@@ -1400,7 +1404,8 @@
 
       &>.left-title {
         display: block;
-        margin-top: 5px;
+        margin-top: 4px;
+        border-left: 5px solid var(--menuBg);
       }
 
       &+header {
@@ -1501,7 +1506,7 @@
       }
 
       .el-button--small {
-        font-size: 12px;
+        font-size: 14px !important;
         border-radius: 3px;
         padding: 5px 9px;
         float: right;
@@ -1606,19 +1611,18 @@
 
   .open-search {
     height: 500px !important;
-    // width: 200px;
     background: #000 !important;
     animation: get 2s linear 0s infinite alternate forwards;
   }
 
   @keyframes get {
     from {
-      // transform: translateX(0px);
+      transform: translateX(0px);
       opacity: 0;
     }
 
     to {
-      // transform: translateX(1400px);
+      transform: translateX(1400px);
       opacity: 1;
     }
   }
@@ -1630,6 +1634,7 @@
     right: 20px;
     bottom: 10px;
     height: 32px;
+    font-size: 14px !important;
 
     .button-group-item {
       float: left !important;

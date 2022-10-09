@@ -83,24 +83,24 @@
             <el-col class="none"></el-col>
           </el-row>
           <!-- 右侧搜索按钮 -->
-            <div class="button-group clearfix">
-                <div class="button-group-item search-btn" v-permission="['query']">
-                <el-button :loading="loading" @click="onReset" v-db-click>
-                  重置
-                </el-button>
-              </div> 
-              <div class="button-group-item search-btn" v-permission="['query']">
-                <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
-                  {{$t('biz.lbl.search')}}
-                </el-button>
-              </div>
-              <div class="button-group-item" @click='expand'>
-                <el-button type="text" class="fold" :loading="loading" v-db-click>
-                  {{expandText}}
-                </el-button>
-                <span :class="['jt',{ 't': !expandStatus}]"></span>
-              </div>
+          <div class="button-group clearfix">
+            <div class="button-group-item search-btn" v-permission="['query']">
+              <el-button :loading="loading" @click="onReset" v-db-click>
+                重置
+              </el-button>
             </div>
+            <div class="button-group-item search-btn" v-permission="['query']">
+              <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
+                {{$t('biz.lbl.search')}}
+              </el-button>
+            </div>
+            <div class="button-group-item" @click='expand'>
+              <el-button type="text" class="fold" :loading="loading" v-db-click>
+                {{expandText}}
+              </el-button>
+              <span :class="['jt',{ 't': !expandStatus}]"></span>
+            </div>
+          </div>
         </el-form>
       </header>
       <main>
@@ -116,7 +116,7 @@
             </div>
             <!-- 按钮 -->
             <div v-for='(btn, index) in treeTableData.mainData.topBar' :key='index'>
-              <el-button v-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-permission="btn.permitName ? [...btn.permitName, btn.name] : [btn.name]" >
+              <el-button v-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-permission="btn.permitName ? [...btn.permitName, btn.name] : [btn.name]">
                 <svg-icon :icon-class="btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName"></svg-icon>{{$t(btn.i18n) || $t(baseEvent[btn.name].i18n)}}
               </el-button>
             </div>
@@ -908,13 +908,13 @@ export default {
       height: 40px;
       line-height: 40px;
       text-indent: 10px;
-      // background: #e2e9f4;
+      font-weight: bold;
       border-bottom: 1px solid #ccc;
+      font-size: 16px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      color: #000;
-      font-size: 14px;
+      color: #333333;
     }
     .buttons {
       padding: 5px;
@@ -984,15 +984,15 @@ export default {
             cursor: pointer;
           }
         }
-        .search-btn{
+        .search-btn {
           position: absolute;
           top: auto !important;
           right: 20px !important;
           bottom: 10px !important;
           height: 32px;
-          button{
-              height: 32px;
-              padding: 8px 15px !important;
+          button {
+            height: 32px;
+            padding: 8px 15px !important;
           }
         }
       }
@@ -1002,15 +1002,23 @@ export default {
       .top-operate {
         width: 100% !important;
         // height: 40px !important;
-        line-height: 40px;
+        // line-height: 40px;
         z-index: 99;
         margin-bottom: 3px;
+        .left-title {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 16px;
+          font-weight: 600;
+          padding-left: 5px;
+        }
         .el-row--flex {
           // width: 300px;
           position: static !important;
           float: right !important;
           .el-button {
             padding: 6px 10px;
+            font-size: 14px;
           }
           .el-button + .el-button {
             margin-left: -2px;

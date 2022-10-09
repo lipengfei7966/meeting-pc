@@ -351,7 +351,7 @@ export default {
 .main-wrapper {
   position: relative;
   // height: 100%;/
-  .left-menu{
+  .left-menu {
     float: left;
     width: 50px;
     height: 100px !important;
@@ -375,6 +375,13 @@ export default {
       width: 16px;
       height: 16px;
     }
+  }
+}
+
+.el-scrollbar__view {
+  li:hover {
+    background: #ecf5ff !important;
+    color: #60aeff !important;
   }
 }
 </style>
