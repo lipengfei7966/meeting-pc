@@ -2,7 +2,7 @@
   <header id='elHead' :style="{'width': (clientWidth < 1366 && !app.isScreenFull) ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto'}">
     <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="form.listQuery.data" class='header-form-inline'>
       <el-row :gutter="20" style='width:94%;' justify="space-between">
-        <template v-for='(f, index) in expandStatus ?  form.formData[0].attrs.cols ? form.formData.slice(0,2) : form.formData.slice(0, 3) :form.formData'>
+        <template v-for='(f, index) in expandStatus ?  (form.formData[0].attrs&&form.formData[0].attrs.cols) ? form.formData.slice(0,2) : form.formData.slice(0, 3) :form.formData'>
           <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if='f.isShow' :key='index'>
             <!-- 日期 -->
             <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(f.label)" :prop='f.bind'>
@@ -266,22 +266,24 @@ export default {
     },
     //刷新
     doRefresh(initFlag) {
-      this.$refs.queryForm.validate(valid => {
-        if (valid) {
-          if (initFlag) {
-            this.$parent.form.listQuery.current = 1
-          }
-          if (this.$parent.$refs.bsTable) {
-            this.$parent.$refs.bsTable.getList({ name: 'search' })
-          } else {
-            if (this.$parent.getList) {
-              this.$parent.getList({ name: 'search' })
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.validate(valid => {
+          if (valid) {
+            if (initFlag) {
+              this.$parent.form.listQuery.current = 1
             }
+            if (this.$parent.$refs.bsTable) {
+              this.$parent.$refs.bsTable.getList({ name: 'search' })
+            } else {
+              if (this.$parent.getList) {
+                this.$parent.getList({ name: 'search' })
+              }
+            }
+          } else {
+            return false
           }
-        } else {
-          return false
-        }
-      })
+        })
+      }
     },
     // 查询
     onSubmit() {
