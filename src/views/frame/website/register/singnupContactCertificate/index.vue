@@ -361,7 +361,7 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
-      this.isprint = true
+      
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
@@ -405,7 +405,7 @@ export default {
       })
 
       if (!isCanPrint) return
-
+      this.isprint = true
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
         method: 'POST',
