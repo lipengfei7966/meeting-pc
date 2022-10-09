@@ -274,7 +274,7 @@ export default {
       confirmCancel: '确认取消？',
       confirmGenerate: '确认生成？',
       confirmLock: '确认锁屏？',
-      saveCheck: '请检查红框提示的必输项内容，不能为空',
+      saveCheck: '请检查红框提示的验证信息',
       confirmSave: '请确认当前数据已经准确无误，是否确定保存？',
       confirmSaveAttachment: '请确认是否要上传附件？',
       exportFailed: '导出失败',
