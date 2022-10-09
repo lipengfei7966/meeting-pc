@@ -195,11 +195,13 @@ export default {
           },
           {
             name: 'export',
-            i18n: '导出模板',
+            i18n: 'biz.btn.downloadTemplate',
             event: this.exportExcel
           },
           {
             name: 'upload',
+            iconName: '线性-导入',
+            i18n: 'biz.btn.import',
             atrrs: {
               uploadUrl: process.env.BASE_API + '/api/register/signupContactCol/exportImport', // 文件上传url
               showFileList: false, // 是否展示上传文件，默认false
@@ -211,8 +213,7 @@ export default {
             }
           },
           {
-            name: 'export',
-            i18n: '导出'
+            name: 'export'
           },
           {
             name: 'refresh'

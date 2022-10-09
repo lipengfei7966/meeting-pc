@@ -40,6 +40,16 @@ export function validateEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
 }
+
+/**
+ * validate mobile
+ * @param mobile
+ * @returns {boolean}
+ */
+ export function validateMobile(mobile) {
+  const re = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+  return re.test(mobile)
+}
 /**
  * 校验特殊字符
  * @param {*} str 待校验字符串
