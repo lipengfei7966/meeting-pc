@@ -321,21 +321,29 @@ export default {
     VueBarcode
   },
   mounted() {
-    //
     // 获取打印类型数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'CERTIFICATE_CONTENT', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
-      //
-      this.certificateContentList = res.data
-    })
+    // this.onChangeAll()
   },
   methods: {
     onChangeAll(params) {
       //
       this.$refs.bsTable.doRefresh()
+      this.meetingdictCode()
+    },
+    // 获取会议具体证件内容选项
+    meetingdictCode(){
+      
+      console.log(this.form.listQuery.data.eventCode)
+      // 获取打印类型数据字典
+      request({
+        url: '/api/register/signupContactCol/page',
+        method: 'POST',
+        data: { data: { eventCode: this.form.listQuery.data.eventCode}, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      }).then(res => {
+        this.certificateContentList = res.data.filter(item => {
+          return item.mapType == '1'
+        })
+      })
     },
     toRecord() {
       //
@@ -383,13 +391,13 @@ export default {
         })
 
         if (item.certificateLayout) {
-          item.certificateLayout = item.certificateLayout.replace('姓名', item.name)
-          item.certificateLayout = item.certificateLayout.replace('单位名称', item.department)
-          item.certificateLayout = item.certificateLayout.replace('手机', item.mobile)
-          item.certificateLayout = item.certificateLayout.replace('邮箱', item.email)
-          item.certificateLayout = item.certificateLayout.replace('参会人编码', item.code)
-          item.certificateLayout = item.certificateLayout.replace('职务', '')
-          item.certificateLayout = item.certificateLayout.replace('地址', '')
+          this.certificateContentList.forEach((dictItem,dictIndex) => {
+            if(item.certificateLayout.indexOf(dictItem.mapName) >= 0){
+              item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+            }
+          })
+         
+         
         } else {
           this.$message.warning(`${item.name} 未添加证件模板`)
           isCanPrint = false
