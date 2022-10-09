@@ -1176,6 +1176,18 @@
     margin: 4px 18px;
   }
 
+  .right-content {
+    .top-operate {
+      .left-title {
+        border-left: 5px solid var(--menuBg);
+      }
+    }
+  }
+
+  .el-button--small {
+    font-size: 14px;
+  }
+
   // tree
   .el-tree {
     font-size: 12px !important;
