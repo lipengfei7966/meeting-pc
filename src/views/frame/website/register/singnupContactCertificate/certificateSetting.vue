@@ -285,6 +285,7 @@ export default {
         }
       }).then(res => {
         this.list = [];
+        this.fileList = [];
         if(res.data){
           this.printSetform = res.data
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
@@ -296,7 +297,6 @@ export default {
 
             let index = this.printSetform.printBackground.lastIndexOf("/");
             let filename = this.printSetform.printBackground.substr(index+1)
-            this.fileList = [];
             this.fileList.push({
               name: filename,
               url: this.printSetform.printBackground,
