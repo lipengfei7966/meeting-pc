@@ -1573,8 +1573,8 @@
 
       &+.bottom-operate {
         background: #fff;
-        height: 36px;
-        line-height: 36px;
+        height: 40px;
+        line-height: 40px;
         border-radius: 0 0 5px 5px;
         border: none !important;
         font-size: 14px !important;
@@ -1585,9 +1585,9 @@
           margin-left: 8px;
         }
 
-        .bottom-operate-right {
-          float: right;
-          font-size: 12px;
+        .bottom-operate-left {
+          float: none !important;
+          font-size: 14px;
           color: #606266;
           margin-right: 5px;
         }
