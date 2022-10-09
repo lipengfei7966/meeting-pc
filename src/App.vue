@@ -32,29 +32,29 @@ export default {
         ) {
           $(this)
             .parent('.el-form-item__content')
-            .append(`<div class='el-form-item__errors'>${errorMsg}</div>`)
+            .append(`<p class='el-form-item__errors'>${errorMsg}</p>`)
         } else {
           $(this)
             .siblings('.el-form-item__errors')
             .text(errorMsg)
         }
-        $(this)
-          .parent('.el-form-item__content')
-          .find('.el-form-item__errors')
-          .show()
-          .css('opacity', 1)
-      })
-      $(document).on('mouseover', '.bs-container .is-required.is-error .el-form-item__content > .el-form-item__errors', function() {
-        $(this)
-          .parent('.el-form-item__content')
-          .find('.el-form-item__errors')
-          .hide()
-      })
-      $(document).on('mouseout', '.bs-container .is-required.is-error .el-form-item__content > div', function() {
-        $(this)
-          .parent('.el-form-item__content')
-          .find('.el-form-item__errors')
-          .css('opacity', 0)
+      //   $(this)
+      //     .parent('.el-form-item__content')
+      //     .find('.el-form-item__errors')
+      //     .show()
+      //     .css('opacity', 1)
+      // })
+      // $(document).on('mouseover', '.bs-container .is-required.is-error .el-form-item__content > .el-form-item__errors', function() {
+      //   $(this)
+      //     .parent('.el-form-item__content')
+      //     .find('.el-form-item__errors')
+      //     .hide()
+      // })
+      // $(document).on('mouseout', '.bs-container .is-required.is-error .el-form-item__content > div', function() {
+      //   $(this)
+      //     .parent('.el-form-item__content')
+      //     .find('.el-form-item__errors')
+      //     .css('opacity', 0)
       })
     })
   }

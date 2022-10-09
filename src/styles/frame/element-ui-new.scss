@@ -346,22 +346,19 @@
 
           .el-form-item__errors {
             display: inline-block;
-            position: absolute;
-            right: 0;
-            bottom: -24px;
+            position: static !important;
             min-width: 106px;
-            height: 25px;
+            height: 25px !important;
             line-height: 24px;
-            padding: 0 6px 0 24px;
-            border: 1px solid #faaf00;
+            padding: 0 8px !important;
+            border: none !important;
             border-radius: 3px;
-            box-shadow: 0 0 3px #d4d4d4;
-            background: #ffffff url('../assets/frame/img/tip.png') no-repeat 7px center;
-            color: #faaf00;
+            box-shadow: 0 0 3px transparent !important;
+            background: #ffffff;
+            color: #e60012 !important;
             font-size: 12px;
-            z-index: 99;
-            opacity: 0;
-            animation: appear 2s;
+            opacity: 1 !important;
+            animation: appear .5s !important;
             user-select: none;
           }
 
@@ -375,7 +372,7 @@
             }
 
             to {
-              opacity: 0;
+              opacity: 1;
             }
           }
         }
@@ -393,6 +390,10 @@
     border-bottom: 1px solid #ccc !important;
   }
 
+  .el-checkbox {
+    margin-top: 3px !important;
+  }
+
   .el-input--small {
     font-size: 12px;
 
@@ -402,12 +403,12 @@
   }
 
   .el-input-number--mini {
-    line-height: 23px !important;
+    line-height: 30px !important;
   }
 
   .el-input-number__decrease,
   .el-input-number__increase {
-    height: 22px !important;
+    height: 30px !important;
   }
 
   // 时间选择器
@@ -909,9 +910,37 @@
       height: 46px !important;
       font-size: 16px !important;
       text-align: left !important;
-      padding: 0 20px;
+      padding: 4px 20px 0;
       line-height: 46px !important;
       background: var(--menuBg) !important;
+
+      &>.nav {
+        right: 20px !important;
+      }
+
+      .el-icon-close {
+        color: #fff !important;
+      }
+    }
+
+    .dialog-footer {
+      background: #fff !important;
+      padding-right: 0 !important;
+      bottom: 20px !important;
+      right: 20px !important;
+
+      &>.el-button {
+        font-size: 14px !important;
+      }
+    }
+
+    &>.el-form {
+      padding-bottom: 30px !important;
+
+      .el-col {
+        height: 38px !important;
+        padding-right: 0 !important;
+      }
     }
   }
 
