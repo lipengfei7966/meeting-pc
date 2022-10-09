@@ -130,7 +130,9 @@ export default {
       passwordSet: '6-20位,建议英文、数字、下划线组合',
       remarkNotBlank: '请输入备注',
       search: '搜索',
-      require: '此项为必填项'
+      require: '此项为必填项',
+      email: '邮箱格式有误',
+      mobile: '手机号格式有误'
     },
     title: {
       info: '信息',

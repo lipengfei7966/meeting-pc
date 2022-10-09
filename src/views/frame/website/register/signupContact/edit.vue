@@ -4,6 +4,7 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import {validateEmail, validateMobile} from '@/utils/frame/base/validate.js'
 export default {
   data() {
     return {
@@ -74,6 +75,28 @@ export default {
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
     },
+    validateInfo(rule, value, callback, prop) {
+      if (value.length === 0) {
+        this.edit.formData.part1.content.forEach(ele => {
+          if (ele.prop === prop && ele.validate[0].required) {
+            $('.el-col[data-key=' + prop + '] .is-required .el-form-item__content').attr('data-content', i18n.t('biz.placeholder.require'))
+            callback(new Error())
+            return
+          }
+        })
+        callback()
+      }else{
+        if (prop === 'email' && !validateEmail(value)) {
+          $('.el-col[data-key=' + prop + '] .is-required .el-form-item__content').attr('data-content', i18n.t('biz.placeholder.email'))
+          callback(new Error())
+        }else if (prop === 'mobile' && !validateMobile(value)) {
+          $('.el-col[data-key=' + prop + '] .is-required .el-form-item__content').attr('data-content', i18n.t('biz.placeholder.mobile'))
+          callback(new Error())
+        } else {
+          callback()
+        }
+      }
+    },
     getFormInfo(eventCode){
       this.loadAll = false
       this.edit.formData.part2.content = []
@@ -127,9 +150,7 @@ export default {
         funcOperation: '查询列表'
       }
       }).then(response => {
-        debugger
         response.data.forEach(element => {
-          debugger
           if (element.mapType === '1' && element.mapCode !== 'contactType') {
             const rs = {
               label: element.mapName,
@@ -143,6 +164,12 @@ export default {
                   trigger: 'blur'
                 }
               ]
+            }
+            if (element.mapCode === 'email') {
+              rs.validate[0].validatorFn = this.validateInfo
+            }
+            if (element.mapCode === 'mobile') {
+              rs.validate[0].validatorFn = this.validateInfo
             }
             if (element.mapComp==='1') {
               rs.element = 'input-validate'
