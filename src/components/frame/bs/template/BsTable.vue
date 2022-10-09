@@ -1494,7 +1494,4 @@ tr.el-table__row.el-table__row--striped.success-row td {
   float: none;
   margin: 0 10px;
 }
-.el-pagination--small {
-  float: none !important;
-}
 </style>

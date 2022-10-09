@@ -172,7 +172,7 @@ import exportExcel from '@/utils/frame/base/downloadExcel'
 export default {
   data() {
     return {
-      expandText:'展开',
+      expandText: '展开',
       expandStatus: process.env.EXPAND_FLG,
       scrolbox: '',
       scrollY: 0,
@@ -219,54 +219,54 @@ export default {
           func: this.doAdd,
           iconName: 'add',
           i18n: 'biz.btn.add',
-          types:'primary'
+          types: 'primary'
         },
         view: {
           func: this.doView,
           iconName: 'view',
           i18n: 'biz.btn.view',
-          types:'primary'
+          types: 'primary'
         },
         detailSet: {
           func: this.doView,
           iconName: 'set',
           i18n: 'biz.btn.detailSet',
-          types:'primary'
+          types: 'primary'
         },
         update: {
           func: this.doUpdate,
           iconName: 'edit',
           i18n: 'biz.btn.update',
-          types:'primary'
+          types: 'primary'
         },
         remove: {
           func: this.doDelete,
           iconName: 'delete',
           i18n: 'biz.btn.delete',
-          types:'primary'
+          types: 'primary'
         },
         refresh: {
           func: this.refresh,
           iconName: 'refresh',
           i18n: 'biz.btn.refresh',
-          types:'primary'
+          types: 'primary'
         },
         export: {
           func: this.handleDownload,
           iconName: 'export',
           i18n: 'biz.btn.export',
-          types:'primary'
+          types: 'primary'
         },
         print: {
           iconName: 'print',
           i18n: 'biz.btn.print',
-          types:'primary'
+          types: 'primary'
         },
         expand: {
           func: this.expandNode,
           iconName: 'set',
           i18n: this.treeTableData.form.expandAll ? 'biz.btn.contract' : 'biz.btn.expand',
-          types:'primary'
+          types: 'primary'
         }
       }
     }
@@ -385,8 +385,8 @@ export default {
     this.scrolbox.addEventListener('scroll', this.handleScroll())
   },
   methods: {
-     // 展开收起
-     expand() {
+    // 展开收起
+    expand() {
       this.expandStatus = !this.expandStatus
       this.expandText = !this.expandStatus ? '收起' : '展开'
       if (!this.$parent.mainData) return
@@ -1039,7 +1039,7 @@ export default {
         }
         .bottom-operate-right {
           float: right;
-          font-size: 12px;
+          font-size: 14px;
           color: #606266;
           margin-right: 5px;
         }

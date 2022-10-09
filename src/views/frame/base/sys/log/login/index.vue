@@ -6,8 +6,8 @@
     <bs-table ref='bsTable' :mainData='mainData'>
       <!-- isException 此列特殊处理-->
       <template slot='isException' slot-scope='scope'>
-        <el-tag size="mini" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
-        <el-tag size="mini" v-else type="success">{{$t('sys.log.success')}}</el-tag>
+        <el-tag size="medium" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
+        <el-tag size="medium" v-else type="success">{{$t('sys.log.success')}}</el-tag>
       </template>
     </bs-table>
 
