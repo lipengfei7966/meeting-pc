@@ -690,7 +690,7 @@ export default {
     color: #ffffff;
     user-select: none;
     // min-width: 502px !important;
-    max-width: 30% !important;
+    max-width: 40% !important;
     .right-menu-item {
       float: left;
       width: 48px;
@@ -770,8 +770,8 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          color: #202946;
-          font: 12px '微软雅黑';
+          color: #fff !important;
+          font: 14px '微软雅黑';
         }
         .inlineBlock {
           display: inline-block;
