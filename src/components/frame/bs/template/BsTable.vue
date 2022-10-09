@@ -10,7 +10,7 @@
         <div v-for="(btn, index) in mainData.topBar" :key="index">
           <template v-if="btn.name !== 'query'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
-              <el-button v-db-click size="mini" style="margin-right: 3px" v-permissionMultiple="btn.list">
+              <el-button v-db-click size="mini" style="margin-right: 3px;margin-top: 3px;height:32px;" v-permissionMultiple="btn.list">
                 <svg-icon :icon-class="btn.iconName || 'set'"></svg-icon>
                 {{ $t(btn.i18n || 'biz.btn.moreButton') }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -22,7 +22,7 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button v-else-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
+            <el-button v-else-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px;margin-top: 3px;height:32px;" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
               <svg-icon :icon-class="btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) ? btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) : 'set'"></svg-icon>
               {{ $t(btn.i18n) || (baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)) }}
             </el-button>
@@ -67,7 +67,7 @@
         <svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}
       </div>
       <!-- 分页 -->
-      <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100, 300]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
+      <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
     </div>
     <!-- 编辑弹窗 -->
     <view-form-table v-if="dialogDetailVisible" @closeHandler="dialogHandler" :param="param" :moduleCode="moduleCode" :opType="opType" :opMode="opMode"></view-form-table>
@@ -238,8 +238,8 @@ export default {
         }
       },
       // 默认表高度
-      rowHeight: '24',
-      isHeight: true
+      rowHeight: 38,
+      isHeight: this.mainData.table.rowKey ? true : false
     }
   },
   inject: ['app'],
@@ -271,7 +271,7 @@ export default {
       this.tableComputed()
     },
     tableCols(valArr) {
-      this.formThead = valArr.filter((i) => {
+      this.formThead = valArr.filter(i => {
         if (i.checkFlag) {
           return !!+i.checkFlag
         } else {
@@ -291,7 +291,7 @@ export default {
   },
   beforeMount() {
     if (this.mainData.topBar) {
-      this.mainData.topBar.forEach((v) => {
+      this.mainData.topBar.forEach(v => {
         this.$set(v, 'loading', false)
       })
     }
@@ -309,7 +309,7 @@ export default {
       this.highlightCurrentRow = false
     }
     // 列设置
-    this.mainData.table.cols.forEach((v) => {
+    this.mainData.table.cols.forEach(v => {
       // 根据isShow字段判断是否显示
       if (v.isShow === undefined) {
         v.isShow = true
@@ -406,7 +406,7 @@ export default {
         method: 'POST',
         data: this.$parent.form.listQuery
       })
-        .then((response) => {
+        .then(response => {
           this.loading = false
           if (this.$parent.$refs.bsForm) {
             this.$parent.$refs.bsForm.loading = false
@@ -444,35 +444,37 @@ export default {
     },
     // 计算列表高度
     tableComputed() {
-      if (this.mainData.height) {
-        this.tableHeight = this.mainData.height
-      } else {
-        const elHead = document.getElementById('elHead')
-        let getElHeadHeight = 0
-        // 是否存在头部表单
-        if (elHead) {
-          getElHeadHeight = window.getComputedStyle(elHead).height.split('px')[0] * 1
+      if (this.isHeight) {
+        if (this.mainData.height) {
+          this.tableHeight = this.mainData.height
         } else {
-          getElHeadHeight -= 5
-        }
-        // 是否最大化
-        if (screenfull.isFullscreen) {
-          getElHeadHeight -= 76
-          // 最大化时是否显示标签栏
-          if (this.tagViewVisible) {
-            getElHeadHeight += 26
+          const elHead = document.getElementById('elHead')
+          let getElHeadHeight = 0
+          // 是否存在头部表单
+          if (elHead) {
+            getElHeadHeight = window.getComputedStyle(elHead).height.split('px')[0] * 1
+          } else {
+            getElHeadHeight -= 5
           }
-        }
-        if (this.hasLayout) {
-          this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
-        } else {
-          this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
+          // 是否最大化
+          if (screenfull.isFullscreen) {
+            getElHeadHeight -= 76
+            // 最大化时是否显示标签栏
+            if (this.tagViewVisible) {
+              getElHeadHeight += 26
+            }
+          }
+          if (this.hasLayout) {
+            this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
+          } else {
+            this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
+          }
+          this.tableHeight = this.tableHeight - 50
         }
       }
     },
     // 按钮事件自定义
     triggerEvent(button) {
-      debugger
       if (button.event && typeof button.event === 'function') {
         button.event(button)
       } else if (this.baseEvent[button.name]) {
@@ -533,21 +535,21 @@ export default {
           data: this.mainData.table.id || this.$route.name
         }
       })
-        .then((res) => {
+        .then(res => {
           if (res.data.length === 0) {
-            this.tableCols.forEach((col) => {
+            this.tableCols.forEach(col => {
               col.checkFlag = '1'
             })
             this.key++
-            this.checked = this.mainData.table.cols.map((v) => {
+            this.checked = this.mainData.table.cols.map(v => {
               return v.prop
             })
             this.$nextTick(() => {
               this.$refs.singleTable.reloadData(this.tableData)
             })
           } else {
-            res.data.forEach((col) => {
-              this.tableCols.forEach((c) => {
+            res.data.forEach(col => {
+              this.tableCols.forEach(c => {
                 if (col.itemId === c.prop) {
                   c.checkFlag = col.checkFlag
                   c.sortNo = col.sortNo
@@ -577,8 +579,8 @@ export default {
           return
         }
 
-        const values = data.map((item) => Number(item[column.property]))
-        const filterCol = this.mainData.table.cols.filter((col) => col.prop === column.property)[0]
+        const values = data.map(item => Number(item[column.property]))
+        const filterCol = this.mainData.table.cols.filter(col => col.prop === column.property)[0]
 
         if (filterCol && filterCol.summary) {
           if (filterCol.format && filterCol.format.func) {
@@ -638,8 +640,8 @@ export default {
             this.$notify(notifyInfo({ msg: '操作验证不通过，不可以进行当前操作' }))
           }
           return false
-        } else if (Array.isArray(result) && result.map((v) => v.result).includes(false)) {
-          const index = result.map((v) => v.result).indexOf(false)
+        } else if (Array.isArray(result) && result.map(v => v.result).includes(false)) {
+          const index = result.map(v => v.result).indexOf(false)
           if (result[index].msg) {
             this.$notify(notifyInfo({ msg: result[index].msg }))
           }
@@ -676,7 +678,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -699,7 +701,7 @@ export default {
       if (buttonInfo.getParam) {
         deleteData = buttonInfo.getParam(this.currentRow)
       } else if (this.currentRow instanceof Array) {
-        deleteData = this.currentRow.map((v) => v.id)
+        deleteData = this.currentRow.map(v => v.id)
       } else {
         deleteData = this.currentRow.id
       }
@@ -717,7 +719,7 @@ export default {
               funcOperation: this.funcOperationI18n
             }
           })
-            .then((response) => {
+            .then(response => {
               this.$notify(notifySuccess({ msg: this.operationMsgInfo }))
               this.loading = false
               this.doRefresh()
@@ -755,7 +757,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -790,7 +792,7 @@ export default {
         if (buttonInfo.getParam) {
           setData = buttonInfo.getParam(this.currentRow)
         } else if (this.currentRow instanceof Array) {
-          setData = this.currentRow.map((v) => v.id)
+          setData = this.currentRow.map(v => v.id)
         } else {
           setData = this.currentRow.id
         }
@@ -808,7 +810,7 @@ export default {
                 funcOperation: this.funcOperationI18n
               }
             })
-              .then((response) => {
+              .then(response => {
                 this.$notify(notifySuccess({ msg: this.operationMsgInfo }))
                 this.loading = false
                 this.doRefresh()
@@ -839,7 +841,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -899,7 +901,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -959,7 +961,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -1020,7 +1022,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -1081,7 +1083,7 @@ export default {
               funcOperation: this.$t('biz.btn.check')
             }
           })
-            .then((response) => {
+            .then(response => {
               if (response.status && response.msgText) {
                 this.$notify(
                   notifyError({
@@ -1204,7 +1206,7 @@ export default {
         param.excelInfo['name'] = this.$t('route.' + this.$route.meta.title)
       }
       const titleData = []
-      this.mainData.table.cols.map((col) => {
+      this.mainData.table.cols.map(col => {
         if (col.label) {
           titleData.push({
             name: this.$t(col.label),
@@ -1225,7 +1227,7 @@ export default {
         },
         responseType: 'blob'
       })
-        .then((response) => {
+        .then(response => {
           if (!response.data) {
           } else {
             const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -1238,7 +1240,7 @@ export default {
             link.remove()
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
@@ -1249,10 +1251,10 @@ export default {
       } else {
         exportExcel({
           fileName: this.$t('route.' + this.$route.meta.title),
-          header: this.mainData.table.cols.map((col) => {
+          header: this.mainData.table.cols.map(col => {
             if (col.label) return this.$t(col.label)
           }),
-          filterVal: this.mainData.table.cols.map((col) => {
+          filterVal: this.mainData.table.cols.map(col => {
             if (col.format) {
               return {
                 val: col.prop,
@@ -1282,11 +1284,11 @@ export default {
     },
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.mainData.table.cols.filter((col) => col.prop === prop)[0].sortProp || prop
+      const sortProp = this.mainData.table.cols.filter(col => col.prop === prop)[0].sortProp || prop
       if (this.mainData.table.sortable && this.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'
-          let result = this.ordersList.find((e) => e.prop === prop)
+          let result = this.ordersList.find(e => e.prop === prop)
           if (result) {
             result.sort = asc
             result.order = order
@@ -1319,13 +1321,13 @@ export default {
     },
     getSortString() {
       let sortString = ''
-      this.ordersList.forEach(function (column) {
+      this.ordersList.forEach(function(column) {
         sortString = sortString + column.sortProp + column.sort + ','
       })
       return sortString
     },
     handleHeaderClass({ column }) {
-      let result = this.ordersList.find((e) => e.prop === column.property)
+      let result = this.ordersList.find(e => e.prop === column.property)
 
       if (result) {
         column.order = result.order
@@ -1370,7 +1372,7 @@ export default {
     },
     // 双击行跳转查看详情
     handleDblClick(row) {
-      const buttonInfo = this.mainData.topBar.filter((v) => v.allowDblClick || v.name === 'view')[0]
+      const buttonInfo = this.mainData.topBar.filter(v => v.allowDblClick || v.name === 'view')[0]
       if (buttonInfo) {
         this.currentRow = row
         if (buttonInfo.event) {
@@ -1450,11 +1452,11 @@ tr.el-table__row.el-table__row--striped.success-row td {
     font-size: 16px;
     font-weight: 600;
     color: #262626;
-    padding-left: 5px;
+    padding-left: 10px;
   }
   .right-buttons {
     // width: 100px;
-    height: 60px;
+    height: 40px;
     position: relative;
     padding-left: 36px;
     & > .right-btn {
@@ -1476,11 +1478,11 @@ tr.el-table__row.el-table__row--striped.success-row td {
     }
     .line {
       width: 1px;
-      height: 24px;
+      height: 20px;
       background: #ccc;
       position: absolute;
       left: 16px;
-      top: 56%;
+      top: 50%;
       transform: translate(0, -50%);
     }
   }
@@ -1493,8 +1495,5 @@ tr.el-table__row.el-table__row--striped.success-row td {
 .bottom-operate-left {
   float: none;
   margin: 0 10px;
-}
-.el-pagination--small {
-  float: none !important;
 }
 </style>
