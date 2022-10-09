@@ -212,10 +212,6 @@
         .app-main {
           background: #f0f2f5;
 
-          &>div {
-            height: max-content;
-          }
-
           .app-container {
             background: var(--contentBg);
 

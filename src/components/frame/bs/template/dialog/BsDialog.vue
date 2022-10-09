@@ -80,7 +80,6 @@
           </template>
         </el-row>
       </el-form>
-
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button :loading="button.showLoading ? loading : false" v-for='(button, index) in dialog.bottomButtons.filter(v => { return Array.isArray(v.isShow) ? v.isShow.includes(dialog.type) : v.isShow })' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button)'>
