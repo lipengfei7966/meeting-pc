@@ -12,7 +12,7 @@
           </el-button>
         </div>
         <div v-for="(btn, index) in mainData.topBar" :key="index">
-          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='btn.i18n' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
+          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='$t(btn.i18n)' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
           <template v-if="btn.name !== 'query' && btn.name !== 'upload'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
               <el-button v-db-click size="mini" style="margin-right: 3px" v-permissionMultiple="btn.list">
