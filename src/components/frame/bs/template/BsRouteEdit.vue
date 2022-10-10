@@ -1,7 +1,7 @@
 <template>
   <div class='bs-container app-container edit-page-style'>
     <!-- 顶部按钮 -->
-    <el-row class='top-operate'>
+    <div class='dialog-footer'>
       <template v-for='(button, index) in edit.topButtons'>
         <bs-upload v-if="button.event === 'upload'" :attrs='button.attrs' @onFileChange='addFile' :key='index'></bs-upload>
         <bs-upload-v2 v-else-if='button.type && button.type === "upload"' v-bind='button.atrrs' :btnName='button.name' :permission="button.permitName" :key='index'></bs-upload-v2>
@@ -9,7 +9,7 @@
           <svg-icon :icon-class="button.iconName"></svg-icon>{{$t(button.name)}}
         </el-button>
       </template>
-    </el-row>
+    </div>
     <!--流程引导 -->
     <template v-if="stepInfo && stepInfo.steps && (stepInfo.active > -1)">
       <el-steps v-if="stepShow" :active="stepInfo.active" finish-status="success" simple>

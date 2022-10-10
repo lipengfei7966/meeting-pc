@@ -12,7 +12,8 @@
             </div>
           </el-row>
         </div>
-        <div class='tree-wrapper' :style="{ height: treeHeight + 'px' }">
+        <!-- :style="{ height: treeHeight + 'px' }" -->
+        <div class='tree-wrapper'>
           <el-form v-if='dialog.form.isSearch'>
             <el-form-item>
               <input-validate v-model="filterText" clearable size="mini" placeholder="输入关键字进行过滤" style="padding:5px;"></input-validate>

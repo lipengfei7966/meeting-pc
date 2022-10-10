@@ -3,15 +3,7 @@
     <div class='dialog-container' :style="{width: this.sidebar.opened ? '1166px' : '1326px'}">
       <!-- 头部 -->
       <title-contain :titleName="titleName" @TitleFun="cancel"></title-contain>
-      <!-- 顶部按钮 -->
-      <el-row class='top-operate'>
-        <template v-for='(button, index) in edit.topButtons.filter(v => { return v.isShow.includes(edit.type) })'>
-          <bs-upload-v2 v-if='button.type && button.type === "upload"' v-bind='button.atrrs' :btnName='button.name' :permission="button.permitName" :key='index'></bs-upload-v2>
-          <el-button v-else size="mini" v-db-click :key='index' :loading="button.showLoading ? button.loading : false" v-bind='button.attrs' @click='triggerEvent(button.callback, button)'>
-            <svg-icon :icon-class="button.iconName"></svg-icon>{{$t(button.name)}}
-          </el-button>
-        </template>
-      </el-row>
+
       <div class='dialog-content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
         <!-- 头部信息 -->
         <template v-if='Array.isArray(edit.formData)'>
@@ -352,6 +344,15 @@
           <!-- 二级弹窗 -->
           <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
         </main>
+      </div>
+      <!-- 顶部按钮 -->
+      <div class='dialog-footer'>
+        <template v-for='(button, index) in edit.topButtons.filter(v => { return v.isShow.includes(edit.type) })'>
+          <bs-upload-v2 v-if='button.type && button.type === "upload"' v-bind='button.atrrs' :btnName='button.name' :permission="button.permitName" :key='index'></bs-upload-v2>
+          <el-button v-else size="mini" v-db-click :key='index' :loading="button.showLoading ? button.loading : false" v-bind='button.attrs' @click='triggerEvent(button.callback, button)'>
+            <svg-icon :icon-class="button.iconName"></svg-icon>{{$t(button.name)}}
+          </el-button>
+        </template>
       </div>
     </div>
     <div class="mask"></div>

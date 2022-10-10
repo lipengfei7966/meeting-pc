@@ -5,7 +5,7 @@
       <title-contain titleName='高级查询' @screenChange="setTableHeight" @TitleFun="$emit('closeHandler')"></title-contain>
       <!-- 内容 -->
       <main>
-        <div class='left-content' style='border:none;'>
+        <div class='left-content' style='border:none !important;'>
           <el-tabs v-model="activeName" type="border-card" style='height:100%;'>
             <el-tab-pane label="候选条件" name="todo" :style="{ height: treeHeight + 'px',overflow: 'auto' }">
               <input-validate class="search-input" size='mini' placeholder="" v-model="filterText" :attrs='{ prefixIcon: "el-icon-search" }' style='margin-top:5px;'></input-validate>
