@@ -35,8 +35,8 @@ export default {
       },
       mainData: {
         api: {
-          search: '/api/sys/codeReport/page',
-          doDelete: '/api/sys/codeReport/remove'
+          search: '/api/code/report/page',
+          doDelete: '/api/code/report/remove'
         },
 
         isTopBar: true,

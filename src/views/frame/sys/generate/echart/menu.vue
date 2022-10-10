@@ -14,7 +14,7 @@ export default {
         param: this.param,
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          save: '/api/sys/codeReport/menu/add'
+          save: '/api/code/report/menu/add'
         },
         topButtons: [
           {

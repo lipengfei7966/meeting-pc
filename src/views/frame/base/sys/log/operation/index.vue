@@ -111,15 +111,6 @@ export default {
             }
           },
           {
-            name: 'view',
-            allowDblClick: true,
-            component: () => import('@/views/frame/base/sys/log/operation/view.vue'),
-            type: 'dialog',
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
-          {
             name: 'export'
           },
           {
