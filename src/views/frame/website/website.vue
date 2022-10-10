@@ -224,7 +224,8 @@ export default {
       this.isFlag = 1
     },
     newVal(val, dataNum, colorValue) {
-      // debugger
+      debugger
+      //hkz
       if (val == 1) {
         this.$refs.station.watchVal(val, dataNum)
       } else if (val == 2) {

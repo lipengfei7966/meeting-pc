@@ -114,7 +114,8 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
-        // debugger
+        debugger
+        // 标注
         console.log(newValue, oldValue)
         if (newValue) {
           let submitVal = newValue
@@ -162,7 +163,10 @@ export default {
             this.ruleForm.fileList[0].url = submitVal.icon
             this.ruleForm.icon = submitVal.icon
           } else {
-            this.ruleForm.fileList = []
+            if (this.ruleForm.icon) {
+            } else {
+              this.ruleForm.fileList = []
+            }
           }
           if (submitVal.versionNum) {
             this.ruleForm.versionNum = submitVal.versionNum
@@ -175,6 +179,7 @@ export default {
             this.ruleForm.webpageCode = ''
           }
           if (submitVal.backgroundColor) {
+            // debugger
             this.ruleForm.backgroundColor = submitVal.backgroundColor
           } else {
             this.ruleForm.backgroundColor = ''
@@ -214,6 +219,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // alert('submit!')
+          debugger
+          console.log(this.ruleForm)
+          // return
           if (this.ruleForm.backgroundSetting == 3) {
             this.ruleForm.backgroundColor = this.colorValue
           } else if (this.ruleForm.backgroundSetting == 2) {
@@ -297,7 +305,7 @@ export default {
     },
     selectChange(val) {
       // console.log(val)
-      // debugger
+      debugger
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
@@ -315,6 +323,7 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList)
       this.ruleForm.icon = ''
+      this.ruleForm.fileList = []
     },
     handlePreview(file) {
       console.log(file)

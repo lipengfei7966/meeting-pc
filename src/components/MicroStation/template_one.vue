@@ -106,6 +106,7 @@ export default {
       handler(newValue, oldValue) {
         if (newValue) {
           debugger
+          console.log(123)
           // console.log(window.document.location)
           console.log(newValue, oldValue)
           // if (newValue.backColor) {
