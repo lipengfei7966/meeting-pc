@@ -106,6 +106,7 @@ export default {
       handler(newValue, oldValue) {
         if (newValue) {
           debugger
+          console.log(123)
           // console.log(window.document.location)
           console.log(newValue, oldValue)
           // if (newValue.backColor) {
@@ -171,11 +172,12 @@ export default {
   methods: {
     handel(item, index) {
       // debugger
-      if (item.type == 'url') {
-        window.location.href = item.content
-      } else {
-        this.$message('暂无页面资源！')
-      }
+      // if (item.type == 'url') {
+      //   window.location.href = item.content
+      // } else {
+      //   this.$message('暂无页面资源！')
+      // }
+      this.$emit('itemclick', item, index)
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {

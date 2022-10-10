@@ -7,7 +7,7 @@
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
       <li @click="handel(1)" :class="pitchOn ? 'template_one' : ''">
-        <templateOne :title_="title_" :subTitle_="subTitle_" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @feature="feature" ref="templateOne"></templateOne>
+        <templateOne :title_="title_" :subTitle_="subTitle_" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @feature="feature" @itemclick="itemclick" ref="templateOne"></templateOne>
       </li>
       <!-- <li>模板二</li>
       <li>模板三</li>
@@ -162,6 +162,11 @@ export default {
     colorVal(val, dataNum) {
       // debugger
       this.$refs.templateOne.colorVal(val, dataNum)
+    },
+    itemclick(item, index) {
+      // debugger
+      this.$emit('itemclick', item, index)
+      console.log(item, index)
     }
   }
 }

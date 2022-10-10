@@ -68,15 +68,13 @@
             },
             apiData: {
               search(node) {
-                if (node) {
+                if (node && node["code"]!=undefined) {
                   return {
                     customerCode: node['code'],
 
                   }
                 } else {
-                  console.log(this.$refs.bsTable.getCurrentNode())
-
-                  return {}
+                  return ""
                 }
               }
             },

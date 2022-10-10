@@ -113,9 +113,7 @@ export default {
                   departmentCode:node['code']
                 }
               } else {
-                console.log(this.$refs.bsTable.getCurrentNode())
-
-                return {}
+                return ""
               }
             }
           },
