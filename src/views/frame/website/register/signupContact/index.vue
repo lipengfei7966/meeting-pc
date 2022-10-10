@@ -2,13 +2,14 @@
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref="bsTable" :mainData="mainData" @fileCallback='fileCallback'></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table>
   </div>
 </template>
 
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import request from '@/utils/frame/base/request'
 import axios from 'axios'
 export default {
   name: 'signupContact',
@@ -106,7 +107,10 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'已办证',value:1},{label:'未办证',value:0}]
+            list: [
+              { label: '已办证', value: 1 },
+              { label: '未办证', value: 0 }
+            ]
           },
           {
             label: 'website.signupContact.query.signFlag',
@@ -115,7 +119,10 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+            list: [
+              { label: '已签到', value: 1 },
+              { label: '未签到', value: 0 }
+            ]
           },
           {
             label: 'website.signupContact.query.signNum',
@@ -188,11 +195,13 @@ export default {
           },
           {
             name: 'export',
-            i18n: '导出模板',
+            i18n: 'biz.btn.downloadTemplate',
             event: this.exportExcel
           },
           {
             name: 'upload',
+            iconName: '线性-导入',
+            i18n: 'biz.btn.import',
             atrrs: {
               uploadUrl: process.env.BASE_API + '/api/register/signupContactCol/exportImport', // 文件上传url
               showFileList: false, // 是否展示上传文件，默认false
@@ -204,8 +213,7 @@ export default {
             }
           },
           {
-            name: 'export',
-            i18n: '导出'
+            name: 'export'
           },
           {
             name: 'refresh'
@@ -289,12 +297,33 @@ export default {
   mounted() {},
   methods: {
     onChangeAll(params) {
-      this.mainData.topBar[5].atrrs.paramData={
+      this.mainData.topBar[5].atrrs.paramData = {
         eventCode: this.form.listQuery.data.eventCode
       }
       this.$refs.bsTable.doRefresh()
     },
-    exportExcel(){
+    exportExcel() {
+      request({
+        url: '/api/register/signupContactCol/verifyInitialize',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '模板导出',
+          funcOperation: '根据会议code校验会议表单是否初始化'
+        }
+      })
+        .then((response) => {
+          if (response.status) {
+            this.exportExcel1()
+          } else {
+            this.$notify(notifyError({ msg: response.msgText }))
+          }
+        })
+        .catch(() => {
+          this.$refs.bsTable.doRefresh()
+        })
+    },
+    exportExcel1() {
       axios({
         method: 'post',
         url: process.env.BASE_API + this.mainData.api.export,
@@ -310,7 +339,7 @@ export default {
         },
         responseType: 'blob'
       })
-        .then(response => {
+        .then((response) => {
           if (!response.data) {
           } else {
             const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -323,11 +352,11 @@ export default {
             link.remove()
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
-    fileCallback(data){
+    fileCallback(data) {
       debugger
       this.$notify.success({
         message: data,

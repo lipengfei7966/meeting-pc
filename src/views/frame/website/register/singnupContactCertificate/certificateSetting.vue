@@ -285,6 +285,7 @@ export default {
         }
       }).then(res => {
         this.list = [];
+        this.fileList = [];
         if(res.data){
           this.printSetform = res.data
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
