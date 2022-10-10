@@ -6,7 +6,7 @@
       <!-- 顶部按钮 -->
       <el-row class='top-operate' v-if='dialog.topButtons && dialog.topButtons.length > 0'>
         <el-button v-for='(button, index) in dialog.topButtons.filter(v => { return v.isShow.includes(dialog.type) })' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button)'>
-          {{$t(button.name)}}
+          {{$t(button.name)}}33
         </el-button>
       </el-row>
       <!-- 内容 -->

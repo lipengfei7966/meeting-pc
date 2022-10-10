@@ -6,14 +6,14 @@
 
       <main>
         <!-- 顶部按钮 -->
-        <el-row class='top-operate' style='margin:3px 0;'>
+        <div class='tabs-operate' style='margin:3px 0;'>
           <el-button @click="addRow" size="mini">
             <svg-icon icon-class="addLine"></svg-icon>{{ $t('biz.btn.addRow') }}
           </el-button>
           <el-button @click="deleteRow" size="mini">
             <svg-icon icon-class="delete"></svg-icon>{{ $t('biz.btn.deleteRow') }}
           </el-button>
-        </el-row>
+        </div>
 
         <el-table stripe border class='table-content tb-edit' ref="singleTable" highlight-current-row v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" :data="list" :height='374' @selection-change="handleSelectionChange" style='border:1px solid;'>
           <el-table-column align='center' type="selection" width="45" fixed></el-table-column>
