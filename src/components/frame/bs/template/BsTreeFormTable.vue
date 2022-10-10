@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container tree-form-table">
+  <div class="bs-new-container app-container tree-form-table">
     <!-- 内容 -->
     <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "200px" }'>
       <div class='title' :title='treeTableData.form.treeName'>{{treeTableData.form.treeName}}</div>
@@ -283,13 +283,13 @@ export default {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       if (this.treeTableData.form.formDataVisible) {
-        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105
+        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 78
       } else {
-        return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167
+        return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167 - 40
       }
     },
     treeHeight() {
-      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101
+      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 38
     }
   },
   watch: {

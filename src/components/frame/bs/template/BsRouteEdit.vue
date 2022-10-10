@@ -1,5 +1,5 @@
 <template>
-  <div class='bs-container app-container edit-page-style'>
+  <div class='bs-new-container app-container edit-page-style'>
     <!-- 顶部按钮 -->
     <div class='dialog-footer'>
       <template v-for='(button, index) in edit.topButtons'>

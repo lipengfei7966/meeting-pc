@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-table-tabs ref='bsTable' :mainData='mainData' @initCallback='initCallback'>
     </bs-table-tabs>
   </div>

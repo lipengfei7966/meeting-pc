@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' :type='styleType.class'>
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="$emit('closeDialog')" />

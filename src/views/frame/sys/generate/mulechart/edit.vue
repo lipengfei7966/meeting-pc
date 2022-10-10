@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style="width:1183px;">
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')"></title-contain>
       <el-row class='top-operate'>
@@ -961,7 +961,7 @@ export default {
     getPageData() {
       // 调取接口
       request({
-        url: '/api/sys/codeReport/get',
+        url: '/api/code/report/get',
         method: 'post',
         data: {
           data: this.param,
@@ -1000,7 +1000,7 @@ export default {
     onExplain() {
       if (this.page.sqlStatement && this.page.codeApp) {
         request({
-          url: '/api/sys/codeReport/explain',
+          url: '/api/code/report/explain',
           method: 'post',
           data: {
             data: {
@@ -1459,7 +1459,7 @@ export default {
             params.codeDataJson.mainData.table.cols = this.sortByKey(params.codeDataJson.mainData.table.cols, 'sortNo')
 
             request({
-              url: this.opType === 'add' || this.opType === 'copy' ? '/api/sys/codeReport/save' : '/api/sys/codeReport/update',
+              url: this.opType === 'add' || this.opType === 'copy' ? '/api/code/report/save' : '/api/code/report/update',
               method: 'POST',
               data: {
                 data: params,
