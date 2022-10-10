@@ -209,7 +209,7 @@
         // display: flex;
         align-items: center;
         float: none;
-        width: 96px;
+        width: 106px;
         height: 28px;
         font-size: 14px;
         color: #333333;
@@ -322,15 +322,14 @@
 
     .is-required {
       .el-form-item__label {
-        &::before {
-          content: '';
-          display: none;
-        }
-
-        &::after {
+        &::before {           
           content: '*';
           color: #f56c6c;
           margin-left: 0;
+        }
+        &::after { 
+          content: '';
+          display: none;
         }
       }
 
@@ -1114,8 +1113,8 @@
       padding-bottom: 30px !important;
 
       .el-col {
-        height: 38px !important;
-        padding-right: 0 !important;
+        height: 32px !important;
+        padding-right: 5 !important;
       }
     }
   }
