@@ -33,7 +33,7 @@
           <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
             <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
           </el-button>
-          <div class="bottom-operate-left right-btn" v-if="mainData.isColset">
+          <div class="right-btn" v-if="mainData.isColset">
             <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
           </div>
         </div>
