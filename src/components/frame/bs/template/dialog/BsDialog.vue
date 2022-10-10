@@ -131,15 +131,15 @@ export default {
       dialogMap: {
         mini: {
           class: 'miniColumnsDialog',
-          span: 12
+          span: 24
         },
         medium: {
           class: 'mediumColumnsDialog',
-          span: 8
+          span: 12
         },
         max: {
           class: 'maxColumnsDialog',
-          span: 6
+          span: 8
         }
       }
     }
