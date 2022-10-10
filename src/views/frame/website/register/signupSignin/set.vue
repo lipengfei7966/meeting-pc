@@ -246,22 +246,27 @@ export default {
           cols: [
             {
               prop: 'name',
+              align: 'center',
               label: 'website.signupSignin.list.name'
             },
             {
               prop: 'mobile',
+              align: 'center',
               label: 'website.signupSignin.list.mobile'
             },
             {
               prop: 'email',
+              align: 'center',
               label: 'website.signupSignin.list.email'
             },
             {
               prop: 'department',
+              align: 'center',
               label: 'website.signupSignin.list.department'
             },
             {
               prop: 'contactCode',
+              align: 'center',
               label: 'website.signupSignin.list.contactCode'
             },
             {
@@ -274,18 +279,25 @@ export default {
             },
             {
               prop: 'signinStatus',
+              align: 'center',
               label: 'website.signupSignin.list.signinStatus'
             },
             {
               prop: 'createDate',
+              align: 'center',
               label: 'website.signupSignin.list.createDate'
             },
             {
               prop: 'signinWay',
-              label: 'website.signupSignin.list.signinWay'
+              align: 'center',
+              label: 'website.signupSignin.list.signinWay',
+              format: {
+                dict: this.$t('datadict.singWay')
+              }
             },
             {
               prop: 'signupData',
+              align: 'center',
               label: 'website.signupSignin.list.signupData'
             }
           ]
