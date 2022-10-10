@@ -7,10 +7,72 @@
 </template>
 
 <script>
+import excelUtil from '@/utils/frame/base/excelUtil.js'
+import signinTemplate from '@/assets/frame/excel/signinTemplate.xlsx'
+
 export default {
   name: 'signupSigninRecord',
   data() {
     return {
+      colList:
+      [
+        {
+          title:'导入',
+          colList:[{
+            code: 'eventCode',
+            name: '会议名称',
+            dictCode: null,
+            funcName: null,
+            dict: null
+          
+          }]
+        },
+        {
+          title:'导入',
+          colList:[{
+            code: 'contactCode',
+            name: '参会人编码',
+            dictCode: null,
+            funcName: null,
+            dict: null
+          
+          }]
+        },
+        {
+          title:'导入',
+          colList:[{
+            code: 'sceneName',
+            name: '场景名称',
+            dictCode: null,
+            funcName: null,
+            dict: null
+          
+          }]
+        },
+        {
+          title:'导入',
+          colList:[{
+            code: 'signinWay',
+            name: '签到方式',
+            dictCode: null,
+            funcName: null,
+            dict: null
+          
+          }]
+        },
+        {
+          title:'导入',
+          colList:[{
+            code: 'createDate',
+            name: '签到时间',
+            dictCode: null,
+            funcName: null,
+            dict: null
+          
+          }]
+        }
+      ],
+      tempExcelPath: signinTemplate,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -44,13 +106,14 @@ export default {
             label: '场景',
             prop: 'sceneCode',
             element: 'base-select',
+            //default:'',
             attrs: {
+              clearable:false,
               data: "DICTYPE",
               params: {
                 type:"2",
                 eventCode:this.$route.params.data
-              },
-              clearable: true
+              }
             },
             event: {
               changeAll: this.onChangeAll
@@ -147,8 +210,19 @@ export default {
         initSearch: false,
         isTopBar: true,
         topBar: [
+        {
+            iconName: '导入',
+            i18n: 'biz.btn.import',
+            permitName: ['import'],
+            event: this.Excel,
+            showLoading: true
+          },
           {
-            name: 'refresh'
+            iconName: '下载',
+            i18n: 'biz.btn.downloadTemplate',
+            permitName: ['downloadTemplate'],
+            $refs: this.$refs,
+            event: this.download
           }
         ],
         isColset: true,
@@ -171,6 +245,11 @@ export default {
               label: 'website.signupSignin.list.department'
             },
             {
+              prop: 'eventCode',
+              label: 'website.signupSignin.list.eventCode',
+              isShow:false
+            },
+            {
               prop: 'contactCode',
               label: 'website.signupSignin.list.contactCode'
             },
@@ -187,12 +266,12 @@ export default {
               label: 'website.signupSignin.list.sceneName'
             },
             {
-              prop: 'createDate',
-              label: 'website.signupSignin.list.createDate'
-            },
-            {
               prop: 'signinWay',
               label: 'website.signupSignin.list.signinWay'
+            },
+            {
+              prop: 'createDate',
+              label: 'website.signupSignin.list.createDate'
             },
             {
               prop: 'signupData',
@@ -216,9 +295,24 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
-    console.log(this.form.listQuery.data);
   },
   methods: {
+    download() {
+      const url = this.tempExcelPath
+      const link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      link.setAttribute('download', '签到记录导入模板.xlsx')
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    },
+    Load(){
+      this.$refs.bsTable.getList({ name: 'search' })
+    },
+    Excel(){
+      excelUtil.uploadTemplateData(this, '/api/register/signupSignin/uploadExcel','签到记录导入',this.colList,this.Load);
+    }
   }
 }
 </script>

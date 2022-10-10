@@ -210,7 +210,8 @@ export default {
         signinWay: '签到方式',
         sceneName: '场景名称',
         signupData: '报名时间',
-        title: '添加参会人'
+        title: '添加参会人',
+        eventCode:'会议名称'
       }
     },
     signupContactCol: {
