@@ -39,7 +39,7 @@
             </ul>
           </div>
           <div class="contents" style="width: 28%">
-            <station :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
+            <station @itemclick="itemclick" :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
           </div>
           <div class="contents" style="width: 32%">
             <!-- 设置模块、默认不展示 -->
@@ -352,6 +352,11 @@ export default {
       inputTest.className = 'oInput'
       inputTest.style.display = 'none'
       this.$message.success('复制成功')
+    },
+    itemclick(item, index) {
+      debugger
+      console.log(item, index, 'website标注')
+      this.addEdit(item, index)
     }
   },
   mounted() {
