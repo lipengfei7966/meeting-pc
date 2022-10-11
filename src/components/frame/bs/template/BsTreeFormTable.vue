@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container tree-form-table">
     <!-- 内容 -->
-    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "200px" }'>
+    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "260px" }'>
       <div class='title' :title='treeTableData.form.treeName'>{{treeTableData.form.treeName}}</div>
       <div class="buttons" v-if="treeTableData.form.isTopBar">
         <el-row type='flex'>
@@ -902,7 +902,7 @@ export default {
     // border: 1px solid #aaaaaa;
     border-radius: 5px 5px 0 0;
     margin-right: 3px;
-    margin: 10px;
+    margin: 10px 10px 10px 0px;
     background: #ffffff;
     .title {
       height: 40px;
