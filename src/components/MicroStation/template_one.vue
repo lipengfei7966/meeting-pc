@@ -241,6 +241,7 @@ export default {
     cursor: pointer;
     width: 30%;
     height: 12vh;
+    margin: 0 3px;
     //     background-color: rgba(198, 75, 34, 0.2);
     //     border: 1px solid red;
     margin-bottom: 10px;
