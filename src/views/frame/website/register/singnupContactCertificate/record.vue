@@ -17,10 +17,63 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import excelUtil from '@/utils/frame/base/excelUtil.js'
+import certificatePrintTemplate from '@/assets/frame/excel/certificatePrintTemplate.xlsx'
 export default {
   name: 'singnupContactCertificateRecord',
   data() {
     return {
+      colList: [
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'eventCode',
+              name: '会议名称',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        },
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'code',
+              name: '参会人编码',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        },
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'certificateType',
+              name: '证件类型',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        },
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'updateDate',
+              name: '办证时间',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        }
+      ],
+      tempExcelPath: certificatePrintTemplate,
       activeName: '0001',
       form: {
         moreShowFlg: false,
@@ -129,7 +182,18 @@ export default {
             name: 'refresh'
           },
           {
-            name: 'export'
+            iconName: '导入',
+            i18n: 'biz.btn.import',
+            permitName: ['import'],
+            event: this.Excel,
+            showLoading: true
+          },
+          {
+            iconName: '下载',
+            i18n: 'biz.btn.downloadTemplate',
+            permitName: ['downloadTemplate'],
+            $refs: this.$refs,
+            event: this.download
           }
         ],
         isColset: true,
@@ -215,11 +279,24 @@ export default {
         })
       })
     })
-    this.currentRow = null
-    this.form.listQuery.data.certificateType = this.activeName
-    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
+    download() {
+      const url = this.tempExcelPath
+      const link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      link.setAttribute('download', '办证记录导入模板.xlsx')
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    },
+    Load() {
+      this.$refs.bsTable.getList({ name: 'search' })
+    },
+    Excel() {
+      excelUtil.uploadTemplateData(this, '/api/register/signupCertificatePrint/uploadExcel', '办证记录导入', this.colList, this.Load)
+    },
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
     },
