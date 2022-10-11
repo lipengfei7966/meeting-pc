@@ -376,7 +376,7 @@ export default {
         return
       }
       let isCanPrint = true
-
+      let msg = ''
       this.tableData.forEach((item, index) => {
         this.$nextTick(() => {
           let contents = this.$refs.contents
@@ -399,10 +399,17 @@ export default {
          
          
         } else {
-          this.$message.warning(`${item.name} 未添加证件模板`)
-          isCanPrint = false
+          msg = msg + item.name + '未添加证件模板<br/>'
         }
       })
+      if (msg !== '') {
+        this.$message({
+          dangerouslyUseHTMLString: true,
+          message: msg,
+          type: 'warning'
+        })
+        isCanPrint = false
+      }
 
       if (!isCanPrint) return
       this.isprint = true

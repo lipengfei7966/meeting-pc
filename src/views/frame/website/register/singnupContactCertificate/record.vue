@@ -212,6 +212,9 @@ export default {
         })
       })
     })
+    this.currentRow = null
+    this.form.listQuery.data.certificateType = this.activeName
+    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
     onChangeAll(params) {
