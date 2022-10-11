@@ -147,7 +147,7 @@ export default {
     if (screenfull.enabled) {
       screenfull.on('change', this.screenChange)
     }
-    this.$store.dispatch('setModuleNames',this.moduleName)
+    this.$store.dispatch('setModuleNames', this.moduleName)
   },
   methods: {
     loadCaptcha() {
@@ -168,7 +168,7 @@ export default {
     },
     moduleChange(moduleName) {
       this.moduleName = moduleName
-      this.$store.dispatch('setModuleNames',this.moduleName)
+      this.$store.dispatch('setModuleNames', this.moduleName)
     },
     getFirstParentName(list) {
       list.forEach(l => {
@@ -180,7 +180,7 @@ export default {
       })
     },
     toggleSideBar() {
-      this.$store.dispatch('toggleSideBar');
+      this.$store.dispatch('toggleSideBar')
     },
     // 关闭通用事件
     close() {
@@ -304,7 +304,7 @@ export default {
       #app-main {
         position: relative;
         width: 100%;
-        margin-top: 26px;
+        margin-top: 36px;
       }
     }
   }
