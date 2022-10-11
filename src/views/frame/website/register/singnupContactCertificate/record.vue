@@ -157,8 +157,8 @@ export default {
           },
           {
             type: 'datetime',
-            label: 'website.signupCertificatePrint.query.createDate',
-            prop: 'createDate',
+            label: 'website.signupCertificatePrint.query.certificateTime',
+            prop: 'certificateTime',
             element: 'input-validate',
             attrs: {
               clearable: true,
@@ -244,7 +244,7 @@ export default {
               }
             },
             {
-              prop: 'createDate',
+              prop: 'certificateTime',
               label: 'website.signupCertificatePrint.list.createDate'
             }
           ]
