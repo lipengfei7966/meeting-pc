@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container tree-form-table">
     <!-- 内容 -->
-    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "260px" }'>
+    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "300px" }'>
       <div class='title' :title='treeTableData.form.treeName'>{{treeTableData.form.treeName}}</div>
       <div class="buttons" v-if="treeTableData.form.isTopBar">
         <el-row type='flex'>
@@ -25,7 +25,7 @@
         </el-tree>
       </div>
     </div>
-    <div class='right-content'>
+    <div class='right-content' :style='{"margin-top": treeTableData.form.formDataVisible ? "0px" : "10px" }'>
       <header ref='formTableDialogHeader' v-if='treeTableData.form.formDataVisible' style='border-radius:5px;margin:0 0 3px;'>
         <el-form ref='queryForm' @submit.native.prevent label-position="left" :inline="true" :model="listQuery.data" class='header-form-inline'>
           <el-row :gutter="20" style='width:94%;'>
@@ -940,7 +940,6 @@ export default {
   .right-content {
     flex: 1;
     min-width: 954px;
-
     & > header {
       background: #fff;
       border: 1px solid #ababab;

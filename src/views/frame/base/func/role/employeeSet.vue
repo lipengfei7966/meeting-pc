@@ -23,7 +23,7 @@ export default {
           initSearch: true,
           isSearch: true,
           expandOnClickNode: false,
-          leftWidth: 260,
+          leftWidth: 300,
           showCode: false,
           expandAll: true,
           api: {

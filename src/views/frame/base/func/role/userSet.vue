@@ -21,7 +21,7 @@ export default {
           treeName: this.$t('func.org.treeName'),
           isTopBar: false,
           isSearch: true,
-          leftWidth: 260,
+          leftWidth: 300,
           showCode: false,
           initSearch: true,
           expandOnClickNode: false,

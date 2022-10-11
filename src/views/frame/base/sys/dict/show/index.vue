@@ -14,7 +14,7 @@ export default {
         form: {
           initSearch: true,
           treeName: this.$t('sys.dict.dictBiz'),
-          leftWidth: 260,
+          leftWidth: 300,
           isSearch: true,
           expandAll: true,
           expandOnClickNode: false,
