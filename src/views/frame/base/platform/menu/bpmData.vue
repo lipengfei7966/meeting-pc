@@ -2,6 +2,7 @@
   <div class='bs-container app-container edit-page-style'>
     <!-- 头部 -->
     <main :style="{'width': clientWidth < 1366 ? (this.sidebar.opened ? '1146px' : '1306px') : 'auto'}">
+      <!-- el-row top-operate -->
       <div class='tabs-operate'>
         <el-button size="mini" type="primary" :loading="btnloading" @click="save()" style='margin-left: 0px;margin-right: 6px;'>
           <i class='el-icon-circle-check'></i>{{this.$t('biz.btn.save')}}

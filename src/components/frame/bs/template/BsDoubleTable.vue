@@ -574,7 +574,7 @@ export default {
   display: flex;
   .left-content {
     min-width: 554px;
-    // border: 1px solid #aaaaaa;
+    border: 1px solid #aaaaaa;
     border-radius: 5px 5px 0 0;
     margin-right: 3px;
     background: #ffffff;

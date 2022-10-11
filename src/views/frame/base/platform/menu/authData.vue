@@ -2,7 +2,8 @@
   <div class='bs-container app-container edit-page-style'>
     <!-- 头部 -->
     <main :style="{'width': clientWidth < 1366 ? (this.sidebar.opened ? '1146px' : '1306px') : 'auto'}">
-      <el-row class='top-operate'>
+      <!-- el-row top-operate -->
+      <div class='tabs-operate'>
         <el-button size="mini" type="primary" :loading=" btnloading" @click="save" style='margin-left: 0px;margin-right: 6px;'>
           <i class='el-icon-circle-check'></i>{{this.$t('biz.btn.save')}}
         </el-button>
@@ -12,7 +13,7 @@
         <el-button size="mini" @click="close" style='margin-left: 0px;margin-right: 6px;'>
           <i class='el-icon-circle-plus-outline'></i>{{this.$t('biz.btn.close')}}
         </el-button>
-      </el-row>
+      </div>
       <el-table class='table-content' ref="multipleTable" v-loading="loading" :element-loading-text="$t('route.load')" element-loading-spinner="el-icon-loading" e lement-loading-background="rgba(255, 255, 255, 0.1)" :data="list" :height='tableHeight' border stripe highlight-current-row @selection-change="selectionChange">
         <el-table-column label="唯一编码" prop="colCode">
           <template slot-scope="scope">

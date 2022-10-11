@@ -20,7 +20,7 @@ export default {
       this.$store.dispatch('resetSize')
     })
     $(document).ready(function() {
-      $(document).on('mouseover', '.bs-container .is-required.is-error .el-form-item__content div', function() {
+      $(document).on('mouseover', '.bs-new-container .is-required.is-error .el-form-item__content div', function() {
         const errorMsg =
           $(this)
             .parent('.el-form-item__content')
@@ -44,18 +44,54 @@ export default {
       //     .show()
       //     .css('opacity', 1)
       // })
-      // $(document).on('mouseover', '.bs-container .is-required.is-error .el-form-item__content > .el-form-item__errors', function() {
+      // $(document).on('mouseover', '.bs-new-container .is-required.is-error .el-form-item__content > .el-form-item__errors', function() {
       //   $(this)
       //     .parent('.el-form-item__content')
       //     .find('.el-form-item__errors')
       //     .hide()
       // })
-      // $(document).on('mouseout', '.bs-container .is-required.is-error .el-form-item__content > div', function() {
+      // $(document).on('mouseout', '.bs-new-container .is-required.is-error .el-form-item__content > div', function() {
       //   $(this)
       //     .parent('.el-form-item__content')
       //     .find('.el-form-item__errors')
       //     .css('opacity', 0)
       })
+      $(document).on('mouseover', '.el-form-item__label', function() {
+        console.log($(this))
+        const labelMsg =$(this).html()
+          // || i18n.t('biz.placeholder.require')
+        if (
+          $(this)
+            .parent('.el-form-item')
+            .find('.el-form-label__frame').length === 0
+        ) {
+          $(this)
+            .parent('.el-form-item')
+            .append(`<div class='el-form-label__frame'>${labelMsg}</div>`)
+        }else {
+          $(this)
+            .siblings('.el-form-label__frame')
+            .text(labelMsg)
+        }
+        $(this)
+          .parent('.el-form-item')
+          .find('.el-form-label__frame')
+          .show()
+          .css('opacity', 1)
+
+      $(document).on('mouseover', '.el-form-item__label', function() {
+        $(this)
+          .parent('.el-form-item')
+          .find('.el-form-label__frame')
+          .show()
+      })
+      $(document).on('mouseout', '.el-form-item__label', function() {
+        $(this)
+          .parent('.el-form-item')
+          .find('.el-form-label__frame')
+          .css('opacity', 0)
+      })
+        })
     })
   }
 }

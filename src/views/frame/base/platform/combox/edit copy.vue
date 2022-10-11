@@ -10,7 +10,7 @@
           <svg-icon icon-class="save"></svg-icon>保存
         </el-button>
         <el-button size="mini" type='success' v-db-click @click='onExplain'>
-          <svg-icon icon-class="explain"></svg-icon>解析SQL
+          <svg-icon icon-class="explain"></svg-icon>解析SQL31
         </el-button>
 
       </el-row>

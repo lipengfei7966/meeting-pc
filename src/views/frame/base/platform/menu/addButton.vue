@@ -6,7 +6,8 @@
       <!-- 内容 -->
       <main>
         <el-alert title="如果下拉框里信息不全，请在平台字典中以 数据代码 AUTH_BUTTON，进行添加" type="error" show-icon style='margin:5px 0;'></el-alert>
-        <el-row class='top-operate'>
+        <!-- el-row top-operate -->
+        <div class='tabs-operate'>
           <el-button @click="addRow" size="mini">
             <svg-icon icon-class="addLine"></svg-icon>{{ $t('biz.btn.addRow') }}
           </el-button>
@@ -19,7 +20,7 @@
           <el-button @click="addBizTemplate" size="mini">
             <svg-icon icon-class="delete"></svg-icon>业务按钮
           </el-button>
-        </el-row>
+        </div>
         <el-table :data="dataTable" @selection-change="handleSelectionChange" height="400" stripe v-loading="loading" :element-loading-text="$t('route.load')" element-loading-spinner="el-icon-loading" border class='table-content tb-edit' ref="multipleTable" style="border:1px solid;">
           <el-table-column align='center' type="index" width="38" label=' '></el-table-column>
           <el-table-column type="selection" align="center" width="50"></el-table-column>
