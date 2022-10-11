@@ -127,6 +127,9 @@ export default {
         topBar: [
           {
             name: 'refresh'
+          },
+          {
+            name: 'export'
           }
         ],
         isColset: true,
