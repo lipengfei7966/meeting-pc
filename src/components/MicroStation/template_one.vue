@@ -1,7 +1,7 @@
 <template>
   <div class="contents" :style="{ backgroundImage: 'url(' + loginBg + ')' }">
     <div class="block">
-      <el-carousel trigger="click" height="280px" indicator-position="none">
+      <el-carousel trigger="click" height="230px" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
           <img :src="`${item.url}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
@@ -106,6 +106,7 @@ export default {
       handler(newValue, oldValue) {
         if (newValue) {
           debugger
+          console.log(123)
           // console.log(window.document.location)
           console.log(newValue, oldValue)
           // if (newValue.backColor) {
@@ -171,11 +172,12 @@ export default {
   methods: {
     handel(item, index) {
       // debugger
-      if (item.type == 'url') {
-        window.location.href = item.content
-      } else {
-        this.$message('暂无页面资源！')
-      }
+      // if (item.type == 'url') {
+      //   window.location.href = item.content
+      // } else {
+      //   this.$message('暂无页面资源！')
+      // }
+      this.$emit('itemclick', item, index)
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {
@@ -232,13 +234,14 @@ export default {
   margin: 0 15px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   //   align-items: center;
   li {
     text-align: center;
     cursor: pointer;
     width: 30%;
     height: 12vh;
+    margin: 0 3px;
     //     background-color: rgba(198, 75, 34, 0.2);
     //     border: 1px solid red;
     margin-bottom: 10px;

@@ -155,7 +155,8 @@ export default {
         signNum: '签到次数',
         checkFlag: '状态',
         contactCode: '参会人编码',
-        createDate: '办证时间'
+        createDate: '办证时间',
+        certificateTime: '办证时间'
       },
       list: {
         name: '姓名',
@@ -168,7 +169,8 @@ export default {
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        createDate: '办证时间'
+        createDate: '办证时间',
+        certificateTime: '办证时间'
       },
       edit: {
         eventCode: '会议名称',
@@ -178,7 +180,8 @@ export default {
         department: '单位',
         code: '参会人编码',
         contactType: '参会人类型',
-        certificateFlag: '办证状态'
+        certificateFlag: '办证状态',
+        certificateTime: '办证时间'
       }
     },
     signin: {
@@ -211,7 +214,7 @@ export default {
         sceneName: '场景名称',
         signupData: '报名时间',
         title: '添加参会人',
-        eventCode:'会议名称'
+        eventCode: '会议名称'
       }
     },
     signupContactCol: {
@@ -269,7 +272,7 @@ export default {
         department: '部门',
         customer: '客户',
         createDate: '创建时间',
-        updateDate:'更新时间'
+        updateDate: '更新时间'
       },
       edit: {
         code: '客户联系人编码',

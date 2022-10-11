@@ -221,6 +221,9 @@ export default {
             permitName: ['downloadTemplate'],
             $refs: this.$refs,
             event: this.download
+          },
+          {
+            name: 'export'
           }
         ],
         isColset: true,
