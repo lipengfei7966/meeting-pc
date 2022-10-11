@@ -128,8 +128,8 @@
 
     <!-- 锁屏 -->
     <el-dialog width='30%' :title="$t('navbar.lock')" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :append-to-body="true" :show-close="false" :close-on-press-escape="false">
-      <el-row type="flex" justify="center" style='padding:30px 20px;'>
-        <el-col :span='12'>
+      <el-row type="flex" justify="center" style='padding:10px 20px;'>
+        <el-col :span='18'>
           <el-input v-model="lockPwd" type='password' autoComplete="off" :placeholder="$t('biz.placeholder.passwordNotBlank')" @keyup.enter.native="handleLocked"></el-input>
         </el-col>
         <el-col :span='6'>
@@ -848,7 +848,7 @@ export default {
     cursor: pointer;
     margin-right: 12px;
     float: right;
-    margin-top: 13px;
+    margin-top: 15px;
   }
   @keyframes get {
     from {

@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container" style="margin-bottom:23px">
+  <div class="bs-new-container app-container" style="margin-bottom:23px">
     <el-alert title="页面初始化错误,请联系技术人员" v-if="showError" type="error" show-icon>
     </el-alert>
     <template v-if='showTemplate'>
