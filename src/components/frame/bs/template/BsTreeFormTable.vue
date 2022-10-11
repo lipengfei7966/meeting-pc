@@ -283,13 +283,13 @@ export default {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       if (this.treeTableData.form.formDataVisible) {
-        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 78
+        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 80
       } else {
         return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167 - 40
       }
     },
     treeHeight() {
-      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 38
+      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 80
     }
   },
   watch: {
