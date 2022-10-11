@@ -118,8 +118,8 @@ export default {
           },
           {
             type: 'datetime',
-            label: 'website.signin.query.createDate',
-            prop: 'createDate',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
             element: 'input-validate',
             attrs: {
               clearable: true,
