@@ -1,7 +1,7 @@
 // 覆盖一些element-ui样式
 .bs-new-container {
   position: relative;
-  //margin-top: 5px !important;
+  margin-top: 5px !important;
   padding: 10px !important;
   // height: 100% !important;
   background: #f0f2f5 !important;
@@ -109,10 +109,10 @@
   // form各种表单
   header {
     background: #fff;
-    //margin: 10px 0 !important;
+    margin: 10px 0 !important;
     //padding: 10px 20px;
     border-radius: 5px !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 5px;
     border: none !important;
   }
 
@@ -1305,7 +1305,7 @@
     position: absolute !important;
     background: transparent !important;
     padding-right: 0 !important;
-    bottom: 0px;
+    bottom: -30px;
     right: 0 !important;
     // width: 100%;
     padding: 0 20px !important;
@@ -1718,7 +1718,7 @@
   .header-form-inline {
     position: relative;
     padding: 3px 10px;
-    //margin: 5px;
+    margin: 5px;
   }
 
   .el-button.el-button--primary.el-button--small {
