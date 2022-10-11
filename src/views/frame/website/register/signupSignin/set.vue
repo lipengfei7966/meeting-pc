@@ -110,14 +110,13 @@ export default {
             list:[{label:'已签到',value:1},{label:'未签到',value:0}]
           },
           {
-            type: 'datetime',
-            label: 'website.signin.query.signupData',
-            prop: 'signupData',
-            element: 'input-validate',
+            type: 'date',
+            label: 'website.signin.query.signinDate',
+            prop: 'signinDate',
             attrs: {
               clearable: true,
               format: 'yyyy-MM-dd',
-              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+              'value-format': 'yyyy-MM-dd'
             }
           },
           {
@@ -127,22 +126,20 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'pc',value:'pc'},{label:'扫码签到',value:'scan'}]
+            list:[{label:'pc签到',value:'pc'},{label:'扫码签到',value:'scan'}]
           },
           {
-            type: 'datetime',
-            label: 'website.signin.query.createDate',
-            prop: 'createDate',
-            element: 'input-validate',
+            type: 'date',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
             attrs: {
               clearable: true,
               format: 'yyyy-MM-dd',
-              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+              'value-format': 'yyyy-MM-dd'
             }
           }
         ]
       },
-
       mainData: {
         tabs: [],
         api: {
@@ -208,35 +205,19 @@ export default {
               }
             }
           },
-          // {
-          //   name: 'update',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
-          // {
-          //   name: 'view',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
-
           {
             name: 'remove',
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
+            },
+            msg: '默认场景无法移除参会人',
+            validate: () => {
+              if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined){
+                return false;
+              }
             }
           },
-          // {
-          //   name: 'record',
-          //   type: 'route',
-          //   i18n: '签到记录',
-          //   event: this.toRecord
-          // },
+          
           {
             name: 'refresh'
           }
@@ -283,9 +264,9 @@ export default {
               label: 'website.signupSignin.list.signinStatus'
             },
             {
-              prop: 'createDate',
+              prop: 'signinDate',
               align: 'center',
-              label: 'website.signupSignin.list.createDate'
+              label: 'website.signupSignin.list.signinDate'
             },
             {
               prop: 'signinWay',
