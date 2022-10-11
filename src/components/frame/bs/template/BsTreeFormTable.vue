@@ -25,7 +25,7 @@
         </el-tree>
       </div>
     </div>
-    <div class='right-content' :style='{"margin-top": treeTableData.form.formDataVisible ? "0px" : "10px" }'>
+    <div class='right-content'>
       <header ref='formTableDialogHeader' v-if='treeTableData.form.formDataVisible' style='border-radius:5px;margin:0 0 3px;'>
         <el-form ref='queryForm' @submit.native.prevent label-position="left" :inline="true" :model="listQuery.data" class='header-form-inline'>
           <el-row :gutter="20" style='width:94%;'>
@@ -901,8 +901,7 @@ export default {
     min-width: 200px;
     // border: 1px solid #aaaaaa;
     border-radius: 5px 5px 0 0;
-    margin-right: 3px;
-    margin: 10px 10px 10px 0px;
+    margin-right: 10px;
     background: #ffffff;
     .title {
       height: 40px;

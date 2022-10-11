@@ -1,6 +1,6 @@
 <template>
 
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='miniColumnsDialog'>
       <!-- 头部 -->
       <TitleContain :titleName="titleName" @TitleFun="close" />

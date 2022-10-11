@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='max' style="width:900px;">
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="cancel"></title-contain>
