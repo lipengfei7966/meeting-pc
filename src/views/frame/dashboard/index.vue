@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container dashboard" :style="{'left': sidebar.opened == 0 ? '10px !important' : '0 !important','width': sidebar.opened == 1 ? '100% !important' : ' calc(100% - 10px) !important'}">
+  <div class="bs-new-container app-container dashboard" :style="{'left': sidebar.opened == 0 ? '10px !important' : '0 !important','width': sidebar.opened == 1 ? '100% !important' : ' calc(100% - 10px) !important'}">
     <div :style="{'width': clientWidth < 1366 ? (this.sidebar.opened ? '1146px' : '1306px') : 'auto'}">
       <div class="dashboardWrap">
         <h1>您好, 欢迎使用会议管理系统</h1>

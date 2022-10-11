@@ -90,7 +90,7 @@
               </el-button>
             </div>
             <div class="button-group-item search-btn" v-permission="['query']">
-              <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
+              <el-button type="primary" :loading="loading" @click="handleSearchClick" v-db-click>
                 {{$t('biz.lbl.search')}}
               </el-button>
             </div>
@@ -283,13 +283,13 @@ export default {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       if (this.treeTableData.form.formDataVisible) {
-        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 80
+        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 70
       } else {
         return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167 - 40
       }
     },
     treeHeight() {
-      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 80
+      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 20
     }
   },
   watch: {
@@ -385,6 +385,15 @@ export default {
     this.scrolbox.addEventListener('scroll', this.handleScroll())
   },
   methods: {
+    // 重置
+    onReset() {
+      for (const k in this.form.listQuery.data) {
+        this.form.listQuery.data[k] = ''
+      }
+      this.items = []
+      this.expandStatus = process.env.EXPAND_FLG
+      this.expandText = !this.expandStatus ? '收起' : '展开'
+    },
     // 展开收起
     expand() {
       this.expandStatus = !this.expandStatus
