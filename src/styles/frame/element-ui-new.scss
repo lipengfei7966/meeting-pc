@@ -1,9 +1,7 @@
 // 覆盖一些element-ui样式
 .bs-new-container {
   position: relative;
-  //margin-top: 5px !important;
   padding: 10px !important;
-  // height: 100% !important;
   background: #f0f2f5 !important;
   padding-bottom: 20px !important;
   // , Segoe UI
@@ -142,7 +140,6 @@
       }
 
       .el-form-item__label {
-        // width: 200px;
         height: 30px;
         min-width: 100px !important;
         text-align: right;
@@ -277,7 +274,7 @@
 
         .el-radio-group {
           display: flex;
-          // justify-content: space-between;
+          justify-content: space-between;
           align-items: flex-end;
 
           .el-radio {
@@ -1657,7 +1654,7 @@
     margin-bottom: 10px !important;
     margin-top: 10px !important;
     margin-left: 10px !important;
-    height: 700px !important;
+    height: 768px !important;
     // min-height: 508px;
 
     .title {
@@ -1902,7 +1899,7 @@
           .el-form-item__label {
             // width: auto;
             height: 30px;
-            min-width: 100px !important;
+            min-width: 70px !important;
             text-align: right;
             display: block;
             line-height: 30px;
