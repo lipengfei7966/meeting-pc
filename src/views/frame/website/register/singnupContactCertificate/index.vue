@@ -377,6 +377,7 @@ export default {
       }
       let isCanPrint = true
       let msg = ''
+      this.isprint = true
       this.tableData.forEach((item, index) => {
         this.$nextTick(() => {
           let contents = this.$refs.contents
@@ -409,10 +410,11 @@ export default {
           type: 'warning'
         })
         isCanPrint = false
+        this.isprint = false;
       }
 
-      if (!isCanPrint) return
-      this.isprint = true
+      if (!isCanPrint && !this.isprint) return
+      
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
         method: 'POST',
