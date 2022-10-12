@@ -248,6 +248,7 @@ export default {
   },
   mounted() {
     this.checkQueryCondition()
+    console.log(this.form.formData,5666)
   },
   methods: {
     // 重置
