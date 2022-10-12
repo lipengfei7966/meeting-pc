@@ -92,7 +92,7 @@
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
               <p v-if="item.value == 'qrCode' " id="qrCode" @mousedown="checkItem(item)">
-                <vue-qr class="qrCode" text="printSetform.certificateContent" :size="180" style="width:100%"> </vue-qr>
+                <vue-qr class="qrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
 
               <p v-else-if="item.value == 'barCode'" id="barCode" @mousedown="checkItem(item)">
@@ -747,7 +747,7 @@ export default {
 .p-event {
   border: 1px solid red;
   box-sizing: border-box;
-  min-height: 500px;
+  /* min-height: 500px; */
   overflow: hidden;
   width: 100%;
   position: relative;
