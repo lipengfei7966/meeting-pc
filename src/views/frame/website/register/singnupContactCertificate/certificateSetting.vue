@@ -91,11 +91,11 @@
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
-              <p v-if="item.value == 'qrCode' " id="qrCode" @mousedown="checkItem(item)">
+              <p v-if="item.value == 'qrCode' " id="qrCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-qr class="qrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
 
-              <p v-else-if="item.value == 'barCode'" id="barCode" @mousedown="checkItem(item)">
+              <p v-else-if="item.value == 'barCode'" id="barCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-barcode class="barCode" value="123123" :width="1" :height="50" style="width:100%"> </vue-barcode>
               </p>
 
@@ -468,8 +468,8 @@ export default {
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
-              width: '',
-              height: '',
+              width: item.code == 'qrCode'?'200':'',
+              height: item.code == 'qrCode'?'200':'',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
               y: this.list.length * 50// y 默认值
