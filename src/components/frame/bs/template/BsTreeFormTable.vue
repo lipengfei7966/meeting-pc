@@ -103,7 +103,7 @@
           </div>
         </el-form>
       </header>
-      <main>
+      <main :style="{height:mainHeightFlag ? '91% !important':'100% !important'}">
         <div class="top-operate" v-if="treeTableData.mainData.isTopBar">
           <span class="left-title">应用列表</span>
           <el-row type='flex'>
@@ -268,7 +268,8 @@ export default {
           i18n: this.treeTableData.form.expandAll ? 'biz.btn.contract' : 'biz.btn.expand',
           types: 'primary'
         }
-      }
+      },
+      mainHeightFlag:false
     }
   },
   props: {
@@ -367,6 +368,11 @@ export default {
     })
   },
   mounted() {
+    if(this.$refs.formTableDialogHeader){
+      this.mainHeightFlag = true;
+    }else{
+      this.mainHeightFlag = false;
+    }
     this.getTree()
     if (this.treeTableData.mainData.initSearch) {
       this.initTable()
