@@ -160,6 +160,14 @@ export default {
             }
           },
           {
+            label: 'website.signin.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
             label: 'website.signin.query.contactType',
             prop: 'contactType',
             element: 'base-select',
@@ -253,6 +261,11 @@ export default {
               prop: 'contactCode',
               align: 'center',
               label: 'website.signupSignin.list.contactCode'
+            },
+            {
+              prop: 'personnelCode',
+              align: 'center',
+              label: 'website.signupSignin.list.personnelCode'
             },
             {
               prop: 'contactType',
