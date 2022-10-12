@@ -18,7 +18,7 @@
     <!-- 弹窗 -->
     <el-dialog :title="title_" :visible.sync="dialogVisible" width="500px" :before-close="handleClose">
       <span style="font-size: 14px; color: black">文件夹名称：</span>
-      <el-input style="width: 80%" @blur="blur_" v-model="workName" placeholder="请输入文件夹名称："></el-input>
+      <el-input style="width: 80%" v-model="workName" placeholder="请输入文件夹名称："></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="present_">确 定</el-button>
@@ -93,7 +93,8 @@ export default {
         label: 'label'
       },
       dialogVisible: false,
-      title_: '新建文件夹'
+      title_: '新建文件夹',
+      workName: ''
     }
   },
   methods: {
@@ -116,7 +117,7 @@ export default {
     },
     // 提交
     present_() {
-      console.log('提交')
+      console.log('提交', this.workName)
       this.dialogVisible = false
     }
   }
