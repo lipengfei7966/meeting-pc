@@ -37,66 +37,36 @@
       </div>
       <ul class="content_">
         <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
+          <p>图片名称</p>
+          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
+          <el-button type="text">详情</el-button>
         </li>
         <li class="resource">
-          <el-image style="width: 100%; height: 80%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
+          <p>图片名称</p>
+          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
+          <el-button type="text">详情</el-button>
+        </li>
+        <li class="resource">
+          <p>图片名称</p>
+          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
+          <el-button type="text">详情</el-button>
+        </li>
+        <li class="resource">
+          <p>图片名称</p>
+          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
+          <el-button type="text">详情</el-button>
+        </li>
+        <li class="resource">
+          <p>图片名称</p>
+          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
+          <el-button type="text">详情</el-button>
+        </li>
+        <li class="resource">
+          <p>图片名称</p>
+          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
+          <el-button type="text">详情</el-button>
         </li>
         <!-- <li class="resource">视频</li> -->
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
-        <li class="resource">
-          <el-image style="width: 100%; height: 80%" :src="url" :preview-src-list="srcList"> </el-image>
-          <p>图片</p>
-        </li>
       </ul>
     </el-card>
     <el-card class="box-card content_three">
@@ -107,7 +77,7 @@
         <div class="set_two">
           <div class="particulars">
             <span style="font-size: 14px; color: black">文件名：</span>
-            <el-input v-model="input" style="width: 70%" placeholder="请输入文件名"></el-input>
+            <el-input @blur="blur_" v-model="workName" style="width: 70%" placeholder="请输入文件名"></el-input>
             <p>大小：<span class="sp">256KB</span></p>
             <p>格式：<span class="sp">JPG</span></p>
             <p>类型：<span class="sp">图片</span></p>
@@ -140,6 +110,7 @@ export default {
         rank_: '',
         name_: ''
       },
+      workName: '',
       leixingOptions: [{ name: '内容一' }, { name: '内容二' }],
       paixuOptions: [{ name: '内容一' }, { name: '内容二' }],
       url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
@@ -150,6 +121,9 @@ export default {
     // 顶部搜索
     searchClick() {
       console.log('搜索', this.fileSearch)
+    },
+    blur_() {
+      console.log('失焦了 调保存接口吧')
     }
   }
 }
