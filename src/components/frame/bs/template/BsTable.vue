@@ -62,7 +62,7 @@
     </u-table>
     <!-- <el-alert class="alert-total" title="合计" type="warning" :closable="false"></el-alert> -->
     <!-- 底部按钮 -->
-    <div class="bottom-operate">
+    <div class="bottom-operate" v-show="emptyTextVisible || mainData.bottomBar ">
       <div class="bottom-operate-right" v-show="emptyTextVisible">
         <svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}
       </div>

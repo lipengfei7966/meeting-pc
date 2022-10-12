@@ -63,14 +63,15 @@ export default {
         if (
           $(this)
             .parent('.el-form-item')
-            .find('.el-form-label__frame').length === 0
+            .find('.el-form-label__frameBox').length === 0
         ) {
           $(this)
             .parent('.el-form-item')
-            .append(`<div class='el-form-label__frame'>${labelMsg}</div>`)
+            .append(`<div class="el-form-label__frameBox"><div class='el-form-label__frame'>${labelMsg}</div></div>`)
         }else {
           $(this)
-            .siblings('.el-form-label__frame')
+            .siblings('.el-form-label__frameBox')
+            .children('el-form-label__frame')
             .text(labelMsg)
         }
         $(this)
