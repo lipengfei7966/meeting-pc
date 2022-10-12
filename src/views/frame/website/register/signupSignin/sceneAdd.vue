@@ -12,7 +12,7 @@ export default {
         param: this.param,
         initType: 'param',
         styleType: 'medium',
-        titleName: this.$t('route.' + this.$route.meta.title),
+        titleName: '签到场景',
         api: {
           save: '/api/register/signupDictype/save',
         },

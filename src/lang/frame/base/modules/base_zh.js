@@ -130,7 +130,9 @@ export default {
       passwordSet: '6-20位,建议英文、数字、下划线组合',
       remarkNotBlank: '请输入备注',
       search: '搜索',
-      require: '此项为必填项'
+      require: '此项为必填项',
+      email: '邮箱格式有误',
+      mobile: '手机号格式有误'
     },
     title: {
       info: '信息',
@@ -251,6 +253,7 @@ export default {
       stepWarn: '当前业务操作无流程引导',
       cancelAuditSuccess: '退审成功',
       insertSuccess: '新增成功',
+      addSuccess: '添加成功',
       updateSuccess: '修改成功',
       copySuccess: '复制成功',
       saveSuccess: '保存成功',
@@ -271,7 +274,7 @@ export default {
       confirmCancel: '确认取消？',
       confirmGenerate: '确认生成？',
       confirmLock: '确认锁屏？',
-      saveCheck: '请检查红框提示的必输项内容，不能为空',
+      saveCheck: '请检查红框提示的验证信息',
       confirmSave: '请确认当前数据已经准确无误，是否确定保存？',
       confirmSaveAttachment: '请确认是否要上传附件？',
       exportFailed: '导出失败',

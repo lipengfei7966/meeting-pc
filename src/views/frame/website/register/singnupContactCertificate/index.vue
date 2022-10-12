@@ -2,11 +2,11 @@
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
 
-    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
-        <template v-for='tab in mainData.tabs'>
-          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
-            <span slot="label">{{$t(tab.label)}} </span>
+    <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
+      <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
+        <template v-for="tab in mainData.tabs">
+          <el-tab-pane :key="tab.name" :index="tab.name" :name="tab.name">
+            <span slot="label">{{ $t(tab.label) }} </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -14,13 +14,14 @@
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
-    <div v-show="false">
-      <div v-for="(item,index) in tableData" :key="index" :id="'content'+ index" class="content">
+    <div v-if="isprint" ref="content">
+      <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content" :style="`width: ${item.printWight}mm;height: ${item.printHeight}mm`">
+        <p v-show="false">
+          <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
+        </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -29,10 +30,13 @@
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import Print from 'print-js'
+import VueQr from 'vue-qr'
+import VueBarcode from 'vue-barcode'
 export default {
   name: 'singnupContactCertificate',
   data() {
     return {
+      activeName: '2',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -49,7 +53,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.eventCode',
+            label: 'website.signupCertificate.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -66,6 +70,74 @@ export default {
                 trigger: 'blur'
               }
             ]
+          },
+          {
+            label: 'website.signupCertificate.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            list: this.$t('datadict.contantType'),
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            type: 'datetime',
+            label: 'website.signupCertificate.query.createDate',
+            prop: 'createDate',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
           }
         ]
       },
@@ -97,6 +169,7 @@ export default {
           {
             name: 'update',
             type: 'dialog',
+            i18n: '修改参会人',
             component: () => import('../signupContact/edit.vue'),
             getParam: () => {
               return {
@@ -105,9 +178,9 @@ export default {
               }
             },
             validate: () => {
-              if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length!=1) {
+              if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length != 1) {
                 return false
-              }else{
+              } else {
                 return true
               }
             },
@@ -141,27 +214,35 @@ export default {
           cols: [
             {
               prop: 'name',
-              label: 'website.signupContact.list.name'
+              label: 'website.signupCertificate.list.name'
             },
             {
               prop: 'mobile',
-              label: 'website.signupContact.list.mobile'
+              label: 'website.signupCertificate.list.mobile'
             },
             {
               prop: 'email',
-              label: 'website.signupContact.list.email'
+              label: 'website.signupCertificate.list.email'
             },
             {
               prop: 'department',
-              label: 'website.signupContact.list.department'
+              label: 'website.signupCertificate.list.department'
+            },
+            {
+              prop: 'certificateNum',
+              label: 'website.signupCertificate.list.certificateNum'
             },
             {
               prop: 'code',
-              label: 'website.signupContact.list.code'
+              label: 'website.signupCertificate.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupCertificate.list.personnelCode'
             },
             {
               prop: 'contactType',
-              label: 'website.signupContact.list.contactType',
+              label: 'website.signupCertificate.list.contactType',
               align: 'center',
               format: {
                 dict: this.$t('datadict.contantType')
@@ -169,7 +250,7 @@ export default {
             },
             {
               prop: 'certificateFlag',
-              label: 'website.signupContact.list.certificateFlag',
+              label: 'website.signupCertificate.list.certificateFlag',
               align: 'center',
               format: {
                 dict: this.$t('datadict.certificateFlag')
@@ -177,7 +258,7 @@ export default {
             },
             {
               prop: 'checkFlag',
-              label: 'website.signupContact.list.checkFlag',
+              label: 'website.signupCertificate.list.checkFlag',
               align: 'center',
               format: {
                 dict: this.$t('datadict.checkFlag')
@@ -185,7 +266,7 @@ export default {
             },
             {
               prop: 'createDate',
-              label: 'website.signupContact.list.createDate'
+              label: 'website.signupCertificate.list.createDate'
             }
           ]
         },
@@ -197,8 +278,9 @@ export default {
           }
         }
       },
-      tableData:[],
-      certificateContentList:[],
+      tableData: [],
+      isprint: false,
+      certificateContentList: [],
       certificateLayout: `
         <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
           <div class=\"handle handle-tl\" style=\"display: none;\"></div>
@@ -246,22 +328,34 @@ export default {
         </div>`
     }
   },
+  components: {
+    VueQr,
+    VueBarcode
+  },
   mounted() {
-    //
     // 获取打印类型数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'CERTIFICATE_CONTENT', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      //
-      this.certificateContentList = res.data
-    })
+    // this.onChangeAll()
   },
   methods: {
     onChangeAll(params) {
       //
       this.$refs.bsTable.doRefresh()
+      this.meetingdictCode()
+    },
+    // 获取会议具体证件内容选项
+    meetingdictCode(){
+      
+      console.log(this.form.listQuery.data.eventCode)
+      // 获取打印类型数据字典
+      request({
+        url: '/api/register/signupContactCol/page',
+        method: 'POST',
+        data: { data: { eventCode: this.form.listQuery.data.eventCode}, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      }).then(res => {
+        this.certificateContentList = res.data.filter(item => {
+          return item.mapType == '1'
+        })
+      })
     },
     toRecord() {
       //
@@ -279,47 +373,60 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
+      
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
-        .content {width: 80mm;height: 118mm;margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+        .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
         .draggable {position:absolute}
         .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
-      if(this.tableData.length == 0){
+      if (this.tableData.length == 0) {
         this.$message.warning('请选择办证人员')
         return
       }
       let isCanPrint = true
-
-      this.tableData.forEach(item => {
-        // item.certificateLayout = this.certificateLayout
-        if(item.certificateLayout){
-          item.certificateLayout = item.certificateLayout.replace('姓名',item.name)
-          item.certificateLayout = item.certificateLayout.replace('单位名称',item.department)
-          item.certificateLayout = item.certificateLayout.replace('手机',item.mobile)
-          item.certificateLayout = item.certificateLayout.replace('邮箱',item.email)
-          item.certificateLayout = item.certificateLayout.replace('参会人编码',item.code)
-          item.certificateLayout = item.certificateLayout.replace('职务','')
-          item.certificateLayout = item.certificateLayout.replace('地址','')
-        }else{
-          this.$message.warning(`${item.name} 未添加证件模板`)
-          isCanPrint = false
-        }
-        
-      })
-      if (!isCanPrint) return
-      var bsQueryExtras = []
-      this.$refs.bsTable.tableData.forEach(item => {
-          bsQueryExtras.push({
-            code: item.code,
-            contactTypeArray: item.contactType,
-            eventCode: item.eventCode
+      let msg = ''
+      this.isprint = true
+      this.tableData.forEach((item, index) => {
+        this.$nextTick(() => {
+          let contents = this.$refs.contents
+          contents.forEach((node, nodeindex) => {
+            let qrCode = node.getElementsByClassName('qrCode')
+            let newQR = node.getElementsByClassName('newQR')[0]
+            if (qrCode.length > 0) {
+              qrCode[0].parentNode.appendChild(newQR)
+              qrCode[0].parentNode.removeChild(qrCode[0])
+            }
           })
         })
 
+        if (item.certificateLayout) {
+          this.certificateContentList.forEach((dictItem,dictIndex) => {
+            if(item.certificateLayout.indexOf(dictItem.mapName) >= 0){
+              item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+            }
+          })
+         
+         
+        } else {
+          msg = msg + item.name + '未添加证件模板<br/>'
+        }
+      })
+      if (msg !== '') {
+        this.$message({
+          dangerouslyUseHTMLString: true,
+          message: msg,
+          type: 'warning'
+        })
+        isCanPrint = false
+        this.isprint = false;
+      }
+
+      if (!isCanPrint && !this.isprint) return
+      
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
         method: 'POST',
@@ -328,14 +435,13 @@ export default {
           funcModule: '办证',
           funcOperation: '查询列表'
         }
-      }).then(response => {
+      }).then((response) => {
         debugger
-        console.log(response.data);
-        if(response.data.certificateFlag){
+        console.log(response.data)
+        if (response.data.certificateFlag) {
           this.$message.success(response.data.msg)
 
           const data = this.tableData
-          const params = {}
           //打印
           var newWin = window.open('') //新打开一个空窗口
           this.$nextTick(() => {
@@ -347,32 +453,14 @@ export default {
             newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
             newWin.document.close() //在IE浏览器中使用必须添加这一句
             newWin.focus() //在IE浏览器中使用必须添加这一句
-            if (data.length == 1) {
-                params.name = data[0].name
-                params.code = data[0].code
-                params.mobile = data[0].mobile
-                params.issuingResult = 1
-            } else if (data.length > 1) {
-                params.issuingResult = 1
-                const certificatePrintList = []
-                data.map((item) => {
-                    certificatePrintList.push({ name: item.name, code: item.code, mobile: item.mobile })
-                })
-                params.certificatePrintList = certificatePrintList
-            }
 
+            this.isprint = false
             setTimeout(function () {
-                newWin.print() //打开打印窗口
-                // newWin.close() //关闭打印窗口
-                // issueUpdate(params).then(() => {
-                //     that.fetch()
-                //     that.$message.success('打印结束')
-                // })
+              newWin.print() //打开打印窗口
+              newWin.close() //关闭打印窗口
             }, 100)
-            // this.toSaveRecord()
           })
-        }
-        else{
+        } else {
           this.$message.warning(response.data.msg)
           isCanPrint = false
         }
@@ -383,11 +471,10 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      if (this.$refs.bsTable.currentRow==null) {
+      if (this.$refs.bsTable.currentRow == null) {
         this.$message.warning('请选择参会人')
         return
       }
-      
     },
     toSetting() {
       //

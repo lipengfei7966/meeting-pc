@@ -33,7 +33,7 @@ export default {
           type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
-          defaultSortString: 'code.desc',
+          defaultSortString: 'signinDate.desc',
           data: {}
         },
         formData: [
@@ -50,10 +50,104 @@ export default {
             event: {
               changeAll: this.onChangeAll
             }
+          },
+          {
+            label: 'website.signin.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: this.$t('datadict.contantType')
+          },
+          {
+            label: 'website.signin.query.signFlag',
+            prop: 'signFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+          },
+          {
+            type: 'date',
+            label: 'website.signin.query.signinDate',
+            prop: 'signinDate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              'value-format': 'yyyy-MM-dd'
+            }
+          },
+          {
+            label: 'website.signin.query.signinWay',
+            prop: 'signinWay',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'pc签到',value:'pc'},{label:'扫码签到',value:'scan'}]
+          },
+          {
+            type: 'date',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              'value-format': 'yyyy-MM-dd'
+            }
           }
         ]
       },
-
       mainData: {
         tabs: [],
         api: {
@@ -100,12 +194,12 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '添加参会人',
+            msg: '默认场景无法添加参会人',
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
                 return false
               } else if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-                this.$notify(notifyInfo({ msg: '默认场景无法添加参会人' }));
                 return false
               } else {
                 return true
@@ -119,35 +213,19 @@ export default {
               }
             }
           },
-          // {
-          //   name: 'update',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
-          // {
-          //   name: 'view',
-          //   type: 'dialog',
-          //   component: () => import('./edit.vue'),
-          //   getParam: () => {
-          //     return this.$refs.bsTable.currentRow
-          //   }
-          // },
-
           {
             name: 'remove',
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
+            },
+            msg: '默认场景无法移除参会人',
+            validate: () => {
+              if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined){
+                return false;
+              }
             }
           },
-          // {
-          //   name: 'record',
-          //   type: 'route',
-          //   i18n: '签到记录',
-          //   event: this.toRecord
-          // },
+          
           {
             name: 'refresh'
           }
@@ -157,23 +235,33 @@ export default {
           cols: [
             {
               prop: 'name',
+              align: 'center',
               label: 'website.signupSignin.list.name'
             },
             {
               prop: 'mobile',
+              align: 'center',
               label: 'website.signupSignin.list.mobile'
             },
             {
               prop: 'email',
+              align: 'center',
               label: 'website.signupSignin.list.email'
             },
             {
               prop: 'department',
+              align: 'center',
               label: 'website.signupSignin.list.department'
             },
             {
               prop: 'contactCode',
+              align: 'center',
               label: 'website.signupSignin.list.contactCode'
+            },
+            {
+              prop: 'personnelCode',
+              align: 'center',
+              label: 'website.signupSignin.list.personnelCode'
             },
             {
               prop: 'contactType',
@@ -185,18 +273,25 @@ export default {
             },
             {
               prop: 'signinStatus',
+              align: 'center',
               label: 'website.signupSignin.list.signinStatus'
             },
             {
-              prop: 'createDate',
-              label: 'website.signupSignin.list.createDate'
+              prop: 'signinDate',
+              align: 'center',
+              label: 'website.signupSignin.list.signinDate'
             },
             {
               prop: 'signinWay',
-              label: 'website.signupSignin.list.signinWay'
+              align: 'center',
+              label: 'website.signupSignin.list.signinWay',
+              format: {
+                dict: this.$t('datadict.singWay')
+              }
             },
             {
               prop: 'signupData',
+              align: 'center',
               label: 'website.signupSignin.list.signupData'
             }
           ]
@@ -244,10 +339,10 @@ export default {
       })
     },
     signAdd(){
-      // if (this.$refs.bsTable.currentRow.signinStatus=='已签到') {
-      //   this.$alert('请勿重复签到', '签到', { confirmButtonText: '确定'});
-      //   return
-      // }
+      if (this.$refs.bsTable.currentRow==undefined) {
+        this.$notify(notifyInfo({ msg: '请选择一条数据' }));
+        return
+      }
       console.log(this.$refs.bsTable.currentRow)
       request({
             url: '/api/register/signupSignin/save',
@@ -300,9 +395,9 @@ export default {
         this.$notify(notifyInfo({ msg: '无法获取场景code' }));
         return
       }
-      this.$confirm('确认删除?', '提示', 
-      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => 
-      { 
+      this.$confirm('确认删除?', '提示',
+      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() =>
+      {
         request({
         url: '/api/register/signupDictype/remove',
         method: 'POST',
@@ -323,7 +418,6 @@ export default {
         })
         .catch(() => {})
       }).catch(() => { this.$message({ type: 'info', message: '已取消删除' }); });
-      
     }
   }
 }

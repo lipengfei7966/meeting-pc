@@ -270,7 +270,7 @@ const excelUtil = {
             if (response.status) {
               Notification(notifySuccess({ msg: self.$t('biz.msg.saveSuccess') }))
               if (successCallbck) {
-                successCallbck()
+                successCallbck(response.data)
               }
             }
           })

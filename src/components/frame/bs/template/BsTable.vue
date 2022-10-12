@@ -12,7 +12,8 @@
           </el-button>
         </div>
         <div v-for="(btn, index) in mainData.topBar" :key="index">
-          <template v-if="btn.name !== 'query'">
+          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='$t(btn.i18n)' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
+          <template v-if="btn.name !== 'query' && btn.name !== 'upload'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
               <el-button v-db-click size="mini" style="margin-right: 3px" v-permissionMultiple="btn.list">
                 <svg-icon :icon-class="btn.iconName || 'set'"></svg-icon>
@@ -1432,6 +1433,13 @@ export default {
           rowspan: row[column.property + 'rowSpan'],
           colspan: 1
         }
+      }
+    },
+    // 增行
+    addFile(file) {
+      debugger
+      if (file && file.response && file.response.data) {
+        this.$emit('fileCallback', file.response.data)
       }
     }
   }

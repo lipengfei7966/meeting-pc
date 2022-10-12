@@ -2,13 +2,15 @@
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table>
   </div>
 </template>
 
 <script>
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
+import request from '@/utils/frame/base/request'
+import axios from 'axios'
 export default {
   name: 'signupContact',
   data() {
@@ -48,6 +50,106 @@ export default {
                 trigger: 'blur'
               }
             ]
+          },
+          {
+            label: 'website.signupContact.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.code',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            list: this.$t('datadict.contantType'),
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupContact.query.certificateFlag',
+            prop: 'certificateFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: [
+              { label: '已办证', value: 1 },
+              { label: '未办证', value: 0 }
+            ]
+          },
+          {
+            label: 'website.signupContact.query.signFlag',
+            prop: 'signFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: [
+              { label: '已签到', value: 1 },
+              { label: '未签到', value: 0 }
+            ]
+          },
+          {
+            label: 'website.signupContact.query.signNum',
+            prop: 'signNum',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            type: 'datetime',
+            label: 'website.signupContact.query.createDate',
+            prop: 'createDate',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
           }
         ]
       },
@@ -55,7 +157,8 @@ export default {
       mainData: {
         api: {
           search: '/api/register/signupContact/page',
-          doDelete: '/api/register/signupContact/remove'
+          doDelete: '/api/register/signupContact/remove',
+          export: '/api/register/signupContactCol/exportModel'
         },
         initSearch: false,
         isTopBar: true,
@@ -99,6 +202,28 @@ export default {
             }
           },
           {
+            name: 'export',
+            i18n: 'biz.btn.downloadTemplate',
+            event: this.exportExcel
+          },
+          {
+            name: 'upload',
+            iconName: '线性-导入',
+            i18n: 'biz.btn.import',
+            atrrs: {
+              uploadUrl: process.env.BASE_API + '/api/register/signupContactCol/exportImport', // 文件上传url
+              showFileList: false, // 是否展示上传文件，默认false
+              accept: '*', // 初始化文件选择类型，默认*
+              multiple: false, // 是否可选择多文件，默认false
+              disabled: false, // 是否不可操作，默认false
+              notifyFlag: false, // 是否弹出通知，默认true
+              paramData: {} // 参数，默认{}
+            }
+          },
+          {
+            name: 'export'
+          },
+          {
             name: 'refresh'
           }
         ],
@@ -124,6 +249,10 @@ export default {
             {
               prop: 'code',
               label: 'website.signupContact.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupContact.list.personnelCode'
             },
             {
               prop: 'contactType',
@@ -180,7 +309,71 @@ export default {
   mounted() {},
   methods: {
     onChangeAll(params) {
+      this.mainData.topBar[5].atrrs.paramData = {
+        eventCode: this.form.listQuery.data.eventCode
+      }
       this.$refs.bsTable.doRefresh()
+    },
+    exportExcel() {
+      request({
+        url: '/api/register/signupContactCol/verifyInitialize',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '模板导出',
+          funcOperation: '根据会议code校验会议表单是否初始化'
+        }
+      })
+        .then((response) => {
+          if (response.status) {
+            this.exportExcel1()
+          } else {
+            this.$notify(notifyError({ msg: response.msgText }))
+          }
+        })
+        .catch(() => {
+          this.$refs.bsTable.doRefresh()
+        })
+    },
+    exportExcel1() {
+      axios({
+        method: 'post',
+        url: process.env.BASE_API + this.mainData.api.export,
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '参会人管理',
+          funcOperation: '模板导出'
+        },
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters.token
+          // lang: storage.get('language') || 'zh',
+          // module: session.get('auditModule') || ''
+        },
+        responseType: 'blob'
+      })
+        .then((response) => {
+          if (!response.data) {
+          } else {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = url
+            link.setAttribute('download', '参会人导入模板.xlsx')
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    fileCallback(data) {
+      debugger
+      this.$notify.success({
+        message: data,
+        position: 'bottom-right'
+      })
     }
   }
 }

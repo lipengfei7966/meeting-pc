@@ -62,7 +62,18 @@ export default {
       title: '参会人管理',
       query: {
         name: '姓名',
-        eventCode: '会议名称'
+        eventCode: '会议名称',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        personnelCode: '人员编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        createDate: '报名时间'
       },
       list: {
         name: '姓名',
@@ -70,6 +81,7 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
@@ -91,10 +103,7 @@ export default {
     signupCertificate: {
       title: '办证管理',
       query: {
-        certificateFlag: '办证状态',
-        meetName: '会议名称'
-      },
-      list: {
+        eventCode: '会议名称',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -102,6 +111,23 @@ export default {
         code: '参会人编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        contactCode: '参会人编码',
+        personnelCode: '人员编码',
+        createDate: '报名时间'
+      },
+      list: {
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        personnelCode: '人员编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        certificateNum: '办证次数',
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
@@ -121,7 +147,21 @@ export default {
     signupCertificatePrint: {
       title: '办证记录管理',
       query: {
-        contactType: '证件类型'
+        certificateType: '证件类型',
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        code: '参会人编码',
+        contactType: '参会人类型',
+        signFlag: '签到状态',
+        signNum: '签到次数',
+        checkFlag: '状态',
+        contactCode: '参会人编码',
+        personnelCode: '人员编码',
+        createDate: '办证时间',
+        certificateTime: '办证时间'
       },
       list: {
         name: '姓名',
@@ -129,12 +169,14 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
         signNum: '签到次数',
         checkFlag: '状态',
-        createDate: '办证时间'
+        createDate: '办证时间',
+        certificateTime: '办证时间'
       },
       edit: {
         eventCode: '会议名称',
@@ -144,7 +186,25 @@ export default {
         department: '单位',
         code: '参会人编码',
         contactType: '参会人类型',
-        certificateFlag: '办证状态'
+        certificateFlag: '办证状态',
+        certificateTime: '办证时间'
+      }
+    },
+    signin: {
+      query: {
+        eventCode: '会议名称',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '单位',
+        contactCode: '参会人编码',
+        personnelCode: '人员编码',
+        contactType: '参会人类型',
+        certificateFlag: '办证状态',
+        signFlag: '签到状态',
+        signupData: '报名时间',
+        signinDate: '签到时间',
+        signinWay: '签到方式'
       }
     },
     signupSignin: {
@@ -154,13 +214,15 @@ export default {
         email: '邮箱',
         department: '单位',
         contactCode: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         signinStatus: '签到状态',
-        createDate: '签到时间',
+        signinDate: '签到时间',
         signinWay: '签到方式',
         sceneName: '场景名称',
         signupData: '报名时间',
-        title: '添加参会人'
+        title: '添加参会人',
+        eventCode: '会议名称'
       }
     },
     signupContactCol: {
@@ -191,6 +253,42 @@ export default {
         mapType: '启用',
         mapRequired: '必填',
         mapSort: '顺序'
+      }
+    },
+    department: {
+      list: {
+        code: '编码',
+        name: '部门名称',
+        parentCode: '部门父节点',
+        customerCode: '客户',
+        createDate: '创建时间'
+      },
+      edit: {
+        name: '部门名称',
+        parentCode: '部门父节点',
+        customerCode: '客户'
+      }
+    },
+    customerContact: {
+      title: '客户联系人管理',
+      query: {},
+      list: {
+        code: '客户联系人编码',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        department: '部门',
+        customer: '客户',
+        createDate: '创建时间',
+        updateDate: '更新时间'
+      },
+      edit: {
+        code: '客户联系人编码',
+        name: '姓名',
+        mobile: '手机',
+        email: '邮箱',
+        departmentCode: '部门',
+        customerCode: '客户'
       }
     }
   }

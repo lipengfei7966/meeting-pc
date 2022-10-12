@@ -1,5 +1,5 @@
 <template>
-  <el-upload :show-file-list='false' :action="uploadUrl" :headers="httpHeaders" :accept="accept" :on-progress="handleProgress" :on-success="handleSuccess" :multiple="false" :disabled="disabled" :on-error="handleError" style='display:inline-block;margin-right:10px;'>
+  <el-upload :show-file-list='false' :action="uploadUrl" :data="paramData" :headers="httpHeaders" :accept="accept" :on-progress="handleProgress" :on-success="handleSuccess" :multiple="false" :disabled="disabled" :on-error="handleError" style='display:inline-block;margin-right:10px;'>
     <el-button size="mini" :loading="uploadLoading" v-show="!disabled">
       <svg-icon icon-class="upload"></svg-icon>{{ btnName }}
     </el-button>
@@ -16,6 +16,10 @@ export default {
     uploadUrl: {
       type: String,
       default: process.env.BASE_API + '/api/sys/file/upload'
+    },
+    paramData: {
+      type: Object,
+      default: {}
     },
     disabled: {
       type: Boolean,

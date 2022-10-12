@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import request from '@/utils/frame/base/request'
 // 日期格式化方法
 import { notifyInfo } from '@/utils/frame/base/notifyParams'
 export default {
@@ -38,7 +40,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.signupContact.query.eventCode',
+            label: 'website.signin.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -55,10 +57,86 @@ export default {
                 trigger: 'blur'
               }
             ]
+          },
+          {
+            label: 'website.signin.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signin.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list: this.$t('datadict.contantType')
+          },
+          {
+            label: 'website.signin.query.certificateFlag',
+            prop: 'certificateFlag',
+            element: 'base-select',
+            attrs: {
+              clearable: true
+            },
+            list:[{label:'已办证',value:1},{label:'未办证',value:0}]
+          },
+          {
+            type: 'datetime',
+            label: 'website.signin.query.signupData',
+            prop: 'signupData',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
+            }
           }
         ]
       },
-
       mainData: {
         isTabBar: true,
         tabs: [
@@ -100,11 +178,12 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '签到',
-            component: () => import('../signupSignin/signin.vue'),
+            msg: '请选择一条数据',
+            event:this.signin,
+            //component: () => import('../signupSignin/signin.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === ''
                   || this.$refs.bsTable.currentRow==null) {
-                //this.$notify(notifyInfo({ msg: '请选择会议和人员' }));
                 return false
               }else{
                 return true
@@ -152,6 +231,10 @@ export default {
             {
               prop: 'code',
               label: 'website.signupContact.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupContact.list.personnelCode'
             },
             {
               prop: 'contactType',
@@ -236,6 +319,61 @@ export default {
         }
       })
     },
+    signin(buttonInfo){
+      request({
+          url: '/api/register/signupContactSceneRel/listSceneSelect',
+          method: 'POST',
+          data: {
+              data:{
+                  eventCode:this.form.listQuery.data.eventCode,
+                  contactCode:this.$refs.bsTable.currentRow.code
+              },
+          funcModule: this.$t('route.' + this.$route.meta.title),
+          funcOperation: this.$t('biz.btn.check')
+          }
+      })
+      .then(response => {
+        if (response.status) {
+          if(response.data.length==0){
+            request({
+              url: '/api/register/signupSignin/save',
+              method: 'POST',
+              data: {
+                  data:{
+                      eventCode:this.form.listQuery.data.eventCode,
+                      contactCode:this.$refs.bsTable.currentRow.code,
+                      sceneCode:"",
+                      signinWay:"pc"
+                  },
+              funcModule: this.$t('route.' + this.$route.meta.title),
+              funcOperation: this.$t('biz.btn.check')
+              }
+            })
+            .then(result => {
+              if (result.status) {
+                this.$refs.bsTable.getList({ name: 'search' })
+                this.$notify(notifyInfo({ msg: '签到成功' }));
+              } else {
+                this.$notify(notifyInfo({ msg: '签到失败' }));
+              }
+            })
+          }else{
+            debugger;
+            //this.mainData.topBar[2].component=import('../signupSignin/signin.vue');
+            // 注册组件 '../signupSignin/signin.vue'
+            Vue.component('view-form-table', () => import('../signupSignin/signin.vue'))
+            if (buttonInfo.getParam) {
+              this.$refs.bsTable.param = buttonInfo.getParam(this.currentRow)
+            }
+            this.$refs.bsTable.opType = 'add'
+            this.$refs.bsTable.opMode = buttonInfo.type
+            this.$refs.bsTable.dialogDetailVisible = true
+          }
+        }
+      })
+
+    },
+
     handleTabClick(tab, event) {
       this.currentRow = null
       this.form.listQuery.data.signFlag = tab.name

@@ -1,11 +1,11 @@
 <template>
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
-        <template v-for='tab in mainData.tabs'>
-          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
-            <span slot="label">{{$t(tab.label)}} </span>
+    <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
+      <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
+        <template v-for="tab in mainData.tabs">
+          <el-tab-pane :key="tab.name" :index="tab.name" :name="tab.name">
+            <span slot="label">{{ $t(tab.label) }} </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -17,10 +17,64 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import excelUtil from '@/utils/frame/base/excelUtil.js'
+import certificatePrintTemplate from '@/assets/frame/excel/certificatePrintTemplate.xlsx'
 export default {
   name: 'singnupContactCertificateRecord',
   data() {
     return {
+      colList: [
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'eventCode',
+              name: '会议名称',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        },
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'code',
+              name: '参会人编码',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        },
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'certificateType',
+              name: '证件类型',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        },
+        {
+          title: '导入',
+          colList: [
+            {
+              code: 'updateDate',
+              name: '办证时间',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
+        }
+      ],
+      tempExcelPath: certificatePrintTemplate,
+      activeName: '0001',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -34,13 +88,12 @@ export default {
           funcOperation: this.$t('biz.btn.search'),
           defaultSortString: 'code.desc',
           data: {
-            eventCode: this.$route.params.data,
-            certificateType: "0"
+            eventCode: this.$route.params.data
           }
         },
         formData: [
           {
-            label: 'website.signupContact.query.eventCode',
+            label: 'website.signupCertificatePrint.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
             attrs: {
@@ -51,6 +104,74 @@ export default {
             default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.name',
+            prop: 'name',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.mobile',
+            prop: 'mobile',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.email',
+            prop: 'email',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.department',
+            prop: 'department',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.contactCode',
+            prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificatePrint.query.contactType',
+            prop: 'contactType',
+            element: 'base-select',
+            list: this.$t('datadict.contantType'),
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            type: 'datetime',
+            label: 'website.signupCertificatePrint.query.certificateTime',
+            prop: 'certificateTime',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              pickerOptions: this.$toolUtil.getDefaultPickerOptions()
             }
           }
         ]
@@ -67,6 +188,23 @@ export default {
         topBar: [
           {
             name: 'refresh'
+          },
+          {
+            iconName: '导入',
+            i18n: 'biz.btn.import',
+            permitName: ['import'],
+            event: this.Excel,
+            showLoading: true
+          },
+          {
+            iconName: '下载',
+            i18n: 'biz.btn.downloadTemplate',
+            permitName: ['downloadTemplate'],
+            $refs: this.$refs,
+            event: this.download
+          },
+          {
+            name: 'export'
           }
         ],
         isColset: true,
@@ -74,27 +212,31 @@ export default {
           cols: [
             {
               prop: 'name',
-              label: 'website.signupContact.list.name'
+              label: 'website.signupCertificatePrint.list.name'
             },
             {
               prop: 'mobile',
-              label: 'website.signupContact.list.mobile'
+              label: 'website.signupCertificatePrint.list.mobile'
             },
             {
               prop: 'email',
-              label: 'website.signupContact.list.email'
+              label: 'website.signupCertificatePrint.list.email'
             },
             {
               prop: 'department',
-              label: 'website.signupContact.list.department'
+              label: 'website.signupCertificatePrint.list.department'
             },
             {
               prop: 'code',
-              label: 'website.signupContact.list.code'
+              label: 'website.signupCertificatePrint.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupCertificatePrint.list.personnelCode'
             },
             {
               prop: 'contactType',
-              label: 'website.signupContact.list.contactType',
+              label: 'website.signupCertificatePrint.list.contactType',
               align: 'center',
               format: {
                 dict: this.$t('datadict.contantType')
@@ -102,7 +244,7 @@ export default {
             },
             {
               prop: 'certificateFlag',
-              label: 'website.signupContact.list.certificateFlag',
+              label: 'website.signupCertificatePrint.list.certificateFlag',
               align: 'center',
               format: {
                 dict: this.$t('datadict.certificateFlag')
@@ -110,15 +252,15 @@ export default {
             },
             {
               prop: 'checkFlag',
-              label: 'website.signupContact.list.checkFlag',
+              label: 'website.signupCertificatePrint.list.checkFlag',
               align: 'center',
               format: {
                 dict: this.$t('datadict.checkFlag')
               }
             },
             {
-              prop: 'createDate',
-              label: 'website.signupContact.list.createDate'
+              prop: 'certificateTime',
+              label: 'website.signupCertificatePrint.list.createDate'
             }
           ]
         },
@@ -138,14 +280,14 @@ export default {
       method: 'POST',
       data: {
         data: {
-          queryParams: { type: '1',eventCode: this.$route.params.data},
+          queryParams: { type: '1', eventCode: this.$route.params.data },
           type: 'DICTYPE'
         },
         funcModule: '会议字典',
         funcOperation: '查询列表'
       }
-    }).then(response => {
-      response.data.forEach(element => {
+    }).then((response) => {
+      response.data.forEach((element) => {
         this.mainData.tabs.push({
           label: element.name,
           name: element.code
@@ -154,6 +296,22 @@ export default {
     })
   },
   methods: {
+    download() {
+      const url = this.tempExcelPath
+      const link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      link.setAttribute('download', '办证记录导入模板.xlsx')
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    },
+    Load() {
+      this.$refs.bsTable.getList({ name: 'search' })
+    },
+    Excel() {
+      excelUtil.uploadTemplateData(this, '/api/register/signupCertificatePrint/uploadExcel', '办证记录导入', this.colList, this.Load)
+    },
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
     },
