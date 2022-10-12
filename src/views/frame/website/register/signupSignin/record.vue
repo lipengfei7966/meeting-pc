@@ -84,7 +84,7 @@ export default {
           type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
-          defaultSortString: 'code.desc',
+          defaultSortString: 'signinDate.desc',
           data: {}
         },
         formData: [
