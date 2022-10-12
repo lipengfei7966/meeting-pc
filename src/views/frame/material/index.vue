@@ -232,7 +232,7 @@ export default {
     width: 23.5%;
     height: 40%;
     margin-top: 10px;
-    margin-right: 10px;
+    margin-right: 1%;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     p {
       line-height: 30px;
