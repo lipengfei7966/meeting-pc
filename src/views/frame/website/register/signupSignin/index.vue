@@ -99,6 +99,14 @@ export default {
             }
           },
           {
+            label: 'website.signin.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
             label: 'website.signin.query.contactType',
             prop: 'contactType',
             element: 'base-select',
@@ -223,6 +231,10 @@ export default {
             {
               prop: 'code',
               label: 'website.signupContact.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupContact.list.personnelCode'
             },
             {
               prop: 'contactType',

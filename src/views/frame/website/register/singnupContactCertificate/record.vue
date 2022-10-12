@@ -147,6 +147,14 @@ export default {
             }
           },
           {
+            label: 'website.signupCertificatePrint.query.personnelCode',
+            prop: 'personnelCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
             label: 'website.signupCertificatePrint.query.contactType',
             prop: 'contactType',
             element: 'base-select',
@@ -221,6 +229,10 @@ export default {
             {
               prop: 'code',
               label: 'website.signupCertificatePrint.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupCertificatePrint.list.personnelCode'
             },
             {
               prop: 'contactType',
