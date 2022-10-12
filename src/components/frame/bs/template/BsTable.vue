@@ -1489,7 +1489,7 @@ tr.el-table__row.el-table__row--striped.success-row td {
 }
 .el-row--flex {
   // width: 330px !important;
-  position: absolute;
+  // position: absolute;
   height: 40px !important;
 }
 .bottom-operate-left {
