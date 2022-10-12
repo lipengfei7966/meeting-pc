@@ -91,7 +91,7 @@
             </div>
           </el-col>
           <el-col :span="6" v-if='form.moreShowFlg && addQueryConditionVisible'>
-            <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
+            <span class='more-query' ref="moreQuery" @click='addQueryCondition'>查询扩展&nbsp;+</span>
           </el-col>
         </template>
         <el-col class="none"></el-col>
@@ -259,6 +259,7 @@ export default {
       this.items = []
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
+      this.addQueryConditionVisible = true;
     },
     // 时间变化
     changeDaterangeTime(form) {

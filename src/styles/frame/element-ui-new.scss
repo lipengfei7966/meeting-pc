@@ -141,7 +141,7 @@
 
       .el-form-item__label {
         height: 30px;
-        min-width: 100px !important;
+        min-width: 70px !important;
         text-align: right;
         display: block;
         line-height: 30px;
@@ -360,7 +360,9 @@
 
           .el-form-item__errors {
             display: inline-block;
-            position: static !important;
+            position: absolute !important;
+            left: 0;
+            bottom: -20px;
             min-width: 106px;
             height: 20px !important;
             line-height: 20px !important;
@@ -368,7 +370,7 @@
             border: none !important;
             border-radius: 3px;
             box-shadow: 0 0 3px transparent !important;
-            background: #ffffff;
+            // background: #ffffff;
             color: #e60012 !important;
             font-size: 12px;
             opacity: 1 !important;
@@ -945,14 +947,16 @@
 
   // dialog
   .dialog-container {
-    min-height: 450px;
+    min-height: 350px;
+    min-width: 750px;
+    // max-height: 80vh;
 
     .el-col {
-      margin: 14px 0 !important;
+      margin: 10px 0 !important;
     }
 
     .search-btn {
-      bottom: 17px !important;
+      bottom: 13px !important;
     }
 
     // padding-bottom: 60px !important;
@@ -992,6 +996,7 @@
       padding: 20px !important;
       box-sizing: border-box !important;
       padding-bottom: 40px !important;
+      overflow: visible !important;
 
       &>header {
         margin: 0 0 10px !important;
@@ -1071,8 +1076,7 @@
     }
 
     .right-content {
-      min-height: 508px;
-      // max-height: 709px;
+      min-height: 508px !important;
       border: 1px solid #ececec !important;
       margin-bottom: 10px !important;
       margin-top: 10px !important;
@@ -1102,31 +1106,35 @@
     }
 
     .plTableBox {
-      height: 77% !important;
+      // height: 77%;
     }
 
     .table-content {
-      min-height: 42vh !important;
+      min-height: 42vh;
+      height: auto !important;
     }
 
     .el-table {
-      height: 100% !important;
+      // height: 100% !important;
     }
 
     .singleTable {
-      height: 50vh !important;
+      height: 46vh !important;
     }
 
     .dialog-footer {
-      position: absolute !important;
+      position: sticky !important;
       background: #fff !important;
       box-shadow: 4px 0 10px #cccccc;
       padding-right: 0 !important;
       bottom: 0 !important;
       right: 0 !important;
+      top: 100% !important;
+      left: 100% !important;
       width: 100%;
       padding: 0 20px !important;
       // padding-top: 20px !important;
+      max-height: 70vh;
 
       &>.el-button {
         font-size: 14px !important;
@@ -1305,7 +1313,7 @@
     position: absolute !important;
     background: transparent !important;
     padding-right: 0 !important;
-    bottom: -30px;
+    bottom: 30px;
     right: 0 !important;
     // width: 100%;
     padding: 0 20px !important;
@@ -1422,6 +1430,7 @@
     .el-tabs__content {
       background: #fff;
       padding: 2px !important;
+      padding-bottom: 35px !important;
 
       .tabs-operate {
         height: 48px;
@@ -1654,7 +1663,7 @@
     margin-bottom: 10px !important;
     margin-top: 10px !important;
     margin-left: 10px !important;
-    height: 768px !important;
+    height: 758px !important;
     // min-height: 508px;
 
     .title {
@@ -1683,12 +1692,13 @@
     display: inline-block;
     min-height: 508px;
     // max-height: 709px;
-    border: 1px solid #ececec !important;
+    // border: 1px solid #ececec !important;
     margin-bottom: 10px !important;
     margin-top: 10px !important;
     margin-right: 10px !important;
-    max-width: 75%;
-    height: 700px !important;
+    min-width: 75%;
+    height: 768px !important;
+    // height: 700px !important;
 
     &>header {
       margin-top: 0 !important;
@@ -1703,7 +1713,7 @@
       padding-bottom: 10px !important;
 
       .el-pagination {
-        margin-top: 0 !important;
+        // margin-top: 0 !important;
         text-align: right;
         float: none !important;
       }
@@ -1715,16 +1725,17 @@
     }
 
     &>main {
-      height: 100%;
+      height: 90%;
 
       &>.plTableBox {
         height: 86% !important;
 
         &>.el-table {
-          height: 100% !important;
+          height: 98% !important;
 
           .el-table__body-wrapper {
-            height: 86% !important;
+            // min-height: calc(768px - 200px) !important;
+            height: 100% !important;
           }
         }
       }
@@ -1819,9 +1830,10 @@
 
   // 表格的样式
   main {
-    padding: 5px 10px !important;
+    padding: 10px !important;
     background: #fff;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
+    // padding-bottom: 30px !important;
 
     .top-operate {
       position: relative;
@@ -1997,7 +2009,7 @@
 
       &+.bottom-operate {
         background: #fff;
-        height: 40px;
+        // height: 40px;
         line-height: 40px;
         border-radius: 0 0 5px 5px;
         border: none !important;
@@ -2145,7 +2157,7 @@
   .el-form-label__frame {
     position: absolute;
     top: -4px;
-    left: 70px;
+    left: 40px;
     // min-width: 150px;
     border: 1px solid var(--menuBg);
     background: #fff;
