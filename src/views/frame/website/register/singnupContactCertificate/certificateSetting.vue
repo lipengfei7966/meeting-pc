@@ -252,8 +252,8 @@ export default {
         return item.mapType == '1'
       })
       let newItems = [
-        {mapName: '编码二维码', code: 'qrCode'},
-        {mapName: '编码条码', code: 'barCode'},
+        {mapName: '参会人二维码', code: 'qrCode'},
+        {mapName: '参会人条码', code: 'barCode'},
       ]
       this.certificateContentList = this.certificateContentList.concat(newItems)
     })
