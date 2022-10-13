@@ -8,7 +8,7 @@
           <el-form ref="printSetform" :model="printSetform" :rules="printSetformRules" label-width="100px" label-position="left">
             <el-form-item label="证件类型" prop="certificateType">
               <div style="display:flex; justify-content: space-between;">
-                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" placeholder="请选择活动区域">
+                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" placeholder="请选择证件类型">
                   <el-option v-for="(item,index) in certificateTypeList" :key="index" :label="item.name" :value="item.code"></el-option>
 
                 </el-select>
@@ -290,7 +290,7 @@ export default {
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
           this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
-
+          this.WHchange();
           debugger
           if(this.printSetform.printBackground){
 
