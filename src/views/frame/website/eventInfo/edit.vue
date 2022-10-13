@@ -45,7 +45,6 @@ export default {
               multiple: false,
               cols: 3,
               data: 'CUSTOMER',
-              
               clearable: true
             },
             validate: [

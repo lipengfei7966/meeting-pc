@@ -2,68 +2,7 @@
   <div class="bs-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
-    <div>
-      <div class="steps">
-        <el-steps :active="2" align-center>
-          <el-step title="外观设置"></el-step>
-          <el-step title="表单设置"></el-step>
-          <el-step title="其他设置"></el-step>
-        </el-steps>
-      </div>
-      <div class="formSet" :style="{height: formSetHeight}">
-        <el-card class="formInfo">
-          <div slot="header" class="formInfoTitle">
-            <span>表单信息</span>
-          </div>
-
-          <div>
-            <el-collapse>
-              <el-collapse-item>
-                <template slot="title">
-                  <h2>基本信息</h2>
-                </template>
-              </el-collapse-item>
-
-              <el-collapse-item>
-                <template slot="title">
-                  <h2>联系方式</h2>
-                </template>
-                <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
-              </el-collapse-item>
-
-              <el-collapse-item>
-                <template slot="title">
-                  <h2>工作信息</h2>
-                </template>
-                <div>简化流程：设计简洁直观的操作流程；</div>
-                <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-                <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
-              </el-collapse-item>
-
-              <el-collapse-item>
-                <template slot="title">
-                  <h2>自定义信息</h2>
-                </template>
-                <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-              </el-collapse-item>
-
-              <el-collapse-item>
-                <template slot="title">
-                  <h2>特殊信息</h2>
-                </template>
-                <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-              </el-collapse-item>
-            </el-collapse>
-          </div>
-        </el-card>
-        <div class="formPreview"></div>
-        <div class="formEdit"></div>
-      </div>
-    </div>
+    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
 
@@ -201,28 +140,13 @@ export default {
             }
           ]
         }
-      },
-      // 表格高度
-      formSetHeight: 0,
+      }
     }
-  },
-  computed: {
-    ...mapGetters(['clientWidth','clientHeight'])
-  },
-  watch:{
-    clientWidth() {
-      this.tableComputed()
-    },
-    clientHeight() {
-      this.tableComputed()
-    },
   },
   mounted() {},
   methods: {
     onChangeAll(params) {
-      // params.code
-      // debugger
-      // this.$refs.bsTable.doRefresh()
+      this.$refs.bsTable.doRefresh()
     },
     initialize() {
       if (this.form.listQuery.data.eventCode == '') {
@@ -246,48 +170,7 @@ export default {
         .catch(() => {
           this.$refs.bsTable.doRefresh()
         })
-    },
-    // 计算列表高度
-    tableComputed() {
-        const elHead = document.getElementById('elHead')
-        let getElHeadHeight = 0
-        // 是否最大化
-        // if (screenfull.isFullscreen) {
-        //   getElHeadHeight -= 76
-        //   // 最大化时是否显示标签栏
-        //   if (this.tagViewVisible) {
-        //     getElHeadHeight += 26
-        //   }
-        // }
-        if (this.hasLayout) {
-          this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
-        } else {
-          this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
-        }
-        if (this.mainData.isTabBar) {
-          this.formSetHeight = this.formSetHeight - 30
-        }
-    },
+    }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.formSet {
-  display: flex;
-  justify-content: space-between;
-  .formInfo {
-    width: 20%;
-    .formInfoTitle {
-      text-align: center;
-      font-size: 15px;
-    }
-  }
-  .formPreview {
-    width: 60%;
-  }
-  .formEdit {
-    width: 20%;
-  }
-}
-</style>

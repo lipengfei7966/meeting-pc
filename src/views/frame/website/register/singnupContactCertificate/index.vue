@@ -347,7 +347,6 @@ export default {
     },
     // 获取会议具体证件内容选项
     meetingdictCode(){
-      
       console.log(this.form.listQuery.data.eventCode)
       // 获取打印类型数据字典
       request({
@@ -376,7 +375,6 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
-      
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
@@ -411,8 +409,6 @@ export default {
               barCode[0].parentNode.appendChild(newBar)
               barCode[0].parentNode.removeChild(barCode[0])
             }
-
-
           })
         })
 
@@ -422,8 +418,6 @@ export default {
               item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
             }
           })
-         
-         
         } else {
           msg = msg + item.name + '未添加证件模板<br/>'
         }
@@ -439,7 +433,6 @@ export default {
       }
 
       if (!isCanPrint && !this.isprint) return
-      
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
         method: 'POST',

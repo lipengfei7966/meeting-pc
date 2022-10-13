@@ -24,7 +24,6 @@ export default {
             dictCode: null,
             funcName: null,
             dict: null
-          
           }]
         },
         {
@@ -35,7 +34,6 @@ export default {
             dictCode: null,
             funcName: null,
             dict: null
-          
           }]
         },
         {
@@ -46,7 +44,6 @@ export default {
             dictCode: null,
             funcName: null,
             dict: null
-          
           }]
         },
         {
@@ -57,7 +54,6 @@ export default {
             dictCode: null,
             funcName: null,
             dict: null
-          
           }]
         },
         {
@@ -68,7 +64,6 @@ export default {
             dictCode: null,
             funcName: null,
             dict: null
-          
           }]
         }
       ],
