@@ -359,7 +359,7 @@
           </header>
         </template>
       </template>
-      <main v-if='edit.tabs && edit.tabs.filter(v => { return v.isShow }).length > 0' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+      <main v-if='edit.tabs && edit.tabs.filter(v => { return v.isShow }).length > 0' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto','padding-top':'0 !important'}">
         <el-tabs v-model="activeName" type="border-card">
           <template v-for='tab in edit.tabs'>
             <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name" v-if='tab.isShow'>
