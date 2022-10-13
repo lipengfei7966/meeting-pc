@@ -30,7 +30,7 @@
     </u-table>
 
     <!-- 底部按钮 -->
-    <div class='bottom-operate' v-show="emptyTextVisible">
+    <div class='bottom-operate'>
       <div class='bottom-operate-left' v-if='mainData.isColset'>
         <el-table-column-set :id='mainData.table.id' :checked="checked" :checkList="tableCols" @change="checkChange"></el-table-column-set>
       </div>
