@@ -6,7 +6,7 @@
       <div class="dialog-container__content">
         <!-- 内容 -->
         <main>
-          <div class='left-content' :style='{width: dialog.form.leftWidth ? dialog.form.leftWidth + "px" : "200px" }'>
+          <div class='left-content' :style='{width: dialog.form.leftWidth ? dialog.form.leftWidth + "px !important" : "200px !important" }'>
             <div class='title' :title='dialog.form.treeName'>{{dialog.form.treeName}}</div>
             <div class="buttons" ref='treeButtons' v-if="dialog.form.isTopBar">
               <el-row type='flex'>

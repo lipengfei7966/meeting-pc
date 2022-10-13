@@ -785,13 +785,13 @@
     padding: 0 6px !important;
 
     .el-input--mini .el-input__inner {
-      height: 24px;
-      line-height: 24px !important;
+      height: 28px;
+      line-height: 28px !important;
     }
 
     .el-date-editor .el-input__inner {
-      height: 24px;
-      line-height: 24px !important;
+      height: 28px;
+      line-height: 28px !important;
       padding-left: 15px !important;
     }
   }
@@ -1162,11 +1162,11 @@
       overflow: visible !important;
       margin-right: 10px !important;
       margin-bottom: 10px !important;
-      margin-top: 10px !important;
-      margin-left: 10px !important;
+      margin-top: 0px !important;
+      margin-left: 0px !important;
       max-height: 80% !important;
       min-height: 508px;
-
+      background: #ffffff;
 
       .title {
         width: 100%;
@@ -1176,7 +1176,7 @@
         font-size: 14px;
         // color: #666666;
         font-weight: 900;
-        background-color: #f5f7fa;
+        background-color: #fff;
 
         i {
           float: right;
@@ -1200,7 +1200,7 @@
         // height: calc(100% - 40px) !important;
         overflow: auto;
         margin: 0 !important;
-        padding: 4px 20px !important;
+        padding: 2px 2px !important;
       }
     }
 
@@ -1208,8 +1208,8 @@
       min-height: 508px !important;
       border: 1px solid #ececec;
       margin-bottom: 10px !important;
-      margin-top: 10px !important;
-      margin-right: 10px !important;
+      margin-top:  0px !important;
+      margin-right: 0px !important;
       min-width: auto;
       max-height: 80% !important;
 
@@ -1667,7 +1667,7 @@
     font-size: 14px !important;
 
     span {
-      // font-size: 14px !important;
+       font-size: 14px !important;
     }
 
     .el-button--mini,
@@ -1836,7 +1836,7 @@
       // height: calc(100% - 40px) !important;
       overflow: auto;
       margin: 0 !important;
-      padding: 4px 20px !important;
+      padding: 2px 2px !important;
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container tree-form-table">
     <!-- 内容 -->
-    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "300px" }'>
+    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px !important" : "300px !important" }'>
       <div class='title' :title='treeTableData.form.treeName'>{{treeTableData.form.treeName}}</div>
       <div class="buttons" v-if="treeTableData.form.isTopBar">
         <el-row type='flex'>
@@ -269,7 +269,7 @@ export default {
           i18n: this.treeTableData.form.expandAll ? 'biz.btn.contract' : 'biz.btn.expand',
           types: 'primary'
         }
-      },
+      }
     }
   },
   props: {
@@ -284,13 +284,13 @@ export default {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       if (this.treeTableData.form.formDataVisible) {
-        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 70
+        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 75
       } else {
-        return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167 - 40
+        return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167 - 45
       }
     },
     treeHeight() {
-      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 20
+      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 25
     }
   },
   watch: {
