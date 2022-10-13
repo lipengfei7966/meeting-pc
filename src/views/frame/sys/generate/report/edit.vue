@@ -16,7 +16,7 @@
 
       </div>
 
-      <div class='dialog-content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
         <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': menuInfoVisible ? '1px' : '0'}">
           <div class='form-title'>
             报表信息
