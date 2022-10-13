@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper tree-dialog'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper tree-dialog'>
     <div class='dialog-container'>
       <TitleContain :titleName="dialogTitle" @TitleFun="close" />
       <div class="dialog-content" style="padding-bottom:40px">

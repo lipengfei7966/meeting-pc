@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container maxColumnsDialog'>
       <title-contain :titleName="this.$t('sys.log.execSql')" @TitleFun="$emit('closeHandler')" />
       <div class="dialog-container__content">
