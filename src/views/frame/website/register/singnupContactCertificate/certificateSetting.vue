@@ -37,7 +37,7 @@
                 </p>
 
                 <p style="display: flex;margin-left:30px">
-                  <span>长</span>
+                  <span>高</span>
                   <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @change="WHchange"></el-input>
                 </p>
               </div>
@@ -460,7 +460,7 @@ export default {
           })
           //
           if (!isIncludes) {
-            debugger
+            // debugger
             let pushItem = {
               name: item.mapName, // 表名对应的值
               label: item.mapName, // 表名
@@ -472,15 +472,15 @@ export default {
               height: '25',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
-              y: this.list.length * 50// y 默认值
-              // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
+              y: this.list.length * 30// y 默认值
+              // y: Math.floor(Math.random() * (this.printSetform.printHeight*3 - 10)) + 10 // y 默认值
             }
             if(item.code == 'qrCode'){
-              pushItem.width = '200';
-              pushItem.height = '200';
-            }else if(item.code == 'barCode'){
-              pushItem.width = '250';
+              pushItem.width = '100';
               pushItem.height = '100';
+            }else if(item.code == 'barCode'){
+              pushItem.width = '100';
+              pushItem.height = '40';
             }
             this.list.push(pushItem)
           }else{
@@ -762,5 +762,7 @@ export default {
 }
 .barCode /deep/ .vue-barcode-element {
   width: 100%;
+  max-height: 92px;
+  height: auto;
 }
 </style>

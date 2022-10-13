@@ -283,6 +283,7 @@ export default {
       },
       tableData: [],
       isprint: false,
+      hasBarCode: false,
       certificateContentList: [],
       certificateLayout: `
         <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
@@ -381,10 +382,12 @@ export default {
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
         .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
-        .draggable {position:absolute}
-        .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
+        .draggable {position:absolute;}
+        .printItem {width: auto!important;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
-        .newBar svg{width:100%}
+        p{margin:0}
+        .newBar svg{width:100%;max-height: 92px;height: auto;}
+        .printItem
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
       if (this.tableData.length == 0) {
@@ -395,26 +398,7 @@ export default {
       let msg = ''
       this.isprint = true
       this.tableData.forEach((item, index) => {
-        this.$nextTick(() => {
-          let contents = this.$refs.contents
-          contents.forEach((node, nodeindex) => {
-            let qrCode = node.getElementsByClassName('qrCode')
-            let newQR = node.getElementsByClassName('newQR')[0]
-            if (qrCode.length > 0) {
-              qrCode[0].parentNode.appendChild(newQR)
-              qrCode[0].parentNode.removeChild(qrCode[0])
-            }
-
-            let barCode = node.getElementsByClassName('barCode')
-            let newBar = node.getElementsByClassName('newBar')[0]
-            if (barCode.length > 0) {
-              barCode[0].parentNode.appendChild(newBar)
-              barCode[0].parentNode.removeChild(barCode[0])
-            }
-
-
-          })
-        })
+        
 
         if (item.certificateLayout) {
           this.certificateContentList.forEach((dictItem,dictIndex) => {
@@ -428,6 +412,30 @@ export default {
           msg = msg + item.name + '未添加证件模板<br/>'
         }
       })
+      this.$nextTick(() => {
+          let contents = this.$refs.contents
+          contents.forEach((node, nodeindex) => {
+            let qrCode = node.getElementsByClassName('qrCode')
+            let newQR = node.getElementsByClassName('newQR')[0]
+            if (qrCode.length > 0) {
+              qrCode[0].parentNode.appendChild(newQR)
+              qrCode[0].parentNode.removeChild(qrCode[0])
+            }
+
+            let barCode = node.getElementsByClassName('barCode')
+            let newBar = node.getElementsByClassName('newBar')[0]
+            debugger
+            if (barCode.length > 0) {
+              // item.hasBarCode = true;
+              barCode[0].parentNode.appendChild(newBar)
+              barCode[0].parentNode.removeChild(barCode[0])
+            }else{
+              newBar.parentNode.removeChild(newBar)
+            }
+
+
+          })
+        })
       if (msg !== '') {
         this.$message({
           dangerouslyUseHTMLString: true,
