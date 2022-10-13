@@ -1067,8 +1067,6 @@
           //   margin: 5px;
           //   cursor: pointer;
           // }
-
-
         }
 
         .form-title::before {
@@ -1076,8 +1074,9 @@
           display: inline-block;
           vertical-align: top;
           content: '';
-          width: 2px;
-          height: 100%;
+          width: 5px;
+          height: 20px;
+          margin-top: 10px;
           margin-right: 7px;
         }
       }
@@ -1208,7 +1207,7 @@
       min-height: 508px !important;
       border: 1px solid #ececec;
       margin-bottom: 10px !important;
-      margin-top:  0px !important;
+      margin-top: 0px !important;
       margin-right: 0px !important;
       min-width: auto;
       max-height: 80% !important;
@@ -1667,7 +1666,7 @@
     font-size: 14px !important;
 
     span {
-       font-size: 14px !important;
+      font-size: 14px !important;
     }
 
     .el-button--mini,
