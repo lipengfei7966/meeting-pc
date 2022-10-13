@@ -224,35 +224,6 @@ export default {
               return flg
             }
           },
-          // 流程数据
-          {
-            name: 'update',
-            i18n: 'platform.menu.btn.bpmData',
-            type: 'route',
-            routeInfo: () => {
-              return {
-                name: 'bpmData',
-                params: {
-                  back: 'moduleManage',
-                  moduleCode: this.$refs.bsTable.currentRow.moduleCode
-                }
-              }
-            },
-            msg: this.$t('platform.menu.msg.bpmData'),
-            validate(currentRow) {
-              const flg = currentRow && currentRow.flag === '1'
-
-              return flg
-            }
-          },
-          // {
-          //   name: 'set',
-          //   i18n: 'addButton',
-          //   url: '/api/platform/cfgOperate/addButton',
-          //   getParam: () => {
-          //     return {}
-          //   }
-          // },
           {
             name: 'remove',
             getParam: () => {
