@@ -5,7 +5,6 @@
       <!-- 头部 -->
       <TitleContain :titleName="titleName" @TitleFun="close" />
       <div class=".dialog-container__content">
-
         <!-- 内容 -->
         <div class='dialog-content'>
           <el-table stripe border row-key='roleCode' :height="200" highlight-current-row :data="tableData" ref="multipleTable" style='border:1px solid;' class='table-content'>

@@ -3,126 +3,128 @@
     <div ref='formTableDialog' class='dialog-container' type='formTableDialog'>
       <!-- 头部 -->
       <title-contain :titleName='dialog.titleName' @screenChange="setTableHeight" @TitleFun="$emit('closeDialog')" />
+      <div class="dialog-container__content">
 
-      <!-- 内容 -->
-      <header ref='formTableDialogHeader' style='border-radius:5px;'>
-        <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="listQuery.data" class='header-form-inline'>
-          <el-row :gutter="20" style='width:94%;'>
-            <template v-for='(f, index) in dialog.formData'>
-              <el-col :span="8" :key='index' v-if='f.isShow !== false'>
-                <!-- 日期 -->
-                <el-form-item v-if='f.type === "date"' :label="$t(f.label)">
-                  <el-row :gutter="0">
-                    <el-col :span="11">
-                      <el-date-picker v-model="listQuery.data[f.props[0]]" v-bind='f.attrs' @change="changeStartTime" :picker-options='dateStartBefore' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                      </el-date-picker>
-                    </el-col>
-                    <el-col :span="2" align='center'>~</el-col>
-                    <el-col :span="11">
-                      <el-date-picker v-model="listQuery.data[f.props[1]]" v-bind='f.attrs' @change="changeEndTime" :picker-options='dateEndBefore' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                      </el-date-picker>
-                    </el-col>
-                  </el-row>
-                </el-form-item>
-                <!-- 单选框 -->
-                <el-form-item v-else-if='f.type === "radio"' :label="$t(f.label)">
-                  <el-radio-group v-model="listQuery.data[f.prop]">
-                    <el-radio v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <!-- 多选框 -->
-                <el-form-item v-else-if='f.type === "checkbox"' :label="$t(f.label)">
-                  <el-checkbox-group v-model="listQuery.data[f.prop]">
-                    <el-checkbox v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-                <!-- 数值区间 -->
-                <el-form-item v-else-if='f.type === "numberInterval"' :label="$t(f.label)">
-                  <el-row :gutter="0">
-                    <el-col :span="11">
-                      <input-formatter :min='f.attrs.startMin' :max='f.attrs.startMax !== undefined ? f.attrs.startMax : listQuery.data[f.props[1]]' v-model="listQuery.data[f.props[0]]" v-bind='f.attrs' size="mini"></input-formatter>
-                    </el-col>
-                    <el-col :span="2" align='center'>~</el-col>
-                    <el-col :span="11">
-                      <input-formatter :min='f.attrs.endMin !== undefined ? f.attrs.endMin : listQuery.data[f.props[0]]' :max='f.attrs.endMax' v-model="listQuery.data[f.props[1]]" v-bind='f.attrs' size="mini"></input-formatter>
-                    </el-col>
-                  </el-row>
-                </el-form-item>
-                <!-- 下拉输入 -->
-                <el-form-item v-else :label="$t(f.label)" :prop='f.prop'>
-                  <!-- 字典码表 -->
-                  <el-select v-if='f.list' v-model="listQuery.data[f.prop]" v-bind='f.attrs' :placeholder="$t('biz.placeholder.choose')">
-                    <el-option v-for="item in f.list" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                  <!-- 公用组件 -->
-                  <component v-else :is='f.element' v-model='listQuery.data[f.prop]' v-bind='f.attrs' v-on='f.event' :attrs='f.attrs'></component>
-                </el-form-item>
-              </el-col>
-            </template>
-            <!-- 更多 -->
-            <template>
-              <el-col :span="6" v-for='item in items' :key='item.bind' class='el-form-item-more'>
-                <div class='el-form-item-more-left'>
-                  <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change='handleExtraQueryChange'>
-                    <el-option v-for='i in item.list' :label="i.label" :value="i.prop" :key="i.prop" :disabled="extraChoice.includes(i.prop)"></el-option>
-                  </el-select>
-                </div>
-                <div class='el-form-item-more-right'>
-                  <el-input v-model='extraQuery[item.bind].value'></el-input>
-                </div>
-              </el-col>
-              <el-col :span="6" v-if='dialog.moreShowFlg && addQueryConditionVisible'>
-                <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
-              </el-col>
-            </template>
-            <el-col class="none"></el-col>
-          </el-row>
-          <!-- 右侧搜索按钮 -->
-          <div class="search-btn" v-permission="['query']">
-            <el-button type="primary" :loading="loading" @click="getList" v-db-click>
-              {{$t('biz.lbl.search')}}
-            </el-button>
-          </div>
-        </el-form>
-      </header>
+        <!-- 内容 -->
+        <header ref='formTableDialogHeader' style='border-radius:5px;'>
+          <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="listQuery.data" class='header-form-inline'>
+            <el-row :gutter="20" style='width:94%;'>
+              <template v-for='(f, index) in dialog.formData'>
+                <el-col :span="8" :key='index' v-if='f.isShow !== false'>
+                  <!-- 日期 -->
+                  <el-form-item v-if='f.type === "date"' :label="$t(f.label)">
+                    <el-row :gutter="0">
+                      <el-col :span="11">
+                        <el-date-picker v-model="listQuery.data[f.props[0]]" v-bind='f.attrs' @change="changeStartTime" :picker-options='dateStartBefore' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                        </el-date-picker>
+                      </el-col>
+                      <el-col :span="2" align='center'>~</el-col>
+                      <el-col :span="11">
+                        <el-date-picker v-model="listQuery.data[f.props[1]]" v-bind='f.attrs' @change="changeEndTime" :picker-options='dateEndBefore' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                        </el-date-picker>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                  <!-- 单选框 -->
+                  <el-form-item v-else-if='f.type === "radio"' :label="$t(f.label)">
+                    <el-radio-group v-model="listQuery.data[f.prop]">
+                      <el-radio v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <!-- 多选框 -->
+                  <el-form-item v-else-if='f.type === "checkbox"' :label="$t(f.label)">
+                    <el-checkbox-group v-model="listQuery.data[f.prop]">
+                      <el-checkbox v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
+                    </el-checkbox-group>
+                  </el-form-item>
+                  <!-- 数值区间 -->
+                  <el-form-item v-else-if='f.type === "numberInterval"' :label="$t(f.label)">
+                    <el-row :gutter="0">
+                      <el-col :span="11">
+                        <input-formatter :min='f.attrs.startMin' :max='f.attrs.startMax !== undefined ? f.attrs.startMax : listQuery.data[f.props[1]]' v-model="listQuery.data[f.props[0]]" v-bind='f.attrs' size="mini"></input-formatter>
+                      </el-col>
+                      <el-col :span="2" align='center'>~</el-col>
+                      <el-col :span="11">
+                        <input-formatter :min='f.attrs.endMin !== undefined ? f.attrs.endMin : listQuery.data[f.props[0]]' :max='f.attrs.endMax' v-model="listQuery.data[f.props[1]]" v-bind='f.attrs' size="mini"></input-formatter>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                  <!-- 下拉输入 -->
+                  <el-form-item v-else :label="$t(f.label)" :prop='f.prop'>
+                    <!-- 字典码表 -->
+                    <el-select v-if='f.list' v-model="listQuery.data[f.prop]" v-bind='f.attrs' :placeholder="$t('biz.placeholder.choose')">
+                      <el-option v-for="item in f.list" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                    <!-- 公用组件 -->
+                    <component v-else :is='f.element' v-model='listQuery.data[f.prop]' v-bind='f.attrs' v-on='f.event' :attrs='f.attrs'></component>
+                  </el-form-item>
+                </el-col>
+              </template>
+              <!-- 更多 -->
+              <template>
+                <el-col :span="6" v-for='item in items' :key='item.bind' class='el-form-item-more'>
+                  <div class='el-form-item-more-left'>
+                    <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change='handleExtraQueryChange'>
+                      <el-option v-for='i in item.list' :label="i.label" :value="i.prop" :key="i.prop" :disabled="extraChoice.includes(i.prop)"></el-option>
+                    </el-select>
+                  </div>
+                  <div class='el-form-item-more-right'>
+                    <el-input v-model='extraQuery[item.bind].value'></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="6" v-if='dialog.moreShowFlg && addQueryConditionVisible'>
+                  <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
+                </el-col>
+              </template>
+              <el-col class="none"></el-col>
+            </el-row>
+            <!-- 右侧搜索按钮 -->
+            <div class="search-btn" v-permission="['query']">
+              <el-button type="primary" :loading="loading" @click="getList" v-db-click>
+                {{$t('biz.lbl.search')}}
+              </el-button>
+            </div>
+          </el-form>
+        </header>
 
-      <main>
+        <main>
 
-        <u-table :key='key' ref="singleTable" use-virtual fixed-columns-roll stripe border class='table-content table-array-row' :height='tableHeight' :row-height="24" :pagination-show='false' highlight-current-row v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" @selection-change="handleSelectionChange" @row-click='handleClick' @current-change="handleSelectRow" @sort-change="handleSortChange">
-          <u-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></u-table-column>
-          <u-table-column align="center" type="selection" width="55" v-if="dialog.mainData.table.showCheckbox"></u-table-column>
-          <template v-for='col in tableCols'>
-            <u-table-column v-if='col.isShow' :key='col.prop' v-bind='col' :label='$t(col.label)' :sortable='col.sortable' show-overflow-tooltip>
-              <template slot-scope='scope'>
-                <!-- 自定义内容 -->
-                <slot v-if="col.isSlot" :name="col.prop" :row='scope.row'></slot>
-                <!-- 合并行 -->
-                <template v-else-if='col.isSon'>
-                  <div class='nest' style='display:block;height:24px;' v-for='(i, index) in scope.row[dialog.mainData.table.mergeProp]' :key="index" :style="{'border-top': index > 0 ? '1px solid #aaaaaa' : ''}">
-                    <span v-if='!col.format'>{{ i[col.prop] }}</span>
-                    <span v-else>{{ dataFormat(col.format.func, i[col.prop], col.format.dict,col.format.dictType) }}</span>
+          <u-table :key='key' ref="singleTable" use-virtual fixed-columns-roll stripe border class='table-content table-array-row' :height='tableHeight' :row-height="24" :pagination-show='false' highlight-current-row v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" @selection-change="handleSelectionChange" @row-click='handleClick' @current-change="handleSelectRow" @sort-change="handleSortChange">
+            <u-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></u-table-column>
+            <u-table-column align="center" type="selection" width="55" v-if="dialog.mainData.table.showCheckbox"></u-table-column>
+            <template v-for='col in tableCols'>
+              <u-table-column v-if='col.isShow' :key='col.prop' v-bind='col' :label='$t(col.label)' :sortable='col.sortable' show-overflow-tooltip>
+                <template slot-scope='scope'>
+                  <!-- 自定义内容 -->
+                  <slot v-if="col.isSlot" :name="col.prop" :row='scope.row'></slot>
+                  <!-- 合并行 -->
+                  <template v-else-if='col.isSon'>
+                    <div class='nest' style='display:block;height:24px;' v-for='(i, index) in scope.row[dialog.mainData.table.mergeProp]' :key="index" :style="{'border-top': index > 0 ? '1px solid #aaaaaa' : ''}">
+                      <span v-if='!col.format'>{{ i[col.prop] }}</span>
+                      <span v-else>{{ dataFormat(col.format.func, i[col.prop], col.format.dict,col.format.dictType) }}</span>
+                    </div>
+                  </template>
+                  <!-- 当前列字段是否存在于对象中 -->
+                  <div v-else :style='col.style'>
+                    <span v-if='!col.format'>{{ scope.row[col.prop] }}</span>
+                    <span v-else>{{ dataFormat(col.format.func, scope.row[col.prop], col.format.dict,col.format.dictType) }}</span>
                   </div>
                 </template>
-                <!-- 当前列字段是否存在于对象中 -->
-                <div v-else :style='col.style'>
-                  <span v-if='!col.format'>{{ scope.row[col.prop] }}</span>
-                  <span v-else>{{ dataFormat(col.format.func, scope.row[col.prop], col.format.dict,col.format.dictType) }}</span>
-                </div>
-              </template>
-            </u-table-column>
-          </template>
-        </u-table>
-        <!-- 底部按钮 -->
-        <div class='bottom-operate' v-if='dialog.bottomBar'>
-          <div class="bottom-operate-left" v-show='emptyTextVisible'>
-            <svg-icon icon-class="point" style='color:#E6A23C'></svg-icon>{{$t('table.emptyText')}}
+              </u-table-column>
+            </template>
+          </u-table>
+          <!-- 底部按钮 -->
+          <div class='bottom-operate' v-if='dialog.bottomBar'>
+            <div class="bottom-operate-left" v-show='emptyTextVisible'>
+              <svg-icon icon-class="point" style='color:#E6A23C'></svg-icon>{{$t('table.emptyText')}}
+            </div>
+            <!-- 分页 -->
+            <el-pagination v-if='!emptyTextVisible' small background layout="total,sizes,prev, pager, next" :current-page="listQuery.current" :page-sizes="[20, 40, 60, 80, 100]" :page-size="listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+            </el-pagination>
           </div>
-          <!-- 分页 -->
-          <el-pagination v-if='!emptyTextVisible' small background layout="total,sizes,prev, pager, next" :current-page="listQuery.current" :page-sizes="[20, 40, 60, 80, 100]" :page-size="listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
-          </el-pagination>
-        </div>
-      </main>
+        </main>
 
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button v-for='(button, index) in dialog.bottomButtons' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button.event)'>

@@ -3,71 +3,74 @@
     <div class='dialog-container' type='formTableDialog'>
       <!-- 头部 -->
       <TitleContain titleName="按钮管理" @TitleFun="$emit('closeHandler')" />
-      <!-- 内容 -->
-      <main>
-        <el-alert title="如果下拉框里信息不全，请在平台字典中以 数据代码 AUTH_BUTTON，进行添加" type="error" show-icon style='margin:5px 0;'></el-alert>
-        <!-- el-row top-operate -->
-        <div class='tabs-operate'>
-          <el-button @click="addRow" size="mini">
-            <svg-icon icon-class="addLine"></svg-icon>{{ $t('biz.btn.addRow') }}
-          </el-button>
-          <el-button @click="delRow" size="mini">
-            <svg-icon icon-class="delete"></svg-icon>{{ $t('biz.btn.deleteRow') }}
-          </el-button>
-          <el-button @click="addFormTemplate" size="mini">
-            <svg-icon icon-class="delete"></svg-icon>基础按钮
-          </el-button>
-          <el-button @click="addBizTemplate" size="mini">
-            <svg-icon icon-class="delete"></svg-icon>业务按钮
-          </el-button>
-        </div>
-        <el-table :data="dataTable" @selection-change="handleSelectionChange" height="400" stripe v-loading="loading" :element-loading-text="$t('route.load')" element-loading-spinner="el-icon-loading" border class='table-content tb-edit' ref="multipleTable" style="border:1px solid;">
-          <el-table-column align='center' type="index" width="38" label=' '></el-table-column>
-          <el-table-column type="selection" align="center" width="50"></el-table-column>
-          <!-- 商品名称 -->
-          <el-table-column label="按钮" width='120'>
-            <template slot-scope="scope">
-              <el-select size='mini' filterable allow-create default-first-option clearable v-model="scope.row.operateCode" @change="buttonChange(scope.row)">
-                <el-option v-for="item in buttonOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal">
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="编码" width='120'>
-            <template slot-scope="scope">
-              <el-input size="mini" v-model="scope.row.operateCode"></el-input>
-            </template>
-          </el-table-column>
+      <div class="dialog-container__content">
 
-          <el-table-column label="名称" width='120'>
-            <template slot-scope="scope">
-              <el-input size="mini" v-model="scope.row.operateName"></el-input>
-            </template>
-          </el-table-column>
+        <!-- 内容 -->
+        <main>
+          <el-alert title="如果下拉框里信息不全，请在平台字典中以 数据代码 AUTH_BUTTON，进行添加" type="error" show-icon style='margin:5px 0;'></el-alert>
+          <!-- el-row top-operate -->
+          <div class='tabs-operate'>
+            <el-button @click="addRow" size="mini">
+              <svg-icon icon-class="addLine"></svg-icon>{{ $t('biz.btn.addRow') }}
+            </el-button>
+            <el-button @click="delRow" size="mini">
+              <svg-icon icon-class="delete"></svg-icon>{{ $t('biz.btn.deleteRow') }}
+            </el-button>
+            <el-button @click="addFormTemplate" size="mini">
+              <svg-icon icon-class="delete"></svg-icon>基础按钮
+            </el-button>
+            <el-button @click="addBizTemplate" size="mini">
+              <svg-icon icon-class="delete"></svg-icon>业务按钮
+            </el-button>
+          </div>
+          <el-table :data="dataTable" @selection-change="handleSelectionChange" height="400" stripe v-loading="loading" :element-loading-text="$t('route.load')" element-loading-spinner="el-icon-loading" border class='table-content tb-edit' ref="multipleTable" style="border:1px solid;">
+            <el-table-column align='center' type="index" width="38" label=' '></el-table-column>
+            <el-table-column type="selection" align="center" width="50"></el-table-column>
+            <!-- 商品名称 -->
+            <el-table-column label="按钮" width='120'>
+              <template slot-scope="scope">
+                <el-select size='mini' filterable allow-create default-first-option clearable v-model="scope.row.operateCode" @change="buttonChange(scope.row)">
+                  <el-option v-for="item in buttonOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="编码" width='120'>
+              <template slot-scope="scope">
+                <el-input size="mini" v-model="scope.row.operateCode"></el-input>
+              </template>
+            </el-table-column>
 
-          <el-table-column label="授权方式" width='120'>
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.authFlag" size='mini' placeholder="请选择">
-                <!-- <el-option key="6" label="菜单权限" value="6">
+            <el-table-column label="名称" width='120'>
+              <template slot-scope="scope">
+                <el-input size="mini" v-model="scope.row.operateName"></el-input>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="授权方式" width='120'>
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.authFlag" size='mini' placeholder="请选择">
+                  <!-- <el-option key="6" label="菜单权限" value="6">
                 </el-option>
                 <el-option key="5" label="登陆" value="5">
                 </el-option> -->
-                <el-option key="4" label="操作员" value="4">
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
+                  <el-option key="4" label="操作员" value="4">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
 
-          <el-table-column label="权限" min-width='120'>
-            <template slot-scope="scope">
-              <el-select multiple filterable :filter-method='filterMethod' allow-create size='mini' v-model="scope.row.apiCodes">
-                <el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-        </el-table>
-      </main>
+            <el-table-column label="权限" min-width='120'>
+              <template slot-scope="scope">
+                <el-select multiple filterable :filter-method='filterMethod' allow-create size='mini' v-model="scope.row.apiCodes">
+                  <el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+          </el-table>
+        </main>
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button @click="close" size='mini'>关闭</el-button>

@@ -103,21 +103,22 @@
           </div>
         </el-form>
       </header>
-      <main :style="{height:mainHeightFlag ? '91% !important':'100% !important'}">
+      <main>
         <div class="top-operate" v-if="treeTableData.mainData.isTopBar">
           <span class="left-title">应用列表</span>
           <el-row type='flex'>
             <slot name='add'></slot>
             <slot name='upload'></slot>
-            <div>
-              <el-button v-db-click size="mini" @click='refresh' style='margin-right:3px;'>
-                <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
-              </el-button>
-            </div>
+
             <!-- 按钮 -->
             <div v-for='(btn, index) in treeTableData.mainData.topBar' :key='index'>
               <el-button v-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-permission="btn.permitName ? [...btn.permitName, btn.name] : [btn.name]">
                 <svg-icon :icon-class="btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName"></svg-icon>{{$t(btn.i18n) || $t(baseEvent[btn.name].i18n)}}
+              </el-button>
+            </div>
+            <div>
+              <el-button class="refresh-btn" v-db-click size="mini" @click='refresh' style='margin-right:3px;'>
+                <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
               </el-button>
             </div>
           </el-row>
@@ -269,7 +270,6 @@ export default {
           types: 'primary'
         }
       },
-      mainHeightFlag:false
     }
   },
   props: {
@@ -368,11 +368,6 @@ export default {
     })
   },
   mounted() {
-    if(this.$refs.formTableDialogHeader){
-      this.mainHeightFlag = true;
-    }else{
-      this.mainHeightFlag = false;
-    }
     this.getTree()
     if (this.treeTableData.mainData.initSearch) {
       this.initTable()

@@ -360,10 +360,10 @@ tr.current-row>td {
 }
 
 .el-button.el-button--mini.el-button--default:hover {
-  border-color: var(--menuBg) !important;
-  background: var(--menuBg) !important;
-  color: var(--btnFontColor) !important;
-  fill: var(--btnFontColor) !important;
+  border-color: var(--menuBg);
+  background: var(--menuBg);
+  color: var(--btnFontColor);
+  fill: var(--btnFontColor);
 }
 
 .el-button.el-button--primary.el-button--small {

@@ -32,35 +32,36 @@
       <div class='dialog-container' type='miniColumnsDialog'>
         <!-- 头部 -->
         <title-contain :titleName="$t('login.login')" :isShowClose='false' />
-        <el-form class="header-form-inline" :show-message="false" label-position="left" :model="loginForm" :rules="loginRules" ref="loginForm">
-          <el-form-item prop="username" :label="$t('login.username')">
-            <el-input name="username" :disabled="true" type="text" v-model="loginForm.username" :placeholder="$t('login.username')" />
-          </el-form-item>
+        <div class="dialog-container__content">
+          <el-form class="header-form-inline login-form" :show-message="false" label-position="left" :model="loginForm" :rules="loginRules" ref="loginForm">
+            <el-form-item prop="username" :label="$t('login.username')">
+              <el-input name="username" :disabled="true" type="text" v-model="loginForm.username" :placeholder="$t('login.username')" />
+            </el-form-item>
 
-          <el-form-item prop="password" :label="$t('login.password')" data-key='password'>
-            <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="off" :placeholder="$t('login.password')" />
-          </el-form-item>
-          <el-row :gutter="10">
-            <el-col :span="14">
-              <el-form-item prop="captcha" :label="$t('login.captcha')" data-key='captcha'>
-                <el-input type="text" v-model="loginForm.captcha" @keyup.enter.native="handleLogin" auto-complete="off" :placeholder="$t('login.captcha')" style="width: 100%;"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item>
-                <el-image style="height:30px;vertical-align:top;" :src="loginForm.src">
-                  <div slot="placeholder" class="image-slot">
-                    {{$t('biz.route.load')}}<span class="dot">...</span>
-                  </div>
-                </el-image>
-              </el-form-item>
-            </el-col>
-            <el-col :span="2">
-              <i class='el-icon-refresh pointer' style='font-size:16px;margin-top:5px;' @click="loadCaptcha"></i>
-            </el-col>
-          </el-row>
-        </el-form>
-
+            <el-form-item prop="password" :label="$t('login.password')" data-key='password'>
+              <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="off" :placeholder="$t('login.password')" />
+            </el-form-item>
+            <el-row :gutter="10">
+              <el-col :span="14">
+                <el-form-item prop="captcha" :label="$t('login.captcha')" data-key='captcha'>
+                  <el-input type="text" v-model="loginForm.captcha" @keyup.enter.native="handleLogin" auto-complete="off" :placeholder="$t('login.captcha')" style="width: 100%;"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item>
+                  <el-image style="height:30px;vertical-align:top;" :src="loginForm.src">
+                    <div slot="placeholder" class="image-slot">
+                      {{$t('biz.route.load')}}<span class="dot">...</span>
+                    </div>
+                  </el-image>
+                </el-form-item>
+              </el-col>
+              <el-col :span="2" class="refresh-svg">
+                <i class='el-icon-refresh pointer' style='font-size:16px;margin-top:5px;' @click="loadCaptcha"></i>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
         <div class="dialog-footer">
           <el-button class='login-btn' v-db-click type="primary" :loading="loading" @click.native.prevent="handleLogin">
             {{$t('login.login')}}
