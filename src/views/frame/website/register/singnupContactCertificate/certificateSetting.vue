@@ -461,20 +461,28 @@ export default {
           })
           //
           if (!isIncludes) {
-            this.list.push({
+            let pushItem = {
               name: item.mapName, // 表名对应的值
               label: item.mapName, // 表名
               value: item.code,
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
-              width: item.code == 'qrCode'?'200':'',
-              height: item.code == 'qrCode'?'200':'',
+              width: '',
+              height: '',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
               y: this.list.length * 50// y 默认值
               // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
-            })
+            }
+            if(item.code == 'qrCode'){
+              pushItem.width = '200';
+              pushItem.height = '200';
+            }else if(item.code == 'barCode'){
+              pushItem.width = '100';
+              pushItem.height = '100';
+            }
+            this.list.push(pushItem)
           }else{
             // 删除已取消值
             this.list.forEach((listItem, listIndex) => {
