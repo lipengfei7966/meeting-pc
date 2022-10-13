@@ -91,11 +91,11 @@
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
-              <p v-if="item.value == 'qrCode' " id="qrCode" @mousedown="checkItem(item)">
-                <vue-qr class="qrCode" text="printSetform.certificateContent" :size="180" style="width:100%"> </vue-qr>
+              <p v-if="item.value == 'qrCode' " id="qrCode" class="printItem" @mousedown="checkItem(item)">
+                <vue-qr class="qrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
 
-              <p v-else-if="item.value == 'barCode'" id="barCode" @mousedown="checkItem(item)">
+              <p v-else-if="item.value == 'barCode'" id="barCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-barcode class="barCode" value="123123" :width="1" :height="50" style="width:100%"> </vue-barcode>
               </p>
 
@@ -461,7 +461,7 @@ export default {
           })
           //
           if (!isIncludes) {
-            this.list.push({
+            let pushItem = {
               name: item.mapName, // 表名对应的值
               label: item.mapName, // 表名
               value: item.code,
@@ -474,7 +474,15 @@ export default {
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
               y: this.list.length * 50// y 默认值
               // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
-            })
+            }
+            if(item.code == 'qrCode'){
+              pushItem.width = '200';
+              pushItem.height = '200';
+            }else if(item.code == 'barCode'){
+              pushItem.width = '100';
+              pushItem.height = '100';
+            }
+            this.list.push(pushItem)
           }else{
             // 删除已取消值
             this.list.forEach((listItem, listIndex) => {
@@ -747,7 +755,7 @@ export default {
 .p-event {
   border: 1px solid red;
   box-sizing: border-box;
-  min-height: 500px;
+  /* min-height: 500px; */
   overflow: hidden;
   width: 100%;
   position: relative;

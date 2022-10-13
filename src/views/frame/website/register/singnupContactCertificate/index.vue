@@ -19,6 +19,9 @@
         <p v-show="false">
           <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
+        <p v-show="false">
+          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width:100%"> </vue-barcode>
+        </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
     </div>
@@ -106,6 +109,14 @@ export default {
           {
             label: 'website.signupCertificate.query.contactCode',
             prop: 'code',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            label: 'website.signupCertificate.query.personnelCode',
+            prop: 'personnelCode',
             element: 'input-validate',
             attrs: {
               clearable: true
@@ -227,6 +238,10 @@ export default {
             {
               prop: 'code',
               label: 'website.signupCertificate.list.code'
+            },
+            {
+              prop: 'personnelCode',
+              label: 'website.signupCertificate.list.personnelCode'
             },
             {
               prop: 'contactType',
@@ -388,6 +403,15 @@ export default {
               qrCode[0].parentNode.appendChild(newQR)
               qrCode[0].parentNode.removeChild(qrCode[0])
             }
+
+            let barCode = node.getElementsByClassName('barCode')
+            let newBar = node.getElementsByClassName('newBar')[0]
+            if (barCode.length > 0) {
+              barCode[0].parentNode.appendChild(newBar)
+              barCode[0].parentNode.removeChild(barCode[0])
+            }
+
+
           })
         })
 
@@ -445,7 +469,7 @@ export default {
             this.isprint = false
             setTimeout(function () {
               newWin.print() //打开打印窗口
-              newWin.close() //关闭打印窗口
+              // newWin.close() //关闭打印窗口
             }, 100)
           })
         } else {
