@@ -3,20 +3,22 @@
     <div class='dialog-container' type='treeTableDialog'>
       <!-- 头部 -->
       <title-contain titleName='打印预览' @TitleFun="$emit('closeHandler')" />
+      <div class="dialog-container__content">
 
-      <!-- 内容 -->
-      <main style='margin: 3px 3px 43px;'>
-        <div class='left-content'>
-          <ul>
-            <li v-for='i in list' :key="i.id" :class="['list-item', activeId === i.id ? 'list-item-active' : 'list-item-unactive']" :title='i.name' @click='doPrint(i.data)'>
-              {{ i.name }}
-            </li>
-          </ul>
-        </div>
-        <div class='right-content'>
-          <iframe :src="activeUrl" frameborder="0" width="100%" height="100%"></iframe>
-        </div>
-      </main>
+        <!-- 内容 -->
+        <main style='margin: 3px 3px 43px;'>
+          <div class='left-content'>
+            <ul>
+              <li v-for='i in list' :key="i.id" :class="['list-item', activeId === i.id ? 'list-item-active' : 'list-item-unactive']" :title='i.name' @click='doPrint(i.data)'>
+                {{ i.name }}
+              </li>
+            </ul>
+          </div>
+          <div class='right-content'>
+            <iframe :src="activeUrl" frameborder="0" width="100%" height="100%"></iframe>
+          </div>
+        </main>
+      </div>
 
       <!-- 底部 -->
       <div class="dialog-footer">
