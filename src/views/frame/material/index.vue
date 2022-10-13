@@ -1,108 +1,67 @@
 <template>
   <div class="material">
+    <!-- 左侧树 -->
     <el-card class="box-card content_one">
       <div>
-        <tree />
+        <tree @matter="matter" />
       </div>
     </el-card>
+    <!-- 中间素材列表 -->
     <el-card class="box-card content_two">
-      <div class="search">
-        <el-form :model="fileSearch" label-width="90px">
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="文件类型">
-                <el-select filterable size="mini" v-model="fileSearch.type_" clearable>
-                  <el-option v-for="item in leixingOptions" :label="item.name" :value="item.name" :key="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="排序">
-                <el-select filterable size="mini" v-model="fileSearch.rank_" clearable>
-                  <el-option v-for="item in paixuOptions" :label="item.name" :value="item.name" :key="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="文件名称">
-                <el-input size="mini" v-model="fileSearch.name_" clearable>
-                  <template slot="append">
-                    <span @click="searchClick" style="padding: 0 20px; cursor: pointer">
-                      <i class="el-icon-search"></i>
-                    </span>
-                  </template>
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+      <div v-if="exhibition">
+        <div class="search">
+          <el-form :model="fileSearch" label-width="90px">
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="文件类型">
+                  <el-select filterable size="mini" v-model="fileSearch.type_" clearable>
+                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.name" :key="item.name"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="排序">
+                  <el-select filterable size="mini" v-model="fileSearch.rank_" clearable>
+                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.name" :key="item.name"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="文件名称">
+                  <el-input size="mini" v-model="fileSearch.name_" clearable>
+                    <template slot="append">
+                      <span @click="searchClick" style="padding: 0 20px; cursor: pointer">
+                        <i class="el-icon-search"></i>
+                      </span>
+                    </template>
+                  </el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <!-- <div style="display: flex; justify-content: right; margin-bottom: 20px">
+          <el-button type="primary">移动</el-button>
+          <el-button>删除</el-button>
+        </div> -->
+        <ul v-if="matterList.length > 0" class="content_" @scroll.passive="getScroll($event)">
+          <li class="resource" v-for="(item, index) in matterList" :key="index">
+            <p>{{ item.picName }}</p>
+            <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
+            <div>
+              <el-button type="text">文件信息</el-button>
+            </div>
+          </li>
+          <!-- <li class="resource">视频</li> -->
+        </ul>
+        <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span><el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty></div>
+        <!-- @/assets/image/wushuju.png -->
       </div>
-      <ul class="content_">
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" :src="url" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <li class="resource">
-          <p>图片名称</p>
-          <el-image style="width: 100%; height: 65%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" :preview-src-list="srcList"> </el-image>
-          <el-button type="text">详情</el-button>
-        </li>
-        <!-- <li class="resource">视频</li> -->
-      </ul>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh" v-else><span></span><el-empty description="请选择文件夹"></el-empty></div>
     </el-card>
+    <!-- 右侧详细信息 -->
     <el-card class="box-card content_three">
-      <div class="set">
+      <div class="set" v-if="exhibitionRight">
         <div class="set_one">
           <el-image style="width: 100%; height: 100%" :src="url" :preview-src-list="srcList"> </el-image>
         </div>
@@ -121,17 +80,22 @@
               <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">复制链接</el-button>
             </p>
             <div class="btn">
-              <el-button style="margin-right: 2vw">替换文件</el-button>
-              <el-button type="primary">下载</el-button>
+              <!-- 上传（替换文件） -->
+              <el-button @click="upload_" style="margin-right: 2vw">替换文件</el-button>
+              <input v-show="false" ref="fileRef" type="file" @change="fileChange($event)" />
+              <!--  -->
+              <el-button type="primary" @click="download_">下载</el-button>
             </div>
           </div>
         </div>
       </div>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh" v-else><span></span><el-empty description="请选择图片..."></el-empty></div>
     </el-card>
   </div>
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 import tree from './components/tree'
 export default {
   name: 'material',
@@ -146,11 +110,14 @@ export default {
         name_: ''
       },
       workName: '',
-      leixingOptions: [{ name: '内容一' }, { name: '内容二' }],
-      paixuOptions: [{ name: '内容一' }, { name: '内容二' }],
+      leixingOptions: [{ name: '图片' }, { name: '视频' }],
+      paixuOptions: [{ name: '按上传时间升序' }, { name: '按上传时间降序' }],
       url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       srcList: ['https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'],
-      aaa: 'https://www.csdn.net/tags/MtTaAg0sMzMwNDEtYmxvZwO0O0OO0O0O.html'
+      aaa: 'https://www.csdn.net/tags/MtTaAg0sMzMwNDEtYmxvZwO0O0OO0O0O.html',
+      exhibition: false,
+      exhibitionRight: true,
+      matterList: []
     }
   },
   methods: {
@@ -172,6 +139,46 @@ export default {
     },
     blur_() {
       console.log('失焦了 调保存接口吧')
+    },
+
+    getScroll(event) {
+      // 滚动条距离底部的距离scrollBottom
+      let scrollBottom = event.target.scrollHeight - event.target.scrollTop - event.target.clientHeight
+      console.log(scrollBottom)
+      // if (this.finished && scrollBottom < 40) {
+      //  操作
+      // }
+    },
+    upload_() {
+      this.$refs.fileRef.dispatchEvent(new MouseEvent('click')) //弹出选择本地文件
+    },
+    fileChange(e) {
+      console.log(e)
+      console.log(e.target.files)
+      console.log(e.target.files[0].name)
+    },
+    download_() {
+      console.log('下载')
+    },
+    matter(data) {
+      this.exhibition = true
+      this.loadData(data)
+    },
+    loadData(data) {
+      request({
+        url: '/api/cms/picinfo/listpicurl',
+        method: 'POST',
+        data: { data: { materialCode: data.code }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
+      })
+        .then((res) => {
+          if (res.data) {
+            debugger
+            this.matterList = res.data
+            console.log(res.data)
+          } else {
+          }
+        })
+        .catch(() => {})
     }
   },
   filters: {
@@ -215,8 +222,12 @@ export default {
   margin: 5px;
 }
 .search {
+  padding: 0px 20px;
+  padding-top: 20px;
   width: 100%;
   height: 5%;
+  // border-bottom: 1px solid lightgrey;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
 .content_ {
   width: 100%;
@@ -233,14 +244,16 @@ export default {
     height: 40%;
     margin-top: 10px;
     margin-right: 1%;
+    border-radius: 10px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     p {
       // line-height: 30px;
+      margin: 5px 0;
     }
   }
   .resource :hover {
-    // top: 2px;
-    // animation: move 0.7s linear infinite;
+    bottom: 1px;
+    right: 1px;
   }
 }
 .el-input-group__append {
@@ -269,5 +282,9 @@ export default {
   .btn {
     margin-top: 2vh;
   }
+}
+.el-card__body,
+.el-main {
+  padding: 10px;
 }
 </style>

@@ -1,11 +1,13 @@
 <template>
   <div>
-    <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick" :expand-on-click-node="false">
+    <!-- :default-expand-all="true" -->
+    <!-- @node-expan="expanClick_" -->
+    <el-tree :default-expanded-keys="treeData.length > 0 ? [treeData[0].id] : ['0001']" :data="treeData" node-key="id" :props="defaultProps" @node-click="handleNodeClick" :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span>
           <el-dropdown>
-            <span class="el-dropdown-link"><i class="el-icon-arrow-down el-icon--right"></i> </span>
+            <span class="el-dropdown-link"><i class="el-icon-s-operation el-icon--right"></i> </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click="addWork(node, data)"><span @click=";(dialogVisible = true), addWork(node, data)">新建文件夹</span></el-dropdown-item>
               <el-dropdown-item @click="editWork(node, data)"><span @click=";(dialogVisible = true), editWork(node, data)">编辑文件夹</span></el-dropdown-item>
@@ -28,88 +30,44 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
   data() {
     return {
-      data: [
-        {
-          label: '一级 1',
-          children: [
-            {
-              label: '二级 1-1',
-              children: [
-                {
-                  label: '三级 1-1-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: '一级 2',
-          children: [
-            {
-              label: '二级 2-1',
-              children: [
-                {
-                  label: '三级 2-1-1'
-                }
-              ]
-            },
-            {
-              label: '二级 2-2',
-              children: [
-                {
-                  label: '三级 2-2-1'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          label: '一级 3',
-          children: [
-            {
-              label: '二级 3-1',
-              children: [
-                {
-                  label: '三级 3-1-1'
-                }
-              ]
-            },
-            {
-              label: '二级 3-2',
-              children: [
-                {
-                  label: '三级 3-2-1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      // 树的数据
+      treeData: [],
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'name'
       },
       dialogVisible: false,
       title_: '新建文件夹',
-      workName: ''
+      workName: null,
+      // 选中的数据
+      getData: null
     }
   },
   methods: {
     handleNodeClick(data) {
       console.log(data)
+      this.$emit('matter', data)
     },
     addWork(node, data) {
       this.title_ = '新建文件夹'
+      // 清空名称
+      this.workName = null
+      this.getData = data
       console.log(node, data, 'hkz')
     },
     editWork(node, data) {
       this.title_ = '编辑文件夹'
+      this.getData = data
+      this.workName = data.name
       console.log(node, data, 'hkz')
     },
     delWork(node, data) {
+      this.getData = data
+      this.del()
       console.log(node, data, 'hkz')
     },
     handleClose(done) {
@@ -118,8 +76,100 @@ export default {
     // 提交
     present_() {
       console.log('提交', this.workName)
-      this.dialogVisible = false
+      if (this.workName == null || this.workName == '') {
+        this.dialogVisible = true
+        this.$message('请输入文件夹名称')
+      } else {
+        if (this.title_ == '新建文件夹') {
+          debugger
+          this.add()
+        } else if (this.title_ == '编辑文件夹') {
+          debugger
+          this.getData.name = this.workName
+          this.edit()
+        }
+        this.dialogVisible = false
+      }
+    },
+    loadData() {
+      request({
+        url: '/api/cms/materialLibrary/tree',
+        method: 'POST',
+        data: { data: {}, funcModule: '获取树列表', funcOperation: '获取树列表' }
+      })
+        .then((res) => {
+          if (res.data) {
+            this.treeData = res.data
+            console.log(res.data)
+          } else {
+          }
+        })
+        .catch(() => {})
+    },
+    add() {
+      request({
+        url: '/api/cms/materialLibrary/save',
+        method: 'POST',
+        data: { data: { name: this.workName, parent_code: this.getData.code }, funcModule: '新增文件夹', funcOperation: '新增文件夹' }
+      })
+        .then((res) => {
+          if (res.data) {
+            console.log(res.data)
+            this.$message({
+              message: '新增成功',
+              type: 'success'
+            })
+            this.loadData()
+          } else {
+          }
+        })
+        .catch(() => {})
+    },
+    edit() {
+      request({
+        url: '/api/cms/materialLibrary/update',
+        method: 'POST',
+        data: { data: this.getData, funcModule: '编辑文件夹', funcOperation: '编辑文件夹' }
+      })
+        .then((res) => {
+          if (res.data) {
+            console.log(res.data)
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.loadData()
+          } else {
+          }
+        })
+        .catch(() => {})
+    },
+    del() {
+      request({
+        url: '/api/cms/materialLibrary/remove',
+        method: 'POST',
+        data: { data: this.getData.id, funcModule: '删除文件夹', funcOperation: '删除文件夹' }
+      })
+        .then((res) => {
+          if (res.data) {
+            console.log(res.data)
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.loadData()
+          } else {
+          }
+        })
+        .catch(() => {})
     }
+    // expanClick_(data) {
+    //   debugger
+    //   console.log(data, '展开')
+    // }
+  },
+  created() {
+    this.loadData()
   }
 }
 </script>
@@ -127,7 +177,7 @@ export default {
 <style lang="scss">
 .el-dropdown-link {
   cursor: pointer;
-  color: #409eff;
+  color: #99a9bf;
 }
 .el-icon-arrow-down {
   font-size: 12px;
