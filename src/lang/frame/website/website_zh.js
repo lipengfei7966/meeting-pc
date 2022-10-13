@@ -19,6 +19,7 @@ export default {
       edit: {
         eventName: '会议名称',
         customerName: '客户名称',
+        contactCode: '联系人',
         startDate: '开始时间',
         endDate: '结束时间',
         eventPlace: '活动地点',

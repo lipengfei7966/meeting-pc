@@ -384,6 +384,7 @@ export default {
         .draggable {position:absolute}
         .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
+        .newBar svg{width:100%}
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
       if (this.tableData.length == 0) {

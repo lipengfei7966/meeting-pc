@@ -89,14 +89,14 @@
         <div class="p-event" id="print" :key="changecount" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto',backgroundImage:`url(${printSetform.printBackground})`,backgroundSize:'100% 100%'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
-            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
+            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
               <p v-if="item.value == 'qrCode' " id="qrCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-qr class="qrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
 
               <p v-else-if="item.value == 'barCode'" id="barCode" class="printItem" @mousedown="checkItem(item)">
-                <vue-barcode class="barCode" value="123123" :width="1" :height="50" style="width:100%"> </vue-barcode>
+                <vue-barcode class="barCode" value="SignupContact0000" :width="1" :height="50" style="width:100%"> </vue-barcode>
               </p>
 
               <p v-else class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign, width:item.width+'px', height: item.height+'px' }" @mousedown="checkItem(item)">
@@ -216,7 +216,6 @@ export default {
         color: '#000',
         paddingTop: 20,
         paddingBottom: 0,
-        paddingLeft: 0,
         paddingRight: 0
       },
       sizeList: [], // 字体号数组
@@ -461,6 +460,7 @@ export default {
           })
           //
           if (!isIncludes) {
+            debugger
             let pushItem = {
               name: item.mapName, // 表名对应的值
               label: item.mapName, // 表名
@@ -468,8 +468,8 @@ export default {
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
-              width: '',
-              height: '',
+              width: '100',
+              height: '25',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
               y: this.list.length * 50// y 默认值
@@ -479,7 +479,7 @@ export default {
               pushItem.width = '200';
               pushItem.height = '200';
             }else if(item.code == 'barCode'){
-              pushItem.width = '100';
+              pushItem.width = '250';
               pushItem.height = '100';
             }
             this.list.push(pushItem)
