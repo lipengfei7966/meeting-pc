@@ -2,7 +2,7 @@
 
   // 侧边栏
   .sidebar-container {
-    height: 89%;
+    // height: 89%;
     position: fixed;
     top: 90px;
     bottom: 0;
@@ -11,6 +11,7 @@
     font-size: 0px;
     // z-index: 1001;
     overflow: hidden;
+    z-index: 2;
 
     // padding: 26px 0 89px;
     .horizontal-collapse-transition {
@@ -101,6 +102,10 @@
         }
       }
     }
+  }
+
+  .hamburger-container {
+    z-index: 3;
   }
 
   .sidebar-container .nest-menu .el-submenu>.el-submenu__title,
