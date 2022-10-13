@@ -346,20 +346,7 @@
           </header>
         </template>
       </template>
-      <!-- 左右tables -->
-      <template v-if='edit.tablesTwo && edit.tablesTwo.filter(v => { return v.isShow }).length > 0'>
-        <template v-for='tables in edit.tablesTwo'>
-          <header :key='tables.name' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto',  'display':'flex'}" v-if='tables.isShow'>
-            <div v-for='table in tables.tablesArray' :key='table.uuid' style="width:50%">
-              <div class='form-title'>{{$t(table.label)}}<span v-if='table.required' style='color:#f56c6c;'>*</span>
-                <i :class="[table.visible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='table.visible = !table.visible'></i>
-              </div>
-              <component :is='table.uuid' v-show='table.visible' v-bind='table.attrs' :type='edit.type' :opType='edit.type' :param='edit.param' :extraParam='table.extraParam' :ref='table.name' :editForm='editForm' class='edit-header-table' :content='table.content'></component>
-            </div>
-          </header>
-        </template>
-      </template>
-      <main v-if='edit.tabs && edit.tabs.filter(v => { return v.isShow }).length > 0' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto','padding-top':'0 !important'}">
+      <main v-if='edit.tabs && edit.tabs.filter(v => { return v.isShow }).length > 0' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto','padding-top':'0 !important','margin-bottom': '50px'}">
         <el-tabs v-model="activeName" type="border-card">
           <template v-for='tab in edit.tabs'>
             <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name" v-if='tab.isShow'>
@@ -371,7 +358,7 @@
         <!-- 二级弹窗 -->
         <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
       </main>
-      <main v-else>
+      <main v-else style="margin-bottom: 50px">
         <!-- 二级弹窗 -->
         <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
       </main>
@@ -530,11 +517,7 @@ export default {
     if (Array.isArray(this.edit.tables)) {
       registerComponentTab(this.edit.tables)
     }
-    if (Array.isArray(this.edit.tablesTwo)) {
-      this.edit.tablesTwo.forEach(item => {
-        registerComponentTab(item.tablesArray)
-      })
-    }
+
     //组件注册 并添加附件TAB
     if (Array.isArray(this.edit.tabs)) {
       if (attachmentFlag) {
@@ -720,23 +703,7 @@ export default {
         }
       })
     }
-    if (this.edit.tablesTwo) {
-      this.edit.tablesTwo.forEach(a => {
-        a.tablesArray.forEach(t => {
-          // 每个table控制展开收起标识初始化
-          // this.$set(t, 'visible', true)
-          if (t.visible === undefined) {
-            this.$set(t, 'visible', true)
-          }
-          // 根据isShow字段判断是否显示
-          if (t.isShow === undefined) {
-            t.isShow = true
-          } else if (Array.isArray(t.isShow)) {
-            t.isShow = t.isShow.includes(this.edit.type)
-          }
-        })
-      })
-    }
+
     // 查看则清空校验规则
     if (this.edit.type === 'view') {
       this.rules = {}
@@ -837,15 +804,7 @@ export default {
               }
             })
           }
-          if (this.edit.tablesTwo) {
-            this.edit.tablesTwo.forEach(a => {
-              a.tablesArray.forEach(t => {
-                if (t.name && this.$refs[t.name] && this.$refs[t.name].length > 0) {
-                  this.$refs[t.name][0].tableData = this.editForm[t.name]
-                }
-              })
-            })
-          }
+
           if (this.edit.tabs) {
             this.edit.tabs.forEach(t => {
               if (t.name) {
@@ -1214,39 +1173,7 @@ export default {
             }
           })
         }
-        // 列表参数追加并验证2
-        if (this.edit.tablesTwo) {
-          this.edit.tablesTwo.forEach(a => {
-            a.tablesArray.forEach(t => {
-              if (this.$refs[t.name] && this.$refs[t.name].length > 0) {
-                this.editForm[t.name] = this.$refs[t.name][0].$refs.tab ? this.$refs[t.name][0].$refs.tab.tableData : this.$refs[t.name][0].tableData
-                // 行验证
-                if (this.editForm[t.name]) {
-                  if (this.editForm[t.name].length === 0) {
-                    if (t.required) {
-                      validateMsg.push(this.$t(t.label))
-                      validateArr2.push(false)
-                    }
-                  } else if (this.$refs[t.name][0].tab) {
-                    // 列表列验证
-                    this.$refs[t.name][0].tab.table.cols.forEach(v => {
-                      if (v.required) {
-                        this.editForm[t.name].forEach(detail => {
-                          if (!detail[v.prop] && detail[v.prop] !== 0) {
-                            validateMsg.push(this.$t(v.label))
-                            validateArr2.push(false)
-                          }
-                        })
-                      }
-                    })
-                  }
-                }
-              } else {
-                this.editForm[t.name] = []
-              }
-            })
-          })
-        }
+
         // 标签页参数追加并验证
         if (this.edit.tabs && !validateArr2.includes(false)) {
           this.edit.tabs.forEach(t => {
