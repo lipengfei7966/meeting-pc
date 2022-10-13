@@ -1,5 +1,5 @@
 @import './frame/mixin.scss';
-@import './frame/element-ui.scss'; // element reset
+//@import './frame/element-ui.scss'; // element reset
 @import './frame/sidebar.scss'; // 侧边栏
 @import './frame/theme.scss'; // 主题文件
 @import './frame/table-page.scss'; // 通用表格
@@ -218,7 +218,7 @@ li {
   background: #f0f2f5 !important;
 }
 
-.bs-container[data-v-aed456d2] {
+.bs-new-container[data-v-aed456d2] {
   width: calc(100% - 10px) !important;
   //   left: 10px !important;
   //   overflow: hidden;

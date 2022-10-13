@@ -1,5 +1,5 @@
 <template>
-  <div class='bs-container app-container edit-page-style'>
+  <div class='bs-new-container app-container edit-page-style'>
     <!-- 头部 -->
     <main :style="{'width': clientWidth < 1366 ? (this.sidebar.opened ? '1146px' : '1306px') : 'auto'}">
       <!-- el-row top-operate -->
