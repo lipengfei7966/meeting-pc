@@ -112,7 +112,7 @@
     //padding: 10px 20px;
     border-radius: 5px !important;
     margin-bottom: 10px !important;
-    border: none !important;
+    border: none;
   }
 
   .expand {
@@ -951,6 +951,11 @@
     min-height: 350px;
     min-width: 750px;
     max-height: 100vh;
+    overflow: hidden !important;
+
+    header {
+      border: 1px solid #ececec;
+    }
 
     .el-col {
       margin: 10px 0 !important;
@@ -996,12 +1001,46 @@
       }
     }
 
+    .dialog-container__content {
+      height: 100%;
+      overflow-y: auto;
+      margin-bottom: 40px;
+      background: #f5f7fa;
+      padding: 10px;
+
+      &>.el-form {
+        min-height: 310px;
+        background: #fff;
+      }
+
+      &>main {
+        background: none;
+
+        &>.right-content {
+          border: none;
+
+          &>header {
+            border: 1px solid #ececec;
+          }
+
+          &>.plTableBox {
+            border: 1px solid #ececec;
+            border-bottom: none;
+          }
+
+          &>bottom-operate {
+            border: 1px solid #ececec;
+            border-top: none;
+          }
+        }
+      }
+    }
 
     .dialog-content {
       padding: 20px !important;
       box-sizing: border-box !important;
       padding-bottom: 40px !important;
-      overflow: visible !important;
+      // overflow: visible !important;
 
       &>header {
         margin: 0 0 10px !important;
@@ -1058,22 +1097,37 @@
       max-height: 80% !important;
       min-height: 508px;
 
+
       .title {
-        height: 40px !important;
-        line-height: 40px !important;
-        text-indent: 10px;
-        background: #ececec !important;
-        border-bottom: none !important;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 14px !important;
-        color: #3c3c3c;
-        font-weight: 600;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #ababab;
+        font-size: 14px;
+        // color: #666666;
+        font-weight: 900;
+        background-color: #f5f7fa;
+
+        i {
+          float: right;
+          margin: 5px;
+          cursor: pointer;
+        }
+
+        &::before {
+          background: var(--menuBg);
+          display: inline-block;
+          vertical-align: top;
+          content: '';
+          width: 5px;
+          height: 20px;
+          margin-top: 10px;
+          margin-right: 7px;
+        }
       }
 
       .tree-wrapper {
-        height: calc(100% - 40px) !important;
+        // height: calc(100% - 40px) !important;
         overflow: auto;
         margin: 0 !important;
         padding: 4px 20px !important;
@@ -1082,7 +1136,7 @@
 
     .right-content {
       min-height: 508px !important;
-      border: 1px solid #ececec !important;
+      border: 1px solid #ececec;
       margin-bottom: 10px !important;
       margin-top: 10px !important;
       margin-right: 10px !important;
@@ -1128,14 +1182,14 @@
     }
 
     .dialog-footer {
-      position: sticky !important;
+      position: absolute !important;
       background: #fff !important;
       box-shadow: 4px 0 10px #cccccc;
       padding-right: 0 !important;
       bottom: 0 !important;
       right: 0 !important;
-      top: 100% !important;
-      left: 100% !important;
+      // top: 100% !important;
+      // left: 100% !important;
       width: 100%;
       padding: 0 20px !important;
       // padding-top: 20px !important;
@@ -1243,7 +1297,7 @@
 
       header {
         margin: 0 3px 3px;
-        border: 1px solid #ababab;
+        border: 1px solid #ececec;
 
         // form头部
         .form-title {
@@ -1319,7 +1373,7 @@
   }
 
   .dialog-footer {
-    position: absolute !important;
+    position: fixed !important;
     // background: transparent !important;
     padding-right: 0 !important;
     bottom: -25px;
@@ -1328,7 +1382,7 @@
     text-align: right;
     padding: 0 20px !important;
     padding-bottom: 10px !important;
-    margin: 10px !important;
+    // margin: 10px 0 !important;
     background: #fff;
     z-index: 99 !important;
     border-radius: 0 0 5px 5px;
@@ -1674,27 +1728,43 @@
     overflow: auto !important;
     margin-right: 10px !important;
     margin-bottom: 10px !important;
-    margin-top: 10px !important;
+    margin-top: 0px !important;
     margin-left: 10px !important;
     // height: 758px !important;
     // min-height: 508px;
 
     .title {
-      height: 40px !important;
-      line-height: 40px !important;
-      text-indent: 10px;
-      background: #ececec !important;
-      border-bottom: none !important;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      font-size: 14px !important;
-      color: #3c3c3c;
-      font-weight: 600;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #ababab;
+      font-size: 14px;
+      // color: #666666;
+      font-weight: 900;
+      background-color: #f5f7fa;
+
+      i {
+        float: right;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      &::before {
+        background: var(--menuBg);
+        display: inline-block;
+        vertical-align: top;
+        content: '';
+        width: 5px;
+        height: 20px;
+        margin-top: 10px;
+        margin-right: 7px;
+      }
     }
 
+
+
     .tree-wrapper {
-      height: calc(100% - 40px) !important;
+      // height: calc(100% - 40px) !important;
       overflow: auto;
       margin: 0 !important;
       padding: 4px 20px !important;
@@ -1709,7 +1779,7 @@
     // max-height: 709px;
     // border: 1px solid #ececec !important;
     margin-bottom: 10px !important;
-    margin-top: 10px !important;
+    margin-top: 0px !important;
     margin-right: 10px !important;
     min-width: 75%;
     height: 768px !important;
@@ -1820,10 +1890,6 @@
   .el-table__fixed-body-wrapper {
     top: 44px !important;
   }
-
-  // .plTableBox {
-  //   border: 1px solid #e8e8e8 !important;
-  // }
 
   .el-pagination.is-background .el-pager li:not(.disabled).active {
     //background-color: #409eff !important;
@@ -2073,7 +2139,7 @@
     }
 
     .bottom-operate {
-      border: none !important;
+      border: none;
       font-size: 14px !important;
     }
 
@@ -2193,116 +2259,16 @@
       font-size: 12px;
     }
   }
-
-  // label自适应宽度
-  //   .el-col-6 {
-  //     .el-form-item__label {
-  //       width: 29%;
-  //     }
-
-  //     .el-form-item__content {
-  //       width: 71%;
-  //     }
-  //   }
-
-  //   .el-col-12 {
-  //     .el-form-item__label {
-  //       width: 13%;
-  //     }
-
-  //     .el-form-item__content {
-  //       width: 87%;
-  //     }
-  //   }
-
-  //   .el-col-24 {
-  //     .el-form-item__label {
-  //       width: 6%;
-  //     }
-
-  //     .el-form-item__content {
-  //       width: 94%;
-  //     }
-  //   }
 }
 
-// .tree-form-table {
-//   &>.left-content {
-//     height: auto !important;
-//   }
-
-//   &>.right-content {
-//     &>main {
-//       height: 100% !important;
-//     }
-//   }
-// }
-
-// 媒体查询
-@media screen and (min-width: 750px) and (max-width: 1000px) {
-
-  // label自适应宽度
-  .el-col-6 {
-    .el-form-item__label {
-      width: 39% !important;
-    }
-
-    .el-form-item__content {
-      width: 61% !important;
-    }
+.tree-form-table {
+  &>.left-content {
+    height: auto !important;
   }
 
-  .el-col-12 {
-    .el-form-item__label {
-      width: 19% !important;
-    }
-
-    .el-form-item__content {
-      width: 81% !important;
-    }
-  }
-
-  .el-col-24 {
-    .el-form-item__label {
-      width: 9% !important;
-    }
-
-    .el-form-item__content {
-      width: 91% !important;
-    }
-  }
-}
-
-@media screen and (min-width: 1001px) and (max-width: 1500px) {
-
-  // label自适应宽度
-  .el-col-6 {
-    .el-form-item__label {
-      width: 35% !important;
-    }
-
-    .el-form-item__content {
-      width: 65% !important;
-    }
-  }
-
-  .el-col-12 {
-    .el-form-item__label {
-      width: 17% !important;
-    }
-
-    .el-form-item__content {
-      width: 83% !important;
-    }
-  }
-
-  .el-col-24 {
-    .el-form-item__label {
-      width: 8% !important;
-    }
-
-    .el-form-item__content {
-      width: 92% !important;
+  &>.right-content {
+    &>main {
+      height: 100% !important;
     }
   }
 }

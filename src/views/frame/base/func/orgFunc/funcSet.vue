@@ -4,44 +4,48 @@
 
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')" />
+      <div class="dialog-container__content">
 
-      <!-- 内容 -->
-      <main>
-        <div class='left-content'>
-          <!-- 标题 -->
-          <div class='title' title='菜单信息'>菜单信息</div>
-          <!-- 树状列表 -->
-          <div class='tree-wrapper' :style="{ height: treeHeight + 'px' }">
-            <el-form>
-              <el-form-item>
-                <input-validate v-model="filterText" clearable size="mini" placeholder="输入关键字进行过滤" style="padding:5px;"></input-validate>
-              </el-form-item>
-            </el-form>
-            <el-tree ref="tree" :style="{ height: treeHeight - 42 + 'px' }" :data="treeData" node-key="id" :expand-on-click-node="false" :default-expand-all="true" :props="defaultProps" :check-on-click-node="true" @node-click="handleNodeClick" :filter-node-method="filterNode">
-              <span class="custom-tree-node" slot-scope="{ node,data }">
-                <i style="color:#999" :class="data.children && data.children.length > 0 ? 'el-icon-folder':'el-icon-document'"></i> {{node.label}}
-              </span>
-            </el-tree>
+        <!-- 内容 -->
+        <main>
+          <div class='left-content'>
+            <!-- 标题 -->
+            <div class='title' title='菜单信息'>菜单信息</div>
+            <!-- 树状列表 -->
+            <div class='tree-wrapper' :style="{ height: treeHeight + 'px' }">
+              <el-form>
+                <el-form-item>
+                  <input-validate v-model="filterText" clearable size="mini" placeholder="输入关键字进行过滤" style="padding:5px;"></input-validate>
+                </el-form-item>
+              </el-form>
+              <el-tree ref="tree" :style="{ height: treeHeight - 42 + 'px' }" :data="treeData" node-key="id" :expand-on-click-node="false" :default-expand-all="true" :props="defaultProps" :check-on-click-node="true" @node-click="handleNodeClick" :filter-node-method="filterNode">
+                <span class="custom-tree-node" slot-scope="{ node,data }">
+                  <i style="color:#999" :class="data.children && data.children.length > 0 ? 'el-icon-folder':'el-icon-document'"></i> {{node.label}}
+                </span>
+              </el-tree>
+            </div>
           </div>
-        </div>
-        <el-table stripe border class='table-content right-content' ref="singleTable" highlight-current-row style="border:1px solid;" v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" :data="tableData" :height='tableHeight' @current-change="handleSelectRow">
-          <el-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></el-table-column>
-          <el-table-column width="200" :label="$t('func.role.module')" prop="moduleName">
-            <template slot-scope="scope">
-              <span>{{scope.row.cname}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column :width='maxWidth' :label="$t('func.role.operateName')" prop="operateName">
-            <template slot-scope="scope">
-              <div id="checkboxs">
-                <el-checkbox-group v-model="scope.row.checkedList">
-                  <el-checkbox v-for="items in scope.row.btnChildren" :key="items.code" :label="items.code"><span>{{items.cname}}</span></el-checkbox>
-                </el-checkbox-group>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </main>
+          <div class="right-content">
+            <el-table stripe border class='table-content right-content' ref="singleTable" highlight-current-row style="border:1px solid;" v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" :data="tableData" :height='tableHeight' @current-change="handleSelectRow">
+              <el-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></el-table-column>
+              <el-table-column width="200" :label="$t('func.role.module')" prop="moduleName">
+                <template slot-scope="scope">
+                  <span>{{scope.row.cname}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column :width='maxWidth' :label="$t('func.role.operateName')" prop="operateName">
+                <template slot-scope="scope">
+                  <div id="checkboxs">
+                    <el-checkbox-group v-model="scope.row.checkedList">
+                      <el-checkbox v-for="items in scope.row.btnChildren" :key="items.code" :label="items.code"><span>{{items.cname}}</span></el-checkbox>
+                    </el-checkbox-group>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </main>
+      </div>
 
       <!-- 底部 -->
       <div class="dialog-footer">

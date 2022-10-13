@@ -3,86 +3,88 @@
     <div class='dialog-container' :type='styleType.class'>
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="$emit('closeDialog')" />
-      <!-- 顶部按钮 -->
-      <el-row class='top-operate' v-if='dialog.topButtons && dialog.topButtons.length > 0'>
-        <el-button v-for='(button, index) in dialog.topButtons.filter(v => { return v.isShow.includes(dialog.type) })' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button)'>
-          {{$t(button.name)}}
-        </el-button>
-      </el-row>
-      <!-- 内容 -->
-      <el-form @submit.native.prevent ref="refForm" :model="formData" label-position="left" :rules='rules' :show-message="false">
-        <el-row :gutter="20">
-          <template v-for='(f, index) in dialog.formData'>
-            <!-- 8 16 24 -->
-            <!-- <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : styleType.span * f.attrs.cols : styleType.span)" :data-key='f.prop'> -->
-            <!-- 6 12 24 -->
-            <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : 6 * f.attrs.cols : 6)" :data-key='f.prop'>
-              <!-- 日期 -->
-              <el-form-item v-if='f.type === "date" || f.type === "datetime"' :required='f.props instanceof Array && f.validate instanceof Array' :prop='f.prop' :label="$t(f.label)">
-                <template v-if='f.props instanceof Array'>
-                  <el-row :gutter="0">
-                    <el-col :span="11">
-                      <el-form-item :prop="f.props[0]" :required='f.validate instanceof Array && f.validate[0].required'>
-                        <el-date-picker v-model="formData[f.props[0]]" v-bind='f.attrs' @change="(date) => changeStartTime(date, f.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore)' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                        </el-date-picker>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="2" align='center'>~</el-col>
-                    <el-col :span="11">
-                      <el-form-item :prop="f.props[1]" :required='f.validate instanceof Array && f.validate[0].required'>
-                        <el-date-picker v-model="formData[f.props[1]]" v-bind='f.attrs' @change="(date) => changeEndTime(date, f.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore)' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                        </el-date-picker>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </template>
-                <template v-else>
-                  <template v-if="f.attrs.type === 'start'">
-                    <el-date-picker v-model="formData[f.prop]" v-on="f.event" @change="(date) => changeStartTime(date, f.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore)' v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                    </el-date-picker>
-                  </template>
-                  <template v-else-if="f.attrs.type === 'end'">
-                    <el-date-picker v-model="formData[f.prop]" v-on="f.event" @change="(date) => changeEndTime(date, f.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                    </el-date-picker>
+      <section class="dialog-container__content">
+        <!-- 顶部按钮 -->
+        <el-row class='top-operate' v-if='dialog.topButtons && dialog.topButtons.length > 0'>
+          <el-button v-for='(button, index) in dialog.topButtons.filter(v => { return v.isShow.includes(dialog.type) })' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button)'>
+            {{$t(button.name)}}
+          </el-button>
+        </el-row>
+        <!-- 内容 -->
+        <el-form @submit.native.prevent ref="refForm" :model="formData" label-position="left" :rules='rules' :show-message="false">
+          <el-row :gutter="20">
+            <template v-for='(f, index) in dialog.formData'>
+              <!-- 8 16 24 -->
+              <!-- <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : styleType.span * f.attrs.cols : styleType.span)" :data-key='f.prop'> -->
+              <!-- 6 12 24 -->
+              <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : 6 * f.attrs.cols : 6)" :data-key='f.prop'>
+                <!-- 日期 -->
+                <el-form-item v-if='f.type === "date" || f.type === "datetime"' :required='f.props instanceof Array && f.validate instanceof Array' :prop='f.prop' :label="$t(f.label)">
+                  <template v-if='f.props instanceof Array'>
+                    <el-row :gutter="0">
+                      <el-col :span="11">
+                        <el-form-item :prop="f.props[0]" :required='f.validate instanceof Array && f.validate[0].required'>
+                          <el-date-picker v-model="formData[f.props[0]]" v-bind='f.attrs' @change="(date) => changeStartTime(date, f.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore)' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                          </el-date-picker>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="2" align='center'>~</el-col>
+                      <el-col :span="11">
+                        <el-form-item :prop="f.props[1]" :required='f.validate instanceof Array && f.validate[0].required'>
+                          <el-date-picker v-model="formData[f.props[1]]" v-bind='f.attrs' @change="(date) => changeEndTime(date, f.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore)' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                          </el-date-picker>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                   </template>
                   <template v-else>
-                    <el-date-picker v-model="formData[f.prop]" v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')" :picker-options='Object.assign(func.getDefaultPickerOptions(),f.attrs.pickerOptions?f.attrs.pickerOptions:{})' @change='triggerEvent(f)'>
-                    </el-date-picker>
-                  </template>
-                </template>
-              </el-form-item>
-              <!-- 单选框 -->
-              <el-form-item v-else-if='f.type === "radio"' :prop='f.prop' :label="$t(f.label)">
-                <el-radio-group v-model="formData[f.prop]" @change='triggerEvent(f)'>
-                  <el-radio v-for='item in f.list' :key="item.value" :label="item.value" :disabled="f.attrs && f.attrs.disabled ? f.attrs.disabled : handleRadioDisabled(item.value,f)" v-bind='f.attrs'>{{item.label}}</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <!-- 多选框 -->
-              <el-form-item v-else-if='f.type === "checkbox"' :prop='f.prop' :label="$t(f.label)">
-                <el-checkbox-group v-model="formData[f.prop]" @change='triggerEvent(f)'>
-                  <el-checkbox v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-              <!-- 下拉输入 -->
-              <el-form-item v-else :label="$t(f.label)" :prop='f.prop' :class='f.className'>
-                <!-- 字典码表 -->
-                <el-select v-if='f.list && (!f.attrs || !f.attrs.data)' v-model="formData[f.prop]" v-bind='f.attrs' :placeholder="$t('biz.placeholder.choose')" @change='triggerEvent(f)'>
-                  <template v-for="(item, index) in f.list">
-                    <template v-if="f.attrs && !f.attrs.multiple && dialog.type === 'view'">
-                      <el-option :key=" index" v-if="formData[f.prop]===item.value" :label="item.label" :value="item.value"></el-option>
+                    <template v-if="f.attrs.type === 'start'">
+                      <el-date-picker v-model="formData[f.prop]" v-on="f.event" @change="(date) => changeStartTime(date, f.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore)' v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                      </el-date-picker>
+                    </template>
+                    <template v-else-if="f.attrs.type === 'end'">
+                      <el-date-picker v-model="formData[f.prop]" v-on="f.event" @change="(date) => changeEndTime(date, f.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                      </el-date-picker>
                     </template>
                     <template v-else>
-                      <el-option :key="index" :label="item.label" :value="item.value"></el-option>
+                      <el-date-picker v-model="formData[f.prop]" v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')" :picker-options='Object.assign(func.getDefaultPickerOptions(),f.attrs.pickerOptions?f.attrs.pickerOptions:{})' @change='triggerEvent(f)'>
+                      </el-date-picker>
                     </template>
                   </template>
-                </el-select>
-                <!-- 公用组件 -->
-                <component :opType='dialog.type' v-else :is='f.element' v-model='formData[f.prop]' v-bind='f.attrs' :newList='f.list' @onFileChange='addFile' @handleNode='handleNode' v-on='f.event' :attrs='f.attrs' @handleSelect='dialogSelect(f)'></component>
-              </el-form-item>
-            </el-col>
-          </template>
-        </el-row>
-      </el-form>
+                </el-form-item>
+                <!-- 单选框 -->
+                <el-form-item v-else-if='f.type === "radio"' :prop='f.prop' :label="$t(f.label)">
+                  <el-radio-group v-model="formData[f.prop]" @change='triggerEvent(f)'>
+                    <el-radio v-for='item in f.list' :key="item.value" :label="item.value" :disabled="f.attrs && f.attrs.disabled ? f.attrs.disabled : handleRadioDisabled(item.value,f)" v-bind='f.attrs'>{{item.label}}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <!-- 多选框 -->
+                <el-form-item v-else-if='f.type === "checkbox"' :prop='f.prop' :label="$t(f.label)">
+                  <el-checkbox-group v-model="formData[f.prop]" @change='triggerEvent(f)'>
+                    <el-checkbox v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+                <!-- 下拉输入 -->
+                <el-form-item v-else :label="$t(f.label)" :prop='f.prop' :class='f.className'>
+                  <!-- 字典码表 -->
+                  <el-select v-if='f.list && (!f.attrs || !f.attrs.data)' v-model="formData[f.prop]" v-bind='f.attrs' :placeholder="$t('biz.placeholder.choose')" @change='triggerEvent(f)'>
+                    <template v-for="(item, index) in f.list">
+                      <template v-if="f.attrs && !f.attrs.multiple && dialog.type === 'view'">
+                        <el-option :key=" index" v-if="formData[f.prop]===item.value" :label="item.label" :value="item.value"></el-option>
+                      </template>
+                      <template v-else>
+                        <el-option :key="index" :label="item.label" :value="item.value"></el-option>
+                      </template>
+                    </template>
+                  </el-select>
+                  <!-- 公用组件 -->
+                  <component :opType='dialog.type' v-else :is='f.element' v-model='formData[f.prop]' v-bind='f.attrs' :newList='f.list' @onFileChange='addFile' @handleNode='handleNode' v-on='f.event' :attrs='f.attrs' @handleSelect='dialogSelect(f)'></component>
+                </el-form-item>
+              </el-col>
+            </template>
+          </el-row>
+        </el-form>
+      </section>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button :loading="button.showLoading ? loading : false" v-for='(button, index) in dialog.bottomButtons.filter(v => { return Array.isArray(v.isShow) ? v.isShow.includes(dialog.type) : v.isShow })' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button)'>

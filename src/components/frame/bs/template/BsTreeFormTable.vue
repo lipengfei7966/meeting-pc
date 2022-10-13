@@ -956,7 +956,7 @@ export default {
     min-width: 954px;
     & > header {
       background: #fff;
-      border: 1px solid #ababab;
+      // border: 1px solid #ababab;
       border-radius: 5px;
       margin-bottom: 5px;
       // form版面
@@ -1042,7 +1042,7 @@ export default {
         background: #fff;
         height: 36px;
         line-height: 36px;
-        border: 1px solid #ababab;
+        // border: 1px solid #ababab;
         border-top: none;
         border-radius: 0 0 5px 5px;
         .bottom-operate-left {
