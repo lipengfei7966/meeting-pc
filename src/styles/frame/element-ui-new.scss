@@ -111,7 +111,8 @@
     //margin: 10px 0 !important;
     //padding: 10px 20px;
     border-radius: 5px !important;
-    margin-bottom: 10px !important;
+    // margin-bottom: 10px !important;
+    margin: 0 0 10px !important;
     border: none;
   }
 
@@ -753,7 +754,7 @@
 
     .el-table__fixed,
     .el-table__fixed-right {
-      height: 100% !important;
+      // height: 100% !important;
     }
 
     .el-table--scrollable-y .el-table__fixed-body-wrapper {
@@ -864,7 +865,7 @@
   // }
 
   .el-button:hover svg {
-    color: #ffffff !important;
+    color: #ffffff;
   }
 
   label {
@@ -940,7 +941,13 @@
     border-radius: 3px 3px 0 0 !important;
     padding-left: 10px !important;
 
-    &>i {
+    i {
+      float: right;
+      margin: 5px;
+      cursor: pointer;
+      // }
+
+      // &>i {
       margin: 13px !important;
     }
 
@@ -1003,18 +1010,39 @@
 
     .dialog-container__content {
       height: 100%;
+      max-height: calc(100vh - 80px);
       overflow-y: auto;
       margin-bottom: 40px;
       background: #f5f7fa;
       padding: 10px;
+      min-height: calc(350px - 40px);
+
+      &>.login-form {
+        .el-form-item {
+          margin: 10px 0;
+
+          .el-form-item__label {
+            min-width: 100px !important;
+            padding-left: 5px;
+          }
+        }
+
+        .refresh-svg {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
 
       &>.el-form {
         min-height: 310px;
         background: #fff;
+        border: 1px solid #ececec;
       }
 
       &>main {
         background: none;
+        padding: 2px !important;
 
         &>.right-content {
           border: none;
@@ -1052,7 +1080,7 @@
         // }
         .el-form {
           overflow-y: auto;
-          width: 100%;
+          // width: 100%;
           min-height: 150px;
 
           .el-form-item {
@@ -1144,7 +1172,7 @@
       max-height: 80% !important;
 
       .bottom-operate {
-        background: transparent !important;
+        // background: transparent !important;
         padding-bottom: 10px !important;
 
         .el-pagination {
@@ -1296,7 +1324,7 @@
       }
 
       header {
-        margin: 0 3px 3px;
+        margin: 0 0 3px !important;
         border: 1px solid #ececec;
 
         // form头部
@@ -1373,14 +1401,14 @@
   }
 
   .dialog-footer {
-    position: fixed !important;
+    // position: absolute !important;
     // background: transparent !important;
     padding-right: 0 !important;
-    bottom: -25px;
-    right: 0 !important;
+    // bottom: 0px;
+    // right: 10px !important;
     width: 100%;
     text-align: right;
-    padding: 0 20px !important;
+    padding: 0 6px !important;
     padding-bottom: 10px !important;
     // margin: 10px 0 !important;
     background: #fff;
@@ -1724,10 +1752,10 @@
     display: inline-block;
     width: 230px !important;
     border: none !important;
-    border: 1px solid #ececec !important;
+    // border: 1px solid #ececec !important;
     overflow: auto !important;
     margin-right: 10px !important;
-    margin-bottom: 10px !important;
+    // margin-bottom: 10px !important;
     margin-top: 0px !important;
     margin-left: 10px !important;
     // height: 758px !important;
@@ -1775,14 +1803,14 @@
     display: flex;
     flex-direction: column;
     display: inline-block;
-    min-height: 508px;
+    // min-height: 508px;
     // max-height: 709px;
     // border: 1px solid #ececec !important;
-    margin-bottom: 10px !important;
+    // margin-bottom: 10px !important;
     margin-top: 0px !important;
     margin-right: 10px !important;
-    min-width: 75%;
-    height: 768px !important;
+    // min-width: 75%;
+    // height: 768px !important;
     // height: 700px !important;
 
     &>header {
@@ -1810,14 +1838,14 @@
     }
 
     &>main {
-      height: 90%;
+      // height: 90%;
       flex: 1;
 
       &>.plTableBox {
-        height: 88% !important;
+        // height: 88% !important;
 
         &>.el-table {
-          height: 98% !important;
+          // height: 98% !important;
 
           .el-table__body-wrapper {
             // min-height: calc(768px - 200px) !important;
@@ -2129,7 +2157,7 @@
         // min-height: 500px;
         margin: 0 auto 5px;
         background: #ffffff;
-        border: 1px solid #ababab;
+        // border: 1px solid #ababab;
         border-radius: 5px;
       }
 
@@ -2266,9 +2294,18 @@
     height: auto !important;
   }
 
-  &>.right-content {
-    &>main {
-      height: 100% !important;
+
+  .refresh-btn {
+    border: none;
+  }
+
+  .refresh-btn:hover {
+    background: transparent !important;
+    color: #606266 !important;
+
+    svg {
+      color: #606266 !important;
     }
   }
+
 }

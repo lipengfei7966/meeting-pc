@@ -15,9 +15,9 @@
           <el-row :gutter="20">
             <template v-for='(f, index) in dialog.formData'>
               <!-- 8 16 24 -->
-              <!-- <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : styleType.span * f.attrs.cols : styleType.span)" :data-key='f.prop'> -->
-              <!-- 6 12 24 -->
-              <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : 6 * f.attrs.cols : 6)" :data-key='f.prop'>
+              <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : styleType.span * f.attrs.cols : styleType.span)" :data-key='f.prop'>
+                <!-- 6 12 24 -->
+                <!-- <el-col v-if='f.isShow' :key='index' :span="f.span ? f.span : ( f.attrs && f.attrs.cols ? styleType.span * f.attrs.cols > 24 ? 24 : 6 * f.attrs.cols : 6)" :data-key='f.prop'> -->
                 <!-- 日期 -->
                 <el-form-item v-if='f.type === "date" || f.type === "datetime"' :required='f.props instanceof Array && f.validate instanceof Array' :prop='f.prop' :label="$t(f.label)">
                   <template v-if='f.props instanceof Array'>

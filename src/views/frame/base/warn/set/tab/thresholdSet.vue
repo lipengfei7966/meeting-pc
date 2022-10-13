@@ -3,26 +3,29 @@
     <div class='dialog-container' type='miniColumnsDialog'>
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')" />
-      <!-- 内容 -->
-      <el-form class="header-form-inline" v-if="showTemplate" :model="formData" label-position="left" :rules='rules' ref="validateForm" :show-message="false">
-        <el-row :gutter="20">
-          <el-col :span="24" v-for='thresholdinfo in formData.threshold' :key='thresholdinfo.prop'>
-            <el-form-item :label="thresholdinfo.label" :prop='thresholdinfo.prop'>
-              <el-date-picker v-if="thresholdinfo.dataType==='DATE'" type="datetime" value-format='yyyy-MM-dd HH:mm:ss' v-model='thresholdinfo.value'>
-              </el-date-picker>
-              <el-input v-else v-model='thresholdinfo.value'></el-input>
-            </el-form-item>
-          </el-col>
-          <template v-if="dimensionList && dimensionList.length > 0">
-            <el-col :span='12' v-for='dimension in dimensionList' :key='dimension.colCode'>
-              <el-form-item :label='dimension.colName'>
-                <base-select v-model="formData.dimensionObject[dimension.colCode]" :attrs="dimension.propAttrObject"></base-select>
+      <div class="dialog-container__content">
+
+        <!-- 内容 -->
+        <el-form class="header-form-inline" v-if="showTemplate" :model="formData" label-position="left" :rules='rules' ref="validateForm" :show-message="false">
+          <el-row :gutter="20">
+            <el-col :span="24" v-for='thresholdinfo in formData.threshold' :key='thresholdinfo.prop'>
+              <el-form-item :label="thresholdinfo.label" :prop='thresholdinfo.prop'>
+                <el-date-picker v-if="thresholdinfo.dataType==='DATE'" type="datetime" value-format='yyyy-MM-dd HH:mm:ss' v-model='thresholdinfo.value'>
+                </el-date-picker>
+                <el-input v-else v-model='thresholdinfo.value'></el-input>
               </el-form-item>
             </el-col>
-          </template>
+            <template v-if="dimensionList && dimensionList.length > 0">
+              <el-col :span='12' v-for='dimension in dimensionList' :key='dimension.colCode'>
+                <el-form-item :label='dimension.colName'>
+                  <base-select v-model="formData.dimensionObject[dimension.colCode]" :attrs="dimension.propAttrObject"></base-select>
+                </el-form-item>
+              </el-col>
+            </template>
 
-        </el-row>
-      </el-form>
+          </el-row>
+        </el-form>
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button @click="cancel" v-if="opType==='add'||opType==='update'" size="mini">{{ $t('biz.btn.cancel') }}</el-button>

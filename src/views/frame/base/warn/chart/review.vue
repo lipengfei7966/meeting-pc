@@ -3,12 +3,14 @@
     <div ref='formTableDialog' class='dialog-container' type='formTableDialog'>
       <!-- 头部 -->
       <title-contain :titleName='dialog.titleName' @screenChange="setTableHeight" @TitleFun="$emit('closeHandler')" />
-      <!-- 内容 -->
-      <main :style="{height: contentHeight + 'px', overflow: 'auto', marginRight: 0}">
-        <template v-for='(tab,index) in dialog.tabs'>
-          <review-chart :tab='tab' :key="index" :ref='tab.titleName' style='margin-right:3px;'></review-chart>
-        </template>
-      </main>
+      <div class="dialog-container__content">
+        <!-- 内容 -->
+        <main :style="{height: contentHeight + 'px', overflow: 'auto', marginRight: 0}">
+          <template v-for='(tab,index) in dialog.tabs'>
+            <review-chart :tab='tab' :key="index" :ref='tab.titleName' style='margin-right:3px;'></review-chart>
+          </template>
+        </main>
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button v-for='(button, index) in dialog.bottomButtons' :key='index' v-db-click size="mini" v-bind='button.attrs' @click='triggerEvent(button.event)'>
