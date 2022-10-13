@@ -165,61 +165,61 @@
           </el-form>
         </header>
 
+        <header :style="{'border-bottom-width': moduleVisible ? '1px' : '0'}" v-if="formData.flag==='1'">
+          <div class='form-title'>模块信息
+            <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !moduleVisible}]" @click='moduleVisible = !moduleVisible'></i>
+          </div>
+
+          <el-form v-if='moduleVisible' :inline="true" class="header-form-inline" :model="formData" :rules="rules" ref="moduleFormData" prop="formData" label-position="left" element-loading-spinner="el-icon-loading" v-loading="loading">
+            <el-row :gutter="20">
+
+              <el-col :span="8">
+                <el-form-item label="模块类型" prop='moduleType'>
+                  <el-select v-model="formData.moduleType" clearable placeholder="请选择">
+                    <el-option key="1" label="单据" value="1">
+                    </el-option>
+                    <el-option key="2" label="报表" value="2">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="审批服务" prop='bpmService'>
+                  <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmService">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="审批组件" prop='bpmComponent'>
+                  <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmComponent">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="24">
+                <el-form-item label="授权方式" prop='authFlag' class='input-max-style'>
+                  <el-radio-group v-model="formData.authFlag">
+                    <el-radio label="4">操作员</el-radio>
+                    <el-radio label="5">登陆</el-radio>
+                    <el-radio label="3">机构管理员</el-radio>
+                    <el-radio label="2">集团管理员</el-radio>
+                    <el-radio label="1">平台管理员</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item label="业务代码" prop='bizCode'>
+                  <!-- 字典码表 -->
+                  <el-select v-model="formData.bizCode" :clearable=true :filterable="true" :placeholder="$t('biz.placeholder.choose')">
+                    <el-option v-for="item in $t('datadict.bizCode')" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </header>
       </div>
-      <header :style="{'border-bottom-width': moduleVisible ? '1px' : '0'}" v-if="formData.flag==='1'">
-        <div class='form-title'>模块信息
-          <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !moduleVisible}]" @click='moduleVisible = !moduleVisible'></i>
-        </div>
-
-        <el-form v-if='moduleVisible' :inline="true" class="header-form-inline" :model="formData" :rules="rules" ref="moduleFormData" prop="formData" label-position="left" element-loading-spinner="el-icon-loading" v-loading="loading">
-          <el-row :gutter="20">
-
-            <el-col :span="8">
-              <el-form-item label="模块类型" prop='moduleType'>
-                <el-select v-model="formData.moduleType" clearable placeholder="请选择">
-                  <el-option key="1" label="单据" value="1">
-                  </el-option>
-                  <el-option key="2" label="报表" value="2">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="审批服务" prop='bpmService'>
-                <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmService">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="审批组件" prop='bpmComponent'>
-                <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmComponent">
-                </el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="24">
-              <el-form-item label="授权方式" prop='authFlag' class='input-max-style'>
-                <el-radio-group v-model="formData.authFlag">
-                  <el-radio label="4">操作员</el-radio>
-                  <el-radio label="5">登陆</el-radio>
-                  <el-radio label="3">机构管理员</el-radio>
-                  <el-radio label="2">集团管理员</el-radio>
-                  <el-radio label="1">平台管理员</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="8">
-              <el-form-item label="业务代码" prop='bizCode'>
-                <!-- 字典码表 -->
-                <el-select v-model="formData.bizCode" :clearable=true :filterable="true" :placeholder="$t('biz.placeholder.choose')">
-                  <el-option v-for="item in $t('datadict.bizCode')" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </header>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button @click="$emit('closeHandler')" size="mini">关闭</el-button>
