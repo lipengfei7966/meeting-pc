@@ -1036,7 +1036,7 @@ export default {
       .bottom-operate {
         background: #fff;
         height: 36px;
-        line-height: 36px;
+        line-height: 46px;
         // border: 1px solid #ababab;
         border-top: none;
         border-radius: 0 0 5px 5px;
