@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table>
@@ -324,7 +324,7 @@ export default {
           funcOperation: '根据会议code校验会议表单是否初始化'
         }
       })
-        .then((response) => {
+        .then(response => {
           if (response.status) {
             this.exportExcel1()
           } else {
@@ -351,7 +351,7 @@ export default {
         },
         responseType: 'blob'
       })
-        .then((response) => {
+        .then(response => {
           if (!response.data) {
           } else {
             const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -364,7 +364,7 @@ export default {
             link.remove()
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },

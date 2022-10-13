@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
@@ -286,8 +286,8 @@ export default {
         funcModule: '会议字典',
         funcOperation: '查询列表'
       }
-    }).then((response) => {
-      response.data.forEach((element) => {
+    }).then(response => {
+      response.data.forEach(element => {
         this.mainData.tabs.push({
           label: element.name,
           name: element.code
