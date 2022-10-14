@@ -3,7 +3,7 @@
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
-    <div>
+    <div style="padding: 0 20px">
       <div class="steps">
         <el-steps :active="2" align-center>
           <el-step title="外观设置"></el-step>
@@ -11,7 +11,7 @@
           <el-step title="其他设置"></el-step>
         </el-steps>
       </div>
-      <div class="formSet" :style="{height: formSetHeight}">
+      <div class="formSet">
         <el-card class="formInfo">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
@@ -23,39 +23,45 @@
                 <template slot="title">
                   <h2>基本信息</h2>
                 </template>
+                <ul class="formInfoItems">
+                  <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex"> {{ baseInfoItem.label }} </li>
+                </ul>
               </el-collapse-item>
 
               <el-collapse-item>
                 <template slot="title">
                   <h2>联系方式</h2>
                 </template>
-                <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+                <ul class="formInfoItems">
+                  <li class="formInfoItem" v-for="(contactWayItem, contactWayIndex) in contactWayList" :key="contactWayIndex"> {{ contactWayItem.label }} </li>
+                </ul>
               </el-collapse-item>
 
               <el-collapse-item>
                 <template slot="title">
                   <h2>工作信息</h2>
                 </template>
-                <div>简化流程：设计简洁直观的操作流程；</div>
-                <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-                <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+                <ul class="formInfoItems">
+                  <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex"> {{ workInfoItem.label }} </li>
+                </ul>
               </el-collapse-item>
 
               <el-collapse-item>
                 <template slot="title">
                   <h2>自定义信息</h2>
                 </template>
-                <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+                <ul class="formInfoItems">
+                  <li class="formInfoItem" v-for="(customInfoItem, customInfoIndex) in customInfoList" :key="customInfoIndex"> {{ customInfoItem.label }} </li>
+                </ul>
               </el-collapse-item>
 
               <el-collapse-item>
                 <template slot="title">
                   <h2>特殊信息</h2>
                 </template>
-                <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+                <ul class="formInfoItems">
+                  <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList" :key="specialInfoIndex"> {{ specialInfoItem.label }} </li>
+                </ul>
               </el-collapse-item>
             </el-collapse>
           </div>
@@ -202,20 +208,58 @@ export default {
           ]
         }
       },
+      baseInfoList: [
+        {label: '姓名', value: 'name'},
+        {label: '性别', value: 'gender'},
+        {label: '证件', value: 'certificate'},
+        {label: '照片', value: 'photo'},
+      ],
+      contactWayList:[
+        {label: '地址', value: 'address'},
+        {label: '手机号', value: 'phone'},
+        {label: '备用手机', value: 'secondPhone'},
+        {label: '固定电话', value: 'telephone'},
+        {label: '传真', value: 'fax'},
+        {label: '邮箱', value: 'email'},
+        {label: '备用邮箱', value: 'secondEmail'},
+        {label: '微信号', value: 'wechat'},
+        {label: 'QQ号', value: 'QQ'},
+      ],
+      workInfoList:[
+        {label: '公司', value: 'company'},
+        {label: '部门', value: 'department'},
+        {label: '职位', value: 'position'},
+      ],
+      customInfoList:[
+        {label: '短文本', value: 'input'},
+        {label: '长文本', value: 'textarea'},
+        {label: '数字', value: 'number'},
+        {label: '单选框', value: 'radio'},
+        {label: '复选框', value: 'checkbox'},
+        {label: '下拉列表', value: 'select'},
+        {label: '下拉复选框', value: 'selects'},
+        {label: '附件', value: 'file'},
+        {label: '日期', value: 'date'},
+      ],
+      specialInfoList: [
+        {label: '分割线', value: 'crossLine'},
+        {label: '分页', value: 'paging'},
+        {label: '说明信息', value: 'explainInfo'},
+      ],
       // 表格高度
       formSetHeight: 0,
     }
   },
   computed: {
-    ...mapGetters(['clientWidth','clientHeight'])
+    // ...mapGetters(['clientWidth','clientHeight'])
   },
   watch:{
-    clientWidth() {
-      this.tableComputed()
-    },
-    clientHeight() {
-      this.tableComputed()
-    },
+    // clientWidth() {
+    //   this.tableComputed()
+    // },
+    // clientHeight() {
+    //   this.tableComputed()
+    // },
   },
   mounted() {},
   methods: {
@@ -248,31 +292,27 @@ export default {
         })
     },
     // 计算列表高度
-    tableComputed() {
-        const elHead = document.getElementById('elHead')
-        let getElHeadHeight = 0
-        // 是否最大化
-        // if (screenfull.isFullscreen) {
-        //   getElHeadHeight -= 76
-        //   // 最大化时是否显示标签栏
-        //   if (this.tagViewVisible) {
-        //     getElHeadHeight += 26
-        //   }
-        // }
-        if (this.hasLayout) {
-          this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
-        } else {
-          this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
-        }
-        if (this.mainData.isTabBar) {
-          this.formSetHeight = this.formSetHeight - 30
-        }
-    },
+    // tableComputed() {
+    //     const elHead = document.getElementById('elHead')
+    //     let getElHeadHeight = 0
+    //     if (this.hasLayout) {
+    //       this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
+    //     } else {
+    //       this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
+    //     }
+    //     if (this.mainData.isTabBar) {
+    //       this.formSetHeight = this.formSetHeight - 30
+    //     }
+    // },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.steps {
+  width: 80%;
+  margin: 0 auto;
+}
 .formSet {
   display: flex;
   justify-content: space-between;
@@ -281,6 +321,17 @@ export default {
     .formInfoTitle {
       text-align: center;
       font-size: 15px;
+    }
+    .formInfoItems {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .formInfoItem {
+      min-width: 60px;
+      margin: 10px 20px;
+      text-align: center;
+      cursor: pointer;
     }
   }
   .formPreview {
