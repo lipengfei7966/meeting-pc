@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
@@ -115,7 +115,10 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'已签到',value:1},{label:'未签到',value:0}]
+            list: [
+              { label: '已签到', value: 1 },
+              { label: '未签到', value: 0 }
+            ]
           },
           {
             type: 'date',
@@ -134,7 +137,10 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'pc签到',value:'pc'},{label:'扫码签到',value:'scan'}]
+            list: [
+              { label: 'pc签到', value: 'pc' },
+              { label: '扫码签到', value: 'scan' }
+            ]
           },
           {
             type: 'date',
@@ -176,7 +182,7 @@ export default {
             },
             validate: () => {
               if (this.$refs.bsTable.length > 0) {
-                this.$notify(notifyInfo({ msg: '无法删除场景' }));
+                this.$notify(notifyInfo({ msg: '无法删除场景' }))
                 return false
               }
             }
@@ -220,12 +226,12 @@ export default {
             },
             msg: '默认场景无法移除参会人',
             validate: () => {
-              if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined){
-                return false;
+              if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
+                return false
               }
             }
           },
-          
+
           {
             name: 'refresh'
           }
@@ -338,36 +344,36 @@ export default {
         //this.mainData.tabs = response.data
       })
     },
-    signAdd(){
-      if (this.$refs.bsTable.currentRow==undefined) {
-        this.$notify(notifyInfo({ msg: '请选择一条数据' }));
+    signAdd() {
+      if (this.$refs.bsTable.currentRow == undefined) {
+        this.$notify(notifyInfo({ msg: '请选择一条数据' }))
         return
       }
       console.log(this.$refs.bsTable.currentRow)
       request({
-            url: '/api/register/signupSignin/save',
-            method: 'POST',
-            data: {
-              data:{
-                eventCode:this.form.listQuery.data.eventCode,
-                contactCode:this.$refs.bsTable.currentRow.contactCode,
-                sceneCode:this.$refs.bsTable.currentRow.sceneCode,
-                signinWay:"pc"
-              },
-              funcModule: this.$t('route.' + this.$route.meta.title),
-              funcOperation: this.$t('biz.btn.check')
-            }
-          })
-          .then(response => {
-            debugger;
-            if (response.status) {
-              this.$refs.bsTable.doRefresh();
-              this.$notify(notifyInfo({ msg: '签到成功' }));
-            } else {
-              this.sceneList();
-            }
-          })
-            .catch(() => {})
+        url: '/api/register/signupSignin/save',
+        method: 'POST',
+        data: {
+          data: {
+            eventCode: this.form.listQuery.data.eventCode,
+            contactCode: this.$refs.bsTable.currentRow.contactCode,
+            sceneCode: this.$refs.bsTable.currentRow.sceneCode,
+            signinWay: 'pc'
+          },
+          funcModule: this.$t('route.' + this.$route.meta.title),
+          funcOperation: this.$t('biz.btn.check')
+        }
+      })
+        .then(response => {
+          debugger
+          if (response.status) {
+            this.$refs.bsTable.doRefresh()
+            this.$notify(notifyInfo({ msg: '签到成功' }))
+          } else {
+            this.sceneList()
+          }
+        })
+        .catch(() => {})
     },
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
@@ -383,41 +389,42 @@ export default {
     },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.name
+      this.form.listQuery.data.sceneCode = tab.code
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {
       if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-        this.$notify(notifyInfo({ msg: '无法删除默认场景' }));
+        this.$notify(notifyInfo({ msg: '无法删除默认场景' }))
         return
       }
-      if ( this.form.listQuery.data.sceneCode == undefined) {
-        this.$notify(notifyInfo({ msg: '无法获取场景code' }));
+      if (this.form.listQuery.data.sceneCode == undefined) {
+        this.$notify(notifyInfo({ msg: '无法获取场景code' }))
         return
       }
-      this.$confirm('确认删除?', '提示',
-      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() =>
-      {
-        request({
-        url: '/api/register/signupDictype/remove',
-        method: 'POST',
-        data: {
-          data: this.form.listQuery.data.sceneCode,
-          funcModule: this.$t('route.' + this.$route.meta.title),
-          funcOperation: this.$t('biz.btn.check')
-        }
-      })
-        .then(response => {
-          if (response.status) {
-            this.$notify(notifyInfo({ msg: '删除成功' }));
-            this.sceneList();
-          } else {
-            this.sceneList();
-          }
-
+      this.$confirm('确认删除?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
+        .then(() => {
+          request({
+            url: '/api/register/signupDictype/remove',
+            method: 'POST',
+            data: {
+              data: this.form.listQuery.data.sceneCode,
+              funcModule: this.$t('route.' + this.$route.meta.title),
+              funcOperation: this.$t('biz.btn.check')
+            }
+          })
+            .then(response => {
+              if (response.status) {
+                this.$notify(notifyInfo({ msg: '删除成功' }))
+                this.sceneList()
+              } else {
+                this.sceneList()
+              }
+            })
+            .catch(() => {})
         })
-        .catch(() => {})
-      }).catch(() => { this.$message({ type: 'info', message: '已取消删除' }); });
+        .catch(() => {
+          this.$message({ type: 'info', message: '已取消删除' })
+        })
     }
   }
 }

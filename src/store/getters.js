@@ -28,6 +28,7 @@ const getters = {
   // permission
   permissionRouters: state => state.permission.routers,
   permissionMenus: state => state.permission.menus,
+  showMenus: state => state.permission.showMenus,
   addRouters: state => state.permission.addRouters,
   iframeRouters: state => state.permission.iframeRouters,
   // dashboard

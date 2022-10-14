@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-tree-form-table ref='bsTable' :treeTableData='treeTableData'>
     </bs-tree-form-table>
@@ -14,7 +14,7 @@ export default {
         form: {
           initSearch: true,
           treeName: this.$t('sys.dict.dictBiz'),
-          leftWidth: 260,
+          leftWidth: 300,
           isSearch: true,
           expandAll: true,
           expandOnClickNode: false,

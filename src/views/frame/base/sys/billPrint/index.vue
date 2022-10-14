@@ -14,7 +14,7 @@ export default {
           initSearch: true,
           expandAll: true,
           treeName: '业务功能列表',
-          leftWidth: 260,
+          leftWidth: 300,
           isSearch: true,
           api: {
             getTreeList: '/api/sys/menu/billMenu'

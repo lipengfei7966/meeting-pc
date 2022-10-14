@@ -1,33 +1,36 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='miniColumnsDialog'>
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')" />
-      <!-- 内容 -->
-      <el-form class="header-form-inline" :model="formData" label-position="left" :rules='rules' ref="validateForm" :show-message="false">
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="业务员" :required='true' prop='employeeCode'>
-              <base-select v-model="formData.employeeCode" :attrs=" { data: 'FUNC_EMPLOYEE',  filterable: true, cols: 2, params:{siz:30},   clearable: true }" size="mini">
-              </base-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="匹配方式" :required='true' prop='matchType'>
-              <base-select v-model="formData.matchType" :attrs=" { datadict: 'warnMsgMatchType' }" size="mini">
-              </base-select>
-            </el-form-item>
-          </el-col>
-          <template v-if="showTemplate&&dimensionList&&dimensionList.length>0">
-            <el-col :span='12' v-for='dimension in dimensionList' :key='dimension.colCode'>
-              <el-form-item :label='dimension.colName'>
-                <base-select v-model="formData.dimensionObject[dimension.colCode]" @changeAll='propChange' :attrs="dimension.propAttrObject"></base-select>
+      <div class="dialog-container__content">
+
+        <!-- 内容 -->
+        <el-form class="header-form-inline" :model="formData" label-position="left" :rules='rules' ref="validateForm" :show-message="false">
+          <el-row :gutter="20">
+            <el-col :span="24">
+              <el-form-item label="业务员" :required='true' prop='employeeCode'>
+                <base-select v-model="formData.employeeCode" :attrs=" { data: 'FUNC_EMPLOYEE',  filterable: true, cols: 2, params:{siz:30},   clearable: true }" size="mini">
+                </base-select>
               </el-form-item>
             </el-col>
-          </template>
+            <el-col :span="24">
+              <el-form-item label="匹配方式" :required='true' prop='matchType'>
+                <base-select v-model="formData.matchType" :attrs=" { datadict: 'warnMsgMatchType' }" size="mini">
+                </base-select>
+              </el-form-item>
+            </el-col>
+            <template v-if="showTemplate&&dimensionList&&dimensionList.length>0">
+              <el-col :span='12' v-for='dimension in dimensionList' :key='dimension.colCode'>
+                <el-form-item :label='dimension.colName'>
+                  <base-select v-model="formData.dimensionObject[dimension.colCode]" @changeAll='propChange' :attrs="dimension.propAttrObject"></base-select>
+                </el-form-item>
+              </el-col>
+            </template>
 
-        </el-row>
-      </el-form>
+          </el-row>
+        </el-form>
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button @click="cancel" v-if="opType==='add'||opType==='update'" size="mini">{{ $t('biz.btn.cancel') }}</el-button>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
 
     <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
@@ -18,6 +18,9 @@
       <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content" :style="`width: ${item.printWight}mm;height: ${item.printHeight}mm`">
         <p v-show="false">
           <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
+        </p>
+        <p v-show="false">
+          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width:100%"> </vue-barcode>
         </p>
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
@@ -280,6 +283,7 @@ export default {
       },
       tableData: [],
       isprint: false,
+      hasBarCode: false,
       certificateContentList: [],
       certificateLayout: `
         <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
@@ -343,14 +347,13 @@ export default {
       this.meetingdictCode()
     },
     // 获取会议具体证件内容选项
-    meetingdictCode(){
-      
+    meetingdictCode() {
       console.log(this.form.listQuery.data.eventCode)
       // 获取打印类型数据字典
       request({
         url: '/api/register/signupContactCol/page',
         method: 'POST',
-        data: { data: { eventCode: this.form.listQuery.data.eventCode}, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+        data: { data: { eventCode: this.form.listQuery.data.eventCode }, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       }).then(res => {
         this.certificateContentList = res.data.filter(item => {
           return item.mapType == '1'
@@ -373,14 +376,16 @@ export default {
     },
     //给div添加样式,调出打印界面
     async print() {
-      
       const styleSheet = `<style>
       @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
         body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
         .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
-        .draggable {position:absolute}
-        .printItem {width: 100%;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
+        .draggable {position:absolute;}
+        .printItem {width: auto!important;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
+        p{margin:0}
+        .newBar svg{width:100%;max-height: 92px;height: auto;}
+        .printItem
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
       if (this.tableData.length == 0) {
@@ -391,29 +396,37 @@ export default {
       let msg = ''
       this.isprint = true
       this.tableData.forEach((item, index) => {
-        this.$nextTick(() => {
-          let contents = this.$refs.contents
-          contents.forEach((node, nodeindex) => {
-            let qrCode = node.getElementsByClassName('qrCode')
-            let newQR = node.getElementsByClassName('newQR')[0]
-            if (qrCode.length > 0) {
-              qrCode[0].parentNode.appendChild(newQR)
-              qrCode[0].parentNode.removeChild(qrCode[0])
-            }
-          })
-        })
-
         if (item.certificateLayout) {
-          this.certificateContentList.forEach((dictItem,dictIndex) => {
-            if(item.certificateLayout.indexOf(dictItem.mapName) >= 0){
+          this.certificateContentList.forEach((dictItem, dictIndex) => {
+            if (item.certificateLayout.indexOf(dictItem.mapName) >= 0) {
               item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
             }
           })
-         
-         
         } else {
           msg = msg + item.name + '未添加证件模板<br/>'
         }
+      })
+      this.$nextTick(() => {
+        let contents = this.$refs.contents
+        contents.forEach((node, nodeindex) => {
+          let qrCode = node.getElementsByClassName('qrCode')
+          let newQR = node.getElementsByClassName('newQR')[0]
+          if (qrCode.length > 0) {
+            qrCode[0].parentNode.appendChild(newQR)
+            qrCode[0].parentNode.removeChild(qrCode[0])
+          }
+
+          let barCode = node.getElementsByClassName('barCode')
+          let newBar = node.getElementsByClassName('newBar')[0]
+          debugger
+          if (barCode.length > 0) {
+            // item.hasBarCode = true;
+            barCode[0].parentNode.appendChild(newBar)
+            barCode[0].parentNode.removeChild(barCode[0])
+          } else {
+            newBar.parentNode.removeChild(newBar)
+          }
+        })
       })
       if (msg !== '') {
         this.$message({
@@ -422,11 +435,11 @@ export default {
           type: 'warning'
         })
         isCanPrint = false
-        this.isprint = false;
+        this.isprint = false
       }
 
       if (!isCanPrint && !this.isprint) return
-      
+
       const response = request({
         url: '/api/register/signupCertificatePrint/save',
         method: 'POST',
@@ -435,7 +448,7 @@ export default {
           funcModule: '办证',
           funcOperation: '查询列表'
         }
-      }).then((response) => {
+      }).then(response => {
         debugger
         console.log(response.data)
         if (response.data.certificateFlag) {
@@ -455,9 +468,9 @@ export default {
             newWin.focus() //在IE浏览器中使用必须添加这一句
 
             this.isprint = false
-            setTimeout(function () {
+            setTimeout(function() {
               newWin.print() //打开打印窗口
-              newWin.close() //关闭打印窗口
+              // newWin.close() //关闭打印窗口
             }, 100)
           })
         } else {

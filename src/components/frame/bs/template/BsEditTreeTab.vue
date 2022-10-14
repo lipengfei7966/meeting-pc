@@ -258,6 +258,8 @@ export default {
 <style lang="scss">
 .bs-tree-table {
   .el-table__body-wrapper {
+    // max-height: 100px !important;
+    // background: #000;
     overflow-y: auto;
   }
 }

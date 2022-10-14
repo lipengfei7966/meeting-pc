@@ -11,7 +11,7 @@ export default {
       treeTableData: {
         form: {
           treeName: '业务功能列表',
-          leftWidth: 260,
+          leftWidth: 300,
           isSearch: true,
           expandOnClickNode: false,
           initSearch: true,

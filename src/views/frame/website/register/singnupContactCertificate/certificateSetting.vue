@@ -8,7 +8,7 @@
           <el-form ref="printSetform" :model="printSetform" :rules="printSetformRules" label-width="100px" label-position="left">
             <el-form-item label="证件类型" prop="certificateType">
               <div style="display:flex; justify-content: space-between;">
-                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" placeholder="请选择活动区域">
+                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" placeholder="请选择证件类型">
                   <el-option v-for="(item,index) in certificateTypeList" :key="index" :label="item.name" :value="item.code"></el-option>
 
                 </el-select>
@@ -37,7 +37,7 @@
                 </p>
 
                 <p style="display: flex;margin-left:30px">
-                  <span>长</span>
+                  <span>高</span>
                   <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @change="WHchange"></el-input>
                 </p>
               </div>
@@ -89,14 +89,14 @@
         <div class="p-event" id="print" :key="changecount" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto',backgroundImage:`url(${printSetform.printBackground})`,backgroundSize:'100% 100%'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
-            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :left="form.paddingLeft" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
+            <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
 
               <p v-if="item.value == 'qrCode' " id="qrCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-qr class="qrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
 
               <p v-else-if="item.value == 'barCode'" id="barCode" class="printItem" @mousedown="checkItem(item)">
-                <vue-barcode class="barCode" value="123123" :width="1" :height="50" style="width:100%"> </vue-barcode>
+                <vue-barcode class="barCode" value="SignupContact0000" :width="1" :height="50" style="width:100%"> </vue-barcode>
               </p>
 
               <p v-else class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign, width:item.width+'px', height: item.height+'px' }" @mousedown="checkItem(item)">
@@ -216,7 +216,6 @@ export default {
         color: '#000',
         paddingTop: 20,
         paddingBottom: 0,
-        paddingLeft: 0,
         paddingRight: 0
       },
       sizeList: [], // 字体号数组
@@ -253,8 +252,8 @@ export default {
         return item.mapType == '1'
       })
       let newItems = [
-        {mapName: '编码二维码', code: 'qrCode'},
-        {mapName: '编码条码', code: 'barCode'},
+        {mapName: '参会人二维码', code: 'qrCode'},
+        {mapName: '参会人条码', code: 'barCode'},
       ]
       this.certificateContentList = this.certificateContentList.concat(newItems)
     })
@@ -291,7 +290,7 @@ export default {
           this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
           this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
-
+          this.WHchange();
           debugger
           if(this.printSetform.printBackground){
 
@@ -461,20 +460,29 @@ export default {
           })
           //
           if (!isIncludes) {
-            this.list.push({
+            // debugger
+            let pushItem = {
               name: item.mapName, // 表名对应的值
               label: item.mapName, // 表名
               value: item.code,
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高
               color: '#000000', // 默认颜色
-              width: item.code == 'qrCode'?'200':'',
-              height: item.code == 'qrCode'?'200':'',
+              width: '100',
+              height: '25',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
-              y: this.list.length * 50// y 默认值
-              // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
-            })
+              y: this.list.length * 30// y 默认值
+              // y: Math.floor(Math.random() * (this.printSetform.printHeight*3 - 10)) + 10 // y 默认值
+            }
+            if(item.code == 'qrCode'){
+              pushItem.width = '100';
+              pushItem.height = '100';
+            }else if(item.code == 'barCode'){
+              pushItem.width = '100';
+              pushItem.height = '40';
+            }
+            this.list.push(pushItem)
           }else{
             // 删除已取消值
             this.list.forEach((listItem, listIndex) => {
@@ -754,5 +762,7 @@ export default {
 }
 .barCode /deep/ .vue-barcode-element {
   width: 100%;
+  max-height: 92px;
+  height: auto;
 }
 </style>

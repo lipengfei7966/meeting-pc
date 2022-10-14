@@ -1,222 +1,225 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='maxColumnsDialog'>
       <!-- 头部 -->
       <TitleContain :titleName="dialogTitle" @TitleFun="$emit('closeHandler')" />
-      <!-- 内容 -->
-      <header :style="{'border-bottom-width': mainInfoVisible ? '1px' : '0', 'margin-top': '3px'}">
-        <div class='form-title'>菜单信息
-          <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !mainInfoVisible}]" @click='mainInfoVisible = !mainInfoVisible'></i>
-        </div>
+      <div class="dialog-container__content">
 
-        <el-form v-if='mainInfoVisible' :inline="true" class="header-form-inline" :model="formData" :rules="rules" ref="menuFormData" prop="formData" label-position="left" element-loading-spinner="el-icon-loading" v-loading="loading">
-          <el-row :gutter="20">
-            <el-col :span="16">
-              <el-form-item label="类型" prop='flag' class='input-max-style'>
-                <el-radio-group v-model="formData.flag">
-                  <el-radio :disabled="catalogDisable" label="0">目录</el-radio>
-                  <el-radio :disabled="menuDisable" label="1">菜单</el-radio>
-                  <!-- <el-radio :disabled="buttonDisable" label="2">按钮</el-radio> -->
-                  <el-radio :disabled="routeDisable" label="3">子路由</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="状态" prop='usingFlag'>
-                <el-radio-group v-model="formData.usingFlag">
-                  <el-radio :label="true">启用</el-radio>
-                  <el-radio :label="false">停用</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="上级菜单" prop='parentName'>
-                <el-input :disabled="true" v-model="formData.parentName">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="菜单标识" prop='name'>
-                <el-input :disabled="formData.flag==='2'" v-model="formData.name">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <!-- <el-col :span="8">
+        <!-- 内容 -->
+        <header :style="{'border-bottom-width': mainInfoVisible ? '1px' : '0', 'margin-top': '3px'}">
+          <div class='form-title'>菜单信息
+            <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !mainInfoVisible}]" @click='mainInfoVisible = !mainInfoVisible'></i>
+          </div>
+
+          <el-form v-if='mainInfoVisible' :inline="true" class="header-form-inline" :model="formData" :rules="rules" ref="menuFormData" prop="formData" label-position="left" element-loading-spinner="el-icon-loading" v-loading="loading">
+            <el-row :gutter="20">
+              <el-col :span="16">
+                <el-form-item label="类型" prop='flag' class='input-max-style'>
+                  <el-radio-group v-model="formData.flag">
+                    <el-radio :disabled="catalogDisable" label="0">目录</el-radio>
+                    <el-radio :disabled="menuDisable" label="1">菜单</el-radio>
+                    <!-- <el-radio :disabled="buttonDisable" label="2">按钮</el-radio> -->
+                    <el-radio :disabled="routeDisable" label="3">子路由</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="状态" prop='usingFlag'>
+                  <el-radio-group v-model="formData.usingFlag">
+                    <el-radio :label="true">启用</el-radio>
+                    <el-radio :label="false">停用</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="上级菜单" prop='parentName'>
+                  <el-input :disabled="true" v-model="formData.parentName">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="菜单标识" prop='name'>
+                  <el-input :disabled="formData.flag==='2'" v-model="formData.name">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <!-- <el-col :span="8">
               <el-form-item label="meta-title" prop='metaTitle'>
                 <el-input :disabled="formData.flag==='2'" v-model="formData.metaTitle">
                 </el-input>
               </el-form-item>
             </el-col> -->
-            <el-col :span="8">
-              <el-form-item label="名称" prop='cname'>
-                <el-input :disabled="formData.flag==='2'" v-model="formData.cname">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="英语名称" prop='ename'>
-                <el-input :disabled="formData.flag==='2'" v-model="formData.ename">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :v-show="false">
-              <el-form-item label="排序号" prop='sortNo' type="number">
-                <el-input v-model="formData.sortNo">
-                </el-input>
-              </el-form-item>
-            </el-col>
+              <el-col :span="8">
+                <el-form-item label="名称" prop='cname'>
+                  <el-input :disabled="formData.flag==='2'" v-model="formData.cname">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="英语名称" prop='ename'>
+                  <el-input :disabled="formData.flag==='2'" v-model="formData.ename">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" :v-show="false">
+                <el-form-item label="排序号" prop='sortNo' type="number">
+                  <el-input v-model="formData.sortNo">
+                  </el-input>
+                </el-form-item>
+              </el-col>
 
-            <el-col :span="8">
-              <el-form-item label="图标" prop='icon'>
-                <el-select v-model="formData.icon" size='mini' clearable filterable>
-                  <el-option label="无" value=""></el-option>
-                  <el-option v-for="item in $store.state.app.icons" :key="item.value" :label="item.label" :value="item.value">
-                    <span style="float: left;">{{ item.label }}</span>
-                    <svg-icon style="float: right;" :icon-class="item.value" />
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <template v-if="formData.flag==='1'||formData.flag==='3'">
-              <template v-if=" !formData.subMenuFlag">
+              <el-col :span="8">
+                <el-form-item label="图标" prop='icon'>
+                  <el-select v-model="formData.icon" size='mini' clearable filterable>
+                    <el-option label="无" value=""></el-option>
+                    <el-option v-for="item in $store.state.app.icons" :key="item.value" :label="item.label" :value="item.value">
+                      <span style="float: left;">{{ item.label }}</span>
+                      <svg-icon style="float: right;" :icon-class="item.value" />
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <template v-if="formData.flag==='1'||formData.flag==='3'">
+                <template v-if=" !formData.subMenuFlag">
+                  <el-col :span="8">
+                    <el-form-item label="是否为iframe" prop='iframeFlag'>
+                      <el-radio-group v-model="formData.iframeFlag" @change='iframeFlagChange' :disabled="formData.flag==='2'||formData.flag==='0'">
+                        <el-radio :label="true">是</el-radio>
+                        <el-radio :label="false">否</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="16">
+                    <el-form-item label="iframe url" prop='iframeUrl' class='input-textarea-style'>
+                      <el-input :disabled="!formData.iframeFlag||formData.flag==='2'||formData.flag==='0'" v-model="formData.iframeUrl">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </template>
                 <el-col :span="8">
-                  <el-form-item label="是否为iframe" prop='iframeFlag'>
-                    <el-radio-group v-model="formData.iframeFlag" @change='iframeFlagChange' :disabled="formData.flag==='2'||formData.flag==='0'">
+                  <el-form-item label="是否预警图表" prop='warnChart'>
+                    <el-radio-group v-model="formData.warnChart" @change='warnChartChange' disabled>
                       <el-radio :label="true">是</el-radio>
                       <el-radio :label="false">否</el-radio>
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
-                <el-col :span="16">
-                  <el-form-item label="iframe url" prop='iframeUrl' class='input-textarea-style'>
-                    <el-input :disabled="!formData.iframeFlag||formData.flag==='2'||formData.flag==='0'" v-model="formData.iframeUrl">
+                <el-col :span="8">
+                  <el-form-item label="组件复用" prop='reuseFlag'>
+                    <el-radio-group v-model="formData.reuseFlag">
+                      <el-radio :label="true">是</el-radio>
+                      <el-radio :label="false">否</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="组件名称" prop='componentName'>
+                    <el-input v-model="formData.componentName" placeholder="vue文件中的name">
                     </el-input>
                   </el-form-item>
                 </el-col>
+                <el-col :span="8">
+                  <el-form-item label="菜单URL" prop='path'>
+                    <el-input v-model="formData.path" placeholder="vue-path,以/开始绝对路径">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="16">
+                  <el-form-item label="vue-component" prop='component'>
+                    <el-input v-model="formData.component" placeholder="views/**">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8" v-if="!formData.subMenuFlag">
+                  <el-form-item label="隐藏" prop='hidden'>
+                    <el-radio-group v-model="formData.hidden" :disabled="formData.subMenuFlag">
+                      <el-radio :label="true">隐藏</el-radio>
+                      <el-radio :label="false">展示</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8" align='left'>
+                  <el-form-item label="无缓存" prop='noCache'>
+                    <el-radio-group v-model="formData.noCache">
+                      <el-radio :label="true">无</el-radio>
+                      <el-radio :label="false">有</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="子路由" prop='subMenuFlag'>
+                    <el-radio-group v-model="formData.subMenuFlag" @change="setSubMenuFlag" :disabled='true'>
+                      <el-radio :label="true">是</el-radio>
+                      <el-radio :label="false">否</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8" v-if="formData.subMenuFlag">
+                  <el-form-item label="子路由类型" prop='subMenuType'>
+                    <base-select size="mini" v-model="formData.subMenuType" :attrs="{datadict: 'subMenuType'}"></base-select>
+                  </el-form-item>
+                </el-col>
               </template>
+            </el-row>
+          </el-form>
+        </header>
+
+        <header :style="{'border-bottom-width': moduleVisible ? '1px' : '0'}" v-if="formData.flag==='1'">
+          <div class='form-title'>模块信息
+            <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !moduleVisible}]" @click='moduleVisible = !moduleVisible'></i>
+          </div>
+
+          <el-form v-if='moduleVisible' :inline="true" class="header-form-inline" :model="formData" :rules="rules" ref="moduleFormData" prop="formData" label-position="left" element-loading-spinner="el-icon-loading" v-loading="loading">
+            <el-row :gutter="20">
+
               <el-col :span="8">
-                <el-form-item label="是否预警图表" prop='warnChart'>
-                  <el-radio-group v-model="formData.warnChart" @change='warnChartChange' disabled>
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
+                <el-form-item label="模块类型" prop='moduleType'>
+                  <el-select v-model="formData.moduleType" clearable placeholder="请选择">
+                    <el-option key="1" label="单据" value="1">
+                    </el-option>
+                    <el-option key="2" label="报表" value="2">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="组件复用" prop='reuseFlag'>
-                  <el-radio-group v-model="formData.reuseFlag">
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="组件名称" prop='componentName'>
-                  <el-input v-model="formData.componentName" placeholder="vue文件中的name">
+                <el-form-item label="审批服务" prop='bpmService'>
+                  <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmService">
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="菜单URL" prop='path'>
-                  <el-input v-model="formData.path" placeholder="vue-path,以/开始绝对路径">
-                  </el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="16">
-                <el-form-item label="vue-component" prop='component'>
-                  <el-input v-model="formData.component" placeholder="views/**">
+                <el-form-item label="审批组件" prop='bpmComponent'>
+                  <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmComponent">
                   </el-input>
                 </el-form-item>
               </el-col>
 
-              <el-col :span="8" v-if="!formData.subMenuFlag">
-                <el-form-item label="隐藏" prop='hidden'>
-                  <el-radio-group v-model="formData.hidden" :disabled="formData.subMenuFlag">
-                    <el-radio :label="true">隐藏</el-radio>
-                    <el-radio :label="false">展示</el-radio>
+              <el-col :span="24">
+                <el-form-item label="授权方式" prop='authFlag' class='input-max-style'>
+                  <el-radio-group v-model="formData.authFlag">
+                    <el-radio label="4">操作员</el-radio>
+                    <el-radio label="5">登陆</el-radio>
+                    <el-radio label="3">机构管理员</el-radio>
+                    <el-radio label="2">集团管理员</el-radio>
+                    <el-radio label="1">平台管理员</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" align='left'>
-                <el-form-item label="无缓存" prop='noCache'>
-                  <el-radio-group v-model="formData.noCache">
-                    <el-radio :label="true">无</el-radio>
-                    <el-radio :label="false">有</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
+
               <el-col :span="8">
-                <el-form-item label="子路由" prop='subMenuFlag'>
-                  <el-radio-group v-model="formData.subMenuFlag" @change="setSubMenuFlag" :disabled='true'>
-                    <el-radio :label="true">是</el-radio>
-                    <el-radio :label="false">否</el-radio>
-                  </el-radio-group>
+                <el-form-item label="业务代码" prop='bizCode'>
+                  <!-- 字典码表 -->
+                  <el-select v-model="formData.bizCode" :clearable=true :filterable="true" :placeholder="$t('biz.placeholder.choose')">
+                    <el-option v-for="item in $t('datadict.bizCode')" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if="formData.subMenuFlag">
-                <el-form-item label="子路由类型" prop='subMenuType'>
-                  <base-select size="mini" v-model="formData.subMenuType" :attrs="{datadict: 'subMenuType'}"></base-select>
-                </el-form-item>
-              </el-col>
-            </template>
-          </el-row>
-        </el-form>
-      </header>
-
-      <header :style="{'border-bottom-width': moduleVisible ? '1px' : '0'}" v-if="formData.flag==='1'">
-        <div class='form-title'>模块信息
-          <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !moduleVisible}]" @click='moduleVisible = !moduleVisible'></i>
-        </div>
-
-        <el-form v-if='moduleVisible' :inline="true" class="header-form-inline" :model="formData" :rules="rules" ref="moduleFormData" prop="formData" label-position="left" element-loading-spinner="el-icon-loading" v-loading="loading">
-          <el-row :gutter="20">
-
-            <el-col :span="8">
-              <el-form-item label="模块类型" prop='moduleType'>
-                <el-select v-model="formData.moduleType" clearable placeholder="请选择">
-                  <el-option key="1" label="单据" value="1">
-                  </el-option>
-                  <el-option key="2" label="报表" value="2">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="审批服务" prop='bpmService'>
-                <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmService">
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="审批组件" prop='bpmComponent'>
-                <el-input :disabled="!formData.moduleType||formData.moduleType==='2'" v-model="formData.bpmComponent">
-                </el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="24">
-              <el-form-item label="授权方式" prop='authFlag' class='input-max-style'>
-                <el-radio-group v-model="formData.authFlag">
-                  <el-radio label="4">操作员</el-radio>
-                  <el-radio label="5">登陆</el-radio>
-                  <el-radio label="3">机构管理员</el-radio>
-                  <el-radio label="2">集团管理员</el-radio>
-                  <el-radio label="1">平台管理员</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="8">
-              <el-form-item label="业务代码" prop='bizCode'>
-                <!-- 字典码表 -->
-                <el-select v-model="formData.bizCode" :clearable=true :filterable="true" :placeholder="$t('biz.placeholder.choose')">
-                  <el-option v-for="item in $t('datadict.bizCode')" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </header>
+            </el-row>
+          </el-form>
+        </header>
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-button @click="$emit('closeHandler')" size="mini">关闭</el-button>

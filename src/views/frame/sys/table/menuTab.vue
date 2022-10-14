@@ -11,7 +11,7 @@ export default {
         param: this.param,
         editForm: this.editForm,
         api: {
-          search: '/api/sys/tableBiz/list'
+          search: '/api/code/tableBiz/list'
         },
         apiData: {
           search(param) {

@@ -19,6 +19,7 @@ export default {
       edit: {
         eventName: '会议名称',
         customerName: '客户名称',
+        contactCode: '联系人',
         startDate: '开始时间',
         endDate: '结束时间',
         eventPlace: '活动地点',
@@ -222,7 +223,9 @@ export default {
         sceneName: '场景名称',
         signupData: '报名时间',
         title: '添加参会人',
-        eventCode: '会议名称'
+        eventCode: '会议名称',
+        code: '参会人编码',
+        createDate: '报名时间'
       }
     },
     signupContactCol: {
@@ -291,5 +294,6 @@ export default {
         customerCode: '客户'
       }
     }
+
   }
 }

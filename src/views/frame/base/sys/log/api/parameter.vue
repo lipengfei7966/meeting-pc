@@ -1,12 +1,14 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container maxColumnsDialog'>
       <title-contain :titleName="this.$t('sys.log.inputParameter')" @TitleFun="$emit('closeHandler')" />
-      <!-- 内容 -->
-      <div class='dialog-content' style="margin-bottom: 40px;">
-        <code style="word-wrap: break-word;word-break: break-all;">
-          {{param.requestParam}}
-        </code>
+      <div class="dialog-container__content">
+        <!-- 内容 -->
+        <div class='dialog-content' style="margin-bottom: 40px;">
+          <code style="word-wrap: break-word;word-break: break-all;">
+            {{param.requestParam}}
+          </code>
+        </div>
       </div>
       <!-- 底部 -->
       <div class="dialog-footer">

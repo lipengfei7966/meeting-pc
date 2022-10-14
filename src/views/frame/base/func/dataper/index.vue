@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
         listQuery: {
           current: 1,
           size: 20,
-          isPage: true,
+          isPage: false,
           defaultSortString: 'createDate.desc',
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
@@ -70,7 +70,7 @@ export default {
         },
         bottomBar: {
           pagination: {
-            show: true,
+            show: false,
             layout: 'total, sizes, prev, pager, next, jumper',
             pageSizes: [20, 40, 60, 80, 100]
           }

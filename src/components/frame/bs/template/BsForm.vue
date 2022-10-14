@@ -1,8 +1,8 @@
 <template>
   <header id='elHead' :style="{'width': (clientWidth < 1366 && !app.isScreenFull) ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto'}">
     <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="form.listQuery.data" class='header-form-inline'>
-      <el-row :gutter="20" style='width:94%;'>
-        <template v-for='(f, index) in expandStatus ? form.formData : form.formData.slice(0, 4)'>
+      <el-row :gutter="20" style='width:94%;' justify="space-between">
+        <template v-for='(f, index) in expandStatus ?  (form.formData[0].attrs&&form.formData[0].attrs.cols) ? form.formData.slice(0,2) : form.formData.slice(0, 3) :form.formData'>
           <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if='f.isShow' :key='index'>
             <!-- 日期 -->
             <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(f.label)" :prop='f.bind'>
@@ -69,7 +69,7 @@
           </el-col>
         </template>
         <!-- 更多 -->
-        <template v-if='expandStatus'>
+        <template v-if='!expandStatus'>
           <el-col :span="6" v-for='item in items' :key='item.bind' class='el-form-item-more'>
             <div class='el-form-item-more-left'>
               <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change='handleExtraQueryChange'>
@@ -91,18 +91,35 @@
             </div>
           </el-col>
           <el-col :span="6" v-if='form.moreShowFlg && addQueryConditionVisible'>
-            <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
+            <span class='more-query' ref="moreQuery" @click='addQueryCondition'>查询扩展&nbsp;+</span>
           </el-col>
         </template>
+        <el-col class="none"></el-col>
       </el-row>
       <!-- 右侧搜索按钮 -->
-      <div class="search-btn" v-permission="['query']">
-        <el-button type="primary" :loading="loading" icon="el-icon-search" @click="onSubmit" v-db-click>
-          {{$t('biz.lbl.search')}}
-        </el-button>
-      </div>
+      <el-col :span="6">
+        <div class="button-group clearfix">
+          <div class="button-group-item search-btn" v-permission="['query']">
+            <el-button @click="onReset" v-db-click>
+              重置
+            </el-button>
+          </div>
+          <div class="button-group-item search-btn" v-permission="['query']">
+            <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
+              {{$t('biz.lbl.search')}}
+            </el-button>
+          </div>
+          <div class="button-group-item search-btn" @click='expand' v-show='form.moreShowFlg || form.formData.length > 4' v-permission="['query']">
+            <el-button type="text" class="fold" v-db-click>
+              {{expandText}}
+            </el-button>
+            <span :class="['jt',{ 't': !expandStatus}]"></span>
+            <!-- <span class="jt t"></span> -->
+          </div>
+        </div>
+      </el-col>
       <!-- 展开收起 -->
-      <div class='expand' @click='expand' v-show='form.moreShowFlg || form.formData.length > 4'>
+      <div class='expand' @click="expand()" v-show='form.moreShowFlg || form.formData.length > 4'>
         <i v-if='expandStatus' class='el-icon-arrow-up'></i>
         <i v-else class='el-icon-arrow-down'></i>
       </div>
@@ -140,6 +157,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
+      expandText: '展开',
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},
@@ -230,8 +248,16 @@ export default {
   },
   mounted() {
     this.checkQueryCondition()
+    console.log(this.form.formData,5666)
   },
   methods: {
+    // 重置
+    onReset() {
+      this.items = []
+      this.expandStatus = process.env.EXPAND_FLG
+      this.expandText = !this.expandStatus ? '收起' : '展开'
+      this.addQueryConditionVisible = true;
+    },
     // 时间变化
     changeDaterangeTime(form) {
       this.form.listQuery.data[form.props[0]] = this.form.listQuery.data[form.bind] ? this.form.listQuery.data[form.bind][0] : ''
@@ -239,22 +265,24 @@ export default {
     },
     //刷新
     doRefresh(initFlag) {
-      this.$refs.queryForm.validate(valid => {
-        if (valid) {
-          if (initFlag) {
-            this.$parent.form.listQuery.current = 1
-          }
-          if (this.$parent.$refs.bsTable) {
-            this.$parent.$refs.bsTable.getList({ name: 'search' })
-          } else {
-            if (this.$parent.getList) {
-              this.$parent.getList({ name: 'search' })
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.validate(valid => {
+          if (valid) {
+            if (initFlag) {
+              this.$parent.form.listQuery.current = 1
             }
+            if (this.$parent.$refs.bsTable) {
+              this.$parent.$refs.bsTable.getList({ name: 'search' })
+            } else {
+              if (this.$parent.getList) {
+                this.$parent.getList({ name: 'search' })
+              }
+            }
+          } else {
+            return false
           }
-        } else {
-          return false
-        }
-      })
+        })
+      }
     },
     // 查询
     onSubmit() {
@@ -382,6 +410,7 @@ export default {
     // 展开收起
     expand() {
       this.expandStatus = !this.expandStatus
+      this.expandText = !this.expandStatus ? '收起' : '展开'
       if (!this.$parent.mainData) return
       this.$nextTick(() => {
         this.$parent.$refs.bsTable.tableComputed()

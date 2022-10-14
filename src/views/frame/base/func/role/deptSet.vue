@@ -19,7 +19,7 @@ export default {
           isSearch: true,
           initSearch: true,
           expandOnClickNode: false,
-          leftWidth: 260,
+          leftWidth: 300,
           expandAll: true,
           api: {
             getTreeList: '/api/func/org/treeOrgan'

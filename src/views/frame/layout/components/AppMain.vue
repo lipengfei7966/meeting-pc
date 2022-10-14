@@ -47,7 +47,7 @@ export default {
 
 <style scoped lang='scss'>
 .app-main {
-  background: #fff !important;
+  background: #fff;
   height: 100%;
   overflow: auto; // 针对首页
   .footer-copyright {

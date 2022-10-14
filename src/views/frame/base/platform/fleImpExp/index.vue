@@ -13,7 +13,7 @@ export default {
           initSearch: true,
           expandAll: true,
           treeName: '业务功能列表',
-          leftWidth: 260,
+          leftWidth: 300,
           isSearch: true,
           api: {
             getTreeList: '/api/platform/cfgModule/catalogForTenant'
@@ -187,7 +187,7 @@ export default {
             data: (this.treeTableData.mainData.apiData.search && this.treeTableData.mainData.apiData.search(node)) || node
           }
         })
-          .then((response) => {
+          .then(response => {
             this.loading = false
             this.$refs.bsTreeFormTable.tableData = response.data
             if (this.$refs.bsTreeFormTable.tableData && this.$refs.bsTreeFormTable.tableData.length > 0) {

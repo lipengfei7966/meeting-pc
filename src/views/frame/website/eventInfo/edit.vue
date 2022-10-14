@@ -1,8 +1,9 @@
 <template>
-  <bs-dialog :dialog="dialog" @closeDialog="handleCloseDialog"></bs-dialog>
+  <bs-dialog :dialog="dialog" ref='bsDialog' @closeDialog="handleCloseDialog"></bs-dialog>
 </template>
 
 <script>
+import toolUtil from '@/utils/frame/base/toolUtil.js'
 export default {
   name: 'roleEdit',
   data() {
@@ -44,6 +45,30 @@ export default {
               multiple: false,
               cols: 3,
               data: 'CUSTOMER',
+              clearable: true
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'change'
+              }
+            ],
+            event: {
+              changeAll: this.changeAllOrg
+            }
+          },
+          {
+            label: 'website.eventInfo.edit.contactCode',
+            prop: 'contactCode',
+            element: 'base-select',
+            attrs: {
+              clickParent: true,
+              multiple: false,
+              cols: 3,
+              data: 'CUSTOMER_CONTACT',
+              params: {
+                customerCode: this.param.customerCode == undefined ? '' : this.param.customerCode
+              },
               clearable: true
             },
             validate: [
@@ -129,6 +154,11 @@ export default {
   methods: {
     handleCloseDialog(param) {
       this.$emit('closeHandler', param)
+    },
+    changeAllOrg(item) {
+      this.$refs.bsDialog.formData.contactCode = ''
+      const parentCodeRef = toolUtil.getDefDialogItemByProp(this, 'contactCode')
+      parentCodeRef.attrs.params.customerCode = item.code
     }
   }
 }

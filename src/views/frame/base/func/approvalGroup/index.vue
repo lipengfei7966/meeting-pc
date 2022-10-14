@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref='bsForm' :form='form'></bs-form>
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>

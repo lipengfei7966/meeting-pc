@@ -1,148 +1,150 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='treeTableDialog' ref='treeTableDialog' style='width:900px;'>
       <!-- 头部 -->
       <title-contain titleName='高级查询' @screenChange="setTableHeight" @TitleFun="$emit('closeHandler')"></title-contain>
-      <!-- 内容 -->
-      <main>
-        <div class='left-content' style='border:none;'>
-          <el-tabs v-model="activeName" type="border-card" style='height:100%;'>
-            <el-tab-pane label="候选条件" name="todo" :style="{ height: treeHeight + 'px',overflow: 'auto' }">
-              <input-validate class="search-input" size='mini' placeholder="" v-model="filterText" :attrs='{ prefixIcon: "el-icon-search" }' style='margin-top:5px;'></input-validate>
-              <el-tree :style="{ height: treeHeight - 40 + 'px' }" ref='selectTree' node-key="prop" default-expand-all :data="selectTreeData" :props="defaultSelectProps" :filter-node-method="filterNode" @node-click="handleOptionNodeClick" @node-contextmenu="handleOptionContextmenu" style='padding:10px;'>
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ node.label }} </span>
-                  <span v-if="data.prop!=='all'">
-                    <el-button type="text" size="mini" @click="() => addOption(data)">
-                      添加
-                    </el-button>
+      <div class="dialog-container__content">
+        <!-- 内容 -->
+        <main>
+          <div class='left-content' style='border:none;'>
+            <el-tabs v-model="activeName" type="border-card" style='height:100%;'>
+              <el-tab-pane label="候选条件" name="todo" :style="{ height: treeHeight + 'px',overflow: 'auto' }">
+                <input-validate class="search-input" size='mini' placeholder="" v-model="filterText" :attrs='{ prefixIcon: "el-icon-search" }' style='margin-top:5px;'></input-validate>
+                <el-tree :style="{ height: treeHeight - 40 + 'px' }" ref='selectTree' node-key="prop" default-expand-all :data="selectTreeData" :props="defaultSelectProps" :filter-node-method="filterNode" @node-click="handleOptionNodeClick" @node-contextmenu="handleOptionContextmenu" style='padding:10px;'>
+                  <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span>{{ node.label }} </span>
+                    <span v-if="data.prop!=='all'">
+                      <el-button type="text" size="mini" @click="() => addOption(data)">
+                        添加
+                      </el-button>
+                    </span>
                   </span>
-                </span>
-              </el-tree>
-              <!-- 右键添加 -->
-              <!-- <div class="menu options" v-if="optionMenuVisible" :style="{ left: menuL + 'px', top: menuT + 'px' }">
+                </el-tree>
+                <!-- 右键添加 -->
+                <!-- <div class="menu options" v-if="optionMenuVisible" :style="{ left: menuL + 'px', top: menuT + 'px' }">
                 <div class="delete" @click="addOption">添加</div>
               </div> -->
-            </el-tab-pane>
-            <el-tab-pane label="查询方案" name='haveTodo' :style="{ height: treeHeight + 'px' }">
-              <el-tree :style="{ height: treeHeight + 'px',overflow: 'auto' }" ref='planTree' node-key="id" default-expand-all :data="planTreeData" :props="defaultPlanProps" @node-click="handlePlanNodeClick" @node-contextmenu="handlePlanContextmenu" style='padding:10px;'>
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                  <span>{{ node.label }} </span>
-                  <span v-if="data.id!=='all'">
-                    <el-button type="text" size="mini" v-if="data.id !== defaultPlan" @click="() => deletePlan(data)">
-                      删除
-                    </el-button>
-                    <el-button type="text" size="mini" v-if="data.id !== defaultPlan" @click="() => handleDefaultPlan(data)">
-                      设为默认
-                    </el-button>
-                    <el-button type="text" size="mini" @click="renameVisible = true, renameVal=node.label">
-                      重命名
-                    </el-button>
+              </el-tab-pane>
+              <el-tab-pane label="查询方案" name='haveTodo' :style="{ height: treeHeight + 'px' }">
+                <el-tree :style="{ height: treeHeight + 'px',overflow: 'auto' }" ref='planTree' node-key="id" default-expand-all :data="planTreeData" :props="defaultPlanProps" @node-click="handlePlanNodeClick" @node-contextmenu="handlePlanContextmenu" style='padding:10px;'>
+                  <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span>{{ node.label }} </span>
+                    <span v-if="data.id!=='all'">
+                      <el-button type="text" size="mini" v-if="data.id !== defaultPlan" @click="() => deletePlan(data)">
+                        删除
+                      </el-button>
+                      <el-button type="text" size="mini" v-if="data.id !== defaultPlan" @click="() => handleDefaultPlan(data)">
+                        设为默认
+                      </el-button>
+                      <el-button type="text" size="mini" @click="renameVisible = true, renameVal=node.label">
+                        重命名
+                      </el-button>
 
+                    </span>
                   </span>
-                </span>
 
-              </el-tree>
-              <!-- 右键方案 -->
-              <!-- <div class="menu plan" v-if="planMenuVisible" :style="{ left: menuL + 'px', top: menuT + 'px' }">
+                </el-tree>
+                <!-- 右键方案 -->
+                <!-- <div class="menu plan" v-if="planMenuVisible" :style="{ left: menuL + 'px', top: menuT + 'px' }">
                 <div class="delete" @click="deletePlan" v-if="activePlanId !== defaultPlan">删除方案</div>
                 <div class="rename" @click="renameVisible = true">重命名</div>
                 <div class="default" @click="handleDefaultPlan" v-if="activePlanId !== defaultPlan">设为默认查询方案</div>
               </div> -->
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-        <div class='right-content'>
-          <el-button v-db-click v-if="activeName === 'todo'" size="mini" class="clear-btn" @click='onClear'>
-            <svg-icon icon-class="clear" style="margin-right:0px;"></svg-icon>清除
-          </el-button>
-          <el-tabs type="border-card" style='height:100%;'>
-            <el-tab-pane label="查询条件" :style="{ height: treeHeight + 'px',overflow: 'auto' }">
-              <el-form :inline="true" class="demo-form-inline">
-                <el-form-item :label="f.label" v-for="(f, index) in options[activePlanId]" :key="f.prop" label-width='120px'>
-                  <el-col :span="4" style="margin-right:5px">
-                    <el-select v-model="bsQueryExtras[index] && bsQueryExtras[index].condition" placeholder="">
-                      <template v-if='f.type === "date" || f.type === "daterange"'>
-                        <el-option label="区间" value="between"></el-option>
-                      </template>
-                      <template v-else-if=' f.type === "year" || f.type === "month" || f.type === "week"'>
-                        <el-option label="等于" value="="></el-option>
-                      </template>
-                      <template v-else>
-                        <el-option label="等于" value="="></el-option>
-                        <el-option label="包含" value="like"></el-option>
-                        <el-option label="大于" value=">="></el-option>
-                        <el-option label="小于" value="<="></el-option>
-                        <el-option label="存在" value="in"></el-option>
-                      </template>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+          <div class='right-content'>
+            <el-button v-db-click v-if="activeName === 'todo'" size="mini" class="clear-btn" @click='onClear'>
+              <svg-icon icon-class="clear" style="margin-right:0px;"></svg-icon>清除
+            </el-button>
+            <el-tabs type="border-card" style='height:100%;'>
+              <el-tab-pane label="查询条件" :style="{ height: treeHeight + 'px',overflow: 'auto' }">
+                <el-form :inline="true" class="demo-form-inline">
+                  <el-form-item :label="f.label" v-for="(f, index) in options[activePlanId]" :key="f.prop" label-width='120px'>
+                    <el-col :span="4" style="margin-right:5px">
+                      <el-select v-model="bsQueryExtras[index] && bsQueryExtras[index].condition" placeholder="">
+                        <template v-if='f.type === "date" || f.type === "daterange"'>
+                          <el-option label="区间" value="between"></el-option>
+                        </template>
+                        <template v-else-if=' f.type === "year" || f.type === "month" || f.type === "week"'>
+                          <el-option label="等于" value="="></el-option>
+                        </template>
+                        <template v-else>
+                          <el-option label="等于" value="="></el-option>
+                          <el-option label="包含" value="like"></el-option>
+                          <el-option label="大于" value=">="></el-option>
+                          <el-option label="小于" value="<="></el-option>
+                          <el-option label="存在" value="in"></el-option>
+                        </template>
 
-                    </el-select>
-                  </el-col>
-                  <el-col :span="16">
-                    <!-- 日期 -->
-                    <el-form-item v-if='f.type === "daterange"' :prop='f.prop'>
-                      <!-- :picker-options="f['picker-options']"  -->
-                      <el-date-picker v-model="bsQueryExtras[index].value" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" value-format='yyyy-MM-dd' v-bind='f.attrs' @change='changeDaterangeTime(f)'>
-                      </el-date-picker>
-                    </el-form-item>
-                    <el-form-item v-else-if='f.type === "date" || f.type === "year" || f.type === "month" || f.type === "week"'>
-                      <template v-if='f.props && f.props instanceof Array && f.props.length>1'>
-                        <el-row :gutter="0">
-                          <el-col :span="11">
-                            <el-date-picker v-model="bsQueryExtras[index].value && bsQueryExtras[index].value[0]" v-bind='f.attrs' v-on='f.event' value-format='yyyy-MM-dd' :type="f.type" placeholder="">
-                            </el-date-picker>
-                          </el-col>
-                          <el-col :span="2" align='center'>~</el-col>
-                          <el-col :span="11">
-                            <el-date-picker v-model="bsQueryExtras[index].value && bsQueryExtras[index].value[1]" v-bind='f.attrs' v-on='f.event' value-format='yyyy-MM-dd' :type="f.type" placeholder="">
-                            </el-date-picker>
-                          </el-col>
-                        </el-row>
-                      </template>
-                      <template v-else>
-                        <el-date-picker v-model="bsQueryExtras[index] && bsQueryExtras[index].value" value-format='yyyy-MM-dd' v-bind='f.attrs' v-on='f.event' :type="f.type" placeholder="">
+                      </el-select>
+                    </el-col>
+                    <el-col :span="16">
+                      <!-- 日期 -->
+                      <el-form-item v-if='f.type === "daterange"' :prop='f.prop'>
+                        <!-- :picker-options="f['picker-options']"  -->
+                        <el-date-picker v-model="bsQueryExtras[index].value" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" value-format='yyyy-MM-dd' v-bind='f.attrs' @change='changeDaterangeTime(f)'>
                         </el-date-picker>
-                      </template>
+                      </el-form-item>
+                      <el-form-item v-else-if='f.type === "date" || f.type === "year" || f.type === "month" || f.type === "week"'>
+                        <template v-if='f.props && f.props instanceof Array && f.props.length>1'>
+                          <el-row :gutter="0">
+                            <el-col :span="11">
+                              <el-date-picker v-model="bsQueryExtras[index].value && bsQueryExtras[index].value[0]" v-bind='f.attrs' v-on='f.event' value-format='yyyy-MM-dd' :type="f.type" placeholder="">
+                              </el-date-picker>
+                            </el-col>
+                            <el-col :span="2" align='center'>~</el-col>
+                            <el-col :span="11">
+                              <el-date-picker v-model="bsQueryExtras[index].value && bsQueryExtras[index].value[1]" v-bind='f.attrs' v-on='f.event' value-format='yyyy-MM-dd' :type="f.type" placeholder="">
+                              </el-date-picker>
+                            </el-col>
+                          </el-row>
+                        </template>
+                        <template v-else>
+                          <el-date-picker v-model="bsQueryExtras[index] && bsQueryExtras[index].value" value-format='yyyy-MM-dd' v-bind='f.attrs' v-on='f.event' :type="f.type" placeholder="">
+                          </el-date-picker>
+                        </template>
 
-                    </el-form-item>
-                    <!-- 单选框 -->
-                    <el-form-item v-else-if='f.type === "radio"' style="padding:5px;">
-                      <el-radio-group v-model="bsQueryExtras[index] && bsQueryExtras[index].value">
-                        <el-radio v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-radio>
-                      </el-radio-group>
-                    </el-form-item>
-                    <!-- 多选框 -->
-                    <el-form-item v-else-if='f.type === "checkbox"' style="padding:5px;">
-                      <el-checkbox-group v-model="bsQueryExtras[index] && bsQueryExtras[index].value">
-                        <el-checkbox v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
-                      </el-checkbox-group>
-                    </el-form-item>
-                    <!-- 下拉输入 -->
-                    <el-form-item v-else :prop='f.prop'>
-                      <!-- 字典码表 -->
-                      <el-select v-if='f.list' v-model="bsQueryExtras[index] && bsQueryExtras[index].value" v-bind='f.attrs' placeholder="" @change='f.event && f.event.change()'>
-                        <el-option v-for="item in dataDictList[f.list]" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                      </el-select>
-                      <!-- 字典码表list -->
-                      <el-select v-else-if='f.list && (!f.attrs || !f.attrs.data)' v-model="bsQueryExtras[index] && bsQueryExtras[index].value" v-bind='f.attrs' placeholder="" @change='f.event && f.event.change()'>
-                        <el-option v-for="item in f.list" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                      </el-select>
-                      <!-- 公用组件 -->
-                      <component v-else :is='f.element' v-model='bsQueryExtras[index] && bsQueryExtras[index].value' v-bind='f.attrs' v-on='f.event' :attrs='f.attrs' :newList='f.list' @changeAll='f.event && f.event.changeAll' @handleSelect='dialogSelect(f)'></component>
-                    </el-form-item>
-                  </el-col>
-                  <!-- <el-col :span="2" style="margin-right:5px">
+                      </el-form-item>
+                      <!-- 单选框 -->
+                      <el-form-item v-else-if='f.type === "radio"' style="padding:5px;">
+                        <el-radio-group v-model="bsQueryExtras[index] && bsQueryExtras[index].value">
+                          <el-radio v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-radio>
+                        </el-radio-group>
+                      </el-form-item>
+                      <!-- 多选框 -->
+                      <el-form-item v-else-if='f.type === "checkbox"' style="padding:5px;">
+                        <el-checkbox-group v-model="bsQueryExtras[index] && bsQueryExtras[index].value">
+                          <el-checkbox v-for='item in f.list' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
+                        </el-checkbox-group>
+                      </el-form-item>
+                      <!-- 下拉输入 -->
+                      <el-form-item v-else :prop='f.prop'>
+                        <!-- 字典码表 -->
+                        <el-select v-if='f.list' v-model="bsQueryExtras[index] && bsQueryExtras[index].value" v-bind='f.attrs' placeholder="" @change='f.event && f.event.change()'>
+                          <el-option v-for="item in dataDictList[f.list]" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                        <!-- 字典码表list -->
+                        <el-select v-else-if='f.list && (!f.attrs || !f.attrs.data)' v-model="bsQueryExtras[index] && bsQueryExtras[index].value" v-bind='f.attrs' placeholder="" @change='f.event && f.event.change()'>
+                          <el-option v-for="item in f.list" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                        <!-- 公用组件 -->
+                        <component v-else :is='f.element' v-model='bsQueryExtras[index] && bsQueryExtras[index].value' v-bind='f.attrs' v-on='f.event' :attrs='f.attrs' :newList='f.list' @changeAll='f.event && f.event.changeAll' @handleSelect='dialogSelect(f)'></component>
+                      </el-form-item>
+                    </el-col>
+                    <!-- <el-col :span="2" style="margin-right:5px">
                     <el-button class='right-button' icon="el-icon-search"></el-button>
                   </el-col> -->
-                  <el-col :span="2">
-                    <i class="el-icon-delete" v-if="!f.validate && activeName === 'todo'" @click="deleteOption(f)"></i>
-                  </el-col>
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-      </main>
+                    <el-col :span="2">
+                      <i class="el-icon-delete" v-if="!f.validate && activeName === 'todo'" @click="deleteOption(f)"></i>
+                    </el-col>
+                  </el-form-item>
+                </el-form>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+        </main>
+      </div>
       <!-- 底部 -->
       <div class="dialog-footer">
         <el-popover placement="top" width="220" v-model="visible">
