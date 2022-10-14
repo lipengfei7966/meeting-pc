@@ -22,6 +22,14 @@
         <p v-show="false">
           <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width:100%"> </vue-barcode>
         </p>
+
+        <p v-show="false">
+          <vue-qr class="newPersonQR" :text="item.personnelCode" :size="200" style="width: 100%"> </vue-qr>
+        </p>
+        <p v-show="false">
+          <vue-barcode class="newPersonBar" :value="item.personnelCode" :width="1" :height="50" style="width:100%"> </vue-barcode>
+        </p>
+
         <div class="p-event" v-html="item.certificateLayout"></div>
       </div>
     </div>
@@ -385,6 +393,7 @@ export default {
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
         p{margin:0}
         .newBar svg{width:100%;max-height: 92px;height: auto;}
+        .newPersonBar svg{width:100%;max-height: 92px;height: auto;}
         .printItem
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
@@ -409,22 +418,40 @@ export default {
       this.$nextTick(() => {
         let contents = this.$refs.contents
         contents.forEach((node, nodeindex) => {
+          // 替换参会人二维码
           let qrCode = node.getElementsByClassName('qrCode')
           let newQR = node.getElementsByClassName('newQR')[0]
           if (qrCode.length > 0) {
             qrCode[0].parentNode.appendChild(newQR)
             qrCode[0].parentNode.removeChild(qrCode[0])
           }
-
+          // 替换参会人条形码
           let barCode = node.getElementsByClassName('barCode')
           let newBar = node.getElementsByClassName('newBar')[0]
-          debugger
           if (barCode.length > 0) {
             // item.hasBarCode = true;
             barCode[0].parentNode.appendChild(newBar)
             barCode[0].parentNode.removeChild(barCode[0])
           } else {
             newBar.parentNode.removeChild(newBar)
+          }
+
+          // 替换人员二维码
+          let personQrCode = node.getElementsByClassName('personQrCode')
+          let newPersonQR = node.getElementsByClassName('newPersonQR')[0]
+          if (personQrCode.length > 0) {
+            personQrCode[0].parentNode.appendChild(newPersonQR)
+            personQrCode[0].parentNode.removeChild(personQrCode[0])
+          }
+          // 替换人员条形码
+          let personBarCode = node.getElementsByClassName('personBarCode')
+          let newPersonBar = node.getElementsByClassName('newPersonBar')[0]
+          if (personBarCode.length > 0) {
+            // item.hasBarCode = true;
+            personBarCode[0].parentNode.appendChild(newPersonBar)
+            personBarCode[0].parentNode.removeChild(personBarCode[0])
+          } else {
+            newPersonBar.parentNode.removeChild(newPersonBar)
           }
         })
       })
