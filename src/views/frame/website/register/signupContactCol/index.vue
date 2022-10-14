@@ -66,7 +66,16 @@
             </el-collapse>
           </div>
         </el-card>
-        <div class="formPreview"></div>
+        <el-card class="formPreview">
+          <div>
+            <h2>2022完美海南博鳌研讨会</h2>
+            <draggable v-model="setInfoList" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
+              <transition-group>
+                <div class="item" v-for="element in setInfoList" :key="element.value">{{element.label}}</div>
+              </transition-group>
+            </draggable>
+          </div>
+        </el-card>
         <div class="formEdit"></div>
       </div>
     </div>
@@ -74,6 +83,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
@@ -246,23 +256,30 @@ export default {
         {label: '分页', value: 'paging'},
         {label: '说明信息', value: 'explainInfo'},
       ],
+      drag: false,
+      setInfoList: [
+        {label: '姓名', value: 'name'},
+        {label: '性别', value: 'gender'},
+        {label: '证件', value: 'certificate'},
+        {label: '照片', value: 'photo'},
+      ], // 选中的配置信息列表
       // 表格高度
       formSetHeight: 0,
     }
   },
-  computed: {
-    // ...mapGetters(['clientWidth','clientHeight'])
-  },
-  watch:{
-    // clientWidth() {
-    //   this.tableComputed()
-    // },
-    // clientHeight() {
-    //   this.tableComputed()
-    // },
+  components: {
+    draggable,
   },
   mounted() {},
   methods: {
+    //开始拖拽事件
+      onStart(){
+        this.drag=true;
+      },
+      //拖拽结束事件
+       onEnd() {
+       this.drag=false;
+    },
     onChangeAll(params) {
       // params.code
       // debugger
@@ -336,6 +353,7 @@ export default {
   }
   .formPreview {
     width: 60%;
+    margin: 0 20px;
   }
   .formEdit {
     width: 20%;
