@@ -223,7 +223,9 @@ export default {
         sceneName: '场景名称',
         signupData: '报名时间',
         title: '添加参会人',
-        eventCode: '会议名称'
+        eventCode: '会议名称',
+        code: '参会人编码',
+        createDate: '报名时间'
       }
     },
     signupContactCol: {
@@ -292,5 +294,6 @@ export default {
         customerCode: '客户'
       }
     }
+
   }
 }

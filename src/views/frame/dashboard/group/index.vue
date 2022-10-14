@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container dashboard">
+  <div class="bs-new-container app-container dashboard">
     <div :style="{'width': clientWidth < 1366 ? (this.sidebar.opened ? '1146px' : '1306px') : 'auto'}">
       <div class="dashboardWrap">
         <h1>您好, 欢迎使用会议管理系统</h1>

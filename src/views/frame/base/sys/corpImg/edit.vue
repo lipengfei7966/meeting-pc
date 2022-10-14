@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='mediumColumnsDialog'>
       <!-- 头部 -->
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')" />
@@ -42,7 +42,7 @@
               <input-validate v-model="formData.remark" size="mini"></input-validate>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="24" class="image-upload">
             <el-form-item label="图片" prop='imagePath'>
               <image-upload v-model="formData.imagePath" :imgWidth='imgWidth' :imgHeight='imgHeight' :disabled=this.getDisabledView() size="mini"></image-upload>
             </el-form-item>

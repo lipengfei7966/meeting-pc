@@ -37,7 +37,7 @@
                 </p>
 
                 <p style="display: flex;margin-left:30px">
-                  <span>长</span>
+                  <span>高</span>
                   <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @change="WHchange"></el-input>
                 </p>
               </div>
@@ -90,13 +90,22 @@
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
           <template v-for="(item,index) in list">
             <vue-draggable-resizable parent=".p-event" :grid="[10,10]" :x="item.x" :y="item.y" :w="item.width || 'auto'" :h="item.height || 'auto'" :key="item+index" :parent="true" @dragging="onDrag" @resizing="onResize">
-
+              <!-- 参会人二维码 -->
               <p v-if="item.value == 'qrCode' " id="qrCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-qr class="qrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
               </p>
-
+              <!-- 参会人条码 -->
               <p v-else-if="item.value == 'barCode'" id="barCode" class="printItem" @mousedown="checkItem(item)">
                 <vue-barcode class="barCode" value="SignupContact0000" :width="1" :height="50" style="width:100%"> </vue-barcode>
+              </p>
+
+              <!-- 人员二维码 -->
+              <p v-else-if="item.value == 'personQrCode' " id="personQrCode" class="printItem" @mousedown="checkItem(item)">
+                <vue-qr class="personQrCode" text="printSetform.certificateContent" :size="200" style="width:100%"> </vue-qr>
+              </p>
+              <!-- 人员条码 -->
+              <p v-else-if="item.value == 'personBarCode'" id="personBarCode" class="printItem" @mousedown="checkItem(item)">
+                <vue-barcode class="personBarCode" value="renyuantiaoma" :width="1" :height="50" style="width:100%"> </vue-barcode>
               </p>
 
               <p v-else class="printItem" :style="{ fontSize: item.fontSize, color: item.color, lineHeight: item.lineHeight,textAlign: item.textAlign, width:item.width+'px', height: item.height+'px' }" @mousedown="checkItem(item)">
@@ -252,8 +261,10 @@ export default {
         return item.mapType == '1'
       })
       let newItems = [
-        {mapName: '编码二维码', code: 'qrCode'},
-        {mapName: '编码条码', code: 'barCode'},
+        {mapName: '参会人二维码', code: 'qrCode'},
+        {mapName: '参会人条码', code: 'barCode'},
+        {mapName: '人员二维码', code: 'personQrCode'},
+        {mapName: '人员条码', code: 'personBarCode'},
       ]
       this.certificateContentList = this.certificateContentList.concat(newItems)
     })
@@ -261,10 +272,15 @@ export default {
     // 字号数组获取
     for (let i = 12; i <= 48; i++) {
       this.sizeList.push({ label: `${i}px`, value: `${i}px` })
+
     }
+
   },
+
   methods: {
+
     WHchange(){
+
       this.changecount ++;
     },
     certificateTypeChange(val){
@@ -456,11 +472,12 @@ export default {
         // debugger
         if(item) {
           let isIncludes = this.list.some(listItem => {
-            return listItem.name == item.mapName
+            debugger
+            return listItem.value == item.code
           })
           //
           if (!isIncludes) {
-            debugger
+            // debugger
             let pushItem = {
               name: item.mapName, // 表名对应的值
               label: item.mapName, // 表名
@@ -472,17 +489,18 @@ export default {
               height: '25',
               x: 10, // x默认值
               // x: Math.floor(Math.random() * (200 - 10)) + 10, // x默认值
-              y: this.list.length * 50// y 默认值
-              // y: Math.floor(Math.random() * (250 - 10)) + 10 // y 默认值
+              y: this.list.length * 30// y 默认值
+              // y: Math.floor(Math.random() * (this.printSetform.printHeight*3 - 10)) + 10 // y 默认值
             }
-            if(item.code == 'qrCode'){
-              pushItem.width = '200';
-              pushItem.height = '200';
-            }else if(item.code == 'barCode'){
-              pushItem.width = '250';
+            if(item.code == 'qrCode' || item.code == 'personQrCode'){
+              pushItem.width = '100';
               pushItem.height = '100';
+            }else if(item.code == 'barCode' || item.code == 'personBarCode'){
+              pushItem.width = '100';
+              pushItem.height = '40';
             }
             this.list.push(pushItem)
+            debugger
           }else{
             // 删除已取消值
             this.list.forEach((listItem, listIndex) => {
@@ -492,7 +510,7 @@ export default {
                   return contentItem == item.code
                 })
                 if(item){
-                  return listItem.name == item.mapName
+                  return listItem.value == item.code
                 }else{
                   return false
                 }
@@ -762,5 +780,12 @@ export default {
 }
 .barCode /deep/ .vue-barcode-element {
   width: 100%;
+  max-height: 92px;
+  height: auto;
+}
+.personBarCode /deep/ .vue-barcode-element {
+  width: 100%;
+  max-height: 92px;
+  height: auto;
 }
 </style>

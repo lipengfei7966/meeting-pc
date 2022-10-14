@@ -75,7 +75,7 @@
   // 头部
   &>header {
     background: #fff;
-    border: 1px solid #ababab;
+    //border: 1px solid #ababab;
     border-radius: 5px;
     margin-bottom: 5px;
 
@@ -87,7 +87,7 @@
       .el-row {
         .el-form-item-more {
           display: flex;
-          margin-top: 2px;
+          // margin-top: 2px;
           height: 27px;
 
           .el-form-item-more-left {
@@ -119,7 +119,8 @@
 
         .more-query {
           display: inline-block;
-          margin-top: 8px;
+          margin-top: 6px;
+          font-size: 14px;
           color: #3e6db5;
           cursor: pointer;
         }
@@ -131,9 +132,9 @@
         top: 5px;
 
         .el-button--small {
-          font-size: 12px;
+          font-size: 14px;
           border-radius: 3px;
-          padding: 5px 9px !important;
+          padding: 5px 9px;
           float: right;
         }
       }
@@ -150,6 +151,7 @@
         border-bottom: 1px solid #ababab;
         cursor: pointer;
         z-index: 99;
+        display: block;
 
         &:before {
           content: '';
@@ -195,7 +197,6 @@
     .top-operate {
       position: relative;
       width: calc(100% - 83px);
-      height: 27px;
       z-index: 99;
       margin-bottom: 3px;
       overflow-x: auto;
@@ -205,8 +206,14 @@
         /* Chrome Safari */
       }
 
+      &>.left-title {
+        display: none;
+      }
+
       .el-row {
-        position: absolute;
+        // position: absolute;
+        // left: 0;
+        // top: 0;
         transition: transform .3s;
 
         div {
@@ -215,24 +222,49 @@
           .el-button {
             // height: 32x;
             padding: 6px 10px;
+            font-size: 12px;
           }
 
           .el-button+.el-button {
             margin-left: -2px;
           }
         }
+
+        &>.right-buttons {
+          padding-left: 0;
+
+          .el-button {
+            padding: 5px 10px;
+            border: 1px solid #DCDFE6;
+
+            svg {
+              width: 16px;
+              height: 16px;
+            }
+          }
+
+          .el-button+.el-button {
+            margin-left: -2px;
+          }
+
+          .line {
+            display: none;
+          }
+        }
       }
+
     }
 
     .table-content {
       // border: 1px solid;
+
     }
 
     .bottom-operate {
       background: #fff;
-      height: 36px;
-      line-height: 36px;
-      border: 1px solid #ababab;
+      height: 40px;
+      line-height: 50px;
+      //border: 1px solid #ababab;
       border-top: none;
       border-radius: 0 0 5px 5px;
 
@@ -244,7 +276,7 @@
 
       .bottom-operate-right {
         float: right;
-        font-size: 12px;
+        font-size: 14px;
         color: #606266;
         margin-right: 5px;
       }
@@ -264,10 +296,10 @@
 
     .bs_echarts {
       width: 100%;
-      min-height: 500px;
+      // min-height: 500px;
       margin: 0 auto 5px;
       background: #ffffff;
-      border: 1px solid #ababab;
+      // border: 1px solid #ababab;
       border-radius: 5px;
     }
 

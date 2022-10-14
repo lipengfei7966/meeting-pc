@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container" style="margin-bottom:23px">
+  <div class="bs-new-container app-container" style="margin-bottom:23px">
     <el-alert title="页面初始化错误,请联系技术人员" v-if="showError" type="error" show-icon>
     </el-alert>
     <template v-if='showTemplate'>
@@ -135,7 +135,7 @@ export default {
     // 保存旧结构
     this.chartOptionBak = Object.assign({}, this.chartOption)
     const response = await request({
-      url: '/api/sys/codeReport/json',
+      url: '/api/code/report/json',
       method: 'post',
       data: {
         data: this.$route.params.id || this.$route.meta.title.replace('m', ''),
@@ -163,9 +163,9 @@ export default {
       this.explainData = Object.assign(this.explainData, resData.explainData)
       this.mainData = Object.assign({ hasLayout: this.hasLayout }, resData.mainData, {
         api: {
-          chartSearch: '/api/sys/codeReport/chartSearch',
-          search: '/api/sys/codeReport/reportSearch',
-          export: '/api/sys/codeReport/export'
+          chartSearch: '/api/code/report/chartSearch',
+          search: '/api/code/report/reportSearch',
+          export: '/api/code/report/export'
         },
         codeType: 'chart'
       })

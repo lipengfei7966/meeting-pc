@@ -1,0 +1,88 @@
+header {
+  margin: 10px !important;
+  padding: 10px 20px;
+  border: none !important;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 5px;
+
+  // form版面
+  .header-form-inline {
+    .is-checked {
+      height: 30px !important;
+      line-height: 30px !important;
+    }
+
+    .el-form-item,
+    .el-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      // justify-content: space-between;
+      width: 100% !important;
+      margin: 0 !important;
+
+      .el-col {
+        width: 33.3% !important;
+        height: 30px !important;
+        margin: 10px 0 !important;
+
+        .el-form-item__label {
+          width: auto;
+          height: 30px !important;
+          text-align: right !important;
+          display: block;
+          line-height: 30px !important;
+          color: #262626;
+          font-weight: 500;
+        }
+
+        .el-form-item__content {
+          width: 300px !important;
+        }
+
+        .el-form-item__content,
+        .input-validate,
+        .el-input,
+        input {
+          height: 30px !important;
+
+          .el-input__inner {
+            height: 30px !important;
+          }
+
+          .el-input__suffix {
+            transform: translate(0, 10%) !important;
+          }
+        }
+
+        input {
+          text-align: left !important;
+        }
+
+        .el-radio-group {
+          height: 30px !important;
+          padding-bottom: 8px !important;
+        }
+      }
+
+      .el-col-11 {
+        width: 46% !important;
+        margin: 0 !important;
+      }
+
+      .el-col-2 {
+        margin: 0 !important;
+        width: 8% !important;
+      }
+
+      .none {
+        width: 10px !important;
+        height: 30px !important;
+        padding: 0 !important;
+        margin: 5px !important;
+      }
+    }
+  }
+
+}

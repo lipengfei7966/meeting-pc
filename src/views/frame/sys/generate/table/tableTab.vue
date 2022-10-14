@@ -12,7 +12,7 @@ export default {
         param: this.param,
         editForm: this.editForm,
         api: {
-          search: '/api/sys/tableBiz/list'
+          search: '/api/code/tableBiz/list'
         },
         apiData: {
           search(param) {
@@ -99,7 +99,7 @@ export default {
     },
     onExplain() {
       request({
-        url: '/api/sys/codeReport/explainSqlListTable',
+        url: '/api/code/report/explainSqlListTable',
         method: 'POST',
         data: { data: this.param.codeId }
       })

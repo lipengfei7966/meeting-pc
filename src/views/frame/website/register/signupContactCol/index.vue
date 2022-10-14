@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
@@ -282,7 +282,7 @@ export default {
           funcOperation: '表单初始化'
         }
       })
-        .then((response) => {
+        .then(response => {
           this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
           this.loading = false
           this.handleCloseDialog(true)

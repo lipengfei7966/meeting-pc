@@ -2,21 +2,28 @@
   <main :style="{'width': clientWidth < 1366 ? (this.sidebar.opened && !app.isScreenFull ? '1163px' : '1323px') : 'auto'}">
     <!-- 顶部按钮 -->
     <div class='top-operate' v-if='mainData.isTopBar'>
+      <span class="left-title">应用列表</span>
       <el-row type='flex'>
-        <div>
-          <el-button v-db-click size="mini" @click='getList' style='margin-right:3px;'>
-            <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
+
+        <div v-for='(btn, index) in mainData.topBar' :key='index'>
+          <el-button v-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px;margin-top: 3px;height:32px;" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
+            <svg-icon :icon-class="btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName"></svg-icon>
+            {{$t(btn.i18n) || baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)}}
           </el-button>
         </div>
-        <div v-for='(btn, index) in mainData.topBar' :key='index'>
-          <el-button v-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-permission="btn.permitName ? btn.permitName : [btn.name]">
-            <svg-icon :icon-class="btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName"></svg-icon>{{$t(btn.i18n) || baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)}}
+        <div class="right-buttons">
+          <span class="line"></span>
+          <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
+            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
           </el-button>
+          <div class="right-btn" v-if="mainData.isColset">
+            <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
+          </div>
         </div>
       </el-row>
     </div>
     <!-- 列表 -->
-    <u-table ref="singleTable" use-virtual :height='tableHeight' :key='key' :row-height="24" :pagination-show='false' border :show-summary='mainData.table.showSummary' :summary-method="getSummaries">
+    <u-table ref="singleTable" use-virtual :height='tableHeight' :key='key' :row-height="rowHeight" :pagination-show='false' border :show-summary='mainData.table.showSummary' :summary-method="getSummaries">
       <u-table-column fixed align='center' type="index" width="50" :label='$t("table.id")' />
       <template v-for="(col, index) in formThead">
         <u-table-column :key="col.id" v-if='col.isShow' :resizable="col.resizable" v-bind='col' :show-overflow-tooltip="col.showOverflowTooltip" :sortable='mainData.table.sortable && col.sortable' :prop="col.prop" :label="$t(col.label)" :fixed="col.fixed" :width="col.width">
@@ -31,9 +38,6 @@
 
     <!-- 底部按钮 -->
     <div class='bottom-operate'>
-      <div class='bottom-operate-left' v-if='mainData.isColset'>
-        <el-table-column-set :id='mainData.table.id' :checked="checked" :checkList="tableCols" @change="checkChange"></el-table-column-set>
-      </div>
       <div class='bottom-operate-right' v-show='emptyTextVisible'>
         <svg-icon icon-class='point' style='color:#E6A23C'></svg-icon>{{$t('table.emptyText')}}
       </div>
@@ -91,7 +95,10 @@ export default {
           iconName: 'export',
           i18n: 'biz.btn.export'
         }
-      }
+      },
+      // 默认表高度
+      rowHeight: 38,
+      isHeight: true
     }
   },
   inject: ['app'],
@@ -260,6 +267,7 @@ export default {
       } else {
         this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
       }
+      this.tableHeight = this.tableHeight - 50
     },
     // 按钮事件自定义
     triggerEvent(button) {
@@ -482,3 +490,61 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+tr.el-table__row.success-row,
+tr.el-table__row.el-table__row--striped.success-row td {
+  background: #fff4e9 !important;
+}
+.top-operate {
+  width: 100% !important;
+  .left-title {
+    border-left: 4px solid #1890ff;
+    font-size: 16px;
+    font-weight: 600;
+    color: #262626;
+    padding-left: 10px;
+  }
+  .right-buttons {
+    // width: 100px;
+    height: 40px;
+    position: relative;
+    padding-left: 36px;
+    & > .right-btn {
+      display: inline-block;
+      margin: 0 8px;
+    }
+    & > .el-button {
+      border: none;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    & > .el-button:hover {
+      background: transparent !important;
+      use {
+        color: #606266 !important;
+      }
+    }
+    .line {
+      width: 1px;
+      height: 20px;
+      background: #ccc;
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
+.el-row--flex {
+  // width: 330px !important;
+  position: absolute;
+  height: 40px !important;
+}
+.bottom-operate-left {
+  float: none;
+  margin: 0 10px;
+}
+</style>

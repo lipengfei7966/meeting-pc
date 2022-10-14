@@ -24,8 +24,8 @@ export default {
         titleName: this.$route.meta.title,
         api: {
           view: '/get',
-          save: '/api/sys/tableBiz/save',
-          update: '/api/sys/tableBiz/save'
+          save: '/api/code/tableBiz/save',
+          update: '/api/code/tableBiz/save'
         },
         topButtons: [
           {

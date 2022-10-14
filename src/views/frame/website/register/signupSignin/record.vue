@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
@@ -14,57 +14,66 @@ export default {
   name: 'signupSigninRecord',
   data() {
     return {
-      colList:
-      [
+      colList: [
         {
-          title:'导入',
-          colList:[{
-            code: 'eventCode',
-            name: '会议名称',
-            dictCode: null,
-            funcName: null,
-            dict: null
-          }]
+          title: '导入',
+          colList: [
+            {
+              code: 'eventCode',
+              name: '会议名称',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
         },
         {
-          title:'导入',
-          colList:[{
-            code: 'contactCode',
-            name: '参会人编码',
-            dictCode: null,
-            funcName: null,
-            dict: null
-          }]
+          title: '导入',
+          colList: [
+            {
+              code: 'contactCode',
+              name: '参会人编码',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
         },
         {
-          title:'导入',
-          colList:[{
-            code: 'sceneName',
-            name: '场景名称',
-            dictCode: null,
-            funcName: null,
-            dict: null
-          }]
+          title: '导入',
+          colList: [
+            {
+              code: 'sceneName',
+              name: '场景名称',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
         },
         {
-          title:'导入',
-          colList:[{
-            code: 'signinWay',
-            name: '签到方式',
-            dictCode: null,
-            funcName: null,
-            dict: null
-          }]
+          title: '导入',
+          colList: [
+            {
+              code: 'signinWay',
+              name: '签到方式',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
         },
         {
-          title:'导入',
-          colList:[{
-            code: 'signinDate',
-            name: '签到时间',
-            dictCode: null,
-            funcName: null,
-            dict: null
-          }]
+          title: '导入',
+          colList: [
+            {
+              code: 'signinDate',
+              name: '签到时间',
+              dictCode: null,
+              funcName: null,
+              dict: null
+            }
+          ]
         }
       ],
       tempExcelPath: signinTemplate,
@@ -103,11 +112,11 @@ export default {
             element: 'base-select',
             //default:'',
             attrs: {
-              clearable:false,
-              data: "DICTYPE",
+              clearable: false,
+              data: 'DICTYPE',
               params: {
-                type:"2",
-                eventCode:this.$route.params.data
+                type: '2',
+                eventCode: this.$route.params.data
               }
             },
             event: {
@@ -188,7 +197,10 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'pc签到',value:'pc'},{label:'扫码签到',value:'scan'}]
+            list: [
+              { label: 'pc签到', value: 'pc' },
+              { label: '扫码签到', value: 'scan' }
+            ]
           },
           {
             type: 'date',
@@ -211,7 +223,7 @@ export default {
         initSearch: false,
         isTopBar: true,
         topBar: [
-        {
+          {
             iconName: '导入',
             i18n: 'biz.btn.import',
             permitName: ['import'],
@@ -323,17 +335,17 @@ export default {
       link.click()
       link.remove()
     },
-    Load(result){
+    Load(result) {
       this.$refs.bsTable.getList({ name: 'search' })
-      let str = result.join(' <br/> ');
+      let str = result.join(' <br/> ')
       this.$message({
         dangerouslyUseHTMLString: true,
         message: str,
         type: 'warning'
-      });
+      })
     },
-    Excel(){
-      excelUtil.uploadTemplateData(this, '/api/register/signupSignin/uploadExcel','签到记录导入',this.colList,this.Load);
+    Excel() {
+      excelUtil.uploadTemplateData(this, '/api/register/signupSignin/uploadExcel', '签到记录导入', this.colList, this.Load)
     }
   }
 }

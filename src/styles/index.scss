@@ -3,11 +3,12 @@
 @import './frame/sidebar.scss'; // 侧边栏
 @import './frame/theme.scss'; // 主题文件
 @import './frame/table-page.scss'; // 通用表格
-@import './frame/element-ui-new.scss'; // element reset
 @import './frame/dialog-common.scss'; // 通用弹窗
 @import './frame/tree.scss'; // 树形图
 @import './frame/login.scss'; // 登录
+@import './frame/tags-view.scss'; //顶部导航
 
+// @import './frame/bs-form.scss'; //通用表单
 :root {
   --navFontColor: #ffffff; // 导航栏右侧字体颜色
   --menuBg: #3e6db5; // 一级颜色
@@ -105,6 +106,14 @@ div:focus {
   }
 }
 
+.hover {
+  background: #e6f7ff !important;
+
+  &>span {
+    color: #54a9ff !important;
+  }
+}
+
 code {
   padding: 15px 16px;
   display: block;
@@ -127,8 +136,13 @@ li {
 }
 
 .app-container {
+  height: 100%;
   background: #f3f4f6;
   border-bottom-left-radius: 5px;
+}
+
+.main-wrapper {
+  max-height: calc(100% - 48px) !important;
 }
 
 // 多头/空头样式
@@ -144,7 +158,24 @@ li {
   font-weight: bold;
 }
 
+// .main-container{
+//   margin-left: 50px !important;
+// }
+
+
 // 媒体查询
+@media screen and (min-width: 0) and (max-width: 930px) {
+  .right-menu {
+    min-width: 278px;
+  }
+}
+
+@media screen and (min-width: 1365px) and (max-width: 1920px) {
+  .right-menu {
+    min-width: 503px;
+  }
+}
+
 @media screen and (min-width: 0) and (max-width: 1366px) {
   .el-form-item__content {
     .el-radio+.el-radio {
@@ -179,6 +210,17 @@ li {
       padding-left: 2px !important;
     }
   }
+}
+
+.app-main[data-v-080c255a] {
+  height: 100%;
+  background: #f0f2f5 !important;
+}
+
+.bs-new-container[data-v-aed456d2] {
+  width: calc(100% - 10px) !important;
+  //   left: 10px !important;
+  //   overflow: hidden;
 }
 
 @media screen and (min-width: 1920px) {

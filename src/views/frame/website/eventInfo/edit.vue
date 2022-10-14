@@ -67,7 +67,7 @@ export default {
               cols: 3,
               data: 'CUSTOMER_CONTACT',
               params: {
-                customerCode: this.param.customerCode==undefined?'':this.param.customerCode
+                customerCode: this.param.customerCode == undefined ? '' : this.param.customerCode
               },
               clearable: true
             },
@@ -160,7 +160,6 @@ export default {
       const parentCodeRef = toolUtil.getDefDialogItemByProp(this, 'contactCode')
       parentCodeRef.attrs.params.customerCode = item.code
     }
-
   }
 }
 </script>

@@ -147,6 +147,7 @@ export default {
       menuInfo: '菜单信息'
     },
     btn: {
+      unlock: '解除锁定',
       quickConfirm: '确认',
       quickConfirmList: '批量确认',
       start: '启动',
@@ -163,7 +164,6 @@ export default {
       get: '取得',
       blank: '',
       register: '注册',
-      registerLic: '生成Lic',
       update: '修改',
       change: '变更',
       step: '流程引导',
