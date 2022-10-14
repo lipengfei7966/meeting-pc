@@ -81,10 +81,8 @@ export default {
         this.$message('请输入文件夹名称')
       } else {
         if (this.title_ == '新建文件夹') {
-          debugger
           this.add()
         } else if (this.title_ == '编辑文件夹') {
-          debugger
           this.getData.name = this.workName
           this.edit()
         }
@@ -181,5 +179,15 @@ export default {
 }
 .el-icon-arrow-down {
   font-size: 12px;
+}
+
+.el-tree {
+  height: 95vh;
+  overflow-x: auto;
+}
+
+.el-tree > .el-tree-node {
+  display: inline-block;
+  min-width: 100%;
 }
 </style>

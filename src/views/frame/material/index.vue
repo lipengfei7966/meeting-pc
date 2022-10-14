@@ -2,7 +2,7 @@
   <div class="material">
     <!-- 左侧树 -->
     <el-card class="box-card content_one">
-      <div>
+      <div class="">
         <tree @matter="matter" />
       </div>
     </el-card>
@@ -14,23 +14,23 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="文件类型">
-                  <el-select filterable size="mini" v-model="fileSearch.type_" clearable>
-                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.name" :key="item.name"></el-option>
+                  <el-select filterable size="mini" v-model="fileSearch.picType" clearable>
+                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="排序">
                   <el-select filterable size="mini" v-model="fileSearch.rank_" clearable>
-                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.name" :key="item.name"></el-option>
+                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="文件名称">
-                  <el-input size="mini" v-model="fileSearch.name_" clearable>
+                  <el-input size="mini" v-model="fileSearch.picName" clearable>
                     <template slot="append">
-                      <span @click="searchClick" style="padding: 0 20px; cursor: pointer">
+                      <span @click="searchClick" style="padding: 0px 20px; cursor: pointer; line-height: 26px; display: inline-block">
                         <i class="el-icon-search"></i>
                       </span>
                     </template>
@@ -44,13 +44,11 @@
           <el-button type="primary">移动</el-button>
           <el-button>删除</el-button>
         </div> -->
-        <ul v-if="matterList.length > 0" class="content_" @scroll.passive="getScroll($event)">
+        <ul v-if="matterList.length > 0" id="app_" class="content_" @scroll.passive="getScroll($event)">
           <li class="resource" v-for="(item, index) in matterList" :key="index">
             <p>{{ item.picName }}</p>
             <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
-            <div>
-              <el-button type="text">文件信息</el-button>
-            </div>
+            <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
           <!-- <li class="resource">视频</li> -->
         </ul>
@@ -67,16 +65,28 @@
         </div>
         <div class="set_two">
           <div class="particulars">
-            <span style="font-size: 14px; color: black">文件名：</span>
-            <el-input @blur="blur_" v-model="workName" style="width: 70%" placeholder="请输入文件名"></el-input>
-            <p>大小：<span class="sp">256KB</span></p>
-            <p>格式：<span class="sp">JPG</span></p>
-            <p>类型：<span class="sp">图片</span></p>
-            <p>尺寸：<span class="sp">1920*1000</span></p>
-            <p>上传时间：<span class="sp">2021-02-19</span></p>
-            <p>所在文件夹：<span class="sp">PC轮播图</span></p>
+            <span style="font-size: 12px; color: black">文件名：</span>
+            <el-input size="mini" @blur="blur_" v-model="workName" style="width: 70%" placeholder="请输入文件名"></el-input>
             <p>
-              文件链接：<span class="sp">{{ aaa | commentEllipsis(aaa) }}</span>
+              大小：<span class="sp">{{ more.big }}</span>
+            </p>
+            <p>
+              格式：<span class="sp">{{ more.format }}</span>
+            </p>
+            <p>
+              类型：<span class="sp">{{ more.type }}</span>
+            </p>
+            <p>
+              尺寸：<span class="sp">{{ more.size }}</span>
+            </p>
+            <p>
+              上传时间：<span class="sp">{{ more.createdTime }}</span>
+            </p>
+            <p>
+              所在文件夹：<span class="sp">{{ more.place }}</span>
+            </p>
+            <p>
+              文件链接：<span class="sp">{{ more.link | commentEllipsis(more.link) }}</span>
               <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">复制链接</el-button>
             </p>
             <div class="btn">
@@ -84,18 +94,19 @@
               <el-button @click="upload_" style="margin-right: 2vw">替换文件</el-button>
               <input v-show="false" ref="fileRef" type="file" @change="fileChange($event)" />
               <!--  -->
-              <el-button type="primary" @click="download_">下载</el-button>
+              <el-button type="primary" @click="download_()">下载</el-button>
             </div>
           </div>
         </div>
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh" v-else><span></span><el-empty description="请选择图片..."></el-empty></div>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh" v-else><span></span><el-empty description="请选择文件"></el-empty></div>
     </el-card>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
+import { resolve } from 'path'
 import tree from './components/tree'
 export default {
   name: 'material',
@@ -105,25 +116,51 @@ export default {
   data() {
     return {
       fileSearch: {
-        type_: '',
+        picType: '',
         rank_: '',
-        name_: ''
+        picName: ''
       },
       workName: '',
-      leixingOptions: [{ name: '图片' }, { name: '视频' }],
-      paixuOptions: [{ name: '按上传时间升序' }, { name: '按上传时间降序' }],
-      url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      srcList: ['https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'],
-      aaa: 'https://www.csdn.net/tags/MtTaAg0sMzMwNDEtYmxvZwO0O0OO0O0O.html',
+      leixingOptions: [
+        { name: '图片', id: '0' },
+        { name: '视频', id: '1' }
+      ],
+      paixuOptions: [
+        { name: '按上传时间升序', id: 'createDate.asc' },
+        { name: '按上传时间降序', id: 'createDate.desc' }
+      ],
+      url: '',
+      srcList: [],
       exhibition: false,
-      exhibitionRight: true,
-      matterList: []
+      exhibitionRight: false,
+      matterList: [],
+      treeDatas: null,
+      current: 1,
+      total: 1,
+      pageSize: 20,
+      // 右侧详细信息
+      more: {
+        // 大小
+        big: '暂未获取',
+        // 格式
+        format: '',
+        // 类型
+        type: '',
+        // 尺寸
+        size: '',
+        // 上传时间
+        createdTime: '',
+        // 所在文件夹
+        place: '',
+        // 文件链接
+        link: ''
+      }
     }
   },
   methods: {
     // 复制文件链接
     copyUrl(item, type) {
-      var copyTest = this.aaa
+      var copyTest = this.more.link
       var inputTest = document.createElement('input')
       inputTest.value = copyTest
       document.body.appendChild(inputTest)
@@ -136,18 +173,25 @@ export default {
     // 顶部搜索
     searchClick() {
       console.log('搜索', this.fileSearch)
+      this.pageSize = 20
+      this.current = 1
+      this.loadData(this.treeDatas)
     },
     blur_() {
       console.log('失焦了 调保存接口吧')
     },
-
+    // 滚动刷新
     getScroll(event) {
-      // 滚动条距离底部的距离scrollBottom
-      let scrollBottom = event.target.scrollHeight - event.target.scrollTop - event.target.clientHeight
-      console.log(scrollBottom)
-      // if (this.finished && scrollBottom < 40) {
-      //  操作
-      // }
+      const body = document.getElementById('app_')
+      const windowHeight = body.clientHeight
+      if (Math.ceil(event.target.scrollTop + windowHeight) >= event.target.scrollHeight) {
+        if (this.current < Math.ceil(this.total / 20)) {
+          this.current++
+          this.pageSize = this.current * 20
+        }
+        console.log('到底了！')
+        this.loadData(this.treeDatas)
+      }
     },
     upload_() {
       this.$refs.fileRef.dispatchEvent(new MouseEvent('click')) //弹出选择本地文件
@@ -159,26 +203,105 @@ export default {
     },
     download_() {
       console.log('下载')
+      this.downloadEvt(this.more.link, this.workName)
+    },
+    downloadEvt(url, name) {
+      let image = new Image()
+      image.setAttribute('crossOrigin', 'anonymous')
+      image.src = url
+      image.onload = () => {
+        let canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        let ctx = canvas.getContext('2d')
+        ctx.drawImage(image, 0, 0, image.width, image.height)
+        canvas.toBlob((blob) => {
+          let url = URL.createObjectURL(blob)
+          this.download(url, name)
+          // 用完释放URL对象
+          URL.revokeObjectURL(url)
+        })
+      }
+    },
+    download(href, name) {
+      let eleLink = document.createElement('a')
+      eleLink.download = name
+      eleLink.href = href
+      eleLink.click()
+      eleLink.remove()
     },
     matter(data) {
       this.exhibition = true
+      this.treeDatas = data
       this.loadData(data)
     },
     loadData(data) {
+      const loading = this.$loading({
+        lock: true,
+        text: '加载中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       request({
-        url: '/api/cms/picinfo/listpicurl',
+        url: '/api/cms/picinfo/page',
         method: 'POST',
-        data: { data: { materialCode: data.code }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
+        data: { current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName, defaultSortString: this.fileSearch.rank_ }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
       })
         .then((res) => {
           if (res.data) {
-            debugger
+            loading.close()
             this.matterList = res.data
+            this.total = res.total
             console.log(res.data)
           } else {
+            loading.close()
           }
         })
         .catch(() => {})
+    },
+    details(item, index) {
+      // 打开右侧详细
+      this.exhibitionRight = true
+      // 对右侧信息进行赋值
+      this.workName = item.picName
+      this.url = item.picUrl
+      this.srcList[0] = item.picUrl
+      // 格式--- start
+      let mun = item.picUrl.split('.')
+      let format = mun[mun.length - 1]
+      this.more.format = format
+      // 格式--- end
+      // 类型--- start
+      if (item.picType == '0') {
+        this.more.type = '图片'
+      } else if (item.picType == '1') {
+        this.more.type = '视频'
+      }
+      // 类型--- end
+      // 尺寸--- start
+      this.getImageSize(item.picUrl)
+      // 尺寸--- end
+      // 上传时间 --- start
+      this.more.createdTime = item.createDate
+      // 上传时间--- end
+      //所在文件夹--- start
+      this.more.place = this.treeDatas.name
+      // 所在文件夹--- end
+      // 文件链接
+      this.more.link = item.picUrl
+      // 文件链接
+      console.log(item, index)
+    },
+    getImageSize(url) {
+      return new Promise((resolve) => {
+        var img = document.createElement('img')
+        img.src = url
+        img.onload = () => {
+          resolve(img.naturalWidth, img.naturalHeight)
+          this.more.size = img.naturalWidth + '*' + img.naturalHeight
+          console.log('宽高', img.naturalWidth, img.naturalHeight)
+        }
+      })
     }
   },
   filters: {
@@ -226,16 +349,13 @@ export default {
   padding-top: 20px;
   width: 100%;
   height: 5%;
-  // border-bottom: 1px solid lightgrey;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
 .content_ {
   width: 100%;
-  // hkz
   height: 85vh;
-  // margin: auto;
   text-align: center;
-  overflow-y: auto;
+  overflow: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -247,7 +367,6 @@ export default {
     border-radius: 10px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     p {
-      // line-height: 30px;
       margin: 5px 0;
     }
   }
@@ -263,6 +382,10 @@ export default {
 .set_one {
   width: 100%;
   height: 30vh;
+  padding: 0 1%;
+  img {
+    border-radius: 10px;
+  }
 }
 .set_two {
   margin-top: 5vh;
@@ -272,11 +395,11 @@ export default {
 .particulars {
   p {
     margin-top: 2vh;
-    font-size: 14px;
+    font-size: 12px;
     color: black;
   }
   .sp {
-    font-size: 14px;
+    font-size: 12px;
     color: lightslategrey;
   }
   .btn {
@@ -286,5 +409,21 @@ export default {
 .el-card__body,
 .el-main {
   padding: 10px;
+}
+// 改变默认滚动条样式
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #ebeef5;
+}
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #ccc;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 1);
 }
 </style>
