@@ -10,7 +10,7 @@
           <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="listQuery.data" class='header-form-inline'>
             <el-row :gutter="20" style='width:94%;'>
               <template v-for='(f, index) in dialog.formData'>
-                <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" :key='index' v-if='f.isShow !== false'>
+                <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 8 : 8" :key='index' v-if='f.isShow !== false'>
                   <!-- 日期 -->
                   <el-form-item v-if='f.type === "date"' :required='Array.isArray(f.props) && Array.isArray(f.validate)' :label="$t(f.label)" :prop='f.prop'>
                     <template v-if='Array.isArray(f.props)'>
@@ -92,7 +92,6 @@
                   <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
                 </el-col>
               </template>
-              <el-col class="none"></el-col>
             </el-row>
             <!-- 右侧搜索按钮 -->
             <div class="search-btn" v-permission="['query']">

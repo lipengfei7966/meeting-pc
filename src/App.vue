@@ -57,13 +57,15 @@ export default {
       //     .css('opacity', 0)
       })
       $(document).on('mouseover', '.el-form-item__label', function() {
-        console.log($(this))
+        console.log($(this).html(),60)
         const labelMsg =$(this).html()
           // || i18n.t('biz.placeholder.require')
         if (
           $(this)
             .parent('.el-form-item')
             .find('.el-form-label__frameBox').length === 0
+            &&
+            $(this).html().length >= 8
         ) {
           $(this)
             .parent('.el-form-item')

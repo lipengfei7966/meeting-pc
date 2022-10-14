@@ -1,4 +1,9 @@
 .app-container {
+  padding: 10px !important;
+  background: #f0f2f5 !important;
+  padding-bottom: 20px !important;
+  position: relative;
+
   @mixin clearfix {
     &:after {
       content: "";
@@ -228,6 +233,28 @@
           .el-button+.el-button {
             margin-left: -2px;
           }
+        }
+
+        &>.right-buttons {
+          // padding-left: 0;
+
+          .el-button {
+            padding: 5px 10px;
+            border: 1px solid #DCDFE6;
+
+            svg {
+              width: 16px;
+              height: 16px;
+            }
+          }
+
+          .el-button+.el-button {
+            margin-left: -2px;
+          }
+
+          // .line {
+          //   display: none;
+          // }
         }
 
         &>.right-buttons {

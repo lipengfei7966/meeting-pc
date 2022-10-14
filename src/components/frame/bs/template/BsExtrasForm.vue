@@ -271,10 +271,6 @@ export default {
   methods: {
     // 重置
     onReset() {
-      //置空
-      for (const k in this.form.listQuery.data) {
-        this.form.listQuery.data[k] = ''
-      }
       this.items = [] //更多
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
