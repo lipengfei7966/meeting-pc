@@ -68,10 +68,18 @@
         </el-card>
         <el-card class="formPreview">
           <div>
-            <h2>2022完美海南博鳌研讨会</h2>
+            <h2 style="text-align:center">2022完美海南博鳌研讨会</h2>
             <draggable v-model="setInfoList" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
               <transition-group>
-                <div class="item" v-for="element in setInfoList" :key="element.value">{{element.label}}</div>
+                <!-- <div class="item">
+                  姓名：<el-input type="text"></el-input>
+                </div> -->
+                <div class="setInfoItem" v-for="element in setInfoList" :key="element.value">
+                  <div>
+                    {{element.label}} <el-input style="width: 50%" type="text" size="mini"></el-input>
+                  </div>
+
+                </div>
               </transition-group>
             </draggable>
           </div>
@@ -258,6 +266,12 @@ export default {
       ],
       drag: false,
       setInfoList: [
+        {
+          label: '姓名',
+          type: 'input',
+          isRequired: false,
+          placeholder: '',
+        },
         {label: '姓名', value: 'name'},
         {label: '性别', value: 'gender'},
         {label: '证件', value: 'certificate'},
@@ -333,8 +347,10 @@ export default {
 .formSet {
   display: flex;
   justify-content: space-between;
+  min-width: 1130px;
   .formInfo {
     width: 20%;
+
     .formInfoTitle {
       text-align: center;
       font-size: 15px;
@@ -345,8 +361,8 @@ export default {
       justify-content: space-between;
     }
     .formInfoItem {
-      min-width: 60px;
-      margin: 10px 20px;
+      min-width: 50px;
+      margin: 10px 10px;
       text-align: center;
       cursor: pointer;
     }
@@ -354,6 +370,12 @@ export default {
   .formPreview {
     width: 60%;
     margin: 0 20px;
+    .setInfoItem {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px 30px;
+      background: #eee;
+    }
   }
   .formEdit {
     width: 20%;
