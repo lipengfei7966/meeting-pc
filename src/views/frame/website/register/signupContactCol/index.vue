@@ -24,7 +24,7 @@
                   <h2>基本信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex"> {{ baseInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex" v-show="!baseInfoItem.isSee" @click="addSetInfoList(baseInfoItem,baseInfoList,'baseInfoList')"> {{ baseInfoItem.label }} </li>
                 </ul>
               </el-collapse-item>
 
@@ -33,7 +33,7 @@
                   <h2>联系方式</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(contactWayItem, contactWayIndex) in contactWayList" :key="contactWayIndex"> {{ contactWayItem.label }} </li>
+                  <li class="formInfoItem" v-for="(contactWayItem, contactWayIndex) in contactWayList" :key="contactWayIndex" v-show="!contactWayItem.isSee" @click="addSetInfoList(contactWayItem,contactWayList,'contactWayList')"> {{ contactWayItem.label }} </li>
                 </ul>
               </el-collapse-item>
 
@@ -42,7 +42,7 @@
                   <h2>工作信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex"> {{ workInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex" v-show="!workInfoItem.isSee" @click="addSetInfoList(workInfoItem,workInfoList,'workInfoList')"> {{ workInfoItem.label }} </li>
                 </ul>
               </el-collapse-item>
 
@@ -51,7 +51,7 @@
                   <h2>自定义信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(customInfoItem, customInfoIndex) in customInfoList" :key="customInfoIndex"> {{ customInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(customInfoItem, customInfoIndex) in customInfoList" :key="customInfoIndex" v-show="!customInfoItem.isSee" @click="addSetInfoList(customInfoItem,customInfoList,'customInfoList')"> {{ customInfoItem.label }} </li>
                 </ul>
               </el-collapse-item>
 
@@ -60,7 +60,7 @@
                   <h2>特殊信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList" :key="specialInfoIndex"> {{ specialInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList" :key="specialInfoIndex" v-show="!specialInfoItem.isSee" @click="addSetInfoList(specialInfoItem,specialInfoList,'specialInfoList')"> {{ specialInfoItem.label }} </li>
                 </ul>
               </el-collapse-item>
             </el-collapse>
@@ -74,11 +74,13 @@
                 <!-- <div class="item">
                   姓名：<el-input type="text"></el-input>
                 </div> -->
-                <div class="setInfoItem" v-for="element in setInfoList" :key="element.value">
-                  <div>
-                    {{element.label}} <el-input style="width: 50%" type="text" size="mini"></el-input>
+                <div class="setInfoItem" v-for="(element,index) in setInfoList" :key="element.value">
+                  <div class="form-item-input">
+                    {{element.label}} <el-input style="width: 50%" :type="element.type" size="mini" :placeholder="element.placeholder" v-model="element.content"></el-input>
                   </div>
-
+                  <div>
+                    <div class="remove-button el-icon-remove-outline" @click="delSetInfoList(element,index)"></div>
+                  </div>
                 </div>
               </transition-group>
             </draggable>
@@ -266,16 +268,17 @@ export default {
       ],
       drag: false,
       setInfoList: [
-        {
-          label: '姓名',
-          type: 'input',
-          isRequired: false,
-          placeholder: '',
-        },
-        {label: '姓名', value: 'name'},
-        {label: '性别', value: 'gender'},
-        {label: '证件', value: 'certificate'},
-        {label: '照片', value: 'photo'},
+        // {
+        //   label: '姓名',
+        //   type: 'input',
+        //   isRequired: false,
+        //   placeholder: '',
+        //   value: 'name'
+        // },
+      //   {label: '姓名', value: 'name'},
+      //   {label: '性别', value: 'gender'},
+      //   {label: '证件', value: 'certificate'},
+      //   {label: '照片', value: 'photo'},
       ], // 选中的配置信息列表
       // 表格高度
       formSetHeight: 0,
@@ -286,6 +289,60 @@ export default {
   },
   mounted() {},
   methods: {
+    //移除表单信息
+    delSetInfoList(itemList,itemIndex){
+      switch (itemList.parentListName) {
+        case 'baseInfoList':
+          var index = this.baseInfoList.findIndex(item=>{
+            return item.value == itemList.value;
+          })
+          this.baseInfoList[index].isSee = false;
+          this.setInfoList.splice(itemIndex,1);
+          break;
+        case 'contactWayList':
+          var index = this.contactWayList.findIndex(item=>{
+            return item.value == itemList.value;
+          })
+          this.contactWayList[index].isSee = false;
+          this.setInfoList.splice(itemIndex,1);
+          break;
+        case 'workInfoList':
+          var index = this.workInfoList.findIndex(item=>{
+            return item.value == itemList.value;
+          })
+          this.workInfoList[index].isSee = false;
+          this.setInfoList.splice(itemIndex,1);
+          break;
+        case 'customInfoList':
+          var index = this.customInfoList.findIndex(item=>{
+            return item.value == itemList.value;
+          })
+          this.customInfoList[index].isSee = false;
+          this.setInfoList.splice(itemIndex,1);
+          break;
+        case 'specialInfoList':
+          var index = this.specialInfoList.findIndex(item=>{
+            return item.value == itemList.value;
+          })
+          this.specialInfoList[index].isSee = false;
+          this.setInfoList.splice(itemIndex,1);
+          break;
+        default:
+          break;
+      }
+    },
+    // 添加表单信息
+    addSetInfoList(itemList,parentList,parentListName){   //当前点击的tag   当前点击tag的数组
+      // placeholder 输入框提示词  content 输入的值  isSee 是否在表单中的布尔值
+      console.log(parentList)
+      var obj = {'label':itemList.label,'value':itemList.value,content:'','placeholder':`请输入${itemList.label}`,'content':'','isSee':true,'parentListName':parentListName};
+      var index = parentList.findIndex(item => {
+        return item.value == itemList.value
+      })
+      console.log(index,294);
+      parentList[index].isSee = true;
+      this.setInfoList.push(obj);
+    },
     //开始拖拽事件
       onStart(){
         this.drag=true;
@@ -375,6 +432,16 @@ export default {
       margin: 10px 0;
       padding: 10px 30px;
       background: #eee;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .form-item-input {
+        width: 70%;
+      }
+      .remove-button {
+        font-size: 20px;
+        line-height: 28px;
+      }
     }
   }
   .formEdit {
