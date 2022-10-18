@@ -8,8 +8,8 @@
     </el-card>
     <!-- 中间素材列表 -->
     <el-card class="box-card content_two">
-      <div v-if="exhibition">
-        <div class="search">
+      <div v-if="exhibition" style="height: 95vh">
+        <div class="search_">
           <el-form :model="fileSearch" label-width="90px">
             <el-row>
               <el-col :span="8">
@@ -55,7 +55,7 @@
         <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span><el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty></div>
         <!-- @/assets/image/wushuju.png -->
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh" v-else><span></span><el-empty description="请选择文件夹"></el-empty></div>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span><el-empty description="请选择文件夹"></el-empty></div>
     </el-card>
     <!-- 右侧详细信息 -->
     <el-card class="box-card content_three">
@@ -99,7 +99,7 @@
           </div>
         </div>
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh" v-else><span></span><el-empty description="请选择文件"></el-empty></div>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span><el-empty description="请选择文件"></el-empty></div>
     </el-card>
   </div>
 </template>
@@ -190,7 +190,7 @@ export default {
           this.current++
           this.pageSize = this.current * 20
         }
-        console.log('到底了！')
+        console.log('到底了！', Math.ceil(event.target.scrollTop + windowHeight), event.target.scrollHeight)
         this.loadData(this.treeDatas)
       }
     },
@@ -207,25 +207,27 @@ export default {
       formData.append('id', thiz.pId) // 额外参数
       formData.append('url', thiz.more.link)
       formData.append('file', e.target.files[0])
-      let loading = thiz.$loading({
+      let loading_ = thiz.$loading({
         lock: true,
         text: '上传中，请稍候...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
       request({
-        url: '/api/cms/picinfo/updat',
+        url: '/api/cms/picinfo/update',
         method: 'POST',
         data: formData
       })
         .then((data) => {
           if (data) {
+            loading_.close()
             thiz.$message('上传文件成功')
-            this.loadData()
+            this.loadData(this.treeDatas)
+            this.exhibitionRight = false
           } else {
+            loading_.close()
             thiz.$message('上传文件失败')
           }
-          loading.close()
         })
         .catch(() => {})
       //替换文件--- end
@@ -376,11 +378,11 @@ export default {
   height: 98%;
   margin: 5px;
 }
-.search {
+.search_ {
   padding: 0px 20px;
   padding-top: 20px;
   width: 100%;
-  height: 5%;
+  height: 10%;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
 .content_ {
@@ -457,5 +459,8 @@ export default {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   background: rgba(255, 255, 255, 1);
+}
+.set {
+  height: 95vh;
 }
 </style>
