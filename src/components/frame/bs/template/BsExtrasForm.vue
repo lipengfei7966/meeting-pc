@@ -269,13 +269,31 @@ export default {
     }
   },
   methods: {
-    // 重置
-    onReset() {
-      this.items = [] //更多
+// 重置
+onReset() {
+      var arr = [];
+      this.form.formData.forEach(item => {
+        if(item.validate){
+          arr.push(item.prop);
+        }
+      })
+      for (const key in this.form.listQuery.data) {
+        if(arr.length > 0){
+          arr.forEach(it =>{
+            if(key !== it){
+              this.form.listQuery.data[key]=""
+            }
+          })
+        }else{
+          this.form.listQuery.data[key]=""
+        }
+      }
+      this.items = []
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
-      this.addQueryConditionVisible = true
+      this.addQueryConditionVisible = true;
     },
+
     initExtraQuery() {
       this.form.formData.forEach(v => {
         if (v.attrs && v.attrs.encript) {

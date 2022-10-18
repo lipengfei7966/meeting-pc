@@ -386,11 +386,29 @@ export default {
     this.scrolbox.addEventListener('scroll', this.handleScroll())
   },
   methods: {
-    // 重置
-    onReset() {
+     // 重置
+     onReset() {
+      var arr = [];
+      this.treeTableData.form.formData.forEach(item => {
+        if(item.validate){
+          arr.push(item.prop);
+        }
+      })
+      for (const key in this.listQuery.data) {
+        if(arr.length > 0){
+          arr.forEach(it =>{
+              if(key != it){
+                this.listQuery.data[key]=""
+              }
+          })
+        }else{
+          this.form.listQuery.data[key]=""
+        }
+      }
       this.items = []
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
+      this.addQueryConditionVisible = true;
     },
     // 展开收起
     expand() {
