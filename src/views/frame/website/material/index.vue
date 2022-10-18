@@ -225,11 +225,9 @@ export default {
           } else {
             thiz.$message('上传文件失败')
           }
-          // loading.close()
-        })
-        .catch(() => {
           loading.close()
         })
+        .catch(() => {})
       //替换文件--- end
     },
     download_() {
