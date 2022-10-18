@@ -19,6 +19,7 @@ export default {
       edit: {
         eventName: '会议名称',
         customerName: '客户名称',
+        contactCode: '联系人',
         startDate: '开始时间',
         endDate: '结束时间',
         eventPlace: '活动地点',
@@ -67,6 +68,7 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
@@ -80,6 +82,7 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
@@ -113,6 +116,7 @@ export default {
         signNum: '签到次数',
         checkFlag: '状态',
         contactCode: '参会人编码',
+        personnelCode: '人员编码',
         createDate: '报名时间'
       },
       list: {
@@ -121,6 +125,7 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         certificateNum: '办证次数',
@@ -155,6 +160,7 @@ export default {
         signNum: '签到次数',
         checkFlag: '状态',
         contactCode: '参会人编码',
+        personnelCode: '人员编码',
         createDate: '办证时间',
         certificateTime: '办证时间'
       },
@@ -164,6 +170,7 @@ export default {
         email: '邮箱',
         department: '单位',
         code: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
@@ -192,6 +199,7 @@ export default {
         email: '邮箱',
         department: '单位',
         contactCode: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         certificateFlag: '办证状态',
         signFlag: '签到状态',
@@ -207,6 +215,7 @@ export default {
         email: '邮箱',
         department: '单位',
         contactCode: '参会人编码',
+        personnelCode: '人员编码',
         contactType: '参会人类型',
         signinStatus: '签到状态',
         signinDate: '签到时间',
@@ -214,7 +223,9 @@ export default {
         sceneName: '场景名称',
         signupData: '报名时间',
         title: '添加参会人',
-        eventCode: '会议名称'
+        eventCode: '会议名称',
+        code: '参会人编码',
+        createDate: '报名时间'
       }
     },
     signupContactCol: {
@@ -283,5 +294,6 @@ export default {
         customerCode: '客户'
       }
     }
+
   }
 }

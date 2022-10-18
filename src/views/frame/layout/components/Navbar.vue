@@ -1,12 +1,13 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <div :class="['logo', {'show': true}]" @click="$router.push('/')">
+    <div :style="{'width':!sidebar.opened?'50px':'192px'}" :class="['logo', {'show': true}]" @click="$router.push('/')">
       <img src="@/assets/frame/img/logo.png" alt="">
-      <span>会议系统</span>
+      <span v-show="sidebar.opened">会议系统</span>
     </div>
-    <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
+    <!-- 收缩 -->
+    <!-- <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
       <img src="@/assets/frame/img/hamburger.png" alt="">
-    </div>
+    </div> -->
     <div class='business-module' :style="{'width': moduleWidth + 'px'}">
       <div :class="[menu.name === activeModule || menu.name === app.moduleName ?  'module active' : 'module']" v-for='menu in permissionMenus.slice(0, Math.floor(moduleWidth / 140))' :key="menu.name" @click='moduleClick(menu.name)'>
         <svg-icon :icon-class="menu.meta.icon || ''"></svg-icon>{{ generateTitle(menu.meta.title) }}
@@ -25,9 +26,29 @@
       </el-dropdown>
     </div>
 
-    <div class='right-menu'>
+    <div class='right-menu clearfix'>
+      <!-- 搜索 -->
+      <div class='search'>
+        <!-- <el-input v-model="input" ref="search" class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch" @focus="showSearchContent = true" @blur="showSearchContent = false"></el-input> -->
+        <!-- 折叠框 -->
+        <!-- <ol class="searchContent" v-if="showSearchContent">
+          <li v-for="item in searchMenu" :key="item.name" v-show='!item.hidden'>
+            <router-link v-if='!item.children' :to="{name:item.name}" :key="item.name">
+              <span v-if="item.meta && item.meta.title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
+            </router-link>
+          </li>
+        </ol> -->
+
+        <el-autocomplete class="input-search-style" :style="searchString" clearable v-model="input" :fetch-suggestions="querySearch" @input="changeShowSearchContent" @focus="showSearchContent = true" @blur="showSearchContent = false" :placeholder="$t('biz.placeholder.choose')" :trigger-on-focus="false" @select="handleSelect">
+          <template slot-scope="{ item }">
+            <div class="name">{{ generateTitle(item.meta.title) }}</div>
+          </template>
+        </el-autocomplete>
+        <i class='el-icon-search' slot='append' @click='openSearch'></i>
+      </div>
       <!-- 推送消息 -->
-      <!-- <bs-ws v-if='clientWidth >= 1366'></bs-ws> -->
+      <bs-ws v-if='clientWidth >= 1366'></bs-ws>
+
       <!-- 主题换色 -->
       <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
 
@@ -107,8 +128,8 @@
 
     <!-- 锁屏 -->
     <el-dialog width='30%' :title="$t('navbar.lock')" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :append-to-body="true" :show-close="false" :close-on-press-escape="false">
-      <el-row type="flex" justify="center" style='padding:30px 20px;'>
-        <el-col :span='12'>
+      <el-row type="flex" justify="center" style='padding:10px 20px;'>
+        <el-col :span='18'>
           <el-input v-model="lockPwd" type='password' autoComplete="off" :placeholder="$t('biz.placeholder.passwordNotBlank')" @keyup.enter.native="handleLocked"></el-input>
         </el-col>
         <el-col :span='6'>
@@ -155,6 +176,7 @@ export default {
       }
     }
     return {
+      input: '',
       logoSrc: imgSrc,
       dialogFormVisible: false,
       lockPwd: '',
@@ -198,16 +220,21 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      searchActive: false,
+      searchString: '',
+      showSearchContent: false,
+      searchMenu: []
     }
   },
   inject: ['app'],
   components: {
     BsWs,
-    ThemePicker
+    ThemePicker,
+    ...mapGetters(['permissionMenus', 'sidebar'])
   },
   computed: {
-    ...mapGetters(['sidebar', 'clientWidth', 'avatar', 'name', 'activeFlag', 'account', 'permissionMenus']),
+    ...mapGetters(['sidebar', 'clientWidth', 'avatar', 'name', 'activeFlag', 'account', 'permissionMenus', 'showMenus']),
     moduleWidth() {
       return this.clientWidth - (this.sidebar.opened ? 640 : 480)
     }
@@ -215,12 +242,40 @@ export default {
   watch: {
     'modifyPwdInfo.newPassword'(newValue) {
       this.pwdStrongVal = this.checkStrong(newValue)
+    },
+    searchActive: {
+      handler(newValue) {
+        // this.openSearch();
+        if (this.searchActive) {
+          this.searchString = 'animation:get .3s linear alternate forwards'
+          var searchTime = setTimeout(() => {
+            this.searchString = ''
+            clearTimeout(searchTime)
+          }, 300)
+        } else {
+          this.searchString = 'animation:get .3s linear reverse forwards'
+          var searchTime = setTimeout(() => {
+            this.searchString = 'display:none'
+            clearTimeout(searchTime)
+          }, 300)
+        }
+      },
+      immediate: true
     }
   },
   created() {
     this.logo()
   },
   mounted() {
+    window.onresize = function() {
+      var leftMenu = document.getElementById('left-menu')
+      // if (!$vm.checkFull()) {
+      //   }
+      window.addEventListener('keydown', () => {
+        // this.flag = false;
+        leftMenu.style = ''
+      })
+    }
     if (session.get('isLock') === 'yes') {
       this.dialogFormVisible = true
     }
@@ -229,8 +284,85 @@ export default {
       this.handleChangePwd()
       this.isActive = true
     }
+    this.getList()
   },
   methods: {
+    getList() {
+      this.searchMenu = this.showMenus
+    },
+    changeShowSearchContent() {
+      if (this.input == '') {
+        this.showSearchContent = false
+      } else {
+        this.showSearchContent = true
+      }
+      console.log(this.permissionMenus)
+    },
+    checkFull() {
+      var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
+      if (isFull === undefined) {
+        isFull = false
+      }
+      return isFull
+    },
+    // 打开搜索
+    openSearch() {
+      this.searchActive = !this.searchActive
+    },
+    // 菜单查询
+    doSearch() {
+      //   // 防止多次连续搜索
+      if (this.searchLoading) return
+      this.searchLoading = true
+      if (this.input.trim() === '') {
+        this.showAll(this.searchMenu)
+      } else {
+        this.showSearch(this.searchMenu)
+      }
+      this.searchLoading = false
+    },
+    showAll(route) {
+      route.forEach(item => {
+        item.hidden = false
+      })
+    },
+    showSearch(route) {
+      route.forEach(item => {
+        item.hidden = true
+        if (
+          item.meta &&
+          this.$t('route.' + item.meta.title)
+            .toLowerCase()
+            .includes(this.input.toLowerCase().trim())
+        ) {
+          item.hidden = false
+        }
+      })
+    },
+    querySearch(queryString, cb) {
+      var restaurants = this.searchMenu
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    createFilter(queryString) {
+      return restaurant => {
+        return (
+          restaurant.meta &&
+          this.$t('route.' + restaurant.meta.title)
+            .toLowerCase()
+            .toLowerCase()
+            .indexOf(queryString.toLowerCase()) >= 0
+        )
+      }
+    },
+
+    handleSelect(item) {
+      console.log('handleSelect:' + item.name)
+      this.$router.push({
+        name: item.name
+      })
+    },
     logo() {
       request({
         url: '/api/img/logo',
@@ -294,6 +426,8 @@ export default {
     },
     // 全屏
     handleClickFull() {
+      var leftMenu = document.getElementById('left-menu')
+      leftMenu.style = ''
       if (!screenfull.enabled) {
         this.$message({
           message: '浏览器不支持',
@@ -302,6 +436,7 @@ export default {
         return false
       }
       screenfull.toggle()
+      leftMenu.style = 'width:0px !important'
     },
     // 登出
     logout() {
@@ -456,12 +591,15 @@ export default {
   height: 48px;
   line-height: 48px;
   border-radius: 0px !important;
+  width: 100%;
+  display: flex;
   .logo {
     float: left;
     width: 40px;
     height: 100%;
     text-align: center;
     display: inline-block;
+    // padding-right: 22px;
     cursor: pointer;
     img {
       width: 30px;
@@ -501,16 +639,17 @@ export default {
     transform: rotate(90deg);
     background: transparent;
   }
-
   .business-module {
     float: left;
     height: 48px;
+    flex: 1;
     line-height: 48px;
     overflow: hidden;
     .module {
+      // font-size: 14px;
       .svg-icon {
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
       }
       float: left;
       width: 140px;
@@ -521,7 +660,6 @@ export default {
       user-select: none;
     }
   }
-
   .more-module {
     position: relative;
     float: left;
@@ -546,16 +684,16 @@ export default {
       }
     }
   }
-
   .right-menu {
-    float: right;
     margin-right: 20px;
     font-size: 18px;
     color: #ffffff;
     user-select: none;
+    // min-width: 502px !important;
+    max-width: 40% !important;
     .right-menu-item {
       float: left;
-      width: 40px;
+      width: 48px;
       height: 48px;
       line-height: 48px;
       text-align: center;
@@ -632,8 +770,8 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          color: #202946;
-          font: 12px '微软雅黑';
+          color: #fff !important;
+          font: 14px '微软雅黑';
         }
         .inlineBlock {
           display: inline-block;
@@ -656,9 +794,107 @@ export default {
     }
   }
 }
+.searchContent {
+  width: 160px;
+  height: 160px;
+  position: absolute;
+  bottom: -160px;
+  right: 0;
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 10px #ccc;
+  color: #777;
+  font-size: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  & > li {
+    padding: 0 6px;
+  }
+}
+/*滚动条样式*/
+.searchContent::-webkit-scrollbar {
+  width: 4px;
+  /*height: 4px;*/
+}
+.searchContent::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+.searchContent::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
 </style>
 
 <style lang='scss'>
+.search {
+  float: left;
+  position: relative;
+  width: 192px;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  .el-autocomplete {
+    width: auto !important;
+  }
+  .el-input {
+    width: 160px;
+    background: transparent;
+  }
+
+  .el-icon-search {
+    cursor: pointer;
+    margin-right: 12px;
+    float: right;
+    margin-top: 15px;
+  }
+  @keyframes get {
+    from {
+      width: 0px;
+      opacity: 0;
+    }
+
+    to {
+      width: 160px;
+      opacity: 1;
+    }
+  }
+  .input-search-style {
+    float: right;
+    // position: absolute;
+    // right: 0;
+    // top: 0;
+    height: 30px;
+    padding-top: 0 !important;
+    .el-input__inner {
+      height: 30px;
+      border: 1px solid #fff;
+      border-radius: 0;
+      font-size: 14px;
+      color: #fff;
+      border-radius: 3px 0 0 3px;
+      background: transparent;
+      padding: 0 6px;
+    }
+    .el-input__inner:focus {
+      border: 1px solid #fff !important;
+    }
+    .el-input__icon {
+      line-height: 34px;
+    }
+    .el-input-group__append {
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid;
+      border-left: none;
+      border-radius: 0 3px 3px 0;
+      background: transparent;
+    }
+  }
+}
+
 .el-dropdown-menu {
   margin: 0 !important;
   padding: 0 !important;

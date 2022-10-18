@@ -1,5 +1,5 @@
 <template>
-  <div class='bs-container dialog-wrapper'>
+  <div class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style='width:1000px;'>
       <TitleContain @TitleFun="doClose()" :titleName="$t('file.template.dispTitle')" />
       <div class="dialog-content">

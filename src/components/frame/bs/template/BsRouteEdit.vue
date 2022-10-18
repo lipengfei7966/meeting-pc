@@ -1,163 +1,25 @@
 <template>
-  <div class='bs-container app-container edit-page-style'>
-    <!-- 顶部按钮 -->
-    <el-row class='top-operate'>
-      <template v-for='(button, index) in edit.topButtons'>
-        <bs-upload v-if="button.event === 'upload'" :attrs='button.attrs' @onFileChange='addFile' :key='index'></bs-upload>
-        <bs-upload-v2 v-else-if='button.type && button.type === "upload"' v-bind='button.atrrs' :btnName='button.name' :permission="button.permitName" :key='index'></bs-upload-v2>
-        <el-button v-else :key='index' size="mini" v-db-click :loading="button.showLoading ? button.loading : false" v-bind='button.attrs' v-permission="button.permitName ? button.permitName : null" style='margin-right:6px;' @click='triggerEvent(button.callback, button)'>
-          <svg-icon :icon-class="button.iconName"></svg-icon>{{$t(button.name)}}
-        </el-button>
+  <div class='bs-new-container app-container edit-page-style'>
+    <div class="dialog-container__content">
+      <!--流程引导 -->
+      <template v-if="stepInfo && stepInfo.steps && (stepInfo.active > -1)">
+        <el-steps v-if="stepShow" :active="stepInfo.active" finish-status="success" simple>
+          <el-step :title="dataFormat('dataDictFormat', item, $t('datadict.bizCode'))" v-for='(item, index) in stepInfo.steps' :key='index'></el-step>
+        </el-steps>
       </template>
-    </el-row>
-    <!--流程引导 -->
-    <template v-if="stepInfo && stepInfo.steps && (stepInfo.active > -1)">
-      <el-steps v-if="stepShow" :active="stepInfo.active" finish-status="success" simple>
-        <el-step :title="dataFormat('dataDictFormat', item, $t('datadict.bizCode'))" v-for='(item, index) in stepInfo.steps' :key='index'></el-step>
-      </el-steps>
-    </template>
-    <!-- 流程进度 -->
-    <template v-else>
-      <el-alert v-if="stepShow" show-icon center :title="$t('biz.msg.stepWarn')" type="warning" style="margin: 32px 0 5px;" :closable="false"> </el-alert>
-    </template>
-    <!-- 头部查询 -->
-    <template v-if='Array.isArray(edit.formData)'>
-      <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': mainInfoVisible ? '1px' : '0'}">
-        <div class='form-title'>{{$t('biz.title.mainInfo')}}
-          <i :class="[mainInfoVisible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='mainInfoVisible = !mainInfoVisible'></i>
-        </div>
-        <el-form @submit.native.prevent v-if='mainInfoVisible' :inline="true" :model="editForm" class="header-form-inline" label-position="left" :rules='rules' ref="refForm">
-          <el-row :gutter="20">
-            <template v-for='(form, index) in edit.formData'>
-              <el-col :key='index' v-if='form.isShow' :span="form.attrs && form.attrs.cols ? form.attrs.cols * 6 : 6" :data-key='form.prop'>
-                <!-- 日期 -->
-                <el-form-item v-if='form.type === "date" || form.type === "datetime"' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(form.label)" :prop='form.prop'>
-                  <template v-if='Array.isArray(form.props)'>
-                    <el-row :gutter="0">
-                      <el-col :span="11">
-                        <el-form-item :prop="form.props[0]">
-                          <el-date-picker v-model="editForm[form.props[0]]" v-bind='form.attrs' @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                          </el-date-picker>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="2" align='center'>~</el-col>
-                      <el-col :span="11">
-                        <el-form-item :prop="form.props[1]">
-                          <el-date-picker v-model="editForm[form.props[1]]" v-bind='form.attrs' @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                          </el-date-picker>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </template>
-                  <template v-else>
-                    <template v-if="form.attrs.type === 'start'">
-                      <el-date-picker v-model="editForm[form.prop]" @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                      </el-date-picker>
-                    </template>
-                    <template v-else-if="form.attrs.type === 'end'">
-                      <el-date-picker v-model="editForm[form.prop]" @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                      </el-date-picker>
-                    </template>
-                    <template v-else>
-                      <el-date-picker v-model="editForm[form.prop]" v-bind='form.attrs' :type="form.type" :picker-options='Object.assign(func.getDefaultPickerOptions(),form.attrs.pickerOptions?form.attrs.pickerOptions:{})' :placeholder="$t('biz.placeholder.dateInput')" @change='v => triggerEvent(v, form)'>
-                      </el-date-picker>
-                    </template>
-                  </template>
-                </el-form-item>
-                <!-- 单选框 -->
-                <el-form-item v-else-if='form.type === "radio"' :label="$t(form.label)" :prop='form.prop'>
-                  <el-radio-group v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
-                    <el-radio v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <!-- 多选框 -->
-                <el-form-item v-else-if='form.type === "checkbox"' :label="$t(form.label)" :prop='form.prop'>
-                  <el-checkbox-group v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
-                    <el-checkbox v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-                <!-- 数值区间 -->
-                <el-form-item v-else-if='form.type === "numberInterval"' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(form.label)" :prop='form.prop'>
-                  <el-row :gutter="0">
-                    <el-col :span="11">
-                      <el-form-item :prop="form.props[0]">
-                        <input-formatter :min='form.attrs.startMin' :max='form.attrs.startMax !== undefined ? form.attrs.startMax : editForm[form.props[1]]' v-model="editForm[form.props[0]]" v-bind='form.attrs' size="mini"></input-formatter>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="2" align='center'>~</el-col>
-                    <el-col :span="11">
-                      <el-form-item :prop="form.props[1]">
-                        <input-formatter :min='form.attrs.endMin !== undefined ? form.attrs.endMin : editForm[form.props[0]]' :max='form.attrs.endMax' v-model="editForm[form.props[1]]" v-bind='form.attrs' size="mini"></input-formatter>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </el-form-item>
-                <!-- 组合组件 -->
-                <el-form-item v-else-if='form.type === "combine"' :label="$t(form.label)" :prop='form.elements[0].prop'>
-                  <el-row :gutter="0">
-                    <el-col :span="14">
-                      <!-- 字典码表 -->
-                      <el-select v-if='form.elements[0].list' v-model="editForm[form.elements[0].prop]" v-bind='form.elements[0].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[0])'>
-                        <template v-for="item in form.elements[0].list">
-                          <template v-if="form.elements[0].attrs&&!form.elements[0].attrs.multiple&& (edit.type === 'view' )">
-                            <el-option v-if="editForm[form.elements[0].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </template>
-                          <template v-else>
-                            <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </template>
-                        </template>
-                      </el-select>
-                      <!-- 公用组件 -->
-                      <component v-else :is='form.elements[0].element' v-model='editForm[form.elements[0].prop]' v-bind='form.elements[0].attrs' v-on='form.elements[0].event' :opType='edit.type' :attrs='form.elements[0].attrs' :newList='form.elements[0].list' @handleSelect='dialogSelect(form.elements[0])'></component>
-                    </el-col>
-                    <el-col :span="10">
-                      <!-- 字典码表 -->
-                      <el-select v-if='form.elements[1].list' v-model="editForm[form.elements[1].prop]" v-bind='form.elements[1].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[1])'>
-                        <template v-for="item in form.elements[1].list">
-                          <template v-if="form.elements[1].attrs&&!form.elements[1].attrs.multiple&& (edit.type === 'view' )">
-                            <el-option v-if="editForm[form.elements[1].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </template>
-                          <template v-else>
-                            <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </template>
-                        </template>
-                      </el-select>
-                      <!-- 公用组件 -->
-                      <component v-else :is='form.elements[1].element' v-model='editForm[form.elements[1].prop]' v-bind='form.elements[1].attrs' v-on='form.elements[1].event' :opType='edit.type' :attrs='form.elements[1].attrs' :newList='form.elements[1].list' @handleSelect='dialogSelect(form.elements[1])'></component>
-                    </el-col>
-                  </el-row>
-                </el-form-item>
-                <!-- 下拉输入 -->
-                <el-form-item v-else :label="$t(form.label)" :prop='form.prop'>
-                  <!-- 字典码表 -->
-                  <el-select v-if='form.list && (!form.attrs || !form.attrs.data)' v-model="editForm[form.prop]" v-bind='form.attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form)'>
-                    <template v-for="item in form.list">
-                      <template v-if="edit.type === 'view' ">
-                        <el-option v-if="editForm[form.prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                      </template>
-                      <template v-else>
-                        <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
-                      </template>
-                    </template>
-                  </el-select>
-                  <!-- 公用组件 -->
-                  <component v-else :is='form.element' v-model='editForm[form.prop]' v-bind='form.attrs' v-on='form.event' :opType='edit.type' :attrs='form.attrs' :newList='form.list' @handleSelect='dialogSelect(form)'></component>
-                </el-form-item>
-              </el-col>
-            </template>
-          </el-row>
-        </el-form>
-      </header>
-    </template>
-    <template v-else-if='typeof edit.formData === "object"'>
-      <template v-for='(item, index) in Object.keys(edit.formData)'>
-        <header :key='index' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': edit.formData[item].visible ? '1px' : '0'}" v-if='!edit.formData[item].hidden'>
-          <div class='form-title'>{{$t(edit.formData[item].titleName)}}
-            <i :class="[edit.formData[item].visible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='edit.formData[item].visible = !edit.formData[item].visible'></i>
+      <!-- 流程进度 -->
+      <template v-else>
+        <el-alert v-if="stepShow" show-icon center :title="$t('biz.msg.stepWarn')" type="warning" style="margin: 32px 0 5px;" :closable="false"> </el-alert>
+      </template>
+      <!-- 头部查询 -->
+      <template v-if='Array.isArray(edit.formData)'>
+        <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': mainInfoVisible ? '1px' : '0'}">
+          <div class='form-title'>{{$t('biz.title.mainInfo')}}
+            <i :class="[mainInfoVisible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='mainInfoVisible = !mainInfoVisible'></i>
           </div>
-          <el-form @submit.native.prevent v-if='edit.formData[item].visible' :inline="true" :model="edit.formData[item].dtoKey ? editForm[edit.formData[item].dtoKey] : editForm" class="header-form-inline" label-position="left" :rules='rules' ref="refForm">
+          <el-form @submit.native.prevent v-if='mainInfoVisible' :inline="true" :model="editForm" class="header-form-inline" label-position="left" :rules='rules' ref="refForm">
             <el-row :gutter="20">
-              <template v-for='(form, index) in edit.formData[item].content'>
+              <template v-for='(form, index) in edit.formData'>
                 <el-col :key='index' v-if='form.isShow' :span="form.attrs && form.attrs.cols ? form.attrs.cols * 6 : 6" :data-key='form.prop'>
                   <!-- 日期 -->
                   <el-form-item v-if='form.type === "date" || form.type === "datetime"' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(form.label)" :prop='form.prop'>
@@ -165,18 +27,14 @@
                       <el-row :gutter="0">
                         <el-col :span="11">
                           <el-form-item :prop="form.props[0]">
-                            <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.props[0]]" v-bind='form.attrs' @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                            </el-date-picker>
-                            <el-date-picker v-else v-model="editForm[form.props[0]]" v-bind='form.attrs' @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                            <el-date-picker v-model="editForm[form.props[0]]" v-bind='form.attrs' @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
                             </el-date-picker>
                           </el-form-item>
                         </el-col>
                         <el-col :span="2" align='center'>~</el-col>
                         <el-col :span="11">
                           <el-form-item :prop="form.props[1]">
-                            <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.props[1]]" v-bind='form.attrs' @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                            </el-date-picker>
-                            <el-date-picker v-else v-model="editForm[form.props[1]]" v-bind='form.attrs' @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                            <el-date-picker v-model="editForm[form.props[1]]" v-bind='form.attrs' @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
                             </el-date-picker>
                           </el-form-item>
                         </el-col>
@@ -184,40 +42,28 @@
                     </template>
                     <template v-else>
                       <template v-if="form.attrs.type === 'start'">
-                        <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                        </el-date-picker>
-                        <el-date-picker v-else v-model="editForm[form.prop]" @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                        <el-date-picker v-model="editForm[form.prop]" @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
                         </el-date-picker>
                       </template>
                       <template v-else-if="form.attrs.type === 'end'">
-                        <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
-                        </el-date-picker>
-                        <el-date-picker v-else v-model="editForm[form.prop]" @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                        <el-date-picker v-model="editForm[form.prop]" @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
                         </el-date-picker>
                       </template>
                       <template v-else>
-                        <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" v-bind='form.attrs' :picker-options='Object.assign(func.getDefaultPickerOptions(),form.attrs.pickerOptions?form.attrs.pickerOptions:{})' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')" @change='v => triggerEvent(v, form)'>
-                        </el-date-picker>
-                        <el-date-picker v-else v-model="editForm[form.prop]" v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')" :picker-options='Object.assign(func.getDefaultPickerOptions(),form.attrs.pickerOptions?form.attrs.pickerOptions:{})' @change='v => triggerEvent(v, form)'>
+                        <el-date-picker v-model="editForm[form.prop]" v-bind='form.attrs' :type="form.type" :picker-options='Object.assign(func.getDefaultPickerOptions(),form.attrs.pickerOptions?form.attrs.pickerOptions:{})' :placeholder="$t('biz.placeholder.dateInput')" @change='v => triggerEvent(v, form)'>
                         </el-date-picker>
                       </template>
                     </template>
                   </el-form-item>
                   <!-- 单选框 -->
                   <el-form-item v-else-if='form.type === "radio"' :label="$t(form.label)" :prop='form.prop'>
-                    <el-radio-group v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change='v => triggerEvent(v, form)'>
-                      <el-radio v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-radio>
-                    </el-radio-group>
-                    <el-radio-group v-else v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
+                    <el-radio-group v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
                       <el-radio v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                   <!-- 多选框 -->
                   <el-form-item v-else-if='form.type === "checkbox"' :label="$t(form.label)" :prop='form.prop'>
-                    <el-checkbox-group v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change='v => triggerEvent(v, form)'>
-                      <el-checkbox v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-checkbox>
-                    </el-checkbox-group>
-                    <el-checkbox-group v-else v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
+                    <el-checkbox-group v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
                       <el-checkbox v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
@@ -226,15 +72,13 @@
                     <el-row :gutter="0">
                       <el-col :span="11">
                         <el-form-item :prop="form.props[0]">
-                          <input-formatter v-if='edit.formData[item].dtoKey' :min='form.attrs.startMin' :max='form.attrs.startMax !== undefined ? form.attrs.startMax : editForm[edit.formData[item].dtoKey][form.props[1]]' v-model="editForm[edit.formData[item].dtoKey][form.props[0]]" v-bind='form.attrs' size="mini"></input-formatter>
-                          <input-formatter v-else :min='form.attrs.startMin' :max='form.attrs.startMax !== undefined ? form.attrs.startMax : editForm[form.props[1]]' v-model="editForm[form.props[0]]" v-bind='form.attrs' size="mini"></input-formatter>
+                          <input-formatter :min='form.attrs.startMin' :max='form.attrs.startMax !== undefined ? form.attrs.startMax : editForm[form.props[1]]' v-model="editForm[form.props[0]]" v-bind='form.attrs' size="mini"></input-formatter>
                         </el-form-item>
                       </el-col>
                       <el-col :span="2" align='center'>~</el-col>
                       <el-col :span="11">
                         <el-form-item :prop="form.props[1]">
-                          <input-formatter v-if='edit.formData[item].dtoKey' :min='form.attrs.endMin !== undefined ? form.attrs.endMin : editForm[edit.formData[item].dtoKey][form.props[0]]' :max='form.attrs.endMax' v-model="editForm[edit.formData[item].dtoKey][form.props[1]]" v-bind='form.attrs' size="mini"></input-formatter>
-                          <input-formatter v-else :min='form.attrs.endMin !== undefined ? form.attrs.endMin : editForm[form.props[0]]' :max='form.attrs.endMax' v-model="editForm[form.props[1]]" v-bind='form.attrs' size="mini"></input-formatter>
+                          <input-formatter :min='form.attrs.endMin !== undefined ? form.attrs.endMin : editForm[form.props[0]]' :max='form.attrs.endMax' v-model="editForm[form.props[1]]" v-bind='form.attrs' size="mini"></input-formatter>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -244,99 +88,51 @@
                     <el-row :gutter="0">
                       <el-col :span="14">
                         <!-- 字典码表 -->
-                        <template v-if='form.elements[0].list'>
-                          <el-select v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.elements[0].prop]" v-bind='form.elements[0].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[0])'>
-
-                            <template v-for="items in form.elements[0].list">
-                              <template v-if="form.elements[0].attrs&&!form.elements[0].attrs.multiple&& ( edit.type === 'view' )">
-                                <el-option v-if="editForm[edit.formData[item].dtoKey][form.elements[0].prop]===items.value" :key="items.value" :label="items.label" :value="items.value"></el-option>
-                              </template>
-                              <template v-else>
-                                <el-option :key="items.value" :label="items.label" :value="items.value"></el-option>
-                              </template>
+                        <el-select v-if='form.elements[0].list' v-model="editForm[form.elements[0].prop]" v-bind='form.elements[0].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[0])'>
+                          <template v-for="item in form.elements[0].list">
+                            <template v-if="form.elements[0].attrs&&!form.elements[0].attrs.multiple&& (edit.type === 'view' )">
+                              <el-option v-if="editForm[form.elements[0].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
                             </template>
-
-                          </el-select>
-                          <el-select v-else v-model="editForm[form.elements[0].prop]" v-bind='form.elements[0].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[0])'>
-                            <template v-for="item in form.elements[0].list">
-                              <template v-if="form.elements[0].attrs&&!form.elements[0].attrs.multiple&& (edit.type === 'view' )">
-                                <el-option v-if="editForm[form.elements[0].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                              </template>
-                              <template v-else>
-                                <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
-                              </template>
+                            <template v-else>
+                              <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
                             </template>
-                          </el-select>
-                        </template>
+                          </template>
+                        </el-select>
                         <!-- 公用组件 -->
-                        <template v-else>
-                          <component v-if='edit.formData[item].dtoKey' :is='form.elements[0].element' v-model='editForm[edit.formData[item].dtoKey][form.elements[0].prop]' v-bind='form.elements[0].attrs' v-on='form.elements[0].event' :opType='edit.type' :attrs='form.elements[0].attrs' :newList='form.elements[0].list' @handleSelect='dialogSelect(form.elements[0])'></component>
-                          <component v-else :is='form.elements[0].element' v-model='editForm[form.elements[0].prop]' v-bind='form.elements[0].attrs' v-on='form.elements[0].event' :opType='edit.type' :attrs='form.elements[0].attrs' :newList='form.elements[0].list' @handleSelect='dialogSelect(form.elements[0])'></component>
-                        </template>
+                        <component v-else :is='form.elements[0].element' v-model='editForm[form.elements[0].prop]' v-bind='form.elements[0].attrs' v-on='form.elements[0].event' :opType='edit.type' :attrs='form.elements[0].attrs' :newList='form.elements[0].list' @handleSelect='dialogSelect(form.elements[0])'></component>
                       </el-col>
                       <el-col :span="10">
                         <!-- 字典码表 -->
-                        <template v-if='form.elements[1].list'>
-                          <el-select v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.elements[1].prop]" v-bind='form.elements[1].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[1])'>
-
-                            <template v-for="items in form.elements[1].list">
-                              <template v-if="form.elements[1].attrs&&!form.elements[1].attrs.multiple&& (edit.type === 'view' )">
-                                <el-option v-if="editForm[edit.formData[item].dtoKey][form.elements[1].prop]===items.value" :key="items.value" :label="items.label" :value="items.value"></el-option>
-                              </template>
-                              <template v-else>
-                                <el-option :key="items.value" :label="items.label" :value="items.value"></el-option>
-                              </template>
+                        <el-select v-if='form.elements[1].list' v-model="editForm[form.elements[1].prop]" v-bind='form.elements[1].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[1])'>
+                          <template v-for="item in form.elements[1].list">
+                            <template v-if="form.elements[1].attrs&&!form.elements[1].attrs.multiple&& (edit.type === 'view' )">
+                              <el-option v-if="editForm[form.elements[1].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
                             </template>
-                          </el-select>
-                          <el-select v-else v-model="editForm[form.elements[1].prop]" v-bind='form.elements[1].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[1])'>
-                            <template v-for="item in form.elements[1].list">
-                              <template v-if="form.elements[1].attrs&&!form.elements[1].attrs.multiple&& (edit.type === 'view' )">
-                                <el-option v-if="editForm[form.elements[1].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                              </template>
-                              <template v-else>
-                                <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
-                              </template>
+                            <template v-else>
+                              <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
                             </template>
-                          </el-select>
-                        </template>
+                          </template>
+                        </el-select>
                         <!-- 公用组件 -->
-                        <template v-else>
-                          <component v-if='edit.formData[item].dtoKey' :is='form.elements[1].element' v-model='editForm[edit.formData[item].dtoKey][form.elements[1].prop]' v-bind='form.elements[1].attrs' v-on='form.elements[1].event' :opType='edit.type' :attrs='form.elements[1].attrs' :newList='form.elements[1].list' @handleSelect='dialogSelect(form.elements[1])'></component>
-                          <component v-else :is='form.elements[1].element' v-model='editForm[form.elements[1].prop]' v-bind='form.elements[1].attrs' v-on='form.elements[1].event' :opType='edit.type' :attrs='form.elements[1].attrs' :newList='form.elements[1].list' @handleSelect='dialogSelect(form.elements[1])'></component>
-                        </template>
+                        <component v-else :is='form.elements[1].element' v-model='editForm[form.elements[1].prop]' v-bind='form.elements[1].attrs' v-on='form.elements[1].event' :opType='edit.type' :attrs='form.elements[1].attrs' :newList='form.elements[1].list' @handleSelect='dialogSelect(form.elements[1])'></component>
                       </el-col>
                     </el-row>
                   </el-form-item>
                   <!-- 下拉输入 -->
                   <el-form-item v-else :label="$t(form.label)" :prop='form.prop'>
                     <!-- 字典码表 -->
-                    <template v-if='form.list && (!form.attrs || !form.attrs.data)'>
-                      <el-select v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" v-bind='form.attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form)'>
-                        <template v-for="items in form.list">
-                          <template v-if="form.attrs&&!form.attrs.multiple&& (edit.type === 'view' )">
-                            <el-option v-if="editForm[edit.formData[item].dtoKey][form.prop]===items.value" :key="items.value" :label="items.label" :value="items.value"></el-option>
-                          </template>
-                          <template v-else>
-                            <el-option :key="items.value" :label="items.label" :value="items.value"></el-option>
-                          </template>
+                    <el-select v-if='form.list && (!form.attrs || !form.attrs.data)' v-model="editForm[form.prop]" v-bind='form.attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form)'>
+                      <template v-for="item in form.list">
+                        <template v-if="edit.type === 'view' ">
+                          <el-option v-if="editForm[form.prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </template>
-                      </el-select>
-                      <el-select v-else v-model="editForm[form.prop]" v-bind='form.attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form)'>
-                        <template v-for="item in form.list">
-                          <template v-if="form.attrs&&!form.attrs.multiple&& (edit.type === 'view' )">
-                            <el-option v-if="editForm[form.prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </template>
-                          <template v-else>
-                            <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
-                          </template>
+                        <template v-else>
+                          <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </template>
-                      </el-select>
-                    </template>
+                      </template>
+                    </el-select>
                     <!-- 公用组件 -->
-                    <template v-else>
-                      <component v-if='edit.formData[item].dtoKey' :is='form.element' v-model='editForm[edit.formData[item].dtoKey][form.prop]' v-bind='form.attrs' v-on='form.event' :opType='edit.type' :attrs='form.attrs' :newList='form.list' @handleSelect='dialogSelect(form)'></component>
-                      <component v-else :is='form.element' v-model='editForm[form.prop]' v-bind='form.attrs' v-on='form.event' :opType='edit.type' :attrs='form.attrs' :newList='form.list' @handleSelect='dialogSelect(form)'></component>
-                    </template>
+                    <component v-else :is='form.element' v-model='editForm[form.prop]' v-bind='form.attrs' v-on='form.event' :opType='edit.type' :attrs='form.attrs' :newList='form.list' @handleSelect='dialogSelect(form)'></component>
                   </el-form-item>
                 </el-col>
               </template>
@@ -344,46 +140,239 @@
           </el-form>
         </header>
       </template>
-    </template>
-    <template v-if='edit.tables && edit.tables.filter(v => { return v.isShow }).length > 0'>
-      <template v-for='table in edit.tables'>
-        <header :key='table.uuid' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': table.visible ? '1px' : '0'}" v-if='table.isShow'>
-          <div class='form-title'>{{$t(table.label)}}<span v-if='table.required' style='color:#f56c6c;'>*</span>
-            <i :class="[table.visible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='table.visible = !table.visible'></i>
-          </div>
-          <component :is='table.uuid' v-show='table.visible' v-bind='table.attrs' :type='edit.type' :opType='edit.type' :param='edit.param' :extraParam='table.extraParam' :ref='table.name' :editForm='editForm' class='edit-header-table' :content='table.content'></component>
-        </header>
+      <template v-else-if='typeof edit.formData === "object"'>
+        <template v-for='(item, index) in Object.keys(edit.formData)'>
+          <header :key='index' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': edit.formData[item].visible ? '1px' : '0'}" v-if='!edit.formData[item].hidden'>
+            <div class='form-title'>{{$t(edit.formData[item].titleName)}}
+              <i :class="[edit.formData[item].visible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='edit.formData[item].visible = !edit.formData[item].visible'></i>
+            </div>
+            <el-form @submit.native.prevent v-if='edit.formData[item].visible' :inline="true" :model="edit.formData[item].dtoKey ? editForm[edit.formData[item].dtoKey] : editForm" class="header-form-inline" label-position="left" :rules='rules' ref="refForm">
+              <el-row :gutter="20">
+                <template v-for='(form, index) in edit.formData[item].content'>
+                  <el-col :key='index' v-if='form.isShow' :span="form.attrs && form.attrs.cols ? form.attrs.cols * 6 : 6" :data-key='form.prop'>
+                    <!-- 日期 -->
+                    <el-form-item v-if='form.type === "date" || form.type === "datetime"' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(form.label)" :prop='form.prop'>
+                      <template v-if='Array.isArray(form.props)'>
+                        <el-row :gutter="0">
+                          <el-col :span="11">
+                            <el-form-item :prop="form.props[0]">
+                              <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.props[0]]" v-bind='form.attrs' @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                              </el-date-picker>
+                              <el-date-picker v-else v-model="editForm[form.props[0]]" v-bind='form.attrs' @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                              </el-date-picker>
+                            </el-form-item>
+                          </el-col>
+                          <el-col :span="2" align='center'>~</el-col>
+                          <el-col :span="11">
+                            <el-form-item :prop="form.props[1]">
+                              <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.props[1]]" v-bind='form.attrs' @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                              </el-date-picker>
+                              <el-date-picker v-else v-model="editForm[form.props[1]]" v-bind='form.attrs' @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                              </el-date-picker>
+                            </el-form-item>
+                          </el-col>
+                        </el-row>
+                      </template>
+                      <template v-else>
+                        <template v-if="form.attrs.type === 'start'">
+                          <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                          </el-date-picker>
+                          <el-date-picker v-else v-model="editForm[form.prop]" @change="(date) => changeStartTime(date, form.attrs.pickEnd)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickStart ? datePick[form.attrs.pickStart] : datePick.dateStartBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                          </el-date-picker>
+                        </template>
+                        <template v-else-if="form.attrs.type === 'end'">
+                          <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                          </el-date-picker>
+                          <el-date-picker v-else v-model="editForm[form.prop]" @change="(date) => changeEndTime(date, form.attrs.pickStart)" :picker-options='Object.assign(func.getDefaultPickerOptions() ,form.attrs.pickEnd ? datePick[form.attrs.pickEnd] : datePick.dateEndBefore)' v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')">
+                          </el-date-picker>
+                        </template>
+                        <template v-else>
+                          <el-date-picker v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" v-bind='form.attrs' :picker-options='Object.assign(func.getDefaultPickerOptions(),form.attrs.pickerOptions?form.attrs.pickerOptions:{})' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')" @change='v => triggerEvent(v, form)'>
+                          </el-date-picker>
+                          <el-date-picker v-else v-model="editForm[form.prop]" v-bind='form.attrs' :type="form.type" :placeholder="$t('biz.placeholder.dateInput')" :picker-options='Object.assign(func.getDefaultPickerOptions(),form.attrs.pickerOptions?form.attrs.pickerOptions:{})' @change='v => triggerEvent(v, form)'>
+                          </el-date-picker>
+                        </template>
+                      </template>
+                    </el-form-item>
+                    <!-- 单选框 -->
+                    <el-form-item v-else-if='form.type === "radio"' :label="$t(form.label)" :prop='form.prop'>
+                      <el-radio-group v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change='v => triggerEvent(v, form)'>
+                        <el-radio v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-radio>
+                      </el-radio-group>
+                      <el-radio-group v-else v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
+                        <el-radio v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                    <!-- 多选框 -->
+                    <el-form-item v-else-if='form.type === "checkbox"' :label="$t(form.label)" :prop='form.prop'>
+                      <el-checkbox-group v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" @change='v => triggerEvent(v, form)'>
+                        <el-checkbox v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-checkbox>
+                      </el-checkbox-group>
+                      <el-checkbox-group v-else v-model="editForm[form.prop]" @change='v => triggerEvent(v, form)'>
+                        <el-checkbox v-for='item in form.list' :key="item.value" :label="item.value" v-bind='form.attrs'>{{item.label}}</el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                    <!-- 数值区间 -->
+                    <el-form-item v-else-if='form.type === "numberInterval"' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(form.label)" :prop='form.prop'>
+                      <el-row :gutter="0">
+                        <el-col :span="11">
+                          <el-form-item :prop="form.props[0]">
+                            <input-formatter v-if='edit.formData[item].dtoKey' :min='form.attrs.startMin' :max='form.attrs.startMax !== undefined ? form.attrs.startMax : editForm[edit.formData[item].dtoKey][form.props[1]]' v-model="editForm[edit.formData[item].dtoKey][form.props[0]]" v-bind='form.attrs' size="mini"></input-formatter>
+                            <input-formatter v-else :min='form.attrs.startMin' :max='form.attrs.startMax !== undefined ? form.attrs.startMax : editForm[form.props[1]]' v-model="editForm[form.props[0]]" v-bind='form.attrs' size="mini"></input-formatter>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="2" align='center'>~</el-col>
+                        <el-col :span="11">
+                          <el-form-item :prop="form.props[1]">
+                            <input-formatter v-if='edit.formData[item].dtoKey' :min='form.attrs.endMin !== undefined ? form.attrs.endMin : editForm[edit.formData[item].dtoKey][form.props[0]]' :max='form.attrs.endMax' v-model="editForm[edit.formData[item].dtoKey][form.props[1]]" v-bind='form.attrs' size="mini"></input-formatter>
+                            <input-formatter v-else :min='form.attrs.endMin !== undefined ? form.attrs.endMin : editForm[form.props[0]]' :max='form.attrs.endMax' v-model="editForm[form.props[1]]" v-bind='form.attrs' size="mini"></input-formatter>
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                    </el-form-item>
+                    <!-- 组合组件 -->
+                    <el-form-item v-else-if='form.type === "combine"' :label="$t(form.label)" :prop='form.elements[0].prop'>
+                      <el-row :gutter="0">
+                        <el-col :span="14">
+                          <!-- 字典码表 -->
+                          <template v-if='form.elements[0].list'>
+                            <el-select v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.elements[0].prop]" v-bind='form.elements[0].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[0])'>
+
+                              <template v-for="items in form.elements[0].list">
+                                <template v-if="form.elements[0].attrs&&!form.elements[0].attrs.multiple&& ( edit.type === 'view' )">
+                                  <el-option v-if="editForm[edit.formData[item].dtoKey][form.elements[0].prop]===items.value" :key="items.value" :label="items.label" :value="items.value"></el-option>
+                                </template>
+                                <template v-else>
+                                  <el-option :key="items.value" :label="items.label" :value="items.value"></el-option>
+                                </template>
+                              </template>
+
+                            </el-select>
+                            <el-select v-else v-model="editForm[form.elements[0].prop]" v-bind='form.elements[0].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[0])'>
+                              <template v-for="item in form.elements[0].list">
+                                <template v-if="form.elements[0].attrs&&!form.elements[0].attrs.multiple&& (edit.type === 'view' )">
+                                  <el-option v-if="editForm[form.elements[0].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </template>
+                                <template v-else>
+                                  <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </template>
+                              </template>
+                            </el-select>
+                          </template>
+                          <!-- 公用组件 -->
+                          <template v-else>
+                            <component v-if='edit.formData[item].dtoKey' :is='form.elements[0].element' v-model='editForm[edit.formData[item].dtoKey][form.elements[0].prop]' v-bind='form.elements[0].attrs' v-on='form.elements[0].event' :opType='edit.type' :attrs='form.elements[0].attrs' :newList='form.elements[0].list' @handleSelect='dialogSelect(form.elements[0])'></component>
+                            <component v-else :is='form.elements[0].element' v-model='editForm[form.elements[0].prop]' v-bind='form.elements[0].attrs' v-on='form.elements[0].event' :opType='edit.type' :attrs='form.elements[0].attrs' :newList='form.elements[0].list' @handleSelect='dialogSelect(form.elements[0])'></component>
+                          </template>
+                        </el-col>
+                        <el-col :span="10">
+                          <!-- 字典码表 -->
+                          <template v-if='form.elements[1].list'>
+                            <el-select v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.elements[1].prop]" v-bind='form.elements[1].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[1])'>
+
+                              <template v-for="items in form.elements[1].list">
+                                <template v-if="form.elements[1].attrs&&!form.elements[1].attrs.multiple&& (edit.type === 'view' )">
+                                  <el-option v-if="editForm[edit.formData[item].dtoKey][form.elements[1].prop]===items.value" :key="items.value" :label="items.label" :value="items.value"></el-option>
+                                </template>
+                                <template v-else>
+                                  <el-option :key="items.value" :label="items.label" :value="items.value"></el-option>
+                                </template>
+                              </template>
+                            </el-select>
+                            <el-select v-else v-model="editForm[form.elements[1].prop]" v-bind='form.elements[1].attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form.elements[1])'>
+                              <template v-for="item in form.elements[1].list">
+                                <template v-if="form.elements[1].attrs&&!form.elements[1].attrs.multiple&& (edit.type === 'view' )">
+                                  <el-option v-if="editForm[form.elements[1].prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </template>
+                                <template v-else>
+                                  <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </template>
+                              </template>
+                            </el-select>
+                          </template>
+                          <!-- 公用组件 -->
+                          <template v-else>
+                            <component v-if='edit.formData[item].dtoKey' :is='form.elements[1].element' v-model='editForm[edit.formData[item].dtoKey][form.elements[1].prop]' v-bind='form.elements[1].attrs' v-on='form.elements[1].event' :opType='edit.type' :attrs='form.elements[1].attrs' :newList='form.elements[1].list' @handleSelect='dialogSelect(form.elements[1])'></component>
+                            <component v-else :is='form.elements[1].element' v-model='editForm[form.elements[1].prop]' v-bind='form.elements[1].attrs' v-on='form.elements[1].event' :opType='edit.type' :attrs='form.elements[1].attrs' :newList='form.elements[1].list' @handleSelect='dialogSelect(form.elements[1])'></component>
+                          </template>
+                        </el-col>
+                      </el-row>
+                    </el-form-item>
+                    <!-- 下拉输入 -->
+                    <el-form-item v-else :label="$t(form.label)" :prop='form.prop'>
+                      <!-- 字典码表 -->
+                      <template v-if='form.list && (!form.attrs || !form.attrs.data)'>
+                        <el-select v-if='edit.formData[item].dtoKey' v-model="editForm[edit.formData[item].dtoKey][form.prop]" v-bind='form.attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form)'>
+                          <template v-for="items in form.list">
+                            <template v-if="form.attrs&&!form.attrs.multiple&& (edit.type === 'view' )">
+                              <el-option v-if="editForm[edit.formData[item].dtoKey][form.prop]===items.value" :key="items.value" :label="items.label" :value="items.value"></el-option>
+                            </template>
+                            <template v-else>
+                              <el-option :key="items.value" :label="items.label" :value="items.value"></el-option>
+                            </template>
+                          </template>
+                        </el-select>
+                        <el-select v-else v-model="editForm[form.prop]" v-bind='form.attrs' :placeholder="$t('biz.placeholder.choose')" @change='v => triggerEvent(v, form)'>
+                          <template v-for="item in form.list">
+                            <template v-if="form.attrs&&!form.attrs.multiple&& (edit.type === 'view' )">
+                              <el-option v-if="editForm[form.prop]===item.value" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                            </template>
+                            <template v-else>
+                              <el-option :key="item.value" :label="item.label" :value="item.value"></el-option>
+                            </template>
+                          </template>
+                        </el-select>
+                      </template>
+                      <!-- 公用组件 -->
+                      <template v-else>
+                        <component v-if='edit.formData[item].dtoKey' :is='form.element' v-model='editForm[edit.formData[item].dtoKey][form.prop]' v-bind='form.attrs' v-on='form.event' :opType='edit.type' :attrs='form.attrs' :newList='form.list' @handleSelect='dialogSelect(form)'></component>
+                        <component v-else :is='form.element' v-model='editForm[form.prop]' v-bind='form.attrs' v-on='form.event' :opType='edit.type' :attrs='form.attrs' :newList='form.list' @handleSelect='dialogSelect(form)'></component>
+                      </template>
+                    </el-form-item>
+                  </el-col>
+                </template>
+              </el-row>
+            </el-form>
+          </header>
+        </template>
       </template>
-    </template>
-    <!-- 左右tables -->
-    <template v-if='edit.tablesTwo && edit.tablesTwo.filter(v => { return v.isShow }).length > 0'>
-      <template v-for='tables in edit.tablesTwo'>
-        <header :key='tables.name' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto',  'display':'flex'}" v-if='tables.isShow'>
-          <div v-for='table in tables.tablesArray' :key='table.uuid' style="width:50%">
+      <template v-if='edit.tables && edit.tables.filter(v => { return v.isShow }).length > 0'>
+        <template v-for='table in edit.tables'>
+          <header :key='table.uuid' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': table.visible ? '1px' : '0'}" v-if='table.isShow'>
             <div class='form-title'>{{$t(table.label)}}<span v-if='table.required' style='color:#f56c6c;'>*</span>
               <i :class="[table.visible ? 'el-icon-arrow-up' : 'el-icon-arrow-down']" @click='table.visible = !table.visible'></i>
             </div>
             <component :is='table.uuid' v-show='table.visible' v-bind='table.attrs' :type='edit.type' :opType='edit.type' :param='edit.param' :extraParam='table.extraParam' :ref='table.name' :editForm='editForm' class='edit-header-table' :content='table.content'></component>
-          </div>
-        </header>
-      </template>
-    </template>
-    <main v-if='edit.tabs && edit.tabs.filter(v => { return v.isShow }).length > 0' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-      <el-tabs v-model="activeName" type="border-card">
-        <template v-for='tab in edit.tabs'>
-          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name" v-if='tab.isShow'>
-            <span slot="label">{{$t(tab.label)}}<span v-if='tab.required' style='color:#f56c6c;'>*</span></span>
-            <component :is='tab.uuid' v-bind='tab.attrs' :type='edit.type' :param='edit.param' :opType='edit.type' :ref='tab.name' :editForm='editForm' :extraParam='tab.extraParam' :content='tab.content'></component>
-          </el-tab-pane>
+          </header>
         </template>
-      </el-tabs>
-      <!-- 二级弹窗 -->
-      <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
-    </main>
-    <main v-else>
-      <!-- 二级弹窗 -->
-      <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
-    </main>
+      </template>
+      <main v-if='edit.tabs && edit.tabs.filter(v => { return v.isShow }).length > 0' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto','padding-top':'0 !important','margin-bottom': '50px'}">
+        <el-tabs v-model="activeName" type="border-card">
+          <template v-for='tab in edit.tabs'>
+            <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name" v-if='tab.isShow'>
+              <span slot="label">{{$t(tab.label)}}<span v-if='tab.required' style='color:#f56c6c;'>*</span></span>
+              <component :is='tab.uuid' v-bind='tab.attrs' :type='edit.type' :param='edit.param' :opType='edit.type' :ref='tab.name' :editForm='editForm' :extraParam='tab.extraParam' :content='tab.content'></component>
+            </el-tab-pane>
+          </template>
+        </el-tabs>
+        <!-- 二级弹窗 -->
+        <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
+      </main>
+      <main v-else style="margin-bottom: 50px">
+        <!-- 二级弹窗 -->
+        <view-form-edit ref='viewFormEdit' v-if='dialogLv2Visible' @closeHandler='dialogHandler' :param='edit.param' :extraParam='extraParam' :opType="edit.opType" :opMode='edit.opMode' :initChooseParam='initChooseParam'></view-form-edit>
+      </main>
+      <!-- 顶部按钮 -->
+      <div class='dialog-footer'>
+        <template v-for='(button, index) in edit.topButtons'>
+          <bs-upload v-if="button.event === 'upload'" :attrs='button.attrs' @onFileChange='addFile' :key='index'></bs-upload>
+          <bs-upload-v2 v-else-if='button.type && button.type === "upload"' v-bind='button.atrrs' :btnName='button.name' :permission="button.permitName" :key='index'></bs-upload-v2>
+          <el-button v-else :key='index' size="mini" v-db-click :loading="button.showLoading ? button.loading : false" v-bind='button.attrs' v-permission="button.permitName ? button.permitName : null" style='margin-right:6px;' @click='triggerEvent(button.callback, button)'>
+            <svg-icon :icon-class="button.iconName"></svg-icon>{{$t(button.name)}}
+          </el-button>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -528,11 +517,7 @@ export default {
     if (Array.isArray(this.edit.tables)) {
       registerComponentTab(this.edit.tables)
     }
-    if (Array.isArray(this.edit.tablesTwo)) {
-      this.edit.tablesTwo.forEach(item => {
-        registerComponentTab(item.tablesArray)
-      })
-    }
+
     //组件注册 并添加附件TAB
     if (Array.isArray(this.edit.tabs)) {
       if (attachmentFlag) {
@@ -718,23 +703,7 @@ export default {
         }
       })
     }
-    if (this.edit.tablesTwo) {
-      this.edit.tablesTwo.forEach(a => {
-        a.tablesArray.forEach(t => {
-          // 每个table控制展开收起标识初始化
-          // this.$set(t, 'visible', true)
-          if (t.visible === undefined) {
-            this.$set(t, 'visible', true)
-          }
-          // 根据isShow字段判断是否显示
-          if (t.isShow === undefined) {
-            t.isShow = true
-          } else if (Array.isArray(t.isShow)) {
-            t.isShow = t.isShow.includes(this.edit.type)
-          }
-        })
-      })
-    }
+
     // 查看则清空校验规则
     if (this.edit.type === 'view') {
       this.rules = {}
@@ -835,15 +804,7 @@ export default {
               }
             })
           }
-          if (this.edit.tablesTwo) {
-            this.edit.tablesTwo.forEach(a => {
-              a.tablesArray.forEach(t => {
-                if (t.name && this.$refs[t.name] && this.$refs[t.name].length > 0) {
-                  this.$refs[t.name][0].tableData = this.editForm[t.name]
-                }
-              })
-            })
-          }
+
           if (this.edit.tabs) {
             this.edit.tabs.forEach(t => {
               if (t.name) {
@@ -1212,39 +1173,7 @@ export default {
             }
           })
         }
-        // 列表参数追加并验证2
-        if (this.edit.tablesTwo) {
-          this.edit.tablesTwo.forEach(a => {
-            a.tablesArray.forEach(t => {
-              if (this.$refs[t.name] && this.$refs[t.name].length > 0) {
-                this.editForm[t.name] = this.$refs[t.name][0].$refs.tab ? this.$refs[t.name][0].$refs.tab.tableData : this.$refs[t.name][0].tableData
-                // 行验证
-                if (this.editForm[t.name]) {
-                  if (this.editForm[t.name].length === 0) {
-                    if (t.required) {
-                      validateMsg.push(this.$t(t.label))
-                      validateArr2.push(false)
-                    }
-                  } else if (this.$refs[t.name][0].tab) {
-                    // 列表列验证
-                    this.$refs[t.name][0].tab.table.cols.forEach(v => {
-                      if (v.required) {
-                        this.editForm[t.name].forEach(detail => {
-                          if (!detail[v.prop] && detail[v.prop] !== 0) {
-                            validateMsg.push(this.$t(v.label))
-                            validateArr2.push(false)
-                          }
-                        })
-                      }
-                    })
-                  }
-                }
-              } else {
-                this.editForm[t.name] = []
-              }
-            })
-          })
-        }
+
         // 标签页参数追加并验证
         if (this.edit.tabs && !validateArr2.includes(false)) {
           this.edit.tabs.forEach(t => {

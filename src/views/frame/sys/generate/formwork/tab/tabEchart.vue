@@ -100,7 +100,7 @@ export default {
     // 保存旧结构
     this.chartOptionBak = Object.assign({}, this.chartOption)
     const response = await request({
-      url: '/api/sys/codeReport/json',
+      url: '/api/code/report/json',
       method: 'post',
       data: {
         data: this.tab.id,
@@ -120,7 +120,7 @@ export default {
       })
       this.chart = resData.chart
 
-      this.mainData = Object.assign({}, resData.mainData, { api: { chartSearch: '/api/sys/codeReport/chartSearch', search: '/api/sys/codeReport/reportSearch', export: '/api/sys/codeReport/export' } })
+      this.mainData = Object.assign({}, resData.mainData, { api: { chartSearch: '/api/code/report/chartSearch', search: '/api/code/report/reportSearch', export: '/api/code/report/export' } })
 
       this.showTable = resData.mainData.showTable
       this.chartOptionExtend = Object.assign({}, resData.chartOptionExtend)

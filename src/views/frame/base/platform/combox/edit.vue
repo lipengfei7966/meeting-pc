@@ -1,8 +1,9 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style="width:1183px;">
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')"></title-contain>
-      <el-row class='top-operate'>
+      <!-- el-row top-operate -->
+      <div class='dialog-footer'>
         <el-button size="mini" v-db-click @click="$emit('closeHandler')">
           <svg-icon icon-class="cancel"></svg-icon>取消
         </el-button>
@@ -12,10 +13,9 @@
         <el-button size="mini" type='success' v-db-click @click='onExplain'>
           <svg-icon icon-class="explain"></svg-icon>解析SQL
         </el-button>
+      </div>
 
-      </el-row>
-
-      <div class='dialog-content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
         <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': baseInfoVisible ? '1px' : '0'}">
           <div class='form-title'>
             基础信息

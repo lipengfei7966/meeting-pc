@@ -2,17 +2,18 @@
 
   // 侧边栏
   .sidebar-container {
-    height: 100%;
+    // height: 89%;
     position: fixed;
     top: 90px;
     bottom: 0;
     left: 0;
     width: 192px;
     font-size: 0px;
-    z-index: 1001;
+    // z-index: 1001;
     overflow: hidden;
-    padding: 26px 0 89px;
+    z-index: 2;
 
+    // padding: 26px 0 89px;
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out,
         0s padding-right ease-in-out;
@@ -50,7 +51,7 @@
 
   .hide-sidebar {
     .sidebar-container {
-      width: 40px !important;
+      width: 50px !important;
     }
 
     .main-container {
@@ -103,9 +104,13 @@
     }
   }
 
+  .hamburger-container {
+    z-index: 3;
+  }
+
   .sidebar-container .nest-menu .el-submenu>.el-submenu__title,
   .sidebar-container .el-submenu .el-menu-item {
-    min-width: 200px !important;
+    min-width: 192px !important;
   }
 
   .el-menu--collapse .el-menu .el-submenu {
@@ -154,6 +159,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-left: 4px !important;
   }
 }
 
@@ -164,11 +170,11 @@
 .el-submenu .el-menu-item {
   height: 34px;
   line-height: 34px;
-  padding-left: 20px !important;
+  padding-left: 24px !important;
   padding-right: 10px !important;
 
   span {
-    width: 150px !important;
+    width: 130px !important;
   }
 }
 
@@ -184,7 +190,7 @@
 .el-submenu .el-submenu .el-submenu__title {
   height: 34px;
   line-height: 34px;
-  padding-left: 20px !important;
+  padding-left: 14px !important;
 
   span {
     display: inline-block;
@@ -195,7 +201,7 @@
 }
 
 .el-submenu .el-submenu .el-menu .el-menu-item {
-  padding-left: 30px !important;
+  padding-left: 24px !important;
   padding-right: 25px !important;
 
   span {
@@ -229,7 +235,7 @@
     .el-menu-item {
       height: 34px;
       line-height: 34px;
-      padding-left: 10px !important;
+      padding-left: 24px !important;
 
       span {
         width: 150px !important;
@@ -244,7 +250,7 @@
 
       .el-menu {
         .el-menu-item {
-          padding: 0 20px !important;
+          padding: 0 36px !important;
         }
 
         // 四级菜单（收缩）
@@ -252,12 +258,12 @@
           .el-submenu__title {
             height: 34px;
             line-height: 34px;
-            padding-left: 20px !important;
+            padding-left: 16px !important;
           }
 
           .el-menu {
             .el-menu-item {
-              padding: 0 20px !important;
+              padding: 0 24px !important;
             }
           }
         }
@@ -285,5 +291,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-left: 4px !important;
   }
 }

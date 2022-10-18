@@ -66,7 +66,7 @@
           <svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>暂无数据
         </div>
         <!-- 分页 -->
-        <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="mainData.listQuery.current" :page-sizes="[20, 40, 60, 80, 100, 300]" :page-size="mainData.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
+        <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="mainData.listQuery.current" :page-sizes="[20, 40, 60, 80, 100]" :page-size="mainData.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
       </div>
     </template>
     <!-- 编辑弹窗 -->

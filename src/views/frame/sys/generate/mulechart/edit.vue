@@ -1,8 +1,9 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style="width:1183px;">
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')"></title-contain>
-      <el-row class='top-operate'>
+      <!-- el-row top-operate -->
+      <div class='dialog-footer'>
         <el-button size="mini" v-db-click @click="$emit('closeHandler')">
           <svg-icon icon-class="cancel"></svg-icon>取消
         </el-button>
@@ -13,9 +14,9 @@
           <svg-icon icon-class="explain"></svg-icon>解析SQL
         </el-button>
 
-      </el-row>
+      </div>
 
-      <div class='dialog-content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
         <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': menuInfoVisible ? '1px' : '0'}">
           <div class='form-title'>
             图表信息
@@ -961,7 +962,7 @@ export default {
     getPageData() {
       // 调取接口
       request({
-        url: '/api/sys/codeReport/get',
+        url: '/api/code/report/get',
         method: 'post',
         data: {
           data: this.param,
@@ -1000,7 +1001,7 @@ export default {
     onExplain() {
       if (this.page.sqlStatement && this.page.codeApp) {
         request({
-          url: '/api/sys/codeReport/explain',
+          url: '/api/code/report/explain',
           method: 'post',
           data: {
             data: {
@@ -1459,7 +1460,7 @@ export default {
             params.codeDataJson.mainData.table.cols = this.sortByKey(params.codeDataJson.mainData.table.cols, 'sortNo')
 
             request({
-              url: this.opType === 'add' || this.opType === 'copy' ? '/api/sys/codeReport/save' : '/api/sys/codeReport/update',
+              url: this.opType === 'add' || this.opType === 'copy' ? '/api/code/report/save' : '/api/code/report/update',
               method: 'POST',
               data: {
                 data: params,

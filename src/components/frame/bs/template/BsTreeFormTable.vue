@@ -1,7 +1,7 @@
 <template>
-  <div class="bs-container app-container tree-form-table">
+  <div class="bs-new-container app-container tree-form-table">
     <!-- 内容 -->
-    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px" : "200px" }'>
+    <div class='left-content' :style='{width: treeTableData.form.leftWidth ? treeTableData.form.leftWidth + "px !important" : "300px !important" }'>
       <div class='title' :title='treeTableData.form.treeName'>{{treeTableData.form.treeName}}</div>
       <div class="buttons" v-if="treeTableData.form.isTopBar">
         <el-row type='flex'>
@@ -29,7 +29,7 @@
       <header ref='formTableDialogHeader' v-if='treeTableData.form.formDataVisible' style='border-radius:5px;margin:0 0 3px;'>
         <el-form ref='queryForm' @submit.native.prevent label-position="left" :inline="true" :model="listQuery.data" class='header-form-inline'>
           <el-row :gutter="20" style='width:94%;'>
-            <template v-for='(f, index) in treeTableData.form.formData'>
+            <template v-for='(f, index) in expandStatus ? treeTableData.form.formData.slice(0, 2) : treeTableData.form.formData '>
               <el-col :span="8" :key='index' v-if='f.isShow !== false'>
                 <!-- 日期 -->
                 <el-form-item v-if='f.type === "date"' :label="$t(f.label)">
@@ -80,32 +80,50 @@
                 </el-form-item>
               </el-col>
             </template>
+            <el-col class="none"></el-col>
           </el-row>
           <!-- 右侧搜索按钮 -->
-          <div class="search-btn" v-permission="['query']">
-            <el-button type="primary" :loading="loading" @click="handleSearchClick" v-db-click>
-              {{$t('biz.lbl.search')}}
-            </el-button>
+          <div class="button-group clearfix">
+            <div class="button-group-item search-btn" v-permission="['query']">
+              <el-button :loading="loading" @click="onReset" v-db-click>
+                重置
+              </el-button>
+            </div>
+            <div class="button-group-item search-btn" v-permission="['query']">
+              <el-button type="primary" :loading="loading" @click="handleSearchClick" v-db-click>
+                {{$t('biz.lbl.search')}}
+              </el-button>
+            </div>
+            <div class="button-group-item" @click='expand'>
+              <el-button type="text" class="fold" :loading="loading" v-db-click>
+                {{expandText}}
+              </el-button>
+              <span :class="['jt',{ 't': !expandStatus}]"></span>
+            </div>
           </div>
         </el-form>
       </header>
       <main>
         <div class="top-operate" v-if="treeTableData.mainData.isTopBar">
+          <span class="left-title">应用列表</span>
           <el-row type='flex'>
             <slot name='add'></slot>
             <slot name='upload'></slot>
-            <div>
-              <el-button v-db-click size="mini" @click='refresh' style='margin-right:3px;'>
-                <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
-              </el-button>
-            </div>
+
+            <!-- 按钮 -->
             <div v-for='(btn, index) in treeTableData.mainData.topBar' :key='index'>
               <el-button v-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-permission="btn.permitName ? [...btn.permitName, btn.name] : [btn.name]">
                 <svg-icon :icon-class="btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName"></svg-icon>{{$t(btn.i18n) || $t(baseEvent[btn.name].i18n)}}
               </el-button>
             </div>
+            <div>
+              <el-button class="refresh-btn" v-db-click size="mini" @click='refresh' style='margin-right:3px;'>
+                <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
+              </el-button>
+            </div>
           </el-row>
         </div>
+
         <u-table ref="singleTable" :data="tableData" :tree-config="treeConfig" :height='tableHeight' use-virtual :row-height="24" :rowKey="treeTableData.mainData.table.rowKey" :row-id="treeTableData.mainData.table.rowKey || 'id'" stripe highlight-current-row v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" @sort-change="handleSortChange" @current-change="handleSelectRow">
           <u-table-column align='center' v-if="treeTableData.mainData.table.showIndex" type="index" fixed="left" width="50" :label='$t("table.id")'></u-table-column>
           <template v-for='col in tableCols'>
@@ -155,6 +173,8 @@ import exportExcel from '@/utils/frame/base/downloadExcel'
 export default {
   data() {
     return {
+      expandText: '展开',
+      expandStatus: process.env.EXPAND_FLG,
       scrolbox: '',
       scrollY: 0,
       // 编辑页面参数传值
@@ -199,46 +219,55 @@ export default {
         add: {
           func: this.doAdd,
           iconName: 'add',
-          i18n: 'biz.btn.add'
+          i18n: 'biz.btn.add',
+          types: 'primary'
         },
         view: {
           func: this.doView,
           iconName: 'view',
-          i18n: 'biz.btn.view'
+          i18n: 'biz.btn.view',
+          types: 'primary'
         },
         detailSet: {
           func: this.doView,
           iconName: 'set',
-          i18n: 'biz.btn.detailSet'
+          i18n: 'biz.btn.detailSet',
+          types: 'primary'
         },
         update: {
           func: this.doUpdate,
           iconName: 'edit',
-          i18n: 'biz.btn.update'
+          i18n: 'biz.btn.update',
+          types: 'primary'
         },
         remove: {
           func: this.doDelete,
           iconName: 'delete',
-          i18n: 'biz.btn.delete'
+          i18n: 'biz.btn.delete',
+          types: 'primary'
         },
         refresh: {
           func: this.refresh,
           iconName: 'refresh',
-          i18n: 'biz.btn.refresh'
+          i18n: 'biz.btn.refresh',
+          types: 'primary'
         },
         export: {
           func: this.handleDownload,
           iconName: 'export',
-          i18n: 'biz.btn.export'
+          i18n: 'biz.btn.export',
+          types: 'primary'
         },
         print: {
           iconName: 'print',
-          i18n: 'biz.btn.print'
+          i18n: 'biz.btn.print',
+          types: 'primary'
         },
         expand: {
           func: this.expandNode,
           iconName: 'set',
-          i18n: this.treeTableData.form.expandAll ? 'biz.btn.contract' : 'biz.btn.expand'
+          i18n: this.treeTableData.form.expandAll ? 'biz.btn.contract' : 'biz.btn.expand',
+          types: 'primary'
         }
       }
     }
@@ -255,13 +284,13 @@ export default {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
     tableHeight() {
       if (this.treeTableData.form.formDataVisible) {
-        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105
+        return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 75
       } else {
-        return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167
+        return this.clientWidth < 1366 ? this.clientHeight - 184 : this.clientHeight - 167 - 45
       }
     },
     treeHeight() {
-      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101
+      return this.clientWidth < 1366 ? this.clientHeight - 118 : this.clientHeight - 101 - 25
     }
   },
   watch: {
@@ -357,6 +386,21 @@ export default {
     this.scrolbox.addEventListener('scroll', this.handleScroll())
   },
   methods: {
+    // 重置
+    onReset() {
+      this.items = []
+      this.expandStatus = process.env.EXPAND_FLG
+      this.expandText = !this.expandStatus ? '收起' : '展开'
+    },
+    // 展开收起
+    expand() {
+      this.expandStatus = !this.expandStatus
+      this.expandText = !this.expandStatus ? '收起' : '展开'
+      if (!this.$parent.mainData) return
+      this.$nextTick(() => {
+        this.$parent.$refs.bsTable.tableComputed()
+      })
+    },
     handleScroll(e) {
       this.scrollY = this.$refs.treebox.scrollTop
     },
@@ -862,19 +906,21 @@ export default {
   .left-content {
     width: 200px;
     min-width: 200px;
-    border: 1px solid #aaaaaa;
+    // border: 1px solid #aaaaaa;
     border-radius: 5px 5px 0 0;
-    margin-right: 3px;
+    margin-right: 10px;
     background: #ffffff;
     .title {
-      height: 30px;
-      line-height: 30px;
+      height: 40px;
+      line-height: 40px;
       text-indent: 10px;
-      background: #e2e9f4;
-      border-bottom: 1px solid #aaaaaa;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      color: #333333;
     }
     .buttons {
       padding: 5px;
@@ -900,10 +946,9 @@ export default {
   .right-content {
     flex: 1;
     min-width: 954px;
-
     & > header {
       background: #fff;
-      border: 1px solid #ababab;
+      // border: 1px solid #ababab;
       border-radius: 5px;
       margin-bottom: 5px;
       // form版面
@@ -946,13 +991,13 @@ export default {
         }
         .search-btn {
           position: absolute;
-          right: 16px;
-          top: 5px;
-          .el-button--small {
-            font-size: 12px;
-            border-radius: 3px;
-            padding: 5px 9px !important;
-            float: right;
+          top: auto !important;
+          right: 20px !important;
+          bottom: 10px !important;
+          height: 32px;
+          button {
+            height: 32px;
+            padding: 8px 15px !important;
           }
         }
       }
@@ -960,12 +1005,25 @@ export default {
 
     & > main {
       .top-operate {
-        width: 100%;
+        width: 100% !important;
+        // height: 40px !important;
+        // line-height: 40px;
         z-index: 99;
         margin-bottom: 3px;
-        .el-row {
+        .left-title {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 16px;
+          font-weight: 600;
+          padding-left: 5px;
+        }
+        .el-row--flex {
+          // width: 300px;
+          position: static !important;
+          float: right !important;
           .el-button {
             padding: 6px 10px;
+            font-size: 14px;
           }
           .el-button + .el-button {
             margin-left: -2px;
@@ -975,8 +1033,8 @@ export default {
       .bottom-operate {
         background: #fff;
         height: 36px;
-        line-height: 36px;
-        border: 1px solid #ababab;
+        line-height: 46px;
+        // border: 1px solid #ababab;
         border-top: none;
         border-radius: 0 0 5px 5px;
         .bottom-operate-left {
@@ -986,7 +1044,7 @@ export default {
         }
         .bottom-operate-right {
           float: right;
-          font-size: 12px;
+          font-size: 14px;
           color: #606266;
           margin-right: 5px;
         }

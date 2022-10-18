@@ -96,11 +96,6 @@ export default {
             component: () => import('./employeeTab.vue')
           },
           {
-            name: 'menuDataTab',
-            label: 'func.role.tab.menuData',
-            component: () => import('./menuDataTab.vue')
-          },
-          {
             name: 'apiData',
             label: 'func.role.tab.apiData',
             component: () => import('./apiTab.vue')

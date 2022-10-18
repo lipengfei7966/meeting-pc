@@ -3,19 +3,14 @@
   <main :style="{ width: hasLayout ? (clientWidth < 1366 ? (this.sidebar.opened && !app.isScreenFull ? '1163px' : '1323px') : 'auto') : 'auto' }">
     <!-- 顶部按钮 -->
     <div class="top-operate" v-if="mainData.isTopBar" ref="btnWrapper" @wheel.prevent="handleScroll">
+      <span class="left-title">应用列表</span>
       <el-row type="flex" ref="btnContainer">
         <slot name="add"></slot>
         <slot name="upload"></slot>
-        <div>
-          <el-button v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
-            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
-          </el-button>
-        </div>
         <div v-for="(btn, index) in mainData.topBar" :key="index">
-          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='$t(btn.i18n)' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
-          <template v-if="btn.name !== 'query' && btn.name !== 'upload'">
+          <template v-if="btn.name !== 'query'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
-              <el-button v-db-click size="mini" style="margin-right: 3px" v-permissionMultiple="btn.list">
+              <el-button v-db-click size="mini" style="margin-right: 3px;margin-top: 3px;height:32px;" v-permissionMultiple="btn.list">
                 <svg-icon :icon-class="btn.iconName || 'set'"></svg-icon>
                 {{ $t(btn.i18n || 'biz.btn.moreButton') }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -27,11 +22,20 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button v-else-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
+            <el-button v-else-if="btn.name !== 'refresh'" v-db-click size="mini" @click="triggerEvent(btn)" style="margin-right: 3px;margin-top: 3px;height:32px;" v-bind="btn.attrs" v-permission="btn.permitName ? btn.permitName : [btn.name]" :loading="btn.showLoading ? btn.loading : false">
               <svg-icon :icon-class="btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) ? btn.iconName || (baseEvent[btn.name] && baseEvent[btn.name].iconName) : 'set'"></svg-icon>
               {{ $t(btn.i18n) || (baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)) }}
             </el-button>
           </template>
+        </div>
+        <div class="right-buttons">
+          <span class="line"></span>
+          <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
+            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
+          </el-button>
+          <div class="right-btn" v-if="mainData.isColset">
+            <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
+          </div>
         </div>
       </el-row>
     </div>
@@ -56,16 +60,14 @@
         </template>
       </template>
     </u-table>
+    <!-- <el-alert class="alert-total" title="合计" type="warning" :closable="false"></el-alert> -->
     <!-- 底部按钮 -->
-    <div class="bottom-operate">
-      <div class="bottom-operate-left" v-if="mainData.isColset">
-        <el-table-column-set :id="mainData.table.id" :checked="checked" :checkList="tableCols" @change="checkChange" @lockEvent="handleLockChange"></el-table-column-set>
-      </div>
+    <div class="bottom-operate" v-show="emptyTextVisible || mainData.bottomBar ">
       <div class="bottom-operate-right" v-show="emptyTextVisible">
         <svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}
       </div>
       <!-- 分页 -->
-      <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100, 300]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
+      <el-pagination v-if="!emptyTextVisible && mainData.bottomBar && mainData.bottomBar.pagination && mainData.bottomBar.pagination.show" small background :layout="mainData.bottomBar.pagination.layout" :current-page="$parent.form.listQuery.current" :page-sizes="[20, 40, 60, 80, 100]" :page-size="$parent.form.listQuery.size" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"> </el-pagination>
     </div>
     <!-- 编辑弹窗 -->
     <view-form-table v-if="dialogDetailVisible" @closeHandler="dialogHandler" :param="param" :moduleCode="moduleCode" :opType="opType" :opMode="opMode"></view-form-table>
@@ -236,8 +238,8 @@ export default {
         }
       },
       // 默认表高度
-      rowHeight: 24,
-      isHeight: true
+      rowHeight: 38,
+      isHeight: this.mainData.table.rowKey ? true : false
     }
   },
   inject: ['app'],
@@ -442,38 +444,37 @@ export default {
     },
     // 计算列表高度
     tableComputed() {
-      if (this.mainData.height) {
-        this.tableHeight = this.mainData.height
-      } else {
-        const elHead = document.getElementById('elHead')
-        let getElHeadHeight = 0
-        // 是否存在头部表单
-        if (elHead) {
-          getElHeadHeight = window.getComputedStyle(elHead).height.split('px')[0] * 1
+      if (this.isHeight) {
+        if (this.mainData.height) {
+          this.tableHeight = this.mainData.height
         } else {
-          getElHeadHeight -= 5
-        }
-        // 是否最大化
-        if (screenfull.isFullscreen) {
-          getElHeadHeight -= 76
-          // 最大化时是否显示标签栏
-          if (this.tagViewVisible) {
-            getElHeadHeight += 26
+          const elHead = document.getElementById('elHead')
+          let getElHeadHeight = 0
+          // 是否存在头部表单
+          if (elHead) {
+            getElHeadHeight = window.getComputedStyle(elHead).height.split('px')[0] * 1
+          } else {
+            getElHeadHeight -= 5
           }
-        }
-        if (this.hasLayout) {
-          this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
-        } else {
-          this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
-        }
-        if (this.mainData.isTabBar) {
-          this.tableHeight = this.tableHeight - 30
+          // 是否最大化
+          if (screenfull.isFullscreen) {
+            getElHeadHeight -= 76
+            // 最大化时是否显示标签栏
+            if (this.tagViewVisible) {
+              getElHeadHeight += 26
+            }
+          }
+          if (this.hasLayout) {
+            this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
+          } else {
+            this.tableHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
+          }
+          this.tableHeight = this.tableHeight - 55
         }
       }
     },
     // 按钮事件自定义
     triggerEvent(button) {
-      debugger
       if (button.event && typeof button.event === 'function') {
         button.event(button)
       } else if (this.baseEvent[button.name]) {
@@ -1434,13 +1435,6 @@ export default {
           colspan: 1
         }
       }
-    },
-    // 增行
-    addFile(file) {
-      debugger
-      if (file && file.response && file.response.data) {
-        this.$emit('fileCallback', file.response.data)
-      }
     }
   }
 }
@@ -1450,5 +1444,56 @@ export default {
 tr.el-table__row.success-row,
 tr.el-table__row.el-table__row--striped.success-row td {
   background: #fff4e9 !important;
+}
+.top-operate {
+  width: 100% !important;
+  .left-title {
+    border-left: 4px solid #1890ff;
+    font-size: 16px;
+    font-weight: 600;
+    color: #262626;
+    padding-left: 10px;
+  }
+  .right-buttons {
+    // width: 100px;
+    height: 40px;
+    position: relative;
+    padding-left: 36px;
+    & > .right-btn {
+      display: inline-block;
+      margin: 0 8px;
+    }
+    & > .el-button {
+      border: none;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    & > .el-button:hover {
+      background: transparent !important;
+      use {
+        color: #606266 !important;
+      }
+    }
+    .line {
+      width: 1px;
+      height: 20px;
+      background: #ccc;
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
+.el-row--flex {
+  // width: 330px !important;
+  // position: absolute;
+  height: 40px !important;
+}
+.bottom-operate-left {
+  float: none;
+  margin: 0 10px;
 }
 </style>
