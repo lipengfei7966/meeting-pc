@@ -356,7 +356,6 @@ export default {
     }
   },
   filters: {
-    // 过滤
     commentEllipsis(value) {
       if (value.length != undefined) {
         if (value.length > 15) {
