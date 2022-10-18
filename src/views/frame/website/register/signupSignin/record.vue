@@ -104,7 +104,13 @@ export default {
             default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
           {
             label: '场景',

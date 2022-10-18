@@ -292,6 +292,7 @@ onReset() {
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
       this.addQueryConditionVisible = true;
+      this.doRefresh();
     },
 
     initExtraQuery() {

@@ -99,7 +99,7 @@
       <!-- 右侧搜索按钮 -->
       <el-col :span="6">
         <div class="button-group clearfix">
-          <div class="button-group-item search-btn" v-permission="['query']">
+          <div class="button-group-item search-btn" v-permission="['query']" v-if="refreshNum != 0 && form.moreShowFlg || form.formData.length > 1">
             <el-button @click="onReset" v-db-click>
               重置
             </el-button>
@@ -154,6 +154,7 @@ const registerComponent = data => {
 export default {
   data() {
     return {
+      refreshNum:0,
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
@@ -257,6 +258,7 @@ onReset() {
       this.form.formData.forEach(item => {
         if(item.validate){
           arr.push(item.prop);
+          this.refreshNum += 1;
         }
       })
       for (const key in this.form.listQuery.data) {
@@ -274,6 +276,7 @@ onReset() {
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
       this.addQueryConditionVisible = true;
+      this.doRefresh();
     },
 
     // 时间变化
@@ -488,6 +491,17 @@ onReset() {
       }
       this.extraChoice = list
     }
+  },
+watch: {
+    form(val) {
+      val.formData.forEach(item => {
+        if(item.validate){
+          this.refreshNum += 1;
+        }
+      })
+    },
+    immediate:true,
+    deep:true
   }
 }
 </script>
