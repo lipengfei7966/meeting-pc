@@ -114,8 +114,6 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
-        // 标注
         console.log(newValue, oldValue)
         if (newValue) {
           let submitVal = newValue
@@ -134,8 +132,13 @@ export default {
           } else {
             this.ruleForm.sort = ''
           }
+          debugger
+          // 标注
           if (submitVal.title) {
-            this.ruleForm.title = submitVal.title
+            if (this.ruleForm.title == '') {
+              this.ruleForm.title = submitVal.title
+            } else {
+            }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
@@ -159,7 +162,7 @@ export default {
             this.ruleForm.backgroundSetting = '1'
           }
           if (submitVal.icon) {
-            debugger
+            // debugger
             this.ruleForm.fileList[0].url = submitVal.icon
             this.ruleForm.icon = submitVal.icon
           } else {

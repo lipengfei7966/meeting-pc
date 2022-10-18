@@ -180,6 +180,21 @@ export default {
     },
     blur_() {
       console.log('失焦了 调保存接口吧')
+      request({
+        url: '/aaa',
+        method: 'POST',
+        data: { data: {}, funcModule: '修改文件名', funcOperation: '修改文件名' }
+      })
+        .then((res) => {
+          if (res.data) {
+            this.$message.success('修改成功')
+            this.loadData(this.treeDatas)
+            console.log(res.data)
+          } else {
+            this.$message.success('修改失败')
+          }
+        })
+        .catch(() => {})
     },
     // 滚动刷新
     getScroll(event) {
@@ -264,6 +279,8 @@ export default {
     },
     matter(data) {
       this.exhibition = true
+      // 关闭右侧展示
+      this.exhibitionRight = false
       this.treeDatas = data
       this.loadData(data)
     },
@@ -316,7 +333,7 @@ export default {
       this.getImageSize(item.picUrl)
       // 尺寸--- end
       // 上传时间 --- start
-      this.more.createdTime = item.createDate
+      this.more.createdTime = item.updateDate ? item.updateDate : item.createDate
       // 上传时间--- end
       //所在文件夹--- start
       this.more.place = this.treeDatas.name
