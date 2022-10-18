@@ -136,12 +136,12 @@ export const constantRouterMap = [
   //   hidden: true
   // },
   // 1012
-  {
-    path: '/material',
-    name: '/material',
-    component: () => import('@/views/frame/material/index'),
-    hidden: true
-  },
+  // {
+  //   path: '/material',
+  //   name: '/material',
+  //   component: () => import('@/views/frame/material/index'),
+  //   hidden: true
+  // },
   //
   {
     path: '/404',
