@@ -121,6 +121,7 @@ export default {
         picName: ''
       },
       workName: '',
+      title_: '',
       leixingOptions: [
         { name: '图片', id: '0' },
         { name: '视频', id: '1' }
@@ -181,9 +182,9 @@ export default {
     blur_() {
       console.log('失焦了 调保存接口吧')
       request({
-        url: '/aaa',
+        url: '/api/cms/picinfo/renameFile',
         method: 'POST',
-        data: { data: {}, funcModule: '修改文件名', funcOperation: '修改文件名' }
+        data: { data: { objectKey: this.title_, newObjectKey: this.workName, id: this.pId, url: this.more.link }, funcModule: '修改文件名', funcOperation: '修改文件名' }
       })
         .then((res) => {
           if (res.data) {
@@ -298,7 +299,9 @@ export default {
       })
         .then((res) => {
           if (res.data) {
-            loading.close()
+            setTimeout(() => {
+              loading.close()
+            }, 200)
             this.matterList = res.data
             this.total = res.total
             console.log(res.data)
@@ -315,6 +318,7 @@ export default {
       // id
       this.pId = item.id
       this.workName = item.picName
+      this.title_ = item.picName
       this.url = item.picUrl
       this.srcList[0] = item.picUrl
       // 格式--- start
