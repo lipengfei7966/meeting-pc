@@ -192,6 +192,18 @@ export default {
       default() {
         return ''
       }
+    },
+    certificateFlagName: {
+      type: Number,
+      default() {
+        return ''
+      }
+    },
+    setName: {
+      type: Number,
+      default() {
+        return ''
+      }
     }
   },
   computed: {
@@ -282,8 +294,8 @@ onReset() {
       this.expandText = !this.expandStatus ? '收起' : '展开'
       this.addQueryConditionVisible = true;
       this.form.listQuery.data.signFlag = this.tabName;  //签到管理
-      this.form.listQuery.data.certificateFlag = this.tabName;  //办证管理
-      this.form.listQuery.data.sceneCode = this.tabName;  //签到设置
+      this.form.listQuery.data.certificateFlag = this.certificateFlagName;  //办证管理
+      this.form.listQuery.data.sceneCode = this.setName;  //签到设置
       this.doRefresh();
     },
 

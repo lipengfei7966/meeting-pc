@@ -1,6 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
-    <bs-form ref="bsForm" :form="form" :tabName="tabName"></bs-form>
+    <bs-form ref="bsForm" :form="form" :certificateFlagName="tabName"></bs-form>
 
     <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
