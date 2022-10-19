@@ -1,21 +1,38 @@
 <template>
   <div style="height: 90vh; overflow: auto; margin-top: 10px">
-    <el-upload class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
-      <el-button size="small" type="primary">点击上传</el-button>
-      <!-- <div slot="tip" class="el-upload__tip">请上传图片文件</div> -->
-    </el-upload>
+    <div>
+      <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">从素材库选择</el-button>
+      <el-upload class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
+        <el-button size="small" type="primary">点击上传</el-button>
+      </el-upload>
+    </div>
+    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+      <div>
+        <!-- 放内容的 -->
+        <material ref="material" />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit_">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
+import material from '@/components/MicroStation/materialSelection'
 export default {
   props: ['code', 'webpagePicDtoList'], //接收值
+  components: {
+    material
+  },
   data() {
     return {
       // process.env.BASE_API +
       uploadUrl: '/api/biz/cmsWebpagePic/uploadRotationPic',
-      webpagePicDtoList_: []
+      webpagePicDtoList_: [],
+      dialogVisible: false
       // fileList: [
       //   { name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
       //   { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }
@@ -106,6 +123,13 @@ export default {
           loading.close()
         })
         .catch(() => {})
+    },
+    materialSelection() {
+      this.dialogVisible = true
+    },
+    submit_() {
+      console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
+      this.dialogVisible = false
     }
   },
   computed: {
