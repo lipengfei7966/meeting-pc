@@ -1,23 +1,43 @@
 <template>
-  <div style="text-align: center; margin-top: 50px">
-    <el-upload action list-type="picture-card" :headers="httpHeaders" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
-      <i class="el-icon-plus"></i>
-    </el-upload>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="" />
+  <div>
+    <div style="margin-top: 8px">
+      <el-button size="small" type="primary" @click="materialSelection">从素材库选择</el-button>
+    </div>
+    <div style="text-align: center; margin-top: 50px">
+      <el-upload action list-type="picture-card" :headers="httpHeaders" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible_">
+        <img width="100%" :src="dialogImageUrl" alt="" />
+      </el-dialog>
+    </div>
+    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+      <div>
+        <!-- 放内容的 -->
+        <material ref="material" :MultiSelect="false" />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit_">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
+import material from '@/components/MicroStation/materialSelection'
 export default {
   props: ['code', 'webpagePicDtoList'], //接收值
+  components: {
+    material
+  },
   data() {
     return {
       // process.env.BASE_API +
       uploadUrl: '/api/biz/cmsWebpagePic/uploadBackgroundPic',
       dialogImageUrl: '',
+      dialogVisible_: false,
       dialogVisible: false,
       webpagePicDtoList_: []
     }
@@ -29,7 +49,7 @@ export default {
     handlePictureCardPreview(file) {
       debugger
       this.dialogImageUrl = file.url
-      this.dialogVisible = true
+      this.dialogVisible_ = true
     },
     handleExceed(files, fileList) {
       // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
@@ -64,6 +84,13 @@ export default {
         })
         .catch(() => {})
       console.log(param)
+    },
+    materialSelection() {
+      this.dialogVisible = true
+    },
+    submit_() {
+      console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
+      this.dialogVisible = false
     }
   },
   computed: {
