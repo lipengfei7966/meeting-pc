@@ -194,6 +194,7 @@ export default {
     ...mapGetters(['dataDictList', 'sidebar', 'clientWidth'])
   },
   mounted() {
+    this.doRefresh()
     this.hasLayout = this.$route.path.includes('/layout')
   },
   beforeMount() {
