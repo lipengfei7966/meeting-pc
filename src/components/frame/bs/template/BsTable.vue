@@ -255,6 +255,12 @@ export default {
       default() {
         return {}
       }
+    },
+    mainDataTabs: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   computed: {
@@ -365,7 +371,6 @@ export default {
       //本地返回
       if (this.mainData.apiJson && this.mainData.apiJson.search) {
         let response = this.mainData.apiJson.search()
-
         if (this.mainData.table.rowKey && !this.mainData.table.expandAll) {
           this.tableData = response.data
         } else {
@@ -401,12 +406,15 @@ export default {
           this.$parent.$refs.bsForm.loading = true
         }
       }
+      console.log(this.$parent.form.listQuery,this.mainDataTabs)
       request({
         url: this.mainData.api.search,
         method: 'POST',
         data: this.$parent.form.listQuery
       })
         .then(response => {
+
+          console.log(this.mainDataTabs,1111)
           this.loading = false
           if (this.$parent.$refs.bsForm) {
             this.$parent.$refs.bsForm.loading = false

@@ -1,6 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
-    <bs-form ref="bsForm" :form="form"></bs-form>
+    <bs-form ref="bsForm" :form="form" :tabName="tabName"></bs-form>
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
@@ -22,6 +22,7 @@ export default {
   name: 'signupSigninSet',
   data() {
     return {
+      tabName:0,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -396,6 +397,7 @@ export default {
     handleTabClick(tab, event) {
       this.currentRow = null
       this.form.listQuery.data.sceneCode = tab.code
+      this.tabName = tab.code;
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {

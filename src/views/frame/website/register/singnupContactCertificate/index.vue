@@ -1,6 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
-    <bs-form ref="bsForm" :form="form"></bs-form>
+    <bs-form ref="bsForm" :form="form" :tabName="tabName"></bs-form>
 
     <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
@@ -47,6 +47,7 @@ export default {
   name: 'singnupContactCertificate',
   data() {
     return {
+      tabName:'',
       activeName: '2',
       form: {
         moreShowFlg: false,
@@ -356,7 +357,6 @@ export default {
     },
     // 获取会议具体证件内容选项
     meetingdictCode() {
-      console.log(this.form.listQuery.data.eventCode)
       // 获取打印类型数据字典
       request({
         url: '/api/register/signupContactCol/page',
@@ -533,6 +533,8 @@ export default {
     handleTabClick(tab, event) {
       this.currentRow = null
       this.form.listQuery.data.certificateFlag = tab.name
+      // console.log(tab.name)
+      this.tabName = tab.name;
       this.$refs.bsTable.getList({ name: 'search' })
     }
   }

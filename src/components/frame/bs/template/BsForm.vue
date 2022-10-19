@@ -186,6 +186,12 @@ export default {
       default() {
         return {}
       }
+    },
+    tabName: {
+      type: Number,
+      default() {
+        return ''
+      }
     }
   },
   computed: {
@@ -258,7 +264,6 @@ onReset() {
       this.form.formData.forEach(item => {
         if(item.validate){
           arr.push(item.prop);
-          this.refreshNum += 1;
         }
       })
       for (const key in this.form.listQuery.data) {
@@ -276,6 +281,9 @@ onReset() {
       this.expandStatus = process.env.EXPAND_FLG
       this.expandText = !this.expandStatus ? '收起' : '展开'
       this.addQueryConditionVisible = true;
+      this.form.listQuery.data.signFlag = this.tabName;  //签到管理
+      this.form.listQuery.data.certificateFlag = this.tabName;  //办证管理
+      this.form.listQuery.data.sceneCode = this.tabName;  //签到设置
       this.doRefresh();
     },
 
@@ -287,6 +295,7 @@ onReset() {
     //刷新
     doRefresh(initFlag) {
       if (this.$refs.queryForm) {
+        console.log(111)
         this.$refs.queryForm.validate(valid => {
           if (valid) {
             if (initFlag) {
@@ -294,8 +303,10 @@ onReset() {
             }
             if (this.$parent.$refs.bsTable) {
               this.$parent.$refs.bsTable.getList({ name: 'search' })
+              // 点击重置获取当前页数据
             } else {
               if (this.$parent.getList) {
+              console.log(3,this.$parent.getList)
                 this.$parent.getList({ name: 'search' })
               }
             }

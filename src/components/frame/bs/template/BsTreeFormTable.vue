@@ -498,7 +498,7 @@ export default {
     getCurrentNode() {
       return this.$refs.tree.getCurrentNode()
     },
-
+    // 刷新
     refresh() {
       if (this.getCurrentNode()) {
         if (this.treeTableData.form.formDataVisible) {

@@ -1,6 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
-    <bs-form ref="bsForm" :form="form"></bs-form>
+    <bs-form ref="bsForm" :form="form" :tabName="tabName"></bs-form>
     <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
@@ -11,7 +11,7 @@
       </el-tabs>
     </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" :mainDataTabs="mainData.tabs"></bs-table>
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
   name: 'signupSignin',
   data() {
     return {
+      tabName:0,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -393,6 +394,7 @@ export default {
     handleTabClick(tab, event) {
       this.currentRow = null
       this.form.listQuery.data.signFlag = tab.name
+      this.tabName = tab.name;
       this.$refs.bsTable.getList({ name: 'search' })
     }
   }
