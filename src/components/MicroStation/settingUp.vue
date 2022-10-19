@@ -40,6 +40,7 @@
           <el-button size="small" type="text">上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
+        <el-button size="small" type="text" @click="materialSelection" style="float: left">从素材库选择</el-button>
       </el-form-item>
       <el-form-item>
         <div>
@@ -54,13 +55,27 @@
 <el-button>返回</el-button>
   <el-button type="primary">保存</el-button>
 </div> -->
+    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+      <div>
+        <!-- 放内容的 -->
+        <material ref="material" :MultiSelect="false" />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit_">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import material from '@/components/MicroStation/materialSelection'
 import request from '@/utils/frame/base/request'
 // import ColorPicker from 'el-color-picker-sheldon'
 export default {
+  components: {
+    material
+  },
   props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
@@ -97,7 +112,8 @@ export default {
       pageLists: [],
       classify: [],
       // process.env.BASE_API +
-      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg'
+      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
+      dialogVisible: false
     }
   },
   computed: {
@@ -132,24 +148,28 @@ export default {
           } else {
             this.ruleForm.sort = ''
           }
-          debugger
-          // 标注
           if (submitVal.title) {
             if (this.ruleForm.title == '') {
               this.ruleForm.title = submitVal.title
-            } else {
             }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          // debugger
+          debugger
+          // 标注
           if (submitVal.type) {
-            this.ruleForm.type = submitVal.type
+            if (this.ruleForm.type == '') {
+              this.ruleForm.type = submitVal.type
+            }
             if (submitVal.type == 'article') {
-              this.ruleForm.page = submitVal.content
+              if (this.ruleForm.page == '') {
+                this.ruleForm.page = submitVal.content
+              }
             } else if (submitVal.type == 'url') {
-              this.ruleForm.link = submitVal.content
+              if (this.ruleForm.link == '') {
+                this.ruleForm.link = submitVal.content
+              }
             }
           } else {
             this.ruleForm.type = ''
@@ -374,6 +394,13 @@ export default {
     uploadFile(response, file, filelist) {
       this.ruleForm.icon = response.data.filePath
       console.log(response.data.filePath, file, filelist)
+    },
+    materialSelection() {
+      this.dialogVisible = true
+    },
+    submit_() {
+      console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
+      this.dialogVisible = false
     }
   }
 }
