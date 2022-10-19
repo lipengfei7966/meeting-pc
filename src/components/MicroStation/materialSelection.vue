@@ -42,7 +42,7 @@
         </div>
         <ul v-if="matterList.length > 0" id="app_" class="content_" @scroll.passive="getScroll($event)">
           <el-checkbox-group v-model="checkList" class="check" v-if="MultiSelect">
-            <li class="resource" v-for="(item, index) in matterList" :key="index">
+            <li class="resource_" v-for="(item, index) in matterList" :key="index">
               <el-image style="width: 100%; height: 75%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
               <div style="line-height: 7.5vh">
                 <el-checkbox :label="item">{{ item.picName }}</el-checkbox>
@@ -50,7 +50,7 @@
             </li>
           </el-checkbox-group>
           <div class="check" v-else>
-            <li class="resource" v-for="(item, index) in matterList" :key="index">
+            <li class="resource_" v-for="(item, index) in matterList" :key="index">
               <el-image style="width: 100%; height: 75%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
               <div style="line-height: 7.5vh">
                 <el-radio v-model="pictureRadio" :label="item">{{ item.picName }}</el-radio>
@@ -208,7 +208,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  .resource {
+  .resource_ {
     width: 24%;
     height: 35%;
     margin-top: 10px;

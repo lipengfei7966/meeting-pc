@@ -148,24 +148,28 @@ export default {
           } else {
             this.ruleForm.sort = ''
           }
-          debugger
-          // 标注
           if (submitVal.title) {
             if (this.ruleForm.title == '') {
               this.ruleForm.title = submitVal.title
-            } else {
             }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          // debugger
+          debugger
+          // 标注
           if (submitVal.type) {
-            this.ruleForm.type = submitVal.type
+            if (this.ruleForm.type == '') {
+              this.ruleForm.type = submitVal.type
+            }
             if (submitVal.type == 'article') {
-              this.ruleForm.page = submitVal.content
+              if (this.ruleForm.page == '') {
+                this.ruleForm.page = submitVal.content
+              }
             } else if (submitVal.type == 'url') {
-              this.ruleForm.link = submitVal.content
+              if (this.ruleForm.link == '') {
+                this.ruleForm.link = submitVal.content
+              }
             }
           } else {
             this.ruleForm.type = ''
