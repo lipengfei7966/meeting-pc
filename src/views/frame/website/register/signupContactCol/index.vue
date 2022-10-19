@@ -71,9 +71,9 @@
             <h2 style="text-align:center"> {{ eventName }}</h2>
             <draggable v-model="setInfoList" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
               <transition-group>
-                <div class="setInfoItem" v-for="(element,index) in setInfoList" :key="element.mapCode" @click="edititem(element,index)" @mouseover="edititem(element,index)">
+                <div class="setInfoItem" v-for="(element,index) in setInfoList" :key="element.mapCode" @click="edititem(element,index)">
                   <!-- 姓名 -->
-                  <div v-if="element.mapCode == 'name'" class="form-item-input">
+                  <div v-if=" element.mapCode=='name'" class=" form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
                     <el-input style="width: 50%" size="mini" :placeholder="element.placeholder"></el-input>
                   </div>
@@ -99,15 +99,13 @@
                   <!-- 证件 -->
                   <div v-if="element.mapCode == 'certificate' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
-
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-select v-model="setForm.chenkedCertificate" :placeholder="element.placeholder">
+                      <el-select style="width: 100%" v-model="setForm.chenkedCertificate" :placeholder="element.placeholder">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                       <br>
                       <el-input style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
                     </div>
-
                   </div>
 
                   <!-- 照片 -->
@@ -162,8 +160,160 @@
 
                   </div>
 
+                  <!-- 手机号 -->
+                  <div v-if="element.mapCode == 'phone' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.defaultCountryCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                        </el-select>
+                      </el-input>
+                      <br>
+                      <el-input placeholder="请输入验证码" class="input-with-select">
+                        <el-button slot="append" icon="el-icon-search">获取验证码</el-button>
+                      </el-input>
+                    </div>
+                  </div>
+
+                  <!-- 备用手机号 -->
+                  <div v-if="element.mapCode == 'secondPhone' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.secondPhonedefaultCountryCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                        </el-select>
+                      </el-input>
+                      <br>
+                      <el-input placeholder="请输入验证码" class="input-with-select">
+                        <el-button slot="append" icon="el-icon-search">获取验证码</el-button>
+                      </el-input>
+                    </div>
+                  </div>
+
+                  <!-- 固定电话 -->
+                  <div v-if="element.mapCode == 'telephone' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 80%;display:inline-block;vertical-align: top;">
+                      <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.telephoneDefaultCountryCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                        </el-select>
+                      </el-input>
+                      <span>
+                        - <el-input style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                      </span>
+                      <span v-if="element.extensionNumbeIsShow">
+                        - <el-input style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- 传真 -->
+                  <div v-if="element.mapCode == 'fax' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 80%;display:inline-block;vertical-align: top;">
+                      <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxDefaultCountryCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                        </el-select>
+                      </el-input>
+                      <span>
+                        - <el-input style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                      </span>
+                      <span v-if="element.extensionNumbeIsShow">
+                        - <el-input style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- 邮箱 -->
+                  <div v-if="element.mapCode == 'email' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <br>
+                      <el-input placeholder="请输入验证码" class="input-with-select">
+                        <el-button slot="append" icon="el-icon-search">获取验证码</el-button>
+                      </el-input>
+                    </div>
+                  </div>
+
+                  <!-- 备用邮箱 -->
+                  <div v-if="element.mapCode == 'secondEmail' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <br>
+                      <el-input placeholder="请输入验证码" class="input-with-select">
+                        <el-button slot="append" icon="el-icon-search">获取验证码</el-button>
+                      </el-input>
+                    </div>
+                  </div>
+
+                  <!-- 微信号 -->
+                  <div v-if="element.mapCode == 'wechat' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- QQ -->
+                  <div v-if="element.mapCode == 'QQ' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 公司 -->
+                  <div v-if="element.mapCode == 'company' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 部门 -->
+                  <div v-if="element.mapCode == 'department' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 职位 -->
+                  <div v-if="element.mapCode == 'position' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 短文本 -->
+                  <div v-if="element.systemName == '短文本' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input v-model="test" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                    </div>
+                  </div>
+
                   <div>
-                    <div class="remove-button el-icon-remove-outline" @click="delSetInfoList(element,index)"></div>
+                    <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element,index)"></div>
                   </div>
 
                 </div>
@@ -406,12 +556,12 @@
                   <p class="eidtContentItemTitle">邮编</p>
                   <el-switch v-model="setInfoList[checkedIndex].postcodeIsShow"> </el-switch>
                 </div>
-                <!-- 详细地址标题 -->
+                <!-- 邮编地址标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].postcodeIsShow">
                   <p class="eidtContentItemTitle">标题</p>
-                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].postcodeAdressTitle"></el-input>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].postcodeTitle"></el-input>
                 </div>
-                <!-- 详细地址提示文本 -->
+                <!-- 邮编地址提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].postcodeIsShow">
                   <p class="eidtContentItemTitle">提示文本</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].postcodePlaceholder"></el-input>
@@ -424,6 +574,403 @@
                 </div>
 
               </div>
+
+              <!-- 手机号 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'phone'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 国际区号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">国际区号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
+                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </div>
+
+                <!-- 格式校验 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">格式校验</p>
+                  <el-checkbox-group v-model="setForm.mobilePhoneVerify" @change="mobilePhoneVerifyChange">
+                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item"></el-checkbox>
+                  </el-checkbox-group>
+                </div>
+
+                <!-- 短信验证 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">短信验证</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isNoteVerify"> </el-switch>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+
+                <!-- 仅限于后台管理 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">仅限于后台管理</p>
+                  <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
+                </div>
+
+              </div>
+
+              <!-- 备用手机号 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'secondPhone'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 国际区号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">国际区号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
+                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </div>
+
+                <!-- 格式校验 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">格式校验</p>
+                  <el-checkbox-group v-model="setForm.mobilePhoneVerify" @change="mobilePhoneVerifyChange">
+                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item"></el-checkbox>
+                  </el-checkbox-group>
+                </div>
+
+                <!-- 短信验证 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">短信验证</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isNoteVerify"> </el-switch>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+
+              </div>
+
+              <!-- 固定电话 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'telephone'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].areaCodePlaceholder"></el-input>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                  <el-input size="mini" v-if="setInfoList[checkedIndex].extensionNumbeIsShow" v-model="setInfoList[checkedIndex].extensionNumberPlaceholder"></el-input>
+                </div>
+
+                <!-- 国际区号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">国际区号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
+                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </div>
+
+                <!-- 分机号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">分机号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].extensionNumbeIsShow"> </el-switch>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+
+              </div>
+
+              <!-- 传真 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'fax'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].areaCodePlaceholder"></el-input>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                  <el-input size="mini" v-if="setInfoList[checkedIndex].extensionNumbeIsShow" v-model="setInfoList[checkedIndex].extensionNumberPlaceholder"></el-input>
+                </div>
+
+                <!-- 国际区号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">国际区号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
+                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </div>
+
+                <!-- 分机号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">分机号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].extensionNumbeIsShow"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+
+              </div>
+
+              <!-- 邮箱 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'email'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 邮箱验证 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">邮箱验证</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isEmailVerify"> </el-switch>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+
+                <!-- 仅限于后台管理 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">仅限于后台管理</p>
+                  <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
+                </div>
+
+              </div>
+
+              <!-- 备用邮箱 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'secondEmail'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 邮箱验证 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">邮箱验证</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isEmailVerify"> </el-switch>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 微信号 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'wechat'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- QQ号 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'QQ'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 公司 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'company'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 部门 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'department'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 职位 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'position'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 短文本 -->
+              <div v-if="setInfoList[checkedIndex].systemName == '短文本'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+                <!-- 限制字数 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">限制字数</p>
+                  <el-input-number style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  <!-- <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input> -->
+                </div>
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -607,8 +1154,11 @@ export default {
         {label: '分页', value: 'paging'},
         {label: '说明信息', value: 'explainInfo'},
       ],
+      test: '',
+      customInfoCount: 0, // 自定义信息数量
       eventName: '', // 会议名称
       drag: false,
+      countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
       setInfoList: [], // 选中的配置信息列表
       // 表格高度
       formSetHeight: 0,
@@ -621,6 +1171,11 @@ export default {
         city:'',
         county: '',
         detailedAdress:'',
+        defaultCountryCode: '',
+        secondPhonedefaultCountryCode:'',
+        mobilePhoneVerify: [],
+        telephoneDefaultCountryCode:'',
+        faxDefaultCountryCode: '',
       },
       checkedIndex: 0, // 选中预览item下标
     }
@@ -628,16 +1183,41 @@ export default {
   components: {
     draggable,
   },
-  mounted() {},
+  mounted() {
+    // 获取国际区号数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then(res => {
+      // debugger
+      this.countryCodeOptions = res.data
+      // dictItemName \ dictItemVal
+    })
+  },
+  watch:{
+    customInfoCount(newVal ,oldVal) {
+      if (newVal > 0) {
+        let coustomInfoIndex = 0;
+        this.setInfoList.forEach((item,index) => {
+          if(item.isCoustomInfo){
+            coustomInfoIndex ++;
+            item.mapCode = 'RESERVED_STR' + coustomInfoIndex
+          }
+        })
+      }
+    }
+  },
   methods: {
     //移除表单信息
     delSetInfoList(itemList,itemIndex){
-      // debugger
+      debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
           var index = this.baseInfoList.findIndex(item=>{
             return item.value == itemList.mapCode;
           })
+          this.checkedIndex = 0
           this.baseInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex,1);
           break;
@@ -645,6 +1225,7 @@ export default {
           var index = this.contactWayList.findIndex(item=>{
             return item.value == itemList.mapCode;
           })
+          this.checkedIndex = 0
           this.contactWayList[index].isSee = false;
           this.setInfoList.splice(itemIndex,1);
           break;
@@ -652,6 +1233,7 @@ export default {
           var index = this.workInfoList.findIndex(item=>{
             return item.value == itemList.mapCode;
           })
+          this.checkedIndex = 0
           this.workInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex,1);
           break;
@@ -659,13 +1241,16 @@ export default {
           var index = this.customInfoList.findIndex(item=>{
             return item.value == itemList.mapCode;
           })
-          this.customInfoList[index].isSee = false;
+          this.checkedIndex = 0
+          // this.customInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex,1);
+          this.customInfoCount --;
           break;
         case 'specialInfoList':
           var index = this.specialInfoList.findIndex(item=>{
             return item.value == itemList.mapCode;
           })
+          this.checkedIndex = 0
           this.specialInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex,1);
           break;
@@ -682,9 +1267,10 @@ export default {
       var obj = {
         systemName: itemList.label,    // 系统名称
         mapCode: itemList.value, // 表单绑定字段
-        check:[], // 校验类型 { code: '', name: ''}
+        check:[{ code: '', name: ''}], // 校验类型 { code: '', name: ''}
         mapBase: parentListName == 'customInfoList'? 1 : 2, // 1：自定义属性 ，2：基础属性
         isSee: true,
+        isCoustomInfo: false, // 是否是自定义信息
         parentListName: parentListName,
         isRequire: false, // 是否必填
         title: itemList.label, // 标题
@@ -695,7 +1281,7 @@ export default {
         namePlaceholder: '请输入名', // 名-提示文本
         nameSplit: false, //姓名拆分
         notAllowEdit: false, // 报名后不允许编辑
-    
+
         sexRadioOptions: ['先生','女士'], // 性别选项
         certificateAllTypes: ['居民身份证','护照','军人证','港澳居民来往内地通行证','台湾居民来往内地通行证','港澳台居民居住证','其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
@@ -703,7 +1289,7 @@ export default {
         certificateVerify: '号码逻辑校验', // 选中校验方式
         isOnly: false, // 唯一
         photeTailorOptions: ['手动压缩裁剪','自动裁剪'], //照片裁剪选项
-        photeTailor: '手动压缩裁剪', // 选中照片裁剪方式
+        photeTailor: '自动压缩裁剪', // 选中照片裁剪方式
         photoLimitWidth: '', // 限制照片尺寸-宽
         photoLimitHeight: '', // 限制照片尺寸-高
         nationIsShow: false, // 是否展示国家
@@ -711,10 +1297,10 @@ export default {
         nationPlaceholder: '请选择国家', // 国家提示文本
         provinceIsShow: false, // 省份是否展示
         provinceTitle: '省份', // 省份标题
-        provincePlaceholder: '请选择省份', // 省份提示文本 
+        provincePlaceholder: '请选择省份', // 省份提示文本
         cityIsShow: false, // 城市是否展示
         cityTitle: '城市', // 城市标题
-        cityplaceholder: '请选择城市', // 城市提示文本
+        cityPlaceholder: '请选择城市', // 城市提示文本
         countyIsShow: false, // 区县是否展示
         countyTitle: '区/县', // 区县标题
         countyPlaceholder: '请选择区县', // 区县提示文本
@@ -725,16 +1311,17 @@ export default {
         postcodeTitle: '邮编', // 邮编标题
         postcodePlaceholder: '请输入邮编', // 邮编提示文本
         countryCodeIsShow: false, // 国际区号是否展示
+        defaultCountryCode: '', // 默认国际区号
         mobilePhoneVerifyOptions: ['中国大陆','港澳台','国际'], // 格式校验选项
         mobilePhoneVerify:[], // 格式校验选中选项
         isNoteVerify: false, // 是否短信验证
         onlyUsedByManageSys: false, // 仅限于后台管理
         areaCodePlaceholder: '请输入区号', // 区号提示文本
-        telephonePlaceholder: '请输入固定电话', // 固定电话提示文本
+        // telephonePlaceholder: '请输入固定电话', // 固定电话提示文本
         extensionNumbeIsShow: false, // 分机号是否展示
         extensionNumberPlaceholder: '请输入分机号', // 分机号提示文本
         isEmailVerify: false, // 是否邮箱验证
-        
+
         wordCountLimit: 50, // 字数限制
         numberDigitLimit: 4, // 数字位数限制
         decimalPlacesLimit: 4, // 小数点位数限制
@@ -753,13 +1340,24 @@ export default {
         allFileTypes:[], // 允许上传文件类型合集
         fileSizeLimit: 50, // 文件大小限制
         explain: '', // 说明文字
-    }
+      }
+      if(parentListName == 'customInfoList'){
+        this.customInfoCount ++ ;
+        if(this.customInfoCount > 40){
+          this.$message.warning('新增自定义信息数量超出最大限制')
+          return 
+        }
+        obj.mapCode = 'RESERVED_STR' + this.customInfoCount
+        obj.isCoustomInfo = true;
+        obj.title = '您的标题';
+      }
       var index = parentList.findIndex(item => {
-        // debugger
         return item.value == itemList.value
       })
       console.log(index,294);
-      parentList[index].isSee = true;
+      if(parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList'){
+        parentList[index].isSee = true;
+      }
       this.setInfoList.push(obj);
     },
     handleAvatarSuccess(res, file){
@@ -777,17 +1375,42 @@ export default {
       }
       return isJPG && isLt2M;
     },
+    // 证件类型勾选
     certificateVerifyChange(val){
-      let VerifyItem =  { code: val, name: ''}
-      this.setInfoList[this.checkedIndex].check.push(VerifyItem)
+      this.setInfoList[this.checkedIndex].check.code = val;
     },
-    //开始拖拽事件
-      onStart(){
-        this.drag=true;
-      },
-      //拖拽结束事件
-       onEnd() {
-       this.drag=false;
+    // 国际区号默认国家/地区
+    defaultCountryCodeChange(val){
+      this.setForm.defaultCountryCode = val;
+    },
+    secondphoneDefaultCountryCodeChange(val){
+      this.setForm.secondPhonedefaultCountryCode = val;
+    },
+    telephoneDefaultCountryCodeChange(val){
+      this.setForm.telephoneDefaultCountryCode = val;
+    },
+    faxDefaultCountryCodeChange(val){
+      this.setForm.faxDefaultCountryCode = val;
+    },
+    wordCountLimitChange(setInfoListItem){
+      setInfoListItem.check.code = '008'
+      setInfoListItem.check.name = setInfoListItem.wordCountLimit
+      console.log(this.setInfoList)
+    },
+    // 手机号 校验勾选
+    mobilePhoneVerifyChange(val){
+      // 005：手机号格式校验(中国大陆)
+      // 006：手机号格式校验(港澳台)
+      // 007：手机号格式校验(国际)
+      val.forEach(element => {
+        if(element == "中国大陆"){
+          this.setInfoList[this.checkedIndex].check.code = '005'
+        }else if(element == "港澳台"){
+          this.setInfoList[this.checkedIndex].check.code = '006'
+        }else if(element == "国际"){
+          this.setInfoList[this.checkedIndex].check.code = '007'
+        }
+      });
     },
     onChangeAll(params) {
       // 会议编码 params.code
@@ -820,8 +1443,17 @@ export default {
         })
     },
     edititem(checkedItem, checkedIndex){
-      this.checkedIndex = checkedIndex
-    }
+      // debugger
+      this.checkedIndex = checkedIndex;
+    },
+     //开始拖拽事件
+    onStart(){
+      this.drag=true;
+    },
+    //拖拽结束事件
+      onEnd() {
+      this.drag=false;
+  },
     // 计算列表高度
     // tableComputed() {
     //     const elHead = document.getElementById('elHead')
@@ -879,7 +1511,7 @@ export default {
       flex-direction: row;
       justify-content: space-between;
       .form-item-input {
-        width: 70%;
+        width: 100%;
         .addresItem {
           margin-top: 15px;
         }
@@ -934,6 +1566,13 @@ export default {
     .formInfoTitle {
       text-align: center;
       font-size: 15px;
+    }
+    .eidtContentItem {
+      // line-height: 32px;
+    }
+    .el-input-number__decrease,
+    .el-input-number__increase {
+      height: auto !important;
     }
     .systemName {
       background: #eee;
