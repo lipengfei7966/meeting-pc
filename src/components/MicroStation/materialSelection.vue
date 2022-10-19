@@ -73,6 +73,12 @@ export default {
   components: {
     tree
   },
+  props: {
+    MultiSelect: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       fileSearch: {
@@ -97,8 +103,7 @@ export default {
       //多选的
       checkList: [],
       // 单选的
-      pictureRadio: '',
-      MultiSelect: true
+      pictureRadio: ''
     }
   },
   methods: {

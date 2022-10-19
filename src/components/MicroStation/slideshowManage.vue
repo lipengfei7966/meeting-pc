@@ -9,7 +9,7 @@
     <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
       <div>
         <!-- 放内容的 -->
-        <material ref="material" />
+        <material ref="material" :MultiSelect="true" />
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
