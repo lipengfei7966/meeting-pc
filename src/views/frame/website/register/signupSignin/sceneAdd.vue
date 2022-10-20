@@ -14,7 +14,7 @@ export default {
         styleType: 'medium',
         titleName: '签到场景',
         api: {
-          save: '/api/register/signupDictype/save',
+          save: '/api/register/signupDictype/save'
         },
 
         formData: [
@@ -37,18 +37,31 @@ export default {
             label: '',
             prop: 'type',
             element: 'input-validate',
-            default:2,
-            isShow:false
+            default: 2,
+            isShow: false
           },
           {
             label: '',
             prop: 'eventCode',
             element: 'input-validate',
-            default:this.param,
-            isShow:false
+            default: this.param,
+            isShow: false
           }
         ],
         bottomButtons: [
+          {
+            name: 'biz.btn.close',
+            event: 'close',
+            isShow: ['view'],
+            attrs: {
+              type: 'primary'
+            }
+          },
+          {
+            name: 'biz.btn.cancel',
+            event: 'cancel',
+            isShow: ['add', 'update']
+          },
           {
             name: 'biz.btn.save',
             event: 'save',
@@ -76,8 +89,8 @@ export default {
   },
   methods: {
     handleCloseDialog(param) {
-      this.$parent.$parent.sceneList();
-      this.$emit('closeHandler', param);
+      this.$parent.$parent.sceneList()
+      this.$emit('closeHandler', param)
     }
   }
 }

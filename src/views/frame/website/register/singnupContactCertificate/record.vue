@@ -196,14 +196,14 @@ export default {
             name: 'refresh'
           },
           {
-            iconName: '导入',
+            iconName: 'import',
             i18n: 'biz.btn.import',
             permitName: ['import'],
             event: this.Excel,
             showLoading: true
           },
           {
-            iconName: '下载',
+            iconName: 'down',
             i18n: 'biz.btn.downloadTemplate',
             permitName: ['downloadTemplate'],
             $refs: this.$refs,

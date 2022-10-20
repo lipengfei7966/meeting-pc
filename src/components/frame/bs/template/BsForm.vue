@@ -154,7 +154,7 @@ const registerComponent = data => {
 export default {
   data() {
     return {
-      refreshNum:0,
+      refreshNum: 0,
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
@@ -185,24 +185,6 @@ export default {
       type: Object,
       default() {
         return {}
-      }
-    },
-    tabName: {
-      type: Number,
-      default() {
-        return ''
-      }
-    },
-    certificateFlagName: {
-      type: Number,
-      default() {
-        return ''
-      }
-    },
-    setName: {
-      type: Number,
-      default() {
-        return ''
       }
     }
   },
@@ -267,36 +249,15 @@ export default {
   },
   mounted() {
     this.checkQueryCondition()
-    console.log(this.form.formData,5666)
+    console.log(this.form.formData, 5666)
   },
   methods: {
-// 重置
-onReset() {
-      var arr = [];
-      this.form.formData.forEach(item => {
-        if(item.validate){
-          arr.push(item.prop);
-        }
-      })
-      for (const key in this.form.listQuery.data) {
-        if(arr.length > 0){
-          arr.forEach(it =>{
-            if(key !== it){
-              this.form.listQuery.data[key]=""
-            }
-          })
-        }else{
-          this.form.listQuery.data[key]=""
-        }
+    // 重置
+    onReset() {
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.resetFields()
       }
-      this.items = []
-      this.expandStatus = process.env.EXPAND_FLG
-      this.expandText = !this.expandStatus ? '收起' : '展开'
-      this.addQueryConditionVisible = true;
-      this.form.listQuery.data.signFlag = this.tabName;  //签到管理
-      this.form.listQuery.data.certificateFlag = this.certificateFlagName;  //办证管理
-      this.form.listQuery.data.sceneCode = this.setName;  //签到设置
-      this.doRefresh();
+      this.doRefresh()
     },
 
     // 时间变化
@@ -318,7 +279,7 @@ onReset() {
               // 点击重置获取当前页数据
             } else {
               if (this.$parent.getList) {
-              console.log(3,this.$parent.getList)
+                console.log(3, this.$parent.getList)
                 this.$parent.getList({ name: 'search' })
               }
             }
@@ -515,16 +476,16 @@ onReset() {
       this.extraChoice = list
     }
   },
-watch: {
+  watch: {
     form(val) {
       val.formData.forEach(item => {
-        if(item.validate){
-          this.refreshNum += 1;
+        if (item.validate) {
+          this.refreshNum += 1
         }
       })
     },
-    immediate:true,
-    deep:true
+    immediate: true,
+    deep: true
   }
 }
 </script>

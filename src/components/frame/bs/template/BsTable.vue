@@ -28,8 +28,8 @@
             </el-button>
           </template>
         </div>
-        <div class="right-buttons">
-          <span class="line"></span>
+        <div class="right-buttons" style="padding-left: 20px;">
+          <span class="line" style="display: block;"></span>
           <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
             <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
           </el-button>
@@ -406,15 +406,14 @@ export default {
           this.$parent.$refs.bsForm.loading = true
         }
       }
-      console.log(this.$parent.form.listQuery,this.mainDataTabs)
+      console.log(this.$parent.form.listQuery, this.mainDataTabs)
       request({
         url: this.mainData.api.search,
         method: 'POST',
         data: this.$parent.form.listQuery
       })
         .then(response => {
-
-          console.log(this.mainDataTabs,1111)
+          console.log(this.mainDataTabs, 1111)
           this.loading = false
           if (this.$parent.$refs.bsForm) {
             this.$parent.$refs.bsForm.loading = false
