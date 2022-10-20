@@ -398,8 +398,13 @@ export default {
     materialSelection() {
       this.dialogVisible = true
     },
+    // 素材库选择的图片
     submit_() {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
+      // debugger
+      this.ruleForm.icon = this.$refs.material.pictureRadio.picUrl
+      this.ruleForm.fileList[0].url = this.$refs.material.pictureRadio.picUrl
+      this.ruleForm.fileList[0].name = this.$refs.material.pictureRadio.picName
       this.dialogVisible = false
     }
   }

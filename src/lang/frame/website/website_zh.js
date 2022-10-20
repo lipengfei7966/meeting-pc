@@ -294,6 +294,5 @@ export default {
         customerCode: '客户'
       }
     }
-
   }
 }

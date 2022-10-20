@@ -9,8 +9,8 @@
     <!-- 中间素材列表 -->
     <el-card class="box-card content_two">
       <div v-if="exhibition" style="height: 95vh">
-        <div class="search_">
-          <el-form :model="fileSearch" label-width="90px">
+        <div class="search_" :style="isSearch ? 'padding-top: 20px' : 'padding-top: 0px'">
+          <el-form :model="fileSearch" :label-width="labelWidth ? '90px' : '0px'">
             <el-row>
               <el-col :span="8">
                 <el-form-item label="文件类型">
@@ -75,6 +75,14 @@ export default {
   },
   props: {
     MultiSelect: {
+      type: Boolean,
+      default: true
+    },
+    isSearch: {
+      type: Boolean,
+      default: true
+    },
+    labelWidth: {
       type: Boolean,
       default: true
     }
@@ -195,7 +203,7 @@ export default {
 }
 .search_ {
   padding: 0px 20px;
-  padding-top: 20px;
+  // padding-top: 20px;
   width: 100%;
   height: 10%;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
