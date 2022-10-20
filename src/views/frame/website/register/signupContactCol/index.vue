@@ -308,7 +308,25 @@
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-input v-model="test" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                      <el-input :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 长文本 -->
+                  <div v-if="element.systemName == '长文本' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input type="textarea" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 数字 -->
+                  <div v-if="element.systemName == '数字' " class="form-item-input">
+                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+
+                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                      <el-input type="number" v-model="test" :placeholder="element.placeholder" size="mini"></el-input>
                     </div>
                   </div>
 
@@ -946,8 +964,8 @@
                 </div>
               </div>
 
-              <!-- 短文本 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '短文本'">
+              <!-- 短文本 / 长文本-->
+              <div v-if="setInfoList[checkedIndex].systemName == '短文本' || setInfoList[checkedIndex].systemName == '长文本'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -963,6 +981,38 @@
                   <p class="eidtContentItemTitle">限制字数</p>
                   <el-input-number style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                   <!-- <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input> -->
+                </div>
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 数字-->
+              <div v-if="setInfoList[checkedIndex].systemName == '数字' ">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+                <!-- 限制数字位数 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">限制字数</p>
+                  <el-input-number style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  位
+                </div>
+                <!-- 限制小数点后位数 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">限制小数点后位数</p>
+                  小数点后
+                  <el-input-number style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  位
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
@@ -1257,12 +1307,11 @@ export default {
         default:
           break;
       }
+      console.log(this.setInfoList)
     },
     // 添加表单信息
     addSetInfoList(itemList,parentList,parentListName){   //当前点击的tag   当前点击tag的数组
       // placeholder 输入框提示词  content 输入的值  isSee 是否在表单中的布尔值
-      // debugger
-      console.log(parentList)
       // var obj = {'label':itemList.label,'value':itemList.value,content:'','placeholder':`请输入${itemList.label}`,'content':'','isSee':true,'parentListName':parentListName};
       var obj = {
         systemName: itemList.label,    // 系统名称
@@ -1345,11 +1394,19 @@ export default {
         this.customInfoCount ++ ;
         if(this.customInfoCount > 40){
           this.$message.warning('新增自定义信息数量超出最大限制')
-          return 
+          return
         }
         obj.mapCode = 'RESERVED_STR' + this.customInfoCount
         obj.isCoustomInfo = true;
         obj.title = '您的标题';
+
+        if(itemList.value == 'input'){
+          this.setForm['input'+this.customInfoCount] = '';
+        }
+        if(itemList.value == 'textarea'){
+          obj.wordCountLimit = 200;
+          // this.setForm['textarea'+this.customInfoCount] = '';
+        }
       }
       var index = parentList.findIndex(item => {
         return item.value == itemList.value
@@ -1359,6 +1416,8 @@ export default {
         parentList[index].isSee = true;
       }
       this.setInfoList.push(obj);
+
+      console.log(this.setInfoList)
     },
     handleAvatarSuccess(res, file){
       this.imageUrl = URL.createObjectURL(file.raw);
