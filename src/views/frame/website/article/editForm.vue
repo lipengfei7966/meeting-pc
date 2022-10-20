@@ -89,18 +89,24 @@ export default {
                   clearable: true,
                   cols: 2
                 }
-                // },
-                // {
-                //   label: 'website.article.edit.articlePic',
-                //   prop: 'articlePic',
-                //   element: 'image-upload',
-                //   attrs: {
-                //     imageData: {
-                //       // tenantCode: this.param.tenantCode
-                //     },
-                //     disabled: true,
-                //     cols: 4
-                //   }
+              },
+              // {
+              //   label: 'website.article.edit.articlePic',
+              //   prop: 'articlePic',
+              //   element: 'image-upload',
+              //   attrs: {
+              //     imageData: {
+              //       // tenantCode: this.param.tenantCode
+              //     },
+              //     disabled: true,
+              //     cols: 4
+              //   }
+              // },
+              {
+                prop: 'eventCode',
+                element: 'input-validate',
+                default: this.param.eventCode,
+                isShow: false
               }
             ]
           }
