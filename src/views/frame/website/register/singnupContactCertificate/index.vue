@@ -386,8 +386,8 @@ export default {
     async print() {
       const styleSheet = `<style>
       @media print { @page { margin: 0;padding: 0;} .noprint { display: none;}}
-        body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
-        .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+        body{margin: 0 0;}
+        .content {background-color:#e2f4d2;page-break-after:always}
         .draggable {position:absolute;}
         .printItem {width: auto!important;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
