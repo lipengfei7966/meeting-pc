@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 底图的 -->
     <div style="margin-top: 8px">
       <el-button size="small" type="primary" @click="materialSelection">从素材库选择</el-button>
     </div>
@@ -90,6 +91,29 @@ export default {
     },
     submit_() {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
+      let obj = {
+        webpageCode: this.code,
+        url: this.$refs.material.pictureRadio.picUrl,
+        name: this.$refs.material.pictureRadio.picName
+      }
+      //
+      request({
+        url: '/api/biz/cmsWebpagePic/setBackgroundPic',
+        method: 'POST',
+        data: { data: obj, funcModule: '素材库选择背景图片', funcOperation: '素材库选择背景图片' }
+      })
+        .then((res) => {
+          debugger
+          if (res.data) {
+            console.log(res.data)
+            this.$message('上传文件成功')
+            this.$emit('upData_')
+          } else {
+            this.$message('上传文件失败')
+          }
+        })
+        .catch(() => {})
+      //
       this.dialogVisible = false
     }
   },
