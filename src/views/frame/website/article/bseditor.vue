@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 5px">
-    <span @click="materialSelection" style="position: absolute; right: 18%; top: 40px; font-size: 12px; color: #409eff; cursor: pointer">素材库图片</span>
+    <span @click="materialSelection" style="position: relative; left: 90%; top: 50px; font-size: 12px; color: rgb(64, 158, 255); cursor: pointer">插入素材库图片</span>
     <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
     <el-dialog title="素材选择" append-to-body :modal-append-to-body="false" :visible.sync="dialogVisible_" :fullscreen="true" destroy-on-close>
       <!-- :labelWidth="false" :isSearch="false"  -->
@@ -72,7 +72,6 @@ export default {
       this.$refs.material.checkList.forEach((item) => {
         str += `<p><img src="${item.picUrl}" style="width:400px";height:300px;/></p>`
       })
-      debugger
       this.template.editorWin.setContent(str, true)
       this.dialogVisible_ = false
     }
