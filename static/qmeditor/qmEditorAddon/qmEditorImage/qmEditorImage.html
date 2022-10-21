@@ -39,6 +39,13 @@
 			}
       const formData = new FormData();
       formData.append('file', imgFile);
+			// 处理地址问题
+			let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              }
 			// 
 			$.ajax({
 				headers:{
@@ -47,7 +54,7 @@
     //请求方式
     type:'POST',
     //发送请求的地址
-    url:'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg',
+    url:url,
     //服务器返回的数据类型
     dataType:'json',
 		processData: false,
@@ -141,19 +148,25 @@
 				dialog.close();
 			});
 			// 调取接口
-			//  var args = {};
-      //   args['name'] =  name;
-      //   $.ajax({
-      //       url:'read.php',
-      //       type:'post',
-      //       data:args,
-      //       success:function (msg) {
-      //           f(msg);
-      //       },
-      //       error:function (xhr, msg) {
-      //           f(null);
-      //       }
-      //   });
+			let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              }
+			  var args = {};
+        args['name'] =  '占位';
+        $.ajax({
+            url:url,
+            type:'post',
+            data:args,
+            success:function (res) {
+                console.log(res);
+            },
+            error:function (xhr, res) {
+                console.log(res);
+            }
+        });
 		}
 
 	</script>

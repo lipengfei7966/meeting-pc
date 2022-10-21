@@ -1,7 +1,7 @@
 <template>
   <div style="margin-top: 5px">
     <span @click="materialSelection" style="position: relative; left: 90%; top: 50px; font-size: 12px; color: rgb(64, 158, 255); cursor: pointer">插入素材库图片</span>
-    <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
+    <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
     <el-dialog title="素材选择" append-to-body :modal-append-to-body="false" :visible.sync="dialogVisible_" :fullscreen="true" destroy-on-close>
       <!-- :labelWidth="false" :isSearch="false"  -->
       <material ref="material" :MultiSelect="true" />
@@ -14,7 +14,6 @@
 </template>
 <script>
 import material from '@/components/MicroStation/materialSelection'
-import request from '@/utils/frame/base/request'
 export default {
   components: {
     material
@@ -65,14 +64,12 @@ export default {
       this.dialogVisible_ = true
     },
     submit_() {
-      // console.log(this.template.editorWin, '打点')
       console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
-      // 获取富文本的内容
-      let str = this.template.editorWin.getContent()
+      let str = ''
       this.$refs.material.checkList.forEach((item) => {
         str += `<p><img src="${item.picUrl}" style="width:400px";height:300px;/></p>`
       })
-      this.template.editorWin.setContent(str, true)
+      window.frames['myframe'].execCommand(str)
       this.dialogVisible_ = false
     }
   }
@@ -106,5 +103,20 @@ export default {
 // }
 // .el-dialog__headerbtn .el-dialog__close {
 //   color: #fff;
+// }
+// .el-dialog {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   margin: 0 !important;
+//   transform: translate(-50%, -50%);
+//   max-height: calc(100% - 30px);
+//   max-width: calc(100% - 30px);
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .el-dialog__body {
+//   overflow: auto;
 // }
 </style>
