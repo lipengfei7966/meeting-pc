@@ -2,7 +2,7 @@
   <div style="margin-top: 5px">
     <span @click="materialSelection" style="position: absolute; right: 18%; top: 40px; font-size: 12px; color: #409eff; cursor: pointer">素材库图片</span>
     <iframe ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
-    <el-dialog title="素材选择" :modal-append-to-body="false" :visible.sync="dialogVisible_" :fullscreen="true" destroy-on-close>
+    <el-dialog title="素材选择" append-to-body :modal-append-to-body="false" :visible.sync="dialogVisible_" :fullscreen="true" destroy-on-close>
       <!-- :labelWidth="false" :isSearch="false"  -->
       <material ref="material" :MultiSelect="true" />
       <span slot="footer" class="dialog-footer">
