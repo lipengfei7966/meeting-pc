@@ -68,7 +68,7 @@ export default {
       // 获取富文本的内容
       console.log(this.template.editorWin.getContent())
       let str = this.template.editorWin.getContent()
-      str += '何凯泽'
+      str += '<p><img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" style="width:400px";height:300px;/></p>'
       this.template.editorWin.setContent(str)
       debugger
       this.dialogVisible_ = false
