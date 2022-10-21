@@ -1,4 +1,5 @@
 <template>
+  <!-- 轮播图的 -->
   <div style="height: 90vh; overflow: auto; margin-top: 10px">
     <div>
       <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">从素材库选择</el-button>
@@ -129,6 +130,32 @@ export default {
     },
     submit_() {
       console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
+      let arr = []
+      this.$refs.material.checkList.forEach((item, index) => {
+        let obj = {
+          webpageCode: this.code,
+          url: item.picUrl,
+          name: item.picName
+        }
+        arr.push(obj)
+      })
+      console.log(this.$refs.material.checkList, this.$refs.material.treeDatas, arr)
+      request({
+        url: '/api/biz/cmsWebpagePic/setRotationPic',
+        method: 'POST',
+        data: { data: arr, funcModule: '素材库选择轮播图片', funcOperation: '素材库选择轮播图片' }
+      })
+        .then((res) => {
+          debugger
+          if (res.data) {
+            console.log(res.data)
+            this.$message('上传文件成功')
+            this.$emit('upData_')
+          } else {
+            this.$message('上传文件失败')
+          }
+        })
+        .catch(() => {})
       this.dialogVisible = false
     }
   },

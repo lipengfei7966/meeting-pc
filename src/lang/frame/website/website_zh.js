@@ -30,7 +30,8 @@ export default {
       title: '会议管理',
       query: {
         articleName: '文章名称',
-        articleTitle: '文章标题'
+        articleTitle: '文章标题',
+        eventCode: '会议名称'
       },
       list: {
         articleName: '文章名称',
@@ -294,6 +295,5 @@ export default {
         customerCode: '客户'
       }
     }
-
   }
 }
