@@ -64,13 +64,17 @@ export default {
       this.dialogVisible_ = true
     },
     submit_() {
+      console.log(this.template.editorWin, '打点')
       console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
       // 获取富文本的内容
       console.log(this.template.editorWin.getContent())
       let str = this.template.editorWin.getContent()
       str += '<p><img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" style="width:400px";height:300px;/></p>'
-      this.template.editorWin.setContent(str)
-      debugger
+      // console.log(this.template.editorWin.focus())
+      // this.template.editorWin.setContent(str, true)
+      // console.log(this.template.editorWin.UE.Editor().prototype.exexecCommand(), '测试')
+      // this.template.editorWin.UE.Editor().prototype.exexecCommand('inserthtml', str)
+
       this.dialogVisible_ = false
     }
   }
