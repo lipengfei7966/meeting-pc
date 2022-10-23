@@ -299,7 +299,8 @@
                     <el-select v-model="scope.row.defaultFunc" size='mini' clearable placeholder="">
                       <el-option label="最近一周" value="getLatestWeek"></el-option>
                       <el-option label="最近一个月" value="getLatestMonth"></el-option>
-                      <el-option label="最近三个月" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(日期)" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(月分)" value="getLatestThreeMonthForMonth"></el-option>
                     </el-select>
 
                   </template>
@@ -394,7 +395,7 @@
                     <input-validate v-model="scope.row.prop" size='mini'></input-validate>
                   </template>
                 </el-table-column>
-                <!-- <el-table-column show-overflow-tooltip width="140">
+                <el-table-column show-overflow-tooltip width="140">
                   <template slot="header" slot-scope="scope">
                     查询属性
                     <span style='color:#f56c6c;' :data-header='scope'></span>
@@ -402,7 +403,7 @@
                   <template slot-scope='scope'>
                     <input-validate v-model="scope.row.queryProp" size='mini'></input-validate>
                   </template>
-                </el-table-column> -->
+                </el-table-column>
                 <el-table-column show-overflow-tooltip>
                   <template slot="header" slot-scope="scope" width="80">
                     排序

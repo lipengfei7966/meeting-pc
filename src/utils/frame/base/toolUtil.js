@@ -194,12 +194,20 @@ const toolUtil = {
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
     return [this.dateFormateToYYYYMMDD(start), this.dateFormateToYYYYMMDD(end)]
   },
-  // 最近三个月
+  // 最近三个月（日期）
   getLatestThreeMonth() {
     const end = new Date()
     const start = new Date()
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
     return [this.dateFormateToYYYYMMDD(start), this.dateFormateToYYYYMMDD(end)]
+  },
+
+  // 最近三个月(月分)
+  getLatestThreeMonthForMonth() {
+    const end = new Date()
+    const start = new Date()
+    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+    return [this.dateFormateToYYYYMM(start), this.dateFormateToYYYYMM(end)]
   },
   getScopeThreeMonth() {
     const end = new Date()
@@ -228,6 +236,9 @@ const toolUtil = {
   // 时间格式化
   dateFormateToYYYYMMDD(value) {
     return value.getFullYear() + '' + (value.getMonth() + 1 < 10 ? '0' + (value.getMonth() + 1) : value.getMonth() + 1 + '') + (value.getDate() < 10 ? '0' + value.getDate() : value.getDate() + '')
+  },
+  dateFormateToYYYYMM(value) {
+    return value.getFullYear() + '' + (value.getMonth() + 1 < 10 ? '0' + (value.getMonth() + 1) : value.getMonth() + 1 + '') + '01'
   },
   /**
    * 取得当前日期(yyyyMMdd)
@@ -800,4 +811,9 @@ const toolUtil = {
 window.dateFormateToYYYYMMDD = value => {
   return value.getFullYear() + '' + (value.getMonth() + 1 < 10 ? '0' + (value.getMonth() + 1) : value.getMonth() + 1 + '') + (value.getDate() < 10 ? '0' + value.getDate() : value.getDate() + '')
 }
+
+window.dateFormateToYYYYMM = value => {
+  return value.getFullYear() + '' + (value.getMonth() + 1 < 10 ? '0' + (value.getMonth() + 1) : value.getMonth() + 1 + '') + '01'
+}
+
 export default toolUtil

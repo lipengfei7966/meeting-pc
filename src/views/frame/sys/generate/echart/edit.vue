@@ -351,7 +351,8 @@
                     <el-select v-model="scope.row.defaultFunc" size='mini' clearable placeholder="">
                       <el-option label="最近一周" value="getLatestWeek"></el-option>
                       <el-option label="最近一个月" value="getLatestMonth"></el-option>
-                      <el-option label="最近三个月" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(日期)" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(月分)" value="getLatestThreeMonthForMonth"></el-option>
                     </el-select>
                   </template>
                 </el-table-column>

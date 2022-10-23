@@ -234,7 +234,7 @@ export default {
         this.$set(this.form.listQuery.data, v.props[1], defaultVal[1])
         this.changeEndTime(defaultVal[1], v.attrs.pickStart)
 
-        if ((v.type === 'daterange' || v.type === 'datetimerange' || v.type === 'daterange') && v.prop && v.default) {
+        if ((v.type === 'daterange' || v.type === 'datetimerange' || v.type === 'monthrange') && v.prop && v.default) {
           this.$set(this.form.listQuery.data, v.prop, [this.form.listQuery.data[v.props[0]], this.form.listQuery.data[v.props[1]]])
         }
       } else if (v.default) {
@@ -305,7 +305,7 @@ export default {
             }
           }
 
-          if ((this.extraQueryForCode[i].type !== 'daterange' || this.extraQueryForCode[i].type !== 'monthrange') && this.extraQueryForCode[i].props && this.extraQueryForCode[i].props.length === 2) {
+          if (this.extraQueryForCode[i].type !== 'daterange' && this.extraQueryForCode[i].type !== 'monthrange' && this.extraQueryForCode[i].props && this.extraQueryForCode[i].props.length === 2) {
             if (this.form.listQuery.data[this.extraQueryForCode[i].props[0]] || this.form.listQuery.data[this.extraQueryForCode[i].props[1]]) {
               let tempValue = [this.form.listQuery.data[this.extraQueryForCode[i].props[0]], this.form.listQuery.data[this.extraQueryForCode[i].props[1]]]
               bsQueryExtras.push({
