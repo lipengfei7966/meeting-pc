@@ -4,7 +4,7 @@
       <!-- 头部 -->
       <title-contain :titleName="titleName" @TitleFun="cancel"></title-contain>
 
-      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto','padding-bottom': '0px !important'}">
         <!-- 头部信息 -->
         <template v-if='Array.isArray(edit.formData)'>
           <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': mainInfoVisible ? '1px' : '0'}">

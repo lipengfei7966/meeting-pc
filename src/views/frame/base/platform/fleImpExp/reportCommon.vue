@@ -5,7 +5,7 @@
         <el-row :gutter="20" style="width: 94%">
           <!-- 查询条件 -->
           <template v-for="(f, index) in expandStatus ? fleExpCfg.expQryList : fleExpCfg.expQryList.slice(0, 4)">
-            <el-col :span="6" :key="index">
+            <el-col :span="8" :key="index">
               <el-form-item v-if="f.itemType === 'DATE'" :label="f.label" :required="f.requiredFlag === '1'" :prop="f.itemProp">
                 <el-date-picker v-model="form.listQuery.data[f.itemProp]" size="mini" format="yyyy-MM-dd" value-format="yyyyMMdd" />
               </el-form-item>

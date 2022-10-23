@@ -9,6 +9,10 @@
               <el-date-picker v-model="form.listQuery.data[f.prop]" :picker-options="f['picker-options']" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
               </el-date-picker>
             </el-form-item>
+            <el-form-item v-else-if='f.type === "monthrange"' :label="$t(f.label)" :prop='f.prop'>
+              <el-date-picker v-model="form.listQuery.data[f.prop]" :picker-options="f['picker-options']" type="monthrange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
+              </el-date-picker>
+            </el-form-item>
             <template v-else-if='f.type === "date" ||f.type === "datetime"|| f.type === "year" || f.type === "month" || f.type === "week"'>
               <el-form-item v-if='f.props && f.props instanceof Array && f.props.length>1' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(f.label)">
                 <el-row :gutter="0">
@@ -209,9 +213,13 @@ export default {
       if (v.attrs && v.attrs['picker-options']) {
         v['picker-options'] = new Function(`return ${this.func[v.attrs['picker-options']]}`)()()
       } else {
-        v['picker-options'] = this.$toolUtil.getPickerOptions()
+        if (v.type === 'monthrange') {
+          v['picker-options'] = this.$toolUtil.getDefaultMonthPickerOptions()
+        } else {
+          v['picker-options'] = this.$toolUtil.getPickerOptions()
+        }
       }
-      if (v.props instanceof Array && (v.type === 'date' || v.type === 'datetime' || v.type === 'month' || v.type === 'daterange' || v.type === 'datetimerange')) {
+      if (v.props instanceof Array && (v.type === 'date' || v.type === 'datetime' || v.type === 'month' || v.type === 'monthrange' || v.type === 'daterange' || v.type === 'datetimerange')) {
         let defaultVal = ['', '']
         if (v.default === undefined) {
           v.default = this.$toolUtil.getScopeThreeMonth()
@@ -226,7 +234,7 @@ export default {
         this.$set(this.form.listQuery.data, v.props[1], defaultVal[1])
         this.changeEndTime(defaultVal[1], v.attrs.pickStart)
 
-        if ((v.type === 'daterange' || v.type === 'datetimerange') && v.prop && v.default) {
+        if ((v.type === 'daterange' || v.type === 'datetimerange' || v.type === 'daterange') && v.prop && v.default) {
           this.$set(this.form.listQuery.data, v.prop, [this.form.listQuery.data[v.props[0]], this.form.listQuery.data[v.props[1]]])
         }
       } else if (v.default) {
@@ -297,7 +305,7 @@ export default {
             }
           }
 
-          if (this.extraQueryForCode[i].type !== 'daterange' && this.extraQueryForCode[i].props && this.extraQueryForCode[i].props.length === 2) {
+          if ((this.extraQueryForCode[i].type !== 'daterange' || this.extraQueryForCode[i].type !== 'monthrange') && this.extraQueryForCode[i].props && this.extraQueryForCode[i].props.length === 2) {
             if (this.form.listQuery.data[this.extraQueryForCode[i].props[0]] || this.form.listQuery.data[this.extraQueryForCode[i].props[1]]) {
               let tempValue = [this.form.listQuery.data[this.extraQueryForCode[i].props[0]], this.form.listQuery.data[this.extraQueryForCode[i].props[1]]]
               bsQueryExtras.push({
