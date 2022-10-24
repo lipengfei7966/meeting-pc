@@ -3,7 +3,7 @@
     <header id="elHead" :style="{ width: clientWidth < 1366 && !app.isScreenFull ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-form @submit.native.prevent label-position="left" :inline="true" class="header-form-inline">
         <el-row :gutter="20" style="width: 94%">
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="服务器">
               <bs-base-select v-model="serverKey" :attrs="{ datadict: 'serverAlias', clearable: true }" />
             </el-form-item>

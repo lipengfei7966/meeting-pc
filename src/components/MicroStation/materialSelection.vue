@@ -1,13 +1,13 @@
 <template>
   <div class="material">
     <!-- 左侧树 -->
-    <el-card class="box-card content_one">
+    <el-card class="box-card content_one_">
       <div class="">
         <tree @matter="matter" />
       </div>
     </el-card>
     <!-- 中间素材列表 -->
-    <el-card class="box-card content_two">
+    <el-card class="box-card content_two_">
       <div v-if="exhibition" style="height: 95vh">
         <div class="search_" :style="isSearch ? 'padding-top: 20px' : 'padding-top: 0px'">
           <el-form :model="fileSearch" :label-width="labelWidth ? '90px' : '0px'">
@@ -40,12 +40,16 @@
             </el-row>
           </el-form>
         </div>
-        <ul v-if="matterList.length > 0" id="app_" class="content_" @scroll.passive="getScroll($event)">
+        <ul v-if="matterList.length > 0" id="app_" class="content_A" @scroll.passive="getScroll($event)">
           <el-checkbox-group v-model="checkList" class="check" v-if="MultiSelect">
             <li class="resource_" v-for="(item, index) in matterList" :key="index">
               <el-image style="width: 100%; height: 75%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
               <div style="line-height: 7.5vh">
-                <el-checkbox :label="item">{{ item.picName }}</el-checkbox>
+                <el-checkbox :label="JSON.stringify(item)">
+                  <el-tooltip :content="item.picName" placement="top">
+                    <p>{{ item.picName | headline(item.picName) }}</p>
+                  </el-tooltip>
+                </el-checkbox>
               </div>
             </li>
           </el-checkbox-group>
@@ -53,7 +57,11 @@
             <li class="resource_" v-for="(item, index) in matterList" :key="index">
               <el-image style="width: 100%; height: 75%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
               <div style="line-height: 7.5vh">
-                <el-radio v-model="pictureRadio" :label="item">{{ item.picName }}</el-radio>
+                <el-radio v-model="pictureRadio" :label="JSON.stringify(item)"
+                  ><el-tooltip :content="item.picName" placement="top">
+                    <span>{{ item.picName | headline(item.picName) }}</span>
+                  </el-tooltip></el-radio
+                >
               </div>
             </li>
           </div>
@@ -114,6 +122,7 @@ export default {
       pictureRadio: ''
     }
   },
+  // watch: {},
   methods: {
     // 顶部搜索
     searchClick() {
@@ -176,6 +185,15 @@ export default {
           return value
         }
       }
+    },
+    headline(value) {
+      if (value.length != undefined) {
+        if (value.length > 12) {
+          return value.slice(0, 11) + '...'
+        } else {
+          return value
+        }
+      }
     }
   }
 }
@@ -191,12 +209,12 @@ export default {
     // 暂存
   }
 }
-.content_one {
+.content_one_ {
   width: 24%;
   height: 98%;
   margin: 5px;
 }
-.content_two {
+.content_two_ {
   width: 75%;
   height: 98%;
   margin: 5px;
@@ -208,7 +226,7 @@ export default {
   height: 10%;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
-.content_ {
+.content_A {
   width: 100%;
   height: 85vh;
   text-align: center;

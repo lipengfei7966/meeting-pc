@@ -986,15 +986,16 @@ export default {
     },
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.mainData.table.cols.filter(col => col.prop === prop)[0].queryProp || prop
+      const sortCol = this.mainData.table.cols.filter(col => col.prop === prop)[0]
+      const queryProp = sortCol.queryProp || sortCol.sortProp || prop
       if (this.mainData.table.sortable && this.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'
-          this.mainData.listQuery.sortString = sortProp + asc
+          this.$parent.form.listQuery.sortString = queryProp + asc
           this.getList()
         } else {
-          this.mainData.listQuery.sortString = ''
-          if (this.mainData.listQuery.defaultSortString) {
+          this.$parent.form.listQuery.sortString = ''
+          if (this.$parent.form.listQuery.defaultSortString) {
             this.getList()
           }
         }

@@ -19,12 +19,10 @@
 				document.getElementById("imgSrcL").style.display = "";
 				document.getElementById("imgSrcW").style.display = "none";
 				document.getElementById("imgSrcLbl").innerText = "上传图片:";
-			} else if(obj.value == "W") {
+			} else {
 				document.getElementById("imgSrcL").style.display = "none";
 				document.getElementById("imgSrcW").style.display = "";
 				document.getElementById("imgSrcLbl").innerText = "图片URL:";
-			}else if(obj.value == "BTN"){
-				debugger
 			}
 		}
 		function uploadImg(e) {
@@ -39,6 +37,13 @@
 			}
       const formData = new FormData();
       formData.append('file', imgFile);
+			// 处理地址问题
+			let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              }
 			// 
 			$.ajax({
 				headers:{
@@ -47,7 +52,7 @@
     //请求方式
     type:'POST',
     //发送请求的地址
-    url:'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg',
+    url:url,
     //服务器返回的数据类型
     dataType:'json',
 		processData: false,
@@ -135,11 +140,30 @@
 				} else {
 					imgN.src = imgDataOrg;
 				}
-				// debugger
 				editor.execCommand("inserthtml", imgN.outerHTML);
 				console.log(imgN.outerHTML);
 				dialog.close();
 			});
+			// 调取接口
+			let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              }
+			  var args = {};
+        args['name'] =  '占位';
+        $.ajax({
+            url:url,
+            type:'post',
+            data:args,
+            success:function (res) {
+                console.log(res);
+            },
+            error:function (xhr, res) {
+                console.log(res);
+            }
+        });
 		}
 
 	</script>
@@ -152,7 +176,6 @@
 				<td style="width:330px;">
 					<label><input type="radio" name="imgSrc" value="L" onclick="changeSrcType(this)" />本地图片</label>
 					<label><input type="radio" name="imgSrc" value="W" onclick="changeSrcType(this)" checked="checked" />网络图片</label>
-					<!-- <label><button value="BTN" onclick="changeSrcType(this)">素材库</button></label> -->
 				</td>
 				<td>图片宽度:</td>
 				<td><input type="number" min="1" step="1" id="imgW" style="width:50px;" /></td>

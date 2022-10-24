@@ -131,11 +131,11 @@ export default {
     submit_() {
       console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
       let arr = []
-      this.$refs.material.checkList.forEach((item, index) => {
+      this.$refs.material.checkList.forEach((item) => {
         let obj = {
           webpageCode: this.code,
-          url: item.picUrl,
-          name: item.picName
+          url: JSON.parse(item).picUrl,
+          name: JSON.parse(item).picName
         }
         arr.push(obj)
       })
@@ -169,5 +169,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 </style>
