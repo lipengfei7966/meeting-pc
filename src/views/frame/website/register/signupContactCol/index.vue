@@ -410,7 +410,7 @@
 
                   <div style="display: flex;flex-direction: column;justify-content: space-around;">
                     <div style="display: flex;">
-                      <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire">必填</el-checkbox>
+                      <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">必填</el-checkbox>
                       <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element,index)"></div>
                     </div>
 
@@ -496,14 +496,14 @@
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">可选择证件类型</p>
-                  <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1">
+                  <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1" @change="certificateTypeChange">
                     <el-checkbox v-for="item in setInfoList[checkedIndex].certificateAllTypes" :label="item" :key="item"></el-checkbox>
                   </el-checkbox-group>
                 </div>
                 <!-- 校验 -->
-                <div class="eidtContentItem">
+                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('居民身份证')">
                   <p class="eidtContentItemTitle">校验</p>
-                  <el-radio-group class="certificateVerify" style="width:100%" v-model="setForm.verifyType" @change="certificateVerifyChange">
+                  <el-radio-group class="certificateVerify" style="width:100%" v-model="setInfoList[checkedIndex].check[0].code" @change="certificateVerifyChange">
                     <el-radio label="001">
                       号码逻辑校验
                       <p class="VerifyExplain">仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号</p>
@@ -1792,6 +1792,7 @@ export default {
         pagingIndex: 0, // 分页顺序
         parentListName: parentListName,
         isRequire: false, // 是否必填
+        isRequireDisabled: false, // 必填是否运行修改
         title: itemList.label, // 标题
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
@@ -1907,10 +1908,11 @@ export default {
         return item.value == itemList.value
       })
 
-      // 分割线
+      // 证件
       // debugger
       if( itemList.value == "certificate"){
         obj.options = ['居民身份证'];
+        obj.check[0].code = "001"
       }
       // 分割线
       if( itemList.value == "crossLine"){
@@ -1935,6 +1937,19 @@ export default {
     },
     selectMultipleChange(val){
       // debugger
+    },
+
+    certificateTypeChange(certificateOptions){
+      // debugger
+      // 证件类型不包括居民身份证时 校验code设为空
+      if(!certificateOptions.includes('居民身份证')){
+        this.setInfoList[this.checkedIndex].check[0].code = ''
+      }
+      // 勾选 居民身份证 后, 是最后一项
+      if(certificateOptions[certificateOptions.length-1] == '居民身份证'){
+        this.setInfoList[this.checkedIndex].check[0].code = '001'
+      }
+      console.log(this.setInfoList[this.checkedIndex])
     },
     numberChange(val){
       // numberDigitLimit: 4, // 数字位数限制
@@ -2052,6 +2067,10 @@ export default {
       return isJPG && isLt2M;
     },
     minCheckedCountChange(val){
+      if(val != 0){
+        this.setInfoList[this.checkedIndex].isRequire = true;
+        this.setInfoList[this.checkedIndex].isRequireDisabled = true;
+      }
       debugger
       this.setInfoList[this.checkedIndex].check[0].code = '011';
       this.setInfoList[this.checkedIndex].check[0].name = val;
