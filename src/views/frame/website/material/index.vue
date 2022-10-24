@@ -61,7 +61,7 @@
     <el-card class="box-card content_three">
       <div class="set" v-if="exhibitionRight">
         <div class="set_one">
-          <el-image style="width: 100%; height: 100%" :src="`${url}?v=${Math.random()}`" :preview-src-list="`${srcList[0]}?v=${Math.random()}`"> </el-image>
+          <el-image style="width: 100%; height: 100%" :src="`${url}?v=${Math.random()}`" :preview-src-list="[`${srcList}?v=${Math.random()}`]"> </el-image>
         </div>
         <div class="set_two">
           <div class="particulars">
@@ -121,6 +121,7 @@ export default {
         picName: ''
       },
       workName: '',
+      workName_: '',
       title_: '',
       leixingOptions: [
         { name: '图片', id: '0' },
@@ -131,7 +132,7 @@ export default {
         { name: '按上传时间降序', id: 'createDate.desc' }
       ],
       url: '',
-      srcList: [],
+      srcList: '',
       exhibition: false,
       exhibitionRight: false,
       matterList: [],
@@ -159,6 +160,11 @@ export default {
       pId: ''
     }
   },
+  // watch: {
+  //   workName(nval, oval) {
+  //     console.log(nval, oval)
+  //   }
+  // },
   methods: {
     // 复制文件链接
     copyUrl(item, type) {
@@ -181,21 +187,26 @@ export default {
     },
     blur_() {
       console.log('失焦了 调保存接口吧')
-      request({
-        url: '/api/cms/picinfo/renameFile',
-        method: 'POST',
-        data: { data: { objectKey: this.title_, newObjectKey: this.workName, id: this.pId, url: this.more.link }, funcModule: '修改文件名', funcOperation: '修改文件名' }
-      })
-        .then((res) => {
-          if (res.data) {
-            this.$message.success('修改成功')
-            this.loadData(this.treeDatas)
-            console.log(res.data)
-          } else {
-            this.$message.success('修改失败')
-          }
+      // 控制不改变值不刷新
+      if (this.workName != this.workName_) {
+        request({
+          url: '/api/cms/picinfo/renameFile',
+          method: 'POST',
+          data: { data: { objectKey: this.title_, newObjectKey: this.workName, id: this.pId, url: this.more.link }, funcModule: '修改文件名', funcOperation: '修改文件名' }
         })
-        .catch(() => {})
+          .then((res) => {
+            if (res.data) {
+              // 控制不改变值不刷新
+              this.workName_ = this.workName
+              this.$message.success('修改成功')
+              this.loadData(this.treeDatas)
+              console.log(res.data)
+            } else {
+              this.$message.success('修改失败')
+            }
+          })
+          .catch(() => {})
+      }
     },
     // 滚动刷新
     getScroll(event) {
@@ -318,9 +329,10 @@ export default {
       // id
       this.pId = item.id
       this.workName = item.picName
+      this.workName_ = item.picName
       this.title_ = item.picName
       this.url = item.picUrl
-      this.srcList[0] = item.picUrl
+      this.srcList = item.picUrl
       // 格式--- start
       let mun = item.picUrl.split('.')
       let format = mun[mun.length - 1]
