@@ -883,7 +883,8 @@ export default {
     },
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.treeTableData.mainData.table.cols.filter(col => (col.dataProp ? col.dataProp : col.prop) === prop)[0].sortProp || prop
+      const sortCol = this.treeTableData.mainData.table.cols.filter(col => (col.dataProp ? col.dataProp : col.prop) === prop)[0]
+      const queryProp = sortCol.queryProp || sortCol.sortProp || prop
       if (this.treeTableData.mainData.table.sortable && this.treeTableData.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'

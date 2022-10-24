@@ -132,7 +132,7 @@
         <el-col :span='18'>
           <el-input v-model="lockPwd" type='password' autoComplete="off" :placeholder="$t('biz.placeholder.passwordNotBlank')" @keyup.enter.native="handleLocked"></el-input>
         </el-col>
-        <el-col :span='6'>
+        <el-col :span='8'>
           <el-button type="primary" @click="handleLocked">{{$t('biz.btn.unlock')}}</el-button>
         </el-col>
       </el-row>

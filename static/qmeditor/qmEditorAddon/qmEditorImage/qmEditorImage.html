@@ -19,12 +19,10 @@
 				document.getElementById("imgSrcL").style.display = "";
 				document.getElementById("imgSrcW").style.display = "none";
 				document.getElementById("imgSrcLbl").innerText = "上传图片:";
-			} else if(obj.value == "W") {
+			} else {
 				document.getElementById("imgSrcL").style.display = "none";
 				document.getElementById("imgSrcW").style.display = "";
 				document.getElementById("imgSrcLbl").innerText = "图片URL:";
-			}else if(obj.value == "BTN"){
-				debugger
 			}
 		}
 		function uploadImg(e) {
@@ -135,7 +133,6 @@
 				} else {
 					imgN.src = imgDataOrg;
 				}
-				// debugger
 				editor.execCommand("inserthtml", imgN.outerHTML);
 				console.log(imgN.outerHTML);
 				dialog.close();
@@ -152,7 +149,6 @@
 				<td style="width:330px;">
 					<label><input type="radio" name="imgSrc" value="L" onclick="changeSrcType(this)" />本地图片</label>
 					<label><input type="radio" name="imgSrc" value="W" onclick="changeSrcType(this)" checked="checked" />网络图片</label>
-					<!-- <label><button value="BTN" onclick="changeSrcType(this)">素材库</button></label> -->
 				</td>
 				<td>图片宽度:</td>
 				<td><input type="number" min="1" step="1" id="imgW" style="width:50px;" /></td>

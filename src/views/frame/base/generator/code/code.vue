@@ -21,7 +21,7 @@
           </div>
           <el-form v-if='menuInfoVisible' class="header-form-inline" :model="page" label-position="left" :rules='rules' ref="refForm" :show-message="false">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="页面布局" prop='pageTemp'>
                   <el-select v-model="page.pageTemp">
                     <el-option v-for="item in $t('datadict.codePageTemp')" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -29,7 +29,7 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="表名称" prop='table'>
                   <input-validate v-model='page.table' :clearable='false'></input-validate>
                 </el-form-item>
@@ -60,29 +60,29 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="代码模板" prop='codeTemp'>
                   <el-select v-model="page.codeTemp" @change='codeTempChange'>
                     <el-option v-for="item in $t('datadict.codeTempType')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span=" 6">
+              <el-col :span="8">
                 <el-form-item label="发号前缀" prop='seqPrefix'>
                   <input-validate v-model='page.seqPrefix' :clearable='false' :disabled='seqTypeDisabled'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span=" 6">
+              <el-col :span="8">
                 <el-form-item label="发号长度" prop='seqLength'>
                   <input-validate v-model='page.seqLength' :clearable='false' :disabled='seqTypeDisabled'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item>
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="管理页打开方式" prop='vueEditMode'>
                   <el-select v-model="page.vueEditMode">
                     <el-option v-for="item in $t('datadict.vueEditMode')" :key="item.value" :label="item.label" :value="item.value"></el-option>

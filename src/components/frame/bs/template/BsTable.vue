@@ -8,7 +8,8 @@
         <slot name="add"></slot>
         <slot name="upload"></slot>
         <div v-for="(btn, index) in mainData.topBar" :key="index">
-          <template v-if="btn.name !== 'query'">
+          <bs-upload v-if='btn.name && btn.name === "upload"' v-bind='btn.atrrs' :btnName='$t(btn.i18n)' :permission="btn.permitName" :key='index' @onFileChange='addFile'></bs-upload>
+          <template v-if="btn.name !== 'query' && btn.name !== 'upload'">
             <el-dropdown v-if="btn.name === 'more'" @command="triggerEvent">
               <el-button v-db-click size="mini" style="margin-right: 3px;margin-top: 3px;height:32px;" v-permissionMultiple="btn.list">
                 <svg-icon :icon-class="btn.iconName || 'set'"></svg-icon>
@@ -1291,45 +1292,60 @@ export default {
     },
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.mainData.table.cols.filter(col => col.prop === prop)[0].sortProp || prop
+      const sortCol = this.mainData.table.cols.filter(col => col.prop === prop)[0]
+      const queryProp = sortCol.queryProp || sortCol.sortProp || prop
       if (this.mainData.table.sortable && this.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'
-          let result = this.ordersList.find(e => e.prop === prop)
-          if (result) {
-            result.sort = asc
-            result.order = order
-            result.sortProp = sortProp
-          } else {
-            this.ordersList.push({
-              prop: prop,
-              sortProp: sortProp,
-              sort: asc,
-              order: order
-            })
-          }
+          this.$parent.form.listQuery.sortString = queryProp + asc
+          this.getList()
         } else {
-          for (const i in this.ordersList) {
-            if (this.ordersList[i].prop === prop) {
-              this.ordersList.splice(i, 1)
-            }
-          }
-        }
-        let sortString = this.getSortString()
-        this.$parent.form.listQuery.sortString = sortString
-        if (sortString === '') {
+          this.$parent.form.listQuery.sortString = ''
           if (this.$parent.form.listQuery.defaultSortString) {
             this.getList()
           }
-        } else {
-          this.getList()
         }
       }
+      //多列过滤，太复杂，先不用
+      // const queryProp = this.mainData.table.cols.filter(col => col.prop === prop)[0].queryProp || prop
+      // if (this.mainData.table.sortable && this.mainData.table.sortable === 'custom') {
+      //   if (order) {
+      //     const asc = order === 'ascending' ? '.asc' : '.desc'
+      //     let result = this.ordersList.find(e => e.prop === prop)
+      //     if (result) {
+      //       result.sort = asc
+      //       result.order = order
+      //       result.queryProp = queryProp
+      //     } else {
+      //       this.ordersList.push({
+      //         prop: prop,
+      //         queryProp: queryProp,
+      //         sort: asc,
+      //         order: order
+      //       })
+      //     }
+      //   } else {
+      //     for (const i in this.ordersList) {
+      //       if (this.ordersList[i].prop === prop) {
+      //         this.ordersList.splice(i, 1)
+      //       }
+      //     }
+      //   }
+      //   let sortString = this.getSortString()
+      //   this.$parent.form.listQuery.sortString = sortString
+      //   if (sortString === '') {
+      //     if (this.$parent.form.listQuery.defaultSortString) {
+      //       this.getList()
+      //     }
+      //   } else {
+      //     this.getList()
+      //   }
+      // }
     },
     getSortString() {
       let sortString = ''
       this.ordersList.forEach(function(column) {
-        sortString = sortString + column.sortProp + column.sort + ','
+        sortString = sortString + column.queryProp + column.sort + ','
       })
       return sortString
     },
@@ -1441,6 +1457,13 @@ export default {
           rowspan: row[column.property + 'rowSpan'],
           colspan: 1
         }
+      }
+    },
+    // 增行
+    addFile(file) {
+      debugger
+      if (file && file.response && file.response.data) {
+        this.$emit('fileCallback', file.response.data)
       }
     }
   }
