@@ -37,6 +37,8 @@
 </template>
 
 <script>
+// 调用Vue全局过滤器
+import Vue from 'vue'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
@@ -407,7 +409,14 @@ export default {
         if (item.certificateLayout) {
           this.certificateContentList.forEach((dictItem, dictIndex) => {
             if (item.certificateLayout.indexOf(dictItem.mapName) >= 0) {
-              item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+              // debugger
+              if(dictItem.mapName == '参会人类型'){
+                // 参会人类型 是数据字典, 取到列表 contantType 的值是 value值,需要转换成对应的name
+               let mapVal =  Vue.filter('dataDictFormat')(item[dictItem.mapCode], this.$t('datadict.contantType'))
+                item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, mapVal || '')
+              }else{
+                item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+              }
             }
           })
         } else {
@@ -502,6 +511,7 @@ export default {
         } else {
           this.$message.warning(response.data.msg)
           isCanPrint = false
+          this.isprint = false
         }
       })
     },
