@@ -18,9 +18,11 @@
       </span>
     </el-tree>
     <!-- 弹窗 -->
-    <el-dialog :title="title_" :visible.sync="dialogVisible" width="500px" :before-close="handleClose">
-      <span style="font-size: 14px; color: black">文件夹名称：</span>
-      <el-input style="width: 80%" v-model="workName" placeholder="请输入文件夹名称："></el-input>
+    <el-dialog destroy-on-close :title="title_" :visible.sync="dialogVisible" width="500px" :before-close="handleClose">
+      <div style="padding: 20px 10px">
+        <span style="font-size: 14px; color: black">文件夹名称：</span>
+        <el-input style="width: 80%" v-model="workName" placeholder="请输入文件夹名称："></el-input>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="present_">确 定</el-button>
@@ -189,5 +191,14 @@ export default {
 .el-tree > .el-tree-node {
   display: inline-block;
   min-width: 100%;
+}
+.el-dialog__body {
+  padding: 10px;
+  color: #606266;
+  font-size: 14px;
+  word-break: break-all;
+}
+.el-dialog__header {
+  padding: 10px 20px 0px;
 }
 </style>

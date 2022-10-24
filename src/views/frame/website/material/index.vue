@@ -9,7 +9,7 @@
     <!-- 中间素材列表 -->
     <el-card class="box-card content_two">
       <div v-if="exhibition" style="height: 95vh">
-        <div class="search_">
+        <div class="search_A">
           <el-form :model="fileSearch" label-width="90px">
             <el-row>
               <el-col :span="8">
@@ -40,13 +40,13 @@
             </el-row>
           </el-form>
         </div>
-        <!-- <div style="display: flex; justify-content: right; margin-bottom: 20px">
-          <el-button type="primary">移动</el-button>
-          <el-button>删除</el-button>
-        </div> -->
+        <!-- 操作按钮位置st  后续需要从这里加 -->
+        <!-- 操作按钮位置end -->
         <ul v-if="matterList.length > 0" id="app_" class="content_" @scroll.passive="getScroll($event)">
           <li class="resource" v-for="(item, index) in matterList" :key="index">
-            <p>{{ item.picName }}</p>
+            <el-tooltip :content="item.picName" placement="top">
+              <p>{{ item.picName | headline(item.picName) }}</p>
+            </el-tooltip>
             <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
             <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
@@ -368,6 +368,15 @@ export default {
           return value
         }
       }
+    },
+    headline(value) {
+      if (value.length != undefined) {
+        if (value.length > 12) {
+          return value.slice(0, 11) + '...'
+        } else {
+          return value
+        }
+      }
     }
   }
 }
@@ -398,7 +407,7 @@ export default {
   height: 98%;
   margin: 5px;
 }
-.search_ {
+.search_A {
   padding: 0px 20px;
   padding-top: 20px;
   width: 100%;
