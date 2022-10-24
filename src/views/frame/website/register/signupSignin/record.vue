@@ -329,6 +329,7 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
+    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
     download() {

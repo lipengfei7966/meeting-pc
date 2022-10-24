@@ -1,15 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
-        <template v-for='tab in mainData.tabs'>
-          <el-tab-pane :key='tab.code' :index='tab.code' :name="tab.code">
-            <span slot="label">{{$t(tab.name)}} </span>
-          </el-tab-pane>
-        </template>
-      </el-tabs>
-    </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
@@ -321,6 +312,7 @@ export default {
   },
   mounted() {
     this.sceneList()
+    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
     dialogHandler() {
@@ -344,6 +336,7 @@ export default {
           code: '',
           name: '默认'
         })
+
 
         response.data.forEach((item, key) => {
           this.mainData.tabs.push(item)
@@ -396,7 +389,7 @@ export default {
     },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.code
+      this.form.listQuery.data.sceneCode = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {

@@ -1,15 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-      <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
-        <template v-for='tab in mainData.tabs'>
-          <el-tab-pane :key='tab.name' :index='tab.name' :name="tab.name">
-            <span slot="label">{{$t(tab.label)}} </span>
-          </el-tab-pane>
-        </template>
-      </el-tabs>
-    </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData" :mainDataTabs="mainData.tabs"></bs-table>
   </div>
@@ -184,31 +175,6 @@ export default {
             i18n: '签到',
             msg: '请选择一条数据',
             event: this.signin,
-            //component: () => import('../signupSignin/signin.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
-                return false
-              } else {
-                return true
-              }
-            },
-            getParam: () => {
-              return { eventCode: this.form.listQuery.data.eventCode, contactCode: this.$refs.bsTable.currentRow.code }
-            }
-          },
-          {
-            name: 'add',
-            type: 'dialog',
-            i18n: '签到',
-            component: () => import('../signupSignin/signin.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
-                //this.$notify(notifyInfo({ msg: '请选择会议和人员' }));
-                return false
-              } else {
-                return true
-              }
-            },
             getParam: () => {
               return { eventCode: this.form.listQuery.data.eventCode, contactCode: this.$refs.bsTable.currentRow.code }
             }
@@ -340,6 +306,9 @@ export default {
       })
     },
     signin(buttonInfo) {
+      if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
+        this.$notify(notifyInfo({ msg: '请选择一条数据' }))
+      } 
       request({
         url: '/api/register/signupContactSceneRel/listSceneSelect',
         method: 'POST',
