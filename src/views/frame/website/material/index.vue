@@ -47,7 +47,7 @@
             <el-tooltip :content="item.picName" placement="top">
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
-            <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
+            <el-image style="width: 100%; height: 65%" :src="`${item.picUrl}?${Date.now}`" :preview-src-list="[item.picUrl]"> </el-image>
             <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
           <!-- <li class="resource">视频</li> -->
@@ -61,14 +61,14 @@
     <el-card class="box-card content_three">
       <div class="set" v-if="exhibitionRight">
         <div class="set_one">
-          <el-image style="width: 100%; height: 100%" :src="url" :preview-src-list="srcList"> </el-image>
+          <el-image style="width: 100%; height: 100%" :src="`${url}?${Date.now}`" :preview-src-list="srcList"> </el-image>
         </div>
         <div class="set_two">
           <div class="particulars">
             <span style="font-size: 12px; color: black">文件名：</span>
             <el-input size="mini" @blur="blur_" v-model="workName" style="width: 70%" placeholder="请输入文件名"></el-input>
             <p>
-              大小：<span class="sp">{{ more.big }}</span>
+              大小：<span class="sp">{{ more.big | formatbytes(more.big) }}</span>
             </p>
             <p>
               格式：<span class="sp">{{ more.format }}</span>
@@ -91,10 +91,10 @@
             </p>
             <div class="btn">
               <!-- 上传（替换文件） -->
-              <el-button @click="upload_" style="margin-right: 2vw">替换文件</el-button>
+              <el-button type="primary" @click="upload_" style="margin-right: 2vw">替换文件</el-button>
               <input v-show="false" ref="fileRef" type="file" @change="fileChange($event)" />
               <!--  -->
-              <el-button type="primary" @click="download_()">下载</el-button>
+              <!-- <el-button type="primary" @click="download_()">下载</el-button> -->
             </div>
           </div>
         </div>
@@ -142,7 +142,7 @@ export default {
       // 右侧详细信息
       more: {
         // 大小
-        big: '暂未获取',
+        big: 0,
         // 格式
         format: '',
         // 类型
@@ -345,6 +345,7 @@ export default {
       // 文件链接
       this.more.link = item.picUrl
       // 文件链接
+      this.more.big = item.picSize
       console.log(item, index)
     },
     getImageSize(url) {
@@ -377,6 +378,14 @@ export default {
           return value
         }
       }
+    },
+    // 字节转换
+    formatbytes(bytes) {
+      if (bytes === 0) return '0 B'
+      const k = 1024
+      const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+      const i = Math.floor(Math.log(bytes) / Math.log(k))
+      return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i]
     }
   }
 }
