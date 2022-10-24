@@ -45,7 +45,7 @@
             <li class="resource_" v-for="(item, index) in matterList" :key="index">
               <el-image style="width: 100%; height: 75%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
               <div style="line-height: 7.5vh">
-                <el-checkbox :label="item">
+                <el-checkbox :label="JSON.stringify(item)">
                   <el-tooltip :content="item.picName" placement="top">
                     <p>{{ item.picName | headline(item.picName) }}</p>
                   </el-tooltip>
@@ -57,7 +57,7 @@
             <li class="resource_" v-for="(item, index) in matterList" :key="index">
               <el-image style="width: 100%; height: 75%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
               <div style="line-height: 7.5vh">
-                <el-radio v-model="pictureRadio" :label="item"
+                <el-radio v-model="pictureRadio" :label="JSON.stringify(item)"
                   ><el-tooltip :content="item.picName" placement="top">
                     <span>{{ item.picName | headline(item.picName) }}</span>
                   </el-tooltip></el-radio
@@ -122,6 +122,7 @@ export default {
       pictureRadio: ''
     }
   },
+  // watch: {},
   methods: {
     // 顶部搜索
     searchClick() {

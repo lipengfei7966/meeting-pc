@@ -64,10 +64,10 @@ export default {
       this.dialogVisible_ = true
     },
     submit_() {
-      console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
+      console.log('测试1', this.$refs.material.checkList)
       let str = ''
       this.$refs.material.checkList.forEach((item) => {
-        str += `<p><img src="${item.picUrl}" style="width:400px";height:300px;/></p>`
+        str += `<p><img src="${JSON.parse(item).picUrl}" style="width:400px";height:300px;/></p>`
       })
       window.frames['myframe'].execCommand(str)
       this.dialogVisible_ = false

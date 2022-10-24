@@ -93,8 +93,8 @@ export default {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
       let obj = {
         webpageCode: this.code,
-        url: this.$refs.material.pictureRadio.picUrl,
-        name: this.$refs.material.pictureRadio.picName
+        url: JSON.parse(this.$refs.material.pictureRadio).picUrl,
+        name: JSON.parse(this.$refs.material.pictureRadio).picName
       }
       //
       request({
