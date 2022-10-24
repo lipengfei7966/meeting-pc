@@ -33,12 +33,12 @@
               <div style="display: flex">
                 <p style="display: flex">
                   <span>宽</span>
-                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printWight" @change="WHchange"></el-input>
+                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printWight" @input="printSetform.printWight = limitInput(printSetform.printWight)" @change="WHchange"></el-input>
                 </p>
 
                 <p style="display: flex;margin-left:30px">
                   <span>高</span>
-                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @change="WHchange"></el-input>
+                  <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @input="printSetform.printHeight = limitInput(printSetform.printHeight)" @change="WHchange"></el-input>
                 </p>
               </div>
             </el-form-item>
@@ -118,7 +118,7 @@
 
       </el-card>
       <p style="margin-top: 15px;margin-right:40px">
-        <span>尺寸：{{printSetform.printWight/10}}cm * {{printSetform.printHeight/10}}cm</span>
+        <span>尺寸：{{printSetform.printWight}}mm * {{printSetform.printHeight}}mm</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="doPrint">打印测试页</el-button>
       </p>
     </div>
@@ -278,9 +278,16 @@ export default {
   },
 
   methods: {
-
+    limitInput(value) {
+      let temp = value.toString();// 第一步：转成字符串
+      temp = temp 
+        .replace(/[^\d^\.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
+        .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
+        .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
+        .match(/^\d*(\.?\d{0,2})/g)[0] || '' // 第五步：最终匹配得到结果 以数字开头，只有一个小数点，	而且小数点后面只能有0到2位小数
+      return temp
+    },
     WHchange(){
-
       this.changecount ++;
     },
     certificateTypeChange(val){
