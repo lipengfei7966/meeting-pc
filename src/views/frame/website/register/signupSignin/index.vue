@@ -184,31 +184,6 @@ export default {
             i18n: '签到',
             msg: '请选择一条数据',
             event: this.signin,
-            //component: () => import('../signupSignin/signin.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
-                return false
-              } else {
-                return true
-              }
-            },
-            getParam: () => {
-              return { eventCode: this.form.listQuery.data.eventCode, contactCode: this.$refs.bsTable.currentRow.code }
-            }
-          },
-          {
-            name: 'add',
-            type: 'dialog',
-            i18n: '签到',
-            component: () => import('../signupSignin/signin.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
-                //this.$notify(notifyInfo({ msg: '请选择会议和人员' }));
-                return false
-              } else {
-                return true
-              }
-            },
             getParam: () => {
               return { eventCode: this.form.listQuery.data.eventCode, contactCode: this.$refs.bsTable.currentRow.code }
             }
@@ -340,6 +315,9 @@ export default {
       })
     },
     signin(buttonInfo) {
+      if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
+        this.$notify(notifyInfo({ msg: '请选择一条数据' }))
+      } 
       request({
         url: '/api/register/signupContactSceneRel/listSceneSelect',
         method: 'POST',

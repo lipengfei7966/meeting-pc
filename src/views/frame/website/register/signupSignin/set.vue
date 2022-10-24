@@ -321,6 +321,7 @@ export default {
   },
   mounted() {
     this.sceneList()
+    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
     dialogHandler() {
@@ -344,6 +345,7 @@ export default {
           code: '',
           name: '默认'
         })
+
 
         response.data.forEach((item, key) => {
           this.mainData.tabs.push(item)
@@ -396,7 +398,7 @@ export default {
     },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.code
+      this.form.listQuery.data.sceneCode = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {
