@@ -280,7 +280,7 @@ export default {
   methods: {
     limitInput(value) {
       let temp = value.toString();// 第一步：转成字符串
-      temp = temp 
+      temp = temp
         .replace(/[^\d^\.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
         .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
         .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
