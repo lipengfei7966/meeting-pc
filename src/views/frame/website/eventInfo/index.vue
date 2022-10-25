@@ -191,6 +191,8 @@ export default {
   },
   methods: {
     doDesign() {
+      // debugger
+      // console.log(this.$refs.bsTable.currentRow.code)
       this.$router.push({
         name: 'microStationManagement',
         params: {
