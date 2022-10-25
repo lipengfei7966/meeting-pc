@@ -306,7 +306,7 @@ export default {
       request({
         url: '/api/cms/picinfo/page',
         method: 'POST',
-        data: { current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName, defaultSortString: this.fileSearch.rank_ }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
+        data: { defaultSortString: this.fileSearch.rank_, current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
       })
         .then((res) => {
           if (res.data) {
