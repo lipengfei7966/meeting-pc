@@ -1922,7 +1922,7 @@ export default {
         wordCountLimit: 50, // 字数限制
         numberDigitLimit: 4, // 数字位数限制
         decimalPlacesLimit: 4, // 小数点位数限制
-        options: ["选项一","选项二"], // 选项
+        options: [], // 选项
         radioOptions: [], // 单选框选项
         orientations: ['横向','纵向'], // 排列方向选项
         orientation: '横向', // 排列方向
@@ -1975,11 +1975,13 @@ export default {
         }
         if(itemList.value == 'textarea'){
           obj.wordCountLimit = 200;
-          // this.setForm['textarea'+this.customInfoCount] = '';
+        }
+        if( ['radio','checkbox','select','selects'].includes(itemList.value)){
+          obj.options = ["选项一","选项二"];
         }
       }
       if(parentListName == 'specialInfoList'){
-        obj.isSpecialInfo = true;
+        obj.options = true;
       }
       var index = parentList.findIndex(item => {
         return item.value == itemList.value
