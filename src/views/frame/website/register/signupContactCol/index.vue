@@ -161,7 +161,7 @@
                   </div>
 
                   <!-- 手机号 -->
-                  <div v-if="element.mapCode == 'phone' " class="form-item-input">
+                  <div v-if="element.mapCode == 'mobile' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
@@ -178,7 +178,7 @@
                   </div>
 
                   <!-- 备用手机号 -->
-                  <div v-if="element.mapCode == 'secondPhone' " class="form-item-input">
+                  <div v-if="element.mapCode == 'spare_mobile' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
@@ -195,7 +195,7 @@
                   </div>
 
                   <!-- 固定电话 -->
-                  <div v-if="element.mapCode == 'telephone' " class="form-item-input">
+                  <div v-if="element.mapCode == 'phone' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 80%;display:inline-block;vertical-align: top;">
@@ -246,7 +246,7 @@
                   </div>
 
                   <!-- 备用邮箱 -->
-                  <div v-if="element.mapCode == 'secondEmail' " class="form-item-input">
+                  <div v-if="element.mapCode == 'spare_email' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
@@ -267,8 +267,8 @@
                     </div>
                   </div>
 
-                  <!-- QQ -->
-                  <div v-if="element.mapCode == 'QQ' " class="form-item-input">
+                  <!-- qq -->
+                  <div v-if="element.mapCode == 'qq' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
@@ -680,7 +680,7 @@
               </div>
 
               <!-- 手机号 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'phone'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'mobile'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -736,7 +736,7 @@
               </div>
 
               <!-- 备用手机号 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'secondPhone'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'spare_mobile'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -786,7 +786,7 @@
               </div>
 
               <!-- 固定电话 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'telephone'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'phone'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -907,7 +907,7 @@
               </div>
 
               <!-- 备用邮箱 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'secondEmail'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'spare_email'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -965,7 +965,7 @@
               </div>
 
               <!-- QQ号 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'QQ'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'qq'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1594,14 +1594,14 @@ export default {
       ],
       contactWayList:[
         {label: '地址', value: 'addres'},
-        {label: '手机号', value: 'phone'},
-        {label: '备用手机', value: 'secondPhone'},
-        {label: '固定电话', value: 'telephone'},
+        {label: '手机号', value: 'mobile'},
+        {label: '备用手机', value: 'spare_mobile'},
+        {label: '固定电话', value: 'phone'},
         {label: '传真', value: 'fax'},
         {label: '邮箱', value: 'email'},
-        {label: '备用邮箱', value: 'secondEmail'},
+        {label: '备用邮箱', value: 'spare_email'},
         {label: '微信号', value: 'wechat'},
-        {label: 'QQ号', value: 'QQ'},
+        {label: 'QQ号', value: 'qq'},
       ],
       workInfoList:[
         {label: '公司', value: 'company'},
