@@ -383,7 +383,7 @@ export default {
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
-        data: { data: { type: 'ARTICLE' }, funcModule: '获取页面', funcOperation: '获取页面' }
+        data: { data: { type: 'ARTICLE', queryParams: { eventCode: this.$route.params.ids } }, funcModule: '获取页面', funcOperation: '获取页面' }
       })
         .then((res) => {
           // debugger
