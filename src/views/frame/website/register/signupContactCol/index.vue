@@ -1587,21 +1587,21 @@ export default {
         }
       },
       baseInfoList: [
-        {label: '姓名', value: 'name'},
-        {label: '性别', value: 'sex'},
-        {label: '证件', value: 'certificate'},
-        {label: '照片', value: 'photo'},
+        {label: '姓名', value: 'name', isSee: false},
+        {label: '性别', value: 'sex', isSee: false},
+        {label: '证件', value: 'certificate', isSee: false},
+        {label: '照片', value: 'photo', isSee: false},
       ],
       contactWayList:[
-        {label: '地址', value: 'addres'},
-        {label: '手机号', value: 'mobile'},
-        {label: '备用手机', value: 'spare_mobile'},
-        {label: '固定电话', value: 'phone'},
-        {label: '传真', value: 'fax'},
-        {label: '邮箱', value: 'email'},
-        {label: '备用邮箱', value: 'spare_email'},
-        {label: '微信号', value: 'wechat'},
-        {label: 'QQ号', value: 'qq'},
+        {label: '地址', value: 'addres', isSee: false},
+        {label: '手机号', value: 'mobile', isSee: false},
+        {label: '备用手机', value: 'spare_mobile', isSee: false},
+        {label: '固定电话', value: 'phone', isSee: false},
+        {label: '传真', value: 'fax', isSee: false},
+        {label: '邮箱', value: 'email', isSee: false},
+        {label: '备用邮箱', value: 'spare_email', isSee: false},
+        {label: '微信号', value: 'wechat', isSee: false},
+        {label: 'QQ号', value: 'qq', isSee: false},
       ],
       workInfoList:[
         {label: '公司', value: 'company'},
@@ -1739,6 +1739,16 @@ export default {
         return
       }
       // debugger
+      this.baseInfoList.forEach(baseInfoItem => {
+        baseInfoItem.isSee = false;
+      })
+      this.contactWayList.forEach(contactWayItem => {
+        contactWayItem.isSee = false;
+      })
+      this.workInfoList.forEach(workInfoItem => {
+        workInfoItem.isSee = false;
+      })
+
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -2008,7 +2018,7 @@ export default {
       if( itemList.value == "explainInfo"){
         obj.mapCode = 'explainInfo' + this.setInfoList.length;
       }
-      debugger
+      // debugger
       if(parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList'){
         parentList[index].isSee = true;
       }
@@ -2231,7 +2241,7 @@ export default {
       this.eventName = params.name
       // debugger
       // this.$refs.bsTable.doRefresh()
-      this.getEventInfo()
+      // this.getEventInfo()
     },
     initialize() {
       if (this.form.listQuery.data.eventCode == '') {
