@@ -1,6 +1,6 @@
 <template>
   <div class='input-format'>
-    <el-input v-model.trim='input' :maxlength="20" :disabled="disabled" :readonly='readonly' style="text-align: right;" :size='size' ref='input' :clearable='clearable' @change='hanlder'>
+    <el-input v-model.trim='input' :maxlength="maxlength || 20" :disabled="disabled" :readonly='readonly' style="text-align: right;" :size='size' ref='input' :placeholder="placeholder || $t('biz.placeholder.input')" :clearable='clearable' @change='hanlder'>
       <template v-if="prepend" slot="prepend">{{prepend}}</template>
       <template v-if="append" slot="append">{{append}}</template>
     </el-input>
@@ -85,6 +85,12 @@ export default {
     isValidate: {
       type: Boolean,
       default: true
+    },
+    placeholder: {
+      type: String
+    },
+    maxlength: {
+      type: [Number, String],
     }
   },
   watch: {
