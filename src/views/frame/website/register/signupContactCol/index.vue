@@ -12,7 +12,7 @@
         </el-steps>
       </div>
       <div class="formSet">
-        <el-card class="formInfo">
+        <el-card class="formInfo" :style="{height: formSetHeight + 'px'}">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
           </div>
@@ -66,8 +66,8 @@
             </el-collapse>
           </div>
         </el-card>
-        <el-card class="formPreview">
-          <div>
+        <el-card class="formPreview" :style="{height: formSetHeight + 'px'}">
+          <div :style="{minHeight: formSetHeight - 80 + 'px'}">
             <h2 style="text-align:center"> {{ eventName }}</h2>
             <draggable v-model="setInfoList" chosenClass="chosen" forceFallback="true" :scroll="true" animation="300" @start="onStart" @end="onEnd" @update="onUpdate">
               <transition-group>
@@ -419,10 +419,14 @@
                 </div>
               </transition-group>
             </draggable>
+
+          </div>
+          <div class="optionBtns" style="">
+            <el-button @click="save">保存</el-button>
           </div>
         </el-card>
 
-        <el-card class="formEdit">
+        <el-card class="formEdit" :style="{height: formSetHeight + 'px'}">
           <div slot="header" class="formInfoTitle">
             <span>编辑</span>
           </div>
@@ -1430,8 +1434,8 @@
 
           </div>
         </el-card>
-        <!-- <el-button @click="save">保存</el-button> -->
       </div>
+      <!-- <el-button @click="save">保存</el-button> -->
     </div>
 
     <el-dialog title="批量新增" width="500px" :visible.sync="batchEditDiologVisible" :modal-append-to-body="true" :append-to-body="true">
@@ -1447,6 +1451,8 @@
 
 <script>
 import draggable from 'vuedraggable'
+import screenfull from 'screenfull'
+import { mapGetters } from 'vuex'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
@@ -1682,6 +1688,8 @@ export default {
     draggable,
   },
   mounted() {
+    this.tableComputed()
+    // this.getEventInfo()
     // 获取国际区号数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -1692,6 +1700,9 @@ export default {
       this.countryCodeOptions = res.data
       // dictItemName \ dictItemVal
     })
+  },
+  computed: {
+    ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight'])
   },
   watch:{
     customInfoCount(newVal ,oldVal) {
@@ -1717,15 +1728,81 @@ export default {
         })
       }
     },
-
+    clientHeight() {
+      this.tableComputed()
+    },
   },
   methods: {
+    getEventInfo() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      // debugger
+      request({
+        url: '/api/biz/cmsEventInfo/get',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '表单设置',
+          funcOperation: '表单初始化'
+        }
+      }).then(response => {
+        debugger
+        if(response.data.json){
+          this.setInfoList = JSON.parse(response.data.json)
+        }else{
+          this.setInfoList = [];
+        }
+        // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
+        this.setInfoList.forEach( setInfoItem => {
+          // 基本信息
+          this.baseInfoList.forEach(baseInfoItem => {
+            if(baseInfoItem.value == setInfoItem.mapCode){
+              baseInfoItem.isSee = true;
+            }
+          })
+          // 联系方式
+          this.contactWayList.forEach(contactWayItem => {
+            if(contactWayItem.value == setInfoItem.mapCode){
+              contactWayItem.isSee = true;
+            }
+          })
+          // 工作信息
+          this.workInfoList.forEach(workInfoItem => {
+            if(workInfoItem.value == setInfoItem.mapCode){
+              workInfoItem.isSee = true;
+            }
+          })
+        })
+
+      })
+    },
+
     save(){
+      request({
+        url: 'api/register/signupContactCol/save',
+        method: 'POST',
+        data: {
+          data: {
+            eventCode: this.form.listQuery.data.eventCode,
+            json: this.setInfoList
+          },
+          funcModule: '获取模块类型',
+          funcOperation: '获取模块类型'
+        }
+      }).then(res => {
+        if(res.status){
+          this.$message.success('保存成功')
+        }else{
+          this.$message.error('保存失败')
+        }
+      })
       console.log(this.setInfoList)
     },
     //移除表单信息
     delSetInfoList(itemList,itemIndex){
-      // debugger
+      debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
           var index = this.baseInfoList.findIndex(item=>{
@@ -1929,7 +2006,7 @@ export default {
       if( itemList.value == "explainInfo"){
         obj.mapCode = 'explainInfo' + this.setInfoList.length;
       }
-
+      debugger
       if(parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList'){
         parentList[index].isSee = true;
       }
@@ -2152,6 +2229,7 @@ export default {
       this.eventName = params.name
       // debugger
       // this.$refs.bsTable.doRefresh()
+      this.getEventInfo()
     },
     initialize() {
       if (this.form.listQuery.data.eventCode == '') {
@@ -2198,20 +2276,36 @@ export default {
           item.mapCode = 'paging' + pagingIndex
         }
       })
-    }
+    },
     // 计算列表高度
-    // tableComputed() {
-    //     const elHead = document.getElementById('elHead')
-    //     let getElHeadHeight = 0
-    //     if (this.hasLayout) {
-    //       this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 188 : this.clientHeight - getElHeadHeight - 158) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 172 : this.clientHeight - getElHeadHeight - 142
-    //     } else {
-    //       this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
-    //     }
-    //     if (this.mainData.isTabBar) {
-    //       this.formSetHeight = this.formSetHeight - 30
-    //     }
-    // },
+    tableComputed() {
+      // const elHead = document.getElementById('elHead')
+      this.formSetHeight = 0
+      // debugger
+
+      // 顶部菜单 高48px
+      this.formSetHeight -= 48
+      // tagView 高 36px
+      this.formSetHeight -= 36
+      // 头部表单 高 68
+      this.formSetHeight -= 68
+      // 步骤条 高 57
+      this.formSetHeight -= 57
+      // padding 10px
+      this.formSetHeight -= 20
+      // 调节尺寸
+      this.formSetHeight -= 10
+
+      // 是否最大化
+      if (screenfull.isFullscreen) {
+        this.formSetHeight += 48
+        this.formSetHeight += 36
+      }
+      this.formSetHeight += this.clientHeight
+      // debugger
+      // this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
+      // this.formSetHeight = this.formSetHeight - 50
+    }
   }
 }
 </script>
@@ -2227,7 +2321,7 @@ export default {
   min-width: 1250px;
   .formInfo {
     width: 20%;
-
+    overflow: auto;
     .formInfoTitle {
       text-align: center;
       font-size: 15px;
@@ -2246,6 +2340,8 @@ export default {
   }
   .formPreview {
     width: 60%;
+    overflow: auto;
+    position: relative;
     margin: 0 20px;
     .setInfoItem {
       width: 100%;
@@ -2306,9 +2402,16 @@ export default {
       text-align: left;
       margin-right: 10px;
     }
+    .optionBtns {
+      position: sticky;
+      bottom: 0;
+      // width: calc(100% - 40px);
+      text-align: center;
+    }
   }
   .formEdit {
     width: 20%;
+    overflow: auto;
     .formInfoTitle {
       text-align: center;
       font-size: 15px;
@@ -2349,6 +2452,9 @@ export default {
 </style>
 
 <style scoped>
+.formPreview /deep/ .el-card__body {
+  min-height: 100%;
+}
 .formEdit /deep/ .el-card__body {
   padding: 0;
 }
