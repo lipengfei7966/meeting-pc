@@ -292,12 +292,13 @@ export default {
         funcModule: '会议字典',
         funcOperation: '查询列表'
       }
-    }).then(response => {
-      response.data.forEach(element => {
+    }).then((response) => {
+      response.data.forEach((element) => {
         this.mainData.tabs.push({
           label: element.name,
           name: element.code
         })
+        this.handleTabClick(this.mainData.tabs[0])
       })
     })
   },
@@ -321,7 +322,7 @@ export default {
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
     },
-    handleTabClick(tab, event) {
+    handleTabClick(tab) {
       this.currentRow = null
       this.form.listQuery.data.certificateType = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
