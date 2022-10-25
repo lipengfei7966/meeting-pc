@@ -24,6 +24,10 @@ export default {
         endDate: '结束时间',
         eventPlace: '活动地点',
         eventDate: '会议时间'
+      },
+      btn: {
+        design: '微站设计',
+        set: '参会人编码设置'
       }
     },
     article: {
@@ -293,6 +297,15 @@ export default {
         email: '邮箱',
         departmentCode: '部门',
         customerCode: '客户'
+      }
+    },
+    signupContactCodeRule: {
+      edit: {
+        eventName: '会议名称',
+        prefix: '前缀',
+        length: '长度',
+        type: '生成类型',
+        startCode: '起始码'
       }
     }
   }
