@@ -317,7 +317,7 @@ export default {
     signin(buttonInfo) {
       if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
         this.$notify(notifyInfo({ msg: '请选择一条数据' }))
-      } 
+      }
       request({
         url: '/api/register/signupContactSceneRel/listSceneSelect',
         method: 'POST',

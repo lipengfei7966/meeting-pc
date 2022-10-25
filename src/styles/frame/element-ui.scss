@@ -989,7 +989,7 @@
     }
 
     .el-col {
-      margin: 0 0 10px 0 !important;
+      margin: 10px 0 !important;
     }
 
     .el-checkbox__inner {
@@ -1137,7 +1137,7 @@
           min-height: 150px;
 
           .el-form-item {
-            margin: 10px 0;
+            margin: 0px 0;
           }
         }
 
@@ -2206,7 +2206,7 @@
 
       .bs_echarts {
         width: 100%;
-        // min-height: 500px;
+        min-height: 500px;
         margin: 0 auto 5px;
         background: #ffffff;
         // border: 1px solid #ababab;

@@ -40,7 +40,7 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="图表说明" prop='remark'>
                   <el-input v-model="page.remark" :clearable='true'>
                   </el-input>
@@ -55,45 +55,22 @@
               </el-col>
 
               <el-col :span='24'>
-                <el-form-item label='sql注意说明1'>
+                <el-form-item label='sql注意说明1' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='1、作为查询条件和展示的列，都查在SQL里查询出来,select 里的列必须都是as 成驼峰格式'>
                   </el-input>
                 </el-form-item>
 
-                <el-form-item label='sql注意说2'>
+                <el-form-item label='sql注意说2' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='2、内置查询条件时，例子select xx from table where 1=1  #INNER_SQL#'>
                   </el-input>
                 </el-form-item>
 
-                <el-form-item label='sql注意说3'>
+                <el-form-item label='sql注意说3' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='3、控制数据权限时，例子select xx from table where 1=1  #AUTH_SQL#'>
                   </el-input>
                 </el-form-item>
               </el-col>
 
-            </el-row>
-          </el-form>
-        </header>
-        <header :style=" {'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px' ) : 'auto' , 'border-bottom-width' : explainAuthVisible ? '1px' : '0' }">
-          <div class='form-title'>
-            规则说明
-            <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !explainAuthVisible}]" @click='explainAuthVisible = !explainAuthVisible'></i>
-          </div>
-          <el-form v-if='explainAuthVisible' ref='refForm2' :model='page.codeDataJson.explainData' :rules='rules' :show-message='false' class='header-form-inline' label-position='left'>
-            <el-row :gutter='20'>
-              <el-col :span="8">
-                <el-form-item label='是否显示规则' prop='isExplainAuth'>
-                  <el-checkbox v-model='page.codeDataJson.explainData.isExplainAuth'></el-checkbox>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter='20'>
-              <el-col :span='24'>
-                <el-form-item label='规则说明' prop='explainInfo'>
-                  <el-input v-model='page.codeDataJson.explainData.explainInfo' :clearable='true' type='textarea'>
-                  </el-input>
-                </el-form-item>
-              </el-col>
             </el-row>
           </el-form>
         </header>
@@ -122,7 +99,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="y轴字段/饼图name" prop='yAxis'>
                   <el-select v-model="page.codeDataJson.chart.yAxis" size='mini' :multiple='true' clearable filterable allow-create>
                     <el-option v-for="item in page.codeDataJson.chart.axis" :key="item.value" :label="item.label" :value="item.value"></el-option>
