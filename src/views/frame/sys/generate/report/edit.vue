@@ -39,7 +39,6 @@
                   <input-validate v-model='page.codeName' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-
               <el-col :span="24">
                 <el-form-item label="报表说明" prop='remark'>
                   <el-input v-model="page.remark" :clearable='true'>
@@ -52,19 +51,16 @@
                   </el-input>
                 </el-form-item>
               </el-col>
-
               <el-col :span='24'>
-                <el-form-item label='sql注意说明1'>
+                <el-form-item label='sql注意说明1' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='1、作为查询条件和展示的列，都查在SQL里查询出来,select 里的列必须都是as 成驼峰格式'>
                   </el-input>
                 </el-form-item>
-
-                <el-form-item label='sql注意说2'>
+                <el-form-item label='sql注意说2' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='2、内置查询条件时，例子select xx from table where 1=1  #INNER_SQL#'>
                   </el-input>
                 </el-form-item>
-
-                <el-form-item label='sql注意说3'>
+                <el-form-item label='sql注意说3' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='3、控制数据权限时，例子select xx from table where 1=1  #AUTH_SQL#'>
                   </el-input>
                 </el-form-item>
