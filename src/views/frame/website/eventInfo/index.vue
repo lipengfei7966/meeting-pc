@@ -99,7 +99,7 @@ export default {
           {
             name: 'design',
             type: 'route',
-            i18n: '微站设计',
+            i18n: 'website.eventInfo.btn.design',
             event: this.doDesign,
             routeInfo: () => {
               return {
@@ -110,6 +110,15 @@ export default {
                   ids: this.$refs.bsTable.currentRow.code
                 }
               }
+            }
+          },
+          {
+            name: 'set',
+            type: 'dialog',
+            i18n: 'website.eventInfo.btn.set',
+            component: () => import('@/views/frame/website/register/signupContactCodeRule/set'),
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.code
             }
           },
           {

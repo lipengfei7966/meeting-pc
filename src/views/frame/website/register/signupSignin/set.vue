@@ -344,9 +344,7 @@ export default {
         this.mainData.tabs.push({
           code: '',
           name: '默认'
-        })
-
-
+        });
         response.data.forEach((item, key) => {
           this.mainData.tabs.push(item)
         })
