@@ -47,7 +47,8 @@
             <el-tooltip :content="item.picName" placement="top">
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
-            <el-image style="width: 100%; height: 65%" :src="`${item.picUrl}?v=${Math.random()}`" :preview-src-list="[`${item.picUrl}?v=${Math.random()}`]"> </el-image>
+            <!-- ?v=${Math.random() -->
+            <el-image style="width: 100%; height: 65%" :src="`${item.picUrl}}`" :preview-src-list="[`${item.picUrl}}`]"> </el-image>
             <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
           <!-- <li class="resource">视频</li> -->
@@ -61,7 +62,7 @@
     <el-card class="box-card content_three">
       <div class="set" v-if="exhibitionRight">
         <div class="set_one">
-          <el-image style="width: 100%; height: 100%" :src="`${url}?v=${Math.random()}`" :preview-src-list="[`${srcList}?v=${Math.random()}`]"> </el-image>
+          <el-image style="width: 100%; height: 100%" :src="`${url}`" :preview-src-list="[`${srcList}}`]"> </el-image>
         </div>
         <div class="set_two">
           <div class="particulars">
@@ -249,7 +250,7 @@ export default {
           if (data) {
             loading_.close()
             thiz.$message('上传文件成功')
-            this.loadData(this.treeDatas)
+            this.loadData(this.treeDatas, true)
             this.exhibitionRight = false
           } else {
             loading_.close()
@@ -296,7 +297,7 @@ export default {
       this.treeDatas = data
       this.loadData(data)
     },
-    loadData(data) {
+    loadData(data, isFile) {
       const loading = this.$loading({
         lock: true,
         text: '加载中',
@@ -314,6 +315,15 @@ export default {
               loading.close()
             }, 200)
             this.matterList = res.data
+            debugger
+            if (isFile) {
+              this.matterList.forEach((item) => {
+                if (this.more.link == item.picUrl) {
+                  item.PicUrl += '?v=' + Math.random()
+                }
+              })
+            }
+            console.log(this.matterList)
             this.total = res.total
             console.log(res.data)
           } else {
