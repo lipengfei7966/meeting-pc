@@ -229,36 +229,53 @@ export default {
       console.log(e)
       console.log(e.target.files)
       console.log(e.target.files[0].name)
-      // 替换文件 --- st
-      let thiz = this
-      let formData = new FormData()
-      formData.append('id', thiz.pId) // 额外参数
-      formData.append('url', thiz.more.link)
-      formData.append('file', e.target.files[0])
-      let loading_ = thiz.$loading({
-        lock: true,
-        text: '上传中，请稍候...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      request({
-        url: '/api/cms/picinfo/update',
-        method: 'POST',
-        data: formData
-      })
-        .then((data) => {
-          if (data) {
-            loading_.close()
-            thiz.$message('上传文件成功')
-            this.loadData(this.treeDatas, true)
-            this.exhibitionRight = false
-          } else {
-            loading_.close()
-            thiz.$message('上传文件失败')
-          }
+      let mun = e.target.files[0].name.split('.')
+      let format = mun[mun.length - 1]
+      console.log(format)
+      debugger
+      // if (format == 'jpeg') {
+      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+      //   return
+      // }
+      // if (format == 'png') {
+      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+      //   return
+      // }
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        // 替换文件 --- st
+        let thiz = this
+        let formData = new FormData()
+        formData.append('id', thiz.pId) // 额外参数
+        formData.append('url', thiz.more.link)
+        formData.append('file', e.target.files[0])
+        let loading_ = thiz.$loading({
+          lock: true,
+          text: '上传中，请稍候...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
         })
-        .catch(() => {})
-      //替换文件--- end
+        request({
+          url: '/api/cms/picinfo/update',
+          method: 'POST',
+          data: formData
+        })
+          .then((data) => {
+            if (data) {
+              loading_.close()
+              thiz.$message('上传文件成功')
+              this.loadData(this.treeDatas, true)
+              this.exhibitionRight = false
+            } else {
+              loading_.close()
+              thiz.$message('上传文件失败')
+            }
+          })
+          .catch(() => {})
+        //替换文件--- end
+      } else {
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return
+      }
     },
     download_() {
       console.log('下载')
