@@ -5,7 +5,7 @@
       <el-button size="small" type="primary" @click="materialSelection">从素材库选择</el-button>
     </div>
     <div style="text-align: center; margin-top: 50px">
-      <el-upload action list-type="picture-card" :headers="httpHeaders" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible_">
@@ -58,7 +58,6 @@ export default {
     },
     //
     handleUploadForm(param) {
-      // debugger
       let thiz = this
       let formData = new FormData()
       formData.append('webpageCode', this.code) // 额外参数
@@ -85,6 +84,18 @@ export default {
         })
         .catch(() => {})
       console.log(param)
+    },
+    beforeUpload(param) {
+      debugger
+      // debugger
+      let mun = param.file.name.split('.')
+      let format = mun[mun.length - 1]
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        // 成功
+      } else {
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return
+      }
     },
     materialSelection() {
       this.dialogVisible = true
