@@ -36,7 +36,7 @@
         <colorPicker defaultColor="rgba(198, 75, 34, 0.2)" v-model="colorValue" @change="handleChangeColor" size="5"></colorPicker>
       </div>
       <el-form-item label="图标" prop="fileList">
-        <el-upload :before-upload="beforeUpload" accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
+        <el-upload :before-upload="beforeUpload" accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
           <el-button size="small" type="text">上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpeg/png/jpg/psd文件</div>
         </el-upload>
@@ -357,9 +357,9 @@ export default {
       // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
       this.$message.warning('请删除已存在图片后再进行上传操作')
     },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
-    },
+    // beforeRemove(file, fileList) {
+    //   return this.$confirm(`确定移除 ${file.name}？`)
+    // },
     handelClick(val) {
       console.log(val)
       this.$emit('onClick')
@@ -418,7 +418,7 @@ export default {
         // 成功
       } else {
         this.$message('请上传jpg，png，jpeg，psd 类型的图片')
-        return
+        return false
       }
     }
   }
