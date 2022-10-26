@@ -422,7 +422,11 @@
 
           </div>
           <div class="optionBtns" style="">
-            <el-button @click="save">保存</el-button>
+            <el-button type="primary" @click="save">
+              <span class="el-icon-download"></span>
+              保存
+            </el-button>
+            <!-- <el-button @click="save">保存</el-button> -->
           </div>
         </el-card>
 
@@ -2239,9 +2243,7 @@ export default {
       // 会议编码 params.code
       // 会议名称 params.name
       this.eventName = params.name
-      // debugger
-      // this.$refs.bsTable.doRefresh()
-      // this.getEventInfo()
+      this.getEventInfo()
     },
     initialize() {
       if (this.form.listQuery.data.eventCode == '') {

@@ -293,51 +293,7 @@ export default {
       isprint: false,
       hasBarCode: false,
       certificateContentList: [],
-      certificateLayout: `
-        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(99px, 136px); width: 176px; height: 43px; z-index: auto; user-select: auto;\">
-          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-br\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
-          <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              单位名称\n              </p>
-        </div>
-        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(101px, 59px); width: 174px; height: 43px; z-index: auto; user-select: auto;\">
-          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-br\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
-          <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              姓名\n              </p>
-        </div>
-        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(105px, 218px); width: 174px; height: 43px; z-index: auto; user-select: auto;\">
-          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-br\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
-          <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              手机\n              </p>
-        </div>
-        <div data-v-6e21c36e=\"\" class=\"draggable resizable vdr\" left=\"0\" style=\"transform: translate(106px, 295px); width: 166px; height: 43px; z-index: auto; user-select: auto;\">
-          <div class=\"handle handle-tl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-tr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-mr\" style=\"display: none;\"></div>
-          <div class=\"handle handle-br\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bm\" style=\"display: none;\"></div>
-          <div class=\"handle handle-bl\" style=\"display: none;\"></div>
-          <div class=\"handle handle-ml\" style=\"display: none;\"></div>
-           <p data-v-6e21c36e=\"\" class=\"printItem\" style=\"font-size: 34px; color: rgb(0, 0, 0); line-height: 34px; text-align: center;\">\n              证件号码\n              </p>
-        </div>`
+      certificateLayout: ``
     }
   },
   components: {

@@ -165,17 +165,19 @@ export default {
         topBar: [
           {
             name: 'add',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode
-              }
-            }
+            type: 'route',
+            event: this.toSetting,
+
+            // component: () => import('./edit.vue'),
+            // getParam: () => {
+            //   return {
+            //     eventCode: this.form.listQuery.data.eventCode
+            //   }
+            // }
           },
           {
             name: 'update',
-            type: 'dialog',
+            type: 'route',
             component: () => import('./edit.vue'),
             getParam: () => {
               return {
@@ -186,7 +188,7 @@ export default {
           },
           {
             name: 'view',
-            type: 'dialog',
+            type: 'route',
             component: () => import('./edit.vue'),
             getParam: () => {
               return {
@@ -374,7 +376,21 @@ export default {
         message: data,
         position: 'bottom-right'
       })
-    }
+    },
+    toSetting() {
+      //
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      this.$router.push({
+        name: 'certificateSet',
+        params: {
+          back: 'singnupContactCertificate',
+          data: this.form.listQuery.data.eventCode
+        }
+      })
+    },
   }
 }
 </script>
