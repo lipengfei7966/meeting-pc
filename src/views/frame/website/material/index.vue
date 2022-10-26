@@ -48,7 +48,7 @@
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
             <!-- ?v=${Math.random() -->
-            <el-image style="width: 100%; height: 65%" :src="`${item.picUrl}}`" :preview-src-list="[`${item.picUrl}}`]"> </el-image>
+            <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
             <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
           <!-- <li class="resource">视频</li> -->
@@ -62,7 +62,7 @@
     <el-card class="box-card content_three">
       <div class="set" v-if="exhibitionRight">
         <div class="set_one">
-          <el-image style="width: 100%; height: 100%" :src="`${url}`" :preview-src-list="[`${srcList}}`]"> </el-image>
+          <el-image style="width: 100%; height: 100%" :src="url" :preview-src-list="[srcList]"> </el-image>
         </div>
         <div class="set_two">
           <div class="particulars">
@@ -315,11 +315,12 @@ export default {
               loading.close()
             }, 200)
             this.matterList = res.data
-            debugger
             if (isFile) {
+              debugger
               this.matterList.forEach((item) => {
+                debugger
                 if (this.more.link == item.picUrl) {
-                  item.PicUrl += '?v=' + Math.random()
+                  item.picUrl += '?v=' + Math.random()
                 }
               })
             }
