@@ -3,7 +3,7 @@
   <div style="height: 90vh; overflow: auto; margin-top: 10px">
     <div>
       <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">从素材库选择</el-button>
-      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
+      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" :before-upload="beforeUpload" class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
     </div>
@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      flag_: true,
       // process.env.BASE_API +
       uploadUrl: '/api/biz/cmsWebpagePic/uploadRotationPic',
       webpagePicDtoList_: [],
@@ -67,71 +68,73 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       // debugger
-      //
-      request({
-        url: '/api/biz/cmsWebpagePic/remove',
-        method: 'POST',
-        data: { data: file.id, funcOperation: '删除轮播图', funcModule: '删除轮播图' }
-      })
-        .then((data) => {
-          debugger
-          if (data) {
-            this.$message('删除成功')
-            this.$emit('upData_')
-          } else {
-            this.$message('删除失败')
-          }
+      if (this.flag_) {
+        //
+        request({
+          url: '/api/biz/cmsWebpagePic/remove',
+          method: 'POST',
+          data: { data: file.id, funcOperation: '删除轮播图', funcModule: '删除轮播图' }
         })
-        .catch(() => {})
-      //
-      console.log(file, fileList)
-      console.log(this.webpagePicDtoList)
+          .then((data) => {
+            debugger
+            if (data) {
+              this.$message('删除成功')
+              this.$emit('upData_')
+            } else {
+              this.$message('删除失败')
+            }
+          })
+          .catch(() => {})
+        //
+        console.log(file, fileList)
+        console.log(this.webpagePicDtoList)
+      }
     },
     handlePreview(file) {
       console.log(file)
     },
     handleUploadForm(param) {
-      debugger
-      let mun = param.file.name.split('.')
-      let format = mun[mun.length - 1]
-      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
-        let thiz = this
-        let formData = new FormData()
-        formData.append('webpageCode', this.code) // 额外参数
-        formData.append('file', param.file)
-        let data = {
-          data: {
-            webpageCode: this.code,
-            file: param.file
-          },
-          funcModule: '上传轮播图',
-          funcOperation: '上传轮播图'
-        }
-        let loading = thiz.$loading({
-          lock: true,
-          text: '上传中，请稍候...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        })
-        request({
-          url: thiz.uploadUrl,
-          method: 'POST',
-          data: formData
-        })
-          .then((data) => {
-            if (data) {
-              thiz.$message('上传文件成功')
-              this.$emit('upData_')
-            } else {
-              thiz.$message('上传文件失败')
-            }
-            loading.close()
-          })
-          .catch(() => {})
-      } else {
-        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
-        return
+      // debugger
+      // let mun = param.file.name.split('.')
+      // let format = mun[mun.length - 1]
+      // if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+      let thiz = this
+      let formData = new FormData()
+      formData.append('webpageCode', this.code) // 额外参数
+      formData.append('file', param.file)
+      let data = {
+        data: {
+          webpageCode: this.code,
+          file: param.file
+        },
+        funcModule: '上传轮播图',
+        funcOperation: '上传轮播图'
       }
+      let loading = thiz.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: thiz.uploadUrl,
+        method: 'POST',
+        data: formData
+      })
+        .then((data) => {
+          if (data) {
+            thiz.$message('上传文件成功')
+            this.$emit('upData_')
+          } else {
+            thiz.$message('上传文件失败')
+          }
+          loading.close()
+        })
+        .catch(() => {})
+      // } else {
+      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+      //   return
+      // }
     },
     materialSelection() {
       this.dialogVisible = true
@@ -165,6 +168,20 @@ export default {
         })
         .catch(() => {})
       this.dialogVisible = false
+    },
+    beforeUpload(param) {
+      debugger
+      // debugger
+      let mun = param.name.split('.')
+      let format = mun[mun.length - 1]
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        // 成功
+        this.flag_ = true
+      } else {
+        this.flag_ = false
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return false
+      }
     }
   },
   computed: {

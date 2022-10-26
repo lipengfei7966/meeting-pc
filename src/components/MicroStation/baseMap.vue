@@ -88,13 +88,13 @@ export default {
     beforeUpload(param) {
       debugger
       // debugger
-      let mun = param.file.name.split('.')
+      let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
         // 成功
       } else {
         this.$message('请上传jpg，png，jpeg，psd 类型的图片')
-        return
+        return false
       }
     },
     materialSelection() {
