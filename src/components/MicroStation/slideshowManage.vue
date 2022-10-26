@@ -3,7 +3,7 @@
   <div style="height: 90vh; overflow: auto; margin-top: 10px">
     <div>
       <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">从素材库选择</el-button>
-      <el-upload class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
+      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
     </div>
@@ -91,39 +91,47 @@ export default {
       console.log(file)
     },
     handleUploadForm(param) {
-      let thiz = this
-      let formData = new FormData()
-      formData.append('webpageCode', this.code) // 额外参数
-      formData.append('file', param.file)
-      let data = {
-        data: {
-          webpageCode: this.code,
-          file: param.file
-        },
-        funcModule: '上传轮播图',
-        funcOperation: '上传轮播图'
-      }
-      let loading = thiz.$loading({
-        lock: true,
-        text: '上传中，请稍候...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      request({
-        url: thiz.uploadUrl,
-        method: 'POST',
-        data: formData
-      })
-        .then((data) => {
-          if (data) {
-            thiz.$message('上传文件成功')
-            this.$emit('upData_')
-          } else {
-            thiz.$message('上传文件失败')
-          }
-          loading.close()
+      debugger
+      let mun = param.file.name.split('.')
+      let format = mun[mun.length - 1]
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        let thiz = this
+        let formData = new FormData()
+        formData.append('webpageCode', this.code) // 额外参数
+        formData.append('file', param.file)
+        let data = {
+          data: {
+            webpageCode: this.code,
+            file: param.file
+          },
+          funcModule: '上传轮播图',
+          funcOperation: '上传轮播图'
+        }
+        let loading = thiz.$loading({
+          lock: true,
+          text: '上传中，请稍候...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
         })
-        .catch(() => {})
+        request({
+          url: thiz.uploadUrl,
+          method: 'POST',
+          data: formData
+        })
+          .then((data) => {
+            if (data) {
+              thiz.$message('上传文件成功')
+              this.$emit('upData_')
+            } else {
+              thiz.$message('上传文件失败')
+            }
+            loading.close()
+          })
+          .catch(() => {})
+      } else {
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return
+      }
     },
     materialSelection() {
       this.dialogVisible = true
