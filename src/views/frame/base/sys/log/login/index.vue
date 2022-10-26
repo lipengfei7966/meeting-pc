@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
 
     <bs-form ref='bsForm' :form='form'></bs-form>
     <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
@@ -15,8 +15,8 @@
     <bs-table ref='bsTable' :mainData='mainData' @initCallback='initCallback'>
       <!-- isException 此列特殊处理-->
       <template slot='isException' slot-scope='scope'>
-        <el-tag size="mini" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
-        <el-tag size="mini" v-else type="success">{{$t('sys.log.success')}}</el-tag>
+        <el-tag size="medium" v-if="scope.row.isException==='1'" type="danger">{{$t('sys.log.fail')}}</el-tag>
+        <el-tag size="medium" v-else type="success">{{$t('sys.log.success')}}</el-tag>
       </template>
     </bs-table>
 

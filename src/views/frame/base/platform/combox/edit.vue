@@ -1,8 +1,9 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style="width:1183px;">
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')"></title-contain>
-      <el-row class='top-operate'>
+      <!-- el-row top-operate -->
+      <div class='dialog-footer'>
         <el-button size="mini" v-db-click @click="$emit('closeHandler')">
           <svg-icon icon-class="cancel"></svg-icon>取消
         </el-button>
@@ -12,10 +13,9 @@
         <el-button size="mini" type='success' v-db-click @click='onExplain'>
           <svg-icon icon-class="explain"></svg-icon>解析SQL
         </el-button>
+      </div>
 
-      </el-row>
-
-      <div class='dialog-content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto','padding-bottom': '0px !important'}">
         <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': baseInfoVisible ? '1px' : '0'}">
           <div class='form-title'>
             基础信息
@@ -23,17 +23,17 @@
           </div>
           <el-form v-if='baseInfoVisible' class="header-form-inline" :model="page" label-position="left" :rules='rules' ref="refForm" :show-message="false">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="功能代码" prop='funcCode'>
                   <input-validate v-model='page.funcCode' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="功能名称" prop='funcName'>
                   <input-validate v-model='page.funcName' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="下拉条数" prop='pageSize'>
                   <el-input v-model="page.extendDataJson.pageSize" :clearable='true' type="number">
                   </el-input>
@@ -60,14 +60,14 @@
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="返回代码标识" prop='valueColumn'>
                   <el-select v-model="page.valueColumn" size='mini' clearable placeholder="请选择对应字段">
                     <el-option v-for="item in page.codeDataJson.sqlCols" :key="item.prop" :label="item.label" :value="item.prop"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="返回名称标识" prop='nameColumn'>
                   <el-select v-model="page.nameColumn" size='mini' clearable placeholder="请选择对应字段">
                     <el-option v-for="item in page.codeDataJson.sqlCols" :key="item.prop" :label="item.label" :value="item.prop"></el-option>
@@ -82,17 +82,17 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="查询属性驼峰转成大写下划线" prop='camelToUnderlineFlg'>
                   <el-checkbox v-model='page.codeDataJson.form.listQuery.camelToUnderlineFlg'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="租户对应SQL字段" prop='tenantColumn'>
                   <el-input v-model='page.extendDataJson.tenantColumn'></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="代码对应SQL字段" prop='usedColumn'>
                   <el-input v-model='page.extendDataJson.usedColumn'></el-input>
                 </el-form-item>
@@ -108,32 +108,32 @@
           </div>
           <el-form v-if='authInfoVisible' class="header-form-inline" :model="page.extendDataJson.dataAuthDto" label-position="left" ref="dataAuthDto" :show-message="false">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="是否权限控制" prop='authFlag'>
                   <el-checkbox v-model='page.extendDataJson.authFlag'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="机构SQL字段" prop='orgCol'>
                   <input-validate v-model='page.extendDataJson.dataAuthDto.orgCol' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="部门SQL字段" prop='deptCol'>
                   <input-validate v-model='page.extendDataJson.dataAuthDto.deptCol' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="员工SQL字段" prop='employeeCol'>
                   <input-validate v-model='page.extendDataJson.dataAuthDto.employeeCol' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="自已添加控制SQL字段" prop='selfCol'>
                   <input-validate v-model='page.extendDataJson.dataAuthDto.selfCol' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="查询系统执行数据" prop='includeSysCode'>
                   <el-checkbox v-model='page.extendDataJson.dataAuthDto.includeSysCode'></el-checkbox>
                 </el-form-item>
@@ -149,22 +149,22 @@
           </div>
           <el-form v-if='tableInfoVisible' class="header-form-inline" :model="page" label-position="left" :rules='rules' ref="refForm" :show-message="false">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="数据表" prop='tableName'>
                   <input-validate v-model='page.tableName' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="名称字段" prop='tableColumnName'>
                   <input-validate v-model='page.tableColumnName' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="码值字段" prop='tableColumnValue'>
                   <input-validate v-model='page.tableColumnValue' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="是否有租户标志" prop='tenantFlag'>
                   <!-- 字典码表 -->
                   <el-select v-model="page.tenantFlag" :clearable=true :placeholder="$t('biz.placeholder.choose')">
@@ -255,13 +255,13 @@
           <el-form v-if='pageInfoVisible' class="header-form-inline" :model="page" label-position="left" :rules='rules' ref="refForm2" :show-message="false">
             <el-row :gutter="20">
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="初始化请求" prop='initSearch'>
                   <el-checkbox v-model='page.codeDataJson.mainData.initSearch'></el-checkbox>
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="默认排序" prop='defaultSortString' placeholder='**.asc或者**.desc'>
                   <el-input v-model='page.codeDataJson.form.listQuery.defaultSortString'>
                   </el-input>

@@ -1,11 +1,11 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <header id="elHead" :style="{ width: clientWidth < 1366 && !app.isScreenFull ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-form ref="queryForm" @submit.native.prevent label-position="left" :rules="rules" :inline="true" :model="form.listQuery.data" class="header-form-inline">
         <el-row :gutter="20" style="width: 94%">
           <!-- 查询条件 -->
           <template v-for="(f, index) in expandStatus ? fleExpCfg.expQryList : fleExpCfg.expQryList.slice(0, 4)">
-            <el-col :span="6" :key="index">
+            <el-col :span="8" :key="index">
               <el-form-item v-if="f.itemType === 'DATE'" :label="f.label" :required="f.requiredFlag === '1'" :prop="f.itemProp">
                 <el-date-picker v-model="form.listQuery.data[f.itemProp]" size="mini" format="yyyy-MM-dd" value-format="yyyyMMdd" />
               </el-form-item>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
@@ -11,7 +11,7 @@
       </el-tabs>
     </template>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" :mainDataTabs="mainData.tabs"></bs-table>
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
   name: 'signupSignin',
   data() {
     return {
+      activeName: '0',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -122,7 +123,10 @@ export default {
             attrs: {
               clearable: true
             },
-            list:[{label:'已办证',value:1},{label:'未办证',value:0}]
+            list: [
+              { label: '已办证', value: 1 },
+              { label: '未办证', value: 0 }
+            ]
           },
           {
             type: 'datetime',
@@ -179,18 +183,9 @@ export default {
             type: 'dialog',
             i18n: '签到',
             msg: '请选择一条数据',
-            event:this.signin,
-            //component: () => import('../signupSignin/signin.vue'),
-            validate: () => {
-              if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === ''
-                  || this.$refs.bsTable.currentRow==null) {
-                return false
-              }else{
-                return true
-              }
-            },
+            event: this.signin,
             getParam: () => {
-              return {eventCode:this.form.listQuery.data.eventCode,contactCode:this.$refs.bsTable.currentRow.code}
+              return { eventCode: this.form.listQuery.data.eventCode, contactCode: this.$refs.bsTable.currentRow.code }
             }
           },
           {
@@ -319,46 +314,47 @@ export default {
         }
       })
     },
-    signin(buttonInfo){
+    signin(buttonInfo) {
+      if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
+        this.$notify(notifyInfo({ msg: '请选择一条数据' }))
+      }
       request({
-          url: '/api/register/signupContactSceneRel/listSceneSelect',
-          method: 'POST',
+        url: '/api/register/signupContactSceneRel/listSceneSelect',
+        method: 'POST',
+        data: {
           data: {
-              data:{
-                  eventCode:this.form.listQuery.data.eventCode,
-                  contactCode:this.$refs.bsTable.currentRow.code
-              },
+            eventCode: this.form.listQuery.data.eventCode,
+            contactCode: this.$refs.bsTable.currentRow.code
+          },
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.check')
-          }
-      })
-      .then(response => {
+        }
+      }).then(response => {
         if (response.status) {
-          if(response.data.length==0){
+          if (response.data.length == 0) {
             request({
               url: '/api/register/signupSignin/save',
               method: 'POST',
               data: {
-                  data:{
-                      eventCode:this.form.listQuery.data.eventCode,
-                      contactCode:this.$refs.bsTable.currentRow.code,
-                      sceneCode:"",
-                      signinWay:"pc"
-                  },
-              funcModule: this.$t('route.' + this.$route.meta.title),
-              funcOperation: this.$t('biz.btn.check')
+                data: {
+                  eventCode: this.form.listQuery.data.eventCode,
+                  contactCode: this.$refs.bsTable.currentRow.code,
+                  sceneCode: '',
+                  signinWay: 'pc'
+                },
+                funcModule: this.$t('route.' + this.$route.meta.title),
+                funcOperation: this.$t('biz.btn.check')
               }
-            })
-            .then(result => {
+            }).then(result => {
               if (result.status) {
                 this.$refs.bsTable.getList({ name: 'search' })
-                this.$notify(notifyInfo({ msg: '签到成功' }));
+                this.$notify(notifyInfo({ msg: '签到成功' }))
               } else {
-                this.$notify(notifyInfo({ msg: '签到失败' }));
+                this.$notify(notifyInfo({ msg: '签到失败' }))
               }
             })
-          }else{
-            debugger;
+          } else {
+            debugger
             //this.mainData.topBar[2].component=import('../signupSignin/signin.vue');
             // 注册组件 '../signupSignin/signin.vue'
             Vue.component('view-form-table', () => import('../signupSignin/signin.vue'))
@@ -371,7 +367,6 @@ export default {
           }
         }
       })
-
     },
 
     handleTabClick(tab, event) {

@@ -458,7 +458,8 @@ export default {
 
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.dialog.mainData.table.cols.filter(col => col.prop === prop)[0].sortProp || prop
+      const sortCol = this.dialog.mainData.table.cols.filter(col => col => col.prop === prop)[0]
+      const queryProp = sortCol.queryProp || sortCol.sortProp || prop
       if (this.dialog.mainData.table.sortable && this.dialog.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'

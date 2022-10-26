@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>
@@ -34,8 +34,8 @@ export default {
       },
       mainData: {
         api: {
-          search: '/api/sys/codeReport/page',
-          doDelete: '/api/sys/codeReport/remove'
+          search: '/api/code/report/page',
+          doDelete: '/api/code/report/remove'
         },
 
         isTopBar: true,

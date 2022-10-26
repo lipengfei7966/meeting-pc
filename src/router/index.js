@@ -82,7 +82,6 @@ export const routeExample = [
           title: 'treeSearchDemo'
         }
       }
-
     ]
   }
 ]
@@ -136,6 +135,14 @@ export const constantRouterMap = [
   //   component: () => import('@/views/frame/website/station'),
   //   hidden: true
   // },
+  // 1012
+  // {
+  //   path: '/material',
+  //   name: '/material',
+  //   component: () => import('@/views/frame/material/index'),
+  //   hidden: true
+  // },
+  //
   {
     path: '/404',
     name: '404',

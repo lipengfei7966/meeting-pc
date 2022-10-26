@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <el-alert title="页面初始化错误,请联系技术人员" v-if="showError" type="error" show-icon>
     </el-alert>
     <template v-if='showTemplate'>
@@ -93,7 +93,7 @@ export default {
     this.hasLayout = this.$route.path.includes('/layout')
     this.mainData.hasLayout = this.hasLayout
     const response = await request({
-      url: '/api/sys/codeReport/json',
+      url: '/api/code/report/json',
       method: 'post',
       data: {
         data: this.$route.params.id || this.$route.meta.title.replace('m', ''),
@@ -114,8 +114,8 @@ export default {
       this.explainData = Object.assign({}, this.explainData, resData.explainData)
       this.mainData = Object.assign({ generateType: true, hasLayout: this.hasLayout }, resData.mainData, {
         api: {
-          search: '/api/sys/codeReport/reportSearch',
-          export: '/api/sys/codeReport/export'
+          search: '/api/code/report/reportSearch',
+          export: '/api/code/report/export'
         }
       })
       if (this.mainData.table && this.mainData.table.cols && this.mainData.table.cols.length > 0) {

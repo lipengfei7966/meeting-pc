@@ -1,5 +1,5 @@
 <template>
-  <div class='bs-container app-container edit-page-style' ref="appindex">
+  <div class='bs-new-container app-container edit-page-style' ref="appindex">
     <template v-for='(tab,index) in tabs'>
       <review-chart :tab='tab' :key="index" :ref='tab.titleName'></review-chart>
     </template>

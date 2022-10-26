@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
@@ -27,6 +27,25 @@ export default {
           }
         },
         formData: [
+        {
+            label: 'website.article.query.eventCode',
+            prop: 'eventCode',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true,
+              clearable: false
+            },
+            event: {
+              changeAll: this.onChangeAll
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
           {
             label: 'website.article.query.articleName',
             prop: 'articleName',
@@ -50,7 +69,12 @@ export default {
             name: 'add',
             type: 'dialog',
             $refs: this.$refs,
-            component: () => import('@/views/frame/website/article/editForm.vue')
+            component: () => import('@/views/frame/website/article/editForm.vue'),
+            getParam: () => {
+              return {
+                eventCode: this.form.listQuery.data.eventCode
+              }
+            }
           },
           {
             name: 'update',
@@ -108,6 +132,11 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    onChangeAll(params) {
+      this.$refs.bsTable.doRefresh()
+    },
   }
 }
 </script>

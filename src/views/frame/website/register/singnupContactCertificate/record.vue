@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-container app-container">
+  <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
@@ -104,7 +104,13 @@ export default {
             default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
           {
             label: 'website.signupCertificatePrint.query.name',
@@ -190,14 +196,14 @@ export default {
             name: 'refresh'
           },
           {
-            iconName: '导入',
+            iconName: 'import',
             i18n: 'biz.btn.import',
             permitName: ['import'],
             event: this.Excel,
             showLoading: true
           },
           {
-            iconName: '下载',
+            iconName: 'down',
             i18n: 'biz.btn.downloadTemplate',
             permitName: ['downloadTemplate'],
             $refs: this.$refs,
@@ -292,6 +298,7 @@ export default {
           label: element.name,
           name: element.code
         })
+        this.handleTabClick(this.mainData.tabs[0])
       })
     })
   },
@@ -315,7 +322,7 @@ export default {
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
     },
-    handleTabClick(tab, event) {
+    handleTabClick(tab) {
       this.currentRow = null
       this.form.listQuery.data.certificateType = tab.name
       this.$refs.bsTable.getList({ name: 'search' })

@@ -1,14 +1,14 @@
 <template>
   <div class="menu-wrapper" v-if='!item.hidden'>
     <router-link v-if='!item.children' :to="{name: item.name}" :key="item.name">
-      <el-menu-item :index="item.name" :route-data='item.name' :title="generateTitle(item.meta.title)">
+      <el-menu-item :index="item.name" :id="item.name" :route-data='item.name' :title="generateTitle(item.meta.title)">
         <svg-icon className='svg-icon-menu' :icon-class="item.meta.icon || 'table'"></svg-icon>
         <span v-if="item.meta && item.meta.title" slot="title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
       </el-menu-item>
     </router-link>
     <component :is='item.meta && item.meta.isFirstParent ? "div" : "el-submenu"' v-else :index="item.name" :key="item.name" :title='generateTitle(item.meta.title)' :route-data='item.name'>
       <template slot="title">
-        <svg-icon className='svg-icon-menu' :icon-class="item.meta.icon || 'table'"></svg-icon>
+        <svg-icon className='svg-icon-menu' :icon-class="item.meta.icon || 'table'" ></svg-icon>
         <span v-if="item.meta && item.meta.title" slot="title" class='menu_decorate'>{{ generateTitle(item.meta.title) }}</span>
       </template>
       <template v-if="!item.hidden && item.children && item.children.length > 0">
@@ -20,7 +20,7 @@
 
 <script>
 import { generateTitle } from '@/utils/frame/base/i18n'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'SidebarItem',
   props: {
@@ -29,8 +29,14 @@ export default {
       required: true
     }
   },
+  computed:{
+    ...mapGetters(['permissionMenus']),
+  },
+  mounted(){
+      // this.$refs.aa.itemStyle['border-left'] = '5px solid var(--menuFont)';
+  },
   methods: {
-    generateTitle
+    generateTitle,
   }
 }
 </script>
@@ -38,5 +44,7 @@ export default {
 <style scoped>
 .menu_decorate {
   user-select: none;
+  text-align: left;
+  padding-left: 12px;
 }
 </style>

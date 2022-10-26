@@ -1,8 +1,9 @@
 <template>
-  <div v-el-drag-dialog class='bs-container dialog-wrapper'>
+  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style="width:1183px;">
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')"></title-contain>
-      <el-row class='top-operate'>
+      <!-- el-row top-operate -->
+      <div class='dialog-footer'>
         <el-button size="mini" v-db-click @click="$emit('closeHandler')">
           <svg-icon icon-class="cancel"></svg-icon>取消
         </el-button>
@@ -13,9 +14,9 @@
           <svg-icon icon-class="explain"></svg-icon>解析SQL
         </el-button>
 
-      </el-row>
+      </div>
 
-      <div class='dialog-content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
         <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': menuInfoVisible ? '1px' : '0'}">
           <div class='form-title'>
             图表信息
@@ -23,17 +24,17 @@
           </div>
           <el-form v-if='menuInfoVisible' class="header-form-inline" :model="page" label-position="left" :rules='rules' ref="refForm" :show-message="false">
             <el-row :gutter="20">
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="应用" prop='codeApp'>
                   <base-select size="mini" v-model="page.codeApp" :attrs="{data: 'CODE_APP', params: { usingFlag: '1' }  }"></base-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="系统" prop='reservedStr1'>
                   <input-validate v-model='page.reservedStr1' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="功能名称" prop='codeName'>
                   <input-validate v-model='page.codeName' :clearable='true'></input-validate>
                 </el-form-item>
@@ -80,7 +81,7 @@
           </div>
           <el-form v-if='explainAuthVisible' ref='refForm2' :model='page.codeDataJson.explainData' :rules='rules' :show-message='false' class='header-form-inline' label-position='left'>
             <el-row :gutter='20'>
-              <el-col :span='6'>
+              <el-col :span="8">
                 <el-form-item label='是否显示规则' prop='isExplainAuth'>
                   <el-checkbox v-model='page.codeDataJson.explainData.isExplainAuth'></el-checkbox>
                 </el-form-item>
@@ -105,7 +106,7 @@
           <el-form v-if='pageInfoVisible' class='header-form-inline' :model='page' label-position='left' :rules='rules' ref='refForm2' :show-message='false'>
             <el-row :gutter='20'>
 
-              <el-col :span='6'>
+              <el-col :span="8">
                 <el-form-item label='主题' prop='theme'>
                   <el-select v-model="page.codeDataJson.chart.theme" size='mini' placeholder="">
                     <el-option label="default" value=""></el-option>
@@ -114,7 +115,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="x轴字段/饼图value" prop='xAxis'>
                   <el-select v-model="page.codeDataJson.chart.xAxis" size='mini' clearable filterable allow-create>
                     <el-option v-for="item in page.codeDataJson.chart.axis" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -128,34 +129,34 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="维度" prop='legend'>
                   <el-select v-model="page.codeDataJson.chart.legend" size='mini' clearable filterable allow-create>
                     <el-option v-for="item in page.codeDataJson.chart.axis" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="分组" prop='stackGroup'>
                   <el-select v-model="page.codeDataJson.chart.stackGroup" size='mini' clearable filterable allow-create>
                     <el-option v-for="item in page.codeDataJson.chart.axis" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="阀值" prop='thresholdArray'>
                   <span style='color: #409EFF;cursor: pointer;' @click="onThresholdSet()">阀值设置</span>
                 </el-form-item>
               </el-col>
 
-              <!-- <el-col :span="6">
+              <!-- <el-col :span="8">
                 <el-form-item label="展示布局" prop='layoutType'>
                   <el-select v-model="page.codeDataJson.chart.layoutType" size='mini' clearable placeholder="">
                     <el-option v-for="item in layoutTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col> -->
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="图表类型" prop='chartType'>
                   <el-select v-model="page.codeDataJson.chart.chartType" size='mini' clearable placeholder="">
                     <el-option v-for="item in chartTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -163,40 +164,40 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="默认排序" prop='defaultSortString'>
                   <el-input v-model='page.codeDataJson.form.listQuery.defaultSortString'>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="默认列宽" prop='colWidth'>
                   <el-input v-model='page.codeDataJson.mainData.table.colWidth'>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <!-- <el-col :span="6">
+              <!-- <el-col :span="8">
                 <el-form-item label="是否驼峰转成大写下划线" prop='camelToUnderlineFlg'>
                   <el-checkbox v-model='page.codeDataJson.form.listQuery.camelToUnderlineFlg'></el-checkbox>
                 </el-form-item>
               </el-col> -->
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="是否展示表格" prop='showTable'>
                   <el-checkbox v-model='page.codeDataJson.mainData.showTable'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="表格是否合计" prop='showSummary'>
                   <el-checkbox v-model='page.codeDataJson.mainData.table.showSummary'></el-checkbox>
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="初始化请求" prop='initSearch'>
                   <el-checkbox v-model='page.codeDataJson.mainData.initSearch'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <!-- <el-col :span="6">
+              <!-- <el-col :span="8">
                 <el-form-item label="显示顶部按钮" prop='isTopBar'>
                   <el-checkbox v-model='page.codeDataJson.mainData.isTopBar'></el-checkbox>
                 </el-form-item>
@@ -350,7 +351,8 @@
                     <el-select v-model="scope.row.defaultFunc" size='mini' clearable placeholder="">
                       <el-option label="最近一周" value="getLatestWeek"></el-option>
                       <el-option label="最近一个月" value="getLatestMonth"></el-option>
-                      <el-option label="最近三个月" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(日期)" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(月分)" value="getLatestThreeMonthForMonth"></el-option>
                     </el-select>
                   </template>
                 </el-table-column>
@@ -961,7 +963,7 @@ export default {
     getPageData() {
       // 调取接口
       request({
-        url: '/api/sys/codeReport/get',
+        url: '/api/code/report/get',
         method: 'post',
         data: {
           data: this.param,
@@ -1000,7 +1002,7 @@ export default {
     onExplain() {
       if (this.page.sqlStatement && this.page.codeApp) {
         request({
-          url: '/api/sys/codeReport/explain',
+          url: '/api/code/report/explain',
           method: 'post',
           data: {
             data: {
@@ -1459,7 +1461,7 @@ export default {
             params.codeDataJson.mainData.table.cols = this.sortByKey(params.codeDataJson.mainData.table.cols, 'sortNo')
 
             request({
-              url: this.opType === 'add' || this.opType === 'copy' ? '/api/sys/codeReport/save' : '/api/sys/codeReport/update',
+              url: this.opType === 'add' || this.opType === 'copy' ? '/api/code/report/save' : '/api/code/report/update',
               method: 'POST',
               data: {
                 data: params,

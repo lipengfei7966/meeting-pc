@@ -36,10 +36,11 @@
         <colorPicker defaultColor="rgba(198, 75, 34, 0.2)" v-model="colorValue" @change="handleChangeColor" size="5"></colorPicker>
       </div>
       <el-form-item label="图标" prop="fileList">
-        <el-upload class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
+        <el-upload :before-upload="beforeUpload" accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
           <el-button size="small" type="text">上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">只能上传jpeg/png/jpg/psd文件</div>
         </el-upload>
+        <el-button size="small" type="text" @click="materialSelection" style="float: left">从素材库选择</el-button>
       </el-form-item>
       <el-form-item>
         <div>
@@ -54,13 +55,27 @@
 <el-button>返回</el-button>
   <el-button type="primary">保存</el-button>
 </div> -->
+    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+      <div>
+        <!-- 放内容的 -->
+        <material ref="material" :MultiSelect="false" />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit_">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import material from '@/components/MicroStation/materialSelection'
 import request from '@/utils/frame/base/request'
 // import ColorPicker from 'el-color-picker-sheldon'
 export default {
+  components: {
+    material
+  },
   props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
@@ -97,7 +112,8 @@ export default {
       pageLists: [],
       classify: [],
       // process.env.BASE_API +
-      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg'
+      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
+      dialogVisible: false
     }
   },
   computed: {
@@ -114,8 +130,6 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
-        // 标注
         console.log(newValue, oldValue)
         if (newValue) {
           let submitVal = newValue
@@ -134,19 +148,30 @@ export default {
           } else {
             this.ruleForm.sort = ''
           }
+          // debugger
+          // console.log(this.ruleForm)
           if (submitVal.title) {
+            // if (this.ruleForm.title == '') {
             this.ruleForm.title = submitVal.title
+            // }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          // debugger
+          debugger
+          // 标注
           if (submitVal.type) {
+            // if (this.ruleForm.type == '') {
             this.ruleForm.type = submitVal.type
+            // }
             if (submitVal.type == 'article') {
+              // if (this.ruleForm.page == '') {
               this.ruleForm.page = submitVal.content
+              // }
             } else if (submitVal.type == 'url') {
+              // if (this.ruleForm.link == '') {
               this.ruleForm.link = submitVal.content
+              // }
             }
           } else {
             this.ruleForm.type = ''
@@ -159,7 +184,7 @@ export default {
             this.ruleForm.backgroundSetting = '1'
           }
           if (submitVal.icon) {
-            debugger
+            // debugger
             this.ruleForm.fileList[0].url = submitVal.icon
             this.ruleForm.icon = submitVal.icon
           } else {
@@ -332,9 +357,9 @@ export default {
       // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
       this.$message.warning('请删除已存在图片后再进行上传操作')
     },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
-    },
+    // beforeRemove(file, fileList) {
+    //   return this.$confirm(`确定移除 ${file.name}？`)
+    // },
     handelClick(val) {
       console.log(val)
       this.$emit('onClick')
@@ -358,7 +383,7 @@ export default {
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
-        data: { data: { type: 'ARTICLE' }, funcModule: '获取页面', funcOperation: '获取页面' }
+        data: { data: { type: 'ARTICLE', queryParams: { eventCode: this.$route.params.ids } }, funcModule: '获取页面', funcOperation: '获取页面' }
       })
         .then((res) => {
           // debugger
@@ -371,6 +396,30 @@ export default {
     uploadFile(response, file, filelist) {
       this.ruleForm.icon = response.data.filePath
       console.log(response.data.filePath, file, filelist)
+    },
+    materialSelection() {
+      this.dialogVisible = true
+    },
+    // 素材库选择的图片
+    submit_() {
+      console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
+      debugger
+      this.ruleForm.icon = JSON.parse(this.$refs.material.pictureRadio).picUrl
+      this.ruleForm.fileList[0].url = JSON.parse(this.$refs.material.pictureRadio).picUrl
+      this.ruleForm.fileList[0].name = JSON.parse(this.$refs.material.pictureRadio).picName
+      this.dialogVisible = false
+    },
+    beforeUpload(param) {
+      debugger
+      // debugger
+      let mun = param.name.split('.')
+      let format = mun[mun.length - 1]
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        // 成功
+      } else {
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return false
+      }
     }
   }
 }

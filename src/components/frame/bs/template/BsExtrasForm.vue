@@ -1,12 +1,16 @@
 <template>
   <header id="elHead" :style="{ width: hasLayout ? (clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto') : 'auto' }">
     <el-form ref="queryForm" @submit.native.prevent label-position="left" :rules="rules" :inline="true" :model="form.listQuery.data" class="header-form-inline">
-      <el-row :gutter="20" style="width: 94%">
-        <template v-for='(f, index) in expandStatus ? form.formData : form.formData.slice(0, 4)'>
-          <el-col :span="6" v-if="f.isShow" :key="index">
+      <el-row :gutter="20" style='width:94%;' justify="space-between">
+        <template v-for='(f, index) in expandStatus ?  (form.formData[0].attrs&&form.formData[0].attrs.cols) ? form.formData.slice(0,2) : form.formData.slice(0, 3) :form.formData'>
+          <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if='f.isShow' :key='index'>
             <!-- 日期 -->
             <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(f.label)" :prop='f.prop'>
               <el-date-picker v-model="form.listQuery.data[f.prop]" :picker-options="f['picker-options']" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item v-else-if='f.type === "monthrange"' :label="$t(f.label)" :prop='f.prop'>
+              <el-date-picker v-model="form.listQuery.data[f.prop]" :picker-options="f['picker-options']" type="monthrange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
               </el-date-picker>
             </el-form-item>
             <template v-else-if='f.type === "date" ||f.type === "datetime"|| f.type === "year" || f.type === "month" || f.type === "week"'>
@@ -69,7 +73,7 @@
           </el-col>
         </template>
         <!-- 更多 -->
-        <template v-if='expandStatus'>
+        <template v-if='!expandStatus'>
           <el-col :span="6" v-for='item in items' :key='item.bind' class='el-form-item-more'>
             <div class='el-form-item-more-left'>
               <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change='handleExtraQueryChange'>
@@ -91,16 +95,35 @@
             </div>
           </el-col>
           <el-col :span="6" v-if='form.moreShowFlg && addQueryConditionVisible'>
-            <span class='more-query' @click='addQueryCondition'>查询扩展&nbsp;+</span>
+            <span class='more-query' ref="moreQuery" @click='addQueryCondition'>查询扩展&nbsp;+</span>
           </el-col>
         </template>
+        <el-col class="none"></el-col>
       </el-row>
       <!-- 右侧搜索按钮 -->
-      <div class="search-btn">
-        <el-button type="primary" :loading="loading" icon="el-icon-search" @click="onSubmit" v-db-click> 查询 </el-button>
-      </div>
+      <el-col :span="6">
+        <div class="button-group clearfix">
+          <div class="button-group-item search-btn" v-permission="['query']">
+            <el-button @click="onReset" v-db-click>
+              重置
+            </el-button>
+          </div>
+          <div class="button-group-item search-btn" v-permission="['query']">
+            <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
+              {{$t('biz.lbl.search')}}
+            </el-button>
+          </div>
+          <div class="button-group-item search-btn" @click='expand' v-show='form.moreShowFlg || form.formData.length > 4' v-permission="['query']">
+            <el-button type="text" class="fold" v-db-click>
+              {{expandText}}
+            </el-button>
+            <span :class="['jt',{ 't': !expandStatus}]"></span>
+            <!-- <span class="jt t"></span> -->
+          </div>
+        </div>
+      </el-col>
       <!-- 展开收起 -->
-      <div class='expand' @click='expand' v-show='form.moreShowFlg || form.formData.length > 4'>
+      <div class='expand' @click="expand()" v-show='form.moreShowFlg || form.formData.length > 4'>
         <i v-if='expandStatus' class='el-icon-arrow-up'></i>
         <i v-else class='el-icon-arrow-down'></i>
       </div>
@@ -140,6 +163,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
+      expandText: '展开',
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},
@@ -189,9 +213,13 @@ export default {
       if (v.attrs && v.attrs['picker-options']) {
         v['picker-options'] = new Function(`return ${this.func[v.attrs['picker-options']]}`)()()
       } else {
-        v['picker-options'] = this.$toolUtil.getPickerOptions()
+        if (v.type === 'monthrange') {
+          v['picker-options'] = this.$toolUtil.getDefaultMonthPickerOptions()
+        } else {
+          v['picker-options'] = this.$toolUtil.getPickerOptions()
+        }
       }
-      if (v.props instanceof Array && (v.type === 'date' || v.type === 'datetime' || v.type === 'month' || v.type === 'daterange' || v.type === 'datetimerange')) {
+      if (v.props instanceof Array && (v.type === 'date' || v.type === 'datetime' || v.type === 'month' || v.type === 'monthrange' || v.type === 'daterange' || v.type === 'datetimerange')) {
         let defaultVal = ['', '']
         if (v.default === undefined) {
           v.default = this.$toolUtil.getScopeThreeMonth()
@@ -206,7 +234,7 @@ export default {
         this.$set(this.form.listQuery.data, v.props[1], defaultVal[1])
         this.changeEndTime(defaultVal[1], v.attrs.pickStart)
 
-        if ((v.type === 'daterange' || v.type === 'datetimerange') && v.prop && v.default) {
+        if ((v.type === 'daterange' || v.type === 'datetimerange' || v.type === 'monthrange') && v.prop && v.default) {
           this.$set(this.form.listQuery.data, v.prop, [this.form.listQuery.data[v.props[0]], this.form.listQuery.data[v.props[1]]])
         }
       } else if (v.default) {
@@ -249,6 +277,14 @@ export default {
     }
   },
   methods: {
+    // 重置
+    onReset() {
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.resetFields()
+      }
+      this.doRefresh()
+    },
+
     initExtraQuery() {
       this.form.formData.forEach(v => {
         if (v.attrs && v.attrs.encript) {
@@ -269,7 +305,7 @@ export default {
             }
           }
 
-          if (this.extraQueryForCode[i].type !== 'daterange' && this.extraQueryForCode[i].props && this.extraQueryForCode[i].props.length === 2) {
+          if (this.extraQueryForCode[i].type !== 'daterange' && this.extraQueryForCode[i].type !== 'monthrange' && this.extraQueryForCode[i].props && this.extraQueryForCode[i].props.length === 2) {
             if (this.form.listQuery.data[this.extraQueryForCode[i].props[0]] || this.form.listQuery.data[this.extraQueryForCode[i].props[1]]) {
               let tempValue = [this.form.listQuery.data[this.extraQueryForCode[i].props[0]], this.form.listQuery.data[this.extraQueryForCode[i].props[1]]]
               bsQueryExtras.push({
@@ -301,22 +337,24 @@ export default {
 
     //刷新
     doRefresh(initFlag) {
-      this.$refs.queryForm.validate(valid => {
-        if (valid) {
-          if (initFlag) {
-            this.$parent.form.listQuery.current = 1
-          }
-          if (this.$parent.$refs.bsTable) {
-            this.$parent.$refs.bsTable.getList({ name: 'search' })
-          } else {
-            if (this.$parent.getList) {
-              this.$parent.getList({ name: 'search' })
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.validate(valid => {
+          if (valid) {
+            if (initFlag) {
+              this.$parent.form.listQuery.current = 1
             }
+            if (this.$parent.$refs.bsTable) {
+              this.$parent.$refs.bsTable.getList({ name: 'search' })
+            } else {
+              if (this.$parent.getList) {
+                this.$parent.getList({ name: 'search' })
+              }
+            }
+          } else {
+            return false
           }
-        } else {
-          return false
-        }
-      })
+        })
+      }
     },
     // 查询
     onSubmit() {
@@ -361,20 +399,7 @@ export default {
         }
       })
     },
-    // 更多查询条件
-    setMoreQuery() {
-      // 注册组件
 
-      this.dialogSelectVisible = true
-      // 将弹窗插入body防止被遮盖
-      $(document).ready(() => {
-        $(this.$refs.viewForm.$el).appendTo('body')
-        $('body > .dialog-wrapper > .mask')
-          .css('z-index', 1999)
-          .siblings('.dialog-container')
-          .css('z-index', 2000)
-      })
-    },
     // 打开弹窗选择数据
     dialogSelect(col) {
       if (col.component) {

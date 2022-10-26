@@ -4,14 +4,21 @@
       <navbar @selectModule='moduleChange'></navbar>
     </div>
     <div class="main-wrapper">
-      <div class='search' v-if='!isCollapse'>
+      <!-- 搜索 -->
+      <!-- <div class='search' v-if='!isCollapse'>
         <el-input v-model="input" class='input-search-style' clearable @keyup.enter.native="doSearch" @clear="doSearch">
           <i class='el-icon-search' slot='append' @click='doSearch'></i>
         </el-input>
+      </div> -->
+      <div id="left-menu" class="left-menu" ref="leftMenu">
+        <sidebar class="sidebar-container"></sidebar>
+        <!-- 收缩左侧菜单栏 -->
+        <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
+          <img src="@/assets/frame/img/shrink.png" alt="">
+        </div>
       </div>
-      <sidebar class="sidebar-container"></sidebar>
       <div class="main-container">
-        <div class="tags-view" :style="{'left': isCollapse ? '40px' : '192px', 'display': isScreenFull ? 'none' : 'block'}">
+        <div class="tags-view" :style="{'left': isCollapse ? '50px' : '192px', 'display': isScreenFull ? 'none' : 'block'}">
           <tags-view ref='tagsView'></tags-view>
         </div>
         <div id="app-main" :style="{height: contentHeight}">
@@ -21,39 +28,40 @@
     </div>
 
     <!-- 若token失效则在当前页面弹出登录框 -->
-    <div class='bs-container dialog-wrapper relogin-dialog' id='relogin-dialog' v-show='loginVisible'>
+    <div class='bs-new-container dialog-wrapper relogin-dialog' id='relogin-dialog' v-show='loginVisible'>
       <div class='dialog-container' type='miniColumnsDialog'>
         <!-- 头部 -->
         <title-contain :titleName="$t('login.login')" :isShowClose='false' />
-        <el-form class="header-form-inline" :show-message="false" label-position="left" :model="loginForm" :rules="loginRules" ref="loginForm">
-          <el-form-item prop="username" :label="$t('login.username')">
-            <el-input name="username" :disabled="true" type="text" v-model="loginForm.username" :placeholder="$t('login.username')" />
-          </el-form-item>
+        <div class="dialog-container__content">
+          <el-form class="header-form-inline login-form" :show-message="false" label-position="left" :model="loginForm" :rules="loginRules" ref="loginForm">
+            <el-form-item prop="username" :label="$t('login.username')">
+              <el-input name="username" :disabled="true" type="text" v-model="loginForm.username" :placeholder="$t('login.username')" />
+            </el-form-item>
 
-          <el-form-item prop="password" :label="$t('login.password')" data-key='password'>
-            <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="off" :placeholder="$t('login.password')" />
-          </el-form-item>
-          <el-row :gutter="10">
-            <el-col :span="14">
-              <el-form-item prop="captcha" :label="$t('login.captcha')" data-key='captcha'>
-                <el-input type="text" v-model="loginForm.captcha" @keyup.enter.native="handleLogin" auto-complete="off" :placeholder="$t('login.captcha')" style="width: 100%;"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item>
-                <el-image style="height:30px;vertical-align:top;" :src="loginForm.src">
-                  <div slot="placeholder" class="image-slot">
-                    {{$t('biz.route.load')}}<span class="dot">...</span>
-                  </div>
-                </el-image>
-              </el-form-item>
-            </el-col>
-            <el-col :span="2">
-              <i class='el-icon-refresh pointer' style='font-size:16px;margin-top:5px;' @click="loadCaptcha"></i>
-            </el-col>
-          </el-row>
-        </el-form>
-
+            <el-form-item prop="password" :label="$t('login.password')" data-key='password'>
+              <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="off" :placeholder="$t('login.password')" />
+            </el-form-item>
+            <el-row :gutter="10">
+              <el-col :span="14">
+                <el-form-item prop="captcha" :label="$t('login.captcha')" data-key='captcha'>
+                  <el-input type="text" v-model="loginForm.captcha" @keyup.enter.native="handleLogin" auto-complete="off" :placeholder="$t('login.captcha')" style="width: 100%;"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item>
+                  <el-image style="height:30px;vertical-align:top;" :src="loginForm.src">
+                    <div slot="placeholder" class="image-slot">
+                      {{$t('biz.route.load')}}<span class="dot">...</span>
+                    </div>
+                  </el-image>
+                </el-form-item>
+              </el-col>
+              <el-col :span="2" class="refresh-svg">
+                <i class='el-icon-refresh pointer' style='font-size:16px;margin-top:5px;' @click="loadCaptcha"></i>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
         <div class="dialog-footer">
           <el-button class='login-btn' v-db-click type="primary" :loading="loading" @click.native.prevent="handleLogin">
             {{$t('login.login')}}
@@ -134,11 +142,13 @@ export default {
     if (this.permissionMenus[0]) {
       this.moduleName = this.permissionMenus[0].name
       this.getFirstParentName(this.permissionMenus)
+      console.log(this.permissionMenus)
     }
     // 全屏显示监控
     if (screenfull.enabled) {
       screenfull.on('change', this.screenChange)
     }
+    this.$store.dispatch('setModuleNames', this.moduleName)
   },
   methods: {
     loadCaptcha() {
@@ -159,6 +169,7 @@ export default {
     },
     moduleChange(moduleName) {
       this.moduleName = moduleName
+      this.$store.dispatch('setModuleNames', this.moduleName)
     },
     getFirstParentName(list) {
       list.forEach(l => {
@@ -169,107 +180,12 @@ export default {
         }
       })
     },
+    toggleSideBar() {
+      this.$store.dispatch('toggleSideBar')
+    },
     // 关闭通用事件
     close() {
       this.loginVisible = false
-    },
-    // 菜单查询
-    doSearch() {
-      // 防止多次连续搜索
-      if (this.searchLoading) return
-      this.searchLoading = true
-
-      const filterPermissionMenu = this.permissionMenus.filter(menu => menu.name === this.moduleName)[0].children
-
-      if (this.input.trim() === '') {
-        this.showAll(filterPermissionMenu)
-      } else {
-        this.showSearch(filterPermissionMenu)
-      }
-
-      this.searchLoading = false
-    },
-    showAll(route) {
-      route.forEach(item => {
-        item.hidden = false
-        if (item.children && item.children.length > 0) {
-          this.showAll(item.children)
-        }
-      })
-    },
-    showSearch(route) {
-      route.forEach(item => {
-        item.hidden = true
-        if (
-          item.meta &&
-          this.$t('route.' + item.meta.title)
-            .toLowerCase()
-            .includes(this.input.toLowerCase().trim())
-        ) {
-          item.hidden = false
-        }
-        if (item.children && item.children.length > 0) {
-          const counts = []
-          const count = []
-          item.children.forEach(i => {
-            i.hidden = true
-            if (
-              i.meta &&
-              this.$t('route.' + i.meta.title)
-                .toLowerCase()
-                .includes(this.input.toLowerCase().trim())
-            ) {
-              item.hidden = false
-              i.hidden = false
-              // 计数
-              counts.push(i.meta.title)
-            }
-            if (i.children && i.children.length > 0) {
-              i.children.forEach(r => {
-                r.hidden = true
-                if (
-                  r.meta &&
-                  this.$t('route.' + r.meta.title)
-                    .toLowerCase()
-                    .includes(this.input.toLowerCase().trim())
-                ) {
-                  item.hidden = false
-                  i.hidden = false
-                  r.hidden = false
-                  // 计数
-                  count.push(r.meta.title)
-                }
-              })
-            }
-          })
-          // 规则：
-          // 若只匹配到了一级，则显示所有对应二级和三级
-          // 若只匹配到了二级，则显示对应一级和所有三级
-          if (counts.length === 0 && count.length === 0 && !item.hidden) {
-            item.children.forEach(i => {
-              i.hidden = false
-              if (i.children && i.children.length > 0) {
-                i.children.forEach(r => {
-                  r.hidden = false
-                })
-              }
-            })
-          } else if (counts.length > 0 && count.length === 0) {
-            item.hidden = false
-            item.children.forEach(i => {
-              i.hidden = true
-              if (counts.includes(i.meta.title)) {
-                i.hidden = false
-                if (i.children && i.children.length > 0) {
-                  i.children.forEach(r => {
-                    r.hidden = false
-                  })
-                }
-              }
-            })
-          }
-        }
-      })
     },
     // 弹窗登录
     handleLogin() {
@@ -349,7 +265,7 @@ export default {
 .app-wrapper {
   @include clearfix;
   position: relative;
-  height: 100%;
+  // height: 100%;
   .app-header {
     position: fixed;
     top: 0;
@@ -357,10 +273,14 @@ export default {
     line-height: 48px;
     z-index: 1001;
   }
+  .is-active {
+    transform: rotate(180deg);
+  }
   .main-wrapper {
     padding-top: 48px;
     .main-container {
-      min-height: 100%;
+      height: 100% !important;
+      max-height: 100% !important;
       margin-left: 192px;
       .tags-view {
         position: fixed;
@@ -374,7 +294,7 @@ export default {
         top: 30%;
       }
       .hamburger-container {
-        line-height: 58px;
+        line-height: 57px;
         float: left;
         padding: 0 10px;
       }
@@ -385,7 +305,7 @@ export default {
       #app-main {
         position: relative;
         width: 100%;
-        margin-top: 26px;
+        margin-top: 36px;
       }
     }
   }
@@ -430,41 +350,39 @@ export default {
 
 <style lang='scss'>
 .main-wrapper {
-  .search {
-    position: fixed;
-    width: 192px;
+  position: relative;
+  // height: 100%;/
+  .left-menu {
+    float: left;
+    width: 50px;
+    height: 100px !important;
+  }
+  .hamburger-container {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 48px;
+    height: 48px;
+    line-height: 57px;
     text-align: center;
-    z-index: 1001;
-    .input-search-style {
-      width: 180px;
-      margin-top: 10px;
-      .el-input__suffix {
-        transform: translate(-25px, -2px) !important;
-      }
-      .el-input__inner {
-        height: 30px;
-        border: 1px solid;
-        border-right: none;
-        border-radius: 0;
-        font-size: 14px;
-        color: #fff;
-        border-radius: 3px 0 0 3px;
-        padding: 0 6px;
-      }
-      .el-input__icon {
-        line-height: 34px;
-      }
-      .el-input-group__append {
-        height: 30px;
-        padding: 0 10px;
-        border: 1px solid;
-        border-left: none;
-        border-radius: 0 3px 3px 0;
-        .el-icon-search {
-          cursor: pointer;
-        }
-      }
+    background: transparent;
+    cursor: pointer;
+    // transform: rotate(0);
+    // transition: transform 0.38s;
+    // &:hover {
+    //   background: rgba(255, 255, 255, 0.2);
+    // }
+    img {
+      width: 16px;
+      height: 16px;
     }
+  }
+}
+
+.el-scrollbar__view {
+  li:hover {
+    background: #ecf5ff !important;
+    color: #60aeff !important;
   }
 }
 </style>

@@ -38,14 +38,12 @@
       const formData = new FormData();
       formData.append('file', imgFile);
 			// 处理地址问题
-			debugger
 			let url = ''
               if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
                 url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
               } else if (window.location.host == 'cmms.ctgbs.com') {
                 url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
               }
-              //
 			// 
 			$.ajax({
 				headers:{
@@ -146,6 +144,26 @@
 				console.log(imgN.outerHTML);
 				dialog.close();
 			});
+			// 调取接口
+			let url = ''
+              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+                url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              } else if (window.location.host == 'cmms.ctgbs.com') {
+                url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              }
+			  var args = {};
+        args['name'] =  '占位';
+        $.ajax({
+            url:url,
+            type:'post',
+            data:args,
+            success:function (res) {
+                console.log(res);
+            },
+            error:function (xhr, res) {
+                console.log(res);
+            }
+        });
 		}
 
 	</script>

@@ -19,17 +19,23 @@ export default {
       edit: {
         eventName: '会议名称',
         customerName: '客户名称',
+        contactCode: '联系人',
         startDate: '开始时间',
         endDate: '结束时间',
         eventPlace: '活动地点',
         eventDate: '会议时间'
+      },
+      btn: {
+        design: '微站设计',
+        set: '参会人编码设置'
       }
     },
     article: {
       title: '会议管理',
       query: {
         articleName: '文章名称',
-        articleTitle: '文章标题'
+        articleTitle: '文章标题',
+        eventCode: '会议名称'
       },
       list: {
         articleName: '文章名称',
@@ -222,7 +228,9 @@ export default {
         sceneName: '场景名称',
         signupData: '报名时间',
         title: '添加参会人',
-        eventCode: '会议名称'
+        eventCode: '会议名称',
+        code: '参会人编码',
+        createDate: '报名时间'
       }
     },
     signupContactCol: {
@@ -289,6 +297,15 @@ export default {
         email: '邮箱',
         departmentCode: '部门',
         customerCode: '客户'
+      }
+    },
+    signupContactCodeRule: {
+      edit: {
+        eventName: '会议名称',
+        prefix: '前缀',
+        length: '长度',
+        type: '生成类型',
+        startCode: '起始码'
       }
     }
   }

@@ -37,6 +37,9 @@
 		function getContent() {
 			return ue.getContent();
 		}
+		function execCommand(data) {
+			return ue.execCommand("inserthtml",data)
+		}
 		function editorFocus() {
 			ue.focus();
 		}
