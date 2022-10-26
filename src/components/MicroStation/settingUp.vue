@@ -36,9 +36,9 @@
         <colorPicker defaultColor="rgba(198, 75, 34, 0.2)" v-model="colorValue" @change="handleChangeColor" size="5"></colorPicker>
       </div>
       <el-form-item label="图标" prop="fileList">
-        <el-upload class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
+        <el-upload :before-upload="beforeUpload" accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
           <el-button size="small" type="text">上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">只能上传jpeg/png/jpg/psd文件</div>
         </el-upload>
         <el-button size="small" type="text" @click="materialSelection" style="float: left">从素材库选择</el-button>
       </el-form-item>
@@ -408,6 +408,18 @@ export default {
       this.ruleForm.fileList[0].url = JSON.parse(this.$refs.material.pictureRadio).picUrl
       this.ruleForm.fileList[0].name = JSON.parse(this.$refs.material.pictureRadio).picName
       this.dialogVisible = false
+    },
+    beforeUpload(param) {
+      debugger
+      // debugger
+      let mun = param.name.split('.')
+      let format = mun[mun.length - 1]
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        // 成功
+      } else {
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return
+      }
     }
   }
 }

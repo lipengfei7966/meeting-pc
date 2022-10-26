@@ -34,7 +34,6 @@
 
     <!-- 底部按钮 -->
     <div class='bottom-operate'>
-
       <div class='bottom-operate-right' v-show='emptyTextVisible'>
         <svg-icon icon-class='point' style='color:#E6A23C'></svg-icon>{{$t('table.emptyText')}}
       </div>
@@ -462,8 +461,42 @@ export default {
 </script>
 
 <style lang="scss">
+.plTableBox,
+.el-table {
+  min-height: 345px !important;
+}
+.el-table__footer {
+  width: 100% !important;
+}
+// .el-table__fixed-footer-wrapper {
+//   // bottom:-40px !important;
+// }
+.el-table--scrollable-y th.gutter:last-of-type {
+  width: 40px !important;
+  margin: 0 !important;
+  background: #f6ecdc !important;
+  // display: none !important;
+}
+.el-table--scrollable-y td:last-of-type{
+  text-align: left !important;
+}
+.el-table--scrollable-y tr{
+  background: #f6ecdc !important;
+}
+
+.el-table__header-wrapper .el-table__header .has-gutter tr{
+  background: transparent !important;
+      &>:last-child{
+        background: transparent !important;
+      }
+    }
 tr.el-table__row.success-row,
-tr.el-table__row.el-table__row--striped.success-row td {
+tr.el-table__row.el-table__row--striped.success-row td,
+tr.el-table__row.el-table__row--striped.success-row th {
   background: #fff4e9 !important;
+}
+.el-table__fixed-body-wrapper,
+.is-scrolling-none {
+  min-height:256px !important;
 }
 </style>
