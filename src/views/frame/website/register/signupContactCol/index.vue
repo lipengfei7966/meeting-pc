@@ -1995,7 +1995,7 @@ export default {
         }
       }
       if(parentListName == 'specialInfoList'){
-        obj.options = true;
+        obj.isSpecialInfo = true;
       }
       var index = parentList.findIndex(item => {
         return item.value == itemList.value

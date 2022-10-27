@@ -317,27 +317,6 @@ export default {
       this.$refs.bsTable.doRefresh()
     },
     exportExcel() {
-      request({
-        url: '/api/register/signupContactCol/verifyInitialize',
-        method: 'POST',
-        data: {
-          data: this.form.listQuery.data.eventCode,
-          funcModule: '模板导出',
-          funcOperation: '根据会议code校验会议表单是否初始化'
-        }
-      })
-        .then(response => {
-          if (response.status) {
-            this.exportExcel1()
-          } else {
-            this.$notify(notifyError({ msg: response.msgText }))
-          }
-        })
-        .catch(() => {
-          this.$refs.bsTable.doRefresh()
-        })
-    },
-    exportExcel1() {
       axios({
         method: 'post',
         url: process.env.BASE_API + this.mainData.api.export,
