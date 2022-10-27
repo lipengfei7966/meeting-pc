@@ -2,15 +2,18 @@
   <main :style="{'width': clientWidth < 1366 ? (this.sidebar.opened && !app.isScreenFull ? '1163px' : '1323px') : 'auto'}">
     <!-- 顶部按钮 -->
     <div class='top-operate' v-if='mainData.isTopBar'>
+      <span class="left-title">应用列表</span>
       <el-row type='flex'>
-        <div>
-          <el-button v-db-click size="mini" @click='getList' style='margin-right:3px;'>
-            <svg-icon icon-class="refresh" style="margin-right:0px;"></svg-icon>
-          </el-button>
-        </div>
+
         <div v-for='(btn, index) in mainData.topBar' :key='index'>
           <el-button v-if='btn.name !== "refresh"' v-db-click size="mini" @click='triggerEvent(btn)' style='margin-right:3px;' v-permission="btn.permitName ? btn.permitName : [btn.name]">
             <svg-icon :icon-class="btn.iconName || baseEvent[btn.name] && baseEvent[btn.name].iconName"></svg-icon>{{$t(btn.i18n) || baseEvent[btn.name] && $t(baseEvent[btn.name].i18n)}}
+          </el-button>
+        </div>
+        <div class="right-buttons" style="padding-left: 20px;">
+          <span class="line" style="display: block;"></span>
+          <el-button class="right-btn" v-db-click size="mini" @click="doRefresh(true)" style="margin-right: 3px">
+            <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
           </el-button>
         </div>
       </el-row>
@@ -31,13 +34,10 @@
 
     <!-- 底部按钮 -->
     <div class='bottom-operate'>
-      <div class='bottom-operate-left' v-if='mainData.isColset'>
-        <el-table-column-set :id='mainData.table.id' :checked="checked" :checkList="tableCols" @change="checkChange"></el-table-column-set>
-      </div>
       <div class='bottom-operate-right' v-show='emptyTextVisible'>
         <svg-icon icon-class='point' style='color:#E6A23C'></svg-icon>{{$t('table.emptyText')}}
       </div>
-      <div class="bottom-operate-left" v-show='!emptyTextVisible'>
+      <div class="bottom-operate-right" v-show='!emptyTextVisible'>
         总计 {{ total }} 条数据
       </div>
     </div>
@@ -461,8 +461,42 @@ export default {
 </script>
 
 <style lang="scss">
+.plTableBox,
+.el-table {
+  min-height: 345px !important;
+}
+.el-table__footer {
+  width: 100% !important;
+}
+// .el-table__fixed-footer-wrapper {
+//   // bottom:-40px !important;
+// }
+.el-table--scrollable-y th.gutter:last-of-type {
+  width: 40px !important;
+  margin: 0 !important;
+  background: #f6ecdc !important;
+  // display: none !important;
+}
+.el-table--scrollable-y td:last-of-type{
+  text-align: left !important;
+}
+.el-table--scrollable-y tr{
+  background: #f6ecdc !important;
+}
+
+.el-table__header-wrapper .el-table__header .has-gutter tr{
+  background: transparent !important;
+      &>:last-child{
+        background: transparent !important;
+      }
+    }
 tr.el-table__row.success-row,
-tr.el-table__row.el-table__row--striped.success-row td {
+tr.el-table__row.el-table__row--striped.success-row td,
+tr.el-table__row.el-table__row--striped.success-row th {
   background: #fff4e9 !important;
+}
+.el-table__fixed-body-wrapper,
+.is-scrolling-none {
+  min-height:256px !important;
 }
 </style>
