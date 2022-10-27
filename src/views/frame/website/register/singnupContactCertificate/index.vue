@@ -20,14 +20,14 @@
           <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <p v-show="false">
-          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width:100%"> </vue-barcode>
+          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width: 100%"> </vue-barcode>
         </p>
 
         <p v-show="false">
           <vue-qr class="newPersonQR" :text="item.personnelCode" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <p v-show="false">
-          <vue-barcode class="newPersonBar" :value="item.personnelCode" :width="1" :height="50" style="width:100%"> </vue-barcode>
+          <vue-barcode class="newPersonBar" :value="item.personnelCode" :width="1" :height="50" style="width: 100%"> </vue-barcode>
         </p>
 
         <div class="p-event" v-html="item.certificateLayout"></div>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+// 调用Vue全局过滤器
+import Vue from 'vue'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
@@ -59,7 +61,7 @@ export default {
           type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
-          defaultSortString: 'code.desc',
+          // defaultSortString: 'code.desc',
           data: {}
         },
         formData: [
@@ -312,14 +314,13 @@ export default {
     },
     // 获取会议具体证件内容选项
     meetingdictCode() {
-      console.log(this.form.listQuery.data.eventCode)
       // 获取打印类型数据字典
       request({
         url: '/api/register/signupContactCol/page',
         method: 'POST',
         data: { data: { eventCode: this.form.listQuery.data.eventCode }, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        this.certificateContentList = res.data.filter(item => {
+      }).then((res) => {
+        this.certificateContentList = res.data.filter((item) => {
           return item.mapType == '1'
         })
       })
@@ -341,15 +342,15 @@ export default {
     //给div添加样式,调出打印界面
     async print() {
       const styleSheet = `<style>
-      @media print { @page {size:210mm 230mm!important; margin: 0;padding: 0;} .noprint { display: none;}}
-        body{margin: 0 0;display:flex;flex-wrap:wrap;justify-content: space-around; width:210mm;height:297mm}
-        .content {margin:5mm 5mm;background-color:#e2f4d2;page-break-after:always}
+      @media print { @page { margin: 0;padding: 0;} .noprint { display: none;}}
+        body{margin: 0 0;}
+        .content {background-color:#e2f4d2;page-break-after:always}
         .draggable {position:absolute;}
         .printItem {width: auto!important;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
         p{margin:0}
-        .newBar svg{width:100%;max-height: 92px;height: auto;}
-        .newPersonBar svg{width:100%;max-height: 92px;height: auto;}
+        .newBar svg{width:100%;max-height: 92px;height: 100%;}
+        .newPersonBar svg{width:100%;max-height: 92px;height: 100%;}
         .printItem
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
@@ -364,7 +365,14 @@ export default {
         if (item.certificateLayout) {
           this.certificateContentList.forEach((dictItem, dictIndex) => {
             if (item.certificateLayout.indexOf(dictItem.mapName) >= 0) {
-              item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+              // debugger
+              if(dictItem.mapName == '参会人类型'){
+                // 参会人类型 是数据字典, 取到列表 contantType 的值是 value值,需要转换成对应的name
+               let mapVal =  Vue.filter('dataDictFormat')(item[dictItem.mapCode], this.$t('datadict.contantType'))
+                item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, mapVal || '')
+              }else{
+                item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+              }
             }
           })
         } else {
@@ -431,7 +439,7 @@ export default {
           funcModule: '办证',
           funcOperation: '查询列表'
         }
-      }).then(response => {
+      }).then((response) => {
         debugger
         console.log(response.data)
         if (response.data.certificateFlag) {
@@ -451,7 +459,7 @@ export default {
             newWin.focus() //在IE浏览器中使用必须添加这一句
 
             this.isprint = false
-            setTimeout(function() {
+            setTimeout(function () {
               newWin.print() //打开打印窗口
               // newWin.close() //关闭打印窗口
             }, 100)
@@ -459,6 +467,7 @@ export default {
         } else {
           this.$message.warning(response.data.msg)
           isCanPrint = false
+          this.isprint = false
         }
       })
     },
@@ -489,6 +498,7 @@ export default {
     handleTabClick(tab, event) {
       this.currentRow = null
       this.form.listQuery.data.certificateFlag = tab.name
+      // console.log(tab.name)
       this.$refs.bsTable.getList({ name: 'search' })
     }
   }

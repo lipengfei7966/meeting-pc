@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <template v-if='mainData.tabs  ' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
+    <template v-if='mainData.tabs' :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto'}">
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
           <el-tab-pane :key='tab.code' :index='tab.code' :name="tab.code">
@@ -22,6 +22,7 @@ export default {
   name: 'signupSigninSet',
   data() {
     return {
+      activeName: '',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -49,7 +50,13 @@ export default {
             default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
           {
             label: 'website.signin.query.name',
@@ -314,6 +321,7 @@ export default {
   },
   mounted() {
     this.sceneList()
+    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
     dialogHandler() {
@@ -337,7 +345,6 @@ export default {
           code: '',
           name: '默认'
         })
-
         response.data.forEach((item, key) => {
           this.mainData.tabs.push(item)
         })
@@ -389,7 +396,7 @@ export default {
     },
     handleTabClick(tab, event) {
       this.currentRow = null
-      this.form.listQuery.data.sceneCode = tab.code
+      this.form.listQuery.data.sceneCode = tab.name
       this.$refs.bsTable.getList({ name: 'search' })
     },
     removeScene() {

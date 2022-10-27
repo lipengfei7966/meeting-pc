@@ -99,7 +99,7 @@
       <!-- 右侧搜索按钮 -->
       <el-col :span="6">
         <div class="button-group clearfix">
-          <div class="button-group-item search-btn" v-permission="['query']">
+          <div class="button-group-item search-btn" v-permission="['query']" v-if="refreshNum != 0 && form.moreShowFlg || form.formData.length > 1">
             <el-button @click="onReset" v-db-click>
               重置
             </el-button>
@@ -154,6 +154,7 @@ const registerComponent = data => {
 export default {
   data() {
     return {
+      refreshNum: 0,
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
@@ -248,16 +249,17 @@ export default {
   },
   mounted() {
     this.checkQueryCondition()
-    console.log(this.form.formData,5666)
+    console.log(this.form.formData, 5666)
   },
   methods: {
     // 重置
     onReset() {
-      this.items = []
-      this.expandStatus = process.env.EXPAND_FLG
-      this.expandText = !this.expandStatus ? '收起' : '展开'
-      this.addQueryConditionVisible = true;
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.resetFields()
+      }
+      this.doRefresh()
     },
+
     // 时间变化
     changeDaterangeTime(form) {
       this.form.listQuery.data[form.props[0]] = this.form.listQuery.data[form.bind] ? this.form.listQuery.data[form.bind][0] : ''
@@ -266,6 +268,7 @@ export default {
     //刷新
     doRefresh(initFlag) {
       if (this.$refs.queryForm) {
+        console.log(111)
         this.$refs.queryForm.validate(valid => {
           if (valid) {
             if (initFlag) {
@@ -273,8 +276,10 @@ export default {
             }
             if (this.$parent.$refs.bsTable) {
               this.$parent.$refs.bsTable.getList({ name: 'search' })
+              // 点击重置获取当前页数据
             } else {
               if (this.$parent.getList) {
+                console.log(3, this.$parent.getList)
                 this.$parent.getList({ name: 'search' })
               }
             }
@@ -470,6 +475,17 @@ export default {
       }
       this.extraChoice = list
     }
+  },
+  watch: {
+    form(val) {
+      val.formData.forEach(item => {
+        if (item.validate) {
+          this.refreshNum += 1
+        }
+      })
+    },
+    immediate: true,
+    deep: true
   }
 }
 </script>

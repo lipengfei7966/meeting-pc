@@ -104,7 +104,13 @@ export default {
             default: this.$route.params.data,
             event: {
               changeAll: this.onChangeAll
-            }
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
           {
             label: '场景',
@@ -224,14 +230,14 @@ export default {
         isTopBar: true,
         topBar: [
           {
-            iconName: '导入',
+            iconName: 'import',
             i18n: 'biz.btn.import',
             permitName: ['import'],
             event: this.Excel,
             showLoading: true
           },
           {
-            iconName: '下载',
+            iconName: 'down',
             i18n: 'biz.btn.downloadTemplate',
             permitName: ['downloadTemplate'],
             $refs: this.$refs,
@@ -323,6 +329,7 @@ export default {
     this.$refs.bsTable.isHeight = false
     // 设置行高为38
     this.$refs.bsTable.rowHeight = 38
+    this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
     download() {

@@ -388,9 +388,10 @@ export default {
   methods: {
     // 重置
     onReset() {
-      this.items = []
-      this.expandStatus = process.env.EXPAND_FLG
-      this.expandText = !this.expandStatus ? '收起' : '展开'
+      if (this.$refs.queryForm) {
+        this.$refs.queryForm.resetFields()
+      }
+      this.refresh()
     },
     // 展开收起
     expand() {
@@ -479,7 +480,7 @@ export default {
     getCurrentNode() {
       return this.$refs.tree.getCurrentNode()
     },
-
+    // 刷新
     refresh() {
       if (this.getCurrentNode()) {
         if (this.treeTableData.form.formDataVisible) {
@@ -882,7 +883,8 @@ export default {
     },
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.treeTableData.mainData.table.cols.filter(col => (col.dataProp ? col.dataProp : col.prop) === prop)[0].sortProp || prop
+      const sortCol = this.treeTableData.mainData.table.cols.filter(col => (col.dataProp ? col.dataProp : col.prop) === prop)[0]
+      const queryProp = sortCol.queryProp || sortCol.sortProp || prop
       if (this.treeTableData.mainData.table.sortable && this.treeTableData.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'

@@ -2,7 +2,7 @@
   <div>
     <div :class="!isPc ? 'place' : ''" style="margin-right: 10%; margin-top: 10px; float: right">
       <el-button v-if="isPc" class="btn" type="success" @click="handelClick">选择模板</el-button>
-      <el-button v-if="!isPc" style="margin-right: -40px" class="btn" type="success" @click="handelEdit">重新选择模板</el-button>
+      <el-button v-if="!isPc" style="margin-right: -30px" class="btn" type="success" @click="handelEdit">重新选择模板</el-button>
       <!-- <el-button v-if="!isPc" class="btn" type="success" @click="handelAdd">新增模块</el-button> -->
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">

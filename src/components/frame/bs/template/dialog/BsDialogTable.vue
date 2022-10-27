@@ -101,7 +101,6 @@
             </div>
           </el-form>
         </header>
-
         <main>
           <u-table use-virtual fixed-columns-roll :big-data-checkbox="true" :row-height="24" stripe highlight-current-row :row-key='getRowKey' class='table-content' ref="singleTable" :data-changes-scroll-top='false' v-loading="loading" element-loading-spinner="el-icon-loading" style="border:1px solid #ebeef5;" :element-loading-text="$t('route.load')" :height='tableHeight' @selection-change="handleSelectionChange" @current-change="handleSelectRow" @row-click='handleClick' @sort-change="handleSortChange" @row-dblclick="handleDblClick">
             <u-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></u-table-column>
@@ -224,6 +223,8 @@ export default {
       multipleSelection: [],
       // 表头列表
       tableCols: [],
+      // 二级列表数据
+      linkTableData: [],
       // 二级列表选中行
       currentRowLv2: [],
       // 二级列表当前多选行
@@ -339,6 +340,16 @@ export default {
       v.sortable = v.sortable === false ? v.sortable : true
       this.tableCols.push(v)
     })
+    if (this.dialog.mainData.linkTable) {
+      this.dialog.mainData.linkTable.cols.forEach(v => {
+        // 根据isShow字段判断是否显示
+        if (v.isShow === undefined) {
+          v.isShow = true
+        }
+        v.sortable = v.sortable === false ? v.sortable : true
+        this.tableColsLv2.push(v)
+      })
+    }
   },
   mounted() {
     // 初始化
@@ -357,6 +368,9 @@ export default {
   },
   methods: {
     getRowKey(row) {
+      // if (this.dialog.mainData.linkTable) {
+      //   return toolUtil.uuid()
+      // }
       if (this.dialog.mainData.table.showCheckbox) {
         if (this.dialog.mainData.table.rowKey) {
           return row[this.dialog.mainData.table.rowKey]
@@ -422,6 +436,43 @@ export default {
       })
     },
 
+    // 二级列表数据请求
+    getLinkList() {
+      this.loadingLv2 = true
+      request({
+        url: this.dialog.mainData.api.search_lv2,
+        method: 'POST',
+        data:
+          this.dialog.mainData.apiData && this.dialog.mainData.apiData.search_lv2
+            ? {
+                funcModule: this.$t('route.' + this.$route.meta.title),
+                funcOperation: this.$t('biz.btn.search'),
+                data: this.dialog.mainData.apiData.search_lv2(this.currentRow)
+              }
+            : {
+                funcModule: this.$t('route.' + this.$route.meta.title),
+                funcOperation: this.$t('biz.btn.search'),
+                data: this.currentRow
+              }
+      })
+        .then(response => {
+          this.loading = false
+          this.linkTableData = response.data
+          // this.total = response.total
+          if (this.total && this.total > 0) {
+            this.emptyTextVisibleLv2 = false
+          } else {
+            this.emptyTextVisibleLv2 = true
+          }
+          this.$nextTick(() => {
+            this.$refs.linkTable.reloadData(this.linkTableData)
+          })
+        })
+        .catch(() => {
+          this.loadingLv2 = false
+        })
+    },
+
     // 返回指定过滤条件结果
     dataFormat(func = 'dataDictFormat', value, list, dictType) {
       if (dictType) {
@@ -460,6 +511,9 @@ export default {
     // 单选
     handleSelectRow(val) {
       this.currentRow = val
+      if (this.dialog.mainData.linkTable) {
+        this.getLinkList()
+      }
     },
 
     handleSelectRowLv2(val) {
@@ -471,6 +525,10 @@ export default {
       this.$nextTick(() => {
         this.$refs.singleTable.toggleRowSelection([{ row }])
       })
+    },
+
+    handleClickLv2(row) {
+      this.$refs.linkTable.toggleRowSelection(row)
     },
 
     // 多选
@@ -523,7 +581,11 @@ export default {
     // 设置列表动态高度
     setTableHeight() {
       $(document).ready(() => {
-        this.tableHeight = this.$refs.formTableDialog.offsetHeight - 115 - this.$refs.formTableDialogHeader.offsetHeight
+        if (this.dialog.mainData.linkTable) {
+          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 303 - this.$refs.formTableDialogHeader.offsetHeight
+        } else {
+          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 115 - this.$refs.formTableDialogHeader.offsetHeight
+        }
       })
     },
 
@@ -557,8 +619,14 @@ export default {
           )
           return
         }
-
-        this.$emit('closeDialog', this.multipleSelection)
+        if (this.dialog.mainData.linkTable) {
+          this.$emit('closeDialog', {
+            currentRow: this.multipleSelection,
+            currentRowLv2: this.dialog.mainData.linkTable.showCheckbox ? this.multipleSelectionLv2 : this.currentRowLv2
+          })
+        } else {
+          this.$emit('closeDialog', this.multipleSelection)
+        }
       } else {
         if (!this.currentRow || this.currentRow.length === 0) {
           this.$notify(
@@ -568,8 +636,14 @@ export default {
           )
           return
         }
-
-        this.$emit('closeDialog', this.currentRow)
+        if (this.dialog.mainData.linkTable) {
+          this.$emit('closeDialog', {
+            currentRow: this.currentRow,
+            currentRowLv2: this.dialog.mainData.linkTable.showCheckbox ? this.multipleSelectionLv2 : this.currentRowLv2
+          })
+        } else {
+          this.$emit('closeDialog', this.currentRow)
+        }
       }
     },
 
@@ -594,7 +668,8 @@ export default {
 
     // 后台排序
     handleSortChange({ column, prop, order }) {
-      const sortProp = this.dialog.mainData.table.cols.filter(col => col.prop === prop)[0].sortProp || prop
+      const sortCol = this.dialog.mainData.table.cols.filter(col => col.prop === prop)[0]
+      const queryProp = sortCol.queryProp || sortCol.sortProp || prop
       if (this.dialog.mainData.table.sortable && this.dialog.mainData.table.sortable === 'custom') {
         if (order) {
           const asc = order === 'ascending' ? '.asc' : '.desc'

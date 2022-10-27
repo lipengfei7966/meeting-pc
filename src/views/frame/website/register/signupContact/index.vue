@@ -210,7 +210,7 @@ export default {
           },
           {
             name: 'upload',
-            iconName: '线性-导入',
+            iconName: 'import',
             i18n: 'biz.btn.import',
             atrrs: {
               uploadUrl: process.env.BASE_API + '/api/register/signupContactCol/exportImport', // 文件上传url

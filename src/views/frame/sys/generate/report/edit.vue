@@ -16,31 +16,30 @@
 
       </div>
 
-      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto'}">
+      <div class='dialog-content dialog-container__content' :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto','padding-bottom': '0px !important'}">
         <header :style="{'width': clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto', 'border-bottom-width': menuInfoVisible ? '1px' : '0'}">
           <div class='form-title'>
             报表信息
             <i :class="['el-icon-arrow-down', {'el-icon-arrow-up' : !menuInfoVisible}]" @click='menuInfoVisible = !menuInfoVisible'></i>
           </div>
           <el-form v-if='menuInfoVisible' class="header-form-inline" :model="page" label-position="left" :rules='rules' ref="refForm" :show-message="false">
-            <el-row :gutter="20">
-              <el-col :span="6">
+            <el-row :gutter="24">
+              <el-col :span="8">
                 <el-form-item label="应用" prop='codeApp'>
                   <base-select size="mini" v-model="page.codeApp" :attrs="{data: 'CODE_APP', params: { usingFlag: '1' }  }"></base-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="系统" prop='reservedStr1'>
                   <input-validate v-model='page.reservedStr1' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="功能名称" prop='codeName'>
                   <input-validate v-model='page.codeName' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-
-              <el-col :span="12">
+              <el-col :span="24">
                 <el-form-item label="报表说明" prop='remark'>
                   <el-input v-model="page.remark" :clearable='true'>
                   </el-input>
@@ -48,23 +47,20 @@
               </el-col>
               <el-col :span='24'>
                 <el-form-item label='查询sql' prop='sqlStatement'>
-                  <el-input v-model='page.sqlStatement' :clearable='true' type='textarea'>
+                  <el-input v-model='page.sqlStatement' :clearable='true' type='textarea' :rows="3">
                   </el-input>
                 </el-form-item>
               </el-col>
-
               <el-col :span='24'>
-                <el-form-item label='sql注意说明1'>
+                <el-form-item label='sql注意说明1' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='1、作为查询条件和展示的列，都查在SQL里查询出来,select 里的列必须都是as 成驼峰格式'>
                   </el-input>
                 </el-form-item>
-
-                <el-form-item label='sql注意说2'>
+                <el-form-item label='sql注意说2' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='2、内置查询条件时，例子select xx from table where 1=1  #INNER_SQL#'>
                   </el-input>
                 </el-form-item>
-
-                <el-form-item label='sql注意说3'>
+                <el-form-item label='sql注意说3' style="margin-bottom: 8px !important">
                   <el-input :disabled='true' value='3、控制数据权限时，例子select xx from table where 1=1  #AUTH_SQL#'>
                   </el-input>
                 </el-form-item>
@@ -80,7 +76,7 @@
           </div>
           <el-form v-if='explainAuthVisible' ref='refForm2' :model='page.codeDataJson.explainData' :rules='rules' :show-message='false' class='header-form-inline' label-position='left'>
             <el-row :gutter='20'>
-              <el-col :span='6'>
+              <el-col :span="8">
                 <el-form-item label='是否显示规则' prop='isExplainAuth'>
                   <el-checkbox v-model='page.codeDataJson.explainData.isExplainAuth'></el-checkbox>
                 </el-form-item>
@@ -103,61 +99,60 @@
           </div>
           <el-form v-if='pageInfoVisible' class='header-form-inline' :model='page' label-position='left' :rules='rules' ref='refForm2' :show-message='false'>
             <el-row :gutter='20'>
-
-              <el-col :span='6'>
+              <el-col :span="8">
                 <el-form-item label='显示更多查询' prop='moreShowFlg'>
                   <el-checkbox v-model='page.codeDataJson.form.moreShowFlg'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <!-- <el-col :span="6">
+              <!-- <el-col :span="8">
                 <el-form-item label="显示顶部按钮" prop='isTopBar'>
                   <el-checkbox v-model='page.codeDataJson.mainData.isTopBar'></el-checkbox>
                 </el-form-item>
               </el-col> -->
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="初始化请求" prop='initSearch'>
                   <el-checkbox v-model='page.codeDataJson.mainData.initSearch'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="列设置" prop='isColset'>
                   <el-checkbox v-model='page.codeDataJson.mainData.isColset'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <!-- <el-col :span="6">
+              <!-- <el-col :span="8">
                 <el-form-item label="列表ID" prop='id'>
                   <input-validate v-model='page.codeDataJson.mainData.table.id' :clearable='true' placeholder="可以同菜单标识(全局唯一)"></input-validate>
                 </el-form-item>
               </el-col> -->
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="默认排序" prop='defaultSortString'>
                   <el-input v-model='page.codeDataJson.form.listQuery.defaultSortString'>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="默认列宽" prop='colWidth'>
                   <el-input v-model='page.codeDataJson.mainData.table.colWidth'>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="列表排序" prop='sortable'>
                   <input-validate v-model='page.codeDataJson.mainData.table.sortable' :clearable='true'></input-validate>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="是否分页" prop='show'>
                   <el-checkbox v-model='page.codeDataJson.mainData.bottomBar.pagination.show'></el-checkbox>
                 </el-form-item>
               </el-col>
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item label="是否合计" prop='showSummary'>
                   <el-checkbox v-model='page.codeDataJson.mainData.table.showSummary'></el-checkbox>
                 </el-form-item>
               </el-col>
-              <!-- <el-col :span="6">
+              <!-- <el-col :span="8">
                 <el-form-item label="是否驼峰转成大写下划线" prop='camelToUnderlineFlg'>
                   <el-checkbox v-model='page.codeDataJson.form.listQuery.camelToUnderlineFlg'></el-checkbox>
                 </el-form-item>
@@ -300,7 +295,8 @@
                     <el-select v-model="scope.row.defaultFunc" size='mini' clearable placeholder="">
                       <el-option label="最近一周" value="getLatestWeek"></el-option>
                       <el-option label="最近一个月" value="getLatestMonth"></el-option>
-                      <el-option label="最近三个月" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(日期)" value="getLatestThreeMonth"></el-option>
+                      <el-option label="最近三个月(月分)" value="getLatestThreeMonthForMonth"></el-option>
                     </el-select>
 
                   </template>
@@ -395,7 +391,7 @@
                     <input-validate v-model="scope.row.prop" size='mini'></input-validate>
                   </template>
                 </el-table-column>
-                <!-- <el-table-column show-overflow-tooltip width="140">
+                <el-table-column show-overflow-tooltip width="140">
                   <template slot="header" slot-scope="scope">
                     查询属性
                     <span style='color:#f56c6c;' :data-header='scope'></span>
@@ -403,7 +399,7 @@
                   <template slot-scope='scope'>
                     <input-validate v-model="scope.row.queryProp" size='mini'></input-validate>
                   </template>
-                </el-table-column> -->
+                </el-table-column>
                 <el-table-column show-overflow-tooltip>
                   <template slot="header" slot-scope="scope" width="80">
                     排序
@@ -670,6 +666,10 @@ export default {
         {
           label: '日期区间',
           value: 'daterange'
+        },
+        {
+          label: '月份区间',
+          value: 'monthrange'
         }
       ],
       // 列表项
@@ -1400,6 +1400,9 @@ export default {
                 if (col.format) delete col.format
               }
               if (col.extendProps && col.extendProps instanceof Object) {
+                col.extendProps = Object.assign({}, widthPro, col.extendProps)
+              } else {
+                col.extendProps = {}
                 col.extendProps = Object.assign({}, widthPro, col.extendProps)
               }
             })

@@ -256,6 +256,28 @@
           //   display: none;
           // }
         }
+
+        &>.right-buttons {
+          padding-left: 0;
+
+          .el-button {
+            padding: 5px 10px;
+            border: 1px solid #DCDFE6;
+
+            svg {
+              width: 16px;
+              height: 16px;
+            }
+          }
+
+          .el-button+.el-button {
+            margin-left: -2px;
+          }
+
+          .line {
+            display: none;
+          }
+        }
       }
 
     }
@@ -301,7 +323,7 @@
 
     .bs_echarts {
       width: 100%;
-      // min-height: 500px;
+      min-height: 500px;
       margin: 0 auto 5px;
       background: #ffffff;
       // border: 1px solid #ababab;
