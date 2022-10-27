@@ -384,9 +384,9 @@ export default {
         return
       }
       this.$router.push({
-        name: 'certificateSet',
+        name: 'contactEdit',
         params: {
-          back: 'singnupContactCertificate',
+          back: 'signupContact',
           data: this.form.listQuery.data.eventCode
         }
       })
