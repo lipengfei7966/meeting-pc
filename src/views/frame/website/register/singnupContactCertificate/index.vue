@@ -20,14 +20,14 @@
           <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <p v-show="false">
-          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width:100%"> </vue-barcode>
+          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width: 100%"> </vue-barcode>
         </p>
 
         <p v-show="false">
           <vue-qr class="newPersonQR" :text="item.personnelCode" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <p v-show="false">
-          <vue-barcode class="newPersonBar" :value="item.personnelCode" :width="1" :height="50" style="width:100%"> </vue-barcode>
+          <vue-barcode class="newPersonBar" :value="item.personnelCode" :width="1" :height="50" style="width: 100%"> </vue-barcode>
         </p>
 
         <div class="p-event" v-html="item.certificateLayout"></div>
@@ -363,8 +363,8 @@ export default {
         url: '/api/register/signupContactCol/page',
         method: 'POST',
         data: { data: { eventCode: this.form.listQuery.data.eventCode }, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        this.certificateContentList = res.data.filter(item => {
+      }).then((res) => {
+        this.certificateContentList = res.data.filter((item) => {
           return item.mapType == '1'
         })
       })
@@ -483,7 +483,7 @@ export default {
           funcModule: '办证',
           funcOperation: '查询列表'
         }
-      }).then(response => {
+      }).then((response) => {
         debugger
         console.log(response.data)
         if (response.data.certificateFlag) {
@@ -503,7 +503,7 @@ export default {
             newWin.focus() //在IE浏览器中使用必须添加这一句
 
             this.isprint = false
-            setTimeout(function() {
+            setTimeout(function () {
               newWin.print() //打开打印窗口
               // newWin.close() //关闭打印窗口
             }, 100)

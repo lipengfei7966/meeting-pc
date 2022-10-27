@@ -44,6 +44,7 @@ export default {
             element: 'input-validate',
             attrs: {
               clearable: true,
+              maxlength: 10,
               cols: 3
             },
             validate: [

@@ -47,7 +47,8 @@
             <el-tooltip :content="item.picName" placement="top">
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
-            <el-image style="width: 100%; height: 65%" :src="`${item.picUrl}?v=${Math.random()}`" :preview-src-list="[`${item.picUrl}?v=${Math.random()}`]"> </el-image>
+            <!-- ?v=${Math.random() -->
+            <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
             <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
           <!-- <li class="resource">视频</li> -->
@@ -61,7 +62,7 @@
     <el-card class="box-card content_three">
       <div class="set" v-if="exhibitionRight">
         <div class="set_one">
-          <el-image style="width: 100%; height: 100%" :src="`${url}?v=${Math.random()}`" :preview-src-list="[`${srcList}?v=${Math.random()}`]"> </el-image>
+          <el-image style="width: 100%; height: 100%" :src="url" :preview-src-list="[srcList]"> </el-image>
         </div>
         <div class="set_two">
           <div class="particulars">
@@ -228,36 +229,53 @@ export default {
       console.log(e)
       console.log(e.target.files)
       console.log(e.target.files[0].name)
-      // 替换文件 --- st
-      let thiz = this
-      let formData = new FormData()
-      formData.append('id', thiz.pId) // 额外参数
-      formData.append('url', thiz.more.link)
-      formData.append('file', e.target.files[0])
-      let loading_ = thiz.$loading({
-        lock: true,
-        text: '上传中，请稍候...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      request({
-        url: '/api/cms/picinfo/update',
-        method: 'POST',
-        data: formData
-      })
-        .then((data) => {
-          if (data) {
-            loading_.close()
-            thiz.$message('上传文件成功')
-            this.loadData(this.treeDatas)
-            this.exhibitionRight = false
-          } else {
-            loading_.close()
-            thiz.$message('上传文件失败')
-          }
+      let mun = e.target.files[0].name.split('.')
+      let format = mun[mun.length - 1]
+      console.log(format)
+      debugger
+      // if (format == 'jpeg') {
+      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+      //   return
+      // }
+      // if (format == 'png') {
+      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+      //   return
+      // }
+      if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
+        // 替换文件 --- st
+        let thiz = this
+        let formData = new FormData()
+        formData.append('id', thiz.pId) // 额外参数
+        formData.append('url', thiz.more.link)
+        formData.append('file', e.target.files[0])
+        let loading_ = thiz.$loading({
+          lock: true,
+          text: '上传中，请稍候...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
         })
-        .catch(() => {})
-      //替换文件--- end
+        request({
+          url: '/api/cms/picinfo/update',
+          method: 'POST',
+          data: formData
+        })
+          .then((data) => {
+            if (data) {
+              loading_.close()
+              thiz.$message('上传文件成功')
+              this.loadData(this.treeDatas, true)
+              this.exhibitionRight = false
+            } else {
+              loading_.close()
+              thiz.$message('上传文件失败')
+            }
+          })
+          .catch(() => {})
+        //替换文件--- end
+      } else {
+        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        return
+      }
     },
     download_() {
       console.log('下载')
@@ -296,7 +314,7 @@ export default {
       this.treeDatas = data
       this.loadData(data)
     },
-    loadData(data) {
+    loadData(data, isFile) {
       const loading = this.$loading({
         lock: true,
         text: '加载中',
@@ -306,7 +324,7 @@ export default {
       request({
         url: '/api/cms/picinfo/page',
         method: 'POST',
-        data: { current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName, defaultSortString: this.fileSearch.rank_ }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
+        data: { defaultSortString: this.fileSearch.rank_, current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
       })
         .then((res) => {
           if (res.data) {
@@ -314,6 +332,16 @@ export default {
               loading.close()
             }, 200)
             this.matterList = res.data
+            if (isFile) {
+              debugger
+              this.matterList.forEach((item) => {
+                debugger
+                if (this.more.link == item.picUrl) {
+                  item.picUrl += '?v=' + Math.random()
+                }
+              })
+            }
+            console.log(this.matterList)
             this.total = res.total
             console.log(res.data)
           } else {

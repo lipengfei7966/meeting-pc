@@ -4,7 +4,6 @@
     </el-alert>
     <template v-if='showTemplate'>
       <bs-extras-form ref='bsForm' v-show='showForm' :form='form'></bs-extras-form>
-
       <template v-if='explainData.isExplainAuth'>
         <header>
           <div class='explain-title' @click='showExplain = !showExplain'>
