@@ -322,7 +322,6 @@
                     <input-validate v-model="scope.row.default" size='mini'></input-validate>
                   </template>
                 </el-table-column>
-
                 <el-table-column show-overflow-tooltip label='toolUtil函数' width="150">
                   <template slot-scope='scope'>
                     <el-select v-model="scope.row.defaultFunc" size='mini' clearable placeholder="">
