@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="setForm" class='header-form-inline'>
+    <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :model="setForm" class='header-form-inline'>
 
       <el-form-item v-for="element in setInfoList" :key="element.mapCode" :label="element.title" :prop='element.mapCode'>
         <!-- 姓名 -->
