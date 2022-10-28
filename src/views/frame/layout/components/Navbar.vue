@@ -1,34 +1,32 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <div :style="{'width':!sidebar.opened?'50px':'192px'}" :class="['logo', {'show': true}]" @click="$router.push('/')">
-      <img src="@/assets/frame/img/logo.png" alt="">
+    <div :style="{ width: !sidebar.opened ? '50px' : '192px' }" :class="['logo', { show: true }]" @click="$router.push('/')">
+      <img src="@/assets/frame/img/logo.png" alt="" />
       <span v-show="sidebar.opened">会议系统</span>
     </div>
     <!-- 收缩 -->
     <!-- <div :class="['hamburger-container', {'is-active': !sidebar.opened}]" @click='toggleSideBar' :title='sidebar.opened ? "收缩" : "展开"'>
       <img src="@/assets/frame/img/hamburger.png" alt="">
     </div> -->
-    <div class='business-module' :style="{'width': moduleWidth + 'px'}">
-      <div :class="[menu.name === activeModule || menu.name === app.moduleName ?  'module active' : 'module']" v-for='menu in permissionMenus.slice(0, Math.floor(moduleWidth / 140))' :key="menu.name" @click='moduleClick(menu.name)'>
-        <svg-icon :icon-class="menu.meta.icon || ''"></svg-icon>{{ generateTitle(menu.meta.title) }}
-      </div>
+    <div class="business-module" :style="{ width: moduleWidth + 'px' }">
+      <div :class="[menu.name === activeModule || menu.name === app.moduleName ? 'module active' : 'module']" v-for="menu in permissionMenus.slice(0, Math.floor(moduleWidth / 140))" :key="menu.name" @click="moduleClick(menu.name)"><svg-icon :icon-class="menu.meta.icon || ''"></svg-icon>{{ generateTitle(menu.meta.title) }}</div>
     </div>
-    <div class='more-module' v-if='permissionMenus.length > Math.floor(moduleWidth / 140)'>
+    <div class="more-module" v-if="permissionMenus.length > Math.floor(moduleWidth / 140)">
       <el-dropdown placement="bottom">
         <div>
-          <i class='el-icon-more'></i>
+          <i class="el-icon-more"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item divided v-for='menu in permissionMenus.slice(Math.floor(moduleWidth / 140))' :key="menu.name">
-            <span class='inlineBlock' @click='moduleClick(menu.name)'>{{ generateTitle(menu.meta.title) }}</span>
+          <el-dropdown-item divided v-for="menu in permissionMenus.slice(Math.floor(moduleWidth / 140))" :key="menu.name">
+            <span class="inlineBlock" @click="moduleClick(menu.name)">{{ generateTitle(menu.meta.title) }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
 
-    <div class='right-menu clearfix'>
+    <div class="right-menu clearfix">
       <!-- 搜索 -->
-      <div class='search'>
+      <div class="search">
         <!-- <el-input v-model="input" ref="search" class="input-search-style" :style="searchString" clearable @input="changeShowSearchContent" @keyup.enter.native="doSearch" @clear="doSearch" @focus="showSearchContent = true" @blur="showSearchContent = false"></el-input> -->
         <!-- 折叠框 -->
         <!-- <ol class="searchContent" v-if="showSearchContent">
@@ -44,35 +42,35 @@
             <div class="name">{{ generateTitle(item.meta.title) }}</div>
           </template>
         </el-autocomplete>
-        <i class='el-icon-search' slot='append' @click='openSearch'></i>
+        <i class="el-icon-search" slot="append" @click="openSearch"></i>
       </div>
       <!-- 推送消息 -->
-      <bs-ws v-if='clientWidth >= 1366'></bs-ws>
+      <bs-ws v-if="clientWidth >= 1366"></bs-ws>
 
       <!-- 主题换色 -->
-      <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if='clientWidth >= 1366'></theme-picker>
+      <theme-picker class="right-menu-item" :title="$t('navbar.theme')" v-if="clientWidth >= 1366"></theme-picker>
 
       <!-- 全屏 -->
-      <div class='screenfull' :title="$t('navbar.screenfull')" @click="handleClickFull" v-if='clientWidth >= 1366'>
-        <span class="right-menu-item" style='font-size:16px;'>
-          <svg-icon icon-class="fullscreen" style="margin-right:0"></svg-icon>
+      <div class="screenfull" :title="$t('navbar.screenfull')" @click="handleClickFull" v-if="clientWidth >= 1366">
+        <span class="right-menu-item" style="font-size: 16px">
+          <svg-icon icon-class="fullscreen" style="margin-right: 0"></svg-icon>
         </span>
       </div>
 
       <!-- 锁屏 -->
-      <div class='size' :title="$t('navbar.lock')" @click="onLock" v-if='clientWidth >= 1366'>
-        <span class="right-menu-item" style='font-size:16px;'>
-          <i class='el-icon-lock'></i>
+      <div class="size" :title="$t('navbar.lock')" @click="onLock" v-if="clientWidth >= 1366">
+        <span class="right-menu-item" style="font-size: 16px">
+          <i class="el-icon-lock"></i>
         </span>
       </div>
       <!-- 更多 -->
-      <div class='user'>
+      <div class="user">
         <!--@visible-change="userVisibleChange" -->
         <el-dropdown>
-          <div class='user-title'>
-            <img src="@/assets/frame/img/user.png">
-            <span class="el-dropdown-link" :title='name'>
-              {{name}}
+          <div class="user-title">
+            <img src="@/assets/frame/img/user.png" />
+            <span class="el-dropdown-link" :title="name">
+              {{ name }}
             </span>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -80,40 +78,40 @@
               <span @click="handleClickLan" class='inlineBlock'>{{$t('navbar.lang')}}</span>
             </el-dropdown-item> -->
             <el-dropdown-item divided>
-              <span @click="handleChangePwd" class='inlineBlock'>{{$t('navbar.changePwd')}}</span>
+              <span @click="handleChangePwd" class="inlineBlock">{{ $t('navbar.changePwd') }}</span>
             </el-dropdown-item>
             <el-dropdown-item divided>
-              <span @click="logout" class='inlineBlock'>{{$t('navbar.logOut')}}</span>
+              <span @click="logout" class="inlineBlock">{{ $t('navbar.logOut') }}</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
 
       <!-- 国际化 -->
-      <div class='translate' :title="$t('navbar.lang')" @click="handleClickLan" v-if='clientWidth >= 1366'>
-        <span class="right-menu-item" style='font-size:16px;'>
-          <svg-icon icon-class="translate" style="margin-right:0"></svg-icon>
+      <div class="translate" :title="$t('navbar.lang')" @click="handleClickLan" v-if="clientWidth >= 1366">
+        <span class="right-menu-item" style="font-size: 16px">
+          <svg-icon icon-class="translate" style="margin-right: 0"></svg-icon>
         </span>
       </div>
     </div>
 
     <!-- 修改密码 -->
-    <el-dialog class="updatePW_dialog" :title="$t('login.updatePwd')" :visible.sync="isChangePwdDialogueShow" width="35%" :close-on-click-modal="false" :append-to-body="true" :show-close="isActive===false">
-      <el-form :model="modifyPwdInfo" :rules="resetRules" ref="modifyPwdForm" label-position='left'>
-        <el-form-item :label="$t('sys.user.account')" prop="account" data-key='account'>
+    <el-dialog class="updatePW_dialog" :title="$t('login.updatePwd')" :visible.sync="isChangePwdDialogueShow" width="35%" :close-on-click-modal="false" :append-to-body="true" :show-close="isActive === false">
+      <el-form :model="modifyPwdInfo" :rules="resetRules" ref="modifyPwdForm" label-position="left">
+        <el-form-item :label="$t('sys.user.account')" prop="account" data-key="account">
           <el-input v-model="modifyPwdInfo.account" auto-complete="off" disabled></el-input>
         </el-form-item>
-        <el-form-item :label="$t('sys.user.oldPwd')" prop="oldPassword" data-key='oldPassword'>
+        <el-form-item :label="$t('sys.user.oldPwd')" prop="oldPassword" data-key="oldPassword">
           <el-input type="password" v-model="modifyPwdInfo.oldPassword" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('sys.user.newPwd')" prop="newPassword" data-key='newPassword'>
-          <el-input type="password" :minlength='8' :maxlength='20' :placeholder="$t('biz.placeholder.passwordSet')" v-model="modifyPwdInfo.newPassword" auto-complete="off"></el-input>
+        <el-form-item :label="$t('sys.user.newPwd')" prop="newPassword" data-key="newPassword">
+          <el-input type="password" :minlength="8" :maxlength="20" :placeholder="$t('biz.placeholder.passwordSet')" v-model="modifyPwdInfo.newPassword" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('sys.user.newPwdConfirm')" prop="confirmPwd" data-key='confirmPwd'>
-          <el-input type="password" :minlength='8' :maxlength='20' :placeholder="$t('biz.placeholder.passwordSet')" v-model="modifyPwdInfo.confirmPwd" auto-complete="off"></el-input>
+        <el-form-item :label="$t('sys.user.newPwdConfirm')" prop="confirmPwd" data-key="confirmPwd">
+          <el-input type="password" :minlength="8" :maxlength="20" :placeholder="$t('biz.placeholder.passwordSet')" v-model="modifyPwdInfo.confirmPwd" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码强度">
-          <div class='pwd_strong'>
+          <div class="pwd_strong">
             <span class="level_one" :style="{ background: pwdStrongVal >= 1 ? 'red' : '#eeeeee' }"></span>
             <span class="level_two" :style="{ background: pwdStrongVal >= 2 ? 'orange' : '#eeeeee' }"></span>
             <span class="level_three" :style="{ background: pwdStrongVal === 4 ? '#00D1B2' : '#eeeeee' }"></span>
@@ -121,19 +119,19 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size='mini' v-if="isActive === false" @click="isChangePwdDialogueShow = false">{{$t('biz.btn.cancel')}}</el-button>
-        <el-button size='mini' type="primary" @click="commitChangePwd">{{$t('biz.btn.save')}}</el-button>
+        <el-button size="mini" v-if="isActive === false" @click="isChangePwdDialogueShow = false">{{ $t('biz.btn.cancel') }}</el-button>
+        <el-button size="mini" type="primary" @click="commitChangePwd">{{ $t('biz.btn.save') }}</el-button>
       </div>
     </el-dialog>
 
     <!-- 锁屏 -->
-    <el-dialog width='30%' :title="$t('navbar.lock')" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :append-to-body="true" :show-close="false" :close-on-press-escape="false">
-      <el-row type="flex" justify="center" style='padding:10px 20px;'>
-        <el-col :span='18'>
-          <el-input v-model="lockPwd" type='password' autoComplete="off" :placeholder="$t('biz.placeholder.passwordNotBlank')" @keyup.enter.native="handleLocked"></el-input>
+    <el-dialog width="30%" :title="$t('navbar.lock')" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :append-to-body="true" :show-close="false" :close-on-press-escape="false">
+      <el-row type="flex" justify="center" style="padding: 10px 20px">
+        <el-col :span="18">
+          <el-input v-model="lockPwd" type="password" autoComplete="off" :placeholder="$t('biz.placeholder.passwordNotBlank')" @keyup.enter.native="handleLocked"></el-input>
         </el-col>
-        <el-col :span='6'>
-          <el-button type="primary" @click="handleLocked">{{$t('biz.btn.unlock')}}</el-button>
+        <el-col :span="6">
+          <el-button type="primary" @click="handleLocked">{{ $t('biz.btn.unlock') }}</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -267,7 +265,7 @@ export default {
     this.logo()
   },
   mounted() {
-    window.onresize = function() {
+    window.onresize = function () {
       var leftMenu = document.getElementById('left-menu')
       // if (!$vm.checkFull()) {
       //   }
@@ -322,12 +320,12 @@ export default {
       this.searchLoading = false
     },
     showAll(route) {
-      route.forEach(item => {
+      route.forEach((item) => {
         item.hidden = false
       })
     },
     showSearch(route) {
-      route.forEach(item => {
+      route.forEach((item) => {
         item.hidden = true
         if (
           item.meta &&
@@ -346,7 +344,7 @@ export default {
       cb(results)
     },
     createFilter(queryString) {
-      return restaurant => {
+      return (restaurant) => {
         return (
           restaurant.meta &&
           this.$t('route.' + restaurant.meta.title)
@@ -375,7 +373,7 @@ export default {
           }
         }
       })
-        .then(response => {
+        .then((response) => {
           if (response.data && response.data.length > 0) {
             const element = response.data[0]
             if (process.env.PREVIEW_URL.indexOf('http') > -1) {
@@ -501,7 +499,7 @@ export default {
       })
     },
     commitChangePwd() {
-      this.$refs.modifyPwdForm.validate(valid => {
+      this.$refs.modifyPwdForm.validate((valid) => {
         if (valid) {
           // 加密的处理
           const random = getRandom(8)
@@ -521,7 +519,7 @@ export default {
               }
             }
           })
-            .then(response => {
+            .then((response) => {
               if (response.msgId != null) {
                 this.$notify(
                   notifyError({

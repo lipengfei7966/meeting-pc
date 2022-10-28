@@ -94,6 +94,7 @@ export default {
   color: white;
 }
 .el-dialog__footer {
-  padding: 15px 20px 15px;
+  box-shadow: 4px 0 10px #cccccc;
+  padding: 10px 20px 10px;
 }
 </style>

@@ -195,31 +195,4 @@ export default {
 </script>
 
 <style lang="scss">
-// .el-dialog {
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   margin: 0 !important;
-//   transform: translate(-50%, -50%);
-//   max-height: calc(100%);
-//   max-width: calc(100%);
-//   display: flex;
-//   flex-direction: column;
-// }
-
-// .el-dialog__body {
-//   overflow: auto;
-// }
-// .el-dialog__header {
-//   padding: 15px;
-//   background: #265588;
-// }
-// .el-dialog__title {
-//   line-height: 24px;
-//   font-size: 17px;
-//   color: white;
-// }
-// .el-dialog__footer {
-//   padding: 15px 20px 15px;
-// }
 </style>
