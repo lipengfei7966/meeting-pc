@@ -47,12 +47,12 @@
             <el-tooltip :content="item.picName" placement="top">
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
-            <!-- ?v=${Math.random() -->
-            <el-image style="width: 100%; height: 65%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
-            <span style="display: inline-block; color: #409eff; line-height: 6vh; cursor: pointer" @click="details(item, index)">文件信息</span>
+            <el-image style="width: 100%; height: 70%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
+            <span style="display: inline-block; line-height: 47px; color: #409eff; cursor: pointer" @click="details(item, index)">文件信息</span>
           </li>
           <!-- <li class="resource">视频</li> -->
         </ul>
+        <!-- <div v-if="matterList.length > 0 && size >= total">到底啦</div> -->
         <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span><el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty></div>
         <!-- @/assets/image/wushuju.png -->
       </div>
@@ -158,7 +158,8 @@ export default {
         // 文件链接
         link: ''
       },
-      pId: ''
+      pId: '',
+      size: ''
     }
   },
   // watch: {
@@ -232,15 +233,6 @@ export default {
       let mun = e.target.files[0].name.split('.')
       let format = mun[mun.length - 1]
       console.log(format)
-      debugger
-      // if (format == 'jpeg') {
-      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
-      //   return
-      // }
-      // if (format == 'png') {
-      //   this.$message('请上传jpg，png，jpeg，psd 类型的图片')
-      //   return
-      // }
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
         // 替换文件 --- st
         let thiz = this
@@ -343,6 +335,7 @@ export default {
             }
             console.log(this.matterList)
             this.total = res.total
+            this.size = res.size
             console.log(res.data)
           } else {
             loading.close()
@@ -457,23 +450,24 @@ export default {
   margin: 5px;
 }
 .search_A {
-  padding: 0px 20px;
-  padding-top: 20px;
+  padding: 0px 15px;
+  padding-top: 14px;
   width: 100%;
-  height: 10%;
+  height: 60px;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
 .content_ {
   width: 100%;
   height: 85vh;
+  padding-bottom: 15px;
   text-align: center;
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   .resource {
-    width: 23.5%;
-    height: 40%;
+    width: 32.3%;
+    height: 270px;
     margin-top: 10px;
     margin-right: 1%;
     border-radius: 10px;

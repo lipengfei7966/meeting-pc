@@ -9,7 +9,8 @@
     <!-- 中间素材列表 -->
     <el-card class="box-card content_two_">
       <div v-if="exhibition" style="height: 95vh">
-        <div class="search_" :style="isSearch ? 'padding-top: 20px' : 'padding-top: 0px'">
+        <!-- :style="isSearch ? 'padding-top: 20px' : 'padding-top: 0px'" -->
+        <div class="search_">
           <el-form :model="fileSearch" :label-width="labelWidth ? '90px' : '0px'">
             <el-row>
               <el-col :span="8">
@@ -220,10 +221,10 @@ export default {
   margin: 5px;
 }
 .search_ {
-  padding: 0px 20px;
-  // padding-top: 20px;
+  padding: 0px 15px;
+  padding-top: 14px;
   width: 100%;
-  height: 10%;
+  height: 60px;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
 .content_A {

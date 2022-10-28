@@ -69,13 +69,32 @@ export default {
   display: inline-block;
   min-width: 100%;
 }
+.el-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0 !important;
+  transform: translate(-50%, -50%);
+  max-height: calc(100%);
+  max-width: calc(100%);
+  display: flex;
+  flex-direction: column;
+}
+
 .el-dialog__body {
-  padding: 10px;
-  color: #606266;
-  font-size: 14px;
-  word-break: break-all;
+  overflow: auto;
 }
 .el-dialog__header {
-  padding: 10px 20px 0px;
+  padding: 15px;
+  background: #265588;
+}
+.el-dialog__title {
+  line-height: 24px;
+  font-size: 17px;
+  color: white;
+}
+.el-dialog__footer {
+  box-shadow: 4px 0 10px #cccccc;
+  padding: 10px 20px 10px;
 }
 </style>
