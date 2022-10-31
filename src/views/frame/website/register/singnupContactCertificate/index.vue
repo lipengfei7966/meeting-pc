@@ -425,107 +425,114 @@ export default {
       })
       this.$nextTick(() => {
         let contents = this.$refs.contents
-        contents.forEach((node, nodeindex) => {
-          // 替换参会人二维码
-          let qrCode = node.getElementsByClassName('qrCode')
-          let newQR = node.getElementsByClassName('newQR')[0]
-          if (qrCode.length > 0) {
-            qrCode[0].parentNode.appendChild(newQR)
-            qrCode[0].parentNode.removeChild(qrCode[0])
-          }
-          // 替换参会人条形码
-          let barCode = node.getElementsByClassName('barCode')
-          let newBar = node.getElementsByClassName('newBar')[0]
-          if (barCode.length > 0) {
-            // item.hasBarCode = true;
-            barCode[0].parentNode.appendChild(newBar)
-            barCode[0].parentNode.removeChild(barCode[0])
-          } else {
-            newBar.parentNode.removeChild(newBar)
-          }
-
-          // 替换人员二维码
-          let personQrCode = node.getElementsByClassName('personQrCode')
-          let newPersonQR = node.getElementsByClassName('newPersonQR')[0]
-          if (personQrCode.length > 0) {
-            if(newPersonQR){
-              personQrCode[0].parentNode.appendChild(newPersonQR)
-              personQrCode[0].parentNode.removeChild(personQrCode[0])
-            }else{
-              this.$message.warning("参会人没有人员编码")
-              isCanPrint = false
-              this.isprint = false
+        try{
+          contents.forEach((node, nodeindex) => {
+            // 替换参会人二维码
+            let qrCode = node.getElementsByClassName('qrCode')
+            let newQR = node.getElementsByClassName('newQR')[0]
+            if (qrCode.length > 0) {
+              qrCode[0].parentNode.appendChild(newQR)
+              qrCode[0].parentNode.removeChild(qrCode[0])
             }
-          }
-          // 替换人员条形码
-          let personBarCode = node.getElementsByClassName('personBarCode')
-          let newPersonBar = node.getElementsByClassName('newPersonBar')[0]
-          if (personBarCode.length > 0) {
-            // item.hasBarCode = true;
-            if(newPersonBar){
-              personBarCode[0].parentNode.appendChild(newPersonBar)
-              personBarCode[0].parentNode.removeChild(personBarCode[0])
-            }else{
-              this.$message.warning("参会人没有人员编码")
-              isCanPrint = false
-              this.isprint = false
+            // 替换参会人条形码
+            let barCode = node.getElementsByClassName('barCode')
+            let newBar = node.getElementsByClassName('newBar')[0]
+            if (barCode.length > 0) {
+              // item.hasBarCode = true;
+              barCode[0].parentNode.appendChild(newBar)
+              barCode[0].parentNode.removeChild(barCode[0])
+            } else {
+              newBar.parentNode.removeChild(newBar)
             }
-          } else {
-            newPersonBar.parentNode.removeChild(newPersonBar)
-          }
-        })
-      })
-      if (msg !== '') {
-        this.$message({
-          dangerouslyUseHTMLString: true,
-          message: msg,
-          type: 'warning'
-        })
-        isCanPrint = false
-        this.isprint = false
-      }
 
-      if (!isCanPrint && !this.isprint) return
-
-      const response = request({
-        url: '/api/register/signupCertificatePrint/save',
-        method: 'POST',
-        data: {
-          data: this.$refs.bsTable.currentRow,
-          funcModule: '办证',
-          funcOperation: '查询列表'
-        }
-      }).then((response) => {
-        debugger
-        console.log(response.data)
-        if (response.data.certificateFlag) {
-          this.$message.success(response.data.msg)
-
-          const data = this.tableData
-          //打印
-          var newWin = window.open('') //新打开一个空窗口
-          this.$nextTick(() => {
-            data.map((item, i) => {
-              var imageToPrint = document.getElementById('content' + i) //获取需要打印的内容
-              // console.log('imageToPrint: ', imageToPrint)
-              newWin.document.write(imageToPrint.outerHTML) //将需要打印的内容添加进新的窗口
-            })
-            newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
-            newWin.document.close() //在IE浏览器中使用必须添加这一句
-            newWin.focus() //在IE浏览器中使用必须添加这一句
-
-            this.isprint = false
-            setTimeout(function () {
-              newWin.print() //打开打印窗口
-              // newWin.close() //关闭打印窗口
-            }, 100)
+            // 替换人员二维码
+            let personQrCode = node.getElementsByClassName('personQrCode')
+            let newPersonQR = node.getElementsByClassName('newPersonQR')[0]
+            if (personQrCode.length > 0) {
+              if(newPersonQR){
+                personQrCode[0].parentNode.appendChild(newPersonQR)
+                personQrCode[0].parentNode.removeChild(personQrCode[0])
+              }else{
+                isCanPrint = false
+                this.isprint = false
+                throw Error();
+              }
+            }
+            // 替换人员条形码
+            let personBarCode = node.getElementsByClassName('personBarCode')
+            let newPersonBar = node.getElementsByClassName('newPersonBar')[0]
+            if (personBarCode.length > 0) {
+              // item.hasBarCode = true;
+              if(newPersonBar){
+                personBarCode[0].parentNode.appendChild(newPersonBar)
+                personBarCode[0].parentNode.removeChild(personBarCode[0])
+              }else{
+                isCanPrint = false
+                this.isprint = false
+                throw Error();
+              }
+            } else {
+              newPersonBar.parentNode.removeChild(newPersonBar)
+            }
           })
-        } else {
-          this.$message.warning(response.data.msg)
-          isCanPrint = false
-          this.isprint = false
+          if (msg !== '') {
+            this.$message({
+              dangerouslyUseHTMLString: true,
+              message: msg,
+              type: 'warning'
+            })
+            isCanPrint = false
+            this.isprint = false
+          }
+
+          if (!isCanPrint && !this.isprint) return
+
+          const response = request({
+            url: '/api/register/signupCertificatePrint/save',
+            method: 'POST',
+            data: {
+              data: this.$refs.bsTable.currentRow,
+              funcModule: '办证',
+              funcOperation: '查询列表'
+            }
+          }).then((response) => {
+            debugger
+            console.log(response.data)
+            if (response.data.certificateFlag) {
+              this.$message.success(response.data.msg)
+
+              const data = this.tableData
+              //打印
+              var newWin = window.open('') //新打开一个空窗口
+              this.$nextTick(() => {
+                data.map((item, i) => {
+                  var imageToPrint = document.getElementById('content' + i) //获取需要打印的内容
+                  // console.log('imageToPrint: ', imageToPrint)
+                  newWin.document.write(imageToPrint.outerHTML) //将需要打印的内容添加进新的窗口
+                })
+                newWin.document.head.innerHTML = styleSheet //给打印的内容加上样式
+                newWin.document.close() //在IE浏览器中使用必须添加这一句
+                newWin.focus() //在IE浏览器中使用必须添加这一句
+
+                this.isprint = false
+                setTimeout(function () {
+                  newWin.print() //打开打印窗口
+                  // newWin.close() //关闭打印窗口
+                }, 100)
+              })
+            } else {
+              this.$message.warning(response.data.msg)
+              isCanPrint = false
+              this.isprint = false
+            }
+          })
+        }catch(e){
+          debugger
+          this.$message.warning("参会人没有人员编码")
+          return
         }
       })
+      
     },
     toSaveRecord() {
       if (this.form.listQuery.data.eventCode == '') {
