@@ -166,12 +166,13 @@ export default {
           {
             name: 'add',
             type: 'route',
-            event: this.toSetting,
+            event: this.toAddSetting,
 
             // component: () => import('./edit.vue'),
             // getParam: () => {
             //   return {
-            //     eventCode: this.form.listQuery.data.eventCode
+            //     eventCode: this.form.listQuery.data.eventCode,
+            //     type: 'add'
             //   }
             // }
           },
@@ -356,8 +357,7 @@ export default {
         position: 'bottom-right'
       })
     },
-    toSetting() {
-      //
+    toAddSetting() {
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
@@ -366,7 +366,36 @@ export default {
         name: 'contactEdit',
         params: {
           back: 'signupContact',
-          data: this.form.listQuery.data.eventCode
+          data: this.form.listQuery.data.eventCode,
+          type: 'add'
+        }
+      })
+    },
+    toUpdateSetting() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      this.$router.push({
+        name: 'contactEdit',
+        params: {
+          back: 'signupContact',
+          data: this.form.listQuery.data.eventCode,
+          type: 'update'
+        }
+      })
+    },
+    toViewSetting() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      this.$router.push({
+        name: 'contactEdit',
+        params: {
+          back: 'signupContact',
+          data: this.form.listQuery.data.eventCode,
+          type: 'view'
         }
       })
     },

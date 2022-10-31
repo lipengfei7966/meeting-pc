@@ -178,7 +178,7 @@
                   </div>
 
                   <!-- 备用手机号 -->
-                  <div v-if="element.mapCode == 'spare_mobile' " class="form-item-input">
+                  <div v-if="element.mapCode == 'spareMobile' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
@@ -246,7 +246,7 @@
                   </div>
 
                   <!-- 备用邮箱 -->
-                  <div v-if="element.mapCode == 'spare_email' " class="form-item-input">
+                  <div v-if="element.mapCode == 'spareEmail' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
@@ -700,7 +700,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" filterable v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -740,7 +740,7 @@
               </div>
 
               <!-- 备用手机号 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'spare_mobile'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'spareMobile'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -756,7 +756,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top:5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -808,7 +808,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top:5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -852,7 +852,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top:5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -911,7 +911,7 @@
               </div>
 
               <!-- 备用邮箱 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'spare_email'">
+              <div v-if="setInfoList[checkedIndex].mapCode == 'spareEmail'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1599,11 +1599,11 @@ export default {
       contactWayList:[
         {label: '地址', value: 'addres', isSee: false},
         {label: '手机号', value: 'mobile', isSee: false},
-        {label: '备用手机', value: 'spare_mobile', isSee: false},
+        {label: '备用手机', value: 'spareMobile', isSee: false},
         {label: '固定电话', value: 'phone', isSee: false},
         {label: '传真', value: 'fax', isSee: false},
         {label: '邮箱', value: 'email', isSee: false},
-        {label: '备用邮箱', value: 'spare_email', isSee: false},
+        {label: '备用邮箱', value: 'spareEmail', isSee: false},
         {label: '微信号', value: 'wechat', isSee: false},
         {label: 'QQ号', value: 'qq', isSee: false},
       ],
@@ -1713,9 +1713,9 @@ export default {
       if (newVal > 0) {
         let coustomInfoIndex = 0;
         this.setInfoList.forEach((item,index) => {
-          if(item.isCoustomInfo){
+          if(item.isCoustomInfo){ reservedStr
             coustomInfoIndex ++;
-            item.mapCode = 'RESERVED_STR' + coustomInfoIndex
+            item.mapCode = 'reservedStr' + coustomInfoIndex
           }
         })
       }
@@ -1981,7 +1981,7 @@ export default {
           this.$message.warning('新增自定义信息数量超出最大限制')
           return
         }
-        obj.mapCode = 'RESERVED_STR' + this.customInfoCount
+        obj.mapCode = 'reservedStr' + this.customInfoCount
         obj.isCoustomInfo = true;
         obj.title = '您的标题';
         if(itemList.value == 'input'){
@@ -2000,6 +2000,14 @@ export default {
       var index = parentList.findIndex(item => {
         return item.value == itemList.value
       })
+      // 电话添加校验
+      if(itemList.value == 'phone'){
+        obj.check[0].code = "014"
+      }
+      // 传真添加校验
+      if(itemList.value == 'fax'){
+        obj.check[0].code = "015"
+      }
 
       // 证件
       // debugger
