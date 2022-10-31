@@ -370,7 +370,8 @@ export default {
       this.getImageSize(item.picUrl)
       // 尺寸--- end
       // 上传时间 --- start
-      this.more.createdTime = item.updateDate ? item.updateDate : item.createDate
+      // this.more.createdTime = item.updateDate ? item.updateDate : item.createDate
+      this.more.createdTime = item.createDate
       // 上传时间--- end
       //所在文件夹--- start
       this.more.place = this.treeDatas.name
