@@ -393,8 +393,8 @@ export default {
         .printItem {width: auto!important;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
         p{margin:0}
-        .newBar svg{width:auto;max-height: 92px;height: 100%;}
-        .newPersonBar svg{width:100%;max-height: 92px;height: 100%;}
+        .newBar svg{width:auto;max-width:100%;max-height: 92px;height: 100%;}
+        .newPersonBar svg{width:auto;max-width:100%;max-height: 92px;height: 100%;}
         .printItem
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
@@ -532,7 +532,6 @@ export default {
           return
         }
       })
-      
     },
     toSaveRecord() {
       if (this.form.listQuery.data.eventCode == '') {
