@@ -198,7 +198,19 @@ export default {
   font-size: 14px;
   word-break: break-all;
 }
+// .el-dialog__header {
+//   padding: 10px 20px 0px;
+// }
 .el-dialog__header {
-  padding: 10px 20px 0px;
+  padding: 15px;
+  background: #265588;
+}
+.el-dialog__title {
+  line-height: 24px;
+  font-size: 17px;
+  color: white;
+}
+.el-dialog__footer {
+  padding: 15px 20px 15px;
 }
 </style>
