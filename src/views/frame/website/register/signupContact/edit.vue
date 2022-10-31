@@ -139,58 +139,22 @@ export default {
         }
       ]
       request({
-      url: '/api/register/signupContactCol/page',
+      url: '/api/biz/cmsEventInfo/get',
       method: 'POST',
       data: {
-        data: {
-          eventCode: eventCode
-        },
+        data:  eventCode,
         isPage: false,
         funcModule: '表单配置',
         funcOperation: '查询列表'
       }
       }).then(response => {
-        response.data.forEach(element => {
-          if (element.mapType === '1' && element.mapCode !== 'contactType') {
-            const rs = {
-              label: element.mapName,
-              prop: element.mapCode,
-              element: '',
-              isShow: true,
-              attrs: {},
-              validate: [
-                {
-                  required: element.mapRequired==='1'?true:false,
-                  trigger: 'blur'
-                }
-              ]
-            }
-            if (element.mapCode === 'email') {
-              rs.validate[0].validatorFn = this.validateInfo
-            }
-            if (element.mapCode === 'mobile') {
-              rs.validate[0].validatorFn = this.validateInfo
-            }
-            if (element.mapComp==='1') {
-              rs.element = 'input-validate'
-            }else if (element.mapComp==='3') {
-              rs.element = 'base-select'
-                rs.attrs = eval('(' + element.enumLable + ')')
-            }else if (element.mapComp==='2') {
-              rs.type = 'date'
-              rs.attrs = {
-                clearable: true,
-                format: 'yyyy-MM-dd',
-                'value-format': 'yyyyMMdd'
-              }
-            }
-            if (element.mapBase === '2') {
-              this.edit.formData.part1.content.push(rs)
-            }else{
-              this.edit.formData.part2.content.push(rs)
-            }
-          }
-        })
+        debugger
+        if(response.data.json){
+          this.edit.formData = JSON.parse(response.data.json)
+        }else{
+          this.setInfoList = [];
+        }
+
         this.loadAll = true
       })
     }

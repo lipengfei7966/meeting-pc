@@ -1,0 +1,777 @@
+<template>
+  <div class="content">
+
+    <el-form ref='contactForm' @submit.native.prevent label-position="right" :disabled="isView" :rules='rules' :model="setForm" label-width="150px" class='contactForm'>
+      <div v-for="element in setInfoList" :key="element.mapCode">
+
+        <!-- 分割线 -->
+        <div v-if="element.systemName == '分割线' " class="form-item-input">
+          <el-divider content-position="center">{{ element.placeholder }}</el-divider>
+        </div>
+
+        <!-- 分页 -->
+        <div v-else-if="element.systemName == '分页' " class="form-item-input">
+          <!-- <p style="text-align:center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p> -->
+        </div>
+
+        <!-- 说明信息 -->
+        <div v-else-if="element.systemName == '说明信息' " class="form-item-input">
+          <pre style="padding-left: 150px;">{{ element.placeholder }}</pre>
+        </div>
+
+        <el-form-item v-else :label="element.title" :prop='element.mapCode'>
+          <!-- 姓名 -->
+          <div v-if=" element.mapCode=='name' && !element.nameSplit" class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <el-input v-model="setForm.name" style="width: 50%" size="mini" :placeholder="element.placeholder"></el-input>
+          </div>
+          <!-- 姓名拆分 -->
+          <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
+            <div>
+              <span class="setInfoItemlabel"> {{element.surnameTitle}} : </span>
+              <el-input v-model="setForm.surname" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
+            </div>
+            <div>
+              <span class="setInfoItemlabel"> {{element.nameTitle}} : </span>
+              <el-input v-model="setForm.ming" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
+            </div>
+          </div>
+          <!-- 性别 -->
+          <div v-if="element.mapCode == 'sex' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[0]">{{ element.sexRadioOptions[0] }}</el-radio>
+            <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[1]">{{ element.sexRadioOptions[1] }}</el-radio>
+          </div>
+
+          <!-- 证件 -->
+          <div v-if="element.mapCode == 'certificate' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder">
+                <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+              </el-select>
+              <br>
+              <el-input v-model="setForm.certificate" clearable style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+            </div>
+          </div>
+
+          <!-- 照片 -->
+          <div v-if="element.mapCode == 'photo' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <el-upload class="avatar-uploader" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
+              <img v-if="setForm.photo" :src="setForm.photo" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+
+          <!-- 地址 -->
+          <div v-if="element.mapCode == 'addres' " class="form-item-input">
+            <!-- 国家 -->
+            <div v-if="element.nationIsShow" class="">
+              <span class="setInfoItemlabel"> {{element.nationTitle}} : </span>
+              <el-select style="width: 50%" v-model="setForm.nations" :placeholder="element.nationPlaceholder">
+                <el-option v-for="item in nationsList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+              </el-select>
+            </div>
+            <!-- 省份 -->
+            <div v-if="element.provinceIsShow" class="addresItem">
+              <span class="setInfoItemlabel"> {{element.provinceTitle}} : </span>
+              <el-select style="width: 50%" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
+                <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+              </el-select>
+            </div>
+            <!-- 城市 -->
+            <div v-if="element.cityIsShow" class="addresItem">
+              <span class="setInfoItemlabel"> {{element.cityTitle}} : </span>
+              <el-select style="width: 50%" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+              </el-select>
+            </div>
+            <!-- 区县 -->
+            <div v-if="element.countyIsShow" class="addresItem">
+              <span class="setInfoItemlabel"> {{element.countyTitle}} : </span>
+              <el-select style="width: 50%" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+              </el-select>
+            </div>
+            <!-- 详细地址 -->
+            <div v-if="element.detailedAdressISShow" class="addresItem">
+              <span class="setInfoItemlabel"> {{element.detailedAdressTitle}} : </span>
+              <el-input style="width: 50%" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+            </div>
+            <!-- 邮编 -->
+            <div v-if="element.postcodeIsShow" class="addresItem">
+              <span class="setInfoItemlabel"> {{element.postcodeTitle}} : </span>
+              <el-input style="width: 50%" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+            </div>
+
+          </div>
+
+          <!-- 手机号 -->
+          <div v-if="element.mapCode == 'mobile' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.mobile" :placeholder="element.placeholder" size="mini" class="input-with-select">
+                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" placeholder="请选择国际区号">
+                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                </el-select>
+              </el-input>
+            </div>
+          </div>
+
+          <!-- 备用手机号 -->
+          <div v-if="element.mapCode == 'spareMobile' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.spareMobile" :placeholder="element.placeholder" size="mini" class="input-with-select">
+                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" placeholder="请选择国际区号">
+                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                </el-select>
+              </el-input>
+            </div>
+          </div>
+
+          <!-- 固定电话 -->
+          <div v-if="element.mapCode == 'phone' " class="form-item-input">
+            <div style="width: 80%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.phoneAreaCode" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                </el-select>
+              </el-input>
+              <span>
+                - <el-input v-model="setForm.phone" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+              </span>
+              <span v-if="element.extensionNumbeIsShow">
+                - <el-input v-model="setForm.phoneRunNumber" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+              </span>
+            </div>
+          </div>
+
+          <!-- 传真 -->
+          <div v-if="element.mapCode == 'fax' " class="form-item-input">
+            <div style="width: 80%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.faxAreaCode" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                </el-select>
+              </el-input>
+              <span>
+                - <el-input v-model="setForm.fax" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+              </span>
+              <span v-if="element.extensionNumbeIsShow">
+                - <el-input v-model="setForm.faxRunNumber" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+              </span>
+            </div>
+          </div>
+
+          <!-- 邮箱 -->
+          <div v-if="element.mapCode == 'email' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.email" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- 备用邮箱 -->
+          <div v-if="element.mapCode == 'spareEmail' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.spareEmail" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- 微信号 -->
+          <div v-if="element.mapCode == 'wechat' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.wechat" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- qq -->
+          <div v-if="element.mapCode == 'qq' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.qq" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- 公司 -->
+          <div v-if="element.mapCode == 'company' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.company" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- 部门 -->
+          <div v-if="element.mapCode == 'department' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.department" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- 职位 -->
+          <div v-if="element.mapCode == 'position' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.position" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            </div>
+          </div>
+
+          <!-- 短文本 -->
+          <div v-if="element.systemName == '短文本' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm[element.mapCode]" :placeholder="element.placeholder" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
+            </div>
+          </div>
+
+          <!-- 长文本 -->
+          <div v-if="element.systemName == '长文本' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm[element.mapCode]" type="textarea" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+            </div>
+          </div>
+
+          <!-- 数字 -->
+          <div v-if="element.systemName == '数字' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm[element.mapCode]" :placeholder="element.placeholder" @input="setForm[element.mapCode] = limitInput(element,setForm[element.mapCode])" size="mini"></el-input>
+            </div>
+          </div>
+
+          <!-- 单选框 -->
+          <div v-if="element.systemName == '单选框' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-radio-group v-model="setForm[element.mapCode]" :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}">
+                <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+              </el-radio-group>
+            </div>
+          </div>
+
+          <!-- 复选框 -->
+          <div v-if="element.systemName == '复选框' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-checkbox-group v-model="setForm[element.mapCode]" :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
+                <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </div>
+
+          <!-- 下拉列表 -->
+          <div v-if="element.systemName == '下拉列表' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-select v-model="setForm[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder">
+                <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+            </div>
+          </div>
+
+          <!-- 下拉复选框 -->
+          <div v-if="element.systemName == '下拉复选框' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-select v-model="setForm[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
+                <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="(element.minCheckedCount != '' && setForm[element.mapCode].length <= element.minCheckedCount) && setForm[element.mapCode].includes(item)"></el-option>
+              </el-select>
+            </div>
+          </div>
+
+          <!-- 附件 -->
+          <div v-if="element.systemName == '附件' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <el-upload class="avatar-uploader" action :limit="1" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setForm[element.mapCode]" :before-upload="(file)=>beforeAvatarUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="handleUploadForm">
+              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+              <i class="el-icon-plus avatar-uploader-icon"></i>
+              <p> {{element.placeholder}} </p>
+            </el-upload>
+          </div>
+
+          <!-- 日期 -->
+          <div v-if="element.systemName == '日期' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-date-picker v-model="setForm[element.mapCode]" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+            </div>
+          </div>
+        </el-form-item>
+
+      </div>
+      <div v-if="!isView" style="width:100%;text-align:center">
+        <el-button type="primary" @click="submit">
+          <span class="el-icon-upload2"></span>
+          提交
+        </el-button>
+      </div>
+    </el-form>
+
+  </div>
+</template>
+
+<script>
+import request from '@/utils/frame/base/request'
+import codeCopyVue from '../../../base/generator/code/code copy.vue';
+export default {
+  name: "contactEdit",
+  data() {
+    return {
+      setInfoList: [], // 选中的配置信息列表
+      baseInfoList: [], // 基础信息
+      customInfoList: [], // 自定义信息列表
+      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
+      nationsList: [{name: '中国', code: '86'}],
+      chinaProvinceList: [],
+      provinceCityList: [],
+      cityCountyList: [],
+      isView: false,
+      countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
+      setForm: {
+        name: '', // 姓名
+        surname: '', // 姓
+        ming: '', //名
+        sex: '', // 性别
+        certificateType: '', // 证件类型
+        certificate: '', // 证件号
+        photo: '', // 照片
+        nations: '86', // 国家
+        province: '', // 省份
+        city: '', //城市
+        county: '', // 区/县
+        fullAddress: '', // 详细地址
+        postcode: '', // 邮编
+        mobileIntCode: '', // 手机国际区号
+        mobile: '', // 手机号
+        mobileVerifyCode: '', // 手机验证码
+        spareMobileIntCode: '', // 备用手机号国际区号
+        spareMobile: '', // 备用手机号
+        spareMobileVerifyCode: '', // 备用手机验证码
+        phoneIntCode: '', // 电话国际区号
+        phoneAreaCode: '', // 电话区号
+        phone: '', // 固定电话
+        phoneRunNumber: '', // 电话分机号
+        faxIntCode: '', // 传真国际区号
+        faxAreaCode: '', // 传真区号
+        fax: '', // 传真
+        faxRunNumber: '', // 传真分机号
+        email: '', // 邮箱
+        emailVerifyCode: '', //邮箱验证码
+        spareEmail: '', // 备用邮箱
+        spareEmailVerifyCode: '', // 备用邮箱验证码
+        wechat: '', // 微信号
+        qq: '', // qq
+        company: '', // 公司
+        department: '', // 部门
+        position: '', // 职位
+      },
+      pagingCount: 0, // f分页数量
+      rules:{
+        // name: [
+        //   { required: true, message: "请输入姓名", trigger: "blur" },
+        // ],
+        // surname: [
+        //   { required: true, message: "请输入姓", trigger: "blur" },
+        // ],
+        // ming: [
+        //   { required: true, message: "请输入名", trigger: "blur" },
+        // ],
+        // sex: [
+        //   { required: true, message: "请选择性别", trigger: "blur" },
+        // ],
+        // certificateType: [
+        //   { required: true, message: "请选择证件类型", trigger: "blur" },
+        // ],
+        // certificate: [
+        //   { required: true, message: "请输入证件号码", trigger: "blur" },
+        // ],
+        // photo: [
+        //   { required: true, message: "请上传照片", trigger: "blur" },
+        // ],
+        // addres: [
+        //   { required: true, message: "请输入地址", trigger: "blur" },
+        // ],
+        // mobile: [
+        //   { required: true, message: "请输入手机号", trigger: "blur" },
+        // ],
+        // spareMobile: [
+        //   { required: true, message: "请输入备用手机号", trigger: "blur" },
+        // ],
+        // phone: [
+        //   { required: true, message: "请输入固定电话", trigger: "blur" },
+        // ],
+        // fax: [
+        //   { required: true, message: "请输入传真", trigger: "blur" },
+        // ],
+        // email: [
+        //   { required: true, message: "请输入邮箱", trigger: "blur" },
+        // ],
+        // spareEmail: [
+        //   { required: true, message: "请输入备用邮箱", trigger: "blur" },
+        // ],
+        // wechat: [
+        //   { required: true, message: "请输入微信号", trigger: "blur" },
+        // ],
+        // qq: [
+        //   { required: true, message: "请输入QQ号", trigger: "blur" },
+        // ],
+        // company: [
+        //   { required: true, message: "请输入公司名称", trigger: "blur" },
+        // ],
+        // department: [
+        //   { required: true, message: "请输入部门,名称", trigger: "blur" },
+        // ],
+        // position: [
+        //   { required: true, message: "请输入职位", trigger: "blur" },
+        // ],
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          // return time.getTime() > Date.now();
+        },
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick', new Date());
+          }
+        }, {
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周前',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+    }
+  },
+  props: {
+    param: {
+      type: [String, Object],
+      default() {
+        return {}
+      }
+    }
+  },
+  mounted(){
+    debugger
+    console.log(this.$route.params)
+    // this.$route.params.type   add--新增  update--修改  view--查看
+    if(this.$route.params.type == 'view'){
+      this.isView = true;
+    }
+    this.getComCityTreeList();
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then(res => {
+      // debugger
+      // dictItemName \ dictItemVal
+      this.countryCodeOptions = res.data
+    })
+    this.getEventInfo()
+  },
+  methods:{
+    getEventInfo() {
+      request({
+        url: '/api/biz/cmsEventInfo/get',
+        method: 'POST',
+        data: {
+          data: this.$route.params.data,
+          funcModule: '表单设置',
+          funcOperation: '表单初始化'
+        }
+      }).then(response => {
+        if(response.data.json){
+          this.setInfoList = JSON.parse(response.data.json)
+        }else{
+          this.setInfoList = [];
+        }
+        // debugger
+        this.setInfoList.forEach(item => {
+          // 1：自定义属性
+          if(item.mapBase == 1){
+            if(['复选框','下拉复选框','附件'].includes(item.systemName)) {
+              // debugger
+              // this.setForm[item.mapCode] = []
+              this.$set(this.setForm,item.mapCode,[]);
+              if(item.minCheckedCount > 0){
+                this.setForm[item.mapCode] = item.options.slice(0, item.minCheckedCount)
+              }
+            }else{
+              this.$set(this.setForm,item.mapCode,'');
+              // this.setForm[item.mapCode] = ''
+            }
+          }
+
+          // 添加必填校验
+          this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
+
+          if(item.systemName == '分页'){
+            this.pagingCount++
+          }
+          // 国际区号设置默认值
+          if(item.mapCode == 'mobile'){
+            this.setForm.mobileIntCode = item.defaultCountryCode
+          }
+          if(item.mapCode == 'spareMobile'){
+            this.setForm.spareMobileIntCode = item.defaultCountryCode
+          }
+          if(item.mapCode == 'phone'){
+            this.setForm.phoneIntCode = item.defaultCountryCode
+          }
+          if(item.mapCode == 'fax'){
+            this.setForm.faxIntCode = item.defaultCountryCode
+          }
+
+        })
+
+        console.log(this.setForm)
+      })
+    },
+    submit(){
+      let queryUrl = "";
+      if(this.$route.params.type == 'add'){
+        queryUrl = '/api/register/signupContact/save'
+      }else if(this.$route.params.type == 'upadte'){
+        queryUrl = '/api/register/signupContact/update'
+      }
+      this.setForm.eventCode = this.$route.params.data,
+      this.$refs["contactForm"].validate((valid) => {
+        debugger
+        if (valid) {
+          request({
+            url: queryUrl,
+            method: 'POST',
+            data: {
+              data: this.setForm,
+              funcModule: '获取模块类型',
+              funcOperation: '获取模块类型'
+            }
+          }).then(res => {
+            if(res.status){
+              this.$message.success('保存成功')
+            }else{
+              this.$message.error('保存失败')
+            }
+          })
+        }
+      })
+    },
+    limitInput(element,value) {
+      // debugger
+      // element.numberDigitLimit 整数位数限制
+      // element.decimalPlacesLimit 小数位数限制
+      // var re = new RegExp(title,"g");
+      var re = eval("/^\d*(\.?\d{0,"+element.decimalPlacesLimit+"})/g");
+      let temp = value.toString() // 第一步：转成字符串
+      temp = temp.replace(/[^\d^\.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
+          .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
+          .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
+          // .match(/^\d*(\.?\d{0,2})/g)[0] || '' // 第五步：最终匹配得到结果 以数字开头，只有一个小数点，	而且小数点后面只能有0到2位小数
+
+      let intNumber = temp.split('.')[0]
+      let decimalNumber = temp.split('.')[1] || ''
+      // 小数点位数超出限制 截取
+      if(decimalNumber.length > element.decimalPlacesLimit){
+        decimalNumber = decimalNumber.slice(0, element.decimalPlacesLimit)
+      }
+
+      if(decimalNumber.length > 0 || temp.indexOf('.') >= 0){
+        temp = intNumber + "." + decimalNumber
+      }else{
+        temp = intNumber
+      }
+      // 整数部分超出限制 取最大值
+      const maxNumber = Math.pow(10,element.numberDigitLimit-1)
+      if(Number(temp) >= maxNumber){
+         temp = maxNumber
+      }
+      return temp
+    },
+    handleAvatarSuccess(res, file){
+      // debugger
+    },
+    async beforeAvatarUpload(file,element) {
+      debugger
+      // fileTypeLimit // 是否限制文件类型
+      // pictureSizeLimit: false, // 是否限制图片尺寸
+      // imageCheckedTypes:[], // 图片文件选中类型
+      // documentCheckedTypes: [], // 文档选中类型
+      // compressedFileCheckedTypes: [], // 压缩文件选中类型
+      // videoFileCheckedTypes: [], // 视频文件选中类型
+      // audioFileCheckedTypes: [],// 音频文件选中类型
+      // allFileTypes:[], // 允许上传文件类型合集
+      // fileSizeLimit: 50, // 文件大小限制
+      const fileName = file.name;
+      const extension = fileName.substr(fileName.lastIndexOf('.'));
+      let isAllowUpload = true;
+      if(element.fileTypeLimit){
+        // 判断后缀名是否允许上传
+        isAllowUpload = element.allFileTypes.includes(extension);
+        if(!isAllowUpload){
+          const errMsg ='注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、');
+          this.$message.error(errMsg);
+        }
+      }
+
+      const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
+      if (!sizeLimit) {
+        this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`);
+        return false;
+      }
+
+      if(element.imageTypes.includes(extension) && element.pictureSizeLimit){
+       isAllowUpload = await this.imageSizeLimit(file, element)
+      }
+      return isAllowUpload
+    },
+    async imageSizeLimit(file, element){
+      debugger
+      const _this = this
+      let imgWidth = ''
+      let imgHight = ''
+      const isSize = new Promise(function(resolve, reject) {
+        const _URL = window.URL || window.webkitURL
+        const img = new Image()
+        img.onload = function() {
+            imgWidth = img.width
+            imgHight = img.height
+            // const valid = img.width <= 1700 && img.height <= 2500
+            const valid = img.width <= element.photoLimitWidth && img.height <= element.photoLimitHeight
+            valid ? resolve() : reject()
+        }
+        img.src = _URL.createObjectURL(file)
+      }).then(() => {
+          return file
+      }, () => {
+          _this.$message.warning({ message: `上传文件的图片大小不合符标准,宽需要为${element.photoLimitWidth}px，高需要为${element.photoLimitHeight}px。当前上传图片的宽高分别为：${imgWidth}px和${imgHight}px` })
+          return Promise.reject()
+      })
+      return await isSize
+    },
+    // 自定义上传文件
+    handleUploadForm(param,element) {
+      debugger
+      let thiz = this
+      let formData = new FormData()
+      // formData.append('webpageCode', '') // 额外参数
+      formData.append('file', param.file)
+      let loading = this.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: '/api/obs/file/uploadImg',
+        method: 'POST',
+        data: formData
+      }).then(data => {
+        if (data) {
+          debugger
+          this.$message('上传文件成功')
+          if(element.mapCode = 'photo'){
+            this.setForm.photo = data.data.filePath
+            console.log( this.setForm.photo)
+          }
+          param.onSuccess(data)
+          // this.printSetform.printBackground = data.data.filePath
+        } else {
+          thiz.$message('上传文件失败')
+        }
+        loading.close()
+      })
+    },
+    fileLimitCount(files, fileList) {
+      this.$message.warning('只允许上传一个文件')
+    },
+    getComCityTreeList(){
+      request({
+        url: '/api/base/comCitys/treeList',
+        method: 'POST',
+        data: {
+          // data: this.$route.params.data,
+          funcModule: '表单设置',
+          funcOperation: '表单初始化'
+        }
+      }).then(res => {
+        this.chinaProvinceList = res.data
+      })
+    },
+    provinceChange(provinceCode){
+      let selectProvince = this.chinaProvinceList.find(province => {
+        return province.code == provinceCode
+      })
+
+      this.provinceCityList = selectProvince.chirldren // 接口返回字段为 chirldren 非 children
+      // debugger
+    },
+    cityChange(cityCode){
+      let selectCity = this.provinceCityList.find(city => {
+        return city.code == cityCode
+      })
+      this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
+    },
+    selectMultipleChange(val){
+      // debugger
+    },
+    // 返回上级
+    back(){
+      this.$store.dispatch('delVisitedViews', this.$route).then(() => {
+        this.$router.push({
+          name: 'signupContact'
+        })
+      })
+    },
+  }
+}
+</script>
+
+<style lang="scss">
+.content {
+  min-width: 1250px;
+  .contactForm {
+    width: 50%;
+    background: #fff;
+    padding: 20px;
+    margin: 0 auto;
+  }
+  .form-item-input {
+    width: 100%;
+    .addresItem {
+      margin-top: 15px;
+    }
+    .avatar-uploader {
+      // width: 100px;
+      display: inline-block;
+      vertical-align: top;
+      .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .el-upload:hover {
+        border-color: #409eff;
+      }
+    }
+
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 100px;
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      display: block;
+    }
+  }
+}
+</style>
