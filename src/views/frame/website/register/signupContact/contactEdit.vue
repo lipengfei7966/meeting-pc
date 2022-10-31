@@ -247,7 +247,7 @@
           <!-- 复选框 -->
           <div v-if="element.systemName == '复选框' " class="form-item-input">
             <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-checkbox-group v-model="setForm[element.mapCode]" :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
+              <el-checkbox-group v-model="setForm[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
                 <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
               </el-checkbox-group>
             </div>
@@ -454,25 +454,32 @@ export default {
     }
   },
   mounted(){
-    debugger
-    console.log(this.$route.params)
     // this.$route.params.type   add--新增  update--修改  view--查看
-    if(this.$route.params.type == 'view'){
-      this.isView = true;
-    }
+    // 获取地址级联选项
     this.getComCityTreeList();
+
+    // 国际编码字典项查询
     request({
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
-      // debugger
       // dictItemName \ dictItemVal
       this.countryCodeOptions = res.data
     })
-    this.getEventInfo()
+    // 表单配置查询
+    this.getEventInfo();
+    if(this.$route.params.type == 'view'){
+      this.isView = true;
+      this.getContactInfo();
+    }
+    // 参会人信息查询
+    if(this.$route.params.type == 'update'){
+      this.getContactInfo();
+    }
   },
   methods:{
+    // 表单配置查询
     getEventInfo() {
       request({
         url: '/api/biz/cmsEventInfo/get',
@@ -493,7 +500,6 @@ export default {
           // 1：自定义属性
           if(item.mapBase == 1){
             if(['复选框','下拉复选框','附件'].includes(item.systemName)) {
-              // debugger
               // this.setForm[item.mapCode] = []
               this.$set(this.setForm,item.mapCode,[]);
               if(item.minCheckedCount > 0){
@@ -530,11 +536,22 @@ export default {
         console.log(this.setForm)
       })
     },
+    // 参会人信息查询
+    getContactInfo(){
+      request({
+      url: '/api/register/signupContact/getByContactCode',
+      method: 'POST',
+      data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then(res => {
+      // debugger
+      // this.setForm = res.data
+    })
+    },
     submit(){
       let queryUrl = "";
       if(this.$route.params.type == 'add'){
         queryUrl = '/api/register/signupContact/save'
-      }else if(this.$route.params.type == 'upadte'){
+      }else if(this.$route.params.type == 'update'){
         queryUrl = '/api/register/signupContact/update'
       }
       this.setForm.eventCode = this.$route.params.data,
