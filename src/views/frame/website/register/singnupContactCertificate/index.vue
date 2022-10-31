@@ -17,17 +17,17 @@
     <div v-if="isprint" ref="content">
       <div ref="contents" v-for="(item, index) in tableData" :key="index" :id="'content' + index" class="content" :style="`width: ${item.printWight}mm;height: ${item.printHeight}mm`">
         <p v-show="false">
-          <vue-qr class="newQR" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
+          <vue-qr class="newQR" v-if="item.code" :text="item.code" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <p v-show="false">
-          <vue-barcode class="newBar" :value="item.code" :width="1" :height="50" style="width: 100%"> </vue-barcode>
+          <vue-barcode class="newBar" v-if="item.code" :value="item.code" :width="1" :height="50" style="width: 100%"> </vue-barcode>
         </p>
 
         <p v-show="false">
-          <vue-qr class="newPersonQR" :text="item.personnelCode" :size="200" style="width: 100%"> </vue-qr>
+          <vue-qr class="newPersonQR" v-if="item.personnelCode" :text="item.personnelCode" :size="200" style="width: 100%"> </vue-qr>
         </p>
         <p v-show="false">
-          <vue-barcode class="newPersonBar" :value="item.personnelCode" :width="1" :height="50" style="width: 100%"> </vue-barcode>
+          <vue-barcode class="newPersonBar" v-if="item.personnelCode" :value="item.personnelCode" :width="1" :height="50" style="width: 100%"> </vue-barcode>
         </p>
 
         <div class="p-event" v-html="item.certificateLayout"></div>
@@ -393,7 +393,7 @@ export default {
         .printItem {width: auto!important;height: auto;margin:0;background-color: #fff;word-wrap: break-word;}
         .p-event { box-sizing: border-box; position: relative;width:100%;height:100% }
         p{margin:0}
-        .newBar svg{width:100%;max-height: 92px;height: 100%;}
+        .newBar svg{width:auto;max-height: 92px;height: 100%;}
         .newPersonBar svg{width:100%;max-height: 92px;height: 100%;}
         .printItem
       </style>`
@@ -448,16 +448,28 @@ export default {
           let personQrCode = node.getElementsByClassName('personQrCode')
           let newPersonQR = node.getElementsByClassName('newPersonQR')[0]
           if (personQrCode.length > 0) {
-            personQrCode[0].parentNode.appendChild(newPersonQR)
-            personQrCode[0].parentNode.removeChild(personQrCode[0])
+            if(newPersonQR){
+              personQrCode[0].parentNode.appendChild(newPersonQR)
+              personQrCode[0].parentNode.removeChild(personQrCode[0])
+            }else{
+              this.$message.warning("参会人没有人员编码")
+              isCanPrint = false
+              this.isprint = false
+            }
           }
           // 替换人员条形码
           let personBarCode = node.getElementsByClassName('personBarCode')
           let newPersonBar = node.getElementsByClassName('newPersonBar')[0]
           if (personBarCode.length > 0) {
             // item.hasBarCode = true;
-            personBarCode[0].parentNode.appendChild(newPersonBar)
-            personBarCode[0].parentNode.removeChild(personBarCode[0])
+            if(newPersonBar){
+              personBarCode[0].parentNode.appendChild(newPersonBar)
+              personBarCode[0].parentNode.removeChild(personBarCode[0])
+            }else{
+              this.$message.warning("参会人没有人员编码")
+              isCanPrint = false
+              this.isprint = false
+            }
           } else {
             newPersonBar.parentNode.removeChild(newPersonBar)
           }
