@@ -19,7 +19,7 @@
 
         <!-- 分页 -->
         <div v-else-if="element.systemName == '分页' " class="form-item-input">
-          <!-- <p style="text-align:center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p> -->
+          <p style="text-align:center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
         </div>
 
         <!-- 说明信息 -->
@@ -27,282 +27,283 @@
           <pre style="padding-left: 150px;">{{ element.placeholder }}</pre>
         </div>
 
-        <!-- 自定义信息 -->
-        <el-form-item v-if="element.isCoustomInfo" :label="element.title" :prop="'signupContactDtlDto.'+element.mapCode">
-          <!-- 短文本 -->
-          <div v-if="element.systemName == '短文本' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
-            </div>
-          </div>
-
-          <!-- 长文本 -->
-          <div v-if="element.systemName == '长文本' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
-            </div>
-          </div>
-
-          <!-- 数字 -->
-          <div v-if="element.systemName == '数字' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" @input="setForm[element.mapCode] = limitInput(element,setForm[element.mapCode])" size="mini"></el-input>
-            </div>
-          </div>
-
-          <!-- 单选框 -->
-          <div v-if="element.systemName == '单选框' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
-                <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-
-          <!-- 复选框 -->
-          <div v-if="element.systemName == '复选框' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
-                <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </div>
-
-          <!-- 下拉列表 -->
-          <div v-if="element.systemName == '下拉列表' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder">
-                <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
-              </el-select>
-            </div>
-          </div>
-
-          <!-- 下拉复选框 -->
-          <div v-if="element.systemName == '下拉复选框' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
-                <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="(element.minCheckedCount != '' && (setForm.signupContactDtlDto[element.mapCode].length || 0) <= element.minCheckedCount) && setForm.signupContactDtlDto[element.mapCode].includes(item)"></el-option>
-              </el-select>
-            </div>
-          </div>
-
-          <!-- 附件 -->
-          <div v-if="element.systemName == '附件' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <el-upload class="avatar-uploader" action :limit="1" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>beforeAvatarUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="handleUploadForm">
-              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
-              <i class="el-icon-plus avatar-uploader-icon"></i>
-              <p> {{element.placeholder}} </p>
-            </el-upload>
-          </div>
-
-          <!-- 日期 -->
-          <div v-if="element.systemName == '日期' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-date-picker v-model="setForm[element.mapCode]" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
-            </div>
-          </div>
-        </el-form-item>
-        <!-- 固定信息 -->
-        <el-form-item v-else :label="element.title" :prop='element.mapCode'>
-          <!-- 姓名 -->
-          <div v-if=" element.mapCode=='name' && !element.nameSplit" class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <el-input v-model="setForm.name" style="width: 50%" size="mini" :placeholder="element.placeholder"></el-input>
-          </div>
-          <!-- 姓名拆分 -->
-          <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
-            <div>
-              <span class="setInfoItemlabel"> {{element.surnameTitle}} : </span>
-              <el-input v-model="setForm.surname" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
-            </div>
-            <div>
-              <span class="setInfoItemlabel"> {{element.nameTitle}} : </span>
-              <el-input v-model="setForm.ming" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
-            </div>
-          </div>
-          <!-- 性别 -->
-          <div v-if="element.mapCode == 'sex' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[0]">{{ element.sexRadioOptions[0] }}</el-radio>
-            <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[1]">{{ element.sexRadioOptions[1] }}</el-radio>
-          </div>
-
-          <!-- 证件 -->
-          <div v-if="element.mapCode == 'certificate' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder">
-                <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
-              </el-select>
-              <br>
-              <el-input v-model="setForm.certificate" clearable style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
-            </div>
-          </div>
-
-          <!-- 照片 -->
-          <div v-if="element.mapCode == 'photo' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <el-upload class="avatar-uploader" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
-              <img v-if="setForm.photo" :src="setForm.photo" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </div>
-
-          <!-- 地址 -->
-          <div v-if="element.mapCode == 'addres' " class="form-item-input">
-            <!-- 国家 -->
-            <div v-if="element.nationIsShow" class="">
-              <span class="setInfoItemlabel"> {{element.nationTitle}} : </span>
-              <el-select style="width: 50%" v-model="setForm.nations" :placeholder="element.nationPlaceholder">
-                <el-option v-for="item in nationsList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-              </el-select>
-            </div>
-            <!-- 省份 -->
-            <div v-if="element.provinceIsShow" class="addresItem">
-              <span class="setInfoItemlabel"> {{element.provinceTitle}} : </span>
-              <el-select style="width: 50%" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
-                <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-              </el-select>
-            </div>
-            <!-- 城市 -->
-            <div v-if="element.cityIsShow" class="addresItem">
-              <span class="setInfoItemlabel"> {{element.cityTitle}} : </span>
-              <el-select style="width: 50%" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
-                <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-              </el-select>
-            </div>
-            <!-- 区县 -->
-            <div v-if="element.countyIsShow" class="addresItem">
-              <span class="setInfoItemlabel"> {{element.countyTitle}} : </span>
-              <el-select style="width: 50%" v-model="setForm.county" :placeholder="element.countyPlaceholder">
-                <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-              </el-select>
-            </div>
-            <!-- 详细地址 -->
-            <div v-if="element.detailedAdressISShow" class="addresItem">
-              <span class="setInfoItemlabel"> {{element.detailedAdressTitle}} : </span>
-              <el-input style="width: 50%" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
-            </div>
-            <!-- 邮编 -->
-            <div v-if="element.postcodeIsShow" class="addresItem">
-              <span class="setInfoItemlabel"> {{element.postcodeTitle}} : </span>
-              <el-input style="width: 50%" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+        <div v-else>
+          <!-- 自定义信息 -->
+          <el-form-item v-if="element.isCoustomInfo" :label="element.title" :prop="'signupContactDtlDto.'+element.mapCode">
+            <!-- 短文本 -->
+            <div v-if="element.systemName == '短文本' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
+              </div>
             </div>
 
-          </div>
+            <!-- 长文本 -->
+            <div v-if="element.systemName == '长文本' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+              </div>
+            </div>
 
-          <!-- 手机号 -->
-          <div v-if="element.mapCode == 'mobile' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.mobile" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" placeholder="请选择国际区号">
-                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+            <!-- 数字 -->
+            <div v-if="element.systemName == '数字' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" @input="setForm[element.mapCode] = limitInput(element,setForm[element.mapCode])" size="mini"></el-input>
+              </div>
+            </div>
+
+            <!-- 单选框 -->
+            <div v-if="element.systemName == '单选框' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
+                  <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+
+            <!-- 复选框 -->
+            <div v-if="element.systemName == '复选框' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
+                  <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+                </el-checkbox-group>
+              </div>
+            </div>
+
+            <!-- 下拉列表 -->
+            <div v-if="element.systemName == '下拉列表' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder">
+                  <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
-              </el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 备用手机号 -->
-          <div v-if="element.mapCode == 'spareMobile' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.spareMobile" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" placeholder="请选择国际区号">
-                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+            <!-- 下拉复选框 -->
+            <div v-if="element.systemName == '下拉复选框' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
+                  <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="(element.minCheckedCount != '' && (setForm.signupContactDtlDto[element.mapCode].length || 0) <= element.minCheckedCount) && setForm.signupContactDtlDto[element.mapCode].includes(item)"></el-option>
                 </el-select>
-              </el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 固定电话 -->
-          <div v-if="element.mapCode == 'phone' " class="form-item-input">
-            <div style="width: 80%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.phoneAreaCode" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
-                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+            <!-- 附件 -->
+            <div v-if="element.systemName == '附件' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <el-upload class="avatar-uploader" action :limit="1" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>beforeAvatarUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="handleUploadForm">
+                <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                <i class="el-icon-plus avatar-uploader-icon"></i>
+                <p> {{element.placeholder}} </p>
+              </el-upload>
+            </div>
+
+            <!-- 日期 -->
+            <div v-if="element.systemName == '日期' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-date-picker v-model="setForm[element.mapCode]" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+              </div>
+            </div>
+          </el-form-item>
+          <!-- 固定信息 -->
+          <el-form-item v-else :label="element.title" :prop='element.mapCode'>
+            <!-- 姓名 -->
+            <div v-if=" element.mapCode=='name' && !element.nameSplit" class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <el-input v-model="setForm.name" style="width: 50%" size="mini" :placeholder="element.placeholder"></el-input>
+            </div>
+            <!-- 姓名拆分 -->
+            <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
+              <div>
+                <span class="setInfoItemlabel"> {{element.surnameTitle}} : </span>
+                <el-input v-model="setForm.surname" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
+              </div>
+              <div>
+                <span class="setInfoItemlabel"> {{element.nameTitle}} : </span>
+                <el-input v-model="setForm.ming" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
+              </div>
+            </div>
+            <!-- 性别 -->
+            <div v-if="element.mapCode == 'sex' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[0]">{{ element.sexRadioOptions[0] }}</el-radio>
+              <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[1]">{{ element.sexRadioOptions[1] }}</el-radio>
+            </div>
+
+            <!-- 证件 -->
+            <div v-if="element.mapCode == 'certificate' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder">
+                  <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                 </el-select>
-              </el-input>
-              <span>
-                - <el-input v-model="setForm.phone" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
-              </span>
-              <span v-if="element.extensionNumbeIsShow">
-                - <el-input v-model="setForm.phoneRunNumber" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
-              </span>
+                <br>
+                <el-input v-model="setForm.certificate" clearable style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 传真 -->
-          <div v-if="element.mapCode == 'fax' " class="form-item-input">
-            <div style="width: 80%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.faxAreaCode" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
-                  <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+            <!-- 照片 -->
+            <div v-if="element.mapCode == 'photo' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <el-upload class="avatar-uploader" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
+                <img v-if="setForm.photo" :src="setForm.photo" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </div>
+
+            <!-- 地址 -->
+            <div v-if="element.mapCode == 'addres' " class="form-item-input">
+              <!-- 国家 -->
+              <div v-if="element.nationIsShow" class="">
+                <span class="setInfoItemlabel"> {{element.nationTitle}} : </span>
+                <el-select style="width: 50%" v-model="setForm.nations" :placeholder="element.nationPlaceholder">
+                  <el-option v-for="item in nationsList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                 </el-select>
-              </el-input>
-              <span>
-                - <el-input v-model="setForm.fax" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
-              </span>
-              <span v-if="element.extensionNumbeIsShow">
-                - <el-input v-model="setForm.faxRunNumber" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
-              </span>
+              </div>
+              <!-- 省份 -->
+              <div v-if="element.provinceIsShow" class="addresItem">
+                <span class="setInfoItemlabel"> {{element.provinceTitle}} : </span>
+                <el-select style="width: 50%" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
+                  <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                </el-select>
+              </div>
+              <!-- 城市 -->
+              <div v-if="element.cityIsShow" class="addresItem">
+                <span class="setInfoItemlabel"> {{element.cityTitle}} : </span>
+                <el-select style="width: 50%" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                  <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                </el-select>
+              </div>
+              <!-- 区县 -->
+              <div v-if="element.countyIsShow" class="addresItem">
+                <span class="setInfoItemlabel"> {{element.countyTitle}} : </span>
+                <el-select style="width: 50%" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                  <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                </el-select>
+              </div>
+              <!-- 详细地址 -->
+              <div v-if="element.detailedAdressISShow" class="addresItem">
+                <span class="setInfoItemlabel"> {{element.detailedAdressTitle}} : </span>
+                <el-input style="width: 50%" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+              </div>
+              <!-- 邮编 -->
+              <div v-if="element.postcodeIsShow" class="addresItem">
+                <span class="setInfoItemlabel"> {{element.postcodeTitle}} : </span>
+                <el-input style="width: 50%" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+              </div>
+
             </div>
-          </div>
 
-          <!-- 邮箱 -->
-          <div v-if="element.mapCode == 'email' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.email" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 手机号 -->
+            <div v-if="element.mapCode == 'mobile' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.mobile" :placeholder="element.placeholder" size="mini" class="input-with-select">
+                  <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" placeholder="请选择国际区号">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 备用邮箱 -->
-          <div v-if="element.mapCode == 'spareEmail' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.spareEmail" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 备用手机号 -->
+            <div v-if="element.mapCode == 'spareMobile' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.spareMobile" :placeholder="element.placeholder" size="mini" class="input-with-select">
+                  <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" placeholder="请选择国际区号">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 微信号 -->
-          <div v-if="element.mapCode == 'wechat' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.wechat" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 固定电话 -->
+            <div v-if="element.mapCode == 'phone' " class="form-item-input">
+              <div style="width: 80%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.phoneAreaCode" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                  <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </el-input>
+                <span>
+                  - <el-input v-model="setForm.phone" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                </span>
+                <span v-if="element.extensionNumbeIsShow">
+                  - <el-input v-model="setForm.phoneRunNumber" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+                </span>
+              </div>
             </div>
-          </div>
 
-          <!-- qq -->
-          <div v-if="element.mapCode == 'qq' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.qq" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 传真 -->
+            <div v-if="element.mapCode == 'fax' " class="form-item-input">
+              <div style="width: 80%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.faxAreaCode" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                  <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </el-input>
+                <span>
+                  - <el-input v-model="setForm.fax" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                </span>
+                <span v-if="element.extensionNumbeIsShow">
+                  - <el-input v-model="setForm.faxRunNumber" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+                </span>
+              </div>
             </div>
-          </div>
 
-          <!-- 公司 -->
-          <div v-if="element.mapCode == 'company' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.company" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 邮箱 -->
+            <div v-if="element.mapCode == 'email' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.email" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 部门 -->
-          <div v-if="element.mapCode == 'department' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.department" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 备用邮箱 -->
+            <div v-if="element.mapCode == 'spareEmail' " class="form-item-input">
+              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.spareEmail" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
             </div>
-          </div>
 
-          <!-- 职位 -->
-          <div v-if="element.mapCode == 'position' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm.position" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+            <!-- 微信号 -->
+            <div v-if="element.mapCode == 'wechat' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.wechat" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
             </div>
-          </div>
 
-        </el-form-item>
+            <!-- qq -->
+            <div v-if="element.mapCode == 'qq' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.qq" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
+            </div>
 
+            <!-- 公司 -->
+            <div v-if="element.mapCode == 'company' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.company" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
+            </div>
+
+            <!-- 部门 -->
+            <div v-if="element.mapCode == 'department' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.department" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
+            </div>
+
+            <!-- 职位 -->
+            <div v-if="element.mapCode == 'position' " class="form-item-input">
+              <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <el-input v-model="setForm.position" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+              </div>
+            </div>
+
+          </el-form-item>
+        </div>
       </div>
 
       <div v-if="!isView" style="width:100%;text-align:center">
