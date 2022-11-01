@@ -1713,7 +1713,8 @@ export default {
       if (newVal > 0) {
         let coustomInfoIndex = 0;
         this.setInfoList.forEach((item,index) => {
-          if(item.isCoustomInfo){ reservedStr
+          if(item.isCoustomInfo){
+            debugger
             coustomInfoIndex ++;
             item.mapCode = 'reservedStr' + coustomInfoIndex
           }
@@ -1887,7 +1888,7 @@ export default {
         title: itemList.label, // 标题
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
-        placeholder: `请输入${itemList.label}提示文本`, // 提示文本
+        placeholder: `请输入${itemList.label}`, // 提示文本
         surnamePlaceholder: '请输入姓', // 姓-提示文本
         namePlaceholder: '请输入名', // 名-提示文本
         nameSplit: false, //姓名拆分
@@ -1981,7 +1982,8 @@ export default {
           this.$message.warning('新增自定义信息数量超出最大限制')
           return
         }
-        obj.mapCode = 'reservedStr' + this.customInfoCount
+        // obj.mapCode = 'reservedStr' + this.customInfoCount
+        // debugger
         obj.isCoustomInfo = true;
         obj.title = '您的标题';
         if(itemList.value == 'input'){

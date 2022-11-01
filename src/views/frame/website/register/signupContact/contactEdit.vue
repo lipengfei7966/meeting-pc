@@ -1,9 +1,17 @@
 <template>
   <div class="content">
 
-    <el-form ref='contactForm' @submit.native.prevent label-position="right" :disabled="isView" :rules='rules' :model="setForm" label-width="150px" class='contactForm'>
-      <div v-for="element in setInfoList" :key="element.mapCode">
+    <el-form ref='contactForm' :validate-on-rule-change="false" @submit.native.prevent label-position="right" :disabled="isView" :rules='rules' :model="setForm" label-width="150px" class='contactForm'>
+      <el-form-item label="人员编码" prop='personnelCode'>
+        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" placeholder="请输入人员编码"></el-input>
+      </el-form-item>
+      <el-form-item label="参会人类型" prop='contactType'>
+        <el-select v-model="setForm.contactType" style="width:50%" placeholder="请选择参会人类型">
+          <el-option v-for="item in contactTypeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+        </el-select>
+      </el-form-item>
 
+      <div v-for="element in setInfoList" :key="element.mapCode">
         <!-- 分割线 -->
         <div v-if="element.systemName == '分割线' " class="form-item-input">
           <el-divider content-position="center">{{ element.placeholder }}</el-divider>
@@ -19,6 +27,85 @@
           <pre style="padding-left: 150px;">{{ element.placeholder }}</pre>
         </div>
 
+        <!-- 自定义信息 -->
+        <el-form-item v-if="element.isCoustomInfo" :label="element.title" :prop="'signupContactDtlDto.'+element.mapCode">
+          <!-- 短文本 -->
+          <div v-if="element.systemName == '短文本' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
+            </div>
+          </div>
+
+          <!-- 长文本 -->
+          <div v-if="element.systemName == '长文本' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+            </div>
+          </div>
+
+          <!-- 数字 -->
+          <div v-if="element.systemName == '数字' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" @input="setForm[element.mapCode] = limitInput(element,setForm[element.mapCode])" size="mini"></el-input>
+            </div>
+          </div>
+
+          <!-- 单选框 -->
+          <div v-if="element.systemName == '单选框' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
+                <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+              </el-radio-group>
+            </div>
+          </div>
+
+          <!-- 复选框 -->
+          <div v-if="element.systemName == '复选框' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
+                <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </div>
+
+          <!-- 下拉列表 -->
+          <div v-if="element.systemName == '下拉列表' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder">
+                <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+            </div>
+          </div>
+
+          <!-- 下拉复选框 -->
+          <div v-if="element.systemName == '下拉复选框' " class="form-item-input">
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
+                <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="(element.minCheckedCount != '' && (setForm.signupContactDtlDto[element.mapCode].length || 0) <= element.minCheckedCount) && setForm.signupContactDtlDto[element.mapCode].includes(item)"></el-option>
+              </el-select>
+            </div>
+          </div>
+
+          <!-- 附件 -->
+          <div v-if="element.systemName == '附件' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <el-upload class="avatar-uploader" action :limit="1" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>beforeAvatarUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="handleUploadForm">
+              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+              <i class="el-icon-plus avatar-uploader-icon"></i>
+              <p> {{element.placeholder}} </p>
+            </el-upload>
+          </div>
+
+          <!-- 日期 -->
+          <div v-if="element.systemName == '日期' " class="form-item-input">
+            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+            <div style="width: 50%;display:inline-block;vertical-align: top;">
+              <el-date-picker v-model="setForm[element.mapCode]" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+            </div>
+          </div>
+        </el-form-item>
+        <!-- 固定信息 -->
         <el-form-item v-else :label="element.title" :prop='element.mapCode'>
           <!-- 姓名 -->
           <div v-if=" element.mapCode=='name' && !element.nameSplit" class="form-item-input">
@@ -214,84 +301,10 @@
             </div>
           </div>
 
-          <!-- 短文本 -->
-          <div v-if="element.systemName == '短文本' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm[element.mapCode]" :placeholder="element.placeholder" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
-            </div>
-          </div>
-
-          <!-- 长文本 -->
-          <div v-if="element.systemName == '长文本' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm[element.mapCode]" type="textarea" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
-            </div>
-          </div>
-
-          <!-- 数字 -->
-          <div v-if="element.systemName == '数字' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-input v-model="setForm[element.mapCode]" :placeholder="element.placeholder" @input="setForm[element.mapCode] = limitInput(element,setForm[element.mapCode])" size="mini"></el-input>
-            </div>
-          </div>
-
-          <!-- 单选框 -->
-          <div v-if="element.systemName == '单选框' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-radio-group v-model="setForm[element.mapCode]" :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}">
-                <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-
-          <!-- 复选框 -->
-          <div v-if="element.systemName == '复选框' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-checkbox-group v-model="setForm[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
-                <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </div>
-
-          <!-- 下拉列表 -->
-          <div v-if="element.systemName == '下拉列表' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-select v-model="setForm[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder">
-                <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
-              </el-select>
-            </div>
-          </div>
-
-          <!-- 下拉复选框 -->
-          <div v-if="element.systemName == '下拉复选框' " class="form-item-input">
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-select v-model="setForm[element.mapCode]" style="margin-left: 10px;width:70%" :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
-                <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="(element.minCheckedCount != '' && setForm[element.mapCode].length <= element.minCheckedCount) && setForm[element.mapCode].includes(item)"></el-option>
-              </el-select>
-            </div>
-          </div>
-
-          <!-- 附件 -->
-          <div v-if="element.systemName == '附件' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <el-upload class="avatar-uploader" action :limit="1" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setForm[element.mapCode]" :before-upload="(file)=>beforeAvatarUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="handleUploadForm">
-              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
-              <i class="el-icon-plus avatar-uploader-icon"></i>
-              <p> {{element.placeholder}} </p>
-            </el-upload>
-          </div>
-
-          <!-- 日期 -->
-          <div v-if="element.systemName == '日期' " class="form-item-input">
-            <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-            <div style="width: 50%;display:inline-block;vertical-align: top;">
-              <el-date-picker v-model="setForm[element.mapCode]" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
-            </div>
-          </div>
         </el-form-item>
 
       </div>
+
       <div v-if="!isView" style="width:100%;text-align:center">
         <el-button type="primary" @click="submit">
           <span class="el-icon-upload2"></span>
@@ -320,7 +333,10 @@ export default {
       cityCountyList: [],
       isView: false,
       countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
+      contactTypeOptions: [], // 参会人类型列表
       setForm: {
+        personnelCode: '', // 人员编码
+        contactType: '', // 参会人类型
         name: '', // 姓名
         surname: '', // 姓
         ming: '', //名
@@ -357,66 +373,24 @@ export default {
         company: '', // 公司
         department: '', // 部门
         position: '', // 职位
+        signupContactDtlDto:{
+
+        }
+      },
+      setFormFile:{
+
       },
       pagingCount: 0, // f分页数量
       rules:{
-        // name: [
-        //   { required: true, message: "请输入姓名", trigger: "blur" },
-        // ],
-        // surname: [
-        //   { required: true, message: "请输入姓", trigger: "blur" },
-        // ],
-        // ming: [
-        //   { required: true, message: "请输入名", trigger: "blur" },
-        // ],
-        // sex: [
-        //   { required: true, message: "请选择性别", trigger: "blur" },
-        // ],
-        // certificateType: [
-        //   { required: true, message: "请选择证件类型", trigger: "blur" },
-        // ],
-        // certificate: [
-        //   { required: true, message: "请输入证件号码", trigger: "blur" },
-        // ],
-        // photo: [
-        //   { required: true, message: "请上传照片", trigger: "blur" },
-        // ],
-        // addres: [
-        //   { required: true, message: "请输入地址", trigger: "blur" },
-        // ],
-        // mobile: [
-        //   { required: true, message: "请输入手机号", trigger: "blur" },
-        // ],
-        // spareMobile: [
-        //   { required: true, message: "请输入备用手机号", trigger: "blur" },
-        // ],
-        // phone: [
-        //   { required: true, message: "请输入固定电话", trigger: "blur" },
-        // ],
-        // fax: [
-        //   { required: true, message: "请输入传真", trigger: "blur" },
-        // ],
-        // email: [
-        //   { required: true, message: "请输入邮箱", trigger: "blur" },
-        // ],
-        // spareEmail: [
-        //   { required: true, message: "请输入备用邮箱", trigger: "blur" },
-        // ],
-        // wechat: [
-        //   { required: true, message: "请输入微信号", trigger: "blur" },
-        // ],
-        // qq: [
-        //   { required: true, message: "请输入QQ号", trigger: "blur" },
-        // ],
-        // company: [
-        //   { required: true, message: "请输入公司名称", trigger: "blur" },
-        // ],
-        // department: [
-        //   { required: true, message: "请输入部门,名称", trigger: "blur" },
-        // ],
-        // position: [
-        //   { required: true, message: "请输入职位", trigger: "blur" },
-        // ],
+        signupContactDtlDto:{
+
+        },
+        personnelCode: [
+          { required: true, message: "请输入人员编码", trigger: "blur" },
+        ],
+        contactType: [
+          { required: true, message: "请选择参会人类型", trigger: "change" },
+        ]
       },
       pickerOptions: {
         disabledDate(time) {
@@ -458,25 +432,14 @@ export default {
     // 获取地址级联选项
     this.getComCityTreeList();
 
-    // 国际编码字典项查询
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      // dictItemName \ dictItemVal
-      this.countryCodeOptions = res.data
-    })
     // 表单配置查询
     this.getEventInfo();
-    if(this.$route.params.type == 'view'){
-      this.isView = true;
-      this.getContactInfo();
-    }
-    // 参会人信息查询
-    if(this.$route.params.type == 'update'){
-      this.getContactInfo();
-    }
+
+    // 获取参会人类型数据字典
+    this.getcontactTypeList();
+
+    // 国际编码字典项查询
+    this.getCountryCode()
   },
   methods:{
     // 表单配置查询
@@ -495,24 +458,30 @@ export default {
         }else{
           this.setInfoList = [];
         }
-        // debugger
         this.setInfoList.forEach(item => {
           // 1：自定义属性
           if(item.mapBase == 1){
-            if(['复选框','下拉复选框','附件'].includes(item.systemName)) {
+            if(['复选框','下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
-              this.$set(this.setForm,item.mapCode,[]);
+              this.$set(this.setForm.signupContactDtlDto,item.mapCode,[]);
               if(item.minCheckedCount > 0){
-                this.setForm[item.mapCode] = item.options.slice(0, item.minCheckedCount)
+                this.setForm.signupContactDtlDto[item.mapCode] = item.options.slice(0, item.minCheckedCount)
               }
             }else{
-              this.$set(this.setForm,item.mapCode,'');
+              this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
               // this.setForm[item.mapCode] = ''
             }
-          }
+            if(['附件'].includes(item.systemName)) {
+              this.$set(this.setFormFile,item.mapCode,[]);
+              console.log(this.setFormFile)
+            }
 
-          // 添加必填校验
-          this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
+            // 添加必填校验
+            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
+          }else{
+            // 添加必填校验
+            this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
+          }
 
           if(item.systemName == '分页'){
             this.pagingCount++
@@ -534,6 +503,14 @@ export default {
         })
 
         console.log(this.setForm)
+        if(this.$route.params.type == 'view'){
+          this.isView = true;
+          this.getContactInfo();
+        }
+        // 参会人信息查询
+        if(this.$route.params.type == 'update'){
+          this.getContactInfo();
+        }
       })
     },
     // 参会人信息查询
@@ -543,8 +520,15 @@ export default {
       method: 'POST',
       data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
-      // debugger
-      // this.setForm = res.data
+      this.setForm = res.data
+      for (const key in this.setForm.signupContactDtlDto) {
+        // console.log(key)
+        if( typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0){
+          this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
+          this.setForm.signupContactDtlDto[key].shift('卍')
+        }
+      }
+      console.log(this.setForm)
     })
     },
     submit(){
@@ -556,8 +540,20 @@ export default {
       }
       this.setForm.eventCode = this.$route.params.data,
       this.$refs["contactForm"].validate((valid) => {
-        debugger
         if (valid) {
+          let loading = this.$loading({
+            lock: true,
+            text: '保存中，请稍候...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          })
+          for (const key in this.setForm.signupContactDtlDto) {
+            // console.log(key)
+            if( Array.isArray(this.setForm.signupContactDtlDto[key]) ){
+              this.setForm.signupContactDtlDto[key].unshift('卍')
+              this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
+            }
+          }
           request({
             url: queryUrl,
             method: 'POST',
@@ -572,12 +568,12 @@ export default {
             }else{
               this.$message.error('保存失败')
             }
+            loading.close()
           })
         }
       })
     },
     limitInput(element,value) {
-      // debugger
       // element.numberDigitLimit 整数位数限制
       // element.decimalPlacesLimit 小数位数限制
       // var re = new RegExp(title,"g");
@@ -608,10 +604,8 @@ export default {
       return temp
     },
     handleAvatarSuccess(res, file){
-      // debugger
     },
     async beforeAvatarUpload(file,element) {
-      debugger
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -645,7 +639,6 @@ export default {
       return isAllowUpload
     },
     async imageSizeLimit(file, element){
-      debugger
       const _this = this
       let imgWidth = ''
       let imgHight = ''
@@ -670,7 +663,6 @@ export default {
     },
     // 自定义上传文件
     handleUploadForm(param,element) {
-      debugger
       let thiz = this
       let formData = new FormData()
       // formData.append('webpageCode', '') // 额外参数
@@ -687,12 +679,11 @@ export default {
         data: formData
       }).then(data => {
         if (data) {
-          debugger
           this.$message('上传文件成功')
-          if(element.mapCode = 'photo'){
-            this.setForm.photo = data.data.filePath
+          // if(element.mapCode = 'photo'){
+            this.setForm[element.mapCode] = data.data.filePath
             console.log( this.setForm.photo)
-          }
+          // }
           param.onSuccess(data)
           // this.printSetform.printBackground = data.data.filePath
         } else {
@@ -723,7 +714,6 @@ export default {
       })
 
       this.provinceCityList = selectProvince.chirldren // 接口返回字段为 chirldren 非 children
-      // debugger
     },
     cityChange(cityCode){
       let selectCity = this.provinceCityList.find(city => {
@@ -732,7 +722,27 @@ export default {
       this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
     },
     selectMultipleChange(val){
-      // debugger
+    },
+    // 国际编码字典项查询
+    getCountryCode(){
+      request({
+        url: '/api/sys/dict/listItem',
+        method: 'POST',
+        data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      }).then(res => {
+        // dictItemName \ dictItemVal
+        this.countryCodeOptions = res.data
+      })
+    },
+    // 获取参会人类型数据字典
+    getcontactTypeList(){
+      request({
+        url: '/api/sys/dict/listItem',
+        method: 'POST',
+        data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      }).then(res => {
+        this.contactTypeOptions = res.data
+      })
     },
     // 返回上级
     back(){
