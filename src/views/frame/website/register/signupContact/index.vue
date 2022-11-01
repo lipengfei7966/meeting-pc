@@ -179,7 +179,8 @@ export default {
           {
             name: 'update',
             type: 'route',
-            component: () => import('./edit.vue'),
+            event: this.toUpdateSetting,
+            // component: () => import('./edit.vue'),
             getParam: () => {
               return {
                 eventCode: this.form.listQuery.data.eventCode,
@@ -190,13 +191,14 @@ export default {
           {
             name: 'view',
             type: 'route',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode,
-                code: this.$refs.bsTable.currentRow.code
-              }
-            }
+            event: this.toViewSetting,
+            // component: () => import('./edit.vue'),
+            // getParam: () => {
+            //   return {
+            //     eventCode: this.form.listQuery.data.eventCode,
+            //     code: this.$refs.bsTable.currentRow.code
+            //   }
+            // }
           },
           {
             name: 'remove',
@@ -376,12 +378,18 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
+      if(!this.$refs.bsTable.currentRow){
+        this.$message.warning('请选择参会人')
+        return
+      }
+
       this.$router.push({
         name: 'contactEdit',
         params: {
           back: 'signupContact',
           data: this.form.listQuery.data.eventCode,
-          type: 'update'
+          contactCode: this.$refs.bsTable.currentRow.code,
+          type: 'update',
         }
       })
     },
@@ -390,11 +398,17 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
+      debugger
+      if(!this.$refs.bsTable.currentRow){
+        this.$message.warning('请选择参会人')
+        return
+      }
       this.$router.push({
         name: 'contactEdit',
         params: {
           back: 'signupContact',
           data: this.form.listQuery.data.eventCode,
+          contactCode: this.$refs.bsTable.currentRow.code,
           type: 'view'
         }
       })
