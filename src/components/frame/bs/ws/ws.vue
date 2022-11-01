@@ -22,23 +22,23 @@ export default {
   },
   methods: {
     initWebSocket() {
-      // let tokenStr = this.$store.getters.token
-      // if (tokenStr === null || tokenStr === undefined) {
-      //   tokenStr = getToken()
-      // }
-      // let wsurl
-      // if (process.env.NODE_ENV === 'production') {
-      //   const host = location.host
-      //   wsurl = 'ws://' + host + process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
-      // } else {
-      //   wsurl = process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
-      // }
-      // this.wsconn = new WebSocket(wsurl)
-      // this.wsconn.onopen = this.onWsOpen
-      // this.wsconn.onclose = this.onWsClose
-      // this.wsconn.onerror = this.onWsError
-      // this.wsconn.onmessage = this.onWsMessage
-      // Vue.prototype.$wsconn = this.wsconn
+      let tokenStr = this.$store.getters.token
+      if (tokenStr === null || tokenStr === undefined) {
+        tokenStr = getToken()
+      }
+      let wsurl
+      if (process.env.NODE_ENV === 'production') {
+        const host = location.host
+        wsurl = 'ws://' + host + process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
+      } else {
+        wsurl = process.env.WS_API + '?token=' + encodeURIComponent(tokenStr)
+      }
+      this.wsconn = new WebSocket(wsurl)
+      this.wsconn.onopen = this.onWsOpen
+      this.wsconn.onclose = this.onWsClose
+      this.wsconn.onerror = this.onWsError
+      this.wsconn.onmessage = this.onWsMessage
+      Vue.prototype.$wsconn = this.wsconn
     },
     addWsListener(moduleCode, linstener) {
       this.listenerMap.set(moduleCode, linstener)
@@ -80,9 +80,9 @@ export default {
         this.retryCnt = 60
       }
       const timeDelay = 10000 * this.retryCnt
-      // setTimeout(() => {
-      //   this.initWebSocket()
-      // }, timeDelay)
+      setTimeout(() => {
+        this.initWebSocket()
+      }, timeDelay)
     },
     onWsError(event) {},
     onWsMessage(event) {

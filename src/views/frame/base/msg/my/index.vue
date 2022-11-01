@@ -4,7 +4,7 @@
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref='bsTable' :mainData='mainData'>
       <template slot="msgExtend" slot-scope="scope">
-        <el-tag v-if="scope.row.msgExtend" @click="billDetail(scope.row, $event)">单据信息</el-tag>
+        <el-tag v-if="scope.row.msgExtend" @click="billDetail(scope.row, $event)">更多信息</el-tag>
       </template>
 
     </bs-table>
