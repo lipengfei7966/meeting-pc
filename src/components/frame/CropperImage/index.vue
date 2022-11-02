@@ -67,6 +67,10 @@ export default {
       }
     };
   },
+  mounted(){
+    debugger
+    console.log(this.filePath)
+  },
   methods: {
     //初始化函数
     imgLoad (msg) {
@@ -119,7 +123,7 @@ export default {
       let _this = this
       let formData = new FormData()
       this.$refs.cropper.getCropBlob(async (data) => {
-        formData.append('file', data, "CropperImage.jpg")
+        formData.append('file', data, this.fileName)
         let loading = this.$loading({
           lock: true,
           text: '上传中，请稍候...',

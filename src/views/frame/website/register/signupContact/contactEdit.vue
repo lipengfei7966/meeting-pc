@@ -331,7 +331,7 @@
     </el-dialog>
 
     <!-- 剪裁组件弹窗 -->
-    <el-dialog title="裁切照片" :visible.sync="cropperModel" width="950px" center>
+    <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="950px" center>
       <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
     </el-dialog>
   </div>
