@@ -2011,6 +2011,10 @@ export default {
       if(itemList.value == 'fax'){
         obj.check[0].code = "015"
       }
+      // 照片限制宽高
+      if(itemList.value == 'photo'){
+        obj.pictureSizeLimit = true;
+      }
 
       // 证件
       // debugger

@@ -147,10 +147,20 @@
 
             <!-- 照片 -->
             <div v-if="element.mapCode == 'photo' " class="form-item-input">
-              <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-              <el-upload class="avatar-uploader" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
-                <img v-if="setForm.photo" :src="setForm.photo" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <div v-if="setForm.photo" style="width:100px;height: 100px;" class="picture">
+                <!-- <img v-if="setForm.photo" :src="setForm.photo" class="avatar"> -->
+                <img class="avatar el-upload-list__item-thumbnail" :src="setForm.photo" alt="">
+                <span class="el-upload-list__item-actions" style="width:100px;">
+                  <span class="el-upload-list__item-preview">
+                    <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
+                  </span>
+                  <span class="el-upload-list__item-preview">
+                    <i class="el-icon-delete" @click="deleteImg(setForm.photo)"></i>
+                  </span>
+                </span>
+              </div>
+              <el-upload v-else class="avatar-uploader" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
+                <i class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
 
@@ -316,12 +326,20 @@
       </div>
     </el-form>
 
+    <el-dialog :visible.sync="previewDialogVisible">
+      <img width="100%" :src="previewImgUrl" alt="">
+    </el-dialog>
+
+    <!-- 剪裁组件弹窗 -->
+    <el-dialog title="裁切照片" :visible.sync="cropperModel" width="950px" center>
+      <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
-import codeCopyVue from '../../../base/generator/code/code copy.vue';
+import CropperImage from "@/components/frame/CropperImage";
 export default {
   name: "contactEdit",
   data() {
@@ -335,6 +353,13 @@ export default {
       provinceCityList: [],
       cityCountyList: [],
       isView: false,
+      photoName: '', // 照片文件名
+      photoPath: '', // 照片地址
+      photoLimitWidth: '',
+      photoLimitHeight: '',
+      previewDialogVisible: false, // 预览图片弹窗
+      previewImgUrl:'', // 预览图片地址
+      cropperModel: false, // 图片裁剪弹窗
       countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
       contactTypeOptions: [], // 参会人类型列表
       setForm: {
@@ -425,6 +450,7 @@ export default {
       },
     }
   },
+  components: {CropperImage},
   props: {
     param: {
       type: [String, Object],
@@ -607,6 +633,16 @@ export default {
         }
       })
     },
+    // 预览照片
+    previewImg(imageUrl){
+      debugger
+      this.previewDialogVisible = true;
+      this.previewImgUrl = imageUrl;
+    },
+    // 删除照片
+    deleteImg(){
+      this.setForm.photo = '';
+    },
     limitInput(element,value) {
       // element.numberDigitLimit 整数位数限制
       // element.decimalPlacesLimit 小数位数限制
@@ -637,7 +673,15 @@ export default {
       }
       return temp
     },
+    // 裁剪照片上传成功回调
+    handleUploadSuccess(data){
+      debugger
+      this.setForm.photo = data.url
+    },
     handleAvatarSuccess(res, file){
+      debugger
+      this.photoName = res.fileName
+      this.cropperModel = true;
     },
     async beforeAvatarUpload(file,element) {
       // fileTypeLimit // 是否限制文件类型
@@ -683,6 +727,7 @@ export default {
             imgWidth = img.width
             imgHight = img.height
             // const valid = img.width <= 1700 && img.height <= 2500
+            debugger
             const valid = img.width <= element.photoLimitWidth && img.height <= element.photoLimitHeight
             valid ? resolve() : reject()
         }
@@ -690,7 +735,10 @@ export default {
       }).then(() => {
           return file
       }, () => {
-          _this.$message.warning({ message: `上传文件的图片大小不合符标准,宽需要为${element.photoLimitWidth}px，高需要为${element.photoLimitHeight}px。当前上传图片的宽高分别为：${imgWidth}px和${imgHight}px` })
+          this.cropperModel = true;
+          this.photoLimitWidth = element.photoLimitWidth;
+          this.photoLimitHeight = element.photoLimitHeight;
+          _this.$message.warning({ message: `上传的图片尺寸超出图片限制,宽不超过${element.photoLimitWidth}px，高不超过${element.photoLimitHeight}px。当前上传图片的宽高分别为：${imgWidth}px和${imgHight}px` })
           return Promise.reject()
       })
       return await isSize
@@ -718,7 +766,7 @@ export default {
             this.setForm[element.mapCode] = data.data.filePath
             console.log( this.setForm.photo)
           // }
-          param.onSuccess(data)
+          param.onSuccess(data,element)
           // this.printSetform.printBackground = data.data.filePath
         } else {
           thiz.$message('上传文件失败')
@@ -819,7 +867,6 @@ export default {
         border-color: #409eff;
       }
     }
-
     .avatar-uploader-icon {
       font-size: 28px;
       color: #8c939d;
@@ -832,6 +879,41 @@ export default {
       width: 100px;
       height: 100px;
       display: block;
+    }
+    .picture:hover {
+    }
+    .el-upload-list__item-actions {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      cursor: default;
+      text-align: center;
+      color: #fff;
+      opacity: 0;
+      font-size: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: opacity 0.3s;
+    }
+    .el-upload-list__item-actions:after {
+      display: inline-block;
+      content: '';
+      height: 100%;
+      vertical-align: middle;
+    }
+    .el-upload-list__item-actions span {
+      display: none;
+      cursor: pointer;
+    }
+    .el-upload-list__item-actions:hover {
+      opacity: 1;
+    }
+    .el-upload-list__item-actions:hover span {
+      display: inline-block;
+    }
+    .el-upload-list__item-actions span + span {
+      margin-left: 15px;
     }
   }
 }
