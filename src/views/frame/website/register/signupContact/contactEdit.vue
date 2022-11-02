@@ -435,7 +435,7 @@ export default {
   },
   computed:{
     addOther(){
-      return 
+      return
     }
   },
   mounted(){
@@ -475,7 +475,6 @@ export default {
             if(['复选框','下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
               this.$set(this.setForm.signupContactDtlDto,item.mapCode,[]);
-              
               if(item.minCheckedCount > 0){
                 this.setForm.signupContactDtlDto[item.mapCode] = item.options.slice(0, item.minCheckedCount)
               }
@@ -576,7 +575,6 @@ export default {
           for (const key in this.setForm.signupContactDtlDto) {
             // console.log(key)
             if( Array.isArray(this.setForm.signupContactDtlDto[key]) ){
-              
               this.setForm.signupContactDtlDto[key].forEach( (checkItem, checkIndex) => {
                 if(checkItem == '其他'){
                   this.setForm.signupContactDtlDto[key][checkIndex] = this.setForm.signupContactDtlDto[key][checkIndex] + "&" + this.setformOther[key]
