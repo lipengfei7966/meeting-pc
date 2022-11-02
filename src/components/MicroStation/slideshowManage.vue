@@ -7,7 +7,7 @@
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
     </div>
-    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+    <el-dialog title="素材选择" :fullscreen="true" :visible.sync="dialogVisible" destroy-on-close>
       <div>
         <!-- 放内容的 -->
         <material ref="material" :MultiSelect="true" />

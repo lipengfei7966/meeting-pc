@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0b2d08"],{"265c":function(t,n,s){"use strict";s.r(n);var e=function(){var t=this,n=t._self._c;return n("div",{staticClass:"customer_set box"})},c=[],u={name:"CustomerSetting"},o=u,a=s("0b56"),i=Object(a["a"])(o,e,c,!1,null,"2f4c27b4",null);n["default"]=i.exports}}]);
