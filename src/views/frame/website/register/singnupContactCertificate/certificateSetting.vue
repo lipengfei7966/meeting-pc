@@ -58,7 +58,7 @@
                 <p>证件内容</p>
                 <div style="border: 1px solid;padding: 10px">
                   <el-checkbox-group v-model="printSetform.certificateContent" @change="certificateContentChange">
-                    <el-checkbox :label="item.code" v-for="(item,index) in certificateContentList" :key="index"> {{ item.mapName }}</el-checkbox>
+                    <el-checkbox :label="item.code" v-for="(item,index) in certificateContentList" :key="index"> {{ item.title }}</el-checkbox>
                   </el-checkbox-group>
 
                 </div>
@@ -258,13 +258,14 @@ export default {
       //
       debugger
       this.certificateContentList = res.data.filter(item => {
-        return item.mapType == '1'
+        return item.systmeName != '附件'
       })
       let newItems = [
-        { mapName: '参会人二维码', code: 'qrCode' },
-        { mapName: '参会人条码', code: 'barCode' },
-        { mapName: '人员二维码', code: 'personQrCode' },
-        { mapName: '人员条码', code: 'personBarCode' }
+        { title: '参会人二维码', code: 'qrCode' },
+        { title: '参会人条码', code: 'barCode' },
+        { title: '人员二维码', code: 'personQrCode' },
+        { title: '人员条码', code: 'personBarCode' },
+        { title: '参会人类型', code: 'contactType' },
       ]
       this.certificateContentList = this.certificateContentList.concat(newItems)
     })
@@ -486,8 +487,8 @@ export default {
           if (!isIncludes) {
             // debugger
             let pushItem = {
-              name: item.mapName, // 表名对应的值
-              label: item.mapName, // 表名
+              name: item.title, // 表名对应的值
+              label: item.title, // 表名
               value: item.code,
               fontSize: '16px', // 默认字体
               lineHeight: 'normal', // 默认行高

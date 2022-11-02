@@ -321,8 +321,9 @@ export default {
         data: { data: { eventCode: this.form.listQuery.data.eventCode }, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       }).then((res) => {
         this.certificateContentList = res.data.filter((item) => {
-          return item.mapType == '1'
+          return item.systmeName != '附件'
         })
+        this.certificateContentList.push({ title: '参会人类型', mapCode: 'contactType' })
       })
     },
     toRecord() {
@@ -364,14 +365,15 @@ export default {
       this.tableData.forEach((item, index) => {
         if (item.certificateLayout) {
           this.certificateContentList.forEach((dictItem, dictIndex) => {
-            if (item.certificateLayout.indexOf(dictItem.mapName) >= 0) {
+            if (item.certificateLayout.indexOf(dictItem.title) >= 0) {
               // debugger
-              if(dictItem.mapName == '参会人类型'){
+              if(dictItem.title == '参会人类型'){
+                debugger
                 // 参会人类型 是数据字典, 取到列表 contantType 的值是 value值,需要转换成对应的name
                let mapVal =  Vue.filter('dataDictFormat')(item[dictItem.mapCode], this.$t('datadict.contantType'))
-                item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, mapVal || '')
+                item.certificateLayout = item.certificateLayout.replace(dictItem.title, mapVal || '')
               }else{
-                item.certificateLayout = item.certificateLayout.replace(dictItem.mapName, item[dictItem.mapCode] || '')
+                item.certificateLayout = item.certificateLayout.replace(dictItem.title, item[dictItem.mapCode] || '')
               }
             }
           })
