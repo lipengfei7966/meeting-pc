@@ -56,6 +56,7 @@
               <div style="width: 50%;display:inline-block;vertical-align: top;">
                 <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
                   <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                  <el-input v-if="setForm.signupContactDtlDto[element.mapCode]=='其他'" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width:200px"></el-input>
                 </el-radio-group>
               </div>
             </div>
@@ -65,6 +66,7 @@
               <div style="width: 50%;display:inline-block;vertical-align: top;">
                 <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
                   <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+                  <el-input v-if="setForm.signupContactDtlDto[element.mapCode].includes('其他')" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width:200px;margin-top: 5px;"></el-input>
                 </el-checkbox-group>
               </div>
             </div>
@@ -378,6 +380,9 @@ export default {
 
         }
       },
+      setformOther:{
+
+      },
       setFormFile:{
 
       },
@@ -428,6 +433,11 @@ export default {
       }
     }
   },
+  computed:{
+    addOther(){
+      return 
+    }
+  },
   mounted(){
     // this.$route.params.type   add--新增  update--修改  view--查看
     // 获取地址级联选项
@@ -465,6 +475,7 @@ export default {
             if(['复选框','下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
               this.$set(this.setForm.signupContactDtlDto,item.mapCode,[]);
+              
               if(item.minCheckedCount > 0){
                 this.setForm.signupContactDtlDto[item.mapCode] = item.options.slice(0, item.minCheckedCount)
               }
@@ -476,7 +487,7 @@ export default {
               this.$set(this.setFormFile,item.mapCode,[]);
               console.log(this.setFormFile)
             }
-
+            this.$set(this.setformOther,item.mapCode,'');
             // 添加必填校验
             this.$set(this.rules.signupContactDtlDto, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
           }else{
@@ -527,7 +538,20 @@ export default {
         if( typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0){
           this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
           this.setForm.signupContactDtlDto[key].shift('卍')
+
+          this.setForm.signupContactDtlDto[key].forEach((checkItem,checkIndex) => {
+            // debugger
+            if(checkItem.indexOf('其他&') == 0){
+              this.setformOther[key] = checkItem.split('&')[1]
+              this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
+            }
+          })
         }
+        if(typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('其他&')==0){
+          debugger
+            this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
+            this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
+          }
       }
       console.log(this.setForm)
     })
@@ -539,7 +563,8 @@ export default {
       }else if(this.$route.params.type == 'update'){
         queryUrl = '/api/register/signupContact/update'
       }
-      this.setForm.eventCode = this.$route.params.data,
+      this.setForm.eventCode = this.$route.params.data;
+
       this.$refs["contactForm"].validate((valid) => {
         if (valid) {
           let loading = this.$loading({
@@ -551,8 +576,18 @@ export default {
           for (const key in this.setForm.signupContactDtlDto) {
             // console.log(key)
             if( Array.isArray(this.setForm.signupContactDtlDto[key]) ){
+              
+              this.setForm.signupContactDtlDto[key].forEach( (checkItem, checkIndex) => {
+                if(checkItem == '其他'){
+                  this.setForm.signupContactDtlDto[key][checkIndex] = this.setForm.signupContactDtlDto[key][checkIndex] + "&" + this.setformOther[key]
+                }
+              })
               this.setForm.signupContactDtlDto[key].unshift('卍')
               this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
+            }else{
+              if(this.setForm.signupContactDtlDto[key] == '其他'){
+                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key] + "&" + this.setformOther[key]
+              }
             }
           }
           request({

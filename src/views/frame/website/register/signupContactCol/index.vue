@@ -1069,7 +1069,8 @@
                 <!-- 限制字数 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制字数</p>
-                  <el-input-number style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  <el-input-number v-if="setInfoList[checkedIndex].systemName == '短文本'" style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="50" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  <el-input-number v-if="setInfoList[checkedIndex].systemName == '长文本'" style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="200" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                   <!-- <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input> -->
                 </div>
                 <!-- 报名后不允许编辑 -->
@@ -1095,7 +1096,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制数字位数</p>
                   <p>
-                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1104,7 +1105,7 @@
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制小数点后位数</p>
                   <p>
                     小数点后
-                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1135,7 +1136,7 @@
                     </draggable>
                   </div>
                   <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex]), ''">添加</el-button>
-                  <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
+                  <el-button type="primary" v-if="!setInfoList[checkedIndex].options.includes('其他')" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
                 </div>
 
                 <!-- 排列方向 -->
@@ -1175,7 +1176,7 @@
                     </draggable>
                   </div>
                   <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex]), ''">添加</el-button>
-                  <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
+                  <el-button type="primary" v-if="!setInfoList[checkedIndex].options.includes('其他')" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
                 </div>
 
                 <!-- 可选范围 -->
@@ -1278,7 +1279,7 @@
                     </draggable>
                   </div>
                   <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex]), ''">添加</el-button>
-                  <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
+                  <el-button type="primary" v-if="!setInfoList[checkedIndex].options.includes('其他')" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
                 </div>
 
                 <!-- 可选范围 -->
