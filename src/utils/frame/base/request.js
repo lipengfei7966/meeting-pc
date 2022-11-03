@@ -111,6 +111,7 @@ service.interceptors.response.use(
             session.set('errorMsgId', '')
           }, 3000)
         }
+        return res
       }
 
       // 用户账户重复登陆
