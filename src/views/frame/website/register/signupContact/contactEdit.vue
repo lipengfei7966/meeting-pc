@@ -159,8 +159,8 @@
                   </span>
                 </span>
               </div>
-              <el-upload v-else class="avatar-uploader" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
-                <i class="el-icon-plus avatar-uploader-icon"></i>
+              <el-upload v-else class="avatar-uploader" :disabled="element.photeTailor == '手动裁剪'" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
+                <i class="el-icon-plus avatar-uploader-icon" @click="showCropperModel(element)"></i>
               </el-upload>
             </div>
 
@@ -672,6 +672,13 @@ export default {
          temp = maxNumber
       }
       return temp
+    },
+    showCropperModel(element){
+      if(element.photeTailor == '手动裁剪'){
+        this.cropperModel = true;
+        this.photoLimitWidth = element.photoLimitWidth
+        this.photoLimitHeight = element.photoLimitHeight
+      }
     },
     // 裁剪照片上传成功回调
     handleUploadSuccess(data){
