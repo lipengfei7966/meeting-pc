@@ -331,7 +331,7 @@
     </el-dialog>
 
     <!-- 剪裁组件弹窗 -->
-    <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="950px" center>
+    <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="1050" center>
       <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
     </el-dialog>
   </div>
@@ -531,21 +531,18 @@ export default {
 
             if(item.mapCode == 'mobile' || item.mapCode == 'spareMobile'){
               // this.rules[item.mapCode].push({ pattern: / /,message: '请输入正确的手机号', trigger: "blur"})
-              // // 中国大陆手机号校验
-              // if(item.check.includes(checkItem => checkItem.code=='005') && !item.check.includes(checkItem => checkItem.code=='006')){
-              //   this.rules[item.mapCode].push({ pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
-              // }
-              // // 港澳台手机号校验
-              // if(!item.check.includes(checkItem => checkItem.code=='005') && item.check.includes(checkItem => checkItem.code=='006')){
-              //   this.rules[item.mapCode].push({ pattern: /^([6|9])\d{7}$|^[0][9]\d{8}$|^[6]([8|6])\d{5}$/,message: '请输入正确的手机号', trigger: "blur"})
-              // }
-              // // 大陆加港澳台手机号校验
-              // if(item.check.includes(checkItem => checkItem.code=='005') && item.check.includes(checkItem => checkItem.code=='006')){
-              //   this.rules[item.mapCode].push({ pattern: /^[1][3-8]\d{9}$|^([6|9])\d{7}$|^[0][9]\d{8}$|^[6]([8|6])\d{5}$/,message: '请输入正确的手机号', trigger: "blur"})
-              // }
-              // if(item.check.includes(checkItem => checkItem.code=='007')){
+              
+              if(item.check.includes(checkItem => checkItem.code=='005') && !item.check.includes(checkItem => checkItem.code=='006')){
+                // 中国大陆手机号校验
+                this.rules[item.mapCode].push({ pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+              }else if(!item.check.includes(checkItem => checkItem.code=='005') && item.check.includes(checkItem => checkItem.code=='006')){
+                // 港澳台手机号校验
+                this.rules[item.mapCode].push({ pattern: /^([6|9])\d{7}$|^[0][9]\d{8}$|^[6]([8|6])\d{5}$/,message: '请输入正确的手机号', trigger: "blur"})
+              }else if(item.check.includes(checkItem => checkItem.code=='005') && item.check.includes(checkItem => checkItem.code=='006')){
+                // 大陆加港澳台手机号校验
+                this.rules[item.mapCode].push({ pattern: /^[1][3-8]\d{9}$|^([6|9])\d{7}$|^[0][9]\d{8}$|^[6]([8|6])\d{5}$/,message: '请输入正确的手机号', trigger: "blur"})
+              }
 
-              // }
               // item.check.forEach(checkItem => {
               //   if(checkItem.code == '005'){ // 中国大陆手机号校验
               //     this.rules[item.mapCode].push({ pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
@@ -667,6 +664,7 @@ export default {
               this.$message.success('保存成功')
             }
             loading.close()
+            this.back();
           })
         }
       })
