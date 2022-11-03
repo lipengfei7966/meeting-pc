@@ -51,6 +51,16 @@ export function validateMobile(mobile) {
   return re.test(mobile)
 }
 /**
+ * validate IDcard
+ * @param IDcard
+ * @returns {boolean}
+ */
+export function validateIDcard(IDcard) {
+  const re = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+  return re.test(IDcard)
+}
+
+/**
  * 校验特殊字符
  * @param {*} str 待校验字符串
  * @returns {boolean}
