@@ -237,7 +237,7 @@ export default {
   justify-content: flex-start;
   .resource_ {
     width: 24%;
-    height: 35%;
+    height: 270px;
     margin-top: 10px;
     margin-right: 1%;
     border-radius: 10px;
