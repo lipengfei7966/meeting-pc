@@ -379,7 +379,6 @@ export default {
               prop: 'position',
               label: 'website.signupContact.list.position'
             },
-            
             {
               prop: 'certificateFlag',
               label: 'website.signupContact.list.certificateFlag',
