@@ -405,6 +405,8 @@ export default {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
       debugger
       this.ruleForm.icon = JSON.parse(this.$refs.material.pictureRadio).picUrl
+      // this.ruleForm.fileList = [{ name: '', url: '' }]
+      this.ruleForm.fileList = [{ name: '', url: '' }]
       this.ruleForm.fileList[0].url = JSON.parse(this.$refs.material.pictureRadio).picUrl
       this.ruleForm.fileList[0].name = JSON.parse(this.$refs.material.pictureRadio).picName
       this.dialogVisible = false
