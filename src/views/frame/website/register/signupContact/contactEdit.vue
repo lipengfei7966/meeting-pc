@@ -137,7 +137,7 @@
             <div v-if="element.mapCode == 'certificate' " class="form-item-input">
               <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
               <div style="width: 50%;display:inline-block;vertical-align: top;">
-                <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder">
+                <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" @change="certificateTypeChange">
                   <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                 </el-select>
                 <br>
@@ -340,9 +340,24 @@
 <script>
 import request from '@/utils/frame/base/request'
 import CropperImage from "@/components/frame/CropperImage";
+import {validateEmail, validateMobile, validateIDcard} from '@/utils/frame/base/validate.js'
 export default {
   name: "contactEdit",
   data() {
+    var validateMobile = (rule, value, callback) => {
+      debugger
+      if (!value) {
+        return callback(new Error('请输入有效时长'));
+      }else if (!Number(value)) {
+          callback(new Error('请输入数字'));
+      } else {
+        if (value < 30) {
+          callback(new Error('延期时长最少不得低于30天'));
+        } else {
+          callback();
+        }
+      }
+    };
     return {
       setInfoList: [], // 选中的配置信息列表
       baseInfoList: [], // 基础信息
@@ -479,6 +494,7 @@ export default {
     this.getCountryCode()
   },
   methods:{
+    validateEmail, validateMobile, validateIDcard,
     // 表单配置查询
     getEventInfo() {
       request({
@@ -517,7 +533,19 @@ export default {
             this.$set(this.rules.signupContactDtlDto, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
           }else{
             // 添加必填校验
-            this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
+            if(item.mapCode == 'mobile' || item.mapCode == 'spareMobile'){
+              this.$set(this.rules, item.mapCode, [
+                {required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },
+                { pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,message: '请输入正确的手机号', trigger: "blur"}
+              ])
+            }else if(item.mapCode == 'email' || item.mapCode == 'spareEmail'){
+              this.$set(this.rules, item.mapCode, [
+                {required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },
+                { pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/,message: '请输入正确的手机号', trigger: "blur"}
+              ])
+            }else{
+              this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
+            }
           }
 
           if(item.systemName == '分页'){
@@ -794,6 +822,19 @@ export default {
       }).then(res => {
         this.chinaProvinceList = res.data
       })
+    },
+    // 证件类型切换
+    certificateTypeChange(val){
+      this.setForm.certificate = '';
+      if(val == '居民身份证'){
+        this.rules.certificate.push({ pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,message: '请输入正确的身份证号码', trigger: "blur"})
+        // this.$set(this.rules, 'certificate', [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },{ validator: validateIDcard, trigger: "blur"}])
+      }else{
+        this.rules.certificate.pop()
+      }
+      this.$refs.contactForm.clearValidate('certificate');  // 移除上次校验结果
+      // this.$refs.contactForm.validate();
+      // debugger
     },
     provinceChange(provinceCode){
       let selectProvince = this.chinaProvinceList.find(province => {
