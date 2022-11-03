@@ -193,7 +193,7 @@ export default {
     width: 100%;
     .cropper {
       width: auto;
-      height: auto;
+      height: 300px;
       min-height: 300px;
     }
   }
