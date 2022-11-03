@@ -700,7 +700,7 @@ export default {
       return temp
     },
     showCropperModel(element){
-      if(element.photeTailor == '手动裁剪'){
+      if(element.photeTailor == '手动裁剪'  && !this.isView){
         this.cropperModel = true;
         this.photoLimitWidth = element.photoLimitWidth
         this.photoLimitHeight = element.photoLimitHeight
