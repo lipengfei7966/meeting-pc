@@ -140,7 +140,8 @@ service.interceptors.response.use(
           })
         )
       }
-      return Promise.reject('error')
+      return res
+      // return Promise.reject('error')
     }
   },
   err => {
