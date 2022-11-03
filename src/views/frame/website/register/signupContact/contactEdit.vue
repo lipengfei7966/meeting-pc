@@ -625,8 +625,6 @@ export default {
           }).then(res => {
             if(res.status){
               this.$message.success('保存成功')
-            }else{
-              this.$message.error('保存失败')
             }
             loading.close()
           })
