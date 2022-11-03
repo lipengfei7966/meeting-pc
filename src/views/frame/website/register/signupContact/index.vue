@@ -235,23 +235,7 @@ export default {
         isColset: true,
         table: {
           cols: [
-            {
-              prop: 'name',
-              label: 'website.signupContact.list.name'
-            },
-            {
-              prop: 'mobile',
-              label: 'website.signupContact.list.mobile'
-            },
-            {
-              prop: 'email',
-              label: 'website.signupContact.list.email'
-            },
-            {
-              prop: 'department',
-              label: 'website.signupContact.list.department'
-            },
-            {
+          {
               prop: 'code',
               label: 'website.signupContact.list.code'
             },
@@ -267,6 +251,135 @@ export default {
                 dict: this.$t('datadict.contantType')
               }
             },
+            {
+              prop: 'name',
+              label: 'website.signupContact.list.name'
+            },
+            {
+              prop: 'surname',
+              label: 'website.signupContact.list.surname'
+            },
+            {
+              prop: 'ming',
+              label: 'website.signupContact.list.ming'
+            },
+            {
+              prop: 'sex',
+              label: 'website.signupContact.list.sex'
+            },
+            {
+              prop: 'certificateType',
+              label: 'website.signupContact.list.certificateType'
+            },
+            {
+              prop: 'certificate',
+              label: 'website.signupContact.list.certificate'
+            },
+            {
+              prop: 'photo',
+              label: 'website.signupContact.list.photo'
+            },
+            {
+              prop: 'nations',
+              label: 'website.signupContact.list.nations'
+            },
+            {
+              prop: 'province',
+              label: 'website.signupContact.list.province'
+            },
+            {
+              prop: 'city',
+              label: 'website.signupContact.list.city'
+            },
+            {
+              prop: 'county',
+              label: 'website.signupContact.list.county'
+            },
+            {
+              prop: 'fullAddress',
+              label: 'website.signupContact.list.fullAddress'
+            },
+            {
+              prop: 'postcode',
+              label: 'website.signupContact.list.postcode'
+            },
+            {
+              prop: 'mobileIntCode',
+              label: 'website.signupContact.list.mobileIntCode'
+            },
+            {
+              prop: 'mobile',
+              label: 'website.signupContact.list.mobile'
+            },
+            {
+              prop: 'spareMobileIntXode',
+              label: 'website.signupContact.list.spareMobileIntXode'
+            },
+            {
+              prop: 'spareMobile',
+              label: 'website.signupContact.list.spareMobile'
+            },
+            {
+              prop: 'phoneIntCode',
+              label: 'website.signupContact.list.phoneIntCode'
+            },
+            {
+              prop: 'phoneAreaCode',
+              label: 'website.signupContact.list.phoneAreaCode'
+            },
+            {
+              prop: 'phone',
+              label: 'website.signupContact.list.phone'
+            },
+            {
+              prop: 'phoneRunNumber',
+              label: 'website.signupContact.list.phoneRunNumber'
+            },
+            {
+              prop: 'faxIntCode',
+              label: 'website.signupContact.list.faxIntCode'
+            },
+            {
+              prop: 'faxAreaCode',
+              label: 'website.signupContact.list.faxAreaCode'
+            },
+            {
+              prop: 'fax',
+              label: 'website.signupContact.list.fax'
+            },
+            {
+              prop: 'faxRunNumber',
+              label: 'website.signupContact.list.faxRunNumber'
+            },
+            {
+              prop: 'email',
+              label: 'website.signupContact.list.email'
+            },
+            {
+              prop: 'spareEmail',
+              label: 'website.signupContact.list.spareEmail'
+            },
+            {
+              prop: 'wechat',
+              label: 'website.signupContact.list.wechat'
+            },
+            {
+              prop: 'qq',
+              label: 'website.signupContact.list.qq'
+            },
+            {
+              prop: 'company',
+              label: 'website.signupContact.list.company'
+            },          
+            {
+              prop: 'department',
+              label: 'website.signupContact.list.department'
+            },
+            {
+              prop: 'position',
+              label: 'website.signupContact.list.position'
+            },
+            
             {
               prop: 'certificateFlag',
               label: 'website.signupContact.list.certificateFlag',
