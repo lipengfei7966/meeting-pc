@@ -370,7 +370,7 @@ export default {
             {
               prop: 'company',
               label: 'website.signupContact.list.company'
-            },          
+            },
             {
               prop: 'department',
               label: 'website.signupContact.list.department'
@@ -379,7 +379,6 @@ export default {
               prop: 'position',
               label: 'website.signupContact.list.position'
             },
-            
             {
               prop: 'certificateFlag',
               label: 'website.signupContact.list.certificateFlag',

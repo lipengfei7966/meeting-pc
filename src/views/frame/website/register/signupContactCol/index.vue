@@ -335,7 +335,7 @@
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-radio-group :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}">
+                      <el-radio-group :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
                         <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                       </el-radio-group>
                     </div>
@@ -346,7 +346,7 @@
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-checkbox-group v-model="setForm.checkedOptions" :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
+                      <el-checkbox-group v-model="setForm.checkedOptions" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
                         <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                       </el-checkbox-group>
                     </div>
@@ -1796,6 +1796,11 @@ export default {
     },
 
     save(){
+      this.setInfoList.forEach(item => {
+        if(item.systemName == '附件'){
+          item.allFileTypes = [...item.imageCheckedTypes,...item.documentCheckedTypes,...item.compressedFileCheckedTypes,...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
+        }
+      })
       request({
         url: 'api/register/signupContactCol/save',
         method: 'POST',
@@ -1905,7 +1910,7 @@ export default {
         photeTailor: '自动压缩裁剪', // 选中照片裁剪方式
         photoLimitWidth: '', // 限制照片尺寸-宽
         photoLimitHeight: '', // 限制照片尺寸-高
-        nationIsShow: false, // 是否展示国家
+        nationIsShow: true, // 是否展示国家
         nationTitle: '国家', // 国家标题
         nationPlaceholder: '请选择国家', // 国家提示文本
         provinceIsShow: false, // 省份是否展示
@@ -1923,7 +1928,7 @@ export default {
         postcodeIsShow: false, // 邮编是否显示
         postcodeTitle: '邮编', // 邮编标题
         postcodePlaceholder: '请输入邮编', // 邮编提示文本
-        countryCodeIsShow: true, // 国际区号是否展示
+        countryCodeIsShow: false, // 国际区号是否展示
         defaultCountryCode: '', // 默认国际区号
         mobilePhoneVerifyOptions: ['中国大陆','港澳台','国际'], // 格式校验选项
         mobilePhoneVerify:[], // 格式校验选中选项
@@ -2076,13 +2081,17 @@ export default {
 
   // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
+      debugger
       this.setInfoList[this.checkedIndex].imageCheckedTypes = val? this.setInfoList[this.checkedIndex].imageTypes : []
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
+      debugger
       let checkedCount = value.length;
       this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length;
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length;
+      // this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     documentCheckAllChange(val) {
       this.setInfoList[this.checkedIndex].documentCheckedTypes = val? this.setInfoList[this.checkedIndex].documentTypes : []
@@ -2244,13 +2253,17 @@ export default {
       // 005：手机号格式校验(中国大陆)
       // 006：手机号格式校验(港澳台)
       // 007：手机号格式校验(国际)
+      debugger
+      this.setInfoList[this.checkedIndex].check = [];
       val.forEach(element => {
         if(element == "中国大陆"){
-          this.setInfoList[this.checkedIndex].check[0].code = '005'
+          this.setInfoList[this.checkedIndex].check.push({code: '005', name: ''});
         }else if(element == "港澳台"){
-          this.setInfoList[this.checkedIndex].check[0].code = '006'
+          this.setInfoList[this.checkedIndex].check.push({code: '006', name: ''});
+          // this.setInfoList[this.checkedIndex].check[0].code = '006'
         }else if(element == "国际"){
-          this.setInfoList[this.checkedIndex].check[0].code = '007'
+          this.setInfoList[this.checkedIndex].check.push({code: '007', name: ''});
+          // this.setInfoList[this.checkedIndex].check[0].code = '007'
         }
       });
     },
@@ -2358,7 +2371,7 @@ export default {
     .formInfoItems {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: start;
     }
     .formInfoItem {
       min-width: 50px;
