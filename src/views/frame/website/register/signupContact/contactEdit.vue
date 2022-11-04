@@ -124,12 +124,12 @@
               <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                 <div>
                   <el-form-item label="姓" prop='surname'>
-                    <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" @change="surnameChange" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
+                    <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
                   </el-form-item>
                 </div>
                 <div>
                   <el-form-item label="名" prop='ming'>
-                    <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" @change="mingChange" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
+                    <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -202,7 +202,7 @@
                     <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                   </el-select>
                   <br>
-                  <el-input v-model="setForm.certificate" clearable style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                  <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
                 </div>
               </div>
 
@@ -230,7 +230,7 @@
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
                   <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" placeholder="请选择国际区号">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode,element)" placeholder="请选择国际区号">
                       <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
                     </el-select>
                   </el-input>
@@ -241,7 +241,7 @@
               <div v-if="element.mapCode == 'spareMobile' " class="form-item-input">
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
                   <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" placeholder="请选择国际区号">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode,element)" placeholder="请选择国际区号">
                       <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
                     </el-select>
                   </el-input>
@@ -395,7 +395,7 @@ export default {
         certificateType: '', // 证件类型
         certificate: '', // 证件号
         photo: '', // 照片
-        nations: '86', // 国家
+        nations: '', // 国家
         province: '', // 省份
         city: '', //城市
         county: '', // 区/县
@@ -544,10 +544,23 @@ export default {
             // 添加必填校验
             this.$set(this.rules.signupContactDtlDto, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
           }else{
+            // 国际区号设置默认值
+            if(item.mapCode == 'mobile'){
+              this.setForm.mobileIntCode = item.defaultCountryCode
+            }
+            if(item.mapCode == 'spareMobile'){
+              this.setForm.spareMobileIntCode = item.defaultCountryCode
+            }
+            if(item.mapCode == 'phone'){
+              this.setForm.phoneIntCode = item.defaultCountryCode
+            }
+            if(item.mapCode == 'fax'){
+              this.setForm.faxIntCode = item.defaultCountryCode
+            }
+
             // 添加必填校验
             this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
             if(item.mapCode == 'name' && item.nameSplit){
-              debugger
               this.rules.name[0].required = false;
               this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
               this.$set(this.rules, 'ming', [{required: item.isRequire, message: "名是必填项", trigger: "blur" }])
@@ -578,18 +591,38 @@ export default {
             }
 
             if(item.mapCode == 'mobile' || item.mapCode == 'spareMobile'){
-              // this.rules[item.mapCode].push({ pattern: / /,message: '请输入正确的手机号', trigger: "blur"})
-              if(item.check.includes(checkItem => checkItem.code=='005') && !item.check.includes(checkItem => checkItem.code=='006')){
-                // 中国大陆手机号校验
-                this.rules[item.mapCode].push({ pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
-              }else if(!item.check.includes(checkItem => checkItem.code=='005') && item.check.includes(checkItem => checkItem.code=='006')){
-                // 港澳台手机号校验
-                this.rules[item.mapCode].push({ pattern: /^([6|9])\d{7}$|^[0][9]\d{8}$|^[6]([8|6])\d{5}$/,message: '请输入正确的手机号', trigger: "blur"})
-              }else if(item.check.includes(checkItem => checkItem.code=='005') && item.check.includes(checkItem => checkItem.code=='006')){
-                // 大陆加港澳台手机号校验
-                this.rules[item.mapCode].push({ pattern: /^[1][3-8]\d{9}$|^([6|9])\d{7}$|^[0][9]\d{8}$|^[6]([8|6])\d{5}$/,message: '请输入正确的手机号', trigger: "blur"})
+              debugger
+              if(item.defaultCountryCode != ''){ // 是否设置国际默认区号
+                if( item.check.some(item => item.code == '005') && item.defaultCountryCode == '86'){
+                  // 中国大陆 手机号校验
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }else if(item.check.some(item => item.code == '006') && item.defaultCountryCode == '852'){
+                  // 香港区号 手机号校验
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }else if(item.check.some(item => item.code == '006') && item.defaultCountryCode == '853'){
+                  // 澳门区号 手机号校验
+                  this.rules.mobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }else if(item.check.some(item => item.code == '006') && item.defaultCountryCode == '886'){
+                  // 台湾区号 手机号校验
+                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }
+              }else{
+                if(item.check.some(checkItem => checkItem.code=='005') && !item.check.some(checkItem => checkItem.code=='006')){
+                  debugger
+                  // 中国大陆手机号校验
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }else if(!item.check.some(checkItem => checkItem.code=='005') && item.check.some(checkItem => checkItem.code=='006')){
+                  // 港澳台手机号校验
+                  debugger
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }else if(item.check.some(checkItem => checkItem.code=='005') && item.check.some(checkItem => checkItem.code=='006')){
+                  // 大陆加港澳台手机号校验
+                  debugger
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }
               }
-            }else if(item.mapCode == 'email' || item.mapCode == 'spareEmail'){
+            }
+            if(item.mapCode == 'email' || item.mapCode == 'spareEmail'){
               this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/,message: '请输入正确的邮箱', trigger: "blur"})
             }
           }
@@ -597,24 +630,11 @@ export default {
           if(item.systemName == '分页'){
             this.pagingCount++
           }
-          // 国际区号设置默认值
-          if(item.mapCode == 'mobile'){
-            this.setForm.mobileIntCode = item.defaultCountryCode
-          }
-          if(item.mapCode == 'spareMobile'){
-            this.setForm.spareMobileIntCode = item.defaultCountryCode
-          }
-          if(item.mapCode == 'phone'){
-            this.setForm.phoneIntCode = item.defaultCountryCode
-          }
-          if(item.mapCode == 'fax'){
-            this.setForm.faxIntCode = item.defaultCountryCode
-          }
 
         })
 
         console.log(this.setForm)
-        console.log(this.rules)
+        console.log(this.rules.mobile)
         if(this.$route.params.type == 'view'){
           this.isView = true;
           this.getContactInfo();
@@ -700,9 +720,9 @@ export default {
           }).then(res => {
             if(res.status){
               this.$message.success('保存成功')
+              this.back();
             }
             loading.close()
-            this.back();
           })
         }
       })
@@ -905,25 +925,11 @@ export default {
         this.chinaProvinceList = res.data
       })
     },
-    surnameChange(val){
-      debugger
-      if(this.setForm.surname != '' && this.setForm.ming != ''){
-        // this.setForm.name = this.setForm.surname + this.setForm.ming
-        // this.$refs.contactForm.clearValidate('name');  // 移除上次校验结果
-      }
-    },
-    mingChange(val){
-      debugger
-      if(this.setForm.surname != '' && this.setForm.ming != ''){
-        // this.setForm.name = this.setForm.surname + this.setForm.ming
-        // this.$refs.contactForm.clearValidate('name');  // 移除上次校验结果
-      }
-    },
     // 证件类型切换
     certificateTypeChange(val){
       this.setForm.certificate = '';
       if(val == '居民身份证'){
-        this.rules.certificate.push({ pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,message: '请输入正确的身份证号码', trigger: "blur"})
+        this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/,message: '请输入正确的身份证号码', trigger: "blur"})
         // this.$set(this.rules, 'certificate', [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },{ validator: validateIDcard, trigger: "blur"}])
       }else{
         this.rules.certificate.pop()
@@ -931,6 +937,86 @@ export default {
       this.$refs.contactForm.clearValidate('certificate');  // 移除上次校验结果
       // this.$refs.contactForm.validate();
       // debugger
+    },
+    // 手机号国际区号切换
+    mobileIntCodeChange(val,element){
+      debugger
+      // 86 大陆, 852 香港, 853 澳门, 886 台湾
+      let mobilePhoneVerify = this.rules.mobile.find( item => {
+        return  'pattern' in item
+      })
+
+      if( element.check.some(item => item.code == '005') && val == '86'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else if(element.check.some(item => item.code == '006') && val == '852'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else if(element.check.some(item => item.code == '006') && val == '853'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^6\d{7}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else if(element.check.some(item => item.code == '006') && val == '886'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else{
+        this.rules.mobile.forEach((item,index) => {
+          if(item.pattern){
+            this.rules.mobile.splice(index,1)
+          }
+        })
+      }
+      console.log(this.rules.mobile)
+    },
+    // 手机号国际区号切换
+    spareMobileIntCodeChange(val,element){
+      // 86 大陆, 852 香港, 853 澳门, 886 台湾
+      let mobilePhoneVerify = this.rules.mobile.find( item => {
+        return  'pattern' in item
+      })
+
+      if( element.check.some(item => item.code == '005') && val == '86'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else if(element.check.some(item => item.code == '006') && val == '852'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else if(element.check.some(item => item.code == '006') && val == '853'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^6\d{7}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else if(element.check.some(item => item.code == '006') && val == '886'){
+        if(mobilePhoneVerify){
+          mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
+        }else{
+          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        }
+      }else{
+        this.rules.mobile.forEach((item,index) => {
+          if(item.pattern){
+            this.rules.mobile.splice(index,1)
+          }
+        })
+      }
     },
     provinceChange(provinceCode){
       let selectProvince = this.chinaProvinceList.find(province => {
