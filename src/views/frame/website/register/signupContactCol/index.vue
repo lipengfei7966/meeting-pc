@@ -1910,7 +1910,7 @@ export default {
         photeTailor: '自动压缩裁剪', // 选中照片裁剪方式
         photoLimitWidth: '', // 限制照片尺寸-宽
         photoLimitHeight: '', // 限制照片尺寸-高
-        nationIsShow: false, // 是否展示国家
+        nationIsShow: true, // 是否展示国家
         nationTitle: '国家', // 国家标题
         nationPlaceholder: '请选择国家', // 国家提示文本
         provinceIsShow: false, // 省份是否展示
