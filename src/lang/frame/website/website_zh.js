@@ -48,6 +48,27 @@ export default {
         articleContent: '文章内容'
       }
     },
+    activityManagement: {
+      title: '分活动管理',
+      // query: {
+      //   articleName: '文章名称',
+      //   articleTitle: '文章标题',
+      //   eventCode: '会议名称'
+      // },
+      list: {
+        aaa: '分活动名称',
+        bbb: '活动时间',
+        ccc: '活动状态',
+        ddd: '启用',
+        eee: '报名人数/上限'
+      },
+      edit: {
+        articleName: '文章名称',
+        articleTitle: '文章标题',
+        articlePic: '文章首图',
+        articleContent: '文章内容'
+      }
+    },
     customer: {
       title: '客户管理',
       query: {

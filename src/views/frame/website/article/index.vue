@@ -27,7 +27,7 @@ export default {
           }
         },
         formData: [
-        {
+          {
             label: 'website.article.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
@@ -136,7 +136,7 @@ export default {
   methods: {
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
-    },
+    }
   }
 }
 </script>
