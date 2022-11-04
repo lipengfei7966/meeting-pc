@@ -255,14 +255,14 @@ export default {
               prop: 'name',
               label: 'website.signupContact.list.name'
             },
-            {
-              prop: 'surname',
-              label: 'website.signupContact.list.surname'
-            },
-            {
-              prop: 'ming',
-              label: 'website.signupContact.list.ming'
-            },
+            // {
+            //   prop: 'surname',
+            //   label: 'website.signupContact.list.surname'
+            // },
+            // {
+            //   prop: 'ming',
+            //   label: 'website.signupContact.list.ming'
+            // },
             {
               prop: 'sex',
               label: 'website.signupContact.list.sex'
@@ -303,54 +303,54 @@ export default {
               prop: 'postcode',
               label: 'website.signupContact.list.postcode'
             },
-            {
-              prop: 'mobileIntCode',
-              label: 'website.signupContact.list.mobileIntCode'
-            },
+            // {
+            //   prop: 'mobileIntCode',
+            //   label: 'website.signupContact.list.mobileIntCode'
+            // },
             {
               prop: 'mobile',
               label: 'website.signupContact.list.mobile'
             },
-            {
-              prop: 'spareMobileIntXode',
-              label: 'website.signupContact.list.spareMobileIntXode'
-            },
+            // {
+            //   prop: 'spareMobileIntXode',
+            //   label: 'website.signupContact.list.spareMobileIntXode'
+            // },
             {
               prop: 'spareMobile',
               label: 'website.signupContact.list.spareMobile'
             },
-            {
-              prop: 'phoneIntCode',
-              label: 'website.signupContact.list.phoneIntCode'
-            },
-            {
-              prop: 'phoneAreaCode',
-              label: 'website.signupContact.list.phoneAreaCode'
-            },
+            // {
+            //   prop: 'phoneIntCode',
+            //   label: 'website.signupContact.list.phoneIntCode'
+            // },
+            // {
+            //   prop: 'phoneAreaCode',
+            //   label: 'website.signupContact.list.phoneAreaCode'
+            // },
             {
               prop: 'phone',
               label: 'website.signupContact.list.phone'
             },
-            {
-              prop: 'phoneRunNumber',
-              label: 'website.signupContact.list.phoneRunNumber'
-            },
-            {
-              prop: 'faxIntCode',
-              label: 'website.signupContact.list.faxIntCode'
-            },
-            {
-              prop: 'faxAreaCode',
-              label: 'website.signupContact.list.faxAreaCode'
-            },
+            // {
+            //   prop: 'phoneRunNumber',
+            //   label: 'website.signupContact.list.phoneRunNumber'
+            // },
+            // {
+            //   prop: 'faxIntCode',
+            //   label: 'website.signupContact.list.faxIntCode'
+            // },
+            // {
+            //   prop: 'faxAreaCode',
+            //   label: 'website.signupContact.list.faxAreaCode'
+            // },
             {
               prop: 'fax',
               label: 'website.signupContact.list.fax'
             },
-            {
-              prop: 'faxRunNumber',
-              label: 'website.signupContact.list.faxRunNumber'
-            },
+            // {
+            //   prop: 'faxRunNumber',
+            //   label: 'website.signupContact.list.faxRunNumber'
+            // },
             {
               prop: 'email',
               label: 'website.signupContact.list.email'
