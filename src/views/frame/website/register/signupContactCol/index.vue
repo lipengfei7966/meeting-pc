@@ -335,7 +335,7 @@
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-radio-group :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}">
+                      <el-radio-group :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
                         <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                       </el-radio-group>
                     </div>
@@ -346,7 +346,7 @@
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
 
                     <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-checkbox-group v-model="setForm.checkedOptions" :style="{width:'100%',display:'flex',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
+                      <el-checkbox-group v-model="setForm.checkedOptions" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
                         <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                       </el-checkbox-group>
                     </div>
@@ -2371,7 +2371,7 @@ export default {
     .formInfoItems {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: start;
     }
     .formInfoItem {
       min-width: 50px;
