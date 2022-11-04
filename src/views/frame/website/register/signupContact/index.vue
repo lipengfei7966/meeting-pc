@@ -370,7 +370,7 @@ export default {
             {
               prop: 'company',
               label: 'website.signupContact.list.company'
-            },          
+            },
             {
               prop: 'department',
               label: 'website.signupContact.list.department'
