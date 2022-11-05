@@ -48,7 +48,7 @@
               <!-- 数字 -->
               <div v-if="element.systemName == '数字' " class="form-item-input">
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" @input="setForm[element.mapCode] = limitInput(element,setForm[element.mapCode])" size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element,setForm.signupContactDtlDto[element.mapCode])" size="mini"></el-input>
                 </div>
               </div>
 
@@ -56,8 +56,12 @@
               <div v-if="element.systemName == '单选框' " class="form-item-input">
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
                   <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
-                    <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
-                    <el-input v-if="setForm.signupContactDtlDto[element.mapCode]=='其他'" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width:200px"></el-input>
+                    <div v-for="item in element.options" :key="item">
+                      <el-radio v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                      <el-radio v-else :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                      <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode]=='其他'" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width:200px"></el-input>
+                    </div>
+
                   </el-radio-group>
                 </div>
               </div>
@@ -66,8 +70,12 @@
               <div v-if="element.systemName == '复选框' " class="form-item-input">
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
                   <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
-                    <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
-                    <el-input v-if="setForm.signupContactDtlDto[element.mapCode].includes('其他')" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width:200px;margin-top: 5px;"></el-input>
+                    <div v-for="item in element.options" :key="item">
+                      <el-checkbox v-if="item != '其他' " :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+                      <el-checkbox v-else :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+                      <el-input v-if=" item == '其他' && setForm.signupContactDtlDto[element.mapCode].includes('其他')" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width:200px;margin-top: 5px;"></el-input>
+                    </div>
+
                   </el-checkbox-group>
                 </div>
               </div>
@@ -105,7 +113,7 @@
               <div v-if="element.systemName == '日期' " class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
-                  <el-date-picker v-model="setForm[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+                  <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
                 </div>
               </div>
             </el-form-item>
@@ -114,7 +122,7 @@
           <!-- 固定信息 -->
           <div v-else>
             <!-- 姓名 -->
-            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit?'':element.title" prop='name' :label-width=" element.nameSplit?'0':'150'">
+            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit?'':element.title" prop='name' :label-width="element.nameSplit?'0':'150px'">
               <!-- 姓名 -->
               <div v-if=" element.mapCode=='name' && !element.nameSplit" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
@@ -724,6 +732,17 @@ export default {
             }
             loading.close()
           })
+        }else{
+          // 页面滚动到校验不通过地方
+          this.$nextTick(() => {
+            let isError = document.getElementsByClassName('is-error')
+            if (isError.length) {
+              isError[0].scrollIntoView({
+                block: 'center',
+                behavior: 'smooth'
+              })
+            }
+          })
         }
       })
     },
@@ -738,6 +757,7 @@ export default {
       this.setForm.photo = '';
     },
     limitInput(element,value) {
+      // debugger
       // element.numberDigitLimit 整数位数限制
       // element.decimalPlacesLimit 小数位数限制
       // var re = new RegExp(title,"g");
@@ -761,8 +781,8 @@ export default {
         temp = intNumber
       }
       // 整数部分超出限制 取最大值
-      const maxNumber = Math.pow(10,element.numberDigitLimit-1)
-      if(Number(temp) >= maxNumber){
+      const maxNumber = Math.pow(10,element.numberDigitLimit)-Math.pow(10,-element.decimalPlacesLimit)
+      if(Number(temp) > maxNumber){
          temp = maxNumber
       }
       return temp
@@ -796,23 +816,23 @@ export default {
       // allFileTypes:[], // 允许上传文件类型合集
       // fileSizeLimit: 50, // 文件大小限制
       const fileName = file.name;
-      const extension = fileName.substr(fileName.lastIndexOf('.'));
+      const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase();
       let isAllowUpload = true;
-      if(element.fileTypeLimit){
-        // 判断后缀名是否允许上传
-        isAllowUpload = element.allFileTypes.includes(extension);
-        if(!isAllowUpload){
-          const errMsg ='注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、');
-          this.$message.error(errMsg);
-          return false;
-        }
-      }
+      let acceptType = ['.jpg','.png','.jpeg','.bmp','.webp']
 
-      const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
-      if (!sizeLimit) {
-        this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`);
+      // 判断后缀名是否允许上传
+      isAllowUpload = acceptType.includes(extension);
+      if(!isAllowUpload){
+        const errMsg ='注意: 只允许上传以下文件类型：' + acceptType.join('、');
+        this.$message.error(errMsg);
         return false;
       }
+
+      // const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
+      // if (!sizeLimit) {
+      //   this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`);
+      //   return false;
+      // }
 
       if(element.imageTypes.includes(extension) && element.mapCode == 'photo' && element.pictureSizeLimit){
        isAllowUpload = await this.imageSizeLimit(file, element)
