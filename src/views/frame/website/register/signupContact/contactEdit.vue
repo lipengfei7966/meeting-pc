@@ -113,7 +113,7 @@
               <div v-if="element.systemName == '日期' " class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%;display:inline-block;vertical-align: top;">
-                  <el-date-picker v-model="setForm[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+                  <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
                 </div>
               </div>
             </el-form-item>
@@ -122,7 +122,7 @@
           <!-- 固定信息 -->
           <div v-else>
             <!-- 姓名 -->
-            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit?'':element.title" prop='name' :label-width=" element.nameSplit?'0':'150'">
+            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit?'':element.title" prop='name' :label-width="element.nameSplit?'0':'150px'">
               <!-- 姓名 -->
               <div v-if=" element.mapCode=='name' && !element.nameSplit" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
@@ -731,6 +731,17 @@ export default {
               this.back();
             }
             loading.close()
+          })
+        }else{
+          // 页面滚动到校验不通过地方
+          this.$nextTick(() => {
+            let isError = document.getElementsByClassName('is-error')
+            if (isError.length) {
+              isError[0].scrollIntoView({
+                block: 'center',
+                behavior: 'smooth'
+              })
+            }
           })
         }
       })
