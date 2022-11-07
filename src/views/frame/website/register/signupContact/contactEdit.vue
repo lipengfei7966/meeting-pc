@@ -101,9 +101,7 @@
 
               <!-- 附件 -->
               <div v-if="element.systemName == '附件' " class="form-item-input">
-                <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                <el-upload class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>fileBeforeUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="handleUploadForm">
-                  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>fileBeforeUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="(file)=>flieHandleUploadForm(file,element)">
                   <i class="el-icon-plus avatar-uploader-icon"></i>
                   <p> {{element.placeholder}} </p>
                 </el-upload>
@@ -224,11 +222,11 @@
                       <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
                     </span>
                     <span class="el-upload-list__item-preview">
-                      <i class="el-icon-delete" @click="deleteImg(setForm.photo)"></i>
+                      <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdat0 || isView) )" @click="deleteImg(setForm.photo)"></i>
                     </span>
                   </span>
                 </div>
-                <el-upload v-else class="avatar-uploader" :disabled="element.photeTailor == '手动裁剪'" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
+                <el-upload v-else class="avatar-uploader" :disabled="element.photeTailor == '手动裁剪' || (element.notAllowEdit && isUpdate)" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
                   <i class="el-icon-plus avatar-uploader-icon" @click="showCropperModel(element)"></i>
                 </el-upload>
               </div>
@@ -259,13 +257,17 @@
               <!-- 固定电话 -->
               <div v-if="element.mapCode == 'phone' " class="form-item-input">
                 <div style="width: 80%;display:inline-block;vertical-align: top;">
-                  <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
-                    </el-select>
-                  </el-input>
+                  <span style="display:inline-block">
+                    <el-form-item prop='phoneAreaCode' label-width="0">
+                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 100px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                        </el-select>
+                      </el-input>
+                    </el-form-item>
+                  </span>
                   <span>
-                    - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                    - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
                   </span>
                   <span v-if="element.extensionNumbeIsShow">
                     - <el-input v-model="setForm.phoneRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
@@ -276,13 +278,17 @@
               <!-- 传真 -->
               <div v-if="element.mapCode == 'fax' " class="form-item-input">
                 <div style="width: 80%;display:inline-block;vertical-align: top;">
-                  <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
-                    </el-select>
-                  </el-input>
+                  <span style="display:inline-block">
+                    <el-form-item prop='faxAreaCode' label-width="0">
+                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 100px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                        </el-select>
+                      </el-input>
+                    </el-form-item>
+                  </span>
                   <span>
-                    - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                    - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
                   </span>
                   <span v-if="element.extensionNumbeIsShow">
                     - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
@@ -570,6 +576,7 @@ export default {
             }
             if(item.mapCode == 'phone'){
               this.setForm.phoneIntCode = item.defaultCountryCode
+              this.$set(this.rules, 'phoneAreaCode', [{required: item.isRequire, message:  "区号是必填项", trigger: "blur" }])
               // 国际区号不显示,后台默认86
               if(!item.countryCodeIsShow){
                 this.setForm.mobileIntCode = '86'
@@ -577,6 +584,7 @@ export default {
             }
             if(item.mapCode == 'fax'){
               this.setForm.faxIntCode = item.defaultCountryCode
+              this.$set(this.rules, 'faxAreaCode', [{required: item.isRequire, message:  "区号是必填项", trigger: "blur" }])
               // 国际区号不显示,后台默认86
               if(!item.countryCodeIsShow){
                 this.setForm.mobileIntCode = '86'
@@ -922,8 +930,44 @@ export default {
       return isAllowUpload
     },
     // 自定义上传文件
+    flieHandleUploadForm(param,element) {
+      // let thiz = this
+      let formData = new FormData()
+      // formData.append('webpageCode', '') // 额外参数
+      formData.append('file', param.file)
+      let loading = this.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: '/api/obs/file/uploadImg',
+        method: 'POST',
+        data: formData
+      }).then(data => {
+        debugger
+        if (data.status) {
+          this.$message('上传文件成功')
+          // if(element.mapCode = 'photo'){
+            this.setForm[element.mapCode] = data.data.filePath
+            // console.log(this.setFormFile[element.mapCode])
+          // }
+          param.onSuccess(data,element)
+          // this.printSetform.printBackground = data.data.filePath
+        } else {
+          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
+          this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
+          // param.file.splice(idx, 1)
+          this.$message('上传文件失败')
+        }
+        console.log(this.setFormFile[element.mapCode])
+        loading.close()
+      })
+    },
+     // 自定义上传文件
     handleUploadForm(param,element) {
-      let thiz = this
+      // let thiz = this
       let formData = new FormData()
       // formData.append('webpageCode', '') // 额外参数
       formData.append('file', param.file)
@@ -948,11 +992,12 @@ export default {
           param.onSuccess(data,element)
           // this.printSetform.printBackground = data.data.filePath
         } else {
-          thiz.$message('上传文件失败')
+          this.$message('上传文件失败')
         }
-        loading.close()
+          loading.close()
       })
     },
+
     fileLimitCount(files, fileList) {
       this.$message.warning('只允许上传一个文件')
     },
