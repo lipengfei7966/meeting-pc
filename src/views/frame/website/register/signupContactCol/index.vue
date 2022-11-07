@@ -92,8 +92,8 @@
                   <!-- 性别 -->
                   <div v-if="element.mapCode == 'sex' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
-                    <el-radio v-model="setForm.checkedSex" :label="element.sexRadioOptions[0]">{{ element.sexRadioOptions[0] }}</el-radio>
-                    <el-radio v-model="setForm.checkedSex" :label="element.sexRadioOptions[1]">{{ element.sexRadioOptions[1] }}</el-radio>
+                    <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0] }}</el-radio>
+                    <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1] }}</el-radio>
                   </div>
 
                   <!-- 证件 -->
@@ -205,10 +205,10 @@
                         </el-select>
                       </el-input>
                       <span>
-                        - <el-input style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                        - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
                       </span>
                       <span v-if="element.extensionNumbeIsShow">
-                        - <el-input style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+                        - <el-input style="width: 150px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
                       </span>
                     </div>
                   </div>
@@ -224,10 +224,10 @@
                         </el-select>
                       </el-input>
                       <span>
-                        - <el-input style="width: 120px" :placeholder="element.placeholder" size="mini"></el-input>
+                        - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
                       </span>
                       <span v-if="element.extensionNumbeIsShow">
-                        - <el-input style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
+                        - <el-input style="width: 150px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
                       </span>
                     </div>
                   </div>
@@ -479,8 +479,8 @@
                 <!-- 选项 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">选项</p>
-                  <el-input style="" size="mini" v-model="setInfoList[checkedIndex].sexRadioOptions[0]"></el-input>
-                  <el-input style="margin-top: 10px" size="mini" v-model="setInfoList[checkedIndex].sexRadioOptions[1]"></el-input>
+                  <el-input style="" size="mini" v-model="setInfoList[checkedIndex].options[0]"></el-input>
+                  <el-input style="margin-top: 10px" size="mini" v-model="setInfoList[checkedIndex].options[1]"></el-input>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
@@ -1659,6 +1659,7 @@ export default {
       },
 
       customInfoCount: 0, // 自定义信息数量
+      textareaNum: 35, // 长文本字段序号为 36-40
       pagingCount: 0, // 分页数量
       eventName: '', // 会议名称
       drag: false,
@@ -1713,11 +1714,17 @@ export default {
     customInfoCount(newVal ,oldVal) {
       if (newVal > 0) {
         let coustomInfoIndex = 0;
+        let textareaNum = 35; // 长文本字段需要为 36-40
         this.setInfoList.forEach((item,index) => {
           if(item.isCoustomInfo){
             debugger
-            coustomInfoIndex ++;
-            item.mapCode = 'reservedStr' + coustomInfoIndex
+            if(item.isTexeArea){
+              textareaNum ++;
+              item.mapCode = 'reservedStr' + textareaNum
+            }else{
+              coustomInfoIndex ++;
+              item.mapCode = 'reservedStr' + coustomInfoIndex
+            }
           }
         })
       }
@@ -1900,7 +1907,7 @@ export default {
         nameSplit: false, //姓名拆分
         notAllowEdit: false, // 报名后不允许编辑
 
-        sexRadioOptions: ['先生','女士'], // 性别选项
+        // sexRadioOptions: ['先生','女士'], // 性别选项
         certificateAllTypes: ['居民身份证','护照','军人证','港澳居民来往内地通行证','台湾居民来往内地通行证','港澳台居民居住证','其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
         certificateVerifyOptions: ['号码逻辑校验', '身份证实名校验','人像实名校验'], //校验选项
@@ -1992,22 +1999,29 @@ export default {
         // debugger
         obj.isCoustomInfo = true;
         obj.title = '您的标题';
-        if(itemList.value == 'input'){
-          this.setForm['input'+this.customInfoCount] = '';
-        }
+        // if(itemList.value == 'input'){
+        //   this.setForm['input'+this.customInfoCount] = '';
+        // }
         if(itemList.value == 'textarea'){
+          obj.isTexeArea = true;
+          this.textareaNum ++;
           obj.wordCountLimit = 200;
         }
         if( ['radio','checkbox','select','selects'].includes(itemList.value)){
           obj.options = ["选项一","选项二"];
         }
       }
+
       if(parentListName == 'specialInfoList'){
         obj.isSpecialInfo = true;
       }
       var index = parentList.findIndex(item => {
         return item.value == itemList.value
       })
+      // 性别添加选项
+      if(itemList.value == 'sex'){
+        obj.options = ['先生','女士']
+      }
       // 电话添加校验
       if(itemList.value == 'phone'){
         obj.check[0].code = "014"

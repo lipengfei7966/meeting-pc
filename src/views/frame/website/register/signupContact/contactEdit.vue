@@ -54,7 +54,7 @@
 
               <!-- 单选框 -->
               <div v-if="element.systemName == '单选框' " class="form-item-input">
-                <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <div style="width: 50%;min-width:300px;display:inline-block;vertical-align: top;">
                   <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
                     <div v-for="item in element.options" :key="item">
                       <el-radio v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
@@ -68,7 +68,7 @@
 
               <!-- 复选框 -->
               <div v-if="element.systemName == '复选框' " class="form-item-input">
-                <div style="width: 50%;display:inline-block;vertical-align: top;">
+                <div style="width: 50%;min-width:300px;display:inline-block;vertical-align: top;">
                   <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
                     <div v-for="item in element.options" :key="item">
                       <el-checkbox v-if="item != '其他' " :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
@@ -360,7 +360,7 @@
     </el-dialog>
 
     <!-- 剪裁组件弹窗 -->
-    <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="1050" center>
+    <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="1200px" center>
       <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
     </el-dialog>
   </div>
@@ -774,6 +774,10 @@ export default {
       if(decimalNumber.length > element.decimalPlacesLimit){
         decimalNumber = decimalNumber.slice(0, element.decimalPlacesLimit)
       }
+      // 整数点位数超出限制 截取
+      if(intNumber.length > element.numberDigitLimit){
+        intNumber = intNumber.slice(0, element.numberDigitLimit)
+      }
 
       if(decimalNumber.length > 0 || temp.indexOf('.') >= 0){
         temp = intNumber + "." + decimalNumber
@@ -781,10 +785,13 @@ export default {
         temp = intNumber
       }
       // 整数部分超出限制 取最大值
-      const maxNumber = Math.pow(10,element.numberDigitLimit)-Math.pow(10,-element.decimalPlacesLimit)
-      if(Number(temp) > maxNumber){
-         temp = maxNumber
-      }
+      // const maxNumber = Math.pow(10,element.numberDigitLimit)
+      // const maxNumber = Math.pow(10,element.numberDigitLimit)-Math.pow(10,-element.decimalPlacesLimit)
+
+      // if(Number(temp) >= maxNumber){
+        //  temp = maxNumber
+        // return
+      // }
       return temp
     },
     showCropperModel(element){
@@ -802,7 +809,7 @@ export default {
     handleAvatarSuccess(res, file){
       debugger
       this.photoName = res.fileName
-      this.cropperModel = true;
+      // this.cropperModel = true;
     },
     async beforeAvatarUpload(file,element) {
       debugger
@@ -834,9 +841,9 @@ export default {
       //   return false;
       // }
 
-      if(element.imageTypes.includes(extension) && element.mapCode == 'photo' && element.pictureSizeLimit){
-       isAllowUpload = await this.imageSizeLimit(file, element)
-      }
+      // if(element.imageTypes.includes(extension) && element.mapCode == 'photo' && element.pictureSizeLimit){
+      //  isAllowUpload = await this.imageSizeLimit(file, element)
+      // }
       return isAllowUpload
     },
     async imageSizeLimit(file, element){
