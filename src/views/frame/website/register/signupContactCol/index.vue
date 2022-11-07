@@ -1797,6 +1797,9 @@ export default {
               workInfoItem.isSee = true;
             }
           })
+          if(setInfoItem.isCoustomInfo){
+            this.customInfoCount ++;
+          }
         })
 
       })
@@ -1990,6 +1993,7 @@ export default {
       }
 
       if(parentListName == 'customInfoList'){
+        debugger
         this.customInfoCount ++ ;
         if(this.customInfoCount > 40){
           this.$message.warning('新增自定义信息数量超出最大限制')

@@ -198,8 +198,8 @@
               <!-- 性别 -->
               <div v-if="element.mapCode == 'sex' " class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.sexRadioOptions[0] }}</el-radio>
-                <el-radio v-model="setForm.sex" :label="element.sexRadioOptions[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.sexRadioOptions[1] }}</el-radio>
+                <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
+                <el-radio v-model="setForm.sex" :label="element.options[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
               </div>
 
               <!-- 证件 -->
@@ -541,6 +541,7 @@ export default {
                 this.setForm.signupContactDtlDto[item.mapCode] = item.options.slice(0, item.minCheckedCount)
               }
             }else{
+              debugger
               this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
               // this.setForm[item.mapCode] = ''
             }
