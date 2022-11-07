@@ -2454,8 +2454,8 @@ export default {
     }
     .setInfoItemlabel {
       display: inline-block;
-      // width: 100px;
-      text-align: left;
+      width: 100px;
+      text-align: right;
       margin-right: 10px;
     }
     .optionBtns {
