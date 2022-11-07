@@ -5,7 +5,7 @@
       <el-button size="small" type="primary" @click="materialSelection">从素材库选择</el-button>
     </div>
     <div style="text-align: center; margin-top: 50px">
-      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+      <el-upload :disabled="true" accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible_">
