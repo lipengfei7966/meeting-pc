@@ -556,15 +556,31 @@ export default {
             // 国际区号设置默认值
             if(item.mapCode == 'mobile'){
               this.setForm.mobileIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if(!item.countryCodeIsShow){
+                this.setForm.mobileIntCode = '86'
+              }
             }
             if(item.mapCode == 'spareMobile'){
               this.setForm.spareMobileIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if(!item.countryCodeIsShow){
+                this.setForm.mobileIntCode = '86'
+              }
             }
             if(item.mapCode == 'phone'){
               this.setForm.phoneIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if(!item.countryCodeIsShow){
+                this.setForm.mobileIntCode = '86'
+              }
             }
             if(item.mapCode == 'fax'){
               this.setForm.faxIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if(!item.countryCodeIsShow){
+                this.setForm.mobileIntCode = '86'
+              }
             }
 
             // 添加必填校验
@@ -976,9 +992,9 @@ export default {
 
       if( element.check.some(item => item.code == '005') && val == '86'){
         if(mobilePhoneVerify){
-          mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/
+          mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
         }else{
-          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
         }
       }else if(element.check.some(item => item.code == '006') && val == '852'){
         if(mobilePhoneVerify){
@@ -1016,9 +1032,9 @@ export default {
 
       if( element.check.some(item => item.code == '005') && val == '86'){
         if(mobilePhoneVerify){
-          mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/
+          mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
         }else{
-          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
         }
       }else if(element.check.some(item => item.code == '006') && val == '852'){
         if(mobilePhoneVerify){
