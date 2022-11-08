@@ -619,7 +619,7 @@ export default {
                 this.$set(this.rules, 'fullAddress', [{required: item.isRequire, message:  "详细地址必填项", trigger: "blur" }])
               }
               if(item.postcodeIsShow){ // 显示邮编
-                this.$set(this.rules, 'postcode', [{required: item.isRequire, message:  "邮编是必填项", trigger: "blur" },{ pattern: /"^\d{6}$"/,message: '请输入正确的邮编', trigger: "blur"}])
+                this.$set(this.rules, 'postcode', [{required: item.isRequire, message:  "邮编是必填项", trigger: "blur" },{ pattern: /^\d{6}$/,message: '请输入正确的邮编', trigger: "blur"}])
               }
               // this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
               // this.$set(this.rules, 'ming', [{required: item.isRequire, message: "名是必填项", trigger: "blur" }])
