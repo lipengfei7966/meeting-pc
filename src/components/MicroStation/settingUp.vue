@@ -152,9 +152,9 @@ export default {
           // debugger
           // console.log(this.ruleForm)
           if (submitVal.title) {
-            // if (this.ruleForm.title == '') {
-            this.ruleForm.title = submitVal.title
-            // }
+            if (this.ruleForm.title == '' || this.dataFlag_) {
+              this.ruleForm.title = submitVal.title
+            }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
@@ -169,7 +169,9 @@ export default {
           // }
           if (submitVal.type || this.ruleForm.type) {
             if (submitVal.type) {
-              this.ruleForm.type = submitVal.type
+              if (this.ruleForm.type == '' || this.dataFlag_) {
+                this.ruleForm.type = submitVal.type
+              }
               if (submitVal.type == 'article') {
                 if (this.ruleForm.page == '' || this.dataFlag_) {
                   this.ruleForm.page = submitVal.content
