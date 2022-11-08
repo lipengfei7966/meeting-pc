@@ -76,7 +76,7 @@ export default {
   components: {
     material
   },
-  props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
+  props: ['dataNum', 'newData', 'dataFlag', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
   //   },
@@ -113,7 +113,8 @@ export default {
       classify: [],
       // process.env.BASE_API +
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
-      dialogVisible: false
+      dialogVisible: false,
+      dataFlag_: false
     }
   },
   computed: {
@@ -159,6 +160,7 @@ export default {
             }
           }
           debugger
+          console.log(this.dataFlag_)
           // 标注
           // if(this.ruleForm.type){
 
@@ -169,13 +171,15 @@ export default {
             if (submitVal.type) {
               this.ruleForm.type = submitVal.type
               if (submitVal.type == 'article') {
-                // if (this.ruleForm.page == '') {
-                this.ruleForm.page = submitVal.content
-                // }
+                if (this.ruleForm.page == '' || this.dataFlag_) {
+                  this.ruleForm.page = submitVal.content
+                  this.dataFlag_ = false
+                }
               } else if (submitVal.type == 'url') {
-                // if (this.ruleForm.link == '') {
-                this.ruleForm.link = submitVal.content
-                // }
+                if (this.ruleForm.link == '' || this.dataFlag_) {
+                  this.ruleForm.link = submitVal.content
+                  this.dataFlag_ = false
+                }
               }
             } else {
               console.log(submitVal, this.ruleForm)
