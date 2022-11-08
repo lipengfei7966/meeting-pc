@@ -222,7 +222,7 @@
                       <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
                     </span>
                     <span class="el-upload-list__item-preview">
-                      <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdat0 || isView) )" @click="deleteImg(setForm.photo)"></i>
+                      <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView) )" @click="deleteImg(setForm.photo)"></i>
                     </span>
                   </span>
                 </div>
@@ -259,8 +259,8 @@
                 <div style="width: 80%;display:inline-block;vertical-align: top;">
                   <span style="display:inline-block">
                     <el-form-item prop='phoneAreaCode' label-width="0">
-                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 100px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
                           <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
                         </el-select>
                       </el-input>
@@ -280,8 +280,8 @@
                 <div style="width: 80%;display:inline-block;vertical-align: top;">
                   <span style="display:inline-block">
                     <el-form-item prop='faxAreaCode' label-width="0">
-                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 100px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
                           <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
                         </el-select>
                       </el-input>
@@ -536,7 +536,7 @@ export default {
         }else{
           this.setInfoList = [];
         }
-        debugger
+        // debugger
         this.setInfoList.forEach(item => {
           // 1：自定义属性
           if(item.mapBase == 1){
@@ -552,6 +552,8 @@ export default {
               // this.setForm[item.mapCode] = ''
             }
             if(['附件'].includes(item.systemName)) {
+              debugger
+              this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
               this.$set(this.setFormFile,item.mapCode,[]);
               console.log(this.setFormFile)
             }
@@ -950,8 +952,9 @@ export default {
         if (data.status) {
           this.$message('上传文件成功')
           // if(element.mapCode = 'photo'){
-            this.setForm[element.mapCode] = data.data.filePath
-            // console.log(this.setFormFile[element.mapCode])
+            this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+            // debugger
+            // console.log(this.setForm.signupContactDtlDto[element.mapCode])
           // }
           param.onSuccess(data,element)
           // this.printSetform.printBackground = data.data.filePath
@@ -965,7 +968,7 @@ export default {
         loading.close()
       })
     },
-     // 自定义上传文件
+     // 自定义上传照片
     handleUploadForm(param,element) {
       // let thiz = this
       let formData = new FormData()
