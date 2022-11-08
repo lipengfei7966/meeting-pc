@@ -1,17 +1,54 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
     <div style="padding: 0 20px">
       <div class="steps">
-        <el-steps :active="2" align-center>
+        <el-steps :active="stepIndex" align-center>
           <el-step title="外观设置"></el-step>
           <el-step title="表单设置"></el-step>
           <el-step title="其他设置"></el-step>
         </el-steps>
       </div>
-      <div class="formSet">
+      <!-- 外观设置 -->
+      <div v-if="stepIndex == 1" class="appearanceSet" :style="{height: formSetHeight + 'px'}">
+        <el-form ref="appearanceSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="150px" :model="appearanceSetForm" class="appearanceSetForm">
+          <div class="appearanceSetItem">
+            <div class="setItemTitle">
+              <h3>通用设置</h3>
+              <span>
+                <span style="margin-right: 20px">收起</span>
+                <el-button type="text"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <el-form-item label="注册标题" prop="title">
+              <el-input v-model="appearanceSetForm.title" style="width: 50%" size="mini" placeholder="注册标题"></el-input>
+            </el-form-item>
+            <el-form-item label="注册标题(英文)" prop="EnglishTitle">
+              <el-input v-model="appearanceSetForm.EnglishTitle" style="width: 50%" size="mini" placeholder="注册标题(英文)"></el-input>
+            </el-form-item>
+            <el-form-item label="语言设置" prop="language">
+              <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
+                <el-checkbox label="中文" name="langure"></el-checkbox>
+                <el-checkbox label="英文" name="langure"></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="主色调" prop="mainColor">
+              <el-color-picker v-model="appearanceSetForm.mainColor" style="width: 50%" size="mini"></el-color-picker>
+            </el-form-item>
+          </div>
+        </el-form>
+
+        <div class="appearanceSetItem"></div>
+        <div class="appearanceSetItem"></div>
+        <div class="appearanceSetItem"></div>
+        <div class="appearanceSetItem"></div>
+        <div class="appearanceSetItem"></div>
+      </div>
+
+      <div v-if="stepIndex == 2" class="formSet">
         <el-card class="formInfo" :style="{height: formSetHeight + 'px'}">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
@@ -1440,6 +1477,7 @@
           </div>
         </el-card>
       </div>
+
       <!-- <el-button @click="save">保存</el-button> -->
     </div>
 
@@ -1465,6 +1503,7 @@ export default {
   name: 'signupContactCol',
   data() {
     return {
+      stepIndex: 1,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -1669,6 +1708,12 @@ export default {
       // 表格高度
       formSetHeight: 0,
       batchEditDiologVisible: false,
+      appearanceSetForm:{
+        title: '',
+        englishTitle: '',
+        language: '',
+        mainColor: '',
+      },
       setForm:{
         checkedSex: '',
         chenkedCertificate: [],
@@ -2506,6 +2551,17 @@ export default {
           white-space: normal;
         }
       }
+    }
+  }
+}
+.appearanceSet {
+  padding: 20px 50px;
+  background: #fff;
+  .appearanceSetItem {
+    .setItemTitle {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
     }
   }
 }
