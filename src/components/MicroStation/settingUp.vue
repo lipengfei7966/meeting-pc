@@ -160,18 +160,28 @@ export default {
           }
           debugger
           // 标注
-          if (submitVal.type) {
-            // if (this.ruleForm.type == '') {
-            this.ruleForm.type = submitVal.type
-            // }
-            if (submitVal.type == 'article') {
-              // if (this.ruleForm.page == '') {
-              this.ruleForm.page = submitVal.content
-              // }
-            } else if (submitVal.type == 'url') {
-              // if (this.ruleForm.link == '') {
-              this.ruleForm.link = submitVal.content
-              // }
+          // if(this.ruleForm.type){
+
+          // }else{
+
+          // }
+          if (submitVal.type || this.ruleForm.type) {
+            if (submitVal.type) {
+              this.ruleForm.type = submitVal.type
+              if (submitVal.type == 'article') {
+                // if (this.ruleForm.page == '') {
+                this.ruleForm.page = submitVal.content
+                // }
+              } else if (submitVal.type == 'url') {
+                // if (this.ruleForm.link == '') {
+                this.ruleForm.link = submitVal.content
+                // }
+              }
+            } else {
+              console.log(submitVal, this.ruleForm)
+              this.ruleForm.type = ''
+              this.ruleForm.page = ''
+              this.ruleForm.link = ''
             }
           } else {
             this.ruleForm.type = ''
@@ -412,7 +422,7 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      debugger
+      // debugger
       // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
