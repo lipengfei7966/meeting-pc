@@ -114,7 +114,8 @@ export default {
       // process.env.BASE_API +
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
       dialogVisible: false,
-      dataFlag_: false
+      dataFlag_: false,
+      flag_: true
     }
   },
   computed: {
@@ -174,11 +175,18 @@ export default {
             }
             if (submitVal.type == 'article') {
               if (this.ruleForm.page == '' || this.dataFlag_) {
-                this.ruleForm.page = submitVal.content
+                if (this.flag_) {
+                  this.ruleForm.page = submitVal.content
+                }
+                this.flag_ = true
               }
             } else if (submitVal.type == 'url') {
               if (this.ruleForm.link == '' || this.dataFlag_) {
-                this.ruleForm.link = submitVal.content
+                // hkz
+                if (this.flag_) {
+                  this.ruleForm.link = submitVal.content
+                }
+                this.flag_ = true
               }
             }
             this.dataFlag_ = false
@@ -341,6 +349,7 @@ export default {
     selectChange(val) {
       // console.log(val)
       debugger
+      this.flag_ = false
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
