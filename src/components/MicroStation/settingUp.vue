@@ -76,7 +76,7 @@ export default {
   components: {
     material
   },
-  props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
+  props: ['dataNum', 'newData', 'dataFlag', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
   //   },
@@ -113,7 +113,8 @@ export default {
       classify: [],
       // process.env.BASE_API +
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
-      dialogVisible: false
+      dialogVisible: false,
+      dataFlag_: false
     }
   },
   computed: {
@@ -151,27 +152,42 @@ export default {
           // debugger
           // console.log(this.ruleForm)
           if (submitVal.title) {
-            // if (this.ruleForm.title == '') {
-            this.ruleForm.title = submitVal.title
-            // }
+            if (this.ruleForm.title == '' || this.dataFlag_) {
+              this.ruleForm.title = submitVal.title
+            }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
           debugger
+          console.log(this.dataFlag_)
           // 标注
-          if (submitVal.type) {
-            // if (this.ruleForm.type == '') {
-            this.ruleForm.type = submitVal.type
-            // }
-            if (submitVal.type == 'article') {
-              // if (this.ruleForm.page == '') {
-              this.ruleForm.page = submitVal.content
-              // }
-            } else if (submitVal.type == 'url') {
-              // if (this.ruleForm.link == '') {
-              this.ruleForm.link = submitVal.content
-              // }
+          // if(this.ruleForm.type){
+
+          // }else{
+
+          // }
+          if (submitVal.type || this.ruleForm.type) {
+            if (submitVal.type) {
+              if (this.ruleForm.type == '' || this.dataFlag_) {
+                this.ruleForm.type = submitVal.type
+              }
+              if (submitVal.type == 'article') {
+                if (this.ruleForm.page == '' || this.dataFlag_) {
+                  this.ruleForm.page = submitVal.content
+                  this.dataFlag_ = false
+                }
+              } else if (submitVal.type == 'url') {
+                if (this.ruleForm.link == '' || this.dataFlag_) {
+                  this.ruleForm.link = submitVal.content
+                  this.dataFlag_ = false
+                }
+              }
+            } else {
+              console.log(submitVal, this.ruleForm)
+              this.ruleForm.type = ''
+              this.ruleForm.page = ''
+              this.ruleForm.link = ''
             }
           } else {
             this.ruleForm.type = ''
@@ -412,7 +428,7 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      debugger
+      // debugger
       // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
