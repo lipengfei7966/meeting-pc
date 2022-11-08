@@ -151,6 +151,8 @@ export default {
           }
           // debugger
           // console.log(this.ruleForm)
+          debugger
+          console.log(submitVal, oldValue)
           if (submitVal.title) {
             if (this.ruleForm.title == '' || this.dataFlag_) {
               this.ruleForm.title = submitVal.title
@@ -159,7 +161,6 @@ export default {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          debugger
           console.log(this.dataFlag_)
           // 标注
           // if(this.ruleForm.type){
@@ -168,31 +169,24 @@ export default {
 
           // }
           if (submitVal.type || this.ruleForm.type) {
-            if (submitVal.type) {
-              if (this.ruleForm.type == '' || this.dataFlag_) {
-                this.ruleForm.type = submitVal.type
-              }
-              if (submitVal.type == 'article') {
-                if (this.ruleForm.page == '' || this.dataFlag_) {
-                  this.ruleForm.page = submitVal.content
-                  this.dataFlag_ = false
-                }
-              } else if (submitVal.type == 'url') {
-                if (this.ruleForm.link == '' || this.dataFlag_) {
-                  this.ruleForm.link = submitVal.content
-                  this.dataFlag_ = false
-                }
-              }
-            } else {
-              console.log(submitVal, this.ruleForm)
-              this.ruleForm.type = ''
-              this.ruleForm.page = ''
-              this.ruleForm.link = ''
+            if (this.ruleForm.type == '' || this.dataFlag_) {
+              this.ruleForm.type = submitVal.type
             }
+            if (submitVal.type == 'article') {
+              if (this.ruleForm.page == '' || this.dataFlag_) {
+                this.ruleForm.page = submitVal.content
+              }
+            } else if (submitVal.type == 'url') {
+              if (this.ruleForm.link == '' || this.dataFlag_) {
+                this.ruleForm.link = submitVal.content
+              }
+            }
+            this.dataFlag_ = false
           } else {
             this.ruleForm.type = ''
             this.ruleForm.page = ''
             this.ruleForm.link = ''
+            this.dataFlag_ = false
           }
           if (submitVal.backgroundSetting) {
             this.ruleForm.backgroundSetting = submitVal.backgroundSetting
