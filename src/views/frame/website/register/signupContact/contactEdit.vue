@@ -147,13 +147,13 @@
                 <!-- 国家 -->
                 <div v-if="element.nationIsShow" class="addresItem">
                   <el-form-item :label="element.nationTitle" prop='nations'>
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
+                      <el-option v-for="item in nationsList" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                     </el-select>
                   </el-form-item>
                 </div>
                 <!-- 省份 -->
-                <div v-if="element.provinceIsShow" class="addresItem">
+                <div v-if="element.provinceIsShow && setForm.nations == '86' " class="addresItem">
                   <el-form-item :label="element.provinceTitle" prop='province'>
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
                       <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
@@ -161,7 +161,7 @@
                   </el-form-item>
                 </div>
                 <!-- 城市 -->
-                <div v-if="element.cityIsShow" class="addresItem">
+                <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
                   <el-form-item :label="element.cityTitle" prop='city'>
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
                       <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
@@ -169,7 +169,7 @@
                   </el-form-item>
                 </div>
                 <!-- 区县 -->
-                <div v-if="element.countyIsShow" class="addresItem">
+                <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
                   <el-form-item :label="element.countyTitle" prop='county'>
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
                       <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
@@ -183,7 +183,7 @@
                   </el-form-item>
                 </div>
                 <!-- 邮编 -->
-                <div v-if="element.postcodeIsShow" class="addresItem">
+                <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
                   <el-form-item :label="element.postcodeTitle" prop='postcode'>
                     <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
                   </el-form-item>
@@ -384,7 +384,7 @@ export default {
       baseInfoList: [], // 基础信息
       customInfoList: [], // 自定义信息列表
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
-      nationsList: [{name: '中国', code: '86'}],
+      nationsList: [],
       chinaProvinceList: [],
       provinceCityList: [],
       cityCountyList: [],
@@ -458,7 +458,7 @@ export default {
         ],
         contactType: [
           { required: true, message: "请选择参会人类型", trigger: "change" },
-        ]
+        ],
       },
       pickerOptions: {
         disabledDate(time) {
@@ -619,7 +619,7 @@ export default {
                 this.$set(this.rules, 'fullAddress', [{required: item.isRequire, message:  "详细地址必填项", trigger: "blur" }])
               }
               if(item.postcodeIsShow){ // 显示邮编
-                this.$set(this.rules, 'postcode', [{required: item.isRequire, message:  "邮编是必填项", trigger: "blur" }])
+                this.$set(this.rules, 'postcode', [{required: item.isRequire, message:  "邮编是必填项", trigger: "blur" },{ pattern: /"^\d{6}$"/,message: '请输入正确的邮编', trigger: "blur"}])
               }
               // this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
               // this.$set(this.rules, 'ming', [{required: item.isRequire, message: "名是必填项", trigger: "blur" }])
@@ -1139,7 +1139,13 @@ export default {
         data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       }).then(res => {
         // dictItemName \ dictItemVal
+        debugger
         this.countryCodeOptions = res.data
+        // 86 大陆, 852 香港, 853 澳门, 886 台湾
+        this.nationsList = res.data.filter(item => {
+          // debugger
+          return item.dictItemVal != '852' && item.dictItemVal != '853' && item.dictItemVal != '886'
+        })
       })
     },
     // 获取参会人类型数据字典
