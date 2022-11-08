@@ -13,13 +13,13 @@
       </div>
       <!-- 外观设置 -->
       <div v-if="stepIndex == 1" class="appearanceSet" :style="{height: formSetHeight + 'px'}">
-        <el-form ref="appearanceSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="150px" :model="appearanceSetForm" class="appearanceSetForm">
+        <el-form ref="appearanceSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="250px" :model="appearanceSetForm" class="appearanceSetForm">
           <div class="appearanceSetItem">
             <div class="setItemTitle">
               <h3>通用设置</h3>
               <span>
                 <span style="margin-right: 20px">收起</span>
-                <el-button type="text"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+                <el-button type="text" style="vertical-align: middle;padding:0"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
               </span>
             </div>
             <el-divider></el-divider>
@@ -39,13 +39,75 @@
               <el-color-picker v-model="appearanceSetForm.mainColor" style="width: 50%" size="mini"></el-color-picker>
             </el-form-item>
           </div>
-        </el-form>
+          <div class="appearanceSetItem">
+            <div class="setItemTitle">
+              <h3>会议宣传</h3>
+              <span>
+                <span style="margin-right: 20px">收起</span>
+                <el-button type="text" style="vertical-align: middle;padding:0"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <el-form-item label="是否开启会议宣传" prop="isOpenPublicity">
+              <el-switch v-model="appearanceSetForm.isOpenPublicity" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
 
-        <div class="appearanceSetItem"></div>
-        <div class="appearanceSetItem"></div>
-        <div class="appearanceSetItem"></div>
-        <div class="appearanceSetItem"></div>
-        <div class="appearanceSetItem"></div>
+            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="Banner(pc)" prop="isOpenPublicity">
+              <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+            </el-form-item>
+
+            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="是否显示会议时间" prop="isShowMeetingDate">
+              <el-switch v-model="appearanceSetForm.isShowMeetingDate" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="是否显示会议地点" prop="isShowMeetingAdress">
+              <el-switch v-model="appearanceSetForm.isShowMeetingAdress" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="是否显示倒计时" prop="isShowCountDown">
+              <el-switch v-model="appearanceSetForm.isShowCountDown" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="会议简介" prop="briefIntroduction">
+              <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.briefIntroduction"></el-input>
+            </el-form-item>
+          </div>
+
+          <div class="appearanceSetItem">
+            <div class="setItemTitle">
+              <h3>注册登录</h3>
+              <span>
+                <span style="margin-right: 20px">收起</span>
+                <el-button type="text" style="vertical-align: middle;padding:0"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <el-form-item label="Banner(pc)" prop="isOpenPublicity">
+              <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="Banner(手机端)" prop="isOpenPublicity">
+              <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="是否显示会议时间" prop="registerIsShowMeetingDate">
+              <el-switch v-model="appearanceSetForm.registerIsShowMeetingDate" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item label="是否显示会议地点" prop="registerIsShowMeetingAdress">
+              <el-switch v-model="appearanceSetForm.registerIsShowMeetingAdress" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item label="是否显示倒计时" prop="registerIsShowCountDown">
+              <el-switch v-model="appearanceSetForm.registerIsShowCountDown" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+          </div>
+        </el-form>
       </div>
 
       <div v-if="stepIndex == 2" class="formSet">
@@ -1709,10 +1771,22 @@ export default {
       formSetHeight: 0,
       batchEditDiologVisible: false,
       appearanceSetForm:{
-        title: '',
-        englishTitle: '',
-        language: '',
-        mainColor: '',
+        title: '', // 标题
+        englishTitle: '', // 英文标题
+        language: '', // 语言
+        mainColor: '#409EFF', // 主色调
+        isOpenPublicity: false, // 是否开启会议宣传
+        BannerList: [], // banner 列表
+        isShowMeetingDate: false, // 是否显示会议时间
+        isShowMeetingAdress: false, // 是否显示会议地点
+        isShowCountDown: false, // 是否显示倒计时
+        briefIntroduction: '', // 会议简介
+
+        registerBannerPCList: [], // 注册登录PC BannerList
+        registerBannerMobileList: [], // 注册登录移动端 BannerList
+        registerIsShowMeetingDate: false, // 是否显示会议时间
+        registerIsShowMeetingAdress: false, // 是否显示会议地点
+        registerIsShowCountDown: false, // 是否显示倒计时
       },
       setForm:{
         checkedSex: '',
@@ -2557,7 +2631,14 @@ export default {
 .appearanceSet {
   padding: 20px 50px;
   background: #fff;
+  overflow: auto;
   .appearanceSetItem {
+    .el-form-item {
+      // margin-left: 100px;
+      .el-form-item__label {
+        margin-right: 100px;
+      }
+    }
     .setItemTitle {
       display: flex;
       justify-content: space-between;
