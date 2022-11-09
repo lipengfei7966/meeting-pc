@@ -14,102 +14,120 @@
       <!-- 外观设置 -->
       <div v-if="stepIndex == 1" class="appearanceSet" :style="{height: formSetHeight + 'px'}">
         <el-form ref="appearanceSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="250px" :model="appearanceSetForm" class="appearanceSetForm">
+          <!-- 通用设置 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
               <h3>通用设置</h3>
               <span>
-                <span style="margin-right: 20px">收起</span>
-                <el-button type="text" style="vertical-align: middle;padding:0"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+                <span style="margin-right: 20px">{{ isCommonSetShow ? '收起' : '展开'}}</span>
+                <el-button type="text" @click="isCommonSetShow = !isCommonSetShow" style="vertical-align: middle;padding:0">
+                  <i v-if="isCommonSetShow" class="el-icon-caret-top" style="font-size:30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size:30px"></i>
+                </el-button>
               </span>
             </div>
             <el-divider></el-divider>
-            <el-form-item label="注册标题" prop="title">
-              <el-input v-model="appearanceSetForm.title" style="width: 50%" size="mini" placeholder="注册标题"></el-input>
-            </el-form-item>
-            <el-form-item label="注册标题(英文)" prop="EnglishTitle">
-              <el-input v-model="appearanceSetForm.EnglishTitle" style="width: 50%" size="mini" placeholder="注册标题(英文)"></el-input>
-            </el-form-item>
-            <el-form-item label="语言设置" prop="language">
-              <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
-                <el-checkbox label="中文" name="langure"></el-checkbox>
-                <el-checkbox label="英文" name="langure"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="主色调" prop="mainColor">
-              <el-color-picker v-model="appearanceSetForm.mainColor" style="width: 50%" size="mini"></el-color-picker>
-            </el-form-item>
+            <div v-show="isCommonSetShow">
+              <el-form-item label="注册标题" prop="title">
+                <el-input v-model="appearanceSetForm.title" style="width: 50%" size="mini" placeholder="注册标题"></el-input>
+              </el-form-item>
+              <el-form-item label="注册标题(英文)" prop="EnglishTitle">
+                <el-input v-model="appearanceSetForm.EnglishTitle" style="width: 50%" size="mini" placeholder="注册标题(英文)"></el-input>
+              </el-form-item>
+              <el-form-item label="语言设置" prop="language">
+                <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
+                  <el-checkbox label="中文" name="langure"></el-checkbox>
+                  <el-checkbox label="英文" name="langure"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item label="主色调" prop="mainColor">
+                <el-color-picker v-model="appearanceSetForm.mainColor" style="width: 50%" size="mini"></el-color-picker>
+              </el-form-item>
+            </div>
           </div>
+          <!-- 会议宣传 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
               <h3>会议宣传</h3>
               <span>
-                <span style="margin-right: 20px">收起</span>
-                <el-button type="text" style="vertical-align: middle;padding:0"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+                <span style="margin-right: 20px">{{ isPublicitySetShow ? '收起' : '展开'}}</span>
+                <el-button type="text" @click="isPublicitySetShow = !isPublicitySetShow" style="vertical-align: middle;padding:0">
+                  <i v-if="isPublicitySetShow" class="el-icon-caret-top" style="font-size:30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size:30px"></i>
+                </el-button>
               </span>
             </div>
             <el-divider></el-divider>
-            <el-form-item label="是否开启会议宣传" prop="isOpenPublicity">
-              <el-switch v-model="appearanceSetForm.isOpenPublicity" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
+            <div v-show="isPublicitySetShow">
+              <el-form-item label="是否开启会议宣传" prop="isOpenPublicity">
+                <el-switch v-model="appearanceSetForm.isOpenPublicity" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
 
-            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="Banner(pc)" prop="isOpenPublicity">
-              <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
-              </el-upload>
-            </el-form-item>
+              <el-form-item label="Banner(pc)" prop="isOpenPublicity">
+                <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
 
-            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="是否显示会议时间" prop="isShowMeetingDate">
-              <el-switch v-model="appearanceSetForm.isShowMeetingDate" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
-            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="是否显示会议地点" prop="isShowMeetingAdress">
-              <el-switch v-model="appearanceSetForm.isShowMeetingAdress" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
-            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="是否显示倒计时" prop="isShowCountDown">
-              <el-switch v-model="appearanceSetForm.isShowCountDown" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
-            <el-form-item v-if="appearanceSetForm.isOpenPublicity" label="会议简介" prop="briefIntroduction">
-              <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.briefIntroduction"></el-input>
-            </el-form-item>
+              <el-form-item label="是否显示会议时间" prop="isShowMeetingDate">
+                <el-switch v-model="appearanceSetForm.isShowMeetingDate" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示会议地点" prop="isShowMeetingAdress">
+                <el-switch v-model="appearanceSetForm.isShowMeetingAdress" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示倒计时" prop="isShowCountDown">
+                <el-switch v-model="appearanceSetForm.isShowCountDown" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+              <el-form-item label="会议简介" prop="briefIntroduction">
+                <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.briefIntroduction"></el-input>
+              </el-form-item>
+            </div>
           </div>
-
+          <!-- 注册登录 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
               <h3>注册登录</h3>
               <span>
-                <span style="margin-right: 20px">收起</span>
-                <el-button type="text" style="vertical-align: middle;padding:0"><i class="el-icon-caret-bottom" style="font-size:30px"></i></el-button>
+                <span style="margin-right: 20px">{{ isRegisterSetShow ? '收起' : '展开'}}</span>
+                <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow" style="vertical-align: middle;padding:0">
+                  <i v-if="isRegisterSetShow" class="el-icon-caret-top" style="font-size:30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size:30px"></i>
+                </el-button>
               </span>
             </div>
             <el-divider></el-divider>
-            <el-form-item label="Banner(pc)" prop="isOpenPublicity">
-              <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="Banner(手机端)" prop="isOpenPublicity">
-              <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="是否显示会议时间" prop="registerIsShowMeetingDate">
-              <el-switch v-model="appearanceSetForm.registerIsShowMeetingDate" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
-            <el-form-item label="是否显示会议地点" prop="registerIsShowMeetingAdress">
-              <el-switch v-model="appearanceSetForm.registerIsShowMeetingAdress" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
-            <el-form-item label="是否显示倒计时" prop="registerIsShowCountDown">
-              <el-switch v-model="appearanceSetForm.registerIsShowCountDown" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
+            <div v-show="isRegisterSetShow">
+              <el-form-item label="Banner(pc)" prop="isOpenPublicity">
+                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="Banner(手机端)" prop="isOpenPublicity">
+                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="是否显示会议时间" prop="registerIsShowMeetingDate">
+                <el-switch v-model="appearanceSetForm.registerIsShowMeetingDate" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示会议地点" prop="registerIsShowMeetingAdress">
+                <el-switch v-model="appearanceSetForm.registerIsShowMeetingAdress" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示倒计时" prop="registerIsShowCountDown">
+                <el-switch v-model="appearanceSetForm.registerIsShowCountDown" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+            </div>
           </div>
         </el-form>
       </div>
 
+      <!-- 表单设置 -->
       <div v-if="stepIndex == 2" class="formSet">
         <el-card class="formInfo" :style="{height: formSetHeight + 'px'}">
           <div slot="header" class="formInfoTitle">
@@ -210,7 +228,7 @@
                   <!-- 照片 -->
                   <div v-if="element.mapCode == 'photo' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload class="avatar-uploader">
                       <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                       <i class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -476,7 +494,7 @@
                   <!-- 附件 -->
                   <div v-if="element.systemName == '附件' " class="form-item-input">
                     <span class="setInfoItemlabel"> {{element.title}} : </span>
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload class="avatar-uploader">
                       <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                       <i class="el-icon-plus avatar-uploader-icon"></i>
                       <p> {{element.placeholder}} </p>
@@ -1540,6 +1558,12 @@
         </el-card>
       </div>
 
+      <div v-if="stepIndex == 3" class="resultSet" :style="{height: formSetHeight + 'px'}">
+        <el-form ref="resultSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="250px" :model="resultSetForm" class="resultSetForm">
+
+        </el-form>
+      </div>
+
       <!-- <el-button @click="save">保存</el-button> -->
     </div>
 
@@ -1565,7 +1589,7 @@ export default {
   name: 'signupContactCol',
   data() {
     return {
-      stepIndex: 1,
+      stepIndex: 3,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -1758,7 +1782,9 @@ export default {
           }
         }]
       },
-
+      isCommonSetShow: true, // 通用设置是否收起
+      isPublicitySetShow: true, // 会议宣传是否收起
+      isRegisterSetShow: true, // 注册登录是否收起
       customInfoCount: 0, // 自定义信息数量
       textareaNum: 35, // 长文本字段序号为 36-40
       pagingCount: 0, // 分页数量
@@ -1773,7 +1799,7 @@ export default {
       appearanceSetForm:{
         title: '', // 标题
         englishTitle: '', // 英文标题
-        language: '', // 语言
+        language: ['中文'], // 语言
         mainColor: '#409EFF', // 主色调
         isOpenPublicity: false, // 是否开启会议宣传
         BannerList: [], // banner 列表
@@ -1807,6 +1833,10 @@ export default {
         date: '',
       },
       checkedIndex: 0, // 选中预览item下标
+      resultSetForm:{
+        isNeedApprove: 0, // 是否需要审核
+        isNeedApprove: 0, // 是否需要审核
+      }
     }
   },
   components: {
@@ -2215,7 +2245,61 @@ export default {
       }
       // debugger
     },
+    fileLimitCount(files, fileList) {
+      this.$message.warning('只允许上传一个文件')
+    },
+    beforeAvatarUpload(file) {
+      debugger
+      const fileName = file.name;
+      const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase();
+      let isAllowUpload = true;
+      let acceptType = ['.jpg','.png','.jpeg','.bmp','.webp']
 
+      // 判断后缀名是否允许上传
+      isAllowUpload = acceptType.includes(extension);
+      if(!isAllowUpload){
+        const errMsg ='注意: 只允许上传以下文件类型：' + acceptType.join('、');
+        this.$message.error(errMsg);
+        return false;
+      }
+
+      // const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
+      // if (!sizeLimit) {
+      //   this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`);
+      //   return false;
+      // }
+
+      return isAllowUpload
+    },
+    // 自定义上传文件
+    handleUploadForm(param) {
+      let formData = new FormData()
+      formData.append('file', param.file)
+      let loading = this.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: '/api/obs/file/uploadImg',
+        method: 'POST',
+        data: formData
+      }).then(data => {
+        debugger
+        if (data.status) {
+          this.$message('上传文件成功')
+          // this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+          param.onSuccess(data)
+        } else {
+          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
+          this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
+          this.$message('上传文件失败')
+        }
+        // console.log(this.setFormFile[element.mapCode])
+        loading.close()
+      })
+    },
   // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
       debugger
@@ -2307,18 +2391,6 @@ export default {
 
     handleAvatarSuccess(res, file){
       this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
     },
     minCheckedCountChange(val){
       if(val != 0){
@@ -2645,6 +2717,10 @@ export default {
       font-size: 20px;
     }
   }
+}
+.resultSet {
+  background: #fff;
+  overflow: auto;
 }
 </style>
 
