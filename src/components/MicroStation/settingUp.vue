@@ -76,7 +76,7 @@ export default {
   components: {
     material
   },
-  props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
+  props: ['dataNum', 'newData', 'dataFlag', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
   //   },
@@ -113,7 +113,9 @@ export default {
       classify: [],
       // process.env.BASE_API +
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
-      dialogVisible: false
+      dialogVisible: false,
+      dataFlag_: false,
+      flag_: true
     }
   },
   computed: {
@@ -150,33 +152,49 @@ export default {
           }
           // debugger
           // console.log(this.ruleForm)
+          debugger
+          console.log(submitVal, oldValue)
           if (submitVal.title) {
-            // if (this.ruleForm.title == '') {
-            this.ruleForm.title = submitVal.title
-            // }
+            if (this.ruleForm.title == '' || this.dataFlag_) {
+              this.ruleForm.title = submitVal.title
+            }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          debugger
+          console.log(this.dataFlag_)
           // 标注
-          if (submitVal.type) {
-            // if (this.ruleForm.type == '') {
-            this.ruleForm.type = submitVal.type
-            // }
-            if (submitVal.type == 'article') {
-              // if (this.ruleForm.page == '') {
-              this.ruleForm.page = submitVal.content
-              // }
-            } else if (submitVal.type == 'url') {
-              // if (this.ruleForm.link == '') {
-              this.ruleForm.link = submitVal.content
-              // }
+          // if(this.ruleForm.type){
+
+          // }else{
+
+          // }
+          if (submitVal.type || this.ruleForm.type) {
+            if (this.ruleForm.type == '' || this.dataFlag_) {
+              this.ruleForm.type = submitVal.type
             }
+            if (submitVal.type == 'article') {
+              if (this.ruleForm.page == '' || this.dataFlag_) {
+                if (this.flag_) {
+                  this.ruleForm.page = submitVal.content
+                }
+                this.flag_ = true
+              }
+            } else if (submitVal.type == 'url') {
+              if (this.ruleForm.link == '' || this.dataFlag_) {
+                // hkz
+                if (this.flag_) {
+                  this.ruleForm.link = submitVal.content
+                }
+                this.flag_ = true
+              }
+            }
+            this.dataFlag_ = false
           } else {
             this.ruleForm.type = ''
             this.ruleForm.page = ''
             this.ruleForm.link = ''
+            this.dataFlag_ = false
           }
           if (submitVal.backgroundSetting) {
             this.ruleForm.backgroundSetting = submitVal.backgroundSetting
@@ -331,6 +349,7 @@ export default {
     selectChange(val) {
       // console.log(val)
       debugger
+      this.flag_ = false
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
@@ -405,12 +424,14 @@ export default {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
       debugger
       this.ruleForm.icon = JSON.parse(this.$refs.material.pictureRadio).picUrl
+      // this.ruleForm.fileList = [{ name: '', url: '' }]
+      this.ruleForm.fileList = [{ name: '', url: '' }]
       this.ruleForm.fileList[0].url = JSON.parse(this.$refs.material.pictureRadio).picUrl
       this.ruleForm.fileList[0].name = JSON.parse(this.$refs.material.pictureRadio).picName
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      debugger
+      // debugger
       // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
