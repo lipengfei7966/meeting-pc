@@ -66,6 +66,7 @@
             </el-collapse>
           </div>
         </el-card>
+
         <el-card class="formPreview" :style="{height: formSetHeight + 'px'}">
           <div :style="{minHeight: formSetHeight - 80 + 'px'}">
             <h2 style="text-align:center"> {{ eventName }}</h2>
@@ -409,9 +410,9 @@
                   </div>
 
                   <div style="display: flex;flex-direction: column;justify-content: space-around;">
-                    <div style="display: flex;">
+                    <div style="display: flex;width:85px">
                       <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">必填</el-checkbox>
-                      <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element,index)"></div>
+                      <div v-if="element.mapCode != 'name'" class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element,index)"></div>
                     </div>
 
                   </div>
@@ -1096,7 +1097,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制数字位数</p>
                   <p>
-                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="numberDigitLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1105,7 +1106,7 @@
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制小数点后位数</p>
                   <p>
                     小数点后
-                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="decimalPlacesLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1374,7 +1375,7 @@
                 <!-- 限制图片尺寸 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制图片尺寸</p>
-                  <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit"> </el-switch>
+                  <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit" @change="pictureSizeLimitChange"> </el-switch>
                   <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width:100%">
                     宽: <el-input style="width:70px;margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
                     高: <el-input style="width:70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
@@ -1702,7 +1703,6 @@ export default {
       method: 'POST',
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
-      // debugger
       this.countryCodeOptions = res.data
       // dictItemName \ dictItemVal
     })
@@ -1776,6 +1776,10 @@ export default {
           this.setInfoList = JSON.parse(response.data.json)
         }else{
           this.setInfoList = [];
+        }
+        // 姓名是必加项,如果没有添加姓名, 自动添加
+        if(!this.setInfoList.some(item => item.mapCode == 'name')){
+          this.addSetInfoList( {label: '姓名', value: 'name', isSee: false}, this.baseInfoList, 'baseInfoList')
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
         this.setInfoList.forEach( setInfoItem => {
@@ -2011,8 +2015,26 @@ export default {
           this.textareaNum ++;
           obj.wordCountLimit = 200;
         }
+        // 短文本\长文本添加字数限制校验
+        if(itemList.value == 'input' || itemList.value == 'textarea'){
+          obj.check[0].code = "008"
+          obj.check[0].name = obj.wordCountLimit
+        }
+        // 数字添加校验
+        if(itemList.value == 'number'){
+          obj.check[0].code = "009"
+          obj.check[0].name = obj.numberDigitLimit
+          obj.check.push({
+            code: '010',
+            name: obj.decimalPlacesLimit
+          })
+        }
         if( ['radio','checkbox','select','selects'].includes(itemList.value)){
           obj.options = ["选项一","选项二"];
+        }
+        if(itemList.value == 'file'){
+          obj.check[0].code = "013"
+          obj.check[0].name = obj.fileSizeLimit
         }
       }
 
@@ -2034,6 +2056,7 @@ export default {
       if(itemList.value == 'fax'){
         obj.check[0].code = "015"
       }
+
       // 照片限制宽高
       if(itemList.value == 'photo'){
         obj.pictureSizeLimit = true;
@@ -2180,10 +2203,29 @@ export default {
       }
     },
 
+    // 附件是否限制图片尺寸
+    pictureSizeLimitChange(val){
+      if(val){
+        this.setInfoList[this.checkedIndex].check.push({
+          code: '004',
+          name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight,
+        })
+      }else{
+        this.setInfoList[this.checkedIndex].check.filter(item => {
+          return item.code != '004'
+        })
+      }
+    },
+
     // 限制图片尺寸修改
     photoLimitSizehChange(setInfoListItem){
-      setInfoListItem.check.code = '004'
-      setInfoListItem.check.name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
+      if(setInfoListItem.mapCode == 'photo'){
+        setInfoListItem.check[0].code = '004'
+        setInfoListItem.check[0].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
+      }else{
+        setInfoListItem.check[1].code = '004'
+        setInfoListItem.check[1].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
+      }
     },
 
     handleAvatarSuccess(res, file){
@@ -2264,6 +2306,18 @@ export default {
     wordCountLimitChange(setInfoListItem){
       setInfoListItem.check[0].code = '008'
       setInfoListItem.check[0].name = setInfoListItem.wordCountLimit
+      console.log(this.setInfoList)
+    },
+    // 数字位数限制 添加校验
+    numberDigitLimitChange(setInfoListItem){
+      setInfoListItem.check[0].code = '009'
+      setInfoListItem.check[0].name = setInfoListItem.numberDigitLimit
+      console.log(this.setInfoList)
+    },
+    // 小数位数限制 添加校验
+    decimalPlacesLimitChange(setInfoListItem){
+      setInfoListItem.check[1].code = '010'
+      setInfoListItem.check[1].name = setInfoListItem.decimalPlacesLimit
       console.log(this.setInfoList)
     },
     // 手机号 校验勾选
