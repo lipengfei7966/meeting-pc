@@ -1559,7 +1559,108 @@
       </div>
 
       <div v-if="stepIndex == 3" class="resultSet" :style="{height: formSetHeight + 'px'}">
-        <el-form ref="resultSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="250px" :model="resultSetForm" class="resultSetForm">
+        <el-form ref="resultSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="200px" :model="resultSetForm" class="resultSetForm">
+          <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
+            <el-radio v-model="resultSetForm.isNeedApprove" :label="0">不需要审核</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" :label="1">需要审核</el-radio>
+          </el-form-item>
+          <div class="resultSetItem">
+            <div class="setItemTitle">
+              <h3>1、报名成功</h3>
+              <span>
+                <span style="margin-right: 20px">{{ successIsShow ? '收起' : '展开'}}</span>
+                <el-button type="text" @click="successIsShow = !successIsShow" style="vertical-align: middle;padding:0">
+                  <i v-if="successIsShow" class="el-icon-caret-top" style="font-size:30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size:30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="successIsShow">
+              <div style="display:flex">
+                <el-card shadow="always" class="previewCard">
+                  <div slot="header" style="text-align:center">
+                    <h3>预览</h3>
+                  </div>
+                </el-card>
+
+                <div class="successFormItem">
+                  <el-form-item label="提示主题:" prop="successTitle">
+                    <el-input v-model="resultSetForm.successTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述:" prop="successDescribe">
+                    <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Banner:" prop="successBanner">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="背景图:" prop="successBackground">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                      <i class="el-icon-upload" style="margin: 16px 0"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="提交后是否跳过当前页:" prop="successIsJumpCurrentPage">
+                    <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                    <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="true">跳过</el-radio>
+                    <div style="display:">
+                      <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage">
+                        <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
+                          <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                        <el-form-item label="" prop="successOutPageUrl">
+                          <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                        </el-form-item>
+                      </el-form-item>
+                    </div>
+                  </el-form-item>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+            <div class="setItemTitle">
+              <h3>2、待审核</h3>
+              <span>
+                <span style="margin-right: 20px">{{ waitReviewIsShow ? '收起' : '展开'}}</span>
+                <el-button type="text" @click="waitReviewIsShow = !waitReviewIsShow" style="vertical-align: middle;padding:0">
+                  <i v-if="waitReviewIsShow" class="el-icon-caret-top" style="font-size:30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size:30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="waitReviewIsShow">
+              2、待审核
+            </div>
+          </div>
+
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+            <div class="setItemTitle">
+              <h3>3、不通过</h3>
+              <span>
+                <span style="margin-right: 20px">{{ noPassIsShow ? '收起' : '展开'}}</span>
+                <el-button type="text" @click="noPassIsShow = !noPassIsShow" style="vertical-align: middle;padding:0">
+                  <i v-if="noPassIsShow" class="el-icon-caret-top" style="font-size:30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size:30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="noPassIsShow">
+              3、不通过
+            </div>
+          </div>
 
         </el-form>
       </div>
@@ -1782,9 +1883,9 @@ export default {
           }
         }]
       },
-      isCommonSetShow: true, // 通用设置是否收起
-      isPublicitySetShow: true, // 会议宣传是否收起
-      isRegisterSetShow: true, // 注册登录是否收起
+      isCommonSetShow: true, // 通用设置是否显示
+      isPublicitySetShow: true, // 会议宣传是否显示
+      isRegisterSetShow: true, // 注册登录是否显示
       customInfoCount: 0, // 自定义信息数量
       textareaNum: 35, // 长文本字段序号为 36-40
       pagingCount: 0, // 分页数量
@@ -1835,8 +1936,60 @@ export default {
       checkedIndex: 0, // 选中预览item下标
       resultSetForm:{
         isNeedApprove: 0, // 是否需要审核
-        isNeedApprove: 0, // 是否需要审核
-      }
+        successTitle: '', // 报名成功提示主题
+        successDescribe: '', // 报名成功描述
+        successBanner: [], // 报名成功Banner
+        successBackground: [], // 报名成功背景图
+        successIsJumpCurrentPage: false, // 是否跳过当前页面
+        successJumpPage: '', // 选择跳转页面
+        successOutPageUrl: '', // 站外页面URL
+        successButtonList: [
+          {
+            btnName: '', // 按钮名称
+            btnFun: '', // 按钮功能
+          }
+        ],
+
+        waitReviewTitle: '', // 待审核 提示主题
+        waitReviewDescribe: '', // 待审核 描述
+        waitReviewBanner: [], // 待审核 Banner
+        waitReviewBackground: [], // 待审核 背景图
+        waitReviewIsJumpCurrentPage: false, // 待审核 是否跳过当前页面
+        waitReviewJumpPage: '', // 待审核 选择跳转页面
+        waitReviewOutPageUrl: '', // 待审核 站外页面URL
+        waitReviewButtonList: [
+          {
+            btnName: '', // 按钮名称
+            btnFun: '', // 按钮功能
+          }
+        ],
+
+        noPassTitle: '', // 不通过提示主题
+        noPassDescribe: '', // 不通过 描述
+        noPassBanner: [], // 不通过Banner
+        noPassBackground: [], // 不通过背景图
+        noPassIsJumpCurrentPage: false, // 不通过 是否跳过当前页面
+        noPassJumpPage: '', // 不通过 选择跳转页面
+        noPassOutPageUrl: '', // 不通过 站外页面URL
+        noPassButtonList: [
+          {
+            btnName: '', // 按钮名称
+            btnFun: '', // 按钮功能
+          }
+        ],
+      },
+      jumpPageOptions: [
+        {label: "首页菜单", value: '001'},
+        {label: "个人中心", value: '002'},
+        {label: "参观码", value: '003'},
+        {label: "报名页面", value: '004'},
+        {label: "会议简介", value: '005'},
+        {label: "站内页面", value: '006'},
+        {label: "站外页面", value: '007'},
+      ], // 跳转页面选项
+      successIsShow: false, // 报名成功是否显示
+      waitReviewIsShow: false, // 报名成功是否显示
+      noPassIsShow: false, // 报名成功是否显示
     }
   },
   components: {
@@ -2719,8 +2872,29 @@ export default {
   }
 }
 .resultSet {
+  padding: 20px 50px;
   background: #fff;
   overflow: auto;
+  .resultSetItem {
+    .setItemTitle {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+    }
+    .previewCard {
+      width: 414px;
+      height: 736px;
+    }
+    .el-upload-dragger {
+      height: 120px;
+      .el-icon-upload {
+        margin: 16px 0;
+      }
+    }
+    .el-upload__tip {
+      margin-top: 0;
+    }
+  }
 }
 </style>
 
