@@ -3,12 +3,14 @@
     <bs-form ref="bsForm" :form="form"></bs-form>
     <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
-    <div style="padding: 0 20px">
+    <apply-set v-if="isFormSetComplete" :eventCode="form.listQuery.data.eventCode" :eventName="eventName"></apply-set>
+
+    <div v-else style="padding: 0 20px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
           <el-step title="外观设置"></el-step>
           <el-step title="表单设置"></el-step>
-          <el-step title="其他设置"></el-step>
+          <el-step title="结果设置"></el-step>
         </el-steps>
       </div>
       <!-- 外观设置 -->
@@ -125,6 +127,10 @@
             </div>
           </div>
         </el-form>
+        <div class="appearanceSetBtns">
+          <el-button type="primary" @click="appearanceSetSave">保存,进入下一步</el-button>
+          <el-button>取消</el-button>
+        </div>
       </div>
 
       <!-- 表单设置 -->
@@ -541,9 +547,9 @@
           <div class="optionBtns" style="">
             <el-button type="primary" @click="save">
               <span class="el-icon-download"></span>
-              保存
+              保存,进入下一步
             </el-button>
-            <!-- <el-button @click="save">保存</el-button> -->
+            <el-button>取消</el-button>
           </div>
         </el-card>
 
@@ -1558,6 +1564,7 @@
         </el-card>
       </div>
 
+      <!-- 结果页设置 -->
       <div v-if="stepIndex == 3" class="resultSet" :style="{height: formSetHeight + 'px'}">
         <el-form ref="resultSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="200px" :model="resultSetForm" class="resultSetForm">
           <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
@@ -1582,6 +1589,17 @@
                   <div slot="header" style="text-align:center">
                     <h3>预览</h3>
                   </div>
+                  <div class="successPreview">
+                    <!-- 背景图 -->
+                    <img v-if="resultSetForm.successBackground" :src="printSetform.successBackground" alt="" style="position:absolute;width:100%;height:100%">
+                    <!-- banner 图 -->
+                    <el-image v-if="resultSetForm.successBanner" style="width: 100%;" :src="resultSetForm.successBanner" :fit="fit"></el-image>
+                    <h3 style="text-align:center"> {{ resultSetForm.successTitle }} </h3>
+                    <pre> {{ resultSetForm.successDescribe }} </pre>
+                    <div class="previewBtns">
+                      <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex" v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                    </div>
+                  </div>
                 </el-card>
 
                 <div class="successFormItem">
@@ -1592,7 +1610,7 @@
                     <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="successBanner">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file, 'successBanner')">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -1600,7 +1618,7 @@
                   </el-form-item>
 
                   <el-form-item label="背景图:" prop="successBackground">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file, 'successBackground')">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -1608,17 +1626,36 @@
                   </el-form-item>
 
                   <el-form-item label="提交后是否跳过当前页:" prop="successIsJumpCurrentPage">
-                    <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="false">不跳过</el-radio>
-                    <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="true">跳过</el-radio>
-                    <div style="display:">
-                      <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage">
-                        <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
-                          <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
-                        <el-form-item label="" prop="successOutPageUrl">
-                          <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                    <div style="display: flex">
+                      <div>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="true">跳过</el-radio>
+                      </div>
+                      <div style="display:inline-block">
+                        <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
+                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px">
+                            <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                          </el-form-item>
                         </el-form-item>
+                      </div>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item label="按钮设置:">
+                    <div v-for="(btnItem,btnIndex) in resultSetForm.successButtonList" :key="btnIndex" style="display: flex">
+                      <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.btnName'">
+                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
                       </el-form-item>
+                      <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.btnFun' ">
+                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
+                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.successButtonList, btnIndex)"></div>
+                      <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0" @click.stop="delBtn(resultSetForm.successButtonList, btnIndex)"></div>
                     </div>
                   </el-form-item>
 
@@ -1641,7 +1678,83 @@
             </div>
             <el-divider></el-divider>
             <div v-show="waitReviewIsShow">
-              2、待审核
+              <div style="display:flex">
+                <el-card shadow="always" class="previewCard">
+                  <div slot="header" style="text-align:center">
+                    <h3>预览</h3>
+                  </div>
+                  <div class="waitReviewPreview">
+                    <!-- 背景图 -->
+                    <img v-if="resultSetForm.waitReviewBackground" :src="printSetform.waitReviewBackground" alt="" style="position:absolute;width:100%;height:100%">
+                    <!-- banner 图 -->
+                    <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%;" :src="resultSetForm.waitReviewBanner" :fit="fit"></el-image>
+                    <h3 style="text-align:center"> {{ resultSetForm.waitReviewTitle }} </h3>
+                    <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
+                    <div class="previewBtns">
+                      <el-button v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                    </div>
+                  </div>
+                </el-card>
+
+                <div class="waitReviewFormItem">
+                  <el-form-item label="提示主题:" prop="waitReviewTitle">
+                    <el-input v-model="resultSetForm.waitReviewTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述:" prop="waitReviewDescribe">
+                    <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Banner:" prop="waitReviewBanner">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="背景图:" prop="waitReviewBackground">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                      <i class="el-icon-upload" style="margin: 16px 0"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="提交后是否跳过当前页:" prop="waitReviewIsJumpCurrentPage">
+                    <div style="display: flex">
+                      <div>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" :label="true">跳过</el-radio>
+                      </div>
+                      <div style="display:inline-block">
+                        <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
+                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
+                            <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                          </el-form-item>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item label="按钮设置:">
+                    <div v-for="(btnItem,btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" style="display: flex">
+                      <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex+ '.btnName' ">
+                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      </el-form-item>
+                      <el-form-item label="功能" label-width="50px" :prop="'waitReviewButtonList.'+ btnIndex + '.btnFun' ">
+                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
+                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
+                      <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0" @click.stop="delBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
+                    </div>
+                  </el-form-item>
+
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1658,16 +1771,95 @@
             </div>
             <el-divider></el-divider>
             <div v-show="noPassIsShow">
-              3、不通过
+              <div style="display:flex">
+                <el-card shadow="always" class="previewCard">
+                  <div slot="header" style="text-align:center">
+                    <h3>预览</h3>
+                  </div>
+                  <div class="noPassPreview">
+                    <!-- 背景图 -->
+                    <img v-if="resultSetForm.noPassBackground" :src="printSetform.noPassBackground" alt="" style="position:absolute;width:100%;height:100%">
+                    <!-- banner 图 -->
+                    <el-image v-if="resultSetForm.noPassBanner" style="width: 100%;" :src="resultSetForm.noPassBanner" :fit="fit"></el-image>
+                    <h3 style="text-align:center"> {{ resultSetForm.noPassTitle }} </h3>
+                    <pre> {{ resultSetForm.noPassDescribe }} </pre>
+                    <div class="previewBtns">
+                      <el-button v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                    </div>
+                  </div>
+                </el-card>
+
+                <div class="noPassFormItem">
+                  <el-form-item label="提示主题:" prop="noPassTitle">
+                    <el-input v-model="resultSetForm.noPassTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述:" prop="noPassDescribe">
+                    <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Banner:" prop="noPassBanner">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="背景图:" prop="noPassBackground">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file)=>handleUploadForm(file)">
+                      <i class="el-icon-upload" style="margin: 16px 0"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="提交后是否跳过当前页:" prop="noPassIsJumpCurrentPage">
+                    <div style="display: flex">
+                      <div>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" :label="true">跳过</el-radio>
+                      </div>
+                      <div style="display:inline-block">
+                        <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
+                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
+                            <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                          </el-form-item>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item label="按钮设置:">
+                    <div v-for="(btnItem,btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" style="display: flex">
+                      <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.btnName'">
+                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      </el-form-item>
+                      <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.btnFun' ">
+                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
+                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
+                      <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0" @click.stop="delBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
+                    </div>
+                  </el-form-item>
+
+                </div>
+              </div>
             </div>
           </div>
 
         </el-form>
+        <div class="resultSetBtns">
+          <el-button @click="preStep">上一步(暂存)</el-button>
+          <el-button type="primary" @click="resultSetSave">生成表单</el-button>
+        </div>
       </div>
-
-      <!-- <el-button @click="save">保存</el-button> -->
     </div>
 
+    <!-- 表单设置-批量新增选项 弹窗 -->
     <el-dialog title="批量新增" width="500px" :visible.sync="batchEditDiologVisible" :modal-append-to-body="true" :append-to-body="true">
       <p>输入选项值（每行一个）</p>
       <el-input type="textarea" :rows="10" v-model="batchEditOptions"></el-input>
@@ -1682,6 +1874,7 @@
 <script>
 import draggable from 'vuedraggable'
 import screenfull from 'screenfull'
+import applySet from './applySet.vue'
 import { mapGetters } from 'vuex'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
@@ -1690,7 +1883,7 @@ export default {
   name: 'signupContactCol',
   data() {
     return {
-      stepIndex: 3,
+      stepIndex: 1,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -1938,8 +2131,8 @@ export default {
         isNeedApprove: 0, // 是否需要审核
         successTitle: '', // 报名成功提示主题
         successDescribe: '', // 报名成功描述
-        successBanner: [], // 报名成功Banner
-        successBackground: [], // 报名成功背景图
+        successBanner: '', // 报名成功Banner
+        successBackground: '', // 报名成功背景图
         successIsJumpCurrentPage: false, // 是否跳过当前页面
         successJumpPage: '', // 选择跳转页面
         successOutPageUrl: '', // 站外页面URL
@@ -1952,8 +2145,8 @@ export default {
 
         waitReviewTitle: '', // 待审核 提示主题
         waitReviewDescribe: '', // 待审核 描述
-        waitReviewBanner: [], // 待审核 Banner
-        waitReviewBackground: [], // 待审核 背景图
+        waitReviewBanner: '', // 待审核 Banner
+        waitReviewBackground: '', // 待审核 背景图
         waitReviewIsJumpCurrentPage: false, // 待审核 是否跳过当前页面
         waitReviewJumpPage: '', // 待审核 选择跳转页面
         waitReviewOutPageUrl: '', // 待审核 站外页面URL
@@ -1966,8 +2159,8 @@ export default {
 
         noPassTitle: '', // 不通过提示主题
         noPassDescribe: '', // 不通过 描述
-        noPassBanner: [], // 不通过Banner
-        noPassBackground: [], // 不通过背景图
+        noPassBanner: '', // 不通过Banner
+        noPassBackground: '', // 不通过背景图
         noPassIsJumpCurrentPage: false, // 不通过 是否跳过当前页面
         noPassJumpPage: '', // 不通过 选择跳转页面
         noPassOutPageUrl: '', // 不通过 站外页面URL
@@ -1987,13 +2180,23 @@ export default {
         {label: "站内页面", value: '006'},
         {label: "站外页面", value: '007'},
       ], // 跳转页面选项
-      successIsShow: false, // 报名成功是否显示
-      waitReviewIsShow: false, // 报名成功是否显示
-      noPassIsShow: false, // 报名成功是否显示
+      btnOptions: [
+        { label: '返回首页', value: '001'},
+        { label: '重新报名', value: '002'},
+        { label: '查看报名信息', value: '003'},
+        { label: '前往个人中心', value: '004'},
+        { label: '退出登录', value: '005'},
+        { label: '修改信息', value: '006'},
+      ],
+      successIsShow: true, // 报名成功是否显示
+      waitReviewIsShow: true, // 报名成功是否显示
+      noPassIsShow: true, // 报名成功是否显示
+      isFormSetComplete: true, // 表单设置是否完成
     }
   },
   components: {
     draggable,
+    applySet
   },
   mounted() {
     this.tableComputed()
@@ -2019,7 +2222,6 @@ export default {
         let textareaNum = 35; // 长文本字段需要为 36-40
         this.setInfoList.forEach((item,index) => {
           if(item.isCoustomInfo){
-            debugger
             if(item.isTexeArea){
               textareaNum ++;
               item.mapCode = 'reservedStr' + textareaNum
@@ -2048,6 +2250,21 @@ export default {
     },
   },
   methods: {
+    // 外观设置保存
+    appearanceSetSave(){
+
+      // 进入下一步 表单设置
+      this.stepIndex = 2;
+    },
+
+    // 结果页设置 上一步(暂存)
+    preStep(){
+      this.stepIndex = 2;
+    },
+    resultSetSave(){
+
+      this.isFormSetComplete = true
+    },
     getEventInfo() {
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
@@ -2073,7 +2290,7 @@ export default {
           funcOperation: '表单初始化'
         }
       }).then(response => {
-        debugger
+        // debugger
         if(response.data.json){
           this.setInfoList = JSON.parse(response.data.json)
         }else{
@@ -2106,7 +2323,7 @@ export default {
 
       })
     },
-
+    // 表单设置保存
     save(){
       this.setInfoList.forEach(item => {
         if(item.systemName == '附件'){
@@ -2127,6 +2344,7 @@ export default {
       }).then(res => {
         if(res.status){
           this.$message.success('保存成功')
+          this.stepIndex = 3;
         }else{
           this.$message.error('保存失败')
         }
@@ -2425,7 +2643,7 @@ export default {
       return isAllowUpload
     },
     // 自定义上传文件
-    handleUploadForm(param) {
+    handleUploadForm(param, uploadType) {
       let formData = new FormData()
       formData.append('file', param.file)
       let loading = this.$loading({
@@ -2443,11 +2661,20 @@ export default {
         if (data.status) {
           this.$message('上传文件成功')
           // this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+          if(uploadType == 'successBanner'){
+            this.resultSetForm.successBanner = data.data.filePath
+          }else if(uploadType == 'successBackground'){
+            this.resultSetForm.successBackground = data.data.filePath
+          }else if(uploadType == 'waitReviewBanner'){
+            this.resultSetForm.waitReviewBanner = data.data.filePath
+          }else if(uploadType == 'waitReviewBackground'){
+            this.resultSetForm.waitReviewBackground = data.data.filePath
+          }else if(uploadType == 'noPassBanner'){
+            this.resultSetForm.noPassBanner = data.data.filePath
+          }else if(uploadType == 'noPassBackground'){
+            this.resultSetForm.noPassBackground = data.data.filePath
+          }
           param.onSuccess(data)
-        } else {
-          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
-          this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
-          this.$message('上传文件失败')
         }
         // console.log(this.setFormFile[element.mapCode])
         loading.close()
@@ -2662,6 +2889,17 @@ export default {
       // debugger
       this.checkedIndex = checkedIndex;
     },
+    // 结果页设置 添加按钮
+    addBtn(btnList, btnIndex){
+      btnList.splice(btnIndex + 1, 0, {
+        btnName: '',
+        btnFun: ''
+      })
+    },
+    // 结果页设置 删除按钮
+    delBtn(btnList, btnIndex){
+      btnList.splice(btnIndex, 1)
+    },
      //开始拖拽事件
     onStart(){
       this.drag=true;
@@ -2714,7 +2952,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .steps {
   width: 80%;
   margin: 0 auto;
@@ -2855,6 +3093,7 @@ export default {
 }
 .appearanceSet {
   padding: 20px 50px;
+  min-width: 1250px;
   background: #fff;
   overflow: auto;
   .appearanceSetItem {
@@ -2870,11 +3109,18 @@ export default {
       font-size: 20px;
     }
   }
+  .appearanceSetBtns {
+    text-align: center;
+  }
 }
 .resultSet {
   padding: 20px 50px;
+  min-width: 1250px;
   background: #fff;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .resultSetItem {
     .setItemTitle {
       display: flex;
@@ -2882,8 +3128,26 @@ export default {
       font-size: 20px;
     }
     .previewCard {
-      width: 414px;
-      height: 736px;
+      width: 290px;
+      height: 515px;
+      position: relative;
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .previewBtns {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .el-button {
+          width: 150px;
+          margin: 5px 0;
+        }
+      }
     }
     .el-upload-dragger {
       height: 120px;
@@ -2894,6 +3158,15 @@ export default {
     .el-upload__tip {
       margin-top: 0;
     }
+    .remove-button {
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 28px;
+      margin-left: 10px;
+    }
+  }
+  .resultSetBtns {
+    text-align: center;
   }
 }
 </style>
