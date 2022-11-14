@@ -1191,8 +1191,8 @@ export default {
       })
     },
     // 下载附件
-    downloadFile(fileUrl) {
-      window.open(fileUrl, "_blank");
+    // downloadFile(fileUrl) {
+      // window.open(fileUrl, "_blank");
       // let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
       // let a_link = document.createElement("a");
       // // 这里是将url转成blob地址，
@@ -1206,6 +1206,14 @@ export default {
       //     document.body.appendChild(a_link);
       //     a_link.click();
       //   });
+    // },
+    downloadFile(fileUrl) {
+      let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+      let a_link = document.createElement("a");
+      a_link.href = fileUrl;
+      a_link.download = fileName; //下载的文件的名字/
+      document.body.appendChild(a_link);
+      a_link.click();
     },
   }
 }
