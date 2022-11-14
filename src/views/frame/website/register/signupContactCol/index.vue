@@ -710,7 +710,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">格式校验</p>
                   <el-checkbox-group v-model="setInfoList[checkedIndex].mobilePhoneVerify" @change="mobilePhoneVerifyChange">
-                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item"></el-checkbox>
+                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item" :disabled="item == '国际' "></el-checkbox>
                   </el-checkbox-group>
                 </div>
 
@@ -766,7 +766,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">格式校验</p>
                   <el-checkbox-group v-model="setInfoList[checkedIndex].mobilePhoneVerify" @change="mobilePhoneVerifyChange">
-                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item"></el-checkbox>
+                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item" :disabled="item == '国际'"></el-checkbox>
                   </el-checkbox-group>
                 </div>
 
