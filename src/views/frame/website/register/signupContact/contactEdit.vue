@@ -1195,8 +1195,10 @@ export default {
       let downloadUrl = file.response ? file.response.data.filePath : file.url;
       let filename = file.response ? file.response.data.fileName : file.name;
       let a_link = document.createElement("a");
-
-      window.open(downloadUrl)
+      a_link.href = downloadUrl;
+      a_link.download = filename; //下载的文件的名字/
+      document.body.appendChild(a_link);
+      a_link.click();
 
     },
     downloadPhoto(fileUrl) {
