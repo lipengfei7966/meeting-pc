@@ -1196,7 +1196,7 @@ export default {
       let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
       let a_link = document.createElement("a");
       // 这里是将url转成blob地址，
-      fetch(fileUrl)
+      fetch(fileUrl, { mode : 'no-cors'})
         .then((res) => res.blob())
         .then((blob) => {
           // 将链接地址字符内容转变成blob地址
