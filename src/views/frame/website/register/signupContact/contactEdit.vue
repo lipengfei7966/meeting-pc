@@ -723,7 +723,6 @@ export default {
             url: fileUrl
           })
         }
-
       }
       this.setInfoList.forEach(element => {
         if(element.mapCode == 'mobile' && this.setForm.mobileIntCode){
@@ -780,6 +779,28 @@ export default {
             if (res.status) {
               this.$message.success('保存成功')
               this.back()
+            }
+            // 保存后将多选\其他数据格式恢复
+            for (const key in this.setForm.signupContactDtlDto) {
+              // 判断是否多选
+              if( typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0){
+                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
+                this.setForm.signupContactDtlDto[key].shift('卍')
+
+                this.setForm.signupContactDtlDto[key].forEach((checkItem,checkIndex) => {
+                  // debugger
+                  if(checkItem.indexOf('其他&') == 0){
+                    this.setformOther[key] = checkItem.split('&')[1]
+                    this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
+                  }
+                })
+              }
+              // 判断是否包含其他选项
+              if(typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('其他&')==0){
+                debugger
+                this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
+                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
+              }
             }
             loading.close()
           })
@@ -1198,30 +1219,27 @@ export default {
     // 下载附件
     downloadFile(file) {
       let downloadUrl = file.response ? file.response.data.filePath : file.url;
-      let fileName = file.response ? file.response.data.fileName : file.name;
-      debugger
-      // window.open(downloadUrl, "_blank");
+      let filename = file.response ? file.response.data.fileName : file.name;
       let a_link = document.createElement("a");
-      // 这里是将url转成blob地址，
-      fetch(downloadUrl,{mode: "cors",})
-        .then((res) => res.blob())
-        .then((blob) => {
-          // 将链接地址字符内容转变成blob地址
-          debugger;
-          a_link.href = URL.createObjectURL(blob);
-          console.log(a_link.href);
-          a_link.download = fileName; //下载的文件的名字
-          document.body.appendChild(a_link);
-          a_link.click();
-        });
+      a_link.href = downloadUrl;
+      a_link.download = filename; //下载的文件的名字/
+      a_link.target = '_blank';
+      document.body.appendChild(a_link);
+      a_link.click();
+
     },
     downloadPhoto(fileUrl) {
       // window.open(file.file_path, "_blank");
       let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
       let a_link = document.createElement("a");
       // 这里是将url转成blob地址，
-      fetch(fileUrl,{mode: "cors",})
-        .then((res) => res.blob())
+      fetch(fileUrl,{
+        mode: "no-cors",
+        headers:{
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'text/plain'
+        }
+      }).then((res) => res.blob())
         .then((blob) => {
           // 将链接地址字符内容转变成blob地址
           debugger;
