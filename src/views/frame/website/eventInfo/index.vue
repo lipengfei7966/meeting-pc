@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
@@ -130,6 +130,10 @@ export default {
           id: this.$route.meta.title + 'ff',
           cols: [
             {
+              prop: 'code',
+              label: 'website.eventInfo.list.eventCode'
+            },
+            {
               prop: 'eventName',
               label: 'website.eventInfo.list.eventName'
             },
@@ -145,40 +149,15 @@ export default {
               label: 'website.eventInfo.list.endDate',
               prop: 'eventEndTime'
             },
-            // {
-            //   prop: 'eventBeginTime',
-            //   width: '200',
-            //   label: 'website.eventInfo.list.startDate',
-            //   align: 'center',
-            //   format: {
-            //     dict: 'YYYY-MM-DD 24hh:mm',
-            //     func: 'dateFormat'
-            //   }
-            // },
-            // {
-            //   prop: 'eventBeginTime',
-            //   label: 'website.eventInfo.list.startDate',
-            //   width: '120',
-            //   align: 'center',
-            //   format: {
-            //     dict: 'yyyy-MM-dd HH:mm',
-            //     func: 'dateFormate'
-            //   }
-            // },
-            // {
-            //   prop: 'eventEndTime',
-            //   width: '200',
-            //   label: 'website.eventInfo.list.endDate',
-            //   align: 'center',
-            //   format: {
-            //     dict: 'YYYY-MM-DD 24hh:mm',
-            //     func: 'dateFormat'
-            //   }
-            // },
+
             {
               label: 'website.eventInfo.list.eventPlace',
               prop: 'eventPlace'
             }
+            // {
+            //   label: 'website.eventInfo.list.eventHashCode',
+            //   prop: 'eventHashCode'
+            // }
           ]
         },
         bottomBar: {
@@ -192,7 +171,7 @@ export default {
     }
   },
   mounted() {
-    // debugger
+    // //debugger
     // 不设置表格高度
     //this.$refs.bsTable.isHeight = false
     // 设置行高为38
@@ -200,7 +179,7 @@ export default {
   },
   methods: {
     doDesign() {
-      // debugger
+      // //debugger
       // console.log(this.$refs.bsTable.currentRow.code)
       this.$router.push({
         name: 'microStationManagement',

@@ -49,21 +49,21 @@ export default {
   //   listData: {
   //     immediate: true,
   //     handler(newValue, oldValue) {
-  //       debugger
+  //       //debugger
   //       console.log(newValue, oldValue)
   //     },
   //     deep: true
   //   }
   // },
   created() {
-    // debugger
+    // //debugger
     console.log(window.document.location.origin)
   },
   methods: {
     handelClick() {
-      // debugger
+      // //debugger
       if (this.templateVal && this.pitchOn) {
-        // debugger
+        // //debugger
         let webpagePicDtoList = [
           {
             picDictionary: 'background',
@@ -99,8 +99,8 @@ export default {
           method: 'POST',
           data: data
         })
-          .then((res) => {
-            // debugger
+          .then(res => {
+            // //debugger
             if (res.data) {
               console.log(res)
               // 跳转到编辑界面
@@ -132,19 +132,19 @@ export default {
     handel(val) {
       if (val == 1) {
         this.pitchOn = !this.pitchOn
-        //       debugger
+        //       //debugger
         this.templateVal = val
       }
       console.log(val)
     },
     feature(val) {
-      //       debugger
+      //       //debugger
       this.sonVal = val
       this.$emit('featureVal', this.sonVal)
       console.log(val)
     },
     watchVal(val, dataNum, colorValue) {
-      //       debugger
+      //       //debugger
       if (val == 1) {
         this.$refs.templateOne.watchVal(val, dataNum)
       } else if (val == 2) {
@@ -155,7 +155,7 @@ export default {
       console.log(val)
     },
     colorVal(val, dataNum) {
-      // debugger
+      // //debugger
       this.$refs.templateOne.colorVal(val, dataNum)
     }
   }

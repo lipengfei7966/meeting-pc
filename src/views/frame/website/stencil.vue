@@ -25,14 +25,14 @@ export default {
   },
   methods: {
     loadData() {
-      // debugger
+      // //debugger
       request({
         url: '/api/biz/cmsWebpage/getByEventCode',
         method: 'POST',
         data: { data: this.$route.params.ids, funcModule: '获取网页列表', funcOperation: '获取网页列表' }
       })
-        .then((res) => {
-          debugger
+        .then(res => {
+          //debugger
           if (res.data) {
             this.title_ = res.data.title
             this.subTitle = res.data.subTitle

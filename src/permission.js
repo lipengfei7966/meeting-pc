@@ -16,8 +16,8 @@ import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css' // Progress 进度条样式
 import { getToken, setToken, isExpired, getLoginUrl } from '@/utils/frame/base/auth' // 验权
 
-const whiteList = ['/platform/login', '/old/login', '/group/login', '/user/login', '/login', '/401', '/404'] // 不重定向白名单
-const logninList = ['/login', '/platform/login', '/old/login', '/group/login', '/user/login'] // 不重定向白名单
+const whiteList = ['/platform/login', '/old/login', '/group/login', '/user/login', '/guest/login', '/login', '/401', '/404'] // 不重定向白名单
+const logninList = ['/login', '/platform/login', '/old/login', '/group/login', '/user/login', '/guest/login'] // 不重定向白名单
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()

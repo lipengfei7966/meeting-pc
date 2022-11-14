@@ -16,7 +16,6 @@
           </div>
         </header>
       </template>
-      <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
 
       <bs-table v-if='isPage' ref='bsTable' :mainData='mainData'>
         <template v-if='slotNames' v-for='name in slotNames' :slot='name' slot-scope='scope'>

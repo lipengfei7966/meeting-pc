@@ -1,4 +1,4 @@
-import { platLogin, userLogin, groupLogin, login, logout, getInfo, getUser, getTitles, getMenus, getRoutes, getSubRoutes, switchTo, switchBack } from '@/api/frame/login'
+import { platLogin, userLogin, groupLogin, guestLogin, login, logout, getInfo, getUser, getTitles, getMenus, getRoutes, getSubRoutes, switchTo, switchBack } from '@/api/frame/login'
 import { listSelectData } from '@/api/frame/base/sys/data'
 import { getMd5, setMd5, removeMd5, getToken, setToken, removeToken } from '@/utils/frame/base/auth'
 import session from '@/utils/frame/base/sessionStorage'
@@ -141,6 +141,24 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         groupLogin(username, userInfo.password, userInfo.captcha, userInfo.captchaToken)
+          .then(response => {
+            const data = response.data
+            setToken(data.accessToken)
+            setMd5(data.md5Token)
+            commit('SET_TOKEN', data)
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+
+    // 登录
+    GuestLogin({ commit }, userInfo) {
+      const username = userInfo.username.trim()
+      return new Promise((resolve, reject) => {
+        guestLogin(username, userInfo.password, userInfo.captcha, userInfo.captchaToken, userInfo.eventHashCode)
           .then(response => {
             const data = response.data
             setToken(data.accessToken)

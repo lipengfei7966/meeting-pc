@@ -10,11 +10,13 @@ export default {
         endDate: '会议结束时间'
       },
       list: {
+        eventCode: '会议代码',
         eventName: '会议名称',
         customerName: '客户名称',
         startDate: '开始时间',
         endDate: '结束时间',
-        eventPlace: '活动地点'
+        eventPlace: '活动地点',
+        eventHashCode: '会议哈希'
       },
       edit: {
         eventName: '会议名称',
@@ -23,7 +25,8 @@ export default {
         startDate: '开始时间',
         endDate: '结束时间',
         eventPlace: '活动地点',
-        eventDate: '会议时间'
+        eventDate: '会议时间',
+        eventHashCode: '会议哈希'
       },
       btn: {
         design: '微站设计',

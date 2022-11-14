@@ -11,7 +11,7 @@
         </template>
       </el-tabs>
     </template>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
 
     <div v-if="isprint" ref="content">
@@ -319,8 +319,8 @@ export default {
         url: '/api/register/signupContactCol/page',
         method: 'POST',
         data: { data: { eventCode: this.form.listQuery.data.eventCode }, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then((res) => {
-        this.certificateContentList = res.data.filter((item) => {
+      }).then(res => {
+        this.certificateContentList = res.data.filter(item => {
           return item.systmeName != '附件'
         })
         this.certificateContentList.push({ title: '参会人类型', mapCode: 'contactType' })
@@ -366,13 +366,13 @@ export default {
         if (item.certificateLayout) {
           this.certificateContentList.forEach((dictItem, dictIndex) => {
             if (item.certificateLayout.indexOf(dictItem.title) >= 0) {
-              // debugger
-              if(dictItem.title == '参会人类型'){
-                debugger
+              // //debugger
+              if (dictItem.title == '参会人类型') {
+                //debugger
                 // 参会人类型 是数据字典, 取到列表 contantType 的值是 value值,需要转换成对应的name
-               let mapVal =  Vue.filter('dataDictFormat')(item[dictItem.mapCode], this.$t('datadict.contantType'))
+                let mapVal = Vue.filter('dataDictFormat')(item[dictItem.mapCode], this.$t('datadict.contantType'))
                 item.certificateLayout = item.certificateLayout.replace(dictItem.title, mapVal || '')
-              }else{
+              } else {
                 item.certificateLayout = item.certificateLayout.replace(dictItem.title, item[dictItem.mapCode] || '')
               }
             }
@@ -383,7 +383,7 @@ export default {
       })
       this.$nextTick(() => {
         let contents = this.$refs.contents
-        try{
+        try {
           contents.forEach((node, nodeindex) => {
             // 替换参会人二维码
             let qrCode = node.getElementsByClassName('qrCode')
@@ -407,13 +407,13 @@ export default {
             let personQrCode = node.getElementsByClassName('personQrCode')
             let newPersonQR = node.getElementsByClassName('newPersonQR')[0]
             if (personQrCode.length > 0) {
-              if(newPersonQR){
+              if (newPersonQR) {
                 personQrCode[0].parentNode.appendChild(newPersonQR)
                 personQrCode[0].parentNode.removeChild(personQrCode[0])
-              }else{
+              } else {
                 isCanPrint = false
                 this.isprint = false
-                throw Error();
+                throw Error()
               }
             }
             // 替换人员条形码
@@ -421,13 +421,13 @@ export default {
             let newPersonBar = node.getElementsByClassName('newPersonBar')[0]
             if (personBarCode.length > 0) {
               // item.hasBarCode = true;
-              if(newPersonBar){
+              if (newPersonBar) {
                 personBarCode[0].parentNode.appendChild(newPersonBar)
                 personBarCode[0].parentNode.removeChild(personBarCode[0])
-              }else{
+              } else {
                 isCanPrint = false
                 this.isprint = false
-                throw Error();
+                throw Error()
               }
             } else {
               newPersonBar.parentNode.removeChild(newPersonBar)
@@ -453,8 +453,8 @@ export default {
               funcModule: '办证',
               funcOperation: '查询列表'
             }
-          }).then((response) => {
-            debugger
+          }).then(response => {
+            //debugger
             console.log(response.data)
             if (response.data.certificateFlag) {
               this.$message.success(response.data.msg)
@@ -473,7 +473,7 @@ export default {
                 newWin.focus() //在IE浏览器中使用必须添加这一句
 
                 this.isprint = false
-                setTimeout(function () {
+                setTimeout(function() {
                   newWin.print() //打开打印窗口
                   // newWin.close() //关闭打印窗口
                 }, 100)
@@ -484,9 +484,9 @@ export default {
               this.isprint = false
             }
           })
-        }catch(e){
-          debugger
-          this.$message.warning("参会人没有人员编码")
+        } catch (e) {
+          //debugger
+          this.$message.warning('参会人没有人员编码')
           return
         }
       })

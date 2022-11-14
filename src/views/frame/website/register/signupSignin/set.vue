@@ -10,7 +10,7 @@
         </template>
       </el-tabs>
     </template>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
@@ -372,7 +372,7 @@ export default {
         }
       })
         .then(response => {
-          debugger
+          //debugger
           if (response.status) {
             this.$refs.bsTable.doRefresh()
             this.$notify(notifyInfo({ msg: '签到成功' }))

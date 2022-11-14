@@ -110,6 +110,17 @@ export default {
                 trigger: 'blur'
               }
             ]
+          },
+
+          {
+            label: 'website.eventInfo.edit.eventHashCode',
+            prop: 'eventHashCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: false,
+              disabled: true,
+              cols: 3
+            }
           }
         ],
         bottomButtons: [

@@ -45,7 +45,7 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
+        // //debugger
         this.webpagePicDtoList_ = []
         nVal.forEach((element, index) => {
           if (element.picDictionary == 'rotation') {
@@ -57,7 +57,7 @@ export default {
     }
   },
   created() {
-    // debugger
+    // //debugger
     // this.webpagePicDtoList.forEach((element, index) => {
     //   if (element.picDictionary == 'rotation') {
     //     this.webpagePicDtoList_.push(element)
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     handleRemove(file, fileList) {
-      // debugger
+      // //debugger
       if (this.flag_) {
         //
         request({
@@ -75,8 +75,8 @@ export default {
           method: 'POST',
           data: { data: file.id, funcOperation: '删除轮播图', funcModule: '删除轮播图' }
         })
-          .then((data) => {
-            debugger
+          .then(data => {
+            //debugger
             if (data) {
               this.$message('删除成功')
               this.$emit('upData_')
@@ -94,7 +94,7 @@ export default {
       console.log(file)
     },
     handleUploadForm(param) {
-      // debugger
+      // //debugger
       // let mun = param.file.name.split('.')
       // let format = mun[mun.length - 1]
       // if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
@@ -121,7 +121,7 @@ export default {
         method: 'POST',
         data: formData
       })
-        .then((data) => {
+        .then(data => {
           if (data) {
             thiz.$message('上传文件成功')
             this.$emit('upData_')
@@ -142,7 +142,7 @@ export default {
     submit_() {
       console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)
       let arr = []
-      this.$refs.material.checkList.forEach((item) => {
+      this.$refs.material.checkList.forEach(item => {
         let obj = {
           webpageCode: this.code,
           url: JSON.parse(item).picUrl,
@@ -156,8 +156,8 @@ export default {
         method: 'POST',
         data: { data: arr, funcModule: '素材库选择轮播图片', funcOperation: '素材库选择轮播图片' }
       })
-        .then((res) => {
-          debugger
+        .then(res => {
+          //debugger
           if (res.data) {
             console.log(res.data)
             this.$message('上传文件成功')
@@ -170,8 +170,8 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      debugger
-      // debugger
+      //debugger
+      // //debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {

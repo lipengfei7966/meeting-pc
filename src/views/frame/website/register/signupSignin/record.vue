@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
@@ -324,7 +324,7 @@ export default {
     }
   },
   mounted() {
-    // debugger
+    // //debugger
     // 不设置表格高度
     this.$refs.bsTable.isHeight = false
     // 设置行高为38

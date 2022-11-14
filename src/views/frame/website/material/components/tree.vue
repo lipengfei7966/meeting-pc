@@ -97,7 +97,7 @@ export default {
         method: 'POST',
         data: { data: {}, funcModule: '获取树列表', funcOperation: '获取树列表' }
       })
-        .then((res) => {
+        .then(res => {
           if (res.data) {
             this.treeData = res.data
             console.log(res.data)
@@ -112,7 +112,7 @@ export default {
         method: 'POST',
         data: { data: { name: this.workName, parent_code: this.getData.code }, funcModule: '新增文件夹', funcOperation: '新增文件夹' }
       })
-        .then((res) => {
+        .then(res => {
           if (res.data) {
             console.log(res.data)
             this.$message({
@@ -131,7 +131,7 @@ export default {
         method: 'POST',
         data: { data: this.getData, funcModule: '编辑文件夹', funcOperation: '编辑文件夹' }
       })
-        .then((res) => {
+        .then(res => {
           if (res.data) {
             console.log(res.data)
             this.$message({
@@ -150,7 +150,7 @@ export default {
         method: 'POST',
         data: { data: this.getData.id, funcModule: '删除文件夹', funcOperation: '删除文件夹' }
       })
-        .then((res) => {
+        .then(res => {
           if (res.data) {
             console.log(res.data)
             this.$message({
@@ -164,7 +164,7 @@ export default {
         .catch(() => {})
     }
     // expanClick_(data) {
-    //   debugger
+    //   //debugger
     //   console.log(data, '展开')
     // }
   },

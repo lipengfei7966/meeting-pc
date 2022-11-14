@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
           }
         },
         formData: [
-        {
+          {
             label: 'website.article.query.eventCode',
             prop: 'eventCode',
             element: 'base-select',
@@ -136,7 +136,7 @@ export default {
   methods: {
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
-    },
+    }
   }
 }
 </script>

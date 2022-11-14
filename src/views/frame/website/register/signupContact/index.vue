@@ -1,7 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table>
   </div>
 </template>
@@ -158,7 +157,8 @@ export default {
         api: {
           search: '/api/register/signupContact/page',
           doDelete: '/api/register/signupContact/remove',
-          export: '/api/register/signupContactCol/exportModel'
+          export: '/api/register/signupContactCol/exportModel',
+          set: '/api/register/signupContact/resetPwd'
         },
         initSearch: false,
         isTopBar: true,
@@ -166,7 +166,7 @@ export default {
           {
             name: 'add',
             type: 'route',
-            event: this.toAddSetting,
+            event: this.toAddSetting
 
             // component: () => import('./edit.vue'),
             // getParam: () => {
@@ -191,7 +191,7 @@ export default {
           {
             name: 'view',
             type: 'route',
-            event: this.toViewSetting,
+            event: this.toViewSetting
             // component: () => import('./edit.vue'),
             // getParam: () => {
             //   return {
@@ -204,6 +204,24 @@ export default {
             name: 'remove',
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
+            }
+          },
+          {
+            name: 'set',
+            permitName: ['resetPassword'],
+            i18n: 'biz.btn.resetPwd',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.id
+            }
+          },
+          {
+            name: 'set',
+            permitName: ['unlock'],
+            i18n: 'biz.btn.unlock',
+            url: '/api/register/signupContact/unlock',
+            successMsgInfo: '解锁成功',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.id
             }
           },
           {
@@ -235,7 +253,7 @@ export default {
         isColset: true,
         table: {
           cols: [
-          {
+            {
               prop: 'code',
               label: 'website.signupContact.list.code'
             },
@@ -465,7 +483,7 @@ export default {
         })
     },
     fileCallback(data) {
-      debugger
+      //debugger
       this.$notify.success({
         message: data,
         position: 'bottom-right'
@@ -490,7 +508,7 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      if(!this.$refs.bsTable.currentRow){
+      if (!this.$refs.bsTable.currentRow) {
         this.$message.warning('请选择参会人')
         return
       }
@@ -501,7 +519,7 @@ export default {
           back: 'signupContact',
           data: this.form.listQuery.data.eventCode,
           contactCode: this.$refs.bsTable.currentRow.code,
-          type: 'update',
+          type: 'update'
         }
       })
     },
@@ -510,8 +528,8 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      debugger
-      if(!this.$refs.bsTable.currentRow){
+      //debugger
+      if (!this.$refs.bsTable.currentRow) {
         this.$message.warning('请选择参会人')
         return
       }
@@ -524,7 +542,7 @@ export default {
           type: 'view'
         }
       })
-    },
+    }
   }
 }
 </script>

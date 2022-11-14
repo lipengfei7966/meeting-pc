@@ -160,7 +160,7 @@ export default {
             method: 'POST',
             data: { data: { id: item.id, moveType: 1, webpageCode: item.webpageCode }, funcModule: '按钮上移', funcOperation: '按钮上移' }
           })
-            .then((res) => {
+            .then(res => {
               if (res.data) {
                 this.$message('上移成功')
                 this.loadData()
@@ -180,7 +180,7 @@ export default {
             method: 'POST',
             data: { data: { id: item.id, moveType: -1, webpageCode: item.webpageCode }, funcModule: '按钮下移', funcOperation: '按钮下移' }
           })
-            .then((res) => {
+            .then(res => {
               if (res.data) {
                 this.$message('下移成功')
                 this.loadData()
@@ -197,7 +197,7 @@ export default {
           method: 'POST',
           data: { data: item.id, funcModule: '按钮删除', funcOperation: '按钮删除' }
         })
-          .then((res) => {
+          .then(res => {
             if (res.data) {
               this.$message('删除成功')
               //
@@ -215,7 +215,7 @@ export default {
       console.log(val)
     },
     featureVal(val) {
-      //       debugger
+      //       //debugger
       this.Functionality = val
       console.log(val)
     },
@@ -224,7 +224,7 @@ export default {
       this.isFlag = 1
     },
     newVal(val, dataNum, colorValue) {
-      debugger
+      //debugger
       //hkz
       if (val == 1) {
         this.$refs.station.watchVal(val, dataNum)
@@ -236,7 +236,7 @@ export default {
       console.log(val)
     },
     colorVal(val, dataNum) {
-      // debugger
+      // //debugger
       this.$refs.station.colorVal(val, dataNum)
     },
     onClick() {
@@ -246,7 +246,7 @@ export default {
       this.isFlag = val
     },
     addEdit(val, index) {
-      // debugger
+      // //debugger
       // console.log(val, index, this.Functionality)
       this.isFlag = 1
       this.isFlag_one = false
@@ -260,11 +260,11 @@ export default {
           method: 'POST',
           data: { data: this.$route.params.ids, funcModule: '获取网页列表', funcOperation: '获取网页列表' }
         })
-          .then((res) => {
+          .then(res => {
             if (res.data) {
               this.userData = res.data
               this.Functionality = res.data.webpageButtonDtoList
-              // debugger
+              // //debugger
               this.listData = res.data.webpageButtonDtoList
               this.webpagePicDtoList = res.data.webpagePicDtoList
               this.title_ = res.data.title
@@ -272,7 +272,7 @@ export default {
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
-              // debugger
+              // //debugger
               if (res.data.name) {
                 this.ruleForm.mainTitle = res.data.name
               }
@@ -306,7 +306,7 @@ export default {
       }
     },
     upData() {
-      // debugger
+      // //debugger
       this.isFlag = 0
       this.loadData()
     },
@@ -315,16 +315,16 @@ export default {
     },
     //
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          debugger
+          //debugger
           console.log(valid, formName)
           request({
             url: '/api/biz/cmsWebpage/updateName',
             method: 'POST',
             data: { data: { name: this.ruleForm.mainTitle, code: this.code }, funcModule: '修改名称', funcOperation: '修改名称' }
           })
-            .then((res) => {
+            .then(res => {
               if (res.data) {
                 this.$message('修改成功')
                 this.loadData()
@@ -354,13 +354,13 @@ export default {
       this.$message.success('复制成功')
     },
     itemclick(item, index) {
-      debugger
+      //debugger
       console.log(item, index, 'website标注')
       this.addEdit(item, index)
     }
   },
   mounted() {
-    //     debugger
+    //     //debugger
     this.$refs.station.isPc = false
   },
   filters: {

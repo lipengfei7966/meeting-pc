@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
     <div style="padding: 0 20px">
       <div class="steps">
@@ -1593,70 +1593,74 @@ export default {
         }
       },
       baseInfoList: [
-        {label: '姓名', value: 'name', isSee: false},
-        {label: '性别', value: 'sex', isSee: false},
-        {label: '证件', value: 'certificate', isSee: false},
-        {label: '照片', value: 'photo', isSee: false},
+        { label: '姓名', value: 'name', isSee: false },
+        { label: '性别', value: 'sex', isSee: false },
+        { label: '证件', value: 'certificate', isSee: false },
+        { label: '照片', value: 'photo', isSee: false }
       ],
-      contactWayList:[
-        {label: '地址', value: 'addres', isSee: false},
-        {label: '手机号', value: 'mobile', isSee: false},
-        {label: '备用手机', value: 'spareMobile', isSee: false},
-        {label: '固定电话', value: 'phone', isSee: false},
-        {label: '传真', value: 'fax', isSee: false},
-        {label: '邮箱', value: 'email', isSee: false},
-        {label: '备用邮箱', value: 'spareEmail', isSee: false},
-        {label: '微信号', value: 'wechat', isSee: false},
-        {label: 'QQ号', value: 'qq', isSee: false},
+      contactWayList: [
+        { label: '地址', value: 'addres', isSee: false },
+        { label: '手机号', value: 'mobile', isSee: false },
+        { label: '备用手机', value: 'spareMobile', isSee: false },
+        { label: '固定电话', value: 'phone', isSee: false },
+        { label: '传真', value: 'fax', isSee: false },
+        { label: '邮箱', value: 'email', isSee: false },
+        { label: '备用邮箱', value: 'spareEmail', isSee: false },
+        { label: '微信号', value: 'wechat', isSee: false },
+        { label: 'QQ号', value: 'qq', isSee: false }
       ],
-      workInfoList:[
-        {label: '公司', value: 'company'},
-        {label: '部门', value: 'department'},
-        {label: '职位', value: 'position'},
+      workInfoList: [
+        { label: '公司', value: 'company' },
+        { label: '部门', value: 'department' },
+        { label: '职位', value: 'position' }
       ],
-      customInfoList:[
-        {label: '短文本', value: 'input'},
-        {label: '长文本', value: 'textarea'},
-        {label: '数字', value: 'number'},
-        {label: '单选框', value: 'radio'},
-        {label: '复选框', value: 'checkbox'},
-        {label: '下拉列表', value: 'select'},
-        {label: '下拉复选框', value: 'selects'},
-        {label: '附件', value: 'file'},
-        {label: '日期', value: 'date'},
+      customInfoList: [
+        { label: '短文本', value: 'input' },
+        { label: '长文本', value: 'textarea' },
+        { label: '数字', value: 'number' },
+        { label: '单选框', value: 'radio' },
+        { label: '复选框', value: 'checkbox' },
+        { label: '下拉列表', value: 'select' },
+        { label: '下拉复选框', value: 'selects' },
+        { label: '附件', value: 'file' },
+        { label: '日期', value: 'date' }
       ],
       specialInfoList: [
-        {label: '分割线', value: 'crossLine'},
-        {label: '分页', value: 'paging'},
-        {label: '说明信息', value: 'explainInfo'},
+        { label: '分割线', value: 'crossLine' },
+        { label: '分页', value: 'paging' },
+        { label: '说明信息', value: 'explainInfo' }
       ],
       test: '',
       checkAll: false,
       isIndeterminate: true,
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now();
+          return time.getTime() > Date.now()
         },
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date());
+        shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date())
+            }
+          },
+          {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          },
+          {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
           }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
-          }
-        }]
+        ]
       },
 
       customInfoCount: 0, // 自定义信息数量
@@ -1670,29 +1674,29 @@ export default {
       // 表格高度
       formSetHeight: 0,
       batchEditDiologVisible: false,
-      setForm:{
+      setForm: {
         checkedSex: '',
         chenkedCertificate: [],
         verifyType: '',
-        nation:'',
-        province:'',
-        city:'',
+        nation: '',
+        province: '',
+        city: '',
         county: '',
-        detailedAdress:'',
+        detailedAdress: '',
         defaultCountryCode: '',
-        secondPhonedefaultCountryCode:'',
+        secondPhonedefaultCountryCode: '',
         mobilePhoneVerify: [],
-        telephoneDefaultCountryCode:'',
+        telephoneDefaultCountryCode: '',
         faxDefaultCountryCode: '',
         checkedOptions: [],
         selectMultipleCheckedOptions: [],
-        date: '',
+        date: ''
       },
-      checkedIndex: 0, // 选中预览item下标
+      checkedIndex: 0 // 选中预览item下标
     }
   },
   components: {
-    draggable,
+    draggable
   },
   mounted() {
     this.tableComputed()
@@ -1710,32 +1714,32 @@ export default {
   computed: {
     ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight'])
   },
-  watch:{
-    customInfoCount(newVal ,oldVal) {
+  watch: {
+    customInfoCount(newVal, oldVal) {
       if (newVal > 0) {
-        let coustomInfoIndex = 0;
-        let textareaNum = 35; // 长文本字段需要为 36-40
-        this.setInfoList.forEach((item,index) => {
-          if(item.isCoustomInfo){
-            debugger
-            if(item.isTexeArea){
-              textareaNum ++;
+        let coustomInfoIndex = 0
+        let textareaNum = 35 // 长文本字段需要为 36-40
+        this.setInfoList.forEach((item, index) => {
+          if (item.isCoustomInfo) {
+            //debugger
+            if (item.isTexeArea) {
+              textareaNum++
               item.mapCode = 'reservedStr' + textareaNum
-            }else{
-              coustomInfoIndex ++;
+            } else {
+              coustomInfoIndex++
               item.mapCode = 'reservedStr' + coustomInfoIndex
             }
           }
         })
       }
     },
-    pagingCount(newVal ,oldVal) {
+    pagingCount(newVal, oldVal) {
       if (newVal > 0) {
-        let pagingIndex = 0;
-        this.setInfoList.forEach((item,index) => {
-          if(item.isPaging){
-            pagingIndex++;
-            item.pagingIndex = pagingIndex;
+        let pagingIndex = 0
+        this.setInfoList.forEach((item, index) => {
+          if (item.isPaging) {
+            pagingIndex++
+            item.pagingIndex = pagingIndex
             item.mapCode = 'paging' + pagingIndex
           }
         })
@@ -1743,7 +1747,7 @@ export default {
     },
     clientHeight() {
       this.tableComputed()
-    },
+    }
   },
   methods: {
     getEventInfo() {
@@ -1751,15 +1755,15 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      // debugger
+      // //debugger
       this.baseInfoList.forEach(baseInfoItem => {
-        baseInfoItem.isSee = false;
+        baseInfoItem.isSee = false
       })
       this.contactWayList.forEach(contactWayItem => {
-        contactWayItem.isSee = false;
+        contactWayItem.isSee = false
       })
       this.workInfoList.forEach(workInfoItem => {
-        workInfoItem.isSee = false;
+        workInfoItem.isSee = false
       })
 
       request({
@@ -1771,48 +1775,47 @@ export default {
           funcOperation: '表单初始化'
         }
       }).then(response => {
-        debugger
-        if(response.data.json){
+        //debugger
+        if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
-        }else{
-          this.setInfoList = [];
+        } else {
+          this.setInfoList = []
         }
         // 姓名是必加项,如果没有添加姓名, 自动添加
-        if(!this.setInfoList.some(item => item.mapCode == 'name')){
-          this.addSetInfoList( {label: '姓名', value: 'name', isSee: false}, this.baseInfoList, 'baseInfoList')
+        if (!this.setInfoList.some(item => item.mapCode == 'name')) {
+          this.addSetInfoList({ label: '姓名', value: 'name', isSee: false }, this.baseInfoList, 'baseInfoList')
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
-        this.setInfoList.forEach( setInfoItem => {
+        this.setInfoList.forEach(setInfoItem => {
           // 基本信息
           this.baseInfoList.forEach(baseInfoItem => {
-            if(baseInfoItem.value == setInfoItem.mapCode){
-              baseInfoItem.isSee = true;
+            if (baseInfoItem.value == setInfoItem.mapCode) {
+              baseInfoItem.isSee = true
             }
           })
           // 联系方式
           this.contactWayList.forEach(contactWayItem => {
-            if(contactWayItem.value == setInfoItem.mapCode){
-              contactWayItem.isSee = true;
+            if (contactWayItem.value == setInfoItem.mapCode) {
+              contactWayItem.isSee = true
             }
           })
           // 工作信息
           this.workInfoList.forEach(workInfoItem => {
-            if(workInfoItem.value == setInfoItem.mapCode){
-              workInfoItem.isSee = true;
+            if (workInfoItem.value == setInfoItem.mapCode) {
+              workInfoItem.isSee = true
             }
           })
-          if(setInfoItem.isCoustomInfo){
-            this.customInfoCount ++;
+          if (setInfoItem.isCoustomInfo) {
+            this.customInfoCount++
           }
         })
-
       })
     },
 
-    save(){
+    save() {
       this.setInfoList.forEach(item => {
-        if(item.systemName == '附件'){
-          item.allFileTypes = [...item.imageCheckedTypes,...item.documentCheckedTypes,...item.compressedFileCheckedTypes,...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
+        if (item.systemName == '附件') {
+          item.allFileTypes = [...item.imageCheckedTypes, ...item.documentCheckedTypes, ...item.compressedFileCheckedTypes, ...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
         }
       })
       request({
@@ -1827,76 +1830,77 @@ export default {
           funcOperation: '获取模块类型'
         }
       }).then(res => {
-        if(res.status){
+        if (res.status) {
           this.$message.success('保存成功')
-        }else{
+        } else {
           this.$message.error('保存失败')
         }
       })
       console.log(this.setInfoList)
     },
     //移除表单信息
-    delSetInfoList(itemList,itemIndex){
-      debugger
+    delSetInfoList(itemList, itemIndex) {
+      //debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
-          var index = this.baseInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.baseInfoList.findIndex(item => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
-          this.baseInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          break;
+          this.baseInfoList[index].isSee = false
+          this.setInfoList.splice(itemIndex, 1)
+          break
         case 'contactWayList':
-          var index = this.contactWayList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.contactWayList.findIndex(item => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
-          this.contactWayList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          break;
+          this.contactWayList[index].isSee = false
+          this.setInfoList.splice(itemIndex, 1)
+          break
         case 'workInfoList':
-          var index = this.workInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.workInfoList.findIndex(item => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
-          this.workInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          break;
+          this.workInfoList[index].isSee = false
+          this.setInfoList.splice(itemIndex, 1)
+          break
         case 'customInfoList':
-          var index = this.customInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.customInfoList.findIndex(item => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
           // this.customInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          this.customInfoCount --;
-          break;
+          this.setInfoList.splice(itemIndex, 1)
+          this.customInfoCount--
+          break
         case 'specialInfoList':
-          var index = this.specialInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.specialInfoList.findIndex(item => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
           // this.specialInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          if(itemList.isPaging){
-            this.pagingCount --;
+          this.setInfoList.splice(itemIndex, 1)
+          if (itemList.isPaging) {
+            this.pagingCount--
           }
-          break;
+          break
         default:
-          break;
+          break
       }
       console.log(this.setInfoList)
     },
     // 添加表单信息
-    addSetInfoList(itemList,parentList,parentListName){   //当前点击的tag   当前点击tag的数组
+    addSetInfoList(itemList, parentList, parentListName) {
+      //当前点击的tag   当前点击tag的数组
       // placeholder 输入框提示词  content 输入的值  isSee 是否在表单中的布尔值
       // var obj = {'label':itemList.label,'value':itemList.value,content:'','placeholder':`请输入${itemList.label}`,'content':'','isSee':true,'parentListName':parentListName};
       var obj = {
-        systemName: itemList.label,    // 系统名称
+        systemName: itemList.label, // 系统名称
         mapCode: itemList.value, // 表单绑定字段
-        check:[{ code: '', name: ''}], // 校验类型 { code: '', name: ''}
-        mapBase: parentListName == 'customInfoList'? 1 : 2, // 1：自定义属性 ，2：基础属性
+        check: [{ code: '', name: '' }], // 校验类型 { code: '', name: ''}
+        mapBase: parentListName == 'customInfoList' ? 1 : 2, // 1：自定义属性 ，2：基础属性
         isSee: true,
         isCoustomInfo: false, // 是否是自定义信息
         isSpecialInfo: false, // 是否是特殊信息
@@ -1915,12 +1919,12 @@ export default {
         notAllowEdit: false, // 报名后不允许编辑
 
         // sexRadioOptions: ['先生','女士'], // 性别选项
-        certificateAllTypes: ['居民身份证','护照','军人证','港澳居民来往内地通行证','台湾居民来往内地通行证','港澳台居民居住证','其他法定有效证件'], // 证件可选类型
+        certificateAllTypes: ['居民身份证', '护照', '军人证', '港澳居民来往内地通行证', '台湾居民来往内地通行证', '港澳台居民居住证', '其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
-        certificateVerifyOptions: ['号码逻辑校验', '身份证实名校验','人像实名校验'], //校验选项
+        certificateVerifyOptions: ['号码逻辑校验', '身份证实名校验', '人像实名校验'], //校验选项
         certificateVerify: '号码逻辑校验', // 选中校验方式
         isOnly: false, // 唯一
-        photeTailorOptions: ['手动压缩裁剪','自动裁剪'], //照片裁剪选项
+        photeTailorOptions: ['手动压缩裁剪', '自动裁剪'], //照片裁剪选项
         photeTailor: '自动压缩裁剪', // 选中照片裁剪方式
         photoLimitWidth: '', // 限制照片尺寸-宽
         photoLimitHeight: '', // 限制照片尺寸-高
@@ -1944,8 +1948,8 @@ export default {
         postcodePlaceholder: '请输入邮编', // 邮编提示文本
         countryCodeIsShow: false, // 国际区号是否展示
         defaultCountryCode: '', // 默认国际区号
-        mobilePhoneVerifyOptions: ['中国大陆','港澳台','国际'], // 格式校验选项
-        mobilePhoneVerify:[], // 格式校验选中选项
+        mobilePhoneVerifyOptions: ['中国大陆', '港澳台', '国际'], // 格式校验选项
+        mobilePhoneVerify: [], // 格式校验选中选项
         isNoteVerify: false, // 是否短信验证
         onlyUsedByManageSys: false, // 仅限于后台管理
         areaCodePlaceholder: '请输入区号', // 区号提示文本
@@ -1959,258 +1963,258 @@ export default {
         decimalPlacesLimit: 4, // 小数点位数限制
         options: [], // 选项
         radioOptions: [], // 单选框选项
-        orientations: ['横向','纵向'], // 排列方向选项
+        orientations: ['横向', '纵向'], // 排列方向选项
         orientation: '横向', // 排列方向
         minCheckedCount: '', // 最少选择数量
         maxCheckedCount: '', // 最多选择数量
         fileTypeLimit: false, // 是否限制文件类型
         pictureSizeLimit: false, // 是否限制图片尺寸
 
-        imageTypes: ['.gif','.png','.jpg','.jpeg','.bmp'], // 图片文件类型
-        imageCheckedTypes:[], // 图片文件选中类型
+        imageTypes: ['.gif', '.png', '.jpg', '.jpeg', '.bmp'], // 图片文件类型
+        imageCheckedTypes: [], // 图片文件选中类型
         imageCheckAll: false, // 图片是否全选
         imageIsIndeterminate: false, // 图片indeterminate 状态
 
-        documentTypes: ['.doc','.docx','.pdf','.xls','.xlsx','.ppt','.pptx','.txt'], // 文档类型
+        documentTypes: ['.doc', '.docx', '.pdf', '.xls', '.xlsx', '.ppt', '.pptx', '.txt'], // 文档类型
         documentCheckedTypes: [], // 文档选中类型
         documentCheckAll: false, // 文档是否全选
         documentIsIndeterminate: false, // 文档indeterminate 状态
 
-        compressedFileTypes: ['.zip','.rar','.gzi'], // 压缩文件类型
+        compressedFileTypes: ['.zip', '.rar', '.gzi'], // 压缩文件类型
         compressedFileCheckedTypes: [], // 压缩文件选中类型
         compressedFileCheckAll: false, // 压缩文件是否全选
         compressedFileIsIndeterminate: false, // 压缩文件indeterminate 状态
 
-        videoFileTypes: ['.mp4','.m3u8','.flv','.f4v','.webm','.mov','.m4v','.3gp','.avi','.wmv'], // 视频文件类型
+        videoFileTypes: ['.mp4', '.m3u8', '.flv', '.f4v', '.webm', '.mov', '.m4v', '.3gp', '.avi', '.wmv'], // 视频文件类型
         videoFileCheckedTypes: [], // 视频文件选中类型
         videoFileCheckAll: false, // 压缩文件是否全选
         videoFileIsIndeterminate: false, // 压缩文件indeterminate 状态
 
-        audioFileTypes: ['.mp3','.wam','.wav','.amr','.m4a','.aac'],// 音频文件类型
-        audioFileCheckedTypes: [],// 音频文件选中类型
+        audioFileTypes: ['.mp3', '.wam', '.wav', '.amr', '.m4a', '.aac'], // 音频文件类型
+        audioFileCheckedTypes: [], // 音频文件选中类型
         audioFileCheckAll: false, // 压缩文件是否全选
         audioFileIsIndeterminate: false, // 压缩文件indeterminate 状态
 
-        allFileTypes:[], // 允许上传文件类型合集
+        allFileTypes: [], // 允许上传文件类型合集
         fileSizeLimit: 50, // 文件大小限制
-        explain: '', // 说明文字
+        explain: '' // 说明文字
       }
 
-      if(parentListName == 'customInfoList'){
-        debugger
-        this.customInfoCount ++ ;
-        if(this.customInfoCount > 40){
+      if (parentListName == 'customInfoList') {
+        //debugger
+        this.customInfoCount++
+        if (this.customInfoCount > 40) {
           this.$message.warning('新增自定义信息数量超出最大限制')
           return
         }
         // obj.mapCode = 'reservedStr' + this.customInfoCount
-        // debugger
-        obj.isCoustomInfo = true;
-        obj.title = '您的标题';
+        // //debugger
+        obj.isCoustomInfo = true
+        obj.title = '您的标题'
         // if(itemList.value == 'input'){
         //   this.setForm['input'+this.customInfoCount] = '';
         // }
-        if(itemList.value == 'textarea'){
-          obj.isTexeArea = true;
-          this.textareaNum ++;
-          obj.wordCountLimit = 200;
+        if (itemList.value == 'textarea') {
+          obj.isTexeArea = true
+          this.textareaNum++
+          obj.wordCountLimit = 200
         }
         // 短文本\长文本添加字数限制校验
-        if(itemList.value == 'input' || itemList.value == 'textarea'){
-          obj.check[0].code = "008"
+        if (itemList.value == 'input' || itemList.value == 'textarea') {
+          obj.check[0].code = '008'
           obj.check[0].name = obj.wordCountLimit
         }
         // 数字添加校验
-        if(itemList.value == 'number'){
-          obj.check[0].code = "009"
+        if (itemList.value == 'number') {
+          obj.check[0].code = '009'
           obj.check[0].name = obj.numberDigitLimit
           obj.check.push({
             code: '010',
             name: obj.decimalPlacesLimit
           })
         }
-        if( ['radio','checkbox','select','selects'].includes(itemList.value)){
-          obj.options = ["选项一","选项二"];
+        if (['radio', 'checkbox', 'select', 'selects'].includes(itemList.value)) {
+          obj.options = ['选项一', '选项二']
         }
-        if(itemList.value == 'file'){
-          obj.check[0].code = "013"
+        if (itemList.value == 'file') {
+          obj.check[0].code = '013'
           obj.check[0].name = obj.fileSizeLimit
         }
       }
 
-      if(parentListName == 'specialInfoList'){
-        obj.isSpecialInfo = true;
+      if (parentListName == 'specialInfoList') {
+        obj.isSpecialInfo = true
       }
       var index = parentList.findIndex(item => {
         return item.value == itemList.value
       })
       // 性别添加选项
-      if(itemList.value == 'sex'){
-        obj.options = ['先生','女士']
+      if (itemList.value == 'sex') {
+        obj.options = ['先生', '女士']
       }
       // 电话添加校验
-      if(itemList.value == 'phone'){
-        obj.check[0].code = "014"
+      if (itemList.value == 'phone') {
+        obj.check[0].code = '014'
       }
       // 传真添加校验
-      if(itemList.value == 'fax'){
-        obj.check[0].code = "015"
+      if (itemList.value == 'fax') {
+        obj.check[0].code = '015'
       }
 
       // 照片限制宽高
-      if(itemList.value == 'photo'){
-        obj.pictureSizeLimit = true;
+      if (itemList.value == 'photo') {
+        obj.pictureSizeLimit = true
       }
 
       // 证件
-      // debugger
-      if( itemList.value == "certificate"){
-        obj.options = ['居民身份证'];
-        obj.check[0].code = "001"
+      // //debugger
+      if (itemList.value == 'certificate') {
+        obj.options = ['居民身份证']
+        obj.check[0].code = '001'
       }
       // 分割线
-      if( itemList.value == "crossLine"){
-        obj.mapCode = 'crossLine' + this.setInfoList.length;
+      if (itemList.value == 'crossLine') {
+        obj.mapCode = 'crossLine' + this.setInfoList.length
       }
 
       // 分页
-      if( itemList.value == "paging"){
-        obj.isPaging = true;
-        this.pagingCount ++;
+      if (itemList.value == 'paging') {
+        obj.isPaging = true
+        this.pagingCount++
       }
 
       // 说明信息
-      if( itemList.value == "explainInfo"){
-        obj.mapCode = 'explainInfo' + this.setInfoList.length;
+      if (itemList.value == 'explainInfo') {
+        obj.mapCode = 'explainInfo' + this.setInfoList.length
       }
-      // debugger
-      if(parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList'){
-        parentList[index].isSee = true;
+      // //debugger
+      if (parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList') {
+        parentList[index].isSee = true
       }
-      this.setInfoList.push(obj);
+      this.setInfoList.push(obj)
     },
-    selectMultipleChange(val){
-      // debugger
+    selectMultipleChange(val) {
+      // //debugger
     },
 
-    certificateTypeChange(certificateOptions){
-      // debugger
+    certificateTypeChange(certificateOptions) {
+      // //debugger
       // 证件类型不包括居民身份证时 校验code设为空
-      if(!certificateOptions.includes('居民身份证')){
+      if (!certificateOptions.includes('居民身份证')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
       }
       // 勾选 居民身份证 后, 是最后一项
-      if(certificateOptions[certificateOptions.length-1] == '居民身份证'){
+      if (certificateOptions[certificateOptions.length - 1] == '居民身份证') {
         this.setInfoList[this.checkedIndex].check[0].code = '001'
       }
       console.log(this.setInfoList[this.checkedIndex])
     },
-    numberChange(val){
+    numberChange(val) {
       // numberDigitLimit: 4, // 数字位数限制
       // decimalPlacesLimit: 4, // 小数点位数限制.
       let integer = val.split('.')[0] || ''
       let decimal = val.split('.')[1] || ''
-      if(Number(integer) >= Math.pow(10,this.setInfoList[this.checkedIndex].numberDigitLimit)){
+      if (Number(integer) >= Math.pow(10, this.setInfoList[this.checkedIndex].numberDigitLimit)) {
         this.test = this.test
       }
-      if(decimal.length > this.setInfoList[this.checkedIndex].decimalPlacesLimit){
+      if (decimal.length > this.setInfoList[this.checkedIndex].decimalPlacesLimit) {
         this.test = this.test
         return
       }
-      // debugger
+      // //debugger
     },
 
-  // 附件-文件上传限制类型 勾选 ---- 开始
+    // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
-      debugger
-      this.setInfoList[this.checkedIndex].imageCheckedTypes = val? this.setInfoList[this.checkedIndex].imageTypes : []
-      this.setInfoList[this.checkedIndex].imageIsIndeterminate = false;
+      //debugger
+      this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
+      this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
-      debugger
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length;
-      this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length;
+      //debugger
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
+      this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
       // this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     documentCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].documentCheckedTypes = val? this.setInfoList[this.checkedIndex].documentTypes : []
-      this.setInfoList[this.checkedIndex].documentIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].documentCheckedTypes = val ? this.setInfoList[this.checkedIndex].documentTypes : []
+      this.setInfoList[this.checkedIndex].documentIsIndeterminate = false
     },
     documentCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].documentCheckAll = checkedCount === this.setInfoList[this.checkedIndex].documentTypes.length;
-      this.setInfoList[this.checkedIndex].documentIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].documentTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].documentCheckAll = checkedCount === this.setInfoList[this.checkedIndex].documentTypes.length
+      this.setInfoList[this.checkedIndex].documentIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].documentTypes.length
     },
     compressedFileCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].compressedFileCheckedTypes = val? this.setInfoList[this.checkedIndex].compressedFileTypes : []
-      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].compressedFileCheckedTypes = val ? this.setInfoList[this.checkedIndex].compressedFileTypes : []
+      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = false
     },
     compressedFileCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].compressedFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].compressedFileTypes.length;
-      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].compressedFileTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].compressedFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].compressedFileTypes.length
+      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].compressedFileTypes.length
     },
     videoFileCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].videoFileCheckedTypes = val? this.setInfoList[this.checkedIndex].videoFileTypes : []
-      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].videoFileCheckedTypes = val ? this.setInfoList[this.checkedIndex].videoFileTypes : []
+      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = false
     },
     videoFileCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].videoFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].videoFileFileTypes.length;
-      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].videoFileTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].videoFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].videoFileFileTypes.length
+      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].videoFileTypes.length
     },
     audioFileCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].audioFileCheckedTypes = val? this.setInfoList[this.checkedIndex].audioFileTypes : []
-      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].audioFileCheckedTypes = val ? this.setInfoList[this.checkedIndex].audioFileTypes : []
+      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = false
     },
     audioFileCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].audioFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].audioFileFileTypes.length;
-      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].audioFileTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].audioFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].audioFileFileTypes.length
+      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].audioFileTypes.length
     },
-  // 附件-文件上传限制类型 勾选 --- 结束
+    // 附件-文件上传限制类型 勾选 --- 结束
 
     // 地址 -- 城市 开关回调
-    cityIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
+    cityIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
       }
     },
     // 地址 -- 区/县 开关回调
-    countyIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
-        this.setInfoList[this.checkedIndex].cityIsShow = true;
+    countyIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
       }
     },
     // 地址 -- 详细地址 开关回调
-    detailedAdressIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
-        this.setInfoList[this.checkedIndex].cityIsShow = true;
-        this.setInfoList[this.checkedIndex].countyIsShow = true;
+    detailedAdressIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
+        this.setInfoList[this.checkedIndex].countyIsShow = true
       }
     },
     // 地址 -- 邮编 开关回调
-    postcodeIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
-        this.setInfoList[this.checkedIndex].cityIsShow = true;
-        this.setInfoList[this.checkedIndex].countyIsShow = true;
-        this.setInfoList[this.checkedIndex].detailedAdressISShow = true;
+    postcodeIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
+        this.setInfoList[this.checkedIndex].countyIsShow = true
+        this.setInfoList[this.checkedIndex].detailedAdressISShow = true
       }
     },
 
     // 附件是否限制图片尺寸
-    pictureSizeLimitChange(val){
-      if(val){
+    pictureSizeLimitChange(val) {
+      if (val) {
         this.setInfoList[this.checkedIndex].check.push({
           code: '004',
-          name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight,
+          name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight
         })
-      }else{
+      } else {
         this.setInfoList[this.checkedIndex].check.filter(item => {
           return item.code != '004'
         })
@@ -2218,126 +2222,126 @@ export default {
     },
 
     // 限制图片尺寸修改
-    photoLimitSizehChange(setInfoListItem){
-      if(setInfoListItem.mapCode == 'photo'){
+    photoLimitSizehChange(setInfoListItem) {
+      if (setInfoListItem.mapCode == 'photo') {
         setInfoListItem.check[0].code = '004'
         setInfoListItem.check[0].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
-      }else{
+      } else {
         setInfoListItem.check[1].code = '004'
         setInfoListItem.check[1].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
       }
     },
 
-    handleAvatarSuccess(res, file){
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error('上传头像图片只能是 JPG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt2M
     },
-    minCheckedCountChange(val){
-      if(val != 0){
-        this.setInfoList[this.checkedIndex].isRequire = true;
-        this.setInfoList[this.checkedIndex].isRequireDisabled = true;
+    minCheckedCountChange(val) {
+      if (val != 0) {
+        this.setInfoList[this.checkedIndex].isRequire = true
+        this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-      debugger
-      this.setInfoList[this.checkedIndex].check[0].code = '011';
-      this.setInfoList[this.checkedIndex].check[0].name = val;
+      //debugger
+      this.setInfoList[this.checkedIndex].check[0].code = '011'
+      this.setInfoList[this.checkedIndex].check[0].name = val
     },
-    maxCheckedCountChange(val){
+    maxCheckedCountChange(val) {
       let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some(checkItem => {
         return checkItem.code == '012'
       })
-      if(hasMaxLimit){
+      if (hasMaxLimit) {
         let maxLimit = this.setInfoList[this.checkedIndex].check.find(checkItem => {
           return checkItem.code == '012'
         })
-        maxLimit.name = val;
-      }else{
-        this.setInfoList[this.checkedIndex].check.push({code: '012', name: val})
+        maxLimit.name = val
+      } else {
+        this.setInfoList[this.checkedIndex].check.push({ code: '012', name: val })
       }
       console.log(this.setInfoList[this.checkedIndex].check)
-      debugger
+      //debugger
     },
-    batchEditOptionsComfirm(){
-      // debugger
+    batchEditOptionsComfirm() {
+      // //debugger
       let tempArr = this.batchEditOptions.split('\n')
       this.setInfoList[this.checkedIndex].options = this.setInfoList[this.checkedIndex].options.concat(tempArr)
       // this.setInfoList[this.checkedIndex].options.forEach((option,optionIdnex) => {
       //   this.setInfoList[this.checkedIndex].options[optionIdnex] = tempArr[optionIdnex]
       // })
-      this.batchEditDiologVisible = false;
-      this.batchEditOptions = '';
+      this.batchEditDiologVisible = false
+      this.batchEditOptions = ''
       // console.log(this.batchEditOptions)
     },
-    radioAddOption(setInfoListItem, optionValue){
+    radioAddOption(setInfoListItem, optionValue) {
       setInfoListItem.options.push(optionValue)
     },
-    delRadioOption(setInfoListItem, option, optionIndex){
-      debugger
+    delRadioOption(setInfoListItem, option, optionIndex) {
+      //debugger
       // this.setInfoList.splice(itemIndex,1);
-      setInfoListItem.options.splice(optionIndex,1);
+      setInfoListItem.options.splice(optionIndex, 1)
     },
     // 证件类型勾选
-    certificateVerifyChange(val){
-      this.setInfoList[this.checkedIndex].check[0].code = val;
+    certificateVerifyChange(val) {
+      this.setInfoList[this.checkedIndex].check[0].code = val
     },
     // 国际区号默认国家/地区
-    defaultCountryCodeChange(val){
-      this.setForm.defaultCountryCode = val;
+    defaultCountryCodeChange(val) {
+      this.setForm.defaultCountryCode = val
     },
-    secondphoneDefaultCountryCodeChange(val){
-      this.setForm.secondPhonedefaultCountryCode = val;
+    secondphoneDefaultCountryCodeChange(val) {
+      this.setForm.secondPhonedefaultCountryCode = val
     },
-    telephoneDefaultCountryCodeChange(val){
-      this.setForm.telephoneDefaultCountryCode = val;
+    telephoneDefaultCountryCodeChange(val) {
+      this.setForm.telephoneDefaultCountryCode = val
     },
-    faxDefaultCountryCodeChange(val){
-      this.setForm.faxDefaultCountryCode = val;
+    faxDefaultCountryCodeChange(val) {
+      this.setForm.faxDefaultCountryCode = val
     },
-    wordCountLimitChange(setInfoListItem){
+    wordCountLimitChange(setInfoListItem) {
       setInfoListItem.check[0].code = '008'
       setInfoListItem.check[0].name = setInfoListItem.wordCountLimit
       console.log(this.setInfoList)
     },
     // 数字位数限制 添加校验
-    numberDigitLimitChange(setInfoListItem){
+    numberDigitLimitChange(setInfoListItem) {
       setInfoListItem.check[0].code = '009'
       setInfoListItem.check[0].name = setInfoListItem.numberDigitLimit
       console.log(this.setInfoList)
     },
     // 小数位数限制 添加校验
-    decimalPlacesLimitChange(setInfoListItem){
+    decimalPlacesLimitChange(setInfoListItem) {
       setInfoListItem.check[1].code = '010'
       setInfoListItem.check[1].name = setInfoListItem.decimalPlacesLimit
       console.log(this.setInfoList)
     },
     // 手机号 校验勾选
-    mobilePhoneVerifyChange(val){
+    mobilePhoneVerifyChange(val) {
       // 005：手机号格式校验(中国大陆)
       // 006：手机号格式校验(港澳台)
       // 007：手机号格式校验(国际)
-      debugger
-      this.setInfoList[this.checkedIndex].check = [];
+      //debugger
+      this.setInfoList[this.checkedIndex].check = []
       val.forEach(element => {
-        if(element == "中国大陆"){
-          this.setInfoList[this.checkedIndex].check.push({code: '005', name: ''});
-        }else if(element == "港澳台"){
-          this.setInfoList[this.checkedIndex].check.push({code: '006', name: ''});
+        if (element == '中国大陆') {
+          this.setInfoList[this.checkedIndex].check.push({ code: '005', name: '' })
+        } else if (element == '港澳台') {
+          this.setInfoList[this.checkedIndex].check.push({ code: '006', name: '' })
           // this.setInfoList[this.checkedIndex].check[0].code = '006'
-        }else if(element == "国际"){
-          this.setInfoList[this.checkedIndex].check.push({code: '007', name: ''});
+        } else if (element == '国际') {
+          this.setInfoList[this.checkedIndex].check.push({ code: '007', name: '' })
           // this.setInfoList[this.checkedIndex].check[0].code = '007'
         }
-      });
+      })
     },
     onChangeAll(params) {
       // 会议编码 params.code
@@ -2368,25 +2372,25 @@ export default {
           this.$refs.bsTable.doRefresh()
         })
     },
-    edititem(checkedItem, checkedIndex){
-      // debugger
-      this.checkedIndex = checkedIndex;
+    edititem(checkedItem, checkedIndex) {
+      // //debugger
+      this.checkedIndex = checkedIndex
     },
-     //开始拖拽事件
-    onStart(){
-      this.drag=true;
+    //开始拖拽事件
+    onStart() {
+      this.drag = true
     },
     //拖拽结束事件
     onEnd() {
-      this.drag=false;
+      this.drag = false
     },
     // 拖拽变换位置时触发的事件
-    onUpdate(){
-      let pagingIndex = 0;
-      this.setInfoList.forEach((item,index) => {
-        if(item.isPaging){
-          pagingIndex++;
-          item.pagingIndex = pagingIndex;
+    onUpdate() {
+      let pagingIndex = 0
+      this.setInfoList.forEach((item, index) => {
+        if (item.isPaging) {
+          pagingIndex++
+          item.pagingIndex = pagingIndex
           item.mapCode = 'paging' + pagingIndex
         }
       })
@@ -2395,7 +2399,7 @@ export default {
     tableComputed() {
       // const elHead = document.getElementById('elHead')
       this.formSetHeight = 0
-      // debugger
+      // //debugger
 
       // 顶部菜单 高48px
       this.formSetHeight -= 48
@@ -2416,7 +2420,7 @@ export default {
         this.formSetHeight += 36
       }
       this.formSetHeight += this.clientHeight
-      // debugger
+      // //debugger
       // this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
       // this.formSetHeight = this.formSetHeight - 50
     }

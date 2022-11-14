@@ -87,7 +87,7 @@ export default {
               }
             ],
             default: '1',
-            event: this.changeType,
+            event: this.changeType
           },
           {
             label: 'website.signupContactCodeRule.edit.startCode',
@@ -148,8 +148,7 @@ export default {
       }
     }
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
     initFun() {
       this.changeType()
@@ -162,8 +161,8 @@ export default {
       const parentCodeRef = toolUtil.getDefDialogItemByProp(this, 'contactCode')
       parentCodeRef.attrs.params.customerCode = item.code
     },
-    changeType(){
-      debugger
+    changeType() {
+      //debugger
       let val = this.$refs.bsDialog.formData.type
       const startCodeRef = toolUtil.getDefDialogItemByProp(this, 'startCode')
       if (val && val === '1') {

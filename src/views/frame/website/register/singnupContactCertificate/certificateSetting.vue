@@ -256,7 +256,7 @@ export default {
       data: { data: { eventCode: this.$route.params.data }, isPage: false, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       //
-      debugger
+      //debugger
       this.certificateContentList = res.data.filter(item => {
         return item.systmeName != '附件'
       })
@@ -265,7 +265,7 @@ export default {
         { title: '参会人条码', code: 'barCode' },
         { title: '人员二维码', code: 'personQrCode' },
         { title: '人员条码', code: 'personBarCode' },
-        { title: '参会人类型', code: 'contactType' },
+        { title: '参会人类型', code: 'contactType' }
       ]
       this.certificateContentList = this.certificateContentList.concat(newItems)
     })
@@ -314,7 +314,7 @@ export default {
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
           this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
           this.WHchange()
-          debugger
+          //debugger
           if (this.printSetform.printBackground) {
             let index = this.printSetform.printBackground.lastIndexOf('/')
             let filename = this.printSetform.printBackground.substr(index + 1)
@@ -409,7 +409,7 @@ export default {
               funcOperation: '获取模块类型'
             }
           }).then(res => {
-            debugger
+            //debugger
             if (res.data) {
               this.getCertificateType()
 
@@ -467,7 +467,7 @@ export default {
 
     certificateContentChange(certificateContent) {
       // 网格上的数据获取
-      // debugger
+      // //debugger
       if (certificateContent.length == 0) {
         this.list = []
       }
@@ -477,15 +477,15 @@ export default {
           return dictItemVal == item.code
         })
         // if(!item) return
-        // debugger
+        // //debugger
         if (item) {
           let isIncludes = this.list.some(listItem => {
-            debugger
+            //debugger
             return listItem.value == item.code
           })
           //
           if (!isIncludes) {
-            // debugger
+            // //debugger
             let pushItem = {
               name: item.title, // 表名对应的值
               label: item.title, // 表名
@@ -508,11 +508,11 @@ export default {
               pushItem.height = '40'
             }
             this.list.push(pushItem)
-            debugger
+            //debugger
           } else {
             // 删除已取消值
             this.list.forEach((listItem, listIndex) => {
-              // debugger
+              // //debugger
               let listIncludes = certificateContent.some(contentItem => {
                 let item = this.certificateContentList.find(item => {
                   return contentItem == item.code
@@ -564,7 +564,7 @@ export default {
       return false
     },
     onResize: function(x, y, width, height) {
-      // debugger
+      // //debugger
       let changeItem = this.list.find(item => {
         return item.name == this.form.name
       })
@@ -581,10 +581,10 @@ export default {
       let changeItem = this.list.find(item => {
         return item.name == this.form.name
       })
-      // debugger
+      // //debugger
       changeItem.x = x
       changeItem.y = y
-      // debugger
+      // //debugger
       // this.x = x
       // this.y = y
     },
@@ -662,7 +662,7 @@ export default {
     create() {
       let printSetformvalid = false
       this.$refs.printSetform.validate(valid => {
-        // debugger
+        // //debugger
         printSetformvalid = valid
       })
 
@@ -689,7 +689,7 @@ export default {
           }
         })
           .then(res => {
-            debugger
+            //debugger
             if (res.data) {
               this.$message.success('创建成功')
             } else {
@@ -700,7 +700,7 @@ export default {
             this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
           })
           .catch(error => {
-            debugger
+            //debugger
             this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
             this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
             this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
@@ -716,7 +716,7 @@ export default {
           }
         })
           .then(res => {
-            debugger
+            //debugger
             if (res.data) {
               this.$message.success('创建成功')
             } else {
@@ -727,7 +727,7 @@ export default {
             this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
           })
           .catch(error => {
-            debugger
+            //debugger
             this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
             this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
             this.list = JSON.parse(this.printSetform.certificatePreview || '[]')

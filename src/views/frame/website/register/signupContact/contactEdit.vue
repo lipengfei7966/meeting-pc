@@ -374,10 +374,10 @@
 
 <script>
 import request from '@/utils/frame/base/request'
-import CropperImage from "@/components/frame/CropperImage";
-import {validateEmail, validateMobile, validateIDcard} from '@/utils/frame/base/validate.js'
+import CropperImage from '@/components/frame/CropperImage'
+import { validateEmail, validateMobile, validateIDcard } from '@/utils/frame/base/validate.js'
 export default {
-  name: "contactEdit",
+  name: 'contactEdit',
   data() {
     return {
       setInfoList: [], // 选中的配置信息列表
@@ -395,7 +395,7 @@ export default {
       photoLimitWidth: '',
       photoLimitHeight: '',
       previewDialogVisible: false, // 预览图片弹窗
-      previewImgUrl:'', // 预览图片地址
+      previewImgUrl: '', // 预览图片地址
       cropperModel: false, // 图片裁剪弹窗
       countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
       contactTypeOptions: [], // 参会人类型列表
@@ -438,56 +438,48 @@ export default {
         company: '', // 公司
         department: '', // 部门
         position: '', // 职位
-        signupContactDtlDto:{
-
-        }
+        signupContactDtlDto: {}
       },
-      setformOther:{
-
-      },
-      setFormFile:{
-
-      },
+      setformOther: {},
+      setFormFile: {},
       pagingCount: 0, // f分页数量
-      rules:{
-        signupContactDtlDto:{
-
-        },
-        personnelCode: [
-          { required: true, message: "请输入人员编码", trigger: "blur" },
-        ],
-        contactType: [
-          { required: true, message: "请选择参会人类型", trigger: "change" },
-        ],
+      rules: {
+        signupContactDtlDto: {},
+        personnelCode: [{ required: true, message: '请输入人员编码', trigger: 'blur' }],
+        contactType: [{ required: true, message: '请选择参会人类型', trigger: 'change' }]
       },
       pickerOptions: {
         disabledDate(time) {
           // return time.getTime() > Date.now();
         },
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date());
+        shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date())
+            }
+          },
+          {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          },
+          {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
           }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
-          }
-        }]
-      },
+        ]
+      }
     }
   },
-  components: {CropperImage},
+  components: { CropperImage },
   props: {
     param: {
       type: [String, Object],
@@ -496,30 +488,32 @@ export default {
       }
     }
   },
-  computed:{
-    addOther(){
+  computed: {
+    addOther() {
       return
     }
   },
-  mounted(){
-    if(this.$route.params.type == 'update'){
-      this.isUpdate = true;
+  mounted() {
+    if (this.$route.params.type == 'update') {
+      this.isUpdate = true
     }
     // this.$route.params.type   add--新增  update--修改  view--查看
     // 获取地址级联选项
-    this.getComCityTreeList();
+    this.getComCityTreeList()
 
     // 表单配置查询
-    this.getEventInfo();
+    this.getEventInfo()
 
     // 获取参会人类型数据字典
-    this.getcontactTypeList();
+    this.getcontactTypeList()
 
     // 国际编码字典项查询
     this.getCountryCode()
   },
-  methods:{
-    validateEmail, validateMobile, validateIDcard,
+  methods: {
+    validateEmail,
+    validateMobile,
+    validateIDcard,
     // 表单配置查询
     getEventInfo() {
       request({
@@ -531,196 +525,205 @@ export default {
           funcOperation: '表单初始化'
         }
       }).then(response => {
-        if(response.data.json){
+        if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
-        }else{
-          this.setInfoList = [];
+        } else {
+          this.setInfoList = []
         }
-        // debugger
+        // //debugger
         this.setInfoList.forEach(item => {
           // 1：自定义属性
-          if(item.mapBase == 1){
-            if(['复选框','下拉复选框'].includes(item.systemName)) {
+          if (item.mapBase == 1) {
+            if (['复选框', '下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
-              this.$set(this.setForm.signupContactDtlDto,item.mapCode,[]);
-              if(item.minCheckedCount > 0){
+              this.$set(this.setForm.signupContactDtlDto, item.mapCode, [])
+              if (item.minCheckedCount > 0) {
                 this.setForm.signupContactDtlDto[item.mapCode] = item.options.slice(0, item.minCheckedCount)
               }
-            }else{
-              debugger
-              this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
+            } else {
+              //debugger
+              this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
               // this.setForm[item.mapCode] = ''
             }
-            if(['附件'].includes(item.systemName)) {
-              debugger
-              this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
-              this.$set(this.setFormFile,item.mapCode,[]);
+            if (['附件'].includes(item.systemName)) {
+              //debugger
+              this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
+              this.$set(this.setFormFile, item.mapCode, [])
               console.log(this.setFormFile)
             }
-            this.$set(this.setformOther,item.mapCode,'');
+            this.$set(this.setformOther, item.mapCode, '')
             // 添加必填校验
-            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
-          }else{
+            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: 'blur' }])
+          } else {
             // 国际区号设置默认值
-            if(item.mapCode == 'mobile'){
+            if (item.mapCode == 'mobile') {
               this.setForm.mobileIntCode = item.defaultCountryCode
               // 国际区号不显示,后台默认86
-              if(!item.countryCodeIsShow){
+              if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
               }
             }
-            if(item.mapCode == 'spareMobile'){
+            if (item.mapCode == 'spareMobile') {
               this.setForm.spareMobileIntCode = item.defaultCountryCode
               // 国际区号不显示,后台默认86
-              if(!item.countryCodeIsShow){
+              if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
               }
             }
-            if(item.mapCode == 'phone'){
+            if (item.mapCode == 'phone') {
               this.setForm.phoneIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'phoneAreaCode', [{required: item.isRequire, message:  "区号是必填项", trigger: "blur" }])
+              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: 'blur' }])
               // 国际区号不显示,后台默认86
-              if(!item.countryCodeIsShow){
+              if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
               }
             }
-            if(item.mapCode == 'fax'){
+            if (item.mapCode == 'fax') {
               this.setForm.faxIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'faxAreaCode', [{required: item.isRequire, message:  "区号是必填项", trigger: "blur" }])
+              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: 'blur' }])
               // 国际区号不显示,后台默认86
-              if(!item.countryCodeIsShow){
+              if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
               }
             }
 
             // 添加必填校验
-            this.$set(this.rules, item.mapCode, [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" }])
-            if(item.mapCode == 'name' && item.nameSplit){
-              this.rules.name[0].required = false;
-              this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
-              this.$set(this.rules, 'ming', [{required: item.isRequire, message: "名是必填项", trigger: "blur" }])
+            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: 'blur' }])
+            if (item.mapCode == 'name' && item.nameSplit) {
+              this.rules.name[0].required = false
+              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: 'blur' }])
             }
 
-            if(item.mapCode == 'addres'){
-              this.rules.addres[0].required = false;
-              if(item.nationIsShow){ // 显示国家
-                this.$set(this.rules, 'nations', [{required: item.isRequire, message:  "国家是必选项", trigger: "blur" }])
+            if (item.mapCode == 'addres') {
+              this.rules.addres[0].required = false
+              if (item.nationIsShow) {
+                // 显示国家
+                this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
               }
-              if(item.provinceIsShow){ // 显示省份
-                this.$set(this.rules, 'province', [{required: item.isRequire, message:  "省份是必选项", trigger: "blur" }])
+              if (item.provinceIsShow) {
+                // 显示省份
+                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: 'blur' }])
               }
-              if(item.cityIsShow){ // 显示城市
-                this.$set(this.rules, 'city', [{required: item.isRequire, message:  "城市是必选项", trigger: "blur" }])
+              if (item.cityIsShow) {
+                // 显示城市
+                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: 'blur' }])
               }
-              if(item.countyIsShow){ // 显示区县
-                this.$set(this.rules, 'county', [{required: item.isRequire, message:  "区/县是必选项", trigger: "blur" }])
+              if (item.countyIsShow) {
+                // 显示区县
+                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: 'blur' }])
               }
-              if(item.detailedAdressISShow){ // 显示详细地址
-                this.$set(this.rules, 'fullAddress', [{required: item.isRequire, message:  "详细地址必填项", trigger: "blur" }])
+              if (item.detailedAdressISShow) {
+                // 显示详细地址
+                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: 'blur' }])
               }
-              if(item.postcodeIsShow){ // 显示邮编
-                this.$set(this.rules, 'postcode', [{required: item.isRequire, message:  "邮编是必填项", trigger: "blur" },{ pattern: /^\d{6}$/,message: '请输入正确的邮编', trigger: "blur"}])
+              if (item.postcodeIsShow) {
+                // 显示邮编
+                this.$set(this.rules, 'postcode', [
+                  { required: item.isRequire, message: '邮编是必填项', trigger: 'blur' },
+                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: 'blur' }
+                ])
               }
               // this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
               // this.$set(this.rules, 'ming', [{required: item.isRequire, message: "名是必填项", trigger: "blur" }])
             }
 
-            if(item.mapCode == 'mobile' || item.mapCode == 'spareMobile'){
-              debugger
-              if(item.defaultCountryCode != ''){ // 是否设置国际默认区号
-                if( item.check.some(item => item.code == '005') && item.defaultCountryCode == '86'){
+            if (item.mapCode == 'mobile' || item.mapCode == 'spareMobile') {
+              //debugger
+              if (item.defaultCountryCode != '') {
+                // 是否设置国际默认区号
+                if (item.check.some(item => item.code == '005') && item.defaultCountryCode == '86') {
                   // 中国大陆 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
-                }else if(item.check.some(item => item.code == '006') && item.defaultCountryCode == '852'){
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '852') {
                   // 香港区号 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
-                }else if(item.check.some(item => item.code == '006') && item.defaultCountryCode == '853'){
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '853') {
                   // 澳门区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
-                }else if(item.check.some(item => item.code == '006') && item.defaultCountryCode == '886'){
+                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '886') {
                   // 台湾区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 }
-              }else{
-                if(item.check.some(checkItem => checkItem.code=='005') && !item.check.some(checkItem => checkItem.code=='006')){
-                  debugger
+              } else {
+                if (item.check.some(checkItem => checkItem.code == '005') && !item.check.some(checkItem => checkItem.code == '006')) {
+                  //debugger
                   // 中国大陆手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
-                }else if(!item.check.some(checkItem => checkItem.code=='005') && item.check.some(checkItem => checkItem.code=='006')){
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                } else if (!item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 港澳台手机号校验
-                  debugger
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
-                }else if(item.check.some(checkItem => checkItem.code=='005') && item.check.some(checkItem => checkItem.code=='006')){
+                  //debugger
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                } else if (item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 大陆加港澳台手机号校验
-                  debugger
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+                  //debugger
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 }
               }
             }
-            if(item.mapCode == 'email' || item.mapCode == 'spareEmail'){
-              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/,message: '请输入正确的邮箱', trigger: "blur"})
+            if (item.mapCode == 'email' || item.mapCode == 'spareEmail') {
+              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: 'blur' })
             }
           }
 
-          if(item.systemName == '分页'){
+          if (item.systemName == '分页') {
             this.pagingCount++
           }
-
         })
 
         console.log(this.setForm)
         console.log(this.rules.mobile)
-        if(this.$route.params.type == 'view'){
-          this.isView = true;
-          this.getContactInfo();
+        if (this.$route.params.type == 'view') {
+          this.isView = true
+          this.getContactInfo()
         }
         // 参会人信息查询
-        if(this.$route.params.type == 'update'){
-          this.getContactInfo();
+        if (this.$route.params.type == 'update') {
+          this.getContactInfo()
         }
       })
     },
     // 参会人信息查询
-    getContactInfo(){
+    getContactInfo() {
       request({
-      url: '/api/register/signupContact/getByContactCode',
-      method: 'POST',
-      data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.setForm = res.data
-      for (const key in this.setForm.signupContactDtlDto) {
-        // console.log(key)
-        if( typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0){
-          this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
-          this.setForm.signupContactDtlDto[key].shift('卍')
+        url: '/api/register/signupContact/getByContactCode',
+        method: 'POST',
+        data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+      }).then(res => {
+        this.setForm = res.data
+        for (const key in this.setForm.signupContactDtlDto) {
+          // console.log(key)
+          if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0) {
+            this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
+            this.setForm.signupContactDtlDto[key].shift('卍')
 
-          this.setForm.signupContactDtlDto[key].forEach((checkItem,checkIndex) => {
-            // debugger
-            if(checkItem.indexOf('其他&') == 0){
-              this.setformOther[key] = checkItem.split('&')[1]
-              this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
-            }
-          })
-        }
-        if(typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('其他&')==0){
-          debugger
+            this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
+              // //debugger
+              if (checkItem.indexOf('其他&') == 0) {
+                this.setformOther[key] = checkItem.split('&')[1]
+                this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
+              }
+            })
+          }
+          if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('其他&') == 0) {
+            //debugger
             this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
             this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
           }
-      }
-      console.log(this.setForm)
-    })
+        }
+        console.log(this.setForm)
+      })
     },
-    submit(){
-      let queryUrl = "";
-      if(this.$route.params.type == 'add'){
+    submit() {
+      let queryUrl = ''
+      if (this.$route.params.type == 'add') {
         queryUrl = '/api/register/signupContact/save'
-      }else if(this.$route.params.type == 'update'){
+      } else if (this.$route.params.type == 'update') {
         queryUrl = '/api/register/signupContact/update'
       }
-      this.setForm.eventCode = this.$route.params.data;
+      this.setForm.eventCode = this.$route.params.data
 
-      this.$refs["contactForm"].validate((valid) => {
+      this.$refs['contactForm'].validate(valid => {
         if (valid) {
           let loading = this.$loading({
             lock: true,
@@ -730,17 +733,17 @@ export default {
           })
           for (const key in this.setForm.signupContactDtlDto) {
             // console.log(key)
-            if( Array.isArray(this.setForm.signupContactDtlDto[key]) ){
-              this.setForm.signupContactDtlDto[key].forEach( (checkItem, checkIndex) => {
-                if(checkItem == '其他'){
-                  this.setForm.signupContactDtlDto[key][checkIndex] = this.setForm.signupContactDtlDto[key][checkIndex] + "&" + this.setformOther[key]
+            if (Array.isArray(this.setForm.signupContactDtlDto[key])) {
+              this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
+                if (checkItem == '其他') {
+                  this.setForm.signupContactDtlDto[key][checkIndex] = this.setForm.signupContactDtlDto[key][checkIndex] + '&' + this.setformOther[key]
                 }
               })
               this.setForm.signupContactDtlDto[key].unshift('卍')
               this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
-            }else{
-              if(this.setForm.signupContactDtlDto[key] == '其他'){
-                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key] + "&" + this.setformOther[key]
+            } else {
+              if (this.setForm.signupContactDtlDto[key] == '其他') {
+                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key] + '&' + this.setformOther[key]
               }
             }
           }
@@ -753,13 +756,13 @@ export default {
               funcOperation: '获取模块类型'
             }
           }).then(res => {
-            if(res.status){
+            if (res.status) {
               this.$message.success('保存成功')
-              this.back();
+              this.back()
             }
             loading.close()
           })
-        }else{
+        } else {
           // 页面滚动到校验不通过地方
           this.$nextTick(() => {
             let isError = document.getElementsByClassName('is-error')
@@ -774,41 +777,42 @@ export default {
       })
     },
     // 预览照片
-    previewImg(imageUrl){
-      debugger
-      this.previewDialogVisible = true;
-      this.previewImgUrl = imageUrl;
+    previewImg(imageUrl) {
+      //debugger
+      this.previewDialogVisible = true
+      this.previewImgUrl = imageUrl
     },
     // 删除照片
-    deleteImg(){
-      this.setForm.photo = '';
+    deleteImg() {
+      this.setForm.photo = ''
     },
-    limitInput(element,value) {
-      // debugger
+    limitInput(element, value) {
+      // //debugger
       // element.numberDigitLimit 整数位数限制
       // element.decimalPlacesLimit 小数位数限制
       // var re = new RegExp(title,"g");
-      var re = eval("/^\d*(\.?\d{0,"+element.decimalPlacesLimit+"})/g");
+      var re = eval('/^d*(.?d{0,' + element.decimalPlacesLimit + '})/g')
       let temp = value.toString() // 第一步：转成字符串
-      temp = temp.replace(/[^\d^\.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
-          .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
-          .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
-          // .match(/^\d*(\.?\d{0,2})/g)[0] || '' // 第五步：最终匹配得到结果 以数字开头，只有一个小数点，	而且小数点后面只能有0到2位小数
+      temp = temp
+        .replace(/[^\d^\.]+/g, '') // 第二步：把不是数字，不是小数点的过滤掉
+        .replace(/^0+(\d)/, '$1') // 第三步：第一位0开头，0后面为数字，则过滤掉，取后面的数字
+        .replace(/^\./, '0.') // 第四步：如果输入的第一位为小数点，则替换成 0. 实现自动补全
+      // .match(/^\d*(\.?\d{0,2})/g)[0] || '' // 第五步：最终匹配得到结果 以数字开头，只有一个小数点，	而且小数点后面只能有0到2位小数
 
       let intNumber = temp.split('.')[0]
       let decimalNumber = temp.split('.')[1] || ''
       // 小数点位数超出限制 截取
-      if(decimalNumber.length > element.decimalPlacesLimit){
+      if (decimalNumber.length > element.decimalPlacesLimit) {
         decimalNumber = decimalNumber.slice(0, element.decimalPlacesLimit)
       }
       // 整数点位数超出限制 截取
-      if(intNumber.length > element.numberDigitLimit){
+      if (intNumber.length > element.numberDigitLimit) {
         intNumber = intNumber.slice(0, element.numberDigitLimit)
       }
 
-      if(decimalNumber.length > 0 || temp.indexOf('.') >= 0){
-        temp = intNumber + "." + decimalNumber
-      }else{
+      if (decimalNumber.length > 0 || temp.indexOf('.') >= 0) {
+        temp = intNumber + '.' + decimalNumber
+      } else {
         temp = intNumber
       }
       // 整数部分超出限制 取最大值
@@ -816,30 +820,30 @@ export default {
       // const maxNumber = Math.pow(10,element.numberDigitLimit)-Math.pow(10,-element.decimalPlacesLimit)
 
       // if(Number(temp) >= maxNumber){
-        //  temp = maxNumber
-        // return
+      //  temp = maxNumber
+      // return
       // }
       return temp
     },
-    showCropperModel(element){
-      if(element.photeTailor == '手动裁剪'  && !this.isView){
-        this.cropperModel = true;
+    showCropperModel(element) {
+      if (element.photeTailor == '手动裁剪' && !this.isView) {
+        this.cropperModel = true
         this.photoLimitWidth = element.photoLimitWidth
         this.photoLimitHeight = element.photoLimitHeight
       }
     },
     // 裁剪照片上传成功回调
-    handleUploadSuccess(data){
-      debugger
+    handleUploadSuccess(data) {
+      //debugger
       this.setForm.photo = data.url
     },
-    handleAvatarSuccess(res, file){
-      debugger
+    handleAvatarSuccess(res, file) {
+      //debugger
       this.photoName = res.fileName
       // this.cropperModel = true;
     },
-    async beforeAvatarUpload(file,element) {
-      debugger
+    async beforeAvatarUpload(file, element) {
+      //debugger
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -849,17 +853,17 @@ export default {
       // audioFileCheckedTypes: [],// 音频文件选中类型
       // allFileTypes:[], // 允许上传文件类型合集
       // fileSizeLimit: 50, // 文件大小限制
-      const fileName = file.name;
-      const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase();
-      let isAllowUpload = true;
-      let acceptType = ['.jpg','.png','.jpeg','.bmp','.webp']
+      const fileName = file.name
+      const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
+      let isAllowUpload = true
+      let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
 
       // 判断后缀名是否允许上传
-      isAllowUpload = acceptType.includes(extension);
-      if(!isAllowUpload){
-        const errMsg ='注意: 只允许上传以下文件类型：' + acceptType.join('、');
-        this.$message.error(errMsg);
-        return false;
+      isAllowUpload = acceptType.includes(extension)
+      if (!isAllowUpload) {
+        const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
+        this.$message.error(errMsg)
+        return false
       }
 
       // const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
@@ -873,7 +877,7 @@ export default {
       // }
       return isAllowUpload
     },
-    async imageSizeLimit(file, element){
+    async imageSizeLimit(file, element) {
       const _this = this
       let imgWidth = ''
       let imgHight = ''
@@ -881,27 +885,30 @@ export default {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
         img.onload = function() {
-            imgWidth = img.width
-            imgHight = img.height
-            // const valid = img.width <= 1700 && img.height <= 2500
-            debugger
-            const valid = img.width <= element.photoLimitWidth && img.height <= element.photoLimitHeight
-            valid ? resolve() : reject()
+          imgWidth = img.width
+          imgHight = img.height
+          // const valid = img.width <= 1700 && img.height <= 2500
+          //debugger
+          const valid = img.width <= element.photoLimitWidth && img.height <= element.photoLimitHeight
+          valid ? resolve() : reject()
         }
         img.src = _URL.createObjectURL(file)
-      }).then(() => {
+      }).then(
+        () => {
           return file
-      }, () => {
-          this.cropperModel = true;
-          this.photoLimitWidth = element.photoLimitWidth;
-          this.photoLimitHeight = element.photoLimitHeight;
+        },
+        () => {
+          this.cropperModel = true
+          this.photoLimitWidth = element.photoLimitWidth
+          this.photoLimitHeight = element.photoLimitHeight
           _this.$message.warning({ message: `上传的图片尺寸超出图片限制,宽不超过${element.photoLimitWidth}px，高不超过${element.photoLimitHeight}px。当前上传图片的宽高分别为：${imgWidth}px和${imgHight}px` })
           return Promise.reject()
-      })
+        }
+      )
       return await isSize
     },
-    fileBeforeUpload(file,element){
-      debugger
+    fileBeforeUpload(file, element) {
+      //debugger
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -911,28 +918,28 @@ export default {
       // audioFileCheckedTypes: [],// 音频文件选中类型
       // allFileTypes:[], // 允许上传文件类型合集
       // fileSizeLimit: 50, // 文件大小限制
-      const fileName = file.name;
-      const extension = fileName.substr(fileName.lastIndexOf('.'));
-      let isAllowUpload = true;
-      if(element.fileTypeLimit){
+      const fileName = file.name
+      const extension = fileName.substr(fileName.lastIndexOf('.'))
+      let isAllowUpload = true
+      if (element.fileTypeLimit) {
         // 判断后缀名是否允许上传
-        isAllowUpload = element.allFileTypes.includes(extension);
-        if(!isAllowUpload){
-          const errMsg ='注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、');
-          this.$message.error(errMsg);
-          return false;
+        isAllowUpload = element.allFileTypes.includes(extension)
+        if (!isAllowUpload) {
+          const errMsg = '注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、')
+          this.$message.error(errMsg)
+          return false
         }
       }
 
-      const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
+      const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit
       if (!sizeLimit) {
-        this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`);
-        return false;
+        this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
+        return false
       }
       return isAllowUpload
     },
     // 自定义上传文件
-    flieHandleUploadForm(param,element) {
+    flieHandleUploadForm(param, element) {
       // let thiz = this
       let formData = new FormData()
       // formData.append('webpageCode', '') // 额外参数
@@ -948,15 +955,15 @@ export default {
         method: 'POST',
         data: formData
       }).then(data => {
-        debugger
+        //debugger
         if (data.status) {
           this.$message('上传文件成功')
           // if(element.mapCode = 'photo'){
-            this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
-            // debugger
-            // console.log(this.setForm.signupContactDtlDto[element.mapCode])
+          this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+          // //debugger
+          // console.log(this.setForm.signupContactDtlDto[element.mapCode])
           // }
-          param.onSuccess(data,element)
+          param.onSuccess(data, element)
           // this.printSetform.printBackground = data.data.filePath
         } else {
           const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
@@ -968,8 +975,8 @@ export default {
         loading.close()
       })
     },
-     // 自定义上传照片
-    handleUploadForm(param,element) {
+    // 自定义上传照片
+    handleUploadForm(param, element) {
       // let thiz = this
       let formData = new FormData()
       // formData.append('webpageCode', '') // 额外参数
@@ -985,26 +992,26 @@ export default {
         method: 'POST',
         data: formData
       }).then(data => {
-        debugger
+        //debugger
         if (data.status) {
           this.$message('上传文件成功')
           // if(element.mapCode = 'photo'){
-            this.setForm[element.mapCode] = data.data.filePath
-            console.log( this.setForm.photo)
+          this.setForm[element.mapCode] = data.data.filePath
+          console.log(this.setForm.photo)
           // }
-          param.onSuccess(data,element)
+          param.onSuccess(data, element)
           // this.printSetform.printBackground = data.data.filePath
         } else {
           this.$message('上传文件失败')
         }
-          loading.close()
+        loading.close()
       })
     },
 
     fileLimitCount(files, fileList) {
       this.$message.warning('只允许上传一个文件')
     },
-    getComCityTreeList(){
+    getComCityTreeList() {
       request({
         url: '/api/base/comCitys/treeList',
         method: 'POST',
@@ -1018,138 +1025,138 @@ export default {
       })
     },
     // 证件类型切换
-    certificateTypeChange(val){
-      this.setForm.certificate = '';
-      if(val == '居民身份证'){
-        this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/,message: '请输入正确的身份证号码', trigger: "blur"})
+    certificateTypeChange(val) {
+      this.setForm.certificate = ''
+      if (val == '居民身份证') {
+        this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
         // this.$set(this.rules, 'certificate', [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },{ validator: validateIDcard, trigger: "blur"}])
-      }else{
+      } else {
         this.rules.certificate.pop()
       }
-      this.$refs.contactForm.clearValidate('certificate');  // 移除上次校验结果
+      this.$refs.contactForm.clearValidate('certificate') // 移除上次校验结果
       // this.$refs.contactForm.validate();
-      // debugger
+      // //debugger
     },
     // 手机号国际区号切换
-    mobileIntCodeChange(val,element){
-      debugger
+    mobileIntCodeChange(val, element) {
+      //debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
-      let mobilePhoneVerify = this.rules.mobile.find( item => {
-        return  'pattern' in item
+      let mobilePhoneVerify = this.rules.mobile.find(item => {
+        return 'pattern' in item
       })
 
-      if( element.check.some(item => item.code == '005') && val == '86'){
-        if(mobilePhoneVerify){
+      if (element.check.some(item => item.code == '005') && val == '86') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else if(element.check.some(item => item.code == '006') && val == '852'){
-        if(mobilePhoneVerify){
+      } else if (element.check.some(item => item.code == '006') && val == '852') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else if(element.check.some(item => item.code == '006') && val == '853'){
-        if(mobilePhoneVerify){
+      } else if (element.check.some(item => item.code == '006') && val == '853') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^6\d{7}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else if(element.check.some(item => item.code == '006') && val == '886'){
-        if(mobilePhoneVerify){
+      } else if (element.check.some(item => item.code == '006') && val == '886') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else{
-        this.rules.mobile.forEach((item,index) => {
-          if(item.pattern){
-            this.rules.mobile.splice(index,1)
+      } else {
+        this.rules.mobile.forEach((item, index) => {
+          if (item.pattern) {
+            this.rules.mobile.splice(index, 1)
           }
         })
       }
       console.log(this.rules.mobile)
     },
     // 手机号国际区号切换
-    spareMobileIntCodeChange(val,element){
+    spareMobileIntCodeChange(val, element) {
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
-      let mobilePhoneVerify = this.rules.mobile.find( item => {
-        return  'pattern' in item
+      let mobilePhoneVerify = this.rules.mobile.find(item => {
+        return 'pattern' in item
       })
 
-      if( element.check.some(item => item.code == '005') && val == '86'){
-        if(mobilePhoneVerify){
+      if (element.check.some(item => item.code == '005') && val == '86') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else if(element.check.some(item => item.code == '006') && val == '852'){
-        if(mobilePhoneVerify){
+      } else if (element.check.some(item => item.code == '006') && val == '852') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else if(element.check.some(item => item.code == '006') && val == '853'){
-        if(mobilePhoneVerify){
+      } else if (element.check.some(item => item.code == '006') && val == '853') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^6\d{7}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else if(element.check.some(item => item.code == '006') && val == '886'){
-        if(mobilePhoneVerify){
+      } else if (element.check.some(item => item.code == '006') && val == '886') {
+        if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
-        }else{
-          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
+        } else {
+          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      }else{
-        this.rules.mobile.forEach((item,index) => {
-          if(item.pattern){
-            this.rules.mobile.splice(index,1)
+      } else {
+        this.rules.mobile.forEach((item, index) => {
+          if (item.pattern) {
+            this.rules.mobile.splice(index, 1)
           }
         })
       }
     },
-    provinceChange(provinceCode){
+    provinceChange(provinceCode) {
       let selectProvince = this.chinaProvinceList.find(province => {
         return province.code == provinceCode
       })
-      if(selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000'){ // 北京市
+      if (selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000') {
+        // 北京市
         this.provinceCityList = [selectProvince]
-      }else{
+      } else {
         this.provinceCityList = selectProvince.chirldren // 接口返回字段为 chirldren 非 children
       }
-      this.setForm.city = '';
-      this.setForm.county = '';
+      this.setForm.city = ''
+      this.setForm.county = ''
     },
-    cityChange(cityCode){
+    cityChange(cityCode) {
       let selectCity = this.provinceCityList.find(city => {
         return city.code == cityCode
       })
       this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
-      this.setForm.county = '';
+      this.setForm.county = ''
     },
-    selectMultipleChange(val){
-    },
+    selectMultipleChange(val) {},
     // 国际编码字典项查询
-    getCountryCode(){
+    getCountryCode() {
       request({
         url: '/api/sys/dict/listItem',
         method: 'POST',
         data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       }).then(res => {
         // dictItemName \ dictItemVal
-        debugger
+        //debugger
         this.countryCodeOptions = res.data
         // 86 大陆, 852 香港, 853 澳门, 886 台湾
         this.nationsList = res.data.filter(item => {
-          // debugger
+          // //debugger
           return item.dictItemVal != '852' && item.dictItemVal != '853' && item.dictItemVal != '886'
         })
       })
     },
     // 获取参会人类型数据字典
-    getcontactTypeList(){
+    getcontactTypeList() {
       request({
         url: '/api/sys/dict/listItem',
         method: 'POST',
@@ -1159,13 +1166,13 @@ export default {
       })
     },
     // 返回上级
-    back(){
+    back() {
       this.$store.dispatch('delVisitedViews', this.$route).then(() => {
         this.$router.push({
           name: 'signupContact'
         })
       })
-    },
+    }
   }
 }
 </script>

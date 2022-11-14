@@ -53,10 +53,14 @@
           <!-- <li class="resource">视频</li> -->
         </ul>
         <!-- <div v-if="matterList.length > 0 && size >= total">到底啦</div> -->
-        <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span><el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty></div>
+        <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span>
+          <el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty>
+        </div>
         <!-- @/assets/image/wushuju.png -->
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span><el-empty description="请选择文件夹"></el-empty></div>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span>
+        <el-empty description="请选择文件夹"></el-empty>
+      </div>
     </el-card>
     <!-- 右侧详细信息 -->
     <el-card class="box-card content_three">
@@ -100,7 +104,9 @@
           </div>
         </div>
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span><el-empty description="请选择文件"></el-empty></div>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span>
+        <el-empty description="请选择文件"></el-empty>
+      </div>
     </el-card>
   </div>
 </template>
@@ -196,7 +202,7 @@ export default {
           method: 'POST',
           data: { data: { objectKey: this.title_, newObjectKey: this.workName, id: this.pId, url: this.more.link }, funcModule: '修改文件名', funcOperation: '修改文件名' }
         })
-          .then((res) => {
+          .then(res => {
             if (res.data) {
               // 控制不改变值不刷新
               this.workName_ = this.workName
@@ -251,7 +257,7 @@ export default {
           method: 'POST',
           data: formData
         })
-          .then((data) => {
+          .then(data => {
             if (data) {
               loading_.close()
               thiz.$message('上传文件成功')
@@ -283,7 +289,7 @@ export default {
         canvas.height = image.height
         let ctx = canvas.getContext('2d')
         ctx.drawImage(image, 0, 0, image.width, image.height)
-        canvas.toBlob((blob) => {
+        canvas.toBlob(blob => {
           let url = URL.createObjectURL(blob)
           this.download(url, name)
           // 用完释放URL对象
@@ -318,16 +324,16 @@ export default {
         method: 'POST',
         data: { defaultSortString: this.fileSearch.rank_, current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
       })
-        .then((res) => {
+        .then(res => {
           if (res.data) {
             setTimeout(() => {
               loading.close()
             }, 200)
             this.matterList = res.data
             if (isFile) {
-              debugger
-              this.matterList.forEach((item) => {
-                debugger
+              //debugger
+              this.matterList.forEach(item => {
+                //debugger
                 if (this.more.link == item.picUrl) {
                   item.picUrl += '?v=' + Math.random()
                 }
@@ -383,7 +389,7 @@ export default {
       console.log(item, index)
     },
     getImageSize(url) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         var img = document.createElement('img')
         img.src = url
         img.onload = () => {

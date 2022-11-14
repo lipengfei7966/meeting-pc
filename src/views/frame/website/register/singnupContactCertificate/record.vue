@@ -10,7 +10,7 @@
         </template>
       </el-tabs>
     </template>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData"></bs-table>
   </div>
 </template>
@@ -292,8 +292,8 @@ export default {
         funcModule: '会议字典',
         funcOperation: '查询列表'
       }
-    }).then((response) => {
-      response.data.forEach((element) => {
+    }).then(response => {
+      response.data.forEach(element => {
         this.mainData.tabs.push({
           label: element.name,
           name: element.code

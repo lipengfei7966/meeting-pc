@@ -4,7 +4,7 @@
 
 <script>
 import request from '@/utils/frame/base/request'
-import {validateEmail, validateMobile} from '@/utils/frame/base/validate.js'
+import { validateEmail, validateMobile } from '@/utils/frame/base/validate.js'
 export default {
   data() {
     return {
@@ -67,8 +67,8 @@ export default {
       }
     }
   },
-  mounted(){
-    this.getFormInfo(this.param.eventCode);
+  mounted() {
+    this.getFormInfo(this.param.eventCode)
   },
   methods: {
     // 本页面关闭
@@ -85,11 +85,11 @@ export default {
           }
         })
         callback()
-      }else{
+      } else {
         if (prop === 'email' && !validateEmail(value)) {
           $('.el-col[data-key=' + prop + '] .is-required .el-form-item__content').attr('data-content', i18n.t('biz.placeholder.email'))
           callback(new Error())
-        }else if (prop === 'mobile' && !validateMobile(value)) {
+        } else if (prop === 'mobile' && !validateMobile(value)) {
           $('.el-col[data-key=' + prop + '] .is-required .el-form-item__content').attr('data-content', i18n.t('biz.placeholder.mobile'))
           callback(new Error())
         } else {
@@ -97,7 +97,7 @@ export default {
         }
       }
     },
-    getFormInfo(eventCode){
+    getFormInfo(eventCode) {
       this.loadAll = false
       this.edit.formData.part2.content = []
       this.edit.formData.part1.content = [
@@ -128,7 +128,7 @@ export default {
           element: 'base-select',
           list: this.$t('datadict.contantType'),
           attrs: {
-            clearable: true,
+            clearable: true
           },
           validate: [
             {
@@ -139,20 +139,20 @@ export default {
         }
       ]
       request({
-      url: '/api/biz/cmsEventInfo/get',
-      method: 'POST',
-      data: {
-        data:  eventCode,
-        isPage: false,
-        funcModule: '表单配置',
-        funcOperation: '查询列表'
-      }
+        url: '/api/biz/cmsEventInfo/get',
+        method: 'POST',
+        data: {
+          data: eventCode,
+          isPage: false,
+          funcModule: '表单配置',
+          funcOperation: '查询列表'
+        }
       }).then(response => {
-        debugger
-        if(response.data.json){
+        //debugger
+        if (response.data.json) {
           this.edit.formData = JSON.parse(response.data.json)
-        }else{
-          this.setInfoList = [];
+        } else {
+          this.setInfoList = []
         }
 
         this.loadAll = true

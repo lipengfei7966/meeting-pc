@@ -30,6 +30,7 @@ export default {
     enterpriseName: '公司名称',
     username: '账号',
     captcha: '验证码',
+    eventHashCode: '会议哈希',
     password: '密码',
     updatePwd: '修改密码',
     userValidateMsg: '请输入正确的用户名',

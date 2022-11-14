@@ -105,7 +105,7 @@ export default {
       immediate: true,
       handler(newValue, oldValue) {
         if (newValue) {
-          debugger
+          //debugger
           console.log(123)
           // console.log(window.document.location)
           console.log(newValue, oldValue)
@@ -120,7 +120,7 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(newValue, oldValue) {
-        // debugger
+        // //debugger
         if (newValue) {
           let arr = []
           newValue.forEach((element, index) => {
@@ -139,7 +139,7 @@ export default {
               //   arr.push(element)
               // }
               arr.push(element)
-              // debugger
+              // //debugger
             }
           })
           this.slideshow = arr
@@ -152,7 +152,7 @@ export default {
       immediate: true,
       handler(nVal, oVal) {
         if (nVal) {
-          // debugger
+          // //debugger
           this.title = nVal
           console.log(nVal, oVal)
         }
@@ -162,7 +162,7 @@ export default {
       immediate: true,
       handler(nVal, oVal) {
         if (nVal) {
-          // debugger
+          // //debugger
           this.subTitle = nVal
           console.log(nVal, oVal)
         }
@@ -171,7 +171,7 @@ export default {
   },
   methods: {
     handel(item, index) {
-      // debugger
+      // //debugger
       // if (item.type == 'url') {
       //   window.location.href = item.content
       // } else {
@@ -181,7 +181,7 @@ export default {
       console.log(item, index)
     },
     watchVal(val, dataNum, colorValue) {
-      debugger
+      //debugger
       if (val == 1) {
         // this.isTrue = true
         this.moduleData[dataNum].backgroundColor = this.backColor_

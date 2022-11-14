@@ -10,7 +10,7 @@
         </template>
       </el-tabs>
     </template>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref="bsTable" :mainData="mainData" :mainDataTabs="mainData.tabs"></bs-table>
   </div>
 </template>
@@ -354,7 +354,7 @@ export default {
               }
             })
           } else {
-            debugger
+            //debugger
             //this.mainData.topBar[2].component=import('../signupSignin/signin.vue');
             // 注册组件 '../signupSignin/signin.vue'
             Vue.component('view-form-table', () => import('../signupSignin/signin.vue'))

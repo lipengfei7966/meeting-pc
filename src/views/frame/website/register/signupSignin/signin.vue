@@ -116,7 +116,7 @@ export default {
         }
       })
         .then(response => {
-          debugger
+          //debugger
           if (response.status) {
             var selectList = [{ label: '默认', value: '' }]
             response.data.forEach(t => {

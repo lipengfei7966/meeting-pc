@@ -100,6 +100,12 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: '/guest/login',
+    name: 'guestlogin',
+    component: () => import('@/views/frame/login/guest/index'),
+    hidden: true
+  },
+  {
     path: '/user/login',
     name: 'templogin',
     component: () => import('@/views/frame/login/user/index'),
