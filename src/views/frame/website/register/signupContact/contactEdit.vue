@@ -1197,6 +1197,7 @@ export default {
       let a_link = document.createElement("a");
       a_link.href = downloadUrl;
       a_link.download = filename; //下载的文件的名字/
+      a_link.target = '_blank';
       document.body.appendChild(a_link);
       a_link.click();
 
