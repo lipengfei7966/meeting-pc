@@ -102,8 +102,9 @@
               <!-- 附件 -->
               <div v-if="element.systemName == '附件' " class="form-item-input">
                 <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>fileBeforeUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="(file)=>flieHandleUploadForm(file,element)">
-                  <i class="el-icon-plus avatar-uploader-icon"></i>
-                  <p> {{element.placeholder}} </p>
+                  <!-- <i class="el-icon-plus avatar-uploader-icon"></i> -->
+                  <!-- <p> {{element.placeholder}} </p> -->
+                  <el-button type="primary"> 上传附件 </el-button>
                 </el-upload>
               </div>
 
@@ -222,8 +223,12 @@
                       <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
                     </span>
                     <span class="el-upload-list__item-preview">
+                      <i class="el-icon-download" @click="downloadFile(setForm.photo)"></i>
+                    </span>
+                    <span class="el-upload-list__item-preview">
                       <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView) )" @click="deleteImg(setForm.photo)"></i>
                     </span>
+
                   </span>
                 </div>
                 <el-upload v-else class="avatar-uploader" :disabled="element.photeTailor == '手动裁剪' || (element.notAllowEdit && isUpdate)" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file)=>beforeAvatarUpload(file,element)" :http-request="(file)=>handleUploadForm(file,element)">
@@ -540,15 +545,13 @@ export default {
               if (item.minCheckedCount > 0) {
                 this.setForm.signupContactDtlDto[item.mapCode] = item.options.slice(0, item.minCheckedCount)
               }
-            } else {
-              //debugger
-              this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
+            }else{
+              this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
               // this.setForm[item.mapCode] = ''
             }
-            if (['附件'].includes(item.systemName)) {
-              //debugger
-              this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
-              this.$set(this.setFormFile, item.mapCode, [])
+            if(['附件'].includes(item.systemName)) {
+              this.$set(this.setForm.signupContactDtlDto,item.mapCode,'');
+              this.$set(this.setFormFile,item.mapCode,[]);
               console.log(this.setFormFile)
             }
             this.$set(this.setformOther, item.mapCode, '')
@@ -595,11 +598,12 @@ export default {
               this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: 'blur' }])
             }
 
-            if (item.mapCode == 'addres') {
-              this.rules.addres[0].required = false
-              if (item.nationIsShow) {
-                // 显示国家
-                this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
+            if(item.mapCode == 'addres'){
+              this.rules.addres[0].required = false;
+              if(item.nationIsShow){ // 显示国家
+              debugger
+                this.$set(this.rules, 'nations', [{required: item.isRequire, message:  "国家是必选项", trigger: "blur" }])
+                this.setForm.nations = '86'
               }
               if (item.provinceIsShow) {
                 // 显示省份
@@ -628,11 +632,9 @@ export default {
               // this.$set(this.rules, 'ming', [{required: item.isRequire, message: "名是必填项", trigger: "blur" }])
             }
 
-            if (item.mapCode == 'mobile' || item.mapCode == 'spareMobile') {
-              //debugger
-              if (item.defaultCountryCode != '') {
-                // 是否设置国际默认区号
-                if (item.check.some(item => item.code == '005') && item.defaultCountryCode == '86') {
+            if(item.mapCode == 'mobile' || item.mapCode == 'spareMobile'){
+              if(item.defaultCountryCode != ''){ // 是否设置国际默认区号
+                if( item.check.some(item => item.code == '005') && item.defaultCountryCode == '86'){
                   // 中国大陆 手机号校验
                   this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '852') {
@@ -645,19 +647,16 @@ export default {
                   // 台湾区号 手机号校验
                   this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 }
-              } else {
-                if (item.check.some(checkItem => checkItem.code == '005') && !item.check.some(checkItem => checkItem.code == '006')) {
-                  //debugger
+              }else{
+                if(item.check.some(checkItem => checkItem.code=='005') && !item.check.some(checkItem => checkItem.code=='006')){
                   // 中国大陆手机号校验
                   this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 } else if (!item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 港澳台手机号校验
-                  //debugger
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
-                } else if (item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
+                }else if(item.check.some(checkItem => checkItem.code=='005') && item.check.some(checkItem => checkItem.code=='006')){
                   // 大陆加港澳台手机号校验
-                  //debugger
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
                 }
               }
             }
@@ -686,33 +685,55 @@ export default {
     // 参会人信息查询
     getContactInfo() {
       request({
-        url: '/api/register/signupContact/getByContactCode',
-        method: 'POST',
-        data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        this.setForm = res.data
-        for (const key in this.setForm.signupContactDtlDto) {
-          // console.log(key)
-          if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0) {
-            this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
-            this.setForm.signupContactDtlDto[key].shift('卍')
+      url: '/api/register/signupContact/getByContactCode',
+      method: 'POST',
+      data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then(res => {
+      this.setForm = res.data
+      debugger
+      for (const key in this.setForm.signupContactDtlDto) {
+        // console.log(key)
+        // 判断是否多选
+        if( typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0){
+          this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
+          this.setForm.signupContactDtlDto[key].shift('卍')
 
-            this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
-              // //debugger
-              if (checkItem.indexOf('其他&') == 0) {
-                this.setformOther[key] = checkItem.split('&')[1]
-                this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
-              }
-            })
-          }
-          if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('其他&') == 0) {
-            //debugger
-            this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
-            this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
-          }
+          this.setForm.signupContactDtlDto[key].forEach((checkItem,checkIndex) => {
+            // debugger
+            if(checkItem.indexOf('其他&') == 0){
+              this.setformOther[key] = checkItem.split('&')[1]
+              this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
+            }
+          })
         }
-        console.log(this.setForm)
+        // 判断是否包含其他选项
+        if(typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('其他&')==0){
+          debugger
+          this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
+          this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
+        }
+
+        // 判断是否是附件
+        if(typeof this.setForm.signupContactDtlDto[key] =='string' && this.setForm.signupContactDtlDto[key].indexOf('http')==0){
+          let fileUrl = this.setForm.signupContactDtlDto[key]
+          debugger
+          let flieName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+          this.setFormFile[key].push({
+            name: flieName,
+            url: fileUrl
+          })
+        }
+
+      }
+      this.setInfoList.forEach(element => {
+        if(element.mapCode == 'mobile' && this.setForm.mobileIntCode){
+          this.mobileIntCodeChange(this.setForm.mobileIntCode, element)
+        }
+        if(element.mapCode == 'spareMobile' && this.setForm.spareMobileIntCode){
+          this.spareMobileIntCodeChange(this.setForm.spareMobileIntCode, element)
+        }
       })
+    })
     },
     submit() {
       let queryUrl = ''
@@ -1079,40 +1100,41 @@ export default {
       console.log(this.rules.mobile)
     },
     // 手机号国际区号切换
-    spareMobileIntCodeChange(val, element) {
+    spareMobileIntCodeChange(val,element){
+      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
-      let mobilePhoneVerify = this.rules.mobile.find(item => {
-        return 'pattern' in item
+      let mobilePhoneVerify = this.rules.spareMobile.find( item => {
+        return  'pattern' in item
       })
 
       if (element.check.some(item => item.code == '005') && val == '86') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
-        } else {
-          this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+        }else{
+          this.rules.spareMobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
         }
       } else if (element.check.some(item => item.code == '006') && val == '852') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
-        } else {
-          this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+        }else{
+          this.rules.spareMobile.push({ pattern: /^([5|6|9])\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
         }
       } else if (element.check.some(item => item.code == '006') && val == '853') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^6\d{7}$/
-        } else {
-          this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+        }else{
+          this.rules.spareMobile.push({ pattern: /^6\d{7}$/,message: '请输入正确的手机号', trigger: "blur"})
         }
       } else if (element.check.some(item => item.code == '006') && val == '886') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
-        } else {
-          this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+        }else{
+          this.rules.spareMobile.push({ pattern: /^[0][9]\d{8}$/,message: '请输入正确的手机号', trigger: "blur"})
         }
-      } else {
-        this.rules.mobile.forEach((item, index) => {
-          if (item.pattern) {
-            this.rules.mobile.splice(index, 1)
+      }else{
+        this.rules.spareMobile.forEach((item,index) => {
+          if(item.pattern){
+            this.rules.spareMobile.splice(index,1)
           }
         })
       }
@@ -1172,7 +1194,24 @@ export default {
           name: 'signupContact'
         })
       })
-    }
+    },
+    // 下载附件
+    downloadFile(fileUrl) {
+      // window.open(fileUrl, "_blank");
+      let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+      let a_link = document.createElement("a");
+      // 这里是将url转成blob地址，
+      fetch(fileUrl)
+        .then((res) => res.blob())
+        .then((blob) => {
+          // 将链接地址字符内容转变成blob地址
+          a_link.href = URL.createObjectURL(blob);
+          console.log(a_link.href);
+          a_link.download = fileName; //下载的文件的名字
+          document.body.appendChild(a_link);
+          a_link.click();
+        });
+    },
   }
 }
 </script>
