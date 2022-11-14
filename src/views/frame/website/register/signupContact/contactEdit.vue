@@ -101,7 +101,7 @@
 
               <!-- 附件 -->
               <div v-if="element.systemName == '附件' " class="form-item-input">
-                <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>fileBeforeUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="(file)=>flieHandleUploadForm(file,element)">
+                <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-preview="downloadFile" :on-exceed="fileLimitCount" :show-file-list="true" :file-list="setFormFile[element.mapCode]" :before-upload="(file)=>fileBeforeUpload(file,element)" :on-success="handleAvatarSuccess" :http-request="(file)=>flieHandleUploadForm(file,element)">
                   <!-- <i class="el-icon-plus avatar-uploader-icon"></i> -->
                   <!-- <p> {{element.placeholder}} </p> -->
                   <el-button type="primary"> 上传附件 </el-button>
@@ -223,7 +223,7 @@
                       <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
                     </span>
                     <span class="el-upload-list__item-preview">
-                      <i class="el-icon-download" @click="downloadFile(setForm.photo)"></i>
+                      <i class="el-icon-download" @click="downloadPhoto(setForm.photo)"></i>
                     </span>
                     <span class="el-upload-list__item-preview">
                       <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView) )" @click="deleteImg(setForm.photo)"></i>
@@ -1191,28 +1191,14 @@ export default {
       })
     },
     // 下载附件
-    // downloadFile(fileUrl) {
-      // window.open(fileUrl, "_blank");
-      // let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
-      // let a_link = document.createElement("a");
-      // // 这里是将url转成blob地址，
-      // fetch(fileUrl, { mode : 'no-cors'})
-      //   .then((res) => res.blob())
-      //   .then((blob) => {
-      //     // 将链接地址字符内容转变成blob地址
-      //     a_link.href = URL.createObjectURL(blob);
-      //     console.log(a_link.href);
-      //     a_link.download = fileName; //下载的文件的名字
-      //     document.body.appendChild(a_link);
-      //     a_link.click();
-      //   });
-    // },
-    downloadFile(fileUrl) {
-      // window.open(file.file_path, "_blank");
-      let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+    downloadFile(file) {
+      let downloadUrl = file.response ? file.response.data.filePath : file.url;
+      let fileName = file.response ? file.response.data.fileName : file.name;
+      debugger
+      // window.open(downloadUrl, "_blank");
       let a_link = document.createElement("a");
       // 这里是将url转成blob地址，
-      fetch(fileUrl)
+      fetch(downloadUrl)
         .then((res) => res.blob())
         .then((blob) => {
           // 将链接地址字符内容转变成blob地址
@@ -1224,6 +1210,45 @@ export default {
           a_link.click();
         });
     },
+    downloadPhoto(fileUrl) {//下载图片地址和图片名
+    debugger
+    let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+      var image = new Image();
+      // 解决跨域 Canvas 污染问题
+      image.setAttribute("crossOrigin", "anonymous");
+      image.onload = function () {
+          var canvas = document.createElement("canvas");
+          canvas.width = image.width;
+          canvas.height = image.height;
+          var context = canvas.getContext("2d");
+          context.drawImage(image, 0, 0, image.width, image.height);
+          var url = canvas.toDataURL("image/png"); //得到图片的base64编码数据
+
+          var a = document.createElement("a"); // 生成一个a元素
+          var event = new MouseEvent("click"); // 创建一个单击事件
+          a.download = fileName || "photo"; // 设置图片名称
+          a.href = url; // 将生成的URL设置为a.href属性
+          a.dispatchEvent(event); // 触发a的单击事件
+      };
+      image.src = fileUrl;
+    },
+    // downloadPhoto(fileUrl) {
+    //   // window.open(file.file_path, "_blank");
+    //   let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+    //   let a_link = document.createElement("a");
+    //   // 这里是将url转成blob地址，
+    //   fetch(fileUrl)
+    //     .then((res) => res.blob())
+    //     .then((blob) => {
+    //       // 将链接地址字符内容转变成blob地址
+    //       debugger;
+    //       a_link.href = URL.createObjectURL(blob);
+    //       console.log(a_link.href);
+    //       a_link.download = fileName; //下载的文件的名字
+    //       document.body.appendChild(a_link);
+    //       a_link.click();
+    //     });
+    // },
   }
 }
 </script>
