@@ -1192,20 +1192,20 @@ export default {
     },
     // 下载附件
     downloadFile(fileUrl) {
-      // window.open(fileUrl, "_blank");
-      let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
-      let a_link = document.createElement("a");
-      // 这里是将url转成blob地址，
-      fetch(fileUrl, { mode : 'no-cors'})
-        .then((res) => res.blob())
-        .then((blob) => {
-          // 将链接地址字符内容转变成blob地址
-          a_link.href = URL.createObjectURL(blob);
-          console.log(a_link.href);
-          a_link.download = fileName; //下载的文件的名字
-          document.body.appendChild(a_link);
-          a_link.click();
-        });
+      window.open(fileUrl, "_blank");
+      // let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
+      // let a_link = document.createElement("a");
+      // // 这里是将url转成blob地址，
+      // fetch(fileUrl, { mode : 'no-cors'})
+      //   .then((res) => res.blob())
+      //   .then((blob) => {
+      //     // 将链接地址字符内容转变成blob地址
+      //     a_link.href = URL.createObjectURL(blob);
+      //     console.log(a_link.href);
+      //     a_link.download = fileName; //下载的文件的名字
+      //     document.body.appendChild(a_link);
+      //     a_link.click();
+      //   });
     },
   }
 }
