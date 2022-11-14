@@ -1193,30 +1193,24 @@ export default {
     // 下载附件
     downloadFile(file) {
       let downloadUrl = file.response ? file.response.data.filePath : file.url;
-      let fileName = file.response ? file.response.data.fileName : file.name;
-      debugger
-      // window.open(downloadUrl, "_blank");
+      let filename = file.response ? file.response.data.fileName : file.name;
       let a_link = document.createElement("a");
-      // 这里是将url转成blob地址，
-      fetch(downloadUrl,{mode: "cors",})
-        .then((res) => res.blob())
-        .then((blob) => {
-          // 将链接地址字符内容转变成blob地址
-          debugger;
-          a_link.href = URL.createObjectURL(blob);
-          console.log(a_link.href);
-          a_link.download = fileName; //下载的文件的名字
-          document.body.appendChild(a_link);
-          a_link.click();
-        });
+
+      window.open(downloadUrl)
+
     },
     downloadPhoto(fileUrl) {
       // window.open(file.file_path, "_blank");
       let fileName = fileUrl.slice(fileUrl.lastIndexOf("/")+1)
       let a_link = document.createElement("a");
       // 这里是将url转成blob地址，
-      fetch(fileUrl,{mode: "cors",})
-        .then((res) => res.blob())
+      fetch(fileUrl,{
+        mode: "no-cors",
+        headers:{
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'text/plain'
+        }
+      }).then((res) => res.blob())
         .then((blob) => {
           // 将链接地址字符内容转变成blob地址
           debugger;
