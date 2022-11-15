@@ -695,6 +695,8 @@ export default {
           })
           if (selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000') {
             this.provinceCityList = [selectProvince]
+          } else {
+            this.provinceCityList = selectProvince.chirldren // 接口返回字段为 chirldren 非 children
           }
         }
         if (this.setForm.city) {
