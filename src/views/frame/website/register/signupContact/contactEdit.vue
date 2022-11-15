@@ -689,22 +689,6 @@ export default {
         data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       }).then((res) => {
         this.setForm = res.data
-        if (this.setForm.province) {
-          let selectProvince = this.chinaProvinceList.find((province) => {
-            return province.code == this.setForm.province
-          })
-          if (selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000') {
-            this.provinceCityList = [selectProvince]
-          } else {
-            this.provinceCityList = selectProvince.chirldren // 接口返回字段为 chirldren 非 children
-          }
-        }
-        if (this.setForm.city) {
-          let selectCity = this.provinceCityList.find((city) => {
-            return city.code == this.setForm.city
-          })
-          this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
-        }
 
         for (const key in this.setForm.signupContactDtlDto) {
           // console.log(key)
@@ -1115,6 +1099,24 @@ export default {
         }
       }).then((res) => {
         this.chinaProvinceList = res.data
+
+        if (this.setForm.province) {
+          let selectProvince = this.chinaProvinceList.find((province) => {
+            return province.code == this.setForm.province
+          })
+          if (selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000') {
+            this.provinceCityList = [selectProvince]
+          } else {
+            this.provinceCityList = selectProvince.chirldren // 接口返回字段为 chirldren 非 children
+          }
+        }
+
+        if (this.setForm.city) {
+          let selectCity = this.provinceCityList.find((city) => {
+            return city.code == this.setForm.city
+          })
+          this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
+        }
       })
     },
     // 证件类型切换
@@ -1128,7 +1130,7 @@ export default {
       }
       this.$refs.contactForm.clearValidate('certificate') // 移除上次校验结果
       // this.$refs.contactForm.validate();
-      // debugger
+      // //debugger
     },
     // 手机号国际区号切换
     mobileIntCodeChange(val, element) {
@@ -1240,7 +1242,7 @@ export default {
         data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       }).then((res) => {
         // dictItemName \ dictItemVal
-        debugger
+        //debugger
         this.countryCodeOptions = res.data
         // 86 大陆, 852 香港, 853 澳门, 886 台湾
         this.nationsList = res.data.filter((item) => {
