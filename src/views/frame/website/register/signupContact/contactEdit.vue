@@ -849,7 +849,7 @@ export default {
       let filepath = file.url
       if (!filepath) return
       // 获取文件后缀名
-      let suffix = filepath.substring(filepath.lastIndexOf('.') + 1)
+      let suffix = filepath.substring(filepath.lastIndexOf('.') + 1).toLowerCase()
       // doc、docx、xls、xlsx、xlsm、pdf、ppt、pptx、jpeg、jpg、png、txt
       let types1 = ['pdf', 'jpeg', 'jpg', 'png', 'txt']
       let types2 = ['docx', 'doc', 'xls', 'xlsx', 'xlsm', 'ppt', 'pptx']
@@ -858,9 +858,10 @@ export default {
       if (types2.includes(suffix)) {
         this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
       } else if (types1.includes(suffix)) {
-        this.downloadUrl = filepath
+        this.downloadUrl = encodeURIComponent(filepath)
       } else {
         this.$message.info('文件格式不支持预览，下载后查看')
+        return
       }
       // this.downloadUrl= 'https://view.xdocin.com/view?src=' + encodeURIComponent(file.url)
       setTimeout(() => {
