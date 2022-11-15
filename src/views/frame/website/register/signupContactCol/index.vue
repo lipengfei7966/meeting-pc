@@ -12,7 +12,7 @@
         </el-steps>
       </div>
       <div class="formSet">
-        <el-card class="formInfo" :style="{height: formSetHeight + 'px'}">
+        <el-card class="formInfo" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
           </div>
@@ -24,7 +24,7 @@
                   <h2>基本信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex" v-show="!baseInfoItem.isSee" @click="addSetInfoList( baseInfoItem ,baseInfoList,'baseInfoList')"> {{ baseInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex" v-show="!baseInfoItem.isSee" @click="addSetInfoList(baseInfoItem, baseInfoList, 'baseInfoList')">{{ baseInfoItem.label }}</li>
                 </ul>
               </el-collapse-item>
 
@@ -33,7 +33,7 @@
                   <h2>联系方式</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(contactWayItem, contactWayIndex) in contactWayList" :key="contactWayIndex" v-show="!contactWayItem.isSee" @click="addSetInfoList(contactWayItem,contactWayList,'contactWayList')"> {{ contactWayItem.label }} </li>
+                  <li class="formInfoItem" v-for="(contactWayItem, contactWayIndex) in contactWayList" :key="contactWayIndex" v-show="!contactWayItem.isSee" @click="addSetInfoList(contactWayItem, contactWayList, 'contactWayList')">{{ contactWayItem.label }}</li>
                 </ul>
               </el-collapse-item>
 
@@ -42,7 +42,7 @@
                   <h2>工作信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex" v-show="!workInfoItem.isSee" @click="addSetInfoList(workInfoItem,workInfoList,'workInfoList')"> {{ workInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex" v-show="!workInfoItem.isSee" @click="addSetInfoList(workInfoItem, workInfoList, 'workInfoList')">{{ workInfoItem.label }}</li>
                 </ul>
               </el-collapse-item>
 
@@ -51,7 +51,7 @@
                   <h2>自定义信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(customInfoItem, customInfoIndex) in customInfoList" :key="customInfoIndex" v-show="!customInfoItem.isSee" @click="addSetInfoList(customInfoItem,customInfoList,'customInfoList')"> {{ customInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(customInfoItem, customInfoIndex) in customInfoList" :key="customInfoIndex" v-show="!customInfoItem.isSee" @click="addSetInfoList(customInfoItem, customInfoList, 'customInfoList')">{{ customInfoItem.label }}</li>
                 </ul>
               </el-collapse-item>
 
@@ -60,58 +60,58 @@
                   <h2>特殊信息</h2>
                 </template>
                 <ul class="formInfoItems">
-                  <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList" :key="specialInfoIndex" v-show="!specialInfoItem.isSee" @click="addSetInfoList(specialInfoItem,specialInfoList,'specialInfoList')"> {{ specialInfoItem.label }} </li>
+                  <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList" :key="specialInfoIndex" v-show="!specialInfoItem.isSee" @click="addSetInfoList(specialInfoItem, specialInfoList, 'specialInfoList')">{{ specialInfoItem.label }}</li>
                 </ul>
               </el-collapse-item>
             </el-collapse>
           </div>
         </el-card>
 
-        <el-card class="formPreview" :style="{height: formSetHeight + 'px'}">
-          <div :style="{minHeight: formSetHeight - 80 + 'px'}">
-            <h2 style="text-align:center"> {{ eventName }}</h2>
+        <el-card class="formPreview" :style="{ height: formSetHeight + 'px' }">
+          <div :style="{ minHeight: formSetHeight - 80 + 'px' }">
+            <h2 style="text-align: center">{{ eventName }}</h2>
             <draggable v-model="setInfoList" chosenClass="chosen" forceFallback="true" :scroll="true" animation="300" @start="onStart" @end="onEnd" @update="onUpdate">
               <transition-group>
-                <div class="setInfoItem" v-for="(element,index) in setInfoList" :key="element.mapCode" @click="edititem(element,index)">
+                <div class="setInfoItem" v-for="(element, index) in setInfoList" :key="element.mapCode" @click="edititem(element, index)">
                   <!-- 姓名 -->
-                  <div v-if=" element.mapCode=='name' && !element.nameSplit" class=" form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <el-input style="width: 50%" size="mini" :placeholder="element.placeholder"></el-input>
                   </div>
                   <!-- 姓名拆分 -->
                   <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                     <div>
-                      <span class="setInfoItemlabel"> {{element.surnameTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.surnameTitle }} : </span>
                       <el-input style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
                     </div>
                     <div>
-                      <span class="setInfoItemlabel"> {{element.nameTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.nameTitle }} : </span>
                       <el-input style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
                     </div>
                   </div>
 
                   <!-- 性别 -->
-                  <div v-if="element.mapCode == 'sex' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'sex'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0] }}</el-radio>
                     <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1] }}</el-radio>
                   </div>
 
                   <!-- 证件 -->
-                  <div v-if="element.mapCode == 'certificate' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                  <div v-if="element.mapCode == 'certificate'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-select style="width: 100%" v-model="setForm.chenkedCertificate" :placeholder="element.placeholder">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
-                      <br>
-                      <el-input style="margin-top:10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                      <br />
+                      <el-input style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
                     </div>
                   </div>
 
                   <!-- 照片 -->
-                  <div v-if="element.mapCode == 'photo' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'photo'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                       <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                       <i class="el-icon-plus avatar-uploader-icon"></i>
@@ -119,59 +119,58 @@
                   </div>
 
                   <!-- 地址 -->
-                  <div v-if="element.mapCode == 'addres' " class="form-item-input">
+                  <div v-if="element.mapCode == 'addres'" class="form-item-input">
                     <!-- 国家 -->
                     <div v-if="element.nationIsShow" class="addresItem" style="margin-top: 20px">
-                      <span class="setInfoItemlabel"> {{element.nationTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.nationTitle }} : </span>
                       <el-select style="width: 50%" v-model="setForm.nation" :placeholder="element.nationPlaceholder">
                         <el-option v-for="item in []" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                     </div>
                     <!-- 省份 -->
                     <div v-if="element.provinceIsShow" class="addresItem">
-                      <span class="setInfoItemlabel"> {{element.provinceTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.provinceTitle }} : </span>
                       <el-select style="width: 50%" v-model="setForm.province" :placeholder="element.provincePlaceholder">
                         <el-option v-for="item in []" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                     </div>
                     <!-- 城市 -->
                     <div v-if="element.cityIsShow" class="addresItem">
-                      <span class="setInfoItemlabel"> {{element.cityTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.cityTitle }} : </span>
                       <el-select style="width: 50%" v-model="setForm.city" :placeholder="element.cityPlaceholder">
                         <el-option v-for="item in []" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                     </div>
                     <!-- 区县 -->
                     <div v-if="element.countyIsShow" class="addresItem">
-                      <span class="setInfoItemlabel"> {{element.countyTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.countyTitle }} : </span>
                       <el-select style="width: 50%" v-model="setForm.county" :placeholder="element.countyPlaceholder">
                         <el-option v-for="item in []" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                     </div>
                     <!-- 详细地址 -->
                     <div v-if="element.detailedAdressISShow" class="addresItem">
-                      <span class="setInfoItemlabel"> {{element.detailedAdressTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.detailedAdressTitle }} : </span>
                       <el-input style="width: 50%" size="mini" v-model="setForm.detailedAdress" :placeholder="element.detailedAdressPlaceholder"></el-input>
                     </div>
                     <!-- 邮编 -->
                     <div v-if="element.postcodeIsShow" class="addresItem">
-                      <span class="setInfoItemlabel"> {{element.postcodeTitle}} : </span>
+                      <span class="setInfoItemlabel"> {{ element.postcodeTitle }} : </span>
                       <el-input style="width: 50%" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
                     </div>
-
                   </div>
 
                   <!-- 手机号 -->
-                  <div v-if="element.mapCode == 'mobile' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'mobile'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.defaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
                         </el-select>
                       </el-input>
-                      <br>
+                      <br />
                       <el-input v-if="element.isNoteVerify" placeholder="请输入验证码" class="input-with-select">
                         <el-button slot="append">获取验证码</el-button>
                       </el-input>
@@ -179,16 +178,16 @@
                   </div>
 
                   <!-- 备用手机号 -->
-                  <div v-if="element.mapCode == 'spareMobile' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.secondPhonedefaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
                         </el-select>
                       </el-input>
-                      <br>
+                      <br />
                       <el-input v-if="element.isNoteVerify" placeholder="请输入验证码" class="input-with-select">
                         <el-button slot="append">获取验证码</el-button>
                       </el-input>
@@ -196,50 +195,42 @@
                   </div>
 
                   <!-- 固定电话 -->
-                  <div v-if="element.mapCode == 'phone' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'phone'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 80%;display:inline-block;vertical-align: top;">
+                    <div style="width: 80%; display: inline-block; vertical-align: top">
                       <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.telephoneDefaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
                         </el-select>
                       </el-input>
-                      <span>
-                        - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
-                      </span>
-                      <span v-if="element.extensionNumbeIsShow">
-                        - <el-input style="width: 150px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
-                      </span>
+                      <span> - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
+                      <span v-if="element.extensionNumbeIsShow"> - <el-input style="width: 150px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
                     </div>
                   </div>
 
                   <!-- 传真 -->
-                  <div v-if="element.mapCode == 'fax' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'fax'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 80%;display:inline-block;vertical-align: top;">
+                    <div style="width: 80%; display: inline-block; vertical-align: top">
                       <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxDefaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+'+item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
                         </el-select>
                       </el-input>
-                      <span>
-                        - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
-                      </span>
-                      <span v-if="element.extensionNumbeIsShow">
-                        - <el-input style="width: 150px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input>
-                      </span>
+                      <span> - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
+                      <span v-if="element.extensionNumbeIsShow"> - <el-input style="width: 150px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
                     </div>
                   </div>
 
                   <!-- 邮箱 -->
-                  <div v-if="element.mapCode == 'email' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'email'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
-                      <br>
+                      <br />
                       <el-input v-if="element.isEmailVerify" placeholder="请输入验证码" class="input-with-select">
                         <el-button slot="append">获取验证码</el-button>
                       </el-input>
@@ -247,12 +238,12 @@
                   </div>
 
                   <!-- 备用邮箱 -->
-                  <div v-if="element.mapCode == 'spareEmail' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
-                      <br>
+                      <br />
                       <el-input v-if="element.isEmailVerify" placeholder="请输入验证码" class="input-with-select">
                         <el-button slot="append">获取验证码</el-button>
                       </el-input>
@@ -260,167 +251,164 @@
                   </div>
 
                   <!-- 微信号 -->
-                  <div v-if="element.mapCode == 'wechat' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'wechat'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- qq -->
-                  <div v-if="element.mapCode == 'qq' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'qq'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 公司 -->
-                  <div v-if="element.mapCode == 'company' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'company'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 部门 -->
-                  <div v-if="element.mapCode == 'department' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'department'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 职位 -->
-                  <div v-if="element.mapCode == 'position' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.mapCode == 'position'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 短文本 -->
-                  <div v-if="element.systemName == '短文本' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '短文本'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
                     </div>
                   </div>
 
                   <!-- 长文本 -->
-                  <div v-if="element.systemName == '长文本' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '长文本'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input type="textarea" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
                     </div>
                   </div>
 
                   <!-- 数字 -->
-                  <div v-if="element.systemName == '数字' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '数字'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input v-model.number="test" :placeholder="element.placeholder" size="mini"></el-input>
                     </div>
                   </div>
 
                   <!-- 单选框 -->
-                  <div v-if="element.systemName == '单选框' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '单选框'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-radio-group :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
+                      <el-radio-group :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
                         <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                       </el-radio-group>
                     </div>
                   </div>
 
                   <!-- 复选框 -->
-                  <div v-if="element.systemName == '复选框' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '复选框'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-checkbox-group v-model="setForm.checkedOptions" :style="{width:'100%',display:'flex',flexWrap:'wrap',flexDirection:element.orientation=='横向'?'row':'column'}" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
+                      <el-checkbox-group v-model="setForm.checkedOptions" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length">
                         <el-checkbox v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                       </el-checkbox-group>
                     </div>
                   </div>
 
                   <!-- 下拉列表 -->
-                  <div v-if="element.systemName == '下拉列表' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '下拉列表'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-select style="margin-left: 10px;width:70%" :placeholder="element.placeholder">
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
+                      <el-select style="margin-left: 10px; width: 70%" :placeholder="element.placeholder">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
 
                   <!-- 下拉复选框 -->
-                  <div v-if="element.systemName == '下拉复选框' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '下拉复选框'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
-                      <el-select style="margin-left: 10px;width:70%" :placeholder="element.placeholder" :multiple="true" v-model="setForm.selectMultipleCheckedOptions" @change="selectMultipleChange">
-                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item || '待输入'" :disabled="(element.maxCheckedCount != '' && setForm.selectMultipleCheckedOptions.length >= element.maxCheckedCount) && !setForm.selectMultipleCheckedOptions.includes(item)"></el-option>
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
+                      <el-select style="margin-left: 10px; width: 70%" :placeholder="element.placeholder" :multiple="true" v-model="setForm.selectMultipleCheckedOptions" @change="selectMultipleChange">
+                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item || '待输入'" :disabled="element.maxCheckedCount != '' && setForm.selectMultipleCheckedOptions.length >= element.maxCheckedCount && !setForm.selectMultipleCheckedOptions.includes(item)"></el-option>
                       </el-select>
                     </div>
                   </div>
 
                   <!-- 附件 -->
-                  <div v-if="element.systemName == '附件' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
+                  <div v-if="element.systemName == '附件'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                       <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                       <i class="el-icon-plus avatar-uploader-icon"></i>
-                      <p> {{element.placeholder}} </p>
+                      <p>{{ element.placeholder }}</p>
                     </el-upload>
                   </div>
 
                   <!-- 日期 -->
-                  <div v-if="element.systemName == '日期' " class="form-item-input">
-                    <span class="setInfoItemlabel"> {{element.title}} : </span>
-                    <div style="width: 50%;display:inline-block;vertical-align: top;">
+                  <div v-if="element.systemName == '日期'" class="form-item-input">
+                    <span class="setInfoItemlabel"> {{ element.title }} : </span>
+                    <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-date-picker v-model="setForm.date" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
                     </div>
                   </div>
 
                   <!-- 分割线 -->
-                  <div v-if="element.systemName == '分割线' " class="form-item-input">
+                  <div v-if="element.systemName == '分割线'" class="form-item-input">
                     <el-divider content-position="center">{{ element.placeholder }}</el-divider>
                   </div>
 
                   <!-- 分页 -->
-                  <div v-if="element.systemName == '分页' " class="form-item-input">
-                    <p style="text-align:center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+                  <div v-if="element.systemName == '分页'" class="form-item-input">
+                    <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
                     <!-- <el-divider content-position="center">{{ element.placeholder }}</el-divider> -->
                   </div>
 
                   <!-- 说明信息 -->
-                  <div v-if="element.systemName == '说明信息' " class="form-item-input">
+                  <div v-if="element.systemName == '说明信息'" class="form-item-input">
                     <pre>{{ element.placeholder }}</pre>
                   </div>
 
-                  <div style="display: flex;flex-direction: column;justify-content: space-around;">
-                    <div style="display: flex;width:85px">
+                  <div style="display: flex; flex-direction: column; justify-content: space-around">
+                    <div style="display: flex; width: 85px">
                       <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">必填</el-checkbox>
-                      <div v-if="element.mapCode != 'name'" class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element,index)"></div>
+                      <div v-if="element.mapCode != 'name'" class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element, index)"></div>
                     </div>
-
                   </div>
-
                 </div>
               </transition-group>
             </draggable>
-
           </div>
           <div class="optionBtns" style="">
             <el-button type="primary" @click="save">
@@ -431,7 +419,7 @@
           </div>
         </el-card>
 
-        <el-card class="formEdit" :style="{height: formSetHeight + 'px'}">
+        <el-card class="formEdit" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>编辑</span>
           </div>
@@ -467,7 +455,6 @@
                   <p class="eidtContentItemTitle">报名后不允许编辑</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
-
               </div>
 
               <!-- 性别 -->
@@ -512,7 +499,7 @@
                 <!-- 校验 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('居民身份证')">
                   <p class="eidtContentItemTitle">校验</p>
-                  <el-radio-group class="certificateVerify" style="width:100%" v-model="setInfoList[checkedIndex].check[0].code" @change="certificateVerifyChange">
+                  <el-radio-group class="certificateVerify" style="width: 100%" v-model="setInfoList[checkedIndex].check[0].code" @change="certificateVerifyChange">
                     <el-radio label="001">
                       号码逻辑校验
                       <p class="VerifyExplain">仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号</p>
@@ -551,7 +538,7 @@
                 <!-- 照片裁剪 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">照片裁剪</p>
-                  <el-radio-group class="certificateVerify" style="width:100%" v-model="setInfoList[checkedIndex].photeTailor">
+                  <el-radio-group class="certificateVerify" style="width: 100%" v-model="setInfoList[checkedIndex].photeTailor">
                     <el-radio label="自动压缩裁剪">
                       自动压缩裁剪
                       <p class="VerifyExplain">用户上传照片后系统自动压缩处理（图片可能变形失真）；</p>
@@ -565,10 +552,7 @@
                 </div>
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制照片尺寸 (px)</p>
-                  <div style="width:100%">
-                    宽: <el-input style="width:70px;margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
-                    高: <el-input style="width:70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
-                  </div>
+                  <div style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
@@ -579,7 +563,6 @@
 
               <!-- 地址 -->
               <div v-if="setInfoList[checkedIndex].mapCode == 'addres'">
-
                 <!-- 国家 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国家</p>
@@ -681,7 +664,6 @@
                   <p class="eidtContentItemTitle">报名后不允许编辑</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
-
               </div>
 
               <!-- 手机号 -->
@@ -701,63 +683,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" filterable v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
-                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
-                  </el-select>
-                </div>
-
-                <!-- 格式校验 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">格式校验</p>
-                  <el-checkbox-group v-model="setInfoList[checkedIndex].mobilePhoneVerify" @change="mobilePhoneVerifyChange">
-                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item" :disabled="item == '国际' "></el-checkbox>
-                  </el-checkbox-group>
-                </div>
-
-                <!-- 短信验证 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">短信验证</p>
-                  <el-switch v-model="setInfoList[checkedIndex].isNoteVerify"> </el-switch>
-                </div>
-
-                <!-- 唯一 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
-                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
-                </div>
-
-                <!-- 报名后不允许编辑 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
-                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
-                </div>
-
-                <!-- 仅限于后台管理 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">仅限于后台管理</p>
-                  <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
-                </div>
-
-              </div>
-
-              <!-- 备用手机号 -->
-              <div v-if="setInfoList[checkedIndex].mapCode == 'spareMobile'">
-                <!-- 标题 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
-                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
-                </div>
-                <!-- 提示文本 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
-                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
-                </div>
-
-                <!-- 国际区号 -->
-                <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">国际区号</p>
-                  <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" filterable v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -788,6 +714,60 @@
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
 
+                <!-- 仅限于后台管理 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">仅限于后台管理</p>
+                  <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
+                </div>
+              </div>
+
+              <!-- 备用手机号 -->
+              <div v-if="setInfoList[checkedIndex].mapCode == 'spareMobile'">
+                <!-- 标题 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">标题</p>
+                  <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+                </div>
+                <!-- 提示文本 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                </div>
+
+                <!-- 国际区号 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">国际区号</p>
+                  <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
+                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                  </el-select>
+                </div>
+
+                <!-- 格式校验 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">格式校验</p>
+                  <el-checkbox-group v-model="setInfoList[checkedIndex].mobilePhoneVerify" @change="mobilePhoneVerifyChange">
+                    <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item" :disabled="item == '国际'"></el-checkbox>
+                  </el-checkbox-group>
+                </div>
+
+                <!-- 短信验证 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">短信验证</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isNoteVerify"> </el-switch>
+                </div>
+
+                <!-- 唯一 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">唯一</p>
+                  <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
+                </div>
+
+                <!-- 报名后不允许编辑 -->
+                <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+                </div>
               </div>
 
               <!-- 固定电话 -->
@@ -809,7 +789,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -831,7 +811,6 @@
                   <p class="eidtContentItemTitle">报名后不允许编辑</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
-
               </div>
 
               <!-- 传真 -->
@@ -853,7 +832,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top:5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
                     <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
                   </el-select>
                 </div>
@@ -869,7 +848,6 @@
                   <p class="eidtContentItemTitle">报名后不允许编辑</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
-
               </div>
 
               <!-- 邮箱 -->
@@ -908,7 +886,6 @@
                   <p class="eidtContentItemTitle">仅限于后台管理</p>
                   <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
                 </div>
-
               </div>
 
               <!-- 备用邮箱 -->
@@ -1070,8 +1047,8 @@
                 <!-- 限制字数 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制字数</p>
-                  <el-input-number v-if="setInfoList[checkedIndex].systemName == '短文本'" style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="50" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
-                  <el-input-number v-if="setInfoList[checkedIndex].systemName == '长文本'" style="width:120px; line-height: 32px;" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="200" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  <el-input-number v-if="setInfoList[checkedIndex].systemName == '短文本'" style="width: 120px; line-height: 32px" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="50" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                  <el-input-number v-if="setInfoList[checkedIndex].systemName == '长文本'" style="width: 120px; line-height: 32px" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="200" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                   <!-- <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input> -->
                 </div>
                 <!-- 报名后不允许编辑 -->
@@ -1082,7 +1059,7 @@
               </div>
 
               <!-- 数字 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '数字' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '数字'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1097,7 +1074,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制数字位数</p>
                   <p>
-                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="numberDigitLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="numberDigitLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1106,7 +1083,7 @@
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制小数点后位数</p>
                   <p>
                     小数点后
-                    <el-input-number style="width:80px; line-height: 32px;" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="decimalPlacesLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="decimalPlacesLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1118,7 +1095,7 @@
               </div>
 
               <!-- 单选框 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '单选框' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '单选框'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1126,13 +1103,13 @@
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height:34px">选项</p>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
                   <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-                      <p v-for="(item,index) in setInfoList[checkedIndex].options" :key="index">
-                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项'+(index+1)" style="margin: 5px 5px 5px 0;width:85%"></el-input>
-                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px;line-height:28px;cursor:pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex],item,index)"></span>
+                      <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
+                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项' + (index + 1)" style="margin: 5px 5px 5px 0; width: 85%"></el-input>
+                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px; line-height: 28px; cursor: pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex], item, index)"></span>
                       </p>
                     </draggable>
                   </div>
@@ -1147,7 +1124,6 @@
                     <el-radio v-model="setInfoList[checkedIndex].orientation" label="横向">横向</el-radio>
                     <el-radio v-model="setInfoList[checkedIndex].orientation" label="纵向">纵向</el-radio>
                   </div>
-
                 </div>
 
                 <!-- 报名后不允许编辑 -->
@@ -1158,7 +1134,7 @@
               </div>
 
               <!-- 复选框 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '复选框' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '复选框'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1166,13 +1142,13 @@
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height:34px">选项</p>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
                   <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-                      <p v-for="(item,index) in setInfoList[checkedIndex].options" :key="index">
-                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项'+(index+1)" style="margin: 5px 5px 5px 0;width:85%"></el-input>
-                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px;line-height:28px;cursor:pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex],item,index)"></span>
+                      <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
+                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项' + (index + 1)" style="margin: 5px 5px 5px 0; width: 85%"></el-input>
+                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px; line-height: 28px; cursor: pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex], item, index)"></span>
                       </p>
                     </draggable>
                   </div>
@@ -1186,19 +1162,18 @@
                   <div style="width: 100%">
                     <p style="margin: 5px 0">
                       <span>至少选择</span>
-                      <el-select style="margin-left: 10px;width:70%" v-model="setInfoList[checkedIndex].minCheckedCount" placeholder="请选择" @change="minCheckedCountChange">
-                        <el-option v-for="(item,index) in setInfoList[checkedIndex].options" :key="index" :label="(index+1)+'项'" :value="index+1" :disabled="(index+1 > setInfoList[checkedIndex].maxCheckedCount) && setInfoList[checkedIndex].maxCheckedCount !== ''"></el-option>
+                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].minCheckedCount" placeholder="请选择" @change="minCheckedCountChange">
+                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + '项'" :value="index + 1" :disabled="index + 1 > setInfoList[checkedIndex].maxCheckedCount && setInfoList[checkedIndex].maxCheckedCount !== ''"></el-option>
                         <el-option label="不限" value=""></el-option>
                       </el-select>
                     </p>
                     <p style="margin: 5px 0">
                       <span>至多选择</span>
-                      <el-select style="margin-left: 10px;width:70%" v-model="setInfoList[checkedIndex].maxCheckedCount" placeholder="请选择" @change="maxCheckedCountChange">
-                        <el-option v-for="(item,index) in setInfoList[checkedIndex].options" :key="index" :label="(index+1)+'项'" :value="index+1" :disabled="index+1 < setInfoList[checkedIndex].minCheckedCount"></el-option>
+                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].maxCheckedCount" placeholder="请选择" @change="maxCheckedCountChange">
+                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + '项'" :value="index + 1" :disabled="index + 1 < setInfoList[checkedIndex].minCheckedCount"></el-option>
                         <el-option label="不限" value=""></el-option>
                       </el-select>
                     </p>
-
                   </div>
                 </div>
 
@@ -1219,7 +1194,7 @@
               </div>
 
               <!-- 下拉列表 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '下拉列表' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '下拉列表'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1234,13 +1209,13 @@
 
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height:34px">选项</p>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
                   <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-                      <p v-for="(item,index) in setInfoList[checkedIndex].options" :key="index">
-                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项'+(index+1)" style="margin: 5px 5px 5px 0;width:85%"></el-input>
-                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px;line-height:28px;cursor:pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex],item,index)"></span>
+                      <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
+                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项' + (index + 1)" style="margin: 5px 5px 5px 0; width: 85%"></el-input>
+                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px; line-height: 28px; cursor: pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex], item, index)"></span>
                       </p>
                     </draggable>
                   </div>
@@ -1256,7 +1231,7 @@
               </div>
 
               <!-- 下拉复选框 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '下拉复选框' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '下拉复选框'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1269,13 +1244,13 @@
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height:34px">选项</p>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
                   <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-                      <p v-for="(item,index) in setInfoList[checkedIndex].options" :key="index">
-                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项'+(index+1)" style="margin: 5px 5px 5px 0;width:85%"></el-input>
-                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px;line-height:28px;cursor:pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex],item,index)"></span>
+                      <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
+                        <el-input size="mini" v-model="setInfoList[checkedIndex].options[index]" :placeholder="'请输入选项' + (index + 1)" style="margin: 5px 5px 5px 0; width: 85%"></el-input>
+                        <span v-if="setInfoList[checkedIndex].options.length > 1" style="font-size: 20px; line-height: 28px; cursor: pointer" class="remove-button el-icon-remove-outline" @click.stop="delRadioOption(setInfoList[checkedIndex], item, index)"></span>
                       </p>
                     </draggable>
                   </div>
@@ -1289,19 +1264,18 @@
                   <div style="width: 100%">
                     <p style="margin: 5px 0">
                       <span>至少选择</span>
-                      <el-select style="margin-left: 10px;width:70%" v-model="setInfoList[checkedIndex].minCheckedCount" placeholder="请选择" @change="minCheckedCountChange">
-                        <el-option v-for="(item,index) in setInfoList[checkedIndex].options" :key="index" :label="(index+1)+'项'" :value="index+1" :disabled="(index+1 > setInfoList[checkedIndex].maxCheckedCount) && setInfoList[checkedIndex].maxCheckedCount !== ''"></el-option>
+                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].minCheckedCount" placeholder="请选择" @change="minCheckedCountChange">
+                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + '项'" :value="index + 1" :disabled="index + 1 > setInfoList[checkedIndex].maxCheckedCount && setInfoList[checkedIndex].maxCheckedCount !== ''"></el-option>
                         <el-option label="不限" value=""></el-option>
                       </el-select>
                     </p>
                     <p style="margin: 5px 0">
                       <span>至多选择</span>
-                      <el-select style="margin-left: 10px;width:70%" v-model="setInfoList[checkedIndex].maxCheckedCount" placeholder="请选择" @change="maxCheckedCountChange">
-                        <el-option v-for="(item,index) in setInfoList[checkedIndex].options" :key="index" :label="(index+1)+'项'" :value="index+1" :disabled="index+1 < setInfoList[checkedIndex].minCheckedCount"></el-option>
+                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].maxCheckedCount" placeholder="请选择" @change="maxCheckedCountChange">
+                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + '项'" :value="index + 1" :disabled="index + 1 < setInfoList[checkedIndex].minCheckedCount"></el-option>
                         <el-option label="不限" value=""></el-option>
                       </el-select>
                     </p>
-
                   </div>
                 </div>
 
@@ -1313,7 +1287,7 @@
               </div>
 
               <!-- 附件 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '附件' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '附件'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1330,34 +1304,24 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制文件类型</p>
                   <el-switch v-model="setInfoList[checkedIndex].fileTypeLimit"> </el-switch>
-                  <div v-if="setInfoList[checkedIndex].fileTypeLimit" style="width:100%">
-                    <p>
-                      图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox>
-                    </p>
+                  <div v-if="setInfoList[checkedIndex].fileTypeLimit" style="width: 100%">
+                    <p>图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].imageCheckedTypes" @change="imageCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].imageTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>
-                      文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].documentCheckedTypes" @change="documentCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].documentTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>
-                      压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].compressedFileCheckedTypes" @change="compressedFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].compressedFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>
-                      视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].videoFileCheckedTypes" @change="videoFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].videoFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>
-                      音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].audioFileCheckedTypes" @change="audioFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].audioFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
@@ -1376,10 +1340,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制图片尺寸</p>
                   <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit" @change="pictureSizeLimitChange"> </el-switch>
-                  <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width:100%">
-                    宽: <el-input style="width:70px;margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
-                    高: <el-input style="width:70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
-                  </div>
+                  <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
@@ -1390,7 +1351,7 @@
               </div>
 
               <!-- 日期 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '日期' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '日期'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">标题</p>
@@ -1411,7 +1372,7 @@
               </div>
 
               <!-- 分割线 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '分割线' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '分割线'">
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">提示文本</p>
@@ -1420,24 +1381,22 @@
               </div>
 
               <!-- 分页 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '分页' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '分页'">
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p style="width:100%;text-align:center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+                  <p style="width: 100%; text-align: center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
                 </div>
               </div>
 
               <!-- 说明信息 -->
-              <div v-if="setInfoList[checkedIndex].systemName == '说明信息' ">
+              <div v-if="setInfoList[checkedIndex].systemName == '说明信息'">
                 <!-- 说明信息 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">说明文字</p>
                   <el-input type="textarea" :rows="10" size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
               </div>
-
             </div>
-
           </div>
         </el-card>
       </div>
@@ -1593,70 +1552,74 @@ export default {
         }
       },
       baseInfoList: [
-        {label: '姓名', value: 'name', isSee: false},
-        {label: '性别', value: 'sex', isSee: false},
-        {label: '证件', value: 'certificate', isSee: false},
-        {label: '照片', value: 'photo', isSee: false},
+        { label: '姓名', value: 'name', isSee: false },
+        { label: '性别', value: 'sex', isSee: false },
+        { label: '证件', value: 'certificate', isSee: false },
+        { label: '照片', value: 'photo', isSee: false }
       ],
-      contactWayList:[
-        {label: '地址', value: 'addres', isSee: false},
-        {label: '手机号', value: 'mobile', isSee: false},
-        {label: '备用手机', value: 'spareMobile', isSee: false},
-        {label: '固定电话', value: 'phone', isSee: false},
-        {label: '传真', value: 'fax', isSee: false},
-        {label: '邮箱', value: 'email', isSee: false},
-        {label: '备用邮箱', value: 'spareEmail', isSee: false},
-        {label: '微信号', value: 'wechat', isSee: false},
-        {label: 'QQ号', value: 'qq', isSee: false},
+      contactWayList: [
+        { label: '地址', value: 'addres', isSee: false },
+        { label: '手机号', value: 'mobile', isSee: false },
+        { label: '备用手机', value: 'spareMobile', isSee: false },
+        { label: '固定电话', value: 'phone', isSee: false },
+        { label: '传真', value: 'fax', isSee: false },
+        { label: '邮箱', value: 'email', isSee: false },
+        { label: '备用邮箱', value: 'spareEmail', isSee: false },
+        { label: '微信号', value: 'wechat', isSee: false },
+        { label: 'QQ号', value: 'qq', isSee: false }
       ],
-      workInfoList:[
-        {label: '公司', value: 'company'},
-        {label: '部门', value: 'department'},
-        {label: '职位', value: 'position'},
+      workInfoList: [
+        { label: '公司', value: 'company' },
+        { label: '部门', value: 'department' },
+        { label: '职位', value: 'position' }
       ],
-      customInfoList:[
-        {label: '短文本', value: 'input'},
-        {label: '长文本', value: 'textarea'},
-        {label: '数字', value: 'number'},
-        {label: '单选框', value: 'radio'},
-        {label: '复选框', value: 'checkbox'},
-        {label: '下拉列表', value: 'select'},
-        {label: '下拉复选框', value: 'selects'},
-        {label: '附件', value: 'file'},
-        {label: '日期', value: 'date'},
+      customInfoList: [
+        { label: '短文本', value: 'input' },
+        { label: '长文本', value: 'textarea' },
+        { label: '数字', value: 'number' },
+        { label: '单选框', value: 'radio' },
+        { label: '复选框', value: 'checkbox' },
+        { label: '下拉列表', value: 'select' },
+        { label: '下拉复选框', value: 'selects' },
+        { label: '附件', value: 'file' },
+        { label: '日期', value: 'date' }
       ],
       specialInfoList: [
-        {label: '分割线', value: 'crossLine'},
-        {label: '分页', value: 'paging'},
-        {label: '说明信息', value: 'explainInfo'},
+        { label: '分割线', value: 'crossLine' },
+        { label: '分页', value: 'paging' },
+        { label: '说明信息', value: 'explainInfo' }
       ],
       test: '',
       checkAll: false,
       isIndeterminate: true,
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now();
+          return time.getTime() > Date.now()
         },
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date());
+        shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date())
+            }
+          },
+          {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          },
+          {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
           }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
-          }
-        }]
+        ]
       },
 
       customInfoCount: 0, // 自定义信息数量
@@ -1670,29 +1633,29 @@ export default {
       // 表格高度
       formSetHeight: 0,
       batchEditDiologVisible: false,
-      setForm:{
+      setForm: {
         checkedSex: '',
         chenkedCertificate: [],
         verifyType: '',
-        nation:'',
-        province:'',
-        city:'',
+        nation: '',
+        province: '',
+        city: '',
         county: '',
-        detailedAdress:'',
+        detailedAdress: '',
         defaultCountryCode: '',
-        secondPhonedefaultCountryCode:'',
+        secondPhonedefaultCountryCode: '',
         mobilePhoneVerify: [],
-        telephoneDefaultCountryCode:'',
+        telephoneDefaultCountryCode: '',
         faxDefaultCountryCode: '',
         checkedOptions: [],
         selectMultipleCheckedOptions: [],
-        date: '',
+        date: ''
       },
-      checkedIndex: 0, // 选中预览item下标
+      checkedIndex: 0 // 选中预览item下标
     }
   },
   components: {
-    draggable,
+    draggable
   },
   mounted() {
     this.tableComputed()
@@ -1702,7 +1665,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
+    }).then((res) => {
       this.countryCodeOptions = res.data
       // dictItemName \ dictItemVal
     })
@@ -1710,32 +1673,32 @@ export default {
   computed: {
     ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight'])
   },
-  watch:{
-    customInfoCount(newVal ,oldVal) {
+  watch: {
+    customInfoCount(newVal, oldVal) {
       if (newVal > 0) {
-        let coustomInfoIndex = 0;
-        let textareaNum = 35; // 长文本字段需要为 36-40
-        this.setInfoList.forEach((item,index) => {
-          if(item.isCoustomInfo){
+        let coustomInfoIndex = 0
+        let textareaNum = 35 // 长文本字段需要为 36-40
+        this.setInfoList.forEach((item, index) => {
+          if (item.isCoustomInfo) {
             debugger
-            if(item.isTexeArea){
-              textareaNum ++;
+            if (item.isTexeArea) {
+              textareaNum++
               item.mapCode = 'reservedStr' + textareaNum
-            }else{
-              coustomInfoIndex ++;
+            } else {
+              coustomInfoIndex++
               item.mapCode = 'reservedStr' + coustomInfoIndex
             }
           }
         })
       }
     },
-    pagingCount(newVal ,oldVal) {
+    pagingCount(newVal, oldVal) {
       if (newVal > 0) {
-        let pagingIndex = 0;
-        this.setInfoList.forEach((item,index) => {
-          if(item.isPaging){
-            pagingIndex++;
-            item.pagingIndex = pagingIndex;
+        let pagingIndex = 0
+        this.setInfoList.forEach((item, index) => {
+          if (item.isPaging) {
+            pagingIndex++
+            item.pagingIndex = pagingIndex
             item.mapCode = 'paging' + pagingIndex
           }
         })
@@ -1743,7 +1706,7 @@ export default {
     },
     clientHeight() {
       this.tableComputed()
-    },
+    }
   },
   methods: {
     getEventInfo() {
@@ -1752,14 +1715,14 @@ export default {
         return
       }
       // debugger
-      this.baseInfoList.forEach(baseInfoItem => {
-        baseInfoItem.isSee = false;
+      this.baseInfoList.forEach((baseInfoItem) => {
+        baseInfoItem.isSee = false
       })
-      this.contactWayList.forEach(contactWayItem => {
-        contactWayItem.isSee = false;
+      this.contactWayList.forEach((contactWayItem) => {
+        contactWayItem.isSee = false
       })
-      this.workInfoList.forEach(workInfoItem => {
-        workInfoItem.isSee = false;
+      this.workInfoList.forEach((workInfoItem) => {
+        workInfoItem.isSee = false
       })
 
       request({
@@ -1770,49 +1733,48 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then(response => {
+      }).then((response) => {
         debugger
-        if(response.data.json){
+        if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
-        }else{
-          this.setInfoList = [];
+        } else {
+          this.setInfoList = []
         }
         // 姓名是必加项,如果没有添加姓名, 自动添加
-        if(!this.setInfoList.some(item => item.mapCode == 'name')){
-          this.addSetInfoList( {label: '姓名', value: 'name', isSee: false}, this.baseInfoList, 'baseInfoList')
+        if (!this.setInfoList.some((item) => item.mapCode == 'name')) {
+          this.addSetInfoList({ label: '姓名', value: 'name', isSee: false }, this.baseInfoList, 'baseInfoList')
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
-        this.setInfoList.forEach( setInfoItem => {
+        this.setInfoList.forEach((setInfoItem) => {
           // 基本信息
-          this.baseInfoList.forEach(baseInfoItem => {
-            if(baseInfoItem.value == setInfoItem.mapCode){
-              baseInfoItem.isSee = true;
+          this.baseInfoList.forEach((baseInfoItem) => {
+            if (baseInfoItem.value == setInfoItem.mapCode) {
+              baseInfoItem.isSee = true
             }
           })
           // 联系方式
-          this.contactWayList.forEach(contactWayItem => {
-            if(contactWayItem.value == setInfoItem.mapCode){
-              contactWayItem.isSee = true;
+          this.contactWayList.forEach((contactWayItem) => {
+            if (contactWayItem.value == setInfoItem.mapCode) {
+              contactWayItem.isSee = true
             }
           })
           // 工作信息
-          this.workInfoList.forEach(workInfoItem => {
-            if(workInfoItem.value == setInfoItem.mapCode){
-              workInfoItem.isSee = true;
+          this.workInfoList.forEach((workInfoItem) => {
+            if (workInfoItem.value == setInfoItem.mapCode) {
+              workInfoItem.isSee = true
             }
           })
-          if(setInfoItem.isCoustomInfo){
-            this.customInfoCount ++;
+          if (setInfoItem.isCoustomInfo) {
+            this.customInfoCount++
           }
         })
-
       })
     },
 
-    save(){
-      this.setInfoList.forEach(item => {
-        if(item.systemName == '附件'){
-          item.allFileTypes = [...item.imageCheckedTypes,...item.documentCheckedTypes,...item.compressedFileCheckedTypes,...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
+    save() {
+      this.setInfoList.forEach((item) => {
+        if (item.systemName == '附件') {
+          item.allFileTypes = [...item.imageCheckedTypes, ...item.documentCheckedTypes, ...item.compressedFileCheckedTypes, ...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
         }
       })
       request({
@@ -1826,77 +1788,78 @@ export default {
           funcModule: '获取模块类型',
           funcOperation: '获取模块类型'
         }
-      }).then(res => {
-        if(res.status){
+      }).then((res) => {
+        if (res.status) {
           this.$message.success('保存成功')
-        }else{
+        } else {
           this.$message.error('保存失败')
         }
       })
       console.log(this.setInfoList)
     },
     //移除表单信息
-    delSetInfoList(itemList,itemIndex){
+    delSetInfoList(itemList, itemIndex) {
       debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
-          var index = this.baseInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.baseInfoList.findIndex((item) => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
-          this.baseInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          break;
+          this.baseInfoList[index].isSee = false
+          this.setInfoList.splice(itemIndex, 1)
+          break
         case 'contactWayList':
-          var index = this.contactWayList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.contactWayList.findIndex((item) => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
-          this.contactWayList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          break;
+          this.contactWayList[index].isSee = false
+          this.setInfoList.splice(itemIndex, 1)
+          break
         case 'workInfoList':
-          var index = this.workInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.workInfoList.findIndex((item) => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
-          this.workInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          break;
+          this.workInfoList[index].isSee = false
+          this.setInfoList.splice(itemIndex, 1)
+          break
         case 'customInfoList':
-          var index = this.customInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.customInfoList.findIndex((item) => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
           // this.customInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          this.customInfoCount --;
-          break;
+          this.setInfoList.splice(itemIndex, 1)
+          this.customInfoCount--
+          break
         case 'specialInfoList':
-          var index = this.specialInfoList.findIndex(item=>{
-            return item.value == itemList.mapCode;
+          var index = this.specialInfoList.findIndex((item) => {
+            return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
           // this.specialInfoList[index].isSee = false;
-          this.setInfoList.splice(itemIndex,1);
-          if(itemList.isPaging){
-            this.pagingCount --;
+          this.setInfoList.splice(itemIndex, 1)
+          if (itemList.isPaging) {
+            this.pagingCount--
           }
-          break;
+          break
         default:
-          break;
+          break
       }
       console.log(this.setInfoList)
     },
     // 添加表单信息
-    addSetInfoList(itemList,parentList,parentListName){   //当前点击的tag   当前点击tag的数组
+    addSetInfoList(itemList, parentList, parentListName) {
+      //当前点击的tag   当前点击tag的数组
       // placeholder 输入框提示词  content 输入的值  isSee 是否在表单中的布尔值
       // var obj = {'label':itemList.label,'value':itemList.value,content:'','placeholder':`请输入${itemList.label}`,'content':'','isSee':true,'parentListName':parentListName};
       var obj = {
-        systemName: itemList.label,    // 系统名称
+        systemName: itemList.label, // 系统名称
         mapCode: itemList.value, // 表单绑定字段
-        check:[{ code: '', name: ''}], // 校验类型 { code: '', name: ''}
-        mapBase: parentListName == 'customInfoList'? 1 : 2, // 1：自定义属性 ，2：基础属性
+        check: [{ code: '', name: '' }], // 校验类型 { code: '', name: ''}
+        mapBase: parentListName == 'customInfoList' ? 1 : 2, // 1：自定义属性 ，2：基础属性
         isSee: true,
         isCoustomInfo: false, // 是否是自定义信息
         isSpecialInfo: false, // 是否是特殊信息
@@ -1915,12 +1878,12 @@ export default {
         notAllowEdit: false, // 报名后不允许编辑
 
         // sexRadioOptions: ['先生','女士'], // 性别选项
-        certificateAllTypes: ['居民身份证','护照','军人证','港澳居民来往内地通行证','台湾居民来往内地通行证','港澳台居民居住证','其他法定有效证件'], // 证件可选类型
+        certificateAllTypes: ['居民身份证', '护照', '军人证', '港澳居民来往内地通行证', '台湾居民来往内地通行证', '港澳台居民居住证', '其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
-        certificateVerifyOptions: ['号码逻辑校验', '身份证实名校验','人像实名校验'], //校验选项
+        certificateVerifyOptions: ['号码逻辑校验', '身份证实名校验', '人像实名校验'], //校验选项
         certificateVerify: '号码逻辑校验', // 选中校验方式
         isOnly: false, // 唯一
-        photeTailorOptions: ['手动压缩裁剪','自动裁剪'], //照片裁剪选项
+        photeTailorOptions: ['手动压缩裁剪', '自动裁剪'], //照片裁剪选项
         photeTailor: '自动压缩裁剪', // 选中照片裁剪方式
         photoLimitWidth: '', // 限制照片尺寸-宽
         photoLimitHeight: '', // 限制照片尺寸-高
@@ -1944,8 +1907,8 @@ export default {
         postcodePlaceholder: '请输入邮编', // 邮编提示文本
         countryCodeIsShow: false, // 国际区号是否展示
         defaultCountryCode: '', // 默认国际区号
-        mobilePhoneVerifyOptions: ['中国大陆','港澳台','国际'], // 格式校验选项
-        mobilePhoneVerify:[], // 格式校验选中选项
+        mobilePhoneVerifyOptions: ['中国大陆', '港澳台', '国际'], // 格式校验选项
+        mobilePhoneVerify: [], // 格式校验选中选项
         isNoteVerify: false, // 是否短信验证
         onlyUsedByManageSys: false, // 仅限于后台管理
         areaCodePlaceholder: '请输入区号', // 区号提示文本
@@ -1959,385 +1922,385 @@ export default {
         decimalPlacesLimit: 4, // 小数点位数限制
         options: [], // 选项
         radioOptions: [], // 单选框选项
-        orientations: ['横向','纵向'], // 排列方向选项
+        orientations: ['横向', '纵向'], // 排列方向选项
         orientation: '横向', // 排列方向
         minCheckedCount: '', // 最少选择数量
         maxCheckedCount: '', // 最多选择数量
         fileTypeLimit: false, // 是否限制文件类型
         pictureSizeLimit: false, // 是否限制图片尺寸
 
-        imageTypes: ['.gif','.png','.jpg','.jpeg','.bmp'], // 图片文件类型
-        imageCheckedTypes:[], // 图片文件选中类型
+        imageTypes: ['.gif', '.png', '.jpg', '.jpeg', '.bmp'], // 图片文件类型
+        imageCheckedTypes: [], // 图片文件选中类型
         imageCheckAll: false, // 图片是否全选
         imageIsIndeterminate: false, // 图片indeterminate 状态
 
-        documentTypes: ['.doc','.docx','.pdf','.xls','.xlsx','.ppt','.pptx','.txt'], // 文档类型
+        documentTypes: ['.doc', '.docx', '.pdf', '.xls', '.xlsx', '.ppt', '.pptx', '.txt'], // 文档类型
         documentCheckedTypes: [], // 文档选中类型
         documentCheckAll: false, // 文档是否全选
         documentIsIndeterminate: false, // 文档indeterminate 状态
 
-        compressedFileTypes: ['.zip','.rar','.gzi'], // 压缩文件类型
+        compressedFileTypes: ['.zip', '.rar', '.gzi'], // 压缩文件类型
         compressedFileCheckedTypes: [], // 压缩文件选中类型
         compressedFileCheckAll: false, // 压缩文件是否全选
         compressedFileIsIndeterminate: false, // 压缩文件indeterminate 状态
 
-        videoFileTypes: ['.mp4','.m3u8','.flv','.f4v','.webm','.mov','.m4v','.3gp','.avi','.wmv'], // 视频文件类型
+        videoFileTypes: ['.mp4', '.m3u8', '.flv', '.f4v', '.webm', '.mov', '.m4v', '.3gp', '.avi', '.wmv'], // 视频文件类型
         videoFileCheckedTypes: [], // 视频文件选中类型
         videoFileCheckAll: false, // 压缩文件是否全选
         videoFileIsIndeterminate: false, // 压缩文件indeterminate 状态
 
-        audioFileTypes: ['.mp3','.wam','.wav','.amr','.m4a','.aac'],// 音频文件类型
-        audioFileCheckedTypes: [],// 音频文件选中类型
+        audioFileTypes: ['.mp3', '.wam', '.wav', '.amr', '.m4a', '.aac'], // 音频文件类型
+        audioFileCheckedTypes: [], // 音频文件选中类型
         audioFileCheckAll: false, // 压缩文件是否全选
         audioFileIsIndeterminate: false, // 压缩文件indeterminate 状态
 
-        allFileTypes:[], // 允许上传文件类型合集
+        allFileTypes: [], // 允许上传文件类型合集
         fileSizeLimit: 50, // 文件大小限制
-        explain: '', // 说明文字
+        explain: '' // 说明文字
       }
 
-      if(parentListName == 'customInfoList'){
+      if (parentListName == 'customInfoList') {
         debugger
-        this.customInfoCount ++ ;
-        if(this.customInfoCount > 40){
+        this.customInfoCount++
+        if (this.customInfoCount > 40) {
           this.$message.warning('新增自定义信息数量超出最大限制')
           return
         }
         // obj.mapCode = 'reservedStr' + this.customInfoCount
         // debugger
-        obj.isCoustomInfo = true;
-        obj.title = '您的标题';
+        obj.isCoustomInfo = true
+        obj.title = '您的标题'
         // if(itemList.value == 'input'){
         //   this.setForm['input'+this.customInfoCount] = '';
         // }
-        if(itemList.value == 'textarea'){
-          obj.isTexeArea = true;
-          this.textareaNum ++;
-          obj.wordCountLimit = 200;
+        if (itemList.value == 'textarea') {
+          obj.isTexeArea = true
+          this.textareaNum++
+          obj.wordCountLimit = 200
         }
         // 短文本\长文本添加字数限制校验
-        if(itemList.value == 'input' || itemList.value == 'textarea'){
-          obj.check[0].code = "008"
+        if (itemList.value == 'input' || itemList.value == 'textarea') {
+          obj.check[0].code = '008'
           obj.check[0].name = obj.wordCountLimit
         }
         // 数字添加校验
-        if(itemList.value == 'number'){
-          obj.check[0].code = "009"
+        if (itemList.value == 'number') {
+          obj.check[0].code = '009'
           obj.check[0].name = obj.numberDigitLimit
           obj.check.push({
             code: '010',
             name: obj.decimalPlacesLimit
           })
         }
-        if( ['radio','checkbox','select','selects'].includes(itemList.value)){
-          obj.options = ["选项一","选项二"];
+        if (['radio', 'checkbox', 'select', 'selects'].includes(itemList.value)) {
+          obj.options = ['选项一', '选项二']
         }
-        if(itemList.value == 'file'){
-          obj.check[0].code = "013"
+        if (itemList.value == 'file') {
+          obj.check[0].code = '013'
           obj.check[0].name = obj.fileSizeLimit
         }
       }
 
-      if(parentListName == 'specialInfoList'){
-        obj.isSpecialInfo = true;
+      if (parentListName == 'specialInfoList') {
+        obj.isSpecialInfo = true
       }
-      var index = parentList.findIndex(item => {
+      var index = parentList.findIndex((item) => {
         return item.value == itemList.value
       })
       // 性别添加选项
-      if(itemList.value == 'sex'){
-        obj.options = ['先生','女士']
+      if (itemList.value == 'sex') {
+        obj.options = ['先生', '女士']
       }
       // 电话添加校验
-      if(itemList.value == 'phone'){
-        obj.check[0].code = "014"
+      if (itemList.value == 'phone') {
+        obj.check[0].code = '014'
       }
       // 传真添加校验
-      if(itemList.value == 'fax'){
-        obj.check[0].code = "015"
+      if (itemList.value == 'fax') {
+        obj.check[0].code = '015'
       }
 
       // 照片限制宽高
-      if(itemList.value == 'photo'){
-        obj.pictureSizeLimit = true;
+      if (itemList.value == 'photo') {
+        obj.pictureSizeLimit = true
       }
 
       // 证件
       // debugger
-      if( itemList.value == "certificate"){
-        obj.options = ['居民身份证'];
-        obj.check[0].code = "001"
+      if (itemList.value == 'certificate') {
+        obj.options = ['居民身份证']
+        obj.check[0].code = '001'
       }
       // 分割线
-      if( itemList.value == "crossLine"){
-        obj.mapCode = 'crossLine' + this.setInfoList.length;
+      if (itemList.value == 'crossLine') {
+        obj.mapCode = 'crossLine' + this.setInfoList.length
       }
 
       // 分页
-      if( itemList.value == "paging"){
-        obj.isPaging = true;
-        this.pagingCount ++;
+      if (itemList.value == 'paging') {
+        obj.isPaging = true
+        this.pagingCount++
       }
 
       // 说明信息
-      if( itemList.value == "explainInfo"){
-        obj.mapCode = 'explainInfo' + this.setInfoList.length;
+      if (itemList.value == 'explainInfo') {
+        obj.mapCode = 'explainInfo' + this.setInfoList.length
       }
       // debugger
-      if(parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList'){
-        parentList[index].isSee = true;
+      if (parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList') {
+        parentList[index].isSee = true
       }
-      this.setInfoList.push(obj);
+      this.setInfoList.push(obj)
     },
-    selectMultipleChange(val){
+    selectMultipleChange(val) {
       // debugger
     },
 
-    certificateTypeChange(certificateOptions){
+    certificateTypeChange(certificateOptions) {
       // debugger
       // 证件类型不包括居民身份证时 校验code设为空
-      if(!certificateOptions.includes('居民身份证')){
+      if (!certificateOptions.includes('居民身份证')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
       }
       // 勾选 居民身份证 后, 是最后一项
-      if(certificateOptions[certificateOptions.length-1] == '居民身份证'){
+      if (certificateOptions[certificateOptions.length - 1] == '居民身份证') {
         this.setInfoList[this.checkedIndex].check[0].code = '001'
       }
       console.log(this.setInfoList[this.checkedIndex])
     },
-    numberChange(val){
+    numberChange(val) {
       // numberDigitLimit: 4, // 数字位数限制
       // decimalPlacesLimit: 4, // 小数点位数限制.
       let integer = val.split('.')[0] || ''
       let decimal = val.split('.')[1] || ''
-      if(Number(integer) >= Math.pow(10,this.setInfoList[this.checkedIndex].numberDigitLimit)){
+      if (Number(integer) >= Math.pow(10, this.setInfoList[this.checkedIndex].numberDigitLimit)) {
         this.test = this.test
       }
-      if(decimal.length > this.setInfoList[this.checkedIndex].decimalPlacesLimit){
+      if (decimal.length > this.setInfoList[this.checkedIndex].decimalPlacesLimit) {
         this.test = this.test
         return
       }
       // debugger
     },
 
-  // 附件-文件上传限制类型 勾选 ---- 开始
+    // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
       debugger
-      this.setInfoList[this.checkedIndex].imageCheckedTypes = val? this.setInfoList[this.checkedIndex].imageTypes : []
-      this.setInfoList[this.checkedIndex].imageIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
+      this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
       debugger
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length;
-      this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
+      this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
       // this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     documentCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].documentCheckedTypes = val? this.setInfoList[this.checkedIndex].documentTypes : []
-      this.setInfoList[this.checkedIndex].documentIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].documentCheckedTypes = val ? this.setInfoList[this.checkedIndex].documentTypes : []
+      this.setInfoList[this.checkedIndex].documentIsIndeterminate = false
     },
     documentCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].documentCheckAll = checkedCount === this.setInfoList[this.checkedIndex].documentTypes.length;
-      this.setInfoList[this.checkedIndex].documentIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].documentTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].documentCheckAll = checkedCount === this.setInfoList[this.checkedIndex].documentTypes.length
+      this.setInfoList[this.checkedIndex].documentIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].documentTypes.length
     },
     compressedFileCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].compressedFileCheckedTypes = val? this.setInfoList[this.checkedIndex].compressedFileTypes : []
-      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].compressedFileCheckedTypes = val ? this.setInfoList[this.checkedIndex].compressedFileTypes : []
+      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = false
     },
     compressedFileCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].compressedFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].compressedFileTypes.length;
-      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].compressedFileTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].compressedFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].compressedFileTypes.length
+      this.setInfoList[this.checkedIndex].compressedFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].compressedFileTypes.length
     },
     videoFileCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].videoFileCheckedTypes = val? this.setInfoList[this.checkedIndex].videoFileTypes : []
-      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].videoFileCheckedTypes = val ? this.setInfoList[this.checkedIndex].videoFileTypes : []
+      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = false
     },
     videoFileCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].videoFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].videoFileFileTypes.length;
-      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].videoFileTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].videoFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].videoFileFileTypes.length
+      this.setInfoList[this.checkedIndex].videoFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].videoFileTypes.length
     },
     audioFileCheckAllChange(val) {
-      this.setInfoList[this.checkedIndex].audioFileCheckedTypes = val? this.setInfoList[this.checkedIndex].audioFileTypes : []
-      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = false;
+      this.setInfoList[this.checkedIndex].audioFileCheckedTypes = val ? this.setInfoList[this.checkedIndex].audioFileTypes : []
+      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = false
     },
     audioFileCheckChange(value) {
-      let checkedCount = value.length;
-      this.setInfoList[this.checkedIndex].audioFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].audioFileFileTypes.length;
-      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].audioFileTypes.length;
+      let checkedCount = value.length
+      this.setInfoList[this.checkedIndex].audioFileCheckAll = checkedCount === this.setInfoList[this.checkedIndex].audioFileFileTypes.length
+      this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].audioFileTypes.length
     },
-  // 附件-文件上传限制类型 勾选 --- 结束
+    // 附件-文件上传限制类型 勾选 --- 结束
 
     // 地址 -- 城市 开关回调
-    cityIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
+    cityIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
       }
     },
     // 地址 -- 区/县 开关回调
-    countyIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
-        this.setInfoList[this.checkedIndex].cityIsShow = true;
+    countyIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
       }
     },
     // 地址 -- 详细地址 开关回调
-    detailedAdressIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
-        this.setInfoList[this.checkedIndex].cityIsShow = true;
-        this.setInfoList[this.checkedIndex].countyIsShow = true;
+    detailedAdressIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
+        this.setInfoList[this.checkedIndex].countyIsShow = true
       }
     },
     // 地址 -- 邮编 开关回调
-    postcodeIsShowChange(val){
-      if(val){
-        this.setInfoList[this.checkedIndex].provinceIsShow = true;
-        this.setInfoList[this.checkedIndex].cityIsShow = true;
-        this.setInfoList[this.checkedIndex].countyIsShow = true;
-        this.setInfoList[this.checkedIndex].detailedAdressISShow = true;
+    postcodeIsShowChange(val) {
+      if (val) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
+        this.setInfoList[this.checkedIndex].countyIsShow = true
+        this.setInfoList[this.checkedIndex].detailedAdressISShow = true
       }
     },
 
     // 附件是否限制图片尺寸
-    pictureSizeLimitChange(val){
-      if(val){
+    pictureSizeLimitChange(val) {
+      if (val) {
         this.setInfoList[this.checkedIndex].check.push({
           code: '004',
-          name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight,
+          name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight
         })
-      }else{
-        this.setInfoList[this.checkedIndex].check.filter(item => {
+      } else {
+        this.setInfoList[this.checkedIndex].check.filter((item) => {
           return item.code != '004'
         })
       }
     },
 
     // 限制图片尺寸修改
-    photoLimitSizehChange(setInfoListItem){
-      if(setInfoListItem.mapCode == 'photo'){
+    photoLimitSizehChange(setInfoListItem) {
+      if (setInfoListItem.mapCode == 'photo') {
         setInfoListItem.check[0].code = '004'
         setInfoListItem.check[0].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
-      }else{
+      } else {
         setInfoListItem.check[1].code = '004'
         setInfoListItem.check[1].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
       }
     },
 
-    handleAvatarSuccess(res, file){
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error('上传头像图片只能是 JPG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt2M
     },
-    minCheckedCountChange(val){
-      if(val != 0){
-        this.setInfoList[this.checkedIndex].isRequire = true;
-        this.setInfoList[this.checkedIndex].isRequireDisabled = true;
+    minCheckedCountChange(val) {
+      if (val != 0) {
+        this.setInfoList[this.checkedIndex].isRequire = true
+        this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
       debugger
-      this.setInfoList[this.checkedIndex].check[0].code = '011';
-      this.setInfoList[this.checkedIndex].check[0].name = val;
+      this.setInfoList[this.checkedIndex].check[0].code = '011'
+      this.setInfoList[this.checkedIndex].check[0].name = val
     },
-    maxCheckedCountChange(val){
-      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some(checkItem => {
+    maxCheckedCountChange(val) {
+      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some((checkItem) => {
         return checkItem.code == '012'
       })
-      if(hasMaxLimit){
-        let maxLimit = this.setInfoList[this.checkedIndex].check.find(checkItem => {
+      if (hasMaxLimit) {
+        let maxLimit = this.setInfoList[this.checkedIndex].check.find((checkItem) => {
           return checkItem.code == '012'
         })
-        maxLimit.name = val;
-      }else{
-        this.setInfoList[this.checkedIndex].check.push({code: '012', name: val})
+        maxLimit.name = val
+      } else {
+        this.setInfoList[this.checkedIndex].check.push({ code: '012', name: val })
       }
       console.log(this.setInfoList[this.checkedIndex].check)
       debugger
     },
-    batchEditOptionsComfirm(){
+    batchEditOptionsComfirm() {
       // debugger
       let tempArr = this.batchEditOptions.split('\n')
       this.setInfoList[this.checkedIndex].options = this.setInfoList[this.checkedIndex].options.concat(tempArr)
       // this.setInfoList[this.checkedIndex].options.forEach((option,optionIdnex) => {
       //   this.setInfoList[this.checkedIndex].options[optionIdnex] = tempArr[optionIdnex]
       // })
-      this.batchEditDiologVisible = false;
-      this.batchEditOptions = '';
+      this.batchEditDiologVisible = false
+      this.batchEditOptions = ''
       // console.log(this.batchEditOptions)
     },
-    radioAddOption(setInfoListItem, optionValue){
+    radioAddOption(setInfoListItem, optionValue) {
       setInfoListItem.options.push(optionValue)
     },
-    delRadioOption(setInfoListItem, option, optionIndex){
+    delRadioOption(setInfoListItem, option, optionIndex) {
       debugger
       // this.setInfoList.splice(itemIndex,1);
-      setInfoListItem.options.splice(optionIndex,1);
+      setInfoListItem.options.splice(optionIndex, 1)
     },
     // 证件类型勾选
-    certificateVerifyChange(val){
-      this.setInfoList[this.checkedIndex].check[0].code = val;
+    certificateVerifyChange(val) {
+      this.setInfoList[this.checkedIndex].check[0].code = val
     },
     // 国际区号默认国家/地区
-    defaultCountryCodeChange(val){
-      this.setForm.defaultCountryCode = val;
+    defaultCountryCodeChange(val) {
+      this.setForm.defaultCountryCode = val
     },
-    secondphoneDefaultCountryCodeChange(val){
-      this.setForm.secondPhonedefaultCountryCode = val;
+    secondphoneDefaultCountryCodeChange(val) {
+      this.setForm.secondPhonedefaultCountryCode = val
     },
-    telephoneDefaultCountryCodeChange(val){
-      this.setForm.telephoneDefaultCountryCode = val;
+    telephoneDefaultCountryCodeChange(val) {
+      this.setForm.telephoneDefaultCountryCode = val
     },
-    faxDefaultCountryCodeChange(val){
-      this.setForm.faxDefaultCountryCode = val;
+    faxDefaultCountryCodeChange(val) {
+      this.setForm.faxDefaultCountryCode = val
     },
-    wordCountLimitChange(setInfoListItem){
+    wordCountLimitChange(setInfoListItem) {
       setInfoListItem.check[0].code = '008'
       setInfoListItem.check[0].name = setInfoListItem.wordCountLimit
       console.log(this.setInfoList)
     },
     // 数字位数限制 添加校验
-    numberDigitLimitChange(setInfoListItem){
+    numberDigitLimitChange(setInfoListItem) {
       setInfoListItem.check[0].code = '009'
       setInfoListItem.check[0].name = setInfoListItem.numberDigitLimit
       console.log(this.setInfoList)
     },
     // 小数位数限制 添加校验
-    decimalPlacesLimitChange(setInfoListItem){
+    decimalPlacesLimitChange(setInfoListItem) {
       setInfoListItem.check[1].code = '010'
       setInfoListItem.check[1].name = setInfoListItem.decimalPlacesLimit
       console.log(this.setInfoList)
     },
     // 手机号 校验勾选
-    mobilePhoneVerifyChange(val){
+    mobilePhoneVerifyChange(val) {
       // 005：手机号格式校验(中国大陆)
       // 006：手机号格式校验(港澳台)
       // 007：手机号格式校验(国际)
       debugger
-      this.setInfoList[this.checkedIndex].check = [];
-      val.forEach(element => {
-        if(element == "中国大陆"){
-          this.setInfoList[this.checkedIndex].check.push({code: '005', name: ''});
-        }else if(element == "港澳台"){
-          this.setInfoList[this.checkedIndex].check.push({code: '006', name: ''});
+      this.setInfoList[this.checkedIndex].check = []
+      val.forEach((element) => {
+        if (element == '中国大陆') {
+          this.setInfoList[this.checkedIndex].check.push({ code: '005', name: '' })
+        } else if (element == '港澳台') {
+          this.setInfoList[this.checkedIndex].check.push({ code: '006', name: '' })
           // this.setInfoList[this.checkedIndex].check[0].code = '006'
-        }else if(element == "国际"){
-          this.setInfoList[this.checkedIndex].check.push({code: '007', name: ''});
+        } else if (element == '国际') {
+          this.setInfoList[this.checkedIndex].check.push({ code: '007', name: '' })
           // this.setInfoList[this.checkedIndex].check[0].code = '007'
         }
-      });
+      })
     },
     onChangeAll(params) {
       // 会议编码 params.code
@@ -2359,7 +2322,7 @@ export default {
           funcOperation: '表单初始化'
         }
       })
-        .then(response => {
+        .then((response) => {
           this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
           this.loading = false
           this.handleCloseDialog(true)
@@ -2368,25 +2331,25 @@ export default {
           this.$refs.bsTable.doRefresh()
         })
     },
-    edititem(checkedItem, checkedIndex){
+    edititem(checkedItem, checkedIndex) {
       // debugger
-      this.checkedIndex = checkedIndex;
+      this.checkedIndex = checkedIndex
     },
-     //开始拖拽事件
-    onStart(){
-      this.drag=true;
+    //开始拖拽事件
+    onStart() {
+      this.drag = true
     },
     //拖拽结束事件
     onEnd() {
-      this.drag=false;
+      this.drag = false
     },
     // 拖拽变换位置时触发的事件
-    onUpdate(){
-      let pagingIndex = 0;
-      this.setInfoList.forEach((item,index) => {
-        if(item.isPaging){
-          pagingIndex++;
-          item.pagingIndex = pagingIndex;
+    onUpdate() {
+      let pagingIndex = 0
+      this.setInfoList.forEach((item, index) => {
+        if (item.isPaging) {
+          pagingIndex++
+          item.pagingIndex = pagingIndex
           item.mapCode = 'paging' + pagingIndex
         }
       })
