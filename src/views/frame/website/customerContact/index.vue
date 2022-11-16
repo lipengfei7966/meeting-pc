@@ -87,8 +87,8 @@ export default {
               if (node) {
                 console.log(node)
                 return {
-                  company_id: node['companyId'],
-                  customer_id:node['code']
+                  companyId: node['companyId'],
+                  customerId:node['code']
                 }
               } else {
                 return ""
