@@ -295,20 +295,10 @@ export default {
       list: {
         code: '客户联系人编码',
         name: '姓名',
-        mobile: '手机',
-        email: '邮箱',
-        department: '部门',
-        customer: '客户',
-        createDate: '创建时间',
-        updateDate: '更新时间'
-      },
-      edit: {
-        code: '客户联系人编码',
-        name: '姓名',
-        mobile: '手机',
-        email: '邮箱',
-        departmentCode: '部门',
-        customerCode: '客户'
+        phone: '手机',
+        mailbox: '邮箱',
+        customer: '部门',
+        company: '客户'
       }
     },
     signupContactCodeRule: {
