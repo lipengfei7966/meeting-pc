@@ -407,14 +407,12 @@ export default {
           this.$parent.$refs.bsForm.loading = true
         }
       }
-      console.log(this.$parent.form.listQuery, this.mainDataTabs)
       request({
         url: this.mainData.api.search,
         method: 'POST',
         data: this.$parent.form.listQuery
       })
         .then(response => {
-          console.log(this.mainDataTabs, 1111)
           this.loading = false
           if (this.$parent.$refs.bsForm) {
             this.$parent.$refs.bsForm.loading = false

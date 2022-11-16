@@ -76,8 +76,8 @@
         <template v-if='!expandStatus'>
           <el-col :span="6" v-for='item in items' :key='item.bind' class='el-form-item-more'>
             <div class='el-form-item-more-left'>
-              <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change='handleExtraQueryChange'>
-                <el-option v-for='i in item.list' :label="i.label" :value="i.prop" :key="i.prop" :disabled="extraChoice.includes(i.prop)"></el-option>
+              <el-select clearable v-model="extraQuery[item.bind].obj" value-key="prop" filterable :placeholder="$t('biz.placeholder.choose')" @change="((val)=>{handleExtraQueryChange(val,item.bind)})">
+                <el-option v-for='i in item.list' :label="i.label" :value="i" :key="i.prop" :disabled="extraChoice.includes(i.prop)"></el-option>
               </el-select>
             </div>
             <div class='el-form-item-more-right'>
@@ -372,7 +372,7 @@ export default {
             dictVal = prop.format.dict.filter(item => item.label === this.extraQuery[i].value)[0]
           }
           bsQueryExtras.push({
-            prop: this.extraQuery[i].label,
+            prop: this.extraQuery[i].queryProp ? this.extraQuery[i].queryProp : this.extraQuery[i].label,
             value: dictVal ? dictVal.value : this.extraQuery[i].value,
             type: this.extraQuery[i].type
           })
@@ -496,13 +496,16 @@ export default {
         if (v.sortable !== false && v.isShow) {
           list.push({
             label: this.$t(v.label),
-            prop: v.prop
+            prop: v.prop,
+            queryProp: v.queryProp
           })
         }
       })
       this.$set(this.extraQuery, `extra${this.items.length}`, {
+        obj: {},
         label: '',
         value: '',
+        queryProp: '',
         type: '='
       })
       this.items.push({
@@ -518,12 +521,14 @@ export default {
       }
     },
     // 更多条件修改时禁用已选择的选项
-    handleExtraQueryChange(val) {
+    handleExtraQueryChange(val, bind) {
       const list = []
       for (const i in this.extraQuery) {
         if (this.extraQuery[i].label) list.push(this.extraQuery[i].label)
       }
       this.extraChoice = list
+      this.extraQuery[bind].queryProp = val.queryProp
+      this.extraQuery[bind].label = val.prop
     }
   }
 }
