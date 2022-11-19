@@ -38,25 +38,25 @@ export default {
             }
           },
           {
-            label: 'website.user.orgName',
-            prop: 'orgCode',
+            label: 'website.user.customerName',
+            prop: 'customerId',
             element: 'base-select',
             attrs: {
-              data: 'FUNC_ORG',
+              data: 'CUSTOMER',
               clearable: true
             }
           },
           {
-            label: 'website.user.deptName',
-            prop: 'deptCode',
+            label: 'website.user.customerDeptName',
+            prop: 'customerDeptId',
             element: 'base-select',
             attrs: {
-              data: 'FUNC_DEPT',
+              data: 'USER_GROUP',
               clearable: true
             }
           },
           {
-            label: 'website.user.employeeName',
+            label: 'website.user.customerContactName',
             prop: 'employeeName',
             element: 'input-validate',
             attrs: {
