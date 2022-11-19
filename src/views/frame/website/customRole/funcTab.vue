@@ -9,7 +9,7 @@ export default {
       tab: {
         type: this.$route.params.type || this.$route.params.opType,
         api: {
-          search: '/api/func/roleFunc/list'
+          search: '/api/base/customRoleFunc/list'
         },
         apiData: {
           search: this.param.code
@@ -29,7 +29,7 @@ export default {
               return this.param.code
             },
             // 弹窗组件
-            component: () => import('@/views/frame/base/func/role/funcSet.vue')
+            component: () => import('@/views/frame/website/customRole/funcSet.vue')
           },
           {
             name: 'expand'

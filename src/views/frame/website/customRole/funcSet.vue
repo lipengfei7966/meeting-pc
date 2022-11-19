@@ -161,7 +161,7 @@ export default {
     initTable() {
       this.loading = true
       request({
-        url: '/api/func/roleFunc/listModulesWithOperatesByModuleCodeAndRole',
+        url: '/api/base/customRoleFunc/listModulesWithOperatesByModuleCodeAndRole',
         method: 'POST',
         data: {
           funcModule: this.$t('route.' + this.$route.meta.title),
@@ -195,7 +195,7 @@ export default {
         this.moduleCode = node.code
         this.loading = true
         request({
-          url: '/api/func/roleFunc/listModulesWithOperatesByModuleCodeAndRole',
+          url: '/api/base/customRoleFunc/listModulesWithOperatesByModuleCodeAndRole',
           method: 'POST',
           data: {
             funcModule: this.$t('route.' + this.$route.meta.title),
@@ -243,7 +243,7 @@ export default {
             moduleList.push(obj)
           }
           request({
-            url: '/api/func/roleFunc/save',
+            url: '/api/base/customRoleFunc/save',
             method: 'POST',
             data: {
               funcModule: this.$t('route.' + this.$route.meta.title),
