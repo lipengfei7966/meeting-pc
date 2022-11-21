@@ -18,10 +18,10 @@
             searchForm: true,
             listQuery: {
               isPage: false,
-              defaultSortString: 'createDate.desc'
+              // defaultSortString: 'createDate.desc'
             },
             initSearch: true,
-            treeName: '机构信息',
+            treeName: this.$t('website.department.treeName'),
             expandAll: true,
             expandOnClickNode: false,
             api: {
@@ -53,7 +53,7 @@
             formData: [
               {
                 prop: 'name',
-                label: 'website.department.list.name',
+                label: 'website.department.name',
                 element: 'input-validate',
                 attrs: {
                   clearable: true
@@ -70,7 +70,7 @@
               search(node) {
                 if (node && node["code"]!=undefined) {
                   return {
-                    customerCode: node['code'],
+                    companyId: node['code'],
 
                   }
                 } else {
@@ -82,35 +82,6 @@
             isTopBar: true,
             topBar: [
               {
-                name: 'add',
-                type: 'dialog',
-                getParam: () => {
-                  const node = this.$refs.bsTable.getCurrentNode()
-                    if (node) {
-                      return {
-                        customerCode: node.code
-                      }
-                    } else {
-                      return {}
-                    }
-                },
-                component: () => import('./edit.vue')
-              },
-              {
-                name: 'update',
-                type: 'dialog',
-                getParam: () => {
-                  return this.$refs.bsTable.currentRow
-                },
-                component: () => import('./edit.vue')
-              },
-              {
-                name: 'remove',
-                getParam: () => {
-                  return this.$refs.bsTable.currentRow.code
-                }
-              },
-              {
                 name: 'refresh'
               }
             ],
@@ -118,23 +89,28 @@
             table: {
               showIndex: true,
               id: this.$route.meta.title + 'ff',
-              rowKey: 'code',
+              rowKey: 'id',
               expandAll: true,
               sortable: true,
               cols: [
                 {
                   prop: 'code',
-                  label: 'website.department.list.code',
+                  label: 'website.department.code',
                   width: 160
                 },
                 {
                   prop: 'name',
-                  label: 'website.department.list.name',
+                  label: 'website.department.name',
                   width: 160
                 },
                 {
-                  prop: 'createDate',
-                  label: 'website.department.list.createDate',
+                  prop: 'parentCode',
+                  label: 'website.department.parentCode',
+                  width: 260
+                },
+                {
+                  prop: 'parentName',
+                  label: 'website.department.parentName',
                   width: 260
                 }
               ]

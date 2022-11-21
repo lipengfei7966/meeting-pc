@@ -16,8 +16,8 @@ import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css' // Progress 进度条样式
 import { getToken, setToken, isExpired, getLoginUrl } from '@/utils/frame/base/auth' // 验权
 
-const whiteList = ['/platform/login', '/old/login', '/group/login', '/user/login', '/guest/login', '/login', '/401', '/404'] // 不重定向白名单
-const logninList = ['/login', '/platform/login', '/old/login', '/group/login', '/user/login', '/guest/login'] // 不重定向白名单
+const whiteList = ['/platform/login', '/old/login', '/group/login', '/user/login', '/custom/login', '/guest/login', '/login', '/401', '/404'] // 不重定向白名单
+const logninList = ['/login', '/platform/login', '/old/login', '/group/login', '/user/login', '/custom/login', '/guest/login'] // 不重定向白名单
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
@@ -38,7 +38,13 @@ router.beforeEach(async (to, from, next) => {
         next(getLoginUrl())
       } else {
         const loginType = session.get('loginType')
-        if (loginType === 'plat' && to.path === '/platform/login') {
+        if (loginType === 'custom' && to.path === '/custom/login') {
+          // plat 匹配
+          next(from.path)
+        } else if (loginType === 'guest' && to.path === '/guest/login') {
+          // plat 匹配
+          next(from.path)
+        } else if (loginType === 'plat' && to.path === '/platform/login') {
           // plat 匹配
           next(from.path)
         } else if (loginType === 'group' && to.path === '/group/login') {

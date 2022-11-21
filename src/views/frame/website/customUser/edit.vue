@@ -27,14 +27,14 @@ export default {
         styleType: 'max',
         titleName: this.$t('route.' + this.$route.meta.title),
         api: {
-          view: '/api/func/user/get',
-          save: '/api/func/user/save',
-          update: '/api/func/user/save'
+          view: '/api/base/customUser/get',
+          save: '/api/base/customUser/save',
+          update: '/api/base/customUser/save'
         },
 
         formData: [
           {
-            label: 'func.user.name',
+            label: 'website.user.name',
             prop: 'name',
             element: 'input-validate',
             attrs: {
@@ -48,7 +48,7 @@ export default {
             ]
           },
           {
-            label: 'func.user.account',
+            label: 'website.user.account',
             prop: 'account',
             element: 'input-validate',
             attrs: {
@@ -63,7 +63,7 @@ export default {
             ]
           },
           {
-            label: 'func.user.password',
+            label: 'website.user.password',
             prop: 'password',
             element: 'input-validate',
             isShow: ['add'],
@@ -91,7 +91,7 @@ export default {
             attrs: { cols: 1 }
           },
           {
-            label: 'func.user.userValidPeriodFlag',
+            label: 'website.user.userValidPeriodFlag',
             prop: 'userValidPeriodFlag',
             element: 'el-checkbox',
             default: true,
@@ -100,7 +100,7 @@ export default {
             }
           },
           {
-            label: 'func.user.userValidPeriodDate',
+            label: 'website.user.userValidPeriodDate',
             prop: 'userValidPeriodDate',
             type: 'date',
             default: this.getDefaultValue(),
@@ -114,7 +114,7 @@ export default {
             }
           },
           {
-            label: 'func.user.passwdValidPeriodFlag',
+            label: 'website.user.passwdValidPeriodFlag',
             prop: 'passwdValidPeriodFlag',
             element: 'el-checkbox',
             default: true,
@@ -123,7 +123,7 @@ export default {
             }
           },
           {
-            label: 'func.user.passwdValidPeriodDay',
+            label: 'website.user.passwdValidPeriodDay',
             prop: 'passwdValidPeriodDay',
             element: 'el-input-number',
             default: 90,
@@ -146,11 +146,11 @@ export default {
             isShow: false
           },
           {
-            label: 'func.user.employeeName',
-            prop: 'employeeCode',
+            label: 'website.user.customerContactName',
+            prop: 'customerContactId',
             element: 'base-select',
             attrs: {
-              data: 'FUNC_EMPLOYEE', // 统一基础档案组件，传值data区分
+              data: 'CUSTOMER_CONTACT', // 统一基础档案组件，传值data区分
               clearable: false,
               cols: 2,
               showMoreList: true,
@@ -166,22 +166,22 @@ export default {
               changeAll: this.onChangeAll
             }
           },
-          {
-            label: 'func.user.identity',
-            prop: 'identity',
-            element: 'base-select',
-            list: this.$t('datadict.optIdentity'),
-            default: '4',
-            attrs: {
-              disabled: this.getIdentityDisabled()
-            },
-            validate: [
-              {
-                required: true,
-                trigger: 'change'
-              }
-            ]
-          },
+          // {
+          //   label: 'website.user.identity',
+          //   prop: 'identity',
+          //   element: 'base-select',
+          //   list: this.$t('datadict.optIdentity'),
+          //   default: '4',
+          //   attrs: {
+          //     disabled: this.getIdentityDisabled()
+          //   },
+          //   validate: [
+          //     {
+          //       required: true,
+          //       trigger: 'change'
+          //     }
+          //   ]
+          // },
 
           {
             label: 'biz.lbl.usingFlag',
@@ -200,7 +200,7 @@ export default {
             ]
           },
           {
-            label: 'func.user.failnum',
+            label: 'website.user.failnum',
             prop: 'failnum',
             element: 'el-input',
             isShow: this.opType === 'view' ? true : false,
@@ -210,12 +210,12 @@ export default {
             }
           },
           {
-            label: 'func.user.loginTime',
+            label: 'website.user.loginTime',
             prop: 'loginTime',
             element: 'el-date-picker',
             isShow: this.opType === 'view' ? true : false,
             attrs: {
-              cols: 2,
+              cols: 1,
               type: 'datetime',
               align: 'right',
               disabled: true
@@ -231,11 +231,11 @@ export default {
             }
           },
           {
-            label: 'func.user.roles',
+            label: 'website.user.roles',
             prop: 'roles',
             element: 'combox-select',
             attrs: {
-              data: 'FUNC_ROLE',
+              data: 'CUSTOM_ROLE',
               showMoreList: true,
               multiple: true,
               cols: 4,

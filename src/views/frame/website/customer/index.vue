@@ -31,7 +31,7 @@ export default {
         },
         formData: [
           {
-            label: 'website.customer.query.name',
+            label: 'website.customer.name',
             prop: 'name',
             element: 'input-validate',
             attrs: {
@@ -50,33 +50,6 @@ export default {
         isTopBar: true,
         topBar: [
           {
-            name: 'add',
-            type: 'dialog',
-            component: () => import('./edit.vue')
-          },
-          {
-            name: 'update',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
-          {
-            name: 'view',
-            type: 'dialog',
-            component: () => import('./edit.vue'),
-            getParam: () => {
-              return this.$refs.bsTable.currentRow
-            }
-          },
-          {
-            name: 'remove',
-            getParam: () => {
-              return this.$refs.bsTable.currentRow.code
-            }
-          },
-          {
             name: 'refresh'
           }
         ],
@@ -84,17 +57,17 @@ export default {
         table: {
           id: this.$route.meta.title + 'ff',
           cols: [
+          {
+              prop: 'code',
+              label: 'website.customer.code'
+            },
             {
               prop: 'name',
-              label: 'website.customer.list.name'
+              label: 'website.customer.name'
             },
             {
-              label: 'website.customer.list.shortName',
+              label: 'website.customer.shortName',
               prop: 'shortName'
-            },
-            {
-              label: 'website.customer.list.customerCompanyName',
-              prop: 'customerCompanyName'
             }
           ]
         },

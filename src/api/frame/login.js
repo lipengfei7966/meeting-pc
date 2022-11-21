@@ -73,6 +73,27 @@ export function userLogin(account, password, tenantHashCode, captcha, captchaTok
     }
   })
 }
+
+export function customLogin(account, password, captcha, captchaToken, customCode) {
+  return request({
+    url: '/api/custom/login',
+    method: 'post',
+    data: {
+      isEncrypt: true,
+      funcModule: '登录页面',
+      funcOperation: '登录',
+      data: {
+        'terminal': 'PC',
+        'account': account,
+        'password': password,
+        'captcha': captcha,
+        'captchaToken': captchaToken,
+        'customCode': customCode,
+        'customHashCode': '7019'
+      }
+    }
+  })
+}
 export function platLogin(account, password, captcha, captchaToken) {
   return request({
     url: '/api/platform/login',
