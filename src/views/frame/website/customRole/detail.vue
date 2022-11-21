@@ -97,31 +97,7 @@ export default {
       }
     }
   },
-  created() {
-    request({
-      url: '/api/func/dataper/listAll',
-      method: 'POST',
-      data: {
-        funcModule: this.$t('route.' + this.$route.meta.title),
-        funcOperation: this.$t('biz.btn.search'),
-        data: {}
-      }
-    }).then(response => {
-      this.tableData = response.data
-      if (this.tableData && this.tableData.length > 0) {
-        this.tableData.forEach(t => {
-          if (t.usingFlag === '1') {
-            this.edit.tabs.forEach(v => {
-              // 重新设置isshow
-              if (v.name === t.code) {
-                v.isShow = true
-              }
-            })
-          }
-        })
-      }
-    })
-  },
+  created() {},
   methods: {
     submit() {
       this.$emit('closeHandler', true)

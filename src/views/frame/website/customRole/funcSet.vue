@@ -133,7 +133,7 @@ export default {
     },
     getTree() {
       request({
-        url: '/api/sys/menu/catalog',
+        url: '/api/base/customRoleDataper/catalog',
         method: 'POST',
         data: {
           funcModule: this.$t('route.' + this.$route.meta.title),

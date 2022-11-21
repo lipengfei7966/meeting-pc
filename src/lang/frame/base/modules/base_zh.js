@@ -24,6 +24,7 @@ export default {
   login: {
     title: '用户登录',
     groupTitle: '管理员登录',
+    customTitle: '客户端登录',
     platformTitle: '平台登录',
     userTitle: '登录',
     login: '登录',

@@ -298,11 +298,10 @@ export default {
         mobile: '手机',
         phone: '手机',
         mailbox: '邮箱',
-        customer: '部门',
+        customer: '客户',
         company: '客户',
         email: '邮箱',
         department: '部门',
-        customer: '客户',
         createDate: '创建时间',
         updateDate: '更新时间'
       },

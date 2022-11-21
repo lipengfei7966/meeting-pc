@@ -112,6 +112,12 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: '/custom/login',
+    name: 'customlogin',
+    component: () => import('@/views/frame/login/custom/index'),
+    hidden: true
+  },
+  {
     path: '/:tenantCode/login',
     component: () => import('@/views/frame/login/user/index'),
     hidden: true

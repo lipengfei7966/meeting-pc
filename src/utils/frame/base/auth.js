@@ -55,6 +55,8 @@ export function getUpdatePasswordUrl() {
     return '/api/platform/cfgManager/updatePasswordWithOld'
   } else if (loginType === 'group') {
     return '/api/platform/cfgTenant/updatePasswordWithOld'
+  } else if (loginType === 'custom') {
+    return '/api/base/customUser/updatePasswordWithOld'
   } else {
     return '/api/func/user/updatePasswordWithOld'
   }

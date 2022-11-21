@@ -88,7 +88,7 @@ export default {
           {
             prop: 'zhan01',
             isShow: ['view', 'update'],
-            attrs: { cols: 2 }
+            attrs: { cols: 1 }
           },
           {
             label: 'website.user.userValidPeriodFlag',
@@ -215,7 +215,7 @@ export default {
             element: 'el-date-picker',
             isShow: this.opType === 'view' ? true : false,
             attrs: {
-              cols: 2,
+              cols: 1,
               type: 'datetime',
               align: 'right',
               disabled: true
@@ -235,7 +235,7 @@ export default {
             prop: 'roles',
             element: 'combox-select',
             attrs: {
-              data: 'FUNC_ROLE',
+              data: 'CUSTOM_ROLE',
               showMoreList: true,
               multiple: true,
               cols: 4,
