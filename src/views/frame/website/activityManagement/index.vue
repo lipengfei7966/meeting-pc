@@ -1,13 +1,27 @@
 <template>
   <div>
     <div class="headerSearch">
-      <span class="sp_one">参会人是否可参加多项分活动：</span>
-      <el-radio-group v-model="moduleVal.radio_">
-        <el-radio :label="0">不限制</el-radio>
-        <el-radio :label="1"
-          >单人最多参与 <span> <el-input style="width: 26%" size="mini" v-model="moduleVal.inputNum"></el-input></span> 次</el-radio
-        >
-      </el-radio-group>
+      <div style="display: flex;margin-left: 18px;">
+        <div style="width:200px;display: flex;">
+          <div class="meeting-name">
+            会议名称
+          </div>
+          <div>
+            <el-select style="width:120px" size="mini" v-model="conferenceTitle" placeholder="会议名称">
+              <el-option v-for="(item,index) in activityList" :key="index" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </div>
+        </div>
+        <div>
+          <span class="sp_one">参会人是否可参加多项分活动：</span>
+          <el-radio-group v-model="moduleVal.radio_">
+            <el-radio :label="0">不限制</el-radio>
+            <el-radio :label="1">单人最多参与 <span>
+                <el-input style="width: 26%" size="mini" v-model="moduleVal.inputNum"></el-input>
+              </span> 次</el-radio>
+          </el-radio-group>
+        </div>
+      </div>
       <!--  -->
       <div style="display: flex; align-items: center">
         <div style="width: 90%">
@@ -18,8 +32,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="7">
-              <el-form-item label="活动时间"> <el-date-picker style="width: 100%" size="mini" v-model="moduleVal.activityTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker> </el-form-item
-            ></el-col>
+              <el-form-item label="活动时间">
+                <el-date-picker style="width: 100%" size="mini" v-model="moduleVal.activityTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              </el-form-item>
+            </el-col>
             <el-col :span="6">
               <el-form-item label="活动状态">
                 <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态">
@@ -78,12 +94,12 @@
             <el-form-item label="活动时间" prop="date1">
               <el-date-picker style="width: 500px" size="mini" v-model="ruleForm.date1" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
             </el-form-item>
-            <el-form-item label="参加人数限制" prop="desc">
-              <el-radio-group v-model="moduleVal.radio_">
+            <el-form-item label="参加人数限制" prop="radio_">
+              <el-radio-group v-model="ruleForm.radio_">
                 <el-radio :label="0">不限制</el-radio>
-                <el-radio :label="1"
-                  >单人最多参与 <span> <el-input style="width: 26%" size="mini" v-model="moduleVal.inputNum"></el-input></span> 次</el-radio
-                >
+                <el-radio :label="1">单人最多参与 <span>
+                    <el-input :disabled="ruleForm.radio_ == 0" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0"></el-input>
+                  </span> 次</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="分活动描述" prop="desc">
@@ -101,6 +117,7 @@
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
   name: 'activityManagement',
   data() {
@@ -145,7 +162,9 @@ export default {
         delivery: false,
         type: [],
         resource: '',
-        desc: ''
+        desc: '',
+        radio_:0,
+        inputNum:''
       },
       rules: {
         name: [
@@ -157,9 +176,12 @@ export default {
         date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
         type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
+        desc: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
+        radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }],
       },
-      currentPage4: 4
+      currentPage4: 4,
+      conferenceTitle:'',//会议名称绑定的select
+      activityList:[]//会议名称list
     }
   },
   methods: {
@@ -195,7 +217,27 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+    },
+    getList(){
+      request({
+        url: '/api/dd/selectData/list',
+        method: 'POST',
+        data: { data: {
+          queryParams: {},
+          type: "EVENT_INFO"
+        },
+         funcModule: '分活动管理', funcOperation: '查询' }
+      })
+        .then((res) => {
+        //  debugger
+          console.log(res)
+          this.activityList = res.data
+          this.conferenceTitle = res.data[0].code
+        })
     }
+  },
+  created(){
+    this.getList()
   }
 }
 </script>
@@ -204,6 +246,7 @@ export default {
 .headerSearch {
   width: auto;
   min-height: 58px;
+  // display: flex;
   // line-height: 58px;
   background: white;
   margin: 10px;
@@ -221,5 +264,12 @@ export default {
 .el-col-2 {
   width: 8.33333%;
   text-align: center;
+}
+.meeting-name {
+  width: 125px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 14px;
+  color: #606266;
 }
 </style>
