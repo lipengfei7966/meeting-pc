@@ -130,23 +130,23 @@ export const formatRoutes = aMenu => {
                 )
               })
               // 0902
-            } else if (component.includes('views/frame/biz/custom/')) {
-              require([`@/views/frame/biz/custom/${component.split('views/frame/biz/custom/')[1]}.vue`], resolve, e => {
-                Notification(
-                  notifyError({
-                    msg: `${component}找不到文件`
-                  })
-                )
-              })
-              // 0902
-            } else if (component.includes('views/frame/biz/func/')) {
-              require([`@/views/frame/biz/func/${component.split('views/frame/biz/func/')[1]}.vue`], resolve, e => {
-                Notification(
-                  notifyError({
-                    msg: `${component}找不到文件`
-                  })
-                )
-              })
+            // } else if (component.includes('views/frame/biz/custom/')) {
+            //   require([`@/views/frame/biz/custom/${component.split('views/frame/biz/custom/')[1]}.vue`], resolve, e => {
+            //     Notification(
+            //       notifyError({
+            //         msg: `${component}找不到文件`
+            //       })
+            //     )
+            //   })
+            //   // 0902
+            // } else if (component.includes('views/frame/biz/func/')) {
+            //   require([`@/views/frame/biz/func/${component.split('views/frame/biz/func/')[1]}.vue`], resolve, e => {
+            //     Notification(
+            //       notifyError({
+            //         msg: `${component}找不到文件`
+            //       })
+            //     )
+            //   })
               // 0902
             } else {
               if (process.env.NODE_ENV === 'development') {
