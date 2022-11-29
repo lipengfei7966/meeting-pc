@@ -124,6 +124,11 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: '/custom/:hashCode/login',
+    component: () => import('@/views/frame/login/custom/index'),
+    hidden: true
+  },
+  {
     path: '/:tenantCode/login',
     component: () => import('@/views/frame/login/user/index'),
     hidden: true

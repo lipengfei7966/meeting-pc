@@ -14,7 +14,7 @@ export default {
         },
         apiData: {
           search(param) {
-            return param.funcCode
+            return param
           }
         },
         topBar: [

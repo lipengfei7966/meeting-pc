@@ -27,7 +27,8 @@ export default {
               cols: 2,
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
               isDefault: false,
-              clearable: false
+              clearable: false,
+              disabled: this.getDisabled()
             },
             event: {
               changeAll: this.onChangeAll
@@ -43,12 +44,19 @@ export default {
           {
             label: 'msg.func.msgFuncCode',
             prop: 'msgFuncCode',
-            element: 'input-validate',
+            element: 'base-select',
             attrs: {
               cols: 2,
-              clearable: !this.getDisabled,
-              disabled: this.getDisabled,
-              maxlength: 80
+              data: 'MSG_FUNC',
+              clearable: false,
+              disabled: this.getDisabled(),
+              maxlength: 80,
+              params: {
+                reserved_str1: 'operation'
+              }
+            },
+            event: {
+              changeAll: this.onChangeAllFunc
             },
             validate: [
               {
@@ -166,6 +174,10 @@ export default {
     onChangeAll(params) {
       const formDataRef = this.$refs.qmDialog.formData
       formDataRef.reservedStr1 = params.name
+    },
+    onChangeAllFunc(params) {
+      const formDataRef = this.$refs.qmDialog.formData
+      formDataRef.msgFuncName = params.name
     },
     submit() {
       this.$emit('closeHandler', true)

@@ -74,12 +74,12 @@ export function userLogin(account, password, tenantHashCode, captcha, captchaTok
   })
 }
 
-export function customLogin(account, password, captcha, captchaToken, customCode) {
+export function customLogin(account, password, captcha, captchaToken, customCode, customHashCode) {
   return request({
     url: '/api/custom/login',
     method: 'post',
     data: {
-      isEncrypt: true,
+      // isEncrypt: true,
       funcModule: '登录页面',
       funcOperation: '登录',
       data: {
@@ -89,7 +89,7 @@ export function customLogin(account, password, captcha, captchaToken, customCode
         'captcha': captcha,
         'captchaToken': captchaToken,
         'customCode': customCode,
-        'customHashCode': '7019'
+        'customHashCode': customHashCode
       }
     }
   })

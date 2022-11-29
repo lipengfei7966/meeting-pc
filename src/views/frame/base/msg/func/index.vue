@@ -133,6 +133,15 @@ export default {
               format: {
                 dict: this.$t('datadict.usingFlag')
               }
+            },
+            {
+              label: 'msg.func.msgBizScene',
+              prop: 'reservedStr1',
+              width: '120',
+              align: 'center',
+              format: {
+                dict: this.$t('datadict.msgBizScene')
+              }
             }
           ]
         },

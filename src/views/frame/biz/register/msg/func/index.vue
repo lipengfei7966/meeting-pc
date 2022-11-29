@@ -70,7 +70,7 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow.msgFuncCode
+              return this.$refs.bsTable.currentRow.id
             }
           },
           {
@@ -78,7 +78,7 @@ export default {
             type: 'dialog',
             component: () => import('./edit.vue'),
             getParam: () => {
-              return this.$refs.bsTable.currentRow.msgFuncCode
+              return this.$refs.bsTable.currentRow.id
             }
           },
           {
@@ -91,7 +91,9 @@ export default {
                 params: {
                   back: 'msgBizFunc',
                   opType: 'detailSet',
-                  funcCode: row.msgFuncCode
+                  id: row.id,
+                  msgFuncCode: row.msgFuncCode,
+                  bizCode: row.bizCode
                 }
               }
             }

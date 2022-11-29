@@ -54,6 +54,7 @@ export default {
     customer: {
       title: '客户管理',
       code: '客户编码',
+      hashCode: '客户哈希',
       name: '客户名称',
       shortName: '客户简称'
     },

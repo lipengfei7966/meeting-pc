@@ -18,89 +18,120 @@ export default {
           update: '/api/msg/func/update'
         },
 
-        formData: [{
-          label: 'msg.func.msgFuncCode',
-          prop: 'msgFuncCode',
-          element: 'input-validate',
-          attrs: {
-            clearable: true,
-            maxlength: 80
+        formData: [
+          {
+            label: 'msg.func.msgFuncCode',
+            prop: 'msgFuncCode',
+            element: 'input-validate',
+            attrs: {
+              clearable: !this.getDisabled(),
+              disabled: this.getDisabled(),
+              maxlength: 80
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
-          validate: [{
-            required: true,
-            trigger: 'blur'
-          }]
-        },
-        {
-          label: 'msg.func.msgFuncName',
-          prop: 'msgFuncName',
-          element: 'input-validate',
-          attrs: {
-            clearable: true,
-            maxlength: 80
+          {
+            label: 'msg.func.msgFuncName',
+            prop: 'msgFuncName',
+            element: 'input-validate',
+            attrs: {
+              clearable: true,
+              maxlength: 80
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
           },
-          validate: [{
-            required: true,
-            trigger: 'blur'
-          }]
-        },
 
-        {
-          label: 'msg.func.msgClassType',
-          prop: 'msgClassType',
-          element: 'base-select',
-          list: this.$t('datadict.msgClassType'),
-          attrs: {
-            clearable: false
+          {
+            label: 'msg.func.msgClassType',
+            prop: 'msgClassType',
+            element: 'base-select',
+            list: this.$t('datadict.msgClassType'),
+            attrs: {
+              clearable: false
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'change'
+              }
+            ]
           },
-          validate: [{
-            required: true,
-            trigger: 'change'
-          }]
-        },
-        {
-          label: 'biz.lbl.usingFlag',
-          prop: 'usingFlag',
-          element: 'base-select',
-          list: this.$t('datadict.usingFlag'),
-          default: '1',
-          attrs: {
-            clearable: false
+          {
+            label: 'biz.lbl.usingFlag',
+            prop: 'usingFlag',
+            element: 'base-select',
+            list: this.$t('datadict.usingFlag'),
+            default: '1',
+            attrs: {
+              clearable: false
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'change'
+              }
+            ]
           },
-          validate: [{
-            required: true,
-            trigger: 'change'
-          }]
-        },
-        {
-          label: 'biz.lbl.remark',
-          prop: 'remark',
-          element: 'el-input',
-          attrs: {
-            cols: 4,
-            clearable: true
+          {
+            label: 'msg.func.msgBizScene',
+            prop: 'reservedStr1',
+            element: 'base-select',
+            list: this.$t('datadict.msgBizScene'),
+            attrs: {
+              clearable: false
+            },
+            validate: [
+              {
+                required: false,
+                trigger: 'change'
+              }
+            ]
+          },
+
+          {
+            label: 'biz.lbl.remark',
+            prop: 'remark',
+            element: 'el-input',
+            attrs: {
+              cols: 4,
+              clearable: true
+            }
           }
-        }],
-        bottomButtons: [{
-          name: 'biz.btn.close',
-          event: 'close',
-          isShow: ['view'],
-          attrs: {
-            type: 'primary'
+        ],
+        bottomButtons: [
+          {
+            name: 'biz.btn.close',
+            event: 'close',
+            isShow: ['view'],
+            attrs: {
+              type: 'primary'
+            }
+          },
+          {
+            name: 'biz.btn.cancel',
+            event: 'cancel',
+            isShow: ['add', 'update']
+          },
+          {
+            name: 'biz.btn.save',
+            event: 'save',
+            showLoading: true,
+            isShow: ['add', 'update'],
+            attrs: {
+              type: 'primary'
+            }
           }
-        }, {
-          name: 'biz.btn.cancel',
-          event: 'cancel',
-          isShow: ['add', 'update']
-        }, {
-          name: 'biz.btn.save',
-          event: 'save',
-          showLoading: true,
-          isShow: ['add', 'update'],
-          attrs: {
-            type: 'primary'
-          }
-        }]
+        ]
       }
     }
   },
@@ -116,9 +147,7 @@ export default {
       }
     }
   },
-  created() {
-
-  },
+  created() {},
   methods: {
     getDisabled() {
       if (this.opType === 'add') {
@@ -127,9 +156,7 @@ export default {
         return true
       }
     },
-    attachment() {
-
-    },
+    attachment() {},
     submit() {
       this.$emit('closeHandler', true)
     },

@@ -10,9 +10,7 @@
             <div class="title">
               {{ $t('login.customTitle') }}
             </div>
-            <el-form-item prop="customCode" data-key="customCode">
-              <el-input name="customCode" type="text" v-model="loginForm.customCode" :placeholder="$t('login.customCode')" />
-            </el-form-item>
+
             <el-form-item prop="username" data-key="username">
               <el-input name="username" type="text" v-model="loginForm.username" :placeholder="$t('login.username')" />
             </el-form-item>
@@ -67,13 +65,12 @@ export default {
         src: '',
         username: 'bobo',
         password: 'bobo123456',
-        customCode: '7019',
+        customCode: '',
         captcha: '',
         captchaToken: '',
-        customHashCode: '7019'
+        customHashCode: this.$route.params.hashCode
       },
       loginRules: {
-        customCode: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
         username: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
         captcha: [{ required: true, trigger: 'blur', message: this.$t('biz.placeholder.require') }],
         password: [
@@ -101,13 +98,16 @@ export default {
   },
   mounted() {
     session.remove('userPwd')
-    this.loginForm.username = storage.get('custom_user')
-    this.loginForm.customCode = storage.get('custom_code')
+    this.loginForm.username = storage.get('customUser')
+    this.loginForm.customHashCode = storage.get('customHashCode')
+    if (this.loginForm.customHashCode === null || this.loginForm.customHashCode === 'null') {
+      this.loginForm.customHashCode = ''
+    }
     if (process.env.NODE_ENV === 'development') {
       if (!this.loginForm.username) {
         this.loginForm.username = 'bobo'
       }
-      if (!this.loginForm.customCode) {
+      if (!this.loginForm.customHashCode) {
         this.loginForm.customCode = process.env.DEFAULT_CUSTOM
       }
     }
@@ -136,6 +136,7 @@ export default {
         if (valid) {
           this.loading = true
           const userInfo = {
+            customHashCode: this.loginForm.customHashCode,
             customCode: this.loginForm.customCode,
             username: this.loginForm.username,
             password: encriptPwd(this.loginForm.password),
@@ -150,8 +151,8 @@ export default {
               session.set('loginType', 'custom')
               session.set('username', this.loginForm.username)
 
-              storage.set('custom_user', this.loginForm.username)
-              storage.set('custom_code', this.loginForm.customCode)
+              storage.set('customUser', this.loginForm.username)
+              storage.set('customHashCode', this.loginForm.customHashCode)
               this.$router.push({ path: '/' }).catch(() => {})
             })
             .catch(() => {

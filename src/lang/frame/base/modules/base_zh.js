@@ -29,6 +29,7 @@ export default {
     userTitle: '登录',
     login: '登录',
     enterpriseName: '公司名称',
+    customCode: '客户代码',
     username: '账号',
     captcha: '验证码',
     eventHashCode: '会议哈希',

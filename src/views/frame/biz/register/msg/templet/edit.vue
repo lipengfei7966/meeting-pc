@@ -1,8 +1,9 @@
 <template>
-  <bs-dialog :dialog='dialog' @closeDialog='handleCloseDialog'></bs-dialog>
+  <bs-dialog :dialog='dialog' ref="qmDialog" @closeDialog='handleCloseDialog'></bs-dialog>
 </template>
 
 <script>
+import toolUtil from '@/utils/frame/base/toolUtil.js'
 export default {
   name: 'msgTempEdit',
   data() {
@@ -35,13 +36,38 @@ export default {
             ]
           },
           {
+            label: 'website.signupContact.query.eventCode',
+            prop: 'bizCode',
+            element: 'base-select',
+            attrs: {
+              cols: 2,
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: false,
+              clearable: false,
+              disabled: this.getDisabled()
+            },
+            event: {
+              changeAll: this.onChangeAll
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          { prop: 'reservedStr1', isShow: false },
+          {
             label: 'msg.templet.msgFuncId',
             prop: 'msgFuncCode',
             element: 'base-select',
             attrs: {
               data: 'MSG_BIZ_FUNC',
               clearable: true,
-              maxlength: 80
+              maxlength: 80,
+              params: {
+                BIZ_CODE: ''
+              }
             },
             validate: [
               {
@@ -203,6 +229,14 @@ export default {
     }
   },
   methods: {
+    onChangeAll(params) {
+      const formDataRef = this.$refs.qmDialog.formData
+      formDataRef.reservedStr1 = params.name
+      formDataRef.msgFuncCode = ''
+      toolUtil.getDefDialogItemByProp(this, 'msgFuncCode').attrs.params = {
+        BIZ_CODE: params.code
+      }
+    },
     getDisabled() {
       if (this.opType === 'add') {
         return false

@@ -140,7 +140,7 @@ const user = {
     CustomLogin({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        customLogin(username, userInfo.password, userInfo.captcha, userInfo.captchaToken, userInfo.customCode)
+        customLogin(username, userInfo.password, userInfo.captcha, userInfo.captchaToken, userInfo.customCode, userInfo.customHashCode)
           .then(response => {
             const data = response.data
             setToken(data.accessToken)

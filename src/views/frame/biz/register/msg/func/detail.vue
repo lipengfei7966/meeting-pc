@@ -17,9 +17,9 @@ export default {
           update: '/api/base/msgBizFuncParam/saveParam'
         },
         apiData: {
-          code: this.$route.params.funcCode,
+          code: this.$route.params.id,
           view() {
-            return this.code
+            return this.id
           }
         },
         topButtons: [

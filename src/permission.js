@@ -25,11 +25,15 @@ router.beforeEach(async (to, from, next) => {
     setToken(to.query.token)
     store.commit('SET_ACCESS_TOKEN', to.query.token)
   }
-  const strRegex = '^/[A-Za-z0-9]*/login$'
-  const oRegUrl = new RegExp(strRegex, 'i')
+  const userRegex = '^/[A-Za-z0-9]*/login$'
+  const userRegUrl = new RegExp(userRegex, 'i')
+
+  const customRegex = '^/custom/[A-Za-z0-9]*/login$'
+  const customRegUrl = new RegExp(customRegex, 'i')
+
   if (getToken()) {
     // 登陆页面
-    if ((oRegUrl.test(to.path)) || (logninList.indexOf(to.path) !== -1)) {
+    if ((logninList.indexOf(to.path) !== -1) || customRegUrl.test(to.path) || userRegUrl.test(to.path)) {
       if (isExpired()) {
         await store.dispatch('FedLogOut')
         Notification(notifyError({
@@ -40,6 +44,9 @@ router.beforeEach(async (to, from, next) => {
         const loginType = session.get('loginType')
         if (loginType === 'custom' && to.path === '/custom/login') {
           // plat 匹配
+          next(from.path)
+        } else if (loginType === 'custom' && session.get('customHashCode') && to.path === '/custom/' + session.get('customHashCode') + '/login') {
+          // user 租户匹配
           next(from.path)
         } else if (loginType === 'guest' && to.path === '/guest/login') {
           // plat 匹配
@@ -165,7 +172,7 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (oRegUrl.test(to.path) || whiteList.indexOf(to.path) !== -1) {
+    if ((whiteList.indexOf(to.path) !== -1) || customRegUrl.test(to.path) || userRegUrl.test(to.path)) {
       next()
     } else {
       // 跳转

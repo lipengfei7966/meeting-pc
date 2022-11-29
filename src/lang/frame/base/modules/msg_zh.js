@@ -17,6 +17,7 @@ export default {
       msgFuncCode: '消息功能代码',
       msgFuncName: '消息功能名称',
       msgClassType: '消息级别',
+      msgBizScene: '消息业务场景',
       usingFlag: '是否启用',
       remark: '备注',
       msgParamCode: '参数代码',

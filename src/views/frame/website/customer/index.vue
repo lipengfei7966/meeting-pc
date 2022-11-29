@@ -1,7 +1,6 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref='bsForm' :form='form'></bs-form>
-
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>
 </template>
@@ -55,11 +54,17 @@ export default {
         ],
         isColset: true,
         table: {
-          id: this.$route.meta.title + 'ff',
+          id: this.$route.meta.title,
           cols: [
-          {
+            {
               prop: 'code',
-              label: 'website.customer.code'
+              label: 'website.customer.code',
+              width: 120
+            },
+            {
+              prop: 'hashCode',
+              label: 'website.customer.hashCode',
+              width: 300
             },
             {
               prop: 'name',
