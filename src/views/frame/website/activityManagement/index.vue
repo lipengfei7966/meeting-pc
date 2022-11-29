@@ -7,7 +7,7 @@
             会议名称
           </div>
           <div>
-            <el-select style="width:120px" size="mini" v-model="conferenceTitle" placeholder="会议名称">
+            <el-select style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" placeholder="会议名称">
               <el-option v-for="(item,index) in activityList" :key="index" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </div>
@@ -28,17 +28,17 @@
           <el-form style="margin-top: 15px" :model="moduleVal" ref="form" label-width="100px">
             <el-col :span="5">
               <el-form-item label="分活动名称">
-                <el-input size="mini" v-model="moduleVal.activityName"></el-input>
+                <el-input size="mini" v-model="moduleVal.name" clearable=true></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
               <el-form-item label="活动时间">
-                <el-date-picker style="width: 100%" size="mini" v-model="moduleVal.activityTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                <el-date-picker style="width: 100%" size="mini" v-model="moduleVal.activityTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动状态">
-                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态">
+                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态" clearable=true>
                   <el-option label="状态一" value="shanghai"></el-option>
                   <el-option label="状态二" value="beijing"></el-option>
                 </el-select>
@@ -46,9 +46,8 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="启用状态">
-                <el-select size="mini" v-model="moduleVal.useState" placeholder="启用状态">
-                  <el-option label="状态一" value="shanghai_"></el-option>
-                  <el-option label="状态二" value="beijing_"></el-option>
+                <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态" clearable=true>
+                <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -62,13 +61,23 @@
     </div>
     <div class="contentBody bs-new-container app-container">
       <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="handleCurrentChange">
-        <el-table-column prop="aaa" label="分活动名称" width="180"> </el-table-column>
-        <el-table-column prop="bbb" label="活动时间" width="180"> </el-table-column>
-        <el-table-column prop="ccc" label="活动状态"> </el-table-column>
-        <el-table-column prop="ddd" label="启用">
+        <el-table-column prop="name" label="分活动名称" width="180"> </el-table-column>
+        <el-table-column prop="beginTime,endTime" label="活动时间" width="360">
+          <template slot-scope="scope">
+            {{scope.row.beginTime}}-{{scope.row.endTime}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="beginTime,endTime" label="活动状态">
+          <template slot-scope="scope">
+            <span v-if="new Date(scope.row.beginTime) > new Date()">未开始</span>
+            <span v-else-if="new Date(scope.row.endTime) < new Date()">已结束</span>
+            <span v-else>进行中</span>
+          </template> 
+        </el-table-column>
+        <el-table-column prop="isGoLive" label="启用">
           <template slot-scope="scope">
             <span>
-              <el-switch v-model="scope.row.flag" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
+              <el-switch v-model="scope.row.isGoLive==='1'?true:false" active-color="#13ce66" inactive-color="#ff4949" @change="isGoLiveChange(scope.row.code)"> </el-switch>
             </span>
           </template>
         </el-table-column>
@@ -92,7 +101,7 @@
               <el-input style="width: 500px" v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="活动时间" prop="date1">
-              <el-date-picker style="width: 500px" size="mini" v-model="ruleForm.date1" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              <el-date-picker style="width: 500px" size="mini" v-model="ruleForm.date1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
             </el-form-item>
             <el-form-item label="参加人数限制" prop="radio_">
               <el-radio-group v-model="ruleForm.radio_">
@@ -124,6 +133,7 @@ export default {
     return {
       dialogVisible: false,
       moduleVal: {
+        eventCode: '',
         radio_: 0,
         // 单人最多参与人次
         inputNum: '',
@@ -134,31 +144,18 @@ export default {
         // 活动状态
         activityState: '',
         // 启用状态
-        useState: ''
+        isGoLive: ''
       },
       tableData: [
-        {
-          aaa: '2016-05-02',
-          bbb: '王小虎',
-          ccc: '上海市普陀区金沙江路 1518 弄',
-          ddd: 'ddd',
-          eee: 'eee',
-          flag: true
-        },
-        {
-          aaa: '2016-05-02',
-          bbb: '王小虎',
-          ccc: '上海市普陀区金沙江路 1518 弄',
-          ddd: 'ddd',
-          eee: 'eee',
-          flag: false
-        }
       ],
       ruleForm: {
+        eventCode: '',
         name: '',
         region: '',
         date1: '',
-        date2: '',
+        beginTime: '',
+        endTime: '',
+        triesLimit: '',
         delivery: false,
         type: [],
         resource: '',
@@ -180,13 +177,20 @@ export default {
         radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }],
       },
       currentPage4: 4,
-      conferenceTitle:'',//会议名称绑定的select
       activityList:[]//会议名称list
     }
   },
   methods: {
     searchSubmit() {
       console.log('searchSubmit')
+      request({
+        url: '/api/register/cmsEventInfoChildren/page',
+        method: 'POST',
+        data: { data: this.moduleVal, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
+      }).then(res => {
+        // debugger
+        this.tableData = res.data
+      })
     },
     addSubmit() {
       this.dialogVisible = true
@@ -199,15 +203,34 @@ export default {
       done()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-          this.dialogVisible = false
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+      debugger
+      //this.$refs[formName].validate((valid) => {
+      //  if (valid) {
+          this.ruleForm.eventCode = this.moduleVal.eventCode
+          this.ruleForm.beginTime = this.ruleForm.date1[0]
+          this.ruleForm.endTime = this.ruleForm.date1[1]
+          request({
+            url: '/api/register/cmsEventInfoChildren/save',
+            method: 'POST',
+            data: { data: this.ruleForm, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
+          }).then(res => {
+            if (res && res.status) {
+              this.dialogVisible = false
+              this.$notify(
+                notifySuccess({ msg: this.$t('biz.msg.saveSuccess') })
+              )
+            }else{
+              this.$notify(
+                notifyError({ msg: res.msgText })
+              )
+            }
+          })
+          
+      //  } else {
+      //    console.log('error submit!!')
+      //    return false
+      //  }
+     // })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -228,12 +251,26 @@ export default {
         },
          funcModule: '分活动管理', funcOperation: '查询' }
       })
-        .then((res) => {
-        //  debugger
-          console.log(res)
-          this.activityList = res.data
-          this.conferenceTitle = res.data[0].code
-        })
+      .then((res) => {
+      //  debugger
+        console.log(res)
+        this.activityList = res.data
+        this.moduleVal.eventCode = res.data[0].code
+        this.searchSubmit()
+      })
+    },
+    eventChange(val){
+      this.searchSubmit()
+    },
+    isGoLiveChange(val){
+      request({
+        url: '/api/register/cmsEventInfoChildren/isGoLive',
+        method: 'POST',
+        data: { data: val, funcModule: '分活动管理', funcOperation: '启用停用' }
+      }).then(res => {
+        // debugger
+        this.searchSubmit()
+      })
     }
   },
   created(){
