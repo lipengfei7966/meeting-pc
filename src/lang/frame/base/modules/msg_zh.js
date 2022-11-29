@@ -58,6 +58,7 @@ export default {
       msgChannelName: '消息渠道',
       usingFlag: '是否启用',
       mailFormatType: '邮件格式',
+      contentFormatType: '内容格式',
       templetTitle: '模板标题',
       templetContent: '模板内容',
       templetContentForCommon: '正常提示内容',

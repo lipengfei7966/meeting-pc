@@ -7,7 +7,7 @@
         <div class='login-form'>
           <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
             <div class="title">
-              {{$t('login.groupTitle')}}
+              {{$t('login.guestTitle')}}
             </div>
             <el-form-item prop="eventHashCode" data-key='eventHashCode'>
               <el-input name="eventHashCode" type="text" v-model="loginForm.eventHashCode" :placeholder="$t('login.eventHashCode')" />

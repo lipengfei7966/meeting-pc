@@ -895,8 +895,8 @@
   // 分页
   .el-pagination {
     float: right;
-    height: 22px;
-    margin-top: 10px;
+    height: 46px;
+    padding-top: 13px;
 
     span:not([class*='suffix']) {
       font-size: 14px;
@@ -906,7 +906,7 @@
       .el-input--mini .el-input__inner {
         height: 22px !important;
         line-height: 22px !important;
-        font-size: 12px;
+        font-size: 14px;
       }
     }
 
@@ -1134,7 +1134,7 @@
         .el-form {
           overflow-y: auto;
           // width: 100%;
-          min-height: 150px;
+          //min-height: 150px;
 
           .el-form-item {
             margin: 0px 0;
@@ -1258,9 +1258,7 @@
       // height: 100% !important;
     }
 
-    .singleTable {
-      height: 46vh !important;
-    }
+  
 
     .dialog-footer {
       position: absolute !important;

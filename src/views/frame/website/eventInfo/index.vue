@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       form: {
-        moreShowFlg: false,
+        moreShowFlg: true,
         listQuery: {
           current: 1,
           size: 20,
@@ -127,11 +127,15 @@ export default {
         ],
         isColset: true,
         table: {
-          id: this.$route.meta.title + 'ff',
+          id: this.$route.meta.title,
           cols: [
             {
               prop: 'code',
               label: 'website.eventInfo.list.eventCode'
+            },
+            {
+              label: 'website.eventInfo.edit.eventHashCode',
+              prop: 'eventHashCode'
             },
             {
               prop: 'eventName',

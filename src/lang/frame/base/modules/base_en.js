@@ -23,6 +23,7 @@ export default {
   },
   login: {
     title: '用户登录',
+    guestTitle: '参会人登录',
     groupTitle: '管理员登录',
     platformTitle: '平台登录',
     userTitle: '登录',
