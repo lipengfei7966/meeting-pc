@@ -86,12 +86,6 @@ export default {
             name: 'dept',
             label: 'website.role.tab.customerDept',
             component: () => import('./customerDeptTab.vue')
-          },
-          {
-            name: 'employee',
-            label: 'website.role.tab.employee',
-            isShow: false,
-            component: () => import('./employeeTab.vue')
           }
         ]
       }

@@ -1,5 +1,6 @@
 <template>
-  <bs-edit-tab ref='bsEditTable' :tab='tab'> </bs-edit-tab>
+  <bs-edit-tab ref='bsEditTable' :tab='tabData'>
+  </bs-edit-tab>
 </template>
 
 <script>
@@ -16,16 +17,17 @@ export default {
       loading: false,
       dialogFormVisible: false,
       selectRow: [],
-      tab: {
+      tabData: {
         type: this.$route.params.type || this.$route.params.opType,
         api: {
-          search: '/api/func/roleApi/list'
+          search: '/api/base/cmsCustomer/roleDataper'
         },
         apiData: {
           code: this.param.code,
           search() {
             return {
-              roleCode: this.code
+              roleCode: this.code,
+              dataperCode: 'cust'
             }
           }
         },
@@ -39,13 +41,13 @@ export default {
             // 是查看：view(默认) 或者编辑 update 或者添加 add
             // 打开方式:dialog 弹窗， route 路由
             type: 'dialog',
-            isShow: ['detailSet'],
             param: this.param,
+            isShow: ['detailSet'],
             getParam() {
               return this.param.code
             },
             // 弹窗组件
-            component: () => import('@/views/frame/base/func/role/apiSet.vue')
+            component: () => import('@/views/frame/base/func/role/custSet.vue')
           },
           {
             name: 'delete',
@@ -57,18 +59,13 @@ export default {
         table: {
           cols: [
             {
-              prop: 'apiUrl',
-              label: 'func.api.apiUrl',
-              width: 400
+              prop: 'dataperItem',
+              label: 'func.role.dataperItem',
+              width: 160
             },
             {
-              prop: 'apiCode',
-              label: 'func.api.apiCode',
-              width: 150
-            },
-            {
-              prop: 'apiMemo',
-              label: 'func.api.apiMemo',
+              prop: 'custName',
+              label: 'func.role.custName',
               width: 300
             }
           ]
@@ -103,7 +100,7 @@ export default {
       })
         .then(() => {
           request({
-            url: '/api/func/roleApi/remove',
+            url: '/api/func/funcRoleDataper/remove',
             method: 'POST',
             data: {
               funcModule: this.$t('route.' + this.$route.meta.title),

@@ -1,7 +1,6 @@
 <template>
   <bs-dialog-tree-table ref="bsTable" :dialog='dialog' @closeDialog='handleCloseDialog'></bs-dialog-tree-table>
 </template>
-
 <script>
 import { notifyInfo, notifySuccess } from '@/utils/frame/base/notifyParams'
 // axios访问
@@ -78,7 +77,7 @@ export default {
               if (node) {
                 return {
                   customerId: node['companyId'],
-                  customerDeptId:node['code']
+                  customerDeptId: node['code']
                 }
               } else {
                 return {}

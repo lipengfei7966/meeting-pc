@@ -229,19 +229,19 @@ export default {
               cols: 4,
               clearable: true
             }
-          },
-          {
-            label: 'website.user.roles',
-            prop: 'roles',
-            element: 'combox-select',
-            attrs: {
-              data: 'CUSTOM_ROLE',
-              showMoreList: true,
-              multiple: true,
-              cols: 4,
-              clearable: true
-            }
           }
+          // {
+          //   label: 'website.user.roles',
+          //   prop: 'roles',
+          //   element: 'combox-select',
+          //   attrs: {
+          //     data: 'CUSTOM_ROLE',
+          //     showMoreList: true,
+          //     multiple: true,
+          //     cols: 4,
+          //     clearable: true
+          //   }
+          // }
         ],
         bottomButtons: [
           {
