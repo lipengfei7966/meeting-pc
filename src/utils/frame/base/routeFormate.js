@@ -120,9 +120,9 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-              // 0902
-            } else if (component.includes('views/frame/biz/register/')) {
-              require([`@/views/frame/biz/register/${component.split('views/frame/biz/register/')[1]}.vue`], resolve, e => {
+              // notification
+            } else if (component.includes('views/frame/cmms/services/notification/')) {
+              require([`@/views/frame/cmms/services/notification/${component.split('views/frame/cmms/services/notification/')[1]}.vue`], resolve, e => {
                 Notification(
                   notifyError({
                     msg: `${component}找不到文件`
