@@ -1,5 +1,6 @@
 <template>
-  <bs-edit-tab ref='bsEditTable' :tab='tabData'></bs-edit-tab>
+  <bs-edit-tab ref='bsEditTable' :tab='tab'>
+  </bs-edit-tab>
 </template>
 
 <script>
@@ -16,18 +17,15 @@ export default {
       loading: false,
       dialogFormVisible: false,
       selectRow: [],
-      tabData: {
+      tab: {
         type: this.$route.params.type || this.$route.params.opType,
         api: {
-          search: '/api/base/customRoleDataper/list'
+          search: '/api/base/customUserRole/listByRole'
         },
         apiData: {
           code: this.param.code,
           search() {
-            return {
-              roleCode: this.code,
-              dataperCode: 'dept'
-            }
+            return this.code
           }
         },
         isTopBar: true,
@@ -46,7 +44,7 @@ export default {
               return this.param.code
             },
             // 弹窗组件
-            component: () => import('@/views/frame/website/customRole/customerDeptSet.vue')
+            component: () => import('./userSet.vue')
           },
           {
             name: 'delete',
@@ -57,6 +55,21 @@ export default {
         isColset: true,
         table: {
           cols: [
+            {
+              prop: 'name',
+              label: 'website.user.name',
+              width: 150
+            },
+            {
+              prop: 'account',
+              label: 'website.user.account',
+              width: 150
+            },
+            {
+              prop: 'customerContactName',
+              label: 'website.user.customerContactName',
+              width: 300
+            },
             {
               prop: 'customerName',
               label: 'website.user.customerName',
@@ -99,7 +112,7 @@ export default {
       })
         .then(() => {
           request({
-            url: '/api/base/customRoleDataper/remove',
+            url: '/api/func/userRole/remove',
             method: 'POST',
             data: {
               funcModule: this.$t('route.' + this.$route.meta.title),

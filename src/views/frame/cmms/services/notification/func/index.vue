@@ -101,7 +101,7 @@ export default {
           {
             name: 'remove',
             getParam: () => {
-              return this.$refs.bsTable.currentRow.msgFuncCode
+              return this.$refs.bsTable.currentRow.id
             }
           },
           {

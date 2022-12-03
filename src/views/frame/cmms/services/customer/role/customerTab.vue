@@ -47,7 +47,7 @@ export default {
               return this.param.code
             },
             // 弹窗组件
-            component: () => import('@/views/frame/website/customRole/customerSet.vue')
+            component: () => import('./customerSet.vue')
           },
           {
             name: 'delete',

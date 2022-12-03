@@ -1,14 +1,13 @@
 <template>
   <bs-tree-form-table ref='bsTable' :treeTableData='treeTableData'></bs-tree-form-table>
 </template>
-<script>
+  <script>
 import { Notification } from 'element-ui'
 
 import request from '@/utils/frame/base/request'
 
 // 提醒
 import { notifyInfo, notifySuccess } from '@/utils/frame/base/notifyParams'
-
 export default {
   name: 'customerUsergroup',
   data() {
@@ -18,15 +17,15 @@ export default {
           formSelectByTree: true,
           searchForm: true,
           listQuery: {
-            isPage: false,
-            defaultSortString: ''
+            isPage: false
+            // defaultSortString: 'createDate.desc'
           },
           initSearch: true,
-          treeName: '客户组织信息',
+          treeName: this.$t('website.department.treeName'),
           expandAll: true,
           expandOnClickNode: false,
           api: {
-            getTreeList: '/api/base/cmsUsergroup/list'
+            getTreeList: '/api/base/cmsCustomer/customerTree'
           },
           apiData: {
             getTreeList() {
@@ -52,25 +51,9 @@ export default {
           isSearch: true,
           formDataVisible: true,
           formData: [
-          {
+            {
               prop: 'name',
-              label: 'website.customerContact.list.name',
-              element: 'input-validate',
-              attrs: {
-                clearable: true
-              }
-            },
-            {
-              prop: 'phone',
-              label: 'website.customerContact.list.phone',
-              element: 'input-validate',
-              attrs: {
-                clearable: true
-              }
-            },
-            {
-              prop: 'mailbox',
-              label: 'website.customerContact.list.mailbox',
+              label: 'website.department.name',
               element: 'input-validate',
               attrs: {
                 clearable: true
@@ -80,51 +63,54 @@ export default {
         },
         mainData: {
           api: {
-            search: '/api/base/customerContact/page'
+            search: '/api/base/cmsUsergroup/page',
+            doDelete: '/api/base/cmsUsergroup/remove'
           },
           apiData: {
             search(node) {
-              if (node) {
-                console.log(node)
+              if (node && node['code'] != undefined) {
                 return {
-                  companyId: node['companyId'],
-                  customerId:node['code']
+                  companyId: node['code']
                 }
               } else {
-                return ""
+                return ''
               }
             }
           },
           initSearch: true,
           isTopBar: true,
-          topBar: [],
+          topBar: [
+            {
+              name: 'refresh'
+            }
+          ],
           isColset: true,
           table: {
             showIndex: true,
-            id: this.$route.meta.title + 'ff',
-            rowKey: 'code',
+            id: this.$route.meta.title,
+            rowKey: 'id',
             expandAll: true,
             sortable: true,
             cols: [
               {
+                prop: 'code',
+                label: 'website.department.code',
+                width: 160
+              },
+              {
                 prop: 'name',
-                label: 'website.customerContact.list.name'
+                label: 'website.department.name',
+                width: 160
               },
               {
-                prop: 'phone',
-                label: 'website.customerContact.list.phone'
+                prop: 'parentCode',
+                label: 'website.department.parentCode',
+                width: 260
               },
               {
-                prop: 'mailbox',
-                label: 'website.customerContact.list.mailbox'
-              },
-              {
-                prop: 'customer',
-                label: 'website.customerContact.list.customer'
-              },
-              {
-                prop: 'company',
-                label: 'website.customerContact.list.company'
+                prop: 'parentName',
+                label: 'website.department.parentName',
+                width: 260
               }
             ]
           },
@@ -137,8 +123,8 @@ export default {
       }
     }
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
-
+  
+  

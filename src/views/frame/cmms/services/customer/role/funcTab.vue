@@ -29,7 +29,7 @@ export default {
               return this.param.code
             },
             // 弹窗组件
-            component: () => import('@/views/frame/website/customRole/funcSet.vue')
+            component: () => import('./funcSet.vue')
           },
           {
             name: 'expand'

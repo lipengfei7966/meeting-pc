@@ -129,24 +129,24 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-              // 0902
-            // } else if (component.includes('views/frame/biz/custom/')) {
-            //   require([`@/views/frame/biz/custom/${component.split('views/frame/biz/custom/')[1]}.vue`], resolve, e => {
-            //     Notification(
-            //       notifyError({
-            //         msg: `${component}找不到文件`
-            //       })
-            //     )
-            //   })
-            //   // 0902
-            // } else if (component.includes('views/frame/biz/func/')) {
-            //   require([`@/views/frame/biz/func/${component.split('views/frame/biz/func/')[1]}.vue`], resolve, e => {
-            //     Notification(
-            //       notifyError({
-            //         msg: `${component}找不到文件`
-            //       })
-            //     )
-            //   })
+              // customer
+            } else if (component.includes('views/frame/cmms/services/customer/')) {
+              require([`@/views/frame/cmms/services/customer/${component.split('views/frame/cmms/services/customer/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
+            //   meeting
+            } else if (component.includes('views/frame/cmms/services/meeting/')) {
+              require([`@/views/frame/cmms/services/meeting/${component.split('views/frame/cmms/services/meeting/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
               // 0902
             } else {
               if (process.env.NODE_ENV === 'development') {

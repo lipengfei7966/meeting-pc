@@ -121,7 +121,7 @@ export default {
             .then(() => {
               this.loading = false
               session.set('userPwd', md5Two(this.loginForm.password))
-              session.set('loginType', 'group')
+              session.set('loginType', 'guest')
               session.set('username', this.loginForm.username)
 
               this.$router.push({ path: '/' }).catch(() => {})
