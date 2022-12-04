@@ -45,7 +45,6 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(nVal, oVal) {
-        // //debugger
         this.webpagePicDtoList_ = []
         nVal.forEach((element, index) => {
           if (element.picDictionary == 'rotation') {
@@ -57,7 +56,6 @@ export default {
     }
   },
   created() {
-    // //debugger
     // this.webpagePicDtoList.forEach((element, index) => {
     //   if (element.picDictionary == 'rotation') {
     //     this.webpagePicDtoList_.push(element)
@@ -67,7 +65,6 @@ export default {
   },
   methods: {
     handleRemove(file, fileList) {
-      // //debugger
       if (this.flag_) {
         //
         request({
@@ -76,7 +73,6 @@ export default {
           data: { data: file.id, funcOperation: '删除轮播图', funcModule: '删除轮播图' }
         })
           .then(data => {
-            //debugger
             if (data) {
               this.$message('删除成功')
               this.$emit('upData_')
@@ -94,7 +90,6 @@ export default {
       console.log(file)
     },
     handleUploadForm(param) {
-      // //debugger
       // let mun = param.file.name.split('.')
       // let format = mun[mun.length - 1]
       // if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
@@ -157,7 +152,6 @@ export default {
         data: { data: arr, funcModule: '素材库选择轮播图片', funcOperation: '素材库选择轮播图片' }
       })
         .then(res => {
-          //debugger
           if (res.data) {
             console.log(res.data)
             this.$message('上传文件成功')
@@ -170,8 +164,6 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      //debugger
-      // //debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {

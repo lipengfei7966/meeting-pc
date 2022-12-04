@@ -116,7 +116,7 @@ export default {
             name: 'set',
             type: 'dialog',
             i18n: 'website.eventInfo.btn.set',
-            component: () => import('@/views/frame/website/register/signupContactCodeRule/set'),
+            component: () => import('@/views/frame/cmms/services/registerSetting/codeRule/set'),
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
             }
@@ -175,7 +175,6 @@ export default {
     }
   },
   mounted() {
-    // //debugger
     // 不设置表格高度
     //this.$refs.bsTable.isHeight = false
     // 设置行高为38
@@ -183,7 +182,6 @@ export default {
   },
   methods: {
     doDesign() {
-      // //debugger
       // console.log(this.$refs.bsTable.currentRow.code)
       this.$router.push({
         name: 'microStationManagement',

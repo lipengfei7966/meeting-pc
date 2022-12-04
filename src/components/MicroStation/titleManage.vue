@@ -37,7 +37,6 @@ export default {
     title_: {
       immediate: true,
       handler(nVal, oVal) {
-        // //debugger
         this.ruleForm.mainTitle = nVal
         console.log(nVal, oVal)
       }
@@ -45,7 +44,6 @@ export default {
     subTitle: {
       immediate: true,
       handler(nVal, oVal) {
-        // //debugger
         this.ruleForm.miniTitle = nVal
         console.log(nVal, oVal)
       }
@@ -64,7 +62,6 @@ export default {
           })
             .then(data => {
               if (data) {
-                // //debugger
                 this.$message('标题保存成功')
                 this.$emit('upData_')
               } else {

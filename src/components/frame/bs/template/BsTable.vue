@@ -1459,7 +1459,6 @@ export default {
     },
     // 增行
     addFile(file) {
-      //debugger
       if (file && file.response && file.response.data) {
         this.$emit('fileCallback', file.response.data)
       }

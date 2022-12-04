@@ -165,7 +165,6 @@ export default {
       }
     },
     onSave() {
-      // //debugger
       this.$loopDOM(this, 'bsDialogEdit').editForm.articleContent = this.$loopDOM(this, 'articleContent')[0].template.editorWin.getContent()
       return true
     }

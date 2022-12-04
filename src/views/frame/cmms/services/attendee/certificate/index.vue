@@ -46,7 +46,7 @@ import Print from 'print-js'
 import VueQr from 'vue-qr'
 import VueBarcode from 'vue-barcode'
 export default {
-  name: 'singnupContactCertificate',
+  name: 'attendeeCertificate',
   data() {
     return {
       activeName: '2',
@@ -172,7 +172,7 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '新增参会人',
-            component: () => import('../signupContact/edit.vue'),
+            component: () => import('../manage/edit.vue'),
             getParam: () => {
               return {
                 eventCode: this.form.listQuery.data.eventCode
@@ -183,7 +183,7 @@ export default {
             name: 'update',
             type: 'dialog',
             i18n: '修改参会人',
-            component: () => import('../signupContact/edit.vue'),
+            component: () => import('../manage/edit.vue'),
             getParam: () => {
               return {
                 eventCode: this.form.listQuery.data.eventCode,
@@ -212,7 +212,7 @@ export default {
             event: this.print
           },
           {
-            name: 'certificateSet',
+            name: 'attendeeCertificateSet',
             type: 'route',
             i18n: '办证设置',
             event: this.toSetting
@@ -333,9 +333,9 @@ export default {
         return
       }
       this.$router.push({
-        name: 'singnupContactCertificateRecord',
+        name: 'attendeeCertificateRecord',
         params: {
-          back: 'singnupContactCertificate',
+          back: 'attendeeCertificate',
           data: this.form.listQuery.data.eventCode
         }
       })
@@ -366,9 +366,7 @@ export default {
         if (item.certificateLayout) {
           this.certificateContentList.forEach((dictItem, dictIndex) => {
             if (item.certificateLayout.indexOf(dictItem.title) >= 0) {
-              // //debugger
               if (dictItem.title == '参会人类型') {
-                //debugger
                 // 参会人类型 是数据字典, 取到列表 contantType 的值是 value值,需要转换成对应的name
                 let mapVal = Vue.filter('dataDictFormat')(item[dictItem.mapCode], this.$t('datadict.contantType'))
                 item.certificateLayout = item.certificateLayout.replace(dictItem.title, mapVal || '')
@@ -454,7 +452,6 @@ export default {
               funcOperation: '查询列表'
             }
           }).then(response => {
-            //debugger
             console.log(response.data)
             if (response.data.certificateFlag) {
               this.$message.success(response.data.msg)
@@ -485,7 +482,6 @@ export default {
             }
           })
         } catch (e) {
-          //debugger
           this.$message.warning('参会人没有人员编码')
           return
         }
@@ -508,9 +504,9 @@ export default {
         return
       }
       this.$router.push({
-        name: 'certificateSet',
+        name: 'attendeeCertificateSet',
         params: {
-          back: 'singnupContactCertificate',
+          back: 'attendeeCertificate',
           data: this.form.listQuery.data.eventCode
         }
       })

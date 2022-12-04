@@ -69,7 +69,7 @@ export default {
             name: 'add',
             type: 'dialog',
             $refs: this.$refs,
-            component: () => import('@/views/frame/website/article/editForm.vue'),
+            component: () => import('@/views/frame/cmms/services/cms/article/editForm.vue'),
             getParam: () => {
               return {
                 eventCode: this.form.listQuery.data.eventCode
@@ -83,7 +83,7 @@ export default {
             getParam() {
               return this.$refs.bsTable.currentRow
             },
-            component: () => import('@/views/frame/website/article/editForm.vue')
+            component: () => import('@/views/frame/cmms/services/cms/article/editForm.vue')
           },
           {
             name: 'remove',
@@ -98,7 +98,7 @@ export default {
             getParam() {
               return this.$refs.bsTable.currentRow
             },
-            component: () => import('@/views/frame/website/article/editForm.vue')
+            component: () => import('@/views/frame/cmms/services/cms/article/editForm.vue')
           },
           {
             name: 'export',

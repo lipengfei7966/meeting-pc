@@ -552,7 +552,8 @@
                 </div>
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制照片尺寸 (px)</p>
-                  <div style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
+                  <div style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
+                  </div>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
@@ -1305,23 +1306,28 @@
                   <p class="eidtContentItemTitle">限制文件类型</p>
                   <el-switch v-model="setInfoList[checkedIndex].fileTypeLimit"> </el-switch>
                   <div v-if="setInfoList[checkedIndex].fileTypeLimit" style="width: 100%">
-                    <p>图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox></p>
+                    <p>图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].imageCheckedTypes" @change="imageCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].imageTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox></p>
+                    <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].documentCheckedTypes" @change="documentCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].documentTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox></p>
+                    <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].compressedFileCheckedTypes" @change="compressedFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].compressedFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox></p>
+                    <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].videoFileCheckedTypes" @change="videoFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].videoFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox></p>
+                    <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].audioFileCheckedTypes" @change="audioFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].audioFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
@@ -1340,7 +1346,8 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制图片尺寸</p>
                   <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit" @change="pictureSizeLimitChange"> </el-switch>
-                  <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
+                  <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
+                  </div>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
@@ -1422,7 +1429,7 @@ import { mapGetters } from 'vuex'
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 export default {
-  name: 'signupContactCol',
+  name: 'attendeeFormConfig',
   data() {
     return {
       form: {
@@ -1665,7 +1672,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.countryCodeOptions = res.data
       // dictItemName \ dictItemVal
     })
@@ -1715,13 +1722,13 @@ export default {
         return
       }
       // debugger
-      this.baseInfoList.forEach((baseInfoItem) => {
+      this.baseInfoList.forEach(baseInfoItem => {
         baseInfoItem.isSee = false
       })
-      this.contactWayList.forEach((contactWayItem) => {
+      this.contactWayList.forEach(contactWayItem => {
         contactWayItem.isSee = false
       })
-      this.workInfoList.forEach((workInfoItem) => {
+      this.workInfoList.forEach(workInfoItem => {
         workInfoItem.isSee = false
       })
 
@@ -1733,7 +1740,7 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then((response) => {
+      }).then(response => {
         debugger
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
@@ -1741,25 +1748,25 @@ export default {
           this.setInfoList = []
         }
         // 姓名是必加项,如果没有添加姓名, 自动添加
-        if (!this.setInfoList.some((item) => item.mapCode == 'name')) {
+        if (!this.setInfoList.some(item => item.mapCode == 'name')) {
           this.addSetInfoList({ label: '姓名', value: 'name', isSee: false }, this.baseInfoList, 'baseInfoList')
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
-        this.setInfoList.forEach((setInfoItem) => {
+        this.setInfoList.forEach(setInfoItem => {
           // 基本信息
-          this.baseInfoList.forEach((baseInfoItem) => {
+          this.baseInfoList.forEach(baseInfoItem => {
             if (baseInfoItem.value == setInfoItem.mapCode) {
               baseInfoItem.isSee = true
             }
           })
           // 联系方式
-          this.contactWayList.forEach((contactWayItem) => {
+          this.contactWayList.forEach(contactWayItem => {
             if (contactWayItem.value == setInfoItem.mapCode) {
               contactWayItem.isSee = true
             }
           })
           // 工作信息
-          this.workInfoList.forEach((workInfoItem) => {
+          this.workInfoList.forEach(workInfoItem => {
             if (workInfoItem.value == setInfoItem.mapCode) {
               workInfoItem.isSee = true
             }
@@ -1772,7 +1779,7 @@ export default {
     },
 
     save() {
-      this.setInfoList.forEach((item) => {
+      this.setInfoList.forEach(item => {
         if (item.systemName == '附件') {
           item.allFileTypes = [...item.imageCheckedTypes, ...item.documentCheckedTypes, ...item.compressedFileCheckedTypes, ...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
         }
@@ -1788,7 +1795,7 @@ export default {
           funcModule: '获取模块类型',
           funcOperation: '获取模块类型'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.status) {
           this.$message.success('保存成功')
         } else {
@@ -1802,7 +1809,7 @@ export default {
       debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
-          var index = this.baseInfoList.findIndex((item) => {
+          var index = this.baseInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1810,7 +1817,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'contactWayList':
-          var index = this.contactWayList.findIndex((item) => {
+          var index = this.contactWayList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1818,7 +1825,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'workInfoList':
-          var index = this.workInfoList.findIndex((item) => {
+          var index = this.workInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1826,7 +1833,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'customInfoList':
-          var index = this.customInfoList.findIndex((item) => {
+          var index = this.customInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1835,7 +1842,7 @@ export default {
           this.customInfoCount--
           break
         case 'specialInfoList':
-          var index = this.specialInfoList.findIndex((item) => {
+          var index = this.specialInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -2004,7 +2011,7 @@ export default {
       if (parentListName == 'specialInfoList') {
         obj.isSpecialInfo = true
       }
-      var index = parentList.findIndex((item) => {
+      var index = parentList.findIndex(item => {
         return item.value == itemList.value
       })
       // 性别添加选项
@@ -2080,7 +2087,6 @@ export default {
         this.test = this.test
         return
       }
-      // //debugger
     },
 
     // 附件-文件上传限制类型 勾选 ---- 开始
@@ -2174,7 +2180,7 @@ export default {
           name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight
         })
       } else {
-        this.setInfoList[this.checkedIndex].check.filter((item) => {
+        this.setInfoList[this.checkedIndex].check.filter(item => {
           return item.code != '004'
         })
       }
@@ -2216,11 +2222,11 @@ export default {
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
     maxCheckedCountChange(val) {
-      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some((checkItem) => {
+      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some(checkItem => {
         return checkItem.code == '012'
       })
       if (hasMaxLimit) {
-        let maxLimit = this.setInfoList[this.checkedIndex].check.find((checkItem) => {
+        let maxLimit = this.setInfoList[this.checkedIndex].check.find(checkItem => {
           return checkItem.code == '012'
         })
         maxLimit.name = val
@@ -2228,7 +2234,6 @@ export default {
         this.setInfoList[this.checkedIndex].check.push({ code: '012', name: val })
       }
       console.log(this.setInfoList[this.checkedIndex].check)
-      //debugger
     },
     batchEditOptionsComfirm() {
       // debugger
@@ -2290,7 +2295,7 @@ export default {
       // 007：手机号格式校验(国际)
       debugger
       this.setInfoList[this.checkedIndex].check = []
-      val.forEach((element) => {
+      val.forEach(element => {
         if (element == '中国大陆') {
           this.setInfoList[this.checkedIndex].check.push({ code: '005', name: '' })
         } else if (element == '港澳台') {
@@ -2322,7 +2327,7 @@ export default {
           funcOperation: '表单初始化'
         }
       })
-        .then((response) => {
+        .then(response => {
           this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
           this.loading = false
           this.handleCloseDialog(true)
@@ -2358,7 +2363,6 @@ export default {
     tableComputed() {
       // const elHead = document.getElementById('elHead')
       this.formSetHeight = 0
-      // //debugger
 
       // 顶部菜单 高48px
       this.formSetHeight -= 48
@@ -2379,7 +2383,7 @@ export default {
         this.formSetHeight += 36
       }
       this.formSetHeight += this.clientHeight
-      // //debugger
+
       // this.formSetHeight = this.clientWidth < 1366 ? (this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 97 : this.clientHeight - getElHeadHeight - 67) : this.mainData.isTopBar ? this.clientHeight - getElHeadHeight - 77 : this.clientHeight - getElHeadHeight - 47
       // this.formSetHeight = this.formSetHeight - 50
     }

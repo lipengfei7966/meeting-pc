@@ -21,7 +21,7 @@ import request from '@/utils/frame/base/request'
 // 日期格式化方法
 import { notifyInfo } from '@/utils/frame/base/notifyParams'
 export default {
-  name: 'signupSignin',
+  name: 'attendeeSignin',
   data() {
     return {
       activeName: '0',
@@ -159,7 +159,7 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '新增参会人',
-            component: () => import('../signupContact/edit.vue'),
+            component: () => import('../manage/edit.vue'),
             getParam: () => {
               return {
                 eventCode: this.form.listQuery.data.eventCode
@@ -170,7 +170,7 @@ export default {
             name: 'update',
             type: 'dialog',
             i18n: '修改参会人',
-            component: () => import('../signupContact/edit.vue'),
+            component: () => import('../manage/edit.vue'),
             getParam: () => {
               return {
                 eventCode: this.form.listQuery.data.eventCode,
@@ -294,9 +294,9 @@ export default {
         return
       }
       this.$router.push({
-        name: 'signupSigninRecord',
+        name: 'attendeeSigninRecord',
         params: {
-          back: 'signupSignin',
+          back: 'attendeeSignin',
           data: this.form.listQuery.data.eventCode
         }
       })
@@ -307,9 +307,9 @@ export default {
         return
       }
       this.$router.push({
-        name: 'signupSigninSet',
+        name: 'attendeeSigninSet',
         params: {
-          back: 'signupSignin',
+          back: 'attendeeSignin',
           data: this.form.listQuery.data.eventCode
         }
       })
@@ -354,10 +354,9 @@ export default {
               }
             })
           } else {
-            //debugger
             //this.mainData.topBar[2].component=import('../signupSignin/signin.vue');
             // 注册组件 '../signupSignin/signin.vue'
-            Vue.component('view-form-table', () => import('../signupSignin/signin.vue'))
+            Vue.component('view-form-table', () => import('../signin/signin.vue'))
             if (buttonInfo.getParam) {
               this.$refs.bsTable.param = buttonInfo.getParam(this.currentRow)
             }

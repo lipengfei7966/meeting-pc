@@ -331,9 +331,7 @@ export default {
             }, 200)
             this.matterList = res.data
             if (isFile) {
-              //debugger
               this.matterList.forEach(item => {
-                //debugger
                 if (this.more.link == item.picUrl) {
                   item.picUrl += '?v=' + Math.random()
                 }

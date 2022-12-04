@@ -11,7 +11,7 @@ import excelUtil from '@/utils/frame/base/excelUtil.js'
 import signinTemplate from '@/assets/frame/excel/signinTemplate.xlsx'
 
 export default {
-  name: 'signupSigninRecord',
+  name: 'attendeeSigninRecord',
   data() {
     return {
       colList: [
@@ -324,7 +324,6 @@ export default {
     }
   },
   mounted() {
-    // //debugger
     // 不设置表格高度
     this.$refs.bsTable.isHeight = false
     // 设置行高为38

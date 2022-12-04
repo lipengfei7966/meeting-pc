@@ -11,7 +11,7 @@ import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import axios from 'axios'
 export default {
-  name: 'signupContact',
+  name: 'attendeeManage',
   data() {
     return {
       form: {
@@ -483,7 +483,6 @@ export default {
         })
     },
     fileCallback(data) {
-      //debugger
       this.$notify.success({
         message: data,
         position: 'bottom-right'
@@ -495,9 +494,9 @@ export default {
         return
       }
       this.$router.push({
-        name: 'contactEdit',
+        name: 'attendeeEdit',
         params: {
-          back: 'signupContact',
+          back: 'attendeeManage',
           data: this.form.listQuery.data.eventCode,
           type: 'add'
         }
@@ -514,9 +513,9 @@ export default {
       }
 
       this.$router.push({
-        name: 'contactEdit',
+        name: 'attendeeEdit',
         params: {
-          back: 'signupContact',
+          back: 'attendeeManage',
           data: this.form.listQuery.data.eventCode,
           contactCode: this.$refs.bsTable.currentRow.code,
           type: 'update'
@@ -528,15 +527,15 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      //debugger
+
       if (!this.$refs.bsTable.currentRow) {
         this.$message.warning('请选择参会人')
         return
       }
       this.$router.push({
-        name: 'contactEdit',
+        name: 'attendeeEdit',
         params: {
-          back: 'signupContact',
+          back: 'attendeeManage',
           data: this.form.listQuery.data.eventCode,
           contactCode: this.$refs.bsTable.currentRow.code,
           type: 'view'

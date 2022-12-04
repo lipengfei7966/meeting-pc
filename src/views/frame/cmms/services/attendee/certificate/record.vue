@@ -20,7 +20,7 @@ import request from '@/utils/frame/base/request'
 import excelUtil from '@/utils/frame/base/excelUtil.js'
 import certificatePrintTemplate from '@/assets/frame/excel/certificatePrintTemplate.xlsx'
 export default {
-  name: 'singnupContactCertificateRecord',
+  name: 'attendeeCertificateRecord',
   data() {
     return {
       colList: [

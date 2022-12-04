@@ -215,7 +215,6 @@ export default {
       console.log(val)
     },
     featureVal(val) {
-      //       //debugger
       this.Functionality = val
       console.log(val)
     },
@@ -224,7 +223,6 @@ export default {
       this.isFlag = 1
     },
     newVal(val, dataNum, colorValue) {
-      //debugger
       //hkz
       if (val == 1) {
         this.$refs.station.watchVal(val, dataNum)
@@ -236,7 +234,6 @@ export default {
       console.log(val)
     },
     colorVal(val, dataNum) {
-      // //debugger
       this.$refs.station.colorVal(val, dataNum)
     },
     onClick() {
@@ -246,7 +243,6 @@ export default {
       this.isFlag = val
     },
     addEdit(val, index) {
-      // //debugger
       // console.log(val, index, this.Functionality)
       this.isFlag = 1
       this.isFlag_one = false
@@ -264,7 +260,7 @@ export default {
             if (res.data) {
               this.userData = res.data
               this.Functionality = res.data.webpageButtonDtoList
-              // //debugger
+
               this.listData = res.data.webpageButtonDtoList
               this.webpagePicDtoList = res.data.webpagePicDtoList
               this.title_ = res.data.title
@@ -272,7 +268,7 @@ export default {
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
-              // //debugger
+
               if (res.data.name) {
                 this.ruleForm.mainTitle = res.data.name
               }
@@ -306,7 +302,6 @@ export default {
       }
     },
     upData() {
-      // //debugger
       this.isFlag = 0
       this.loadData()
     },
@@ -317,7 +312,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          //debugger
           console.log(valid, formName)
           request({
             url: '/api/biz/cmsWebpage/updateName',
@@ -354,13 +348,12 @@ export default {
       this.$message.success('复制成功')
     },
     itemclick(item, index) {
-      //debugger
       console.log(item, index, 'website标注')
       this.addEdit(item, index)
     }
   },
   mounted() {
-    //     //debugger
+    //
     this.$refs.station.isPc = false
   },
   filters: {

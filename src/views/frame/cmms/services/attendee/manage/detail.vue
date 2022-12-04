@@ -378,7 +378,7 @@ import request from '@/utils/frame/base/request'
 import CropperImage from '@/components/frame/CropperImage'
 import { validateEmail, validateMobile, validateIDcard } from '@/utils/frame/base/validate.js'
 export default {
-  name: 'contactEdit',
+  name: 'attendeeEdit',
   data() {
     return {
       setInfoList: [], // 选中的配置信息列表
@@ -526,14 +526,14 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then((response) => {
+      }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
         } else {
           this.setInfoList = []
         }
         debugger
-        this.setInfoList.forEach((item) => {
+        this.setInfoList.forEach(item => {
           // 1：自定义属性
           if (item.mapBase == 1) {
             if (['复选框', '下拉复选框'].includes(item.systemName)) {
@@ -633,27 +633,27 @@ export default {
             if (item.mapCode == 'mobile' || item.mapCode == 'spareMobile') {
               if (item.defaultCountryCode != '') {
                 // 是否设置国际默认区号
-                if (item.check.some((item) => item.code == '005') && item.defaultCountryCode == '86') {
+                if (item.check.some(item => item.code == '005') && item.defaultCountryCode == '86') {
                   // 中国大陆 手机号校验
                   this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
-                } else if (item.check.some((item) => item.code == '006') && item.defaultCountryCode == '852') {
+                } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '852') {
                   // 香港区号 手机号校验
                   this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
-                } else if (item.check.some((item) => item.code == '006') && item.defaultCountryCode == '853') {
+                } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '853') {
                   // 澳门区号 手机号校验
                   this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
-                } else if (item.check.some((item) => item.code == '006') && item.defaultCountryCode == '886') {
+                } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '886') {
                   // 台湾区号 手机号校验
                   this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 }
               } else {
-                if (item.check.some((checkItem) => checkItem.code == '005') && !item.check.some((checkItem) => checkItem.code == '006')) {
+                if (item.check.some(checkItem => checkItem.code == '005') && !item.check.some(checkItem => checkItem.code == '006')) {
                   // 中国大陆手机号校验
                   this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
-                } else if (!item.check.some((checkItem) => checkItem.code == '005') && item.check.some((checkItem) => checkItem.code == '006')) {
+                } else if (!item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 港澳台手机号校验
                   this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
-                } else if (item.check.some((checkItem) => checkItem.code == '005') && item.check.some((checkItem) => checkItem.code == '006')) {
+                } else if (item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 大陆加港澳台手机号校验
                   this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
                 }
@@ -687,10 +687,10 @@ export default {
         url: '/api/register/signupContact/getByContactCode',
         method: 'POST',
         data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then((res) => {
+      }).then(res => {
         this.setForm = res.data
         if (this.setForm.province) {
-          let selectProvince = this.chinaProvinceList.find((province) => {
+          let selectProvince = this.chinaProvinceList.find(province => {
             return province.code == this.setForm.province
           })
           if (selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000') {
@@ -700,7 +700,7 @@ export default {
           }
         }
         if (this.setForm.city) {
-          let selectCity = this.provinceCityList.find((city) => {
+          let selectCity = this.provinceCityList.find(city => {
             return city.code == this.setForm.city
           })
           this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
@@ -739,7 +739,7 @@ export default {
             })
           }
         }
-        this.setInfoList.forEach((element) => {
+        this.setInfoList.forEach(element => {
           if (element.mapCode == 'mobile' && this.setForm.mobileIntCode) {
             this.mobileIntCodeChange(this.setForm.mobileIntCode, element)
           }
@@ -758,7 +758,7 @@ export default {
       }
       this.setForm.eventCode = this.$route.params.data
 
-      this.$refs['contactForm'].validate((valid) => {
+      this.$refs['contactForm'].validate(valid => {
         if (valid) {
           let loading = this.$loading({
             lock: true,
@@ -790,7 +790,7 @@ export default {
               funcModule: '获取模块类型',
               funcOperation: '获取模块类型'
             }
-          }).then((res) => {
+          }).then(res => {
             if (res.status) {
               this.$message.success('保存成功')
               this.back()
@@ -869,7 +869,7 @@ export default {
       }, 100)
     },
     delFile(fileList, file) {
-      let fileIndex = fileList.findIndex((item) => {
+      let fileIndex = fileList.findIndex(item => {
         return item.name == file.name
       })
       if (fileIndex >= 0) {
@@ -974,10 +974,10 @@ export default {
       const _this = this
       let imgWidth = ''
       let imgHight = ''
-      const isSize = new Promise(function (resolve, reject) {
+      const isSize = new Promise(function(resolve, reject) {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
-        img.onload = function () {
+        img.onload = function() {
           imgWidth = img.width
           imgHight = img.height
           // const valid = img.width <= 1700 && img.height <= 2500
@@ -1047,7 +1047,7 @@ export default {
         url: '/api/obs/file/uploadImg',
         method: 'POST',
         data: formData
-      }).then((data) => {
+      }).then(data => {
         if (data.status) {
           this.$message('上传文件成功')
           this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
@@ -1060,7 +1060,7 @@ export default {
           console.log(this.setForm.signupContactDtlDto[element.mapCode])
           param.onSuccess(data, element)
         } else {
-          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex((item) => item.uid === param.file.uid)
+          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
           this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
           // param.file.splice(idx, 1)
           this.$message('上传文件失败')
@@ -1084,7 +1084,7 @@ export default {
         url: '/api/obs/file/uploadImg',
         method: 'POST',
         data: formData
-      }).then((data) => {
+      }).then(data => {
         debugger
         if (data.status) {
           this.$message('上传文件成功')
@@ -1113,7 +1113,7 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then((res) => {
+      }).then(res => {
         this.chinaProvinceList = res.data
       })
     },
@@ -1128,35 +1128,34 @@ export default {
       }
       this.$refs.contactForm.clearValidate('certificate') // 移除上次校验结果
       // this.$refs.contactForm.validate();
-      // //debugger
     },
     // 手机号国际区号切换
     mobileIntCodeChange(val, element) {
       debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
-      let mobilePhoneVerify = this.rules.mobile.find((item) => {
+      let mobilePhoneVerify = this.rules.mobile.find(item => {
         return 'pattern' in item
       })
 
-      if (element.check.some((item) => item.code == '005') && val == '86') {
+      if (element.check.some(item => item.code == '005') && val == '86') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
         } else {
           this.rules.mobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      } else if (element.check.some((item) => item.code == '006') && val == '852') {
+      } else if (element.check.some(item => item.code == '006') && val == '852') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
         } else {
           this.rules.mobile.push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      } else if (element.check.some((item) => item.code == '006') && val == '853') {
+      } else if (element.check.some(item => item.code == '006') && val == '853') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^6\d{7}$/
         } else {
           this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      } else if (element.check.some((item) => item.code == '006') && val == '886') {
+      } else if (element.check.some(item => item.code == '006') && val == '886') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
         } else {
@@ -1175,29 +1174,29 @@ export default {
     spareMobileIntCodeChange(val, element) {
       debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
-      let mobilePhoneVerify = this.rules.spareMobile.find((item) => {
+      let mobilePhoneVerify = this.rules.spareMobile.find(item => {
         return 'pattern' in item
       })
 
-      if (element.check.some((item) => item.code == '005') && val == '86') {
+      if (element.check.some(item => item.code == '005') && val == '86') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/
         } else {
           this.rules.spareMobile.push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      } else if (element.check.some((item) => item.code == '006') && val == '852') {
+      } else if (element.check.some(item => item.code == '006') && val == '852') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^([5|6|9])\d{7}$/
         } else {
           this.rules.spareMobile.push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      } else if (element.check.some((item) => item.code == '006') && val == '853') {
+      } else if (element.check.some(item => item.code == '006') && val == '853') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^6\d{7}$/
         } else {
           this.rules.spareMobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
         }
-      } else if (element.check.some((item) => item.code == '006') && val == '886') {
+      } else if (element.check.some(item => item.code == '006') && val == '886') {
         if (mobilePhoneVerify) {
           mobilePhoneVerify.pattern = /^[0][9]\d{8}$/
         } else {
@@ -1212,7 +1211,7 @@ export default {
       }
     },
     provinceChange(provinceCode) {
-      let selectProvince = this.chinaProvinceList.find((province) => {
+      let selectProvince = this.chinaProvinceList.find(province => {
         return province.code == provinceCode
       })
       if (selectProvince.code == '110000000' || selectProvince.code == '120000000' || selectProvince.code == '310000000' || selectProvince.code == '500000000' || selectProvince.code == '810000000' || selectProvince.code == '820000000' || selectProvince.code == '710000000') {
@@ -1225,7 +1224,7 @@ export default {
       this.setForm.county = ''
     },
     cityChange(cityCode) {
-      let selectCity = this.provinceCityList.find((city) => {
+      let selectCity = this.provinceCityList.find(city => {
         return city.code == cityCode
       })
       this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
@@ -1238,12 +1237,12 @@ export default {
         url: '/api/sys/dict/listItem',
         method: 'POST',
         data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then((res) => {
+      }).then(res => {
         // dictItemName \ dictItemVal
-        //debugger
+
         this.countryCodeOptions = res.data
         // 86 大陆, 852 香港, 853 澳门, 886 台湾
-        this.nationsList = res.data.filter((item) => {
+        this.nationsList = res.data.filter(item => {
           // debugger
           return item.dictItemVal != '852' && item.dictItemVal != '853' && item.dictItemVal != '886'
         })
@@ -1255,7 +1254,7 @@ export default {
         url: '/api/sys/dict/listItem',
         method: 'POST',
         data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then((res) => {
+      }).then(res => {
         this.contactTypeOptions = res.data
       })
     },
@@ -1263,7 +1262,7 @@ export default {
     back() {
       this.$store.dispatch('delVisitedViews', this.$route).then(() => {
         this.$router.push({
-          name: 'signupContact'
+          name: 'attendeeManage'
         })
       })
     },
@@ -1292,8 +1291,8 @@ export default {
           'Content-Type': 'text/plain'
         }
       })
-        .then((res) => res.blob())
-        .then((blob) => {
+        .then(res => res.blob())
+        .then(blob => {
           // 将链接地址字符内容转变成blob地址
           debugger
           a_link.href = URL.createObjectURL(blob)

@@ -89,7 +89,7 @@ export default {
       if (!route) {
         return false
       }
-      // //debugger
+
       // let hasmenu = false;
       // this.permissionMenus.forEach(item => {
       //   if(item.children) {

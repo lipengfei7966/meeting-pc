@@ -112,16 +112,8 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-            } else if (component.includes('views/frame/website/')) {
-              require([`@/views/frame/website/${component.split('views/frame/website/')[1]}.vue`], resolve, e => {
-                Notification(
-                  notifyError({
-                    msg: `${component}找不到文件`
-                  })
-                )
-              })
-              // notification
             } else if (component.includes('views/frame/cmms/services/notification/')) {
+              // notification
               require([`@/views/frame/cmms/services/notification/${component.split('views/frame/cmms/services/notification/')[1]}.vue`], resolve, e => {
                 Notification(
                   notifyError({
@@ -129,8 +121,8 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-              // customer
             } else if (component.includes('views/frame/cmms/services/customer/')) {
+              // customer
               require([`@/views/frame/cmms/services/customer/${component.split('views/frame/cmms/services/customer/')[1]}.vue`], resolve, e => {
                 Notification(
                   notifyError({
@@ -138,9 +130,36 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-            //   meeting
             } else if (component.includes('views/frame/cmms/services/meeting/')) {
+              //   meeting
               require([`@/views/frame/cmms/services/meeting/${component.split('views/frame/cmms/services/meeting/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
+            } else if (component.includes('views/frame/cmms/services/attendee/')) {
+              // attendee
+              require([`@/views/frame/cmms/services/attendee/${component.split('views/frame/cmms/services/attendee/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
+            } else if (component.includes('views/frame/cmms/services/registerSetting/')) {
+              // registerSet
+              require([`@/views/frame/cmms/services/registerSetting/${component.split('views/frame/cmms/services/registerSetting/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
+            } else if (component.includes('views/frame/cmms/services/cms/')) {
+              // cms
+              require([`@/views/frame/cmms/services/cms/${component.split('views/frame/cmms/services/cms/')[1]}.vue`], resolve, e => {
                 Notification(
                   notifyError({
                     msg: `${component}找不到文件`

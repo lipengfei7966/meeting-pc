@@ -49,7 +49,7 @@ export default {
     // webpagePicDtoList: {
     //   immediate: true,
     //   handler(newValue, oldValue) {
-    //     //debugger
+    //
     //     console.log(newValue, oldValue)
     //   },
     //   deep: true
@@ -60,9 +60,7 @@ export default {
   },
   methods: {
     handelClick() {
-      // //debugger
       if (this.templateVal && this.pitchOn) {
-        // //debugger
         let webpagePicDtoList = [
           {
             picDictionary: 'background',
@@ -78,12 +76,12 @@ export default {
         }
         //
         let webpageButtonDtoList = this.$refs.templateOne.moduleData
-        //debugger
+
         console.log(window.document.location.origin)
         for (let j = 0; j < webpageButtonDtoList.length; j++) {
           webpageButtonDtoList[j].icon = webpageButtonDtoList[j].icon
         }
-        // //debugger
+
         let data = {
           data: {
             webpagePicDtoList: webpagePicDtoList,
@@ -102,8 +100,6 @@ export default {
           data: data
         })
           .then(res => {
-            // //debugger
-            // //debugger
             console.log(this.$route.params)
             let ids = this.$route.params.data
             if (res.data) {
@@ -137,19 +133,17 @@ export default {
     handel(val) {
       if (val == 1) {
         this.pitchOn = !this.pitchOn
-        //       //debugger
+
         this.templateVal = 'Sudoku_1'
       }
       console.log(val)
     },
     feature(val) {
-      //       //debugger
       this.sonVal = val
       this.$emit('featureVal', this.sonVal)
       console.log(val)
     },
     watchVal(val, dataNum, colorValue) {
-      //       //debugger
       if (val == 1) {
         this.$refs.templateOne.watchVal(val, dataNum)
       } else if (val == 2) {
@@ -160,11 +154,9 @@ export default {
       console.log(val)
     },
     colorVal(val, dataNum) {
-      // //debugger
       this.$refs.templateOne.colorVal(val, dataNum)
     },
     itemclick(item, index) {
-      // //debugger
       this.$emit('itemclick', item, index)
       console.log(item, index)
     }

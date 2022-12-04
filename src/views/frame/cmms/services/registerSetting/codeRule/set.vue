@@ -5,7 +5,7 @@
 <script>
 import toolUtil from '@/utils/frame/base/toolUtil.js'
 export default {
-  name: 'signupContactCodeRuleSet',
+  name: 'codeRuleSet',
   data() {
     return {
       dialog: {
@@ -162,7 +162,6 @@ export default {
       parentCodeRef.attrs.params.customerCode = item.code
     },
     changeType() {
-      //debugger
       let val = this.$refs.bsDialog.formData.type
       const startCodeRef = toolUtil.getDefDialogItemByProp(this, 'startCode')
       if (val && val === '1') {

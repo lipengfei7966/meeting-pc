@@ -138,7 +138,7 @@ export default {
           } else {
             this.ruleForm.id = ''
           }
-          // //debugger
+
           if (submitVal.sort || submitVal.sort == 0) {
             if (submitVal.sort == 0) {
               this.ruleForm.sort = 0
@@ -148,7 +148,7 @@ export default {
           } else {
             this.ruleForm.sort = ''
           }
-          // //debugger
+
           // console.log(this.ruleForm)
           if (submitVal.title) {
             // if (this.ruleForm.title == '') {
@@ -158,7 +158,7 @@ export default {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          //debugger
+
           // 标注
           // if(this.ruleForm.type){
 
@@ -189,7 +189,6 @@ export default {
             this.ruleForm.backgroundSetting = '1'
           }
           if (submitVal.icon) {
-            // //debugger
             this.ruleForm.fileList[0].url = submitVal.icon
             this.ruleForm.icon = submitVal.icon
           } else {
@@ -209,7 +208,6 @@ export default {
             this.ruleForm.webpageCode = ''
           }
           if (submitVal.backgroundColor) {
-            // //debugger
             this.ruleForm.backgroundColor = submitVal.backgroundColor
           } else {
             this.ruleForm.backgroundColor = ''
@@ -221,7 +219,6 @@ export default {
     isFlag_one: {
       immediate: true,
       handler(nVal, oVal) {
-        // //debugger
         if (nVal == true) {
           this.ruleForm = {
             id: '',
@@ -249,7 +246,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // alert('submit!')
-          //debugger
+
           console.log(this.ruleForm)
           // return
           if (this.ruleForm.backgroundSetting == 3) {
@@ -275,7 +272,6 @@ export default {
             data: { data: this.ruleForm, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
           })
             .then(res => {
-              // //debugger
               if (res.data) {
                 this.$message('保存成功')
                 this.$emit('upData')
@@ -316,7 +312,6 @@ export default {
             data: { data: this.ruleForm, funcModule: '新增模块', funcOperation: '新增模块' }
           })
             .then(res => {
-              // //debugger
               if (res.data) {
                 this.$message('新增成功')
                 this.$emit('upData')
@@ -335,7 +330,7 @@ export default {
     },
     selectChange(val) {
       // console.log(val)
-      //debugger
+
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
@@ -345,7 +340,6 @@ export default {
       }
     },
     handleChangeColor(val) {
-      // //debugger
       this.colorValue = val
       this.$emit('colorVal', this.colorValue, this.dataNum)
       console.log('输出颜色值', val) // 颜色 #6c8198
@@ -391,8 +385,6 @@ export default {
         data: { data: { type: 'ARTICLE', queryParams: { eventCode: this.$route.params.ids } }, funcModule: '获取页面', funcOperation: '获取页面' }
       })
         .then(res => {
-          // //debugger
-          // //debugger
           this.pageLists = res.data
           this.console.log(res)
         })
@@ -408,7 +400,7 @@ export default {
     // 素材库选择的图片
     submit_() {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
-      //debugger
+
       this.ruleForm.icon = JSON.parse(this.$refs.material.pictureRadio).picUrl
       // this.ruleForm.fileList = [{ name: '', url: '' }]
       this.ruleForm.fileList = [{ name: '', url: '' }]
@@ -417,8 +409,6 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      //debugger
-      // //debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {

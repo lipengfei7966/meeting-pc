@@ -19,7 +19,7 @@
 import request from '@/utils/frame/base/request'
 import { notifyInfo } from '@/utils/frame/base/notifyParams'
 export default {
-  name: 'signupSigninSet',
+  name: 'attendeeSigninSet',
   data() {
     return {
       activeName: '',
@@ -372,7 +372,6 @@ export default {
         }
       })
         .then(response => {
-          //debugger
           if (response.status) {
             this.$refs.bsTable.doRefresh()
             this.$notify(notifyInfo({ msg: '签到成功' }))
@@ -387,9 +386,9 @@ export default {
     },
     toRecord() {
       this.$router.push({
-        name: 'signupSigninRecord',
+        name: 'attendeeSigninRecord',
         params: {
-          back: 'signupSignin',
+          back: 'attendeeSignin',
           data: this.$refs.bsTable.currentRow
         }
       })

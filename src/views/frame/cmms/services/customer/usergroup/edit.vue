@@ -23,7 +23,6 @@ export default {
         },
         apiData: {
           view(param) {
-            //debugger
             return param.code
           }
         },
@@ -121,7 +120,6 @@ export default {
         }
       })
         .then(response => {
-          //debugger;
           if (response.status) {
             var selectList = []
             response.data.forEach(t => {

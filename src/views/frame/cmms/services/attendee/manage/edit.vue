@@ -148,7 +148,6 @@ export default {
           funcOperation: '查询列表'
         }
       }).then(response => {
-        //debugger
         if (response.data.json) {
           this.edit.formData = JSON.parse(response.data.json)
         } else {

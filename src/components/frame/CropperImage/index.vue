@@ -68,7 +68,6 @@ export default {
     }
   },
   mounted() {
-    //debugger
     console.log(this.limitWidth, this.limitHeight)
   },
   methods: {
