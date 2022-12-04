@@ -1687,7 +1687,6 @@ export default {
         let textareaNum = 35 // 长文本字段需要为 36-40
         this.setInfoList.forEach((item, index) => {
           if (item.isCoustomInfo) {
-            debugger
             if (item.isTexeArea) {
               textareaNum++
               item.mapCode = 'reservedStr' + textareaNum
@@ -1721,7 +1720,7 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      // debugger
+      //
       this.baseInfoList.forEach(baseInfoItem => {
         baseInfoItem.isSee = false
       })
@@ -1741,7 +1740,6 @@ export default {
           funcOperation: '表单初始化'
         }
       }).then(response => {
-        debugger
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
         } else {
@@ -1806,7 +1804,6 @@ export default {
     },
     //移除表单信息
     delSetInfoList(itemList, itemIndex) {
-      debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
           var index = this.baseInfoList.findIndex(item => {
@@ -1967,14 +1964,13 @@ export default {
       }
 
       if (parentListName == 'customInfoList') {
-        debugger
         this.customInfoCount++
         if (this.customInfoCount > 40) {
           this.$message.warning('新增自定义信息数量超出最大限制')
           return
         }
         // obj.mapCode = 'reservedStr' + this.customInfoCount
-        // debugger
+        //
         obj.isCoustomInfo = true
         obj.title = '您的标题'
         // if(itemList.value == 'input'){
@@ -2033,7 +2029,7 @@ export default {
       }
 
       // 证件
-      // debugger
+      //
       if (itemList.value == 'certificate') {
         obj.options = ['居民身份证']
         obj.check[0].code = '001'
@@ -2053,18 +2049,18 @@ export default {
       if (itemList.value == 'explainInfo') {
         obj.mapCode = 'explainInfo' + this.setInfoList.length
       }
-      // debugger
+      //
       if (parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList') {
         parentList[index].isSee = true
       }
       this.setInfoList.push(obj)
     },
     selectMultipleChange(val) {
-      // debugger
+      //
     },
 
     certificateTypeChange(certificateOptions) {
-      // debugger
+      //
       // 证件类型不包括居民身份证时 校验code设为空
       if (!certificateOptions.includes('居民身份证')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
@@ -2091,13 +2087,11 @@ export default {
 
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
-      debugger
       this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
-      debugger
       let checkedCount = value.length
       this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
@@ -2217,7 +2211,7 @@ export default {
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-      debugger
+
       this.setInfoList[this.checkedIndex].check[0].code = '011'
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
@@ -2236,7 +2230,7 @@ export default {
       console.log(this.setInfoList[this.checkedIndex].check)
     },
     batchEditOptionsComfirm() {
-      // debugger
+      //
       let tempArr = this.batchEditOptions.split('\n')
       this.setInfoList[this.checkedIndex].options = this.setInfoList[this.checkedIndex].options.concat(tempArr)
       // this.setInfoList[this.checkedIndex].options.forEach((option,optionIdnex) => {
@@ -2250,7 +2244,6 @@ export default {
       setInfoListItem.options.push(optionValue)
     },
     delRadioOption(setInfoListItem, option, optionIndex) {
-      debugger
       // this.setInfoList.splice(itemIndex,1);
       setInfoListItem.options.splice(optionIndex, 1)
     },
@@ -2293,7 +2286,7 @@ export default {
       // 005：手机号格式校验(中国大陆)
       // 006：手机号格式校验(港澳台)
       // 007：手机号格式校验(国际)
-      debugger
+
       this.setInfoList[this.checkedIndex].check = []
       val.forEach(element => {
         if (element == '中国大陆') {
@@ -2337,7 +2330,7 @@ export default {
         })
     },
     edititem(checkedItem, checkedIndex) {
-      // debugger
+      //
       this.checkedIndex = checkedIndex
     },
     //开始拖拽事件

@@ -177,7 +177,6 @@ export default {
         // 操作员账户
         const userCodeArr = []
         this.$refs.bsTable.multipleSelection.forEach(select => {
-          debugger
           userCodeArr.push({ userCode: select.code, roleCode: this.param })
         })
         this.loading = true

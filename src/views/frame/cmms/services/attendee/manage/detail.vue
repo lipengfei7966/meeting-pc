@@ -532,7 +532,7 @@ export default {
         } else {
           this.setInfoList = []
         }
-        debugger
+
         this.setInfoList.forEach(item => {
           // 1：自定义属性
           if (item.mapBase == 1) {
@@ -599,7 +599,7 @@ export default {
               this.rules.addres[0].required = false
               if (item.nationIsShow) {
                 // 显示国家
-                debugger
+
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
                 this.setForm.nations = '86'
               }
@@ -714,7 +714,7 @@ export default {
             this.setForm.signupContactDtlDto[key].shift('卍')
 
             this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
-              // debugger
+              //
               if (checkItem.indexOf('其他&') == 0) {
                 this.setformOther[key] = checkItem.split('&')[1]
                 this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
@@ -723,7 +723,6 @@ export default {
           }
           // 判断是否包含其他选项
           if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('其他&') == 0) {
-            debugger
             this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
             this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
           }
@@ -731,7 +730,7 @@ export default {
           // 判断是否是附件
           if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('http') == 0) {
             let fileUrl = this.setForm.signupContactDtlDto[key]
-            debugger
+
             let flieName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
             this.setFormFile[key].push({
               name: flieName,
@@ -803,7 +802,7 @@ export default {
                 this.setForm.signupContactDtlDto[key].shift('卍')
 
                 this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
-                  // debugger
+                  //
                   if (checkItem.indexOf('其他&') == 0) {
                     this.setformOther[key] = checkItem.split('&')[1]
                     this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
@@ -812,7 +811,6 @@ export default {
               }
               // 判断是否包含其他选项
               if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('其他&') == 0) {
-                debugger
                 this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
                 this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
               }
@@ -835,7 +833,6 @@ export default {
     },
     // 预览照片
     previewImg(imageUrl) {
-      debugger
       this.previewDialogVisible = true
       this.previewImgUrl = imageUrl
     },
@@ -845,7 +842,6 @@ export default {
     },
     // 预览附件
     handlePreview(file) {
-      debugger
       let filepath = file.url
       if (!filepath) return
       // 获取文件后缀名
@@ -877,7 +873,7 @@ export default {
       }
     },
     limitInput(element, value) {
-      // debugger
+      //
       // element.numberDigitLimit 整数位数限制
       // element.decimalPlacesLimit 小数位数限制
       // var re = new RegExp(title,"g");
@@ -924,19 +920,15 @@ export default {
     },
     // 裁剪照片上传成功回调
     handleUploadSuccess(data) {
-      debugger
       this.setForm.photo = data.url
     },
     handleAvatarSuccess(res, file) {
-      debugger
       this.photoName = res.fileName
     },
     fileUploadSuccess(res, file) {
-      debugger
       console.log(this.setFormFile)
     },
     async beforeAvatarUpload(file, element) {
-      debugger
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -981,7 +973,7 @@ export default {
           imgWidth = img.width
           imgHight = img.height
           // const valid = img.width <= 1700 && img.height <= 2500
-          debugger
+
           const valid = img.width <= element.photoLimitWidth && img.height <= element.photoLimitHeight
           valid ? resolve() : reject()
         }
@@ -1001,7 +993,6 @@ export default {
       return await isSize
     },
     fileBeforeUpload(file, element) {
-      debugger
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -1056,7 +1047,7 @@ export default {
             name: data.data.fileName,
             url: data.data.filePath
           })
-          debugger
+
           console.log(this.setForm.signupContactDtlDto[element.mapCode])
           param.onSuccess(data, element)
         } else {
@@ -1085,7 +1076,6 @@ export default {
         method: 'POST',
         data: formData
       }).then(data => {
-        debugger
         if (data.status) {
           this.$message('上传文件成功')
           // if(element.mapCode = 'photo'){
@@ -1131,7 +1121,6 @@ export default {
     },
     // 手机号国际区号切换
     mobileIntCodeChange(val, element) {
-      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       let mobilePhoneVerify = this.rules.mobile.find(item => {
         return 'pattern' in item
@@ -1172,7 +1161,6 @@ export default {
     },
     // 手机号国际区号切换
     spareMobileIntCodeChange(val, element) {
-      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       let mobilePhoneVerify = this.rules.spareMobile.find(item => {
         return 'pattern' in item
@@ -1243,7 +1231,7 @@ export default {
         this.countryCodeOptions = res.data
         // 86 大陆, 852 香港, 853 澳门, 886 台湾
         this.nationsList = res.data.filter(item => {
-          // debugger
+          //
           return item.dictItemVal != '852' && item.dictItemVal != '853' && item.dictItemVal != '886'
         })
       })
@@ -1268,7 +1256,6 @@ export default {
     },
     // 下载附件
     downloadFile(file) {
-      debugger
       let downloadUrl = file.response ? file.response.data.filePath : file.url
       let filename = file.response ? file.response.data.fileName : file.name
       let a_link = document.createElement('a')
@@ -1294,7 +1281,7 @@ export default {
         .then(res => res.blob())
         .then(blob => {
           // 将链接地址字符内容转变成blob地址
-          debugger
+
           a_link.href = URL.createObjectURL(blob)
           console.log(a_link.href)
           a_link.download = fileName //下载的文件的名字
