@@ -55,7 +55,7 @@ export const formatRoutes = aMenu => {
           reuseFlag,
           name,
           path,
-          component(resolve) {
+          component (resolve) {
             if (component.includes('views/frame/base/')) {
               require([`@/views/frame/base/${component.split('views/frame/base/')[1]}.vue`], resolve, e => {
                 Notification(
@@ -133,6 +133,15 @@ export const formatRoutes = aMenu => {
             } else if (component.includes('views/frame/cmms/services/meeting/')) {
               //   meeting
               require([`@/views/frame/cmms/services/meeting/${component.split('views/frame/cmms/services/meeting/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
+            } else if (component.includes('views/frame/cmms/services/orderTicketing/')) {
+              //   meeting
+              require([`@/views/frame/cmms/services/orderTicketing/${component.split('views/frame/cmms/services/orderTicketing/')[1]}.vue`], resolve, e => {
                 Notification(
                   notifyError({
                     msg: `${component}找不到文件`
