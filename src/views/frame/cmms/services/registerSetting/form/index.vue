@@ -1,17 +1,149 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
 
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
-    <div style="padding: 0 20px">
+    <apply-set v-if="isFormSetComplete" :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"></apply-set>
+
+    <div v-else style="padding: 0 20px">
       <div class="steps">
-        <el-steps :active="2" align-center>
-          <el-step title="外观设置"></el-step>
-          <el-step title="表单设置"></el-step>
-          <el-step title="其他设置"></el-step>
+        <el-steps :active="stepIndex" align-center>
+          <el-step style="cursor: pointer">
+            <span slot="icon" @click="stepIndexChange(1)" style="cursor: pointer"> 1 </span>
+            <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> 外观设置 </span>
+          </el-step>
+          <el-step title="表单设置">
+            <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 2 </span>
+            <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 表单设置 </span>
+          </el-step>
+          <el-step title="结果设置">
+            <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 3 </span>
+            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 结果设置 </span>
+          </el-step>
         </el-steps>
       </div>
-      <div class="formSet">
+      <!-- 外观设置 -->
+      <div v-if="stepIndex == 1" class="appearanceSet" :style="{ height: formSetHeight + 'px' }">
+        <el-form ref="appearanceSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="250px" :model="appearanceSetForm" class="appearanceSetForm">
+          <!-- 通用设置 -->
+          <div class="appearanceSetItem">
+            <div class="setItemTitle">
+              <h3>通用设置</h3>
+              <span>
+                <span style="margin-right: 20px">{{ isCommonSetShow ? '收起' : '展开' }}</span>
+                <el-button type="text" @click="isCommonSetShow = !isCommonSetShow" style="vertical-align: middle; padding: 0">
+                  <i v-if="isCommonSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="isCommonSetShow">
+              <el-form-item label="注册标题" prop="titleChinese">
+                <el-input v-model="appearanceSetForm.titleChinese" style="width: 50%" size="mini" placeholder="注册标题"></el-input>
+              </el-form-item>
+              <el-form-item label="注册标题(英文)" prop="titleEnglish">
+                <el-input v-model="appearanceSetForm.titleEnglish" style="width: 50%" size="mini" placeholder="注册标题(英文)"></el-input>
+              </el-form-item>
+              <el-form-item label="语言设置" prop="language">
+                <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
+                  <el-checkbox label="中文" name="CN"></el-checkbox>
+                  <el-checkbox label="英文" name="EN"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item label="主色调" prop="color">
+                <el-color-picker v-model="appearanceSetForm.color" style="width: 50%" size="mini"></el-color-picker>
+              </el-form-item>
+            </div>
+          </div>
+          <!-- 会议宣传 -->
+          <div class="appearanceSetItem">
+            <div class="setItemTitle">
+              <h3>会议宣传</h3>
+              <span>
+                <span style="margin-right: 20px">{{ isPublicitySetShow ? '收起' : '展开' }}</span>
+                <el-button type="text" @click="isPublicitySetShow = !isPublicitySetShow" style="vertical-align: middle; padding: 0">
+                  <i v-if="isPublicitySetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="isPublicitySetShow">
+              <el-form-item label="是否开启会议宣传" prop="isPropaganda">
+                <el-switch v-model="appearanceSetForm.isPropaganda" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+
+              <el-form-item label="Banner(pc)" prop="meetingFile">
+                <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+
+              <el-form-item label="是否显示会议时间" prop="isMeetingDate">
+                <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示会议地点" prop="isMeetinPlace">
+                <el-switch v-model="appearanceSetForm.isMeetinPlace" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示倒计时" prop="isMeetinCountdown">
+                <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+              <el-form-item label="会议简介" prop="profile">
+                <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input>
+              </el-form-item>
+            </div>
+          </div>
+          <!-- 注册登录 -->
+          <div class="appearanceSetItem">
+            <div class="setItemTitle">
+              <h3>注册登录</h3>
+              <span>
+                <span style="margin-right: 20px">{{ isRegisterSetShow ? '收起' : '展开' }}</span>
+                <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow" style="vertical-align: middle; padding: 0">
+                  <i v-if="isRegisterSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="isRegisterSetShow">
+              <el-form-item label="Banner(pc)" prop="loginPcFile">
+                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="Banner(手机端)" prop="loginAppFile">
+                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                  <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="是否显示会议时间" prop="isLoginDate">
+                <el-switch v-model="appearanceSetForm.isLoginDate" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示会议地点" prop="isLoginPlace">
+                <el-switch v-model="appearanceSetForm.isLoginPlace" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+              <el-form-item label="是否显示倒计时" prop="isLoginCountdown">
+                <el-switch v-model="appearanceSetForm.isLoginCountdown" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
+        <div class="appearanceSetBtns">
+          <el-button type="primary" @click="appearanceSetSave">保存,进入下一步</el-button>
+          <el-button>取消</el-button>
+        </div>
+      </div>
+
+      <!-- 表单设置 -->
+      <div v-if="stepIndex == 2" class="formSet">
         <el-card class="formInfo" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
@@ -66,7 +198,6 @@
             </el-collapse>
           </div>
         </el-card>
-
         <el-card class="formPreview" :style="{ height: formSetHeight + 'px' }">
           <div :style="{ minHeight: formSetHeight - 80 + 'px' }">
             <h2 style="text-align: center">{{ eventName }}</h2>
@@ -112,7 +243,7 @@
                   <!-- 照片 -->
                   <div v-if="element.mapCode == 'photo'" class="form-item-input">
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload class="avatar-uploader">
                       <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                       <i class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -369,7 +500,7 @@
                   <!-- 附件 -->
                   <div v-if="element.systemName == '附件'" class="form-item-input">
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload class="avatar-uploader">
                       <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                       <i class="el-icon-plus avatar-uploader-icon"></i>
                       <p>{{ element.placeholder }}</p>
@@ -401,9 +532,9 @@
                   </div>
 
                   <div style="display: flex; flex-direction: column; justify-content: space-around">
-                    <div style="display: flex; width: 85px">
+                    <div style="display: flex">
                       <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">必填</el-checkbox>
-                      <div v-if="element.mapCode != 'name'" class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element, index)"></div>
+                      <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element, index)"></div>
                     </div>
                   </div>
                 </div>
@@ -413,9 +544,9 @@
           <div class="optionBtns" style="">
             <el-button type="primary" @click="save">
               <span class="el-icon-download"></span>
-              保存
+              保存,进入下一步
             </el-button>
-            <!-- <el-button @click="save">保存</el-button> -->
+            <el-button>取消</el-button>
           </div>
         </el-card>
 
@@ -552,8 +683,7 @@
                 </div>
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制照片尺寸 (px)</p>
-                  <div style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
-                  </div>
+                  <div style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
@@ -1075,7 +1205,7 @@
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制数字位数</p>
                   <p>
-                    <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="numberDigitLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1084,7 +1214,7 @@
                   <p class="eidtContentItemTitle" style="line-height: 32px">限制小数点后位数</p>
                   <p>
                     小数点后
-                    <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="decimalPlacesLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                    <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1306,28 +1436,23 @@
                   <p class="eidtContentItemTitle">限制文件类型</p>
                   <el-switch v-model="setInfoList[checkedIndex].fileTypeLimit"> </el-switch>
                   <div v-if="setInfoList[checkedIndex].fileTypeLimit" style="width: 100%">
-                    <p>图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].imageCheckedTypes" @change="imageCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].imageTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].documentCheckedTypes" @change="documentCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].documentTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].compressedFileCheckedTypes" @change="compressedFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].compressedFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].videoFileCheckedTypes" @change="videoFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].videoFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox>
-                    </p>
+                    <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox></p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].audioFileCheckedTypes" @change="audioFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].audioFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
@@ -1345,9 +1470,8 @@
                 <!-- 限制图片尺寸 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">限制图片尺寸</p>
-                  <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit" @change="pictureSizeLimitChange"> </el-switch>
-                  <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
-                  </div>
+                  <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit"> </el-switch>
+                  <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
@@ -1407,9 +1531,298 @@
           </div>
         </el-card>
       </div>
-      <!-- <el-button @click="save">保存</el-button> -->
+
+      <!-- 结果页设置 -->
+      <div v-if="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+        <el-form ref="resultSetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="200px" :model="resultSetForm" class="resultSetForm">
+          <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
+            <el-radio v-model="resultSetForm.isNeedApprove" :label="0">不需要审核</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" :label="1">需要审核</el-radio>
+          </el-form-item>
+          <div class="resultSetItem">
+            <div class="setItemTitle">
+              <h3>1、报名成功</h3>
+              <span>
+                <span style="margin-right: 20px">{{ successIsShow ? '收起' : '展开' }}</span>
+                <el-button type="text" @click="successIsShow = !successIsShow" style="vertical-align: middle; padding: 0">
+                  <i v-if="successIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="successIsShow">
+              <div style="display: flex">
+                <el-card shadow="always" class="previewCard">
+                  <div slot="header" style="text-align: center">
+                    <h3>预览</h3>
+                  </div>
+                  <div class="successPreview">
+                    <!-- 背景图 -->
+                    <img v-if="resultSetForm.successBackground" :src="printSetform.successBackground" alt="" style="position: absolute; width: 100%; height: 100%" />
+                    <!-- banner 图 -->
+                    <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner" :fit="fit"></el-image>
+                    <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
+                    <pre> {{ resultSetForm.successDescribe }} </pre>
+                    <div class="previewBtns">
+                      <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex" v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                    </div>
+                  </div>
+                </el-card>
+
+                <div class="successFormItem">
+                  <el-form-item label="提示主题:" prop="successTitle">
+                    <el-input v-model="resultSetForm.successTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述:" prop="successDescribe">
+                    <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Banner:" prop="successBanner">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file, 'successBanner')">
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="背景图:" prop="successBackground">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file, 'successBackground')">
+                      <i class="el-icon-upload" style="margin: 16px 0"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="提交后是否跳过当前页:" prop="successIsJumpCurrentPage">
+                    <div style="display: flex">
+                      <div>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="true">跳过</el-radio>
+                      </div>
+                      <div style="display: inline-block">
+                        <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
+                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px">
+                            <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                          </el-form-item>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item label="按钮设置:">
+                    <div v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex" style="display: flex">
+                      <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.btnName'">
+                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      </el-form-item>
+                      <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.btnFun'">
+                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
+                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.successButtonList, btnIndex)"></div>
+                      <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0" @click.stop="delBtn(resultSetForm.successButtonList, btnIndex)"></div>
+                    </div>
+                  </el-form-item>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+            <div class="setItemTitle">
+              <h3>2、待审核</h3>
+              <span>
+                <span style="margin-right: 20px">{{ waitReviewIsShow ? '收起' : '展开' }}</span>
+                <el-button type="text" @click="waitReviewIsShow = !waitReviewIsShow" style="vertical-align: middle; padding: 0">
+                  <i v-if="waitReviewIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="waitReviewIsShow">
+              <div style="display: flex">
+                <el-card shadow="always" class="previewCard">
+                  <div slot="header" style="text-align: center">
+                    <h3>预览</h3>
+                  </div>
+                  <div class="waitReviewPreview">
+                    <!-- 背景图 -->
+                    <img v-if="resultSetForm.waitReviewBackground" :src="printSetform.waitReviewBackground" alt="" style="position: absolute; width: 100%; height: 100%" />
+                    <!-- banner 图 -->
+                    <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%" :src="resultSetForm.waitReviewBanner" :fit="fit"></el-image>
+                    <h3 style="text-align: center">{{ resultSetForm.waitReviewTitle }}</h3>
+                    <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
+                    <div class="previewBtns">
+                      <el-button v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                    </div>
+                  </div>
+                </el-card>
+
+                <div class="waitReviewFormItem">
+                  <el-form-item label="提示主题:" prop="waitReviewTitle">
+                    <el-input v-model="resultSetForm.waitReviewTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述:" prop="waitReviewDescribe">
+                    <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Banner:" prop="waitReviewBanner">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="背景图:" prop="waitReviewBackground">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                      <i class="el-icon-upload" style="margin: 16px 0"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="提交后是否跳过当前页:" prop="waitReviewIsJumpCurrentPage">
+                    <div style="display: flex">
+                      <div>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" :label="true">跳过</el-radio>
+                      </div>
+                      <div style="display: inline-block">
+                        <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
+                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
+                            <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                          </el-form-item>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item label="按钮设置:">
+                    <div v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" style="display: flex">
+                      <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.btnName'">
+                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      </el-form-item>
+                      <el-form-item label="功能" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.btnFun'">
+                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
+                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
+                      <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0" @click.stop="delBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
+                    </div>
+                  </el-form-item>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+            <div class="setItemTitle">
+              <h3>3、不通过</h3>
+              <span>
+                <span style="margin-right: 20px">{{ noPassIsShow ? '收起' : '展开' }}</span>
+                <el-button type="text" @click="noPassIsShow = !noPassIsShow" style="vertical-align: middle; padding: 0">
+                  <i v-if="noPassIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                  <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+                </el-button>
+              </span>
+            </div>
+            <el-divider></el-divider>
+            <div v-show="noPassIsShow">
+              <div style="display: flex">
+                <el-card shadow="always" class="previewCard">
+                  <div slot="header" style="text-align: center">
+                    <h3>预览</h3>
+                  </div>
+                  <div class="noPassPreview">
+                    <!-- 背景图 -->
+                    <img v-if="resultSetForm.noPassBackground" :src="printSetform.noPassBackground" alt="" style="position: absolute; width: 100%; height: 100%" />
+                    <!-- banner 图 -->
+                    <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner" :fit="fit"></el-image>
+                    <h3 style="text-align: center">{{ resultSetForm.noPassTitle }}</h3>
+                    <pre> {{ resultSetForm.noPassDescribe }} </pre>
+                    <div class="previewBtns">
+                      <el-button v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                    </div>
+                  </div>
+                </el-card>
+
+                <div class="noPassFormItem">
+                  <el-form-item label="提示主题:" prop="noPassTitle">
+                    <el-input v-model="resultSetForm.noPassTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述:" prop="noPassDescribe">
+                    <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Banner:" prop="noPassBanner">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="背景图:" prop="noPassBackground">
+                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                      <i class="el-icon-upload" style="margin: 16px 0"></i>
+                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="提交后是否跳过当前页:" prop="noPassIsJumpCurrentPage">
+                    <div style="display: flex">
+                      <div>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" :label="false">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" :label="true">跳过</el-radio>
+                      </div>
+                      <div style="display: inline-block">
+                        <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
+                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
+                            <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                          </el-form-item>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form-item>
+
+                  <el-form-item label="按钮设置:">
+                    <div v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" style="display: flex">
+                      <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.btnName'">
+                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      </el-form-item>
+                      <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.btnFun'">
+                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
+                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
+                      <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0" @click.stop="delBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
+                    </div>
+                  </el-form-item>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-form>
+        <div class="resultSetBtns">
+          <el-button @click="preStep">上一步(暂存)</el-button>
+          <el-button type="primary" @click="resultSetSave">生成表单</el-button>
+        </div>
+      </div>
     </div>
 
+    <!-- 表单设置-批量新增选项 弹窗 -->
     <el-dialog title="批量新增" width="500px" :visible.sync="batchEditDiologVisible" :modal-append-to-body="true" :append-to-body="true">
       <p>输入选项值（每行一个）</p>
       <el-input type="textarea" :rows="10" v-model="batchEditOptions"></el-input>
@@ -1424,6 +1837,7 @@
 <script>
 import draggable from 'vuedraggable'
 import screenfull from 'screenfull'
+import applySet from './applySet.vue'
 import { mapGetters } from 'vuex'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
@@ -1432,6 +1846,7 @@ export default {
   name: 'attendeeFormConfig',
   data() {
     return {
+      stepIndex: 1,
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -1628,7 +2043,9 @@ export default {
           }
         ]
       },
-
+      isCommonSetShow: true, // 通用设置是否显示
+      isPublicitySetShow: true, // 会议宣传是否显示
+      isRegisterSetShow: true, // 注册登录是否显示
       customInfoCount: 0, // 自定义信息数量
       textareaNum: 35, // 长文本字段序号为 36-40
       pagingCount: 0, // 分页数量
@@ -1640,6 +2057,28 @@ export default {
       // 表格高度
       formSetHeight: 0,
       batchEditDiologVisible: false,
+      appearanceSetForm: {
+        titleChinese: '', // 标题
+        titleEnglish: '', // 英文标题
+        language: ['中文'], // 语言
+        language: ['中文'], // 语言
+        color: '#409EFF', // 主色调
+        isPropaganda: 0, // 是否开启会议宣传
+        BannerList: [], // banner 列表
+        meetingFile: '',
+        isMeetingDate: 0, // 是否显示会议时间
+        isMeetinPlace: 0, // 是否显示会议地点
+        isMeetinCountdown: 0, // 是否显示倒计时
+        profile: '', // 会议简介
+
+        registerBannerPCList: [], // 注册登录PC BannerList
+        loginPcFile: '',
+        registerBannerMobileList: [], // 注册登录移动端 BannerList
+        loginAppFile: '',
+        isLoginDate: 0, // 是否显示会议时间
+        isLoginPlace: 0, // 是否显示会议地点
+        isLoginCountdown: 0 // 是否显示倒计时
+      },
       setForm: {
         checkedSex: '',
         chenkedCertificate: [],
@@ -1658,11 +2097,77 @@ export default {
         selectMultipleCheckedOptions: [],
         date: ''
       },
-      checkedIndex: 0 // 选中预览item下标
+      checkedIndex: 0, // 选中预览item下标
+      resultSetForm: {
+        isNeedApprove: 0, // 是否需要审核
+        successTitle: '', // 报名成功提示主题
+        successDescribe: '', // 报名成功描述
+        successBanner: '', // 报名成功Banner
+        successBackground: '', // 报名成功背景图
+        successIsJumpCurrentPage: false, // 是否跳过当前页面
+        successJumpPage: '', // 选择跳转页面
+        successOutPageUrl: '', // 站外页面URL
+        successButtonList: [
+          {
+            btnName: '', // 按钮名称
+            btnFun: '' // 按钮功能
+          }
+        ],
+
+        waitReviewTitle: '', // 待审核 提示主题
+        waitReviewDescribe: '', // 待审核 描述
+        waitReviewBanner: '', // 待审核 Banner
+        waitReviewBackground: '', // 待审核 背景图
+        waitReviewIsJumpCurrentPage: false, // 待审核 是否跳过当前页面
+        waitReviewJumpPage: '', // 待审核 选择跳转页面
+        waitReviewOutPageUrl: '', // 待审核 站外页面URL
+        waitReviewButtonList: [
+          {
+            btnName: '', // 按钮名称
+            btnFun: '' // 按钮功能
+          }
+        ],
+
+        noPassTitle: '', // 不通过提示主题
+        noPassDescribe: '', // 不通过 描述
+        noPassBanner: '', // 不通过Banner
+        noPassBackground: '', // 不通过背景图
+        noPassIsJumpCurrentPage: false, // 不通过 是否跳过当前页面
+        noPassJumpPage: '', // 不通过 选择跳转页面
+        noPassOutPageUrl: '', // 不通过 站外页面URL
+        noPassButtonList: [
+          {
+            btnName: '', // 按钮名称
+            btnFun: '' // 按钮功能
+          }
+        ]
+      },
+      jumpPageOptions: [
+        { label: '首页菜单', value: '001' },
+        { label: '个人中心', value: '002' },
+        { label: '参观码', value: '003' },
+        { label: '报名页面', value: '004' },
+        { label: '会议简介', value: '005' },
+        { label: '站内页面', value: '006' },
+        { label: '站外页面', value: '007' }
+      ], // 跳转页面选项
+      btnOptions: [
+        { label: '返回首页', value: '001' },
+        { label: '重新报名', value: '002' },
+        { label: '查看报名信息', value: '003' },
+        { label: '前往个人中心', value: '004' },
+        { label: '退出登录', value: '005' },
+        { label: '修改信息', value: '006' }
+      ],
+      successIsShow: true, // 报名成功是否显示
+      waitReviewIsShow: true, // 报名成功是否显示
+      noPassIsShow: true, // 报名成功是否显示
+      isFormSetComplete: false // 表单设置是否完成
     }
   },
   components: {
-    draggable
+    draggable,
+    applySet
   },
   mounted() {
     this.tableComputed()
@@ -1672,7 +2177,8 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
+    }).then((res) => {
+      // debugger
       this.countryCodeOptions = res.data
       // dictItemName \ dictItemVal
     })
@@ -1712,22 +2218,76 @@ export default {
     },
     clientHeight() {
       this.tableComputed()
+    },
+    stepIndex(newVal, oldVal) {
+      if (newVal == 1) {
+        this.getAppearanceSet()
+      }
     }
   },
   methods: {
+    // 外观设置保存
+    appearanceSetSave() {
+      this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+      this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+      debugger
+      request({
+        url: '/api/register/signupExterior/save',
+        method: 'POST',
+        data: {
+          data: this.appearanceSetForm,
+          funcModule: '表单外观设置',
+          funcOperation: '表单外观设置保存'
+        }
+      }).then((res) => {
+        if (res.status) {
+          // 进入下一步 表单设置
+          this.stepIndex = 2
+        }
+      })
+    },
+
+    getAppearanceSet() {
+      request({
+        url: '/api/register/signupExterior/get',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '表单外观设置',
+          funcOperation: '表单外观设置查询'
+        }
+      }).then((res) => {
+        if (res.status) {
+          this.appearanceSetForm = res.data
+          this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
+        }
+      })
+    },
+    // 结果页设置 上一步(暂存)
+    preStep() {
+      this.stepIndex = 2
+    },
+    resultSetSave() {
+      this.isFormSetComplete = true
+    },
+    setResult() {
+      this.isFormSetComplete = false
+      this.stepIndex = 3
+      this.resultSetForm.isNeedApprove = 1
+    },
     getEventInfo() {
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
       }
-      //
-      this.baseInfoList.forEach(baseInfoItem => {
+      // debugger
+      this.baseInfoList.forEach((baseInfoItem) => {
         baseInfoItem.isSee = false
       })
-      this.contactWayList.forEach(contactWayItem => {
+      this.contactWayList.forEach((contactWayItem) => {
         contactWayItem.isSee = false
       })
-      this.workInfoList.forEach(workInfoItem => {
+      this.workInfoList.forEach((workInfoItem) => {
         workInfoItem.isSee = false
       })
 
@@ -1739,32 +2299,29 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then(response => {
+      }).then((response) => {
+        // debugger
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
         } else {
           this.setInfoList = []
         }
-        // 姓名是必加项,如果没有添加姓名, 自动添加
-        if (!this.setInfoList.some(item => item.mapCode == 'name')) {
-          this.addSetInfoList({ label: '姓名', value: 'name', isSee: false }, this.baseInfoList, 'baseInfoList')
-        }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
-        this.setInfoList.forEach(setInfoItem => {
+        this.setInfoList.forEach((setInfoItem) => {
           // 基本信息
-          this.baseInfoList.forEach(baseInfoItem => {
+          this.baseInfoList.forEach((baseInfoItem) => {
             if (baseInfoItem.value == setInfoItem.mapCode) {
               baseInfoItem.isSee = true
             }
           })
           // 联系方式
-          this.contactWayList.forEach(contactWayItem => {
+          this.contactWayList.forEach((contactWayItem) => {
             if (contactWayItem.value == setInfoItem.mapCode) {
               contactWayItem.isSee = true
             }
           })
           // 工作信息
-          this.workInfoList.forEach(workInfoItem => {
+          this.workInfoList.forEach((workInfoItem) => {
             if (workInfoItem.value == setInfoItem.mapCode) {
               workInfoItem.isSee = true
             }
@@ -1775,9 +2332,9 @@ export default {
         })
       })
     },
-
+    // 表单设置保存
     save() {
-      this.setInfoList.forEach(item => {
+      this.setInfoList.forEach((item) => {
         if (item.systemName == '附件') {
           item.allFileTypes = [...item.imageCheckedTypes, ...item.documentCheckedTypes, ...item.compressedFileCheckedTypes, ...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
         }
@@ -1793,9 +2350,10 @@ export default {
           funcModule: '获取模块类型',
           funcOperation: '获取模块类型'
         }
-      }).then(res => {
+      }).then((res) => {
         if (res.status) {
           this.$message.success('保存成功')
+          this.stepIndex = 3
         } else {
           this.$message.error('保存失败')
         }
@@ -1804,9 +2362,10 @@ export default {
     },
     //移除表单信息
     delSetInfoList(itemList, itemIndex) {
+      debugger
       switch (itemList.parentListName) {
         case 'baseInfoList':
-          var index = this.baseInfoList.findIndex(item => {
+          var index = this.baseInfoList.findIndex((item) => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1814,7 +2373,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'contactWayList':
-          var index = this.contactWayList.findIndex(item => {
+          var index = this.contactWayList.findIndex((item) => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1822,7 +2381,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'workInfoList':
-          var index = this.workInfoList.findIndex(item => {
+          var index = this.workInfoList.findIndex((item) => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1830,7 +2389,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'customInfoList':
-          var index = this.customInfoList.findIndex(item => {
+          var index = this.customInfoList.findIndex((item) => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1839,7 +2398,7 @@ export default {
           this.customInfoCount--
           break
         case 'specialInfoList':
-          var index = this.specialInfoList.findIndex(item => {
+          var index = this.specialInfoList.findIndex((item) => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -1964,13 +2523,14 @@ export default {
       }
 
       if (parentListName == 'customInfoList') {
+        debugger
         this.customInfoCount++
         if (this.customInfoCount > 40) {
           this.$message.warning('新增自定义信息数量超出最大限制')
           return
         }
         // obj.mapCode = 'reservedStr' + this.customInfoCount
-        //
+        // debugger
         obj.isCoustomInfo = true
         obj.title = '您的标题'
         // if(itemList.value == 'input'){
@@ -1981,33 +2541,15 @@ export default {
           this.textareaNum++
           obj.wordCountLimit = 200
         }
-        // 短文本\长文本添加字数限制校验
-        if (itemList.value == 'input' || itemList.value == 'textarea') {
-          obj.check[0].code = '008'
-          obj.check[0].name = obj.wordCountLimit
-        }
-        // 数字添加校验
-        if (itemList.value == 'number') {
-          obj.check[0].code = '009'
-          obj.check[0].name = obj.numberDigitLimit
-          obj.check.push({
-            code: '010',
-            name: obj.decimalPlacesLimit
-          })
-        }
         if (['radio', 'checkbox', 'select', 'selects'].includes(itemList.value)) {
           obj.options = ['选项一', '选项二']
-        }
-        if (itemList.value == 'file') {
-          obj.check[0].code = '013'
-          obj.check[0].name = obj.fileSizeLimit
         }
       }
 
       if (parentListName == 'specialInfoList') {
         obj.isSpecialInfo = true
       }
-      var index = parentList.findIndex(item => {
+      var index = parentList.findIndex((item) => {
         return item.value == itemList.value
       })
       // 性别添加选项
@@ -2029,7 +2571,7 @@ export default {
       }
 
       // 证件
-      //
+      // debugger
       if (itemList.value == 'certificate') {
         obj.options = ['居民身份证']
         obj.check[0].code = '001'
@@ -2049,18 +2591,21 @@ export default {
       if (itemList.value == 'explainInfo') {
         obj.mapCode = 'explainInfo' + this.setInfoList.length
       }
-      //
+      // debugger
       if (parentListName == 'baseInfoList' || parentListName == 'contactWayList' || parentListName == 'workInfoList') {
         parentList[index].isSee = true
       }
       this.setInfoList.push(obj)
     },
     selectMultipleChange(val) {
-      //
+      // debugger
     },
-
+    stepIndexChange(setpIndex) {
+      debugger
+      this.stepIndex = setpIndex
+    },
     certificateTypeChange(certificateOptions) {
-      //
+      // debugger
       // 证件类型不包括居民身份证时 校验code设为空
       if (!certificateOptions.includes('居民身份证')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
@@ -2083,15 +2628,81 @@ export default {
         this.test = this.test
         return
       }
+      // debugger
     },
+    fileLimitCount(files, fileList) {
+      this.$message.warning('只允许上传一个文件')
+    },
+    beforeAvatarUpload(file) {
+      debugger
+      const fileName = file.name
+      const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
+      let isAllowUpload = true
+      let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
 
+      // 判断后缀名是否允许上传
+      isAllowUpload = acceptType.includes(extension)
+      if (!isAllowUpload) {
+        const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
+        this.$message.error(errMsg)
+        return false
+      }
+
+      // const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit;
+      // if (!sizeLimit) {
+      //   this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`);
+      //   return false;
+      // }
+
+      return isAllowUpload
+    },
+    // 自定义上传文件
+    handleUploadForm(param, uploadType) {
+      let formData = new FormData()
+      formData.append('file', param.file)
+      let loading = this.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: '/api/obs/file/uploadImg',
+        method: 'POST',
+        data: formData
+      }).then((data) => {
+        debugger
+        if (data.status) {
+          this.$message('上传文件成功')
+          // this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+          if (uploadType == 'successBanner') {
+            this.resultSetForm.successBanner = data.data.filePath
+          } else if (uploadType == 'successBackground') {
+            this.resultSetForm.successBackground = data.data.filePath
+          } else if (uploadType == 'waitReviewBanner') {
+            this.resultSetForm.waitReviewBanner = data.data.filePath
+          } else if (uploadType == 'waitReviewBackground') {
+            this.resultSetForm.waitReviewBackground = data.data.filePath
+          } else if (uploadType == 'noPassBanner') {
+            this.resultSetForm.noPassBanner = data.data.filePath
+          } else if (uploadType == 'noPassBackground') {
+            this.resultSetForm.noPassBackground = data.data.filePath
+          }
+          param.onSuccess(data)
+        }
+        // console.log(this.setFormFile[element.mapCode])
+        loading.close()
+      })
+    },
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
+      debugger
       this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
+      debugger
       let checkedCount = value.length
       this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
@@ -2166,61 +2777,30 @@ export default {
       }
     },
 
-    // 附件是否限制图片尺寸
-    pictureSizeLimitChange(val) {
-      if (val) {
-        this.setInfoList[this.checkedIndex].check.push({
-          code: '004',
-          name: this.setInfoList[this.checkedIndex].photoLimitWidth + ',' + this.setInfoList[this.checkedIndex].photoLimitHeight
-        })
-      } else {
-        this.setInfoList[this.checkedIndex].check.filter(item => {
-          return item.code != '004'
-        })
-      }
-    },
-
     // 限制图片尺寸修改
     photoLimitSizehChange(setInfoListItem) {
-      if (setInfoListItem.mapCode == 'photo') {
-        setInfoListItem.check[0].code = '004'
-        setInfoListItem.check[0].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
-      } else {
-        setInfoListItem.check[1].code = '004'
-        setInfoListItem.check[1].name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
-      }
+      setInfoListItem.check.code = '004'
+      setInfoListItem.check.name = setInfoListItem.photoLimitWidth + ',' + setInfoListItem.photoLimitHeight
     },
 
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
     },
     minCheckedCountChange(val) {
       if (val != 0) {
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-
+      debugger
       this.setInfoList[this.checkedIndex].check[0].code = '011'
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
     maxCheckedCountChange(val) {
-      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some(checkItem => {
+      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some((checkItem) => {
         return checkItem.code == '012'
       })
       if (hasMaxLimit) {
-        let maxLimit = this.setInfoList[this.checkedIndex].check.find(checkItem => {
+        let maxLimit = this.setInfoList[this.checkedIndex].check.find((checkItem) => {
           return checkItem.code == '012'
         })
         maxLimit.name = val
@@ -2230,7 +2810,7 @@ export default {
       console.log(this.setInfoList[this.checkedIndex].check)
     },
     batchEditOptionsComfirm() {
-      //
+      // debugger
       let tempArr = this.batchEditOptions.split('\n')
       this.setInfoList[this.checkedIndex].options = this.setInfoList[this.checkedIndex].options.concat(tempArr)
       // this.setInfoList[this.checkedIndex].options.forEach((option,optionIdnex) => {
@@ -2244,6 +2824,7 @@ export default {
       setInfoListItem.options.push(optionValue)
     },
     delRadioOption(setInfoListItem, option, optionIndex) {
+      debugger
       // this.setInfoList.splice(itemIndex,1);
       setInfoListItem.options.splice(optionIndex, 1)
     },
@@ -2286,9 +2867,9 @@ export default {
       // 005：手机号格式校验(中国大陆)
       // 006：手机号格式校验(港澳台)
       // 007：手机号格式校验(国际)
-
+      debugger
       this.setInfoList[this.checkedIndex].check = []
-      val.forEach(element => {
+      val.forEach((element) => {
         if (element == '中国大陆') {
           this.setInfoList[this.checkedIndex].check.push({ code: '005', name: '' })
         } else if (element == '港澳台') {
@@ -2304,7 +2885,10 @@ export default {
       // 会议编码 params.code
       // 会议名称 params.name
       this.eventName = params.name
+
+      this.stepIndex = 1
       this.getEventInfo()
+      this.getAppearanceSet()
     },
     initialize() {
       if (this.form.listQuery.data.eventCode == '') {
@@ -2320,7 +2904,7 @@ export default {
           funcOperation: '表单初始化'
         }
       })
-        .then(response => {
+        .then((response) => {
           this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
           this.loading = false
           this.handleCloseDialog(true)
@@ -2330,8 +2914,19 @@ export default {
         })
     },
     edititem(checkedItem, checkedIndex) {
-      //
+      // debugger
       this.checkedIndex = checkedIndex
+    },
+    // 结果页设置 添加按钮
+    addBtn(btnList, btnIndex) {
+      btnList.splice(btnIndex + 1, 0, {
+        btnName: '',
+        btnFun: ''
+      })
+    },
+    // 结果页设置 删除按钮
+    delBtn(btnList, btnIndex) {
+      btnList.splice(btnIndex, 1)
     },
     //开始拖拽事件
     onStart() {
@@ -2384,10 +2979,18 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .steps {
   width: 80%;
   margin: 0 auto;
+  .stepIcon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid;
+    background: #fff;
+  }
 }
 .formSet {
   display: flex;
@@ -2521,6 +3124,84 @@ export default {
         }
       }
     }
+  }
+}
+.appearanceSet {
+  padding: 20px 50px;
+  min-width: 1250px;
+  background: #fff;
+  overflow: auto;
+  .appearanceSetItem {
+    .el-form-item {
+      // margin-left: 100px;
+      .el-form-item__label {
+        margin-right: 100px;
+      }
+    }
+    .setItemTitle {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+    }
+  }
+  .appearanceSetBtns {
+    text-align: center;
+  }
+}
+.resultSet {
+  padding: 20px 50px;
+  min-width: 1250px;
+  background: #fff;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .resultSetItem {
+    .setItemTitle {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+    }
+    .previewCard {
+      width: 290px;
+      height: 515px;
+      position: relative;
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .previewBtns {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .el-button {
+          width: 150px;
+          margin: 5px 0;
+        }
+      }
+    }
+    .el-upload-dragger {
+      height: 120px;
+      .el-icon-upload {
+        margin: 16px 0;
+      }
+    }
+    .el-upload__tip {
+      margin-top: 0;
+    }
+    .remove-button {
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 28px;
+      margin-left: 10px;
+    }
+  }
+  .resultSetBtns {
+    text-align: center;
   }
 }
 </style>
