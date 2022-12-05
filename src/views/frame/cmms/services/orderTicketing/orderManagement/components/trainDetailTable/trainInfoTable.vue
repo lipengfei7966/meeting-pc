@@ -1,17 +1,23 @@
 <template>
-    <div class="tranInfoContainer bs-new-container">
-        <el-table :data="tableData" style="width: 100%;" max-height="350" stripe border>
-            <el-table-column fixed prop="date" label="日期" width="150">
+    <div class="tranInfoContainer">
+        <el-table :data="tableData" style="width: 100%;" max-height="130" stripe border>
+            <el-table-column fixed prop="date" label="车次" width="150">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="name" label="检票口" width="120">
             </el-table-column>
-            <el-table-column prop="province" label="省份" width="120">
+            <el-table-column prop="province" label="始发地" width="120">
             </el-table-column>
-            <el-table-column prop="city" label="市区" width="120">
+            <el-table-column prop="city" label="始发站" width="120">
             </el-table-column>
-            <el-table-column prop="address" label="地址" width="300">
+            <el-table-column prop="address" label="目的地" width="250">
             </el-table-column>
-            <el-table-column prop="zip" label="邮编" width="120">
+            <el-table-column prop="zip" label="到达站" width="130">
+            </el-table-column>
+            <el-table-column prop="zip" label="出发时间" width="120">
+            </el-table-column>
+            <el-table-column prop="zip" label="耗时" width="120">
+            </el-table-column>
+            <el-table-column prop="zip" label="车次状态" width="120">
             </el-table-column>
         </el-table>
     </div>
@@ -24,41 +30,6 @@ export default {
         return {
             tableData: [{
                 date: '2016-05-03',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-02',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-08',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-06',
                 name: '王小虎',
                 province: '上海',
                 city: '普陀区',
@@ -86,4 +57,17 @@ export default {
 .tranInfoContainer {
     padding: 15px 15px 0 15px;
 }
+
+::v-deep.bs-new-container {
+    min-height: 100px;
+    border: none;
+}
+
+// ::v-deep.el-table td.el-table__cell {
+//     border: none;
+// }
+
+// ::v-deep.el-table--small ::v-deep.el-table__cell {
+//     border: none;
+// }
 </style>

@@ -92,15 +92,73 @@ export default {
             refundAmount: 0,// 预估退票金额
             serviceFee: 0,// 手续费
             thepayAmount: 0,
-            theorderCode: ''
+            theorderCode: '',
+            multipleSelection: [],
+            Relation: {
+                '订单状态': 'orderStatus',
+                '所属客户': 'userCode',
+                '订单号': 'orderNumber',
+                '下单时间': 'updateDate',
+                '差旅类型': 'travelType',
+                '订单类型': 'orderType',
+                '下单人': 'createUser',
+                '支付方式': 'payType',
+                '支付状态': 'payStatus',
+                '出行类型': 'tripType',
+                '联系人电话': 'contactPhone',
+                '票号': 'ticketNo',
+                '车次/航班信息': 'info',
+                '支付金额': 'payAmount',
+            },
+            columnNames: [],
+            columnValues: [],
+            exportData: [],
         }
     },
-    created () { },
+    created () { this.headerFn() },
     mounted () { },
+    watch: {
+        'multipleSelection': {
+            handler (newVal, oldVal) {
+                // this.multipleSelection = newVal
+                if (this.exportData.length >= 2) {
+                    this.exportData = this.exportData.slice(0, this.exportData.length - 1)
+                }
+                this.orderFamtter()
+                this.$emit('exportData', this.exportData)
+                this.$emit('multipleSelection', this.multipleSelection)
+            }
+        }
+    },
     methods: {
         // 选中列表中某一项
         handleSelectionChange (val) {
+            // this.exportData = this.exportData.splice(1)
             this.multipleSelection = val
+            console.log(this.multipleSelection, 'this.multipleSelection')
+            console.log(this.multipleSelection.length, 'this.multipleSelection.length')
+            if (this.multipleSelection.length <= 0) { return false }
+            this.orderFamtter()
+            this.$emit('exportData', this.exportData)
+            this.$emit('multipleSelection', this.multipleSelection)
+        },
+        // 表头
+        headerFn () {
+            this.columnNames = Object.keys(this.Relation)
+            this.columnValues = Object.values(this.Relation)
+            this.exportData.push(this.columnNames)
+        },
+        // 表格数据格式化
+        orderFamtter () {
+            this.multipleSelection.forEach(item => {
+                var this_Arr = []
+                this.columnValues.forEach(key => {
+                    item.hasOwnProperty(key) ? this_Arr.push(item[key]) : this_Arr.push('')
+                })
+                console.log(this_Arr, 'this_Arr')
+                this.exportData.push(this_Arr)
+            })
+
         },
         // 改签
         handleUpdteClick (row) {

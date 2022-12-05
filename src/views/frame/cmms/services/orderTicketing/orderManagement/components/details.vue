@@ -49,17 +49,17 @@ export default {
         }
     },
     created () {
-        // this.trainDetailFn()
+        this.trainDetailFn()
         // console.log(this.$route.query.orderCode)
     },
     mounted () { },
     methods: {
-        // trainDetailFn () {
-        //     let orderCode = this.$route.query.orderCode
-        //     trainDetail(orderCode).then(res => {
-        //         console.log(res, '车票详情')
-        //     })
-        // }
+        trainDetailFn () {
+            let orderCode = this.$route.params.orderCode
+            trainDetail(orderCode).then(res => {
+                console.log(res, '车票详情')
+            })
+        }
     },
 }
 </script>

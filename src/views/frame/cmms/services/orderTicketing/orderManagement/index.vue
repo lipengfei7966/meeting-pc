@@ -36,9 +36,6 @@
           <el-col :span="8">
             <div class="grid-content bg-purple">
               <el-form-item label="下单时间：">
-                <!-- <el-date-picker v-model="value1" prefix-icon=0 type="daterange" range-separator="至"
-                  value-format="yyyy-MM-dd" @change="checkChange" start-placeholder="开始日期" end-placeholder="结束日期">
-                </el-date-picker> -->
                 <el-date-picker v-model="value1" @change="checkChange" type="datetimerange" range-separator="至"
                   start-placeholder="开始日期" end-placeholder="结束日期">
                 </el-date-picker>
@@ -171,19 +168,23 @@
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane :label='`快速订单(${orderStatusTotal.allOrderCount})`' name="first">
                 <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize" />
+                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
+                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <el-tab-pane :label='`已出票(${orderStatusTotal.ticketsIssuedCount})`' name="second">
                 <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize" />
+                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
+                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <el-tab-pane :label='`待付款(${orderStatusTotal.obligationCount})`' name="third">
                 <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize" />
+                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
+                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <el-tab-pane :label='`已取消(${orderStatusTotal.cancelCount})`' name="fourth">
                 <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize" />
+                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
+                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <!-- <el-tab-pane :label='`退票异常订单(${orderStatusTotal.abnormalOrderCount})`' name="fifth">
                 <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
@@ -193,25 +194,25 @@
           </div>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :offset="10">
-          <div class="grid-content bg-purple">
-            <div class="page ">
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="basicOrderInfoSize"
-                layout="total, sizes, prev, pager, next, jumper" :total="basicOrderInfoTotal">
-              </el-pagination>
-            </div>
+      <div class="pages">
+        <div class="grid-content bg-purple">
+          <div class="page ">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+              :current-page="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="basicOrderInfoSize"
+              layout="total, sizes, prev, pager, next, jumper" :total="basicOrderInfoTotal">
+            </el-pagination>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
-
   </div>
 </template>
 <script>
 import { basicOrderInfo, listItem, getStatusCount } from './utils/api'
 import orderTable from './components/orderTable.vue'
+// 导出excel
+// import exportExcel from '@/utils/frame/base/downloadExcel'
+import { exportExcel } from "./utils/excelConfig"
 export default {
   name: 'orderManagement',
   components: { orderTable },
@@ -276,7 +277,9 @@ export default {
         cancelCount: 0,
         obligationCount: 0,
         ticketsIssuedCount: 0
-      }
+      },
+      exportData: [],
+      multipleSelection: []
     }
   },
   created () {
@@ -424,13 +427,35 @@ export default {
       this.queryBasicOrderInfo.data.endTime = ''
       this.value1 = ''
     },
+    // 选中数据
+    multipleSelectionFn (multipleSelection) {
+      this.multipleSelection = multipleSelection
+    },
+    // 导出的数据
+    exportDataFn (exportData) {
+      this.exportData = exportData
+    },
     // 导出
     onImport () {
       console.log('onImport!')
+      // exportExcel({
+      //   fileName: '1.xlsx',
+      //   header: ['订单状态', '所属客户'],
+      //   filterVal: ['已出票', '1212'],
+      //   exportfunc: function () {
+      //   },
+      //   callBackfunc: function () {
+
+      //   }
+      // })
+      if (this.exportData.length <= 1 || this.multipleSelection.length <= 0) {
+        this.$message({ message: '您还没有选择要导出的数据', type: 'warning' })
+        return false
+      }
+      exportExcel('订单表格导出', this.exportData)
     },
     // tab栏
-    handleClick (tab, event) {
-      console.log(tab, event)
+    handleClick (tab) {
       switch (tab._props.name) {
         case 'first':
           this.queryBasicOrderInfo.data.orderStatus = ''
@@ -474,11 +499,6 @@ export default {
       this.queryBasicOrderInfo.data.startTime = this.value1[0]
       this.queryBasicOrderInfo.data.endTime = this.value1[1]
     }
-  },
-  filters: {
-    Time (e) { //处理时间
-      return moment(parseInt(e)).format('YYYY-MM-DD HH:mm:ss')
-    }
   }
 }
 </script>
@@ -486,6 +506,12 @@ export default {
 <style scoped lang="scss">
 .container {
   padding: 10px;
+}
+
+.pages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .order-select {
