@@ -139,18 +139,12 @@ export default {
         },
         // 跳转详情页
         handleInfoClick (row) {
-            // if (row.businessType === '1') {//机票
-            // this.$router.push({ name: '/trainTicketDetails', query: {} })
-            // }
-            // if (row.businessType === '2') {//火车票
-            //     this.$router.push({ name: '/trainTicketDetails', query: {} })
-            // }
-            // if (row.businessType === '1') {//机票
-            this.$router.push({ path: '/services/orderManagement/airTicketDetails', query: { orderCode: row.orderCode } })
-            // }
-            // if (row.businessType === '2') {//火车票
-            // this.$router.push('/services/orderManagement/trainTicketDetails')
-            // }
+            if (row.businessType === '1') {//机票
+                this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode } })
+            }
+            if (row.businessType === '2') {//火车票
+                this.$router.push({ name: '/trainTicketDetails', params: { orderCode: row.orderCode } })
+            }
         }
     },
 }

@@ -3,7 +3,7 @@
     <div class="order-select bs-new-container">
       <el-form :inline="true" :model="queryBasicOrderInfo.data" class="demo-form-inline">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="订单状态：">
                 <el-select v-model="queryBasicOrderInfo.data.orderStatus" placeholder="全部">
@@ -16,7 +16,7 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="所属客户：">
                 <el-select v-model="queryBasicOrderInfo.data.userCode" placeholder="全部">
@@ -33,18 +33,22 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <div class="grid-content bg-purple">
               <el-form-item label="下单时间：">
-                <el-date-picker v-model="value1" prefix-icon=0 type="daterange" range-separator="至"
+                <!-- <el-date-picker v-model="value1" prefix-icon=0 type="daterange" range-separator="至"
                   value-format="yyyy-MM-dd" @change="checkChange" start-placeholder="开始日期" end-placeholder="结束日期">
+                </el-date-picker> -->
+                <el-date-picker v-model="value1" @change="checkChange" type="datetimerange" range-separator="至"
+                  start-placeholder="开始日期" end-placeholder="结束日期">
                 </el-date-picker>
+
               </el-form-item>
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="差旅类型：">
                 <el-select v-model="queryBasicOrderInfo.data.travelType" placeholder="全部">
@@ -57,7 +61,7 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="订单类型：">
                 <el-select v-model="queryBasicOrderInfo.data.orderType" placeholder="全部">
@@ -77,7 +81,7 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <div class="grid-content bg-purple">
               <el-form-item label="支付方式：">
                 <el-select v-model="queryBasicOrderInfo.data.payType" placeholder="全部">
@@ -92,7 +96,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="支付状态：">
                 <el-select v-model="queryBasicOrderInfo.data.payStatus" placeholder="全部">
@@ -105,7 +109,7 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="出行类型：">
                 <el-select v-model="queryBasicOrderInfo.data.tripType" placeholder="全部">
@@ -125,7 +129,7 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <div class="grid-content bg-purple">
               <el-form-item label="联系人电话：">
                 <el-input v-model="queryBasicOrderInfo.data.contactPhone"></el-input>
