@@ -143,7 +143,7 @@ export default {
                 this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode } })
             }
             if (row.businessType === '2') {//火车票
-                this.$router.push({ name: '/trainTicketDetails', params: { orderCode: row.orderCode } })
+                this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode } })
             }
         }
     },
