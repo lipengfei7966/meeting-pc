@@ -1,0 +1,701 @@
+<template>
+  <div>
+    <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
+      <div class="formSet">
+        <h2>{{ eventName }}</h2>
+
+        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="150px" class="contactForm" style="width: 50%; margin: 0 auto">
+          <div v-for="element in setInfoList" :key="element.mapCode">
+            <!-- 分割线 -->
+            <div v-if="element.systemName == '分割线'" class="form-item-input">
+              <el-divider content-position="center">{{ element.placeholder }}</el-divider>
+            </div>
+
+            <!-- 分页 -->
+            <div v-else-if="element.systemName == '分页'" class="form-item-input">
+              <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+            </div>
+
+            <!-- 说明信息 -->
+            <div v-else-if="element.systemName == '说明信息'" class="form-item-input">
+              <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
+            </div>
+
+            <div v-else>
+              <!-- 自定义信息 -->
+              <div v-if="element.isCoustomInfo">
+                <el-form-item :label="element.title">
+                  <!-- 短文本 -->
+                  <div v-if="element.systemName == '短文本'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 长文本 -->
+                  <div v-if="element.systemName == '长文本'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 数字 -->
+                  <div v-if="element.systemName == '数字'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])" size="mini"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 单选框 -->
+                  <div v-if="element.systemName == '单选框'" class="form-item-input">
+                    <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                      <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                        <div v-for="item in element.options" :key="item">
+                          <el-radio v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                          <el-radio v-else :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                          <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'" placeholder="请输入其他选项" size="mini" style="width: 200px"></el-input>
+                        </div>
+                      </el-radio-group>
+                    </div>
+                  </div>
+
+                  <!-- 复选框 -->
+                  <div v-if="element.systemName == '复选框'" class="form-item-input">
+                    <div style="width: 100%; min-width: 300px; display: inline-block; vertical-align: top">
+                      <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
+                        <div v-for="item in element.options" :key="item">
+                          <el-checkbox v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+                          <el-checkbox v-else :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
+                          <el-input v-if="false" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width: 200px; margin-top: 5px"></el-input>
+                        </div>
+                      </el-checkbox-group>
+                    </div>
+                  </div>
+
+                  <!-- 下拉列表 -->
+                  <div v-if="element.systemName == '下拉列表'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <div>
+                      <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px" :placeholder="element.placeholder">
+                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
+                      </el-select>
+                    </div>
+                  </div>
+
+                  <!-- 下拉复选框 -->
+                  <div v-if="element.systemName == '下拉复选框'" class="form-item-input">
+                    <div>
+                      <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px" :placeholder="element.placeholder" :multiple="true" :multiple-limit="element.maxCheckedCount || 0">
+                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
+                      </el-select>
+                    </div>
+                  </div>
+
+                  <!-- 附件 -->
+                  <div v-if="element.systemName == '附件'" class="form-item-input">
+                    <el-upload :ref="element.mapCode" class="avatar-uploader" action>
+                      <i class="el-icon-plus avatar-uploader-icon"></i>
+                      <p>{{ element.placeholder }}</p>
+                    </el-upload>
+                  </div>
+
+                  <!-- 日期 -->
+                  <div v-if="element.systemName == '日期'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <div>
+                      <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+                    </div>
+                  </div>
+                </el-form-item>
+              </div>
+
+              <!-- 固定信息 -->
+              <div v-else>
+                <!-- 姓名 -->
+                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '150px'">
+                  <!-- 姓名 -->
+                  <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.placeholder"></el-input>
+                  </div>
+                  <!-- 姓名拆分 -->
+                  <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
+                    <div>
+                      <el-form-item label="姓">
+                        <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
+                      </el-form-item>
+                    </div>
+                    <div>
+                      <el-form-item label="名">
+                        <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.namePlaceholder"></el-input>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </el-form-item>
+
+                <!-- 地址 -->
+                <el-form-item v-else-if="element.mapCode == 'addres'" label-width="0">
+                  <div class="form-item-input">
+                    <!-- 国家 -->
+                    <div v-if="element.nationIsShow" class="addresItem">
+                      <el-form-item :label="element.nationTitle">
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" :placeholder="element.nationPlaceholder"> </el-select>
+                      </el-form-item>
+                    </div>
+                    <!-- 省份 -->
+                    <div v-if="element.provinceIsShow" class="addresItem">
+                      <el-form-item :label="element.provinceTitle">
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder"> </el-select>
+                      </el-form-item>
+                    </div>
+                    <!-- 城市 -->
+                    <div v-if="element.cityIsShow" class="addresItem">
+                      <el-form-item :label="element.cityTitle">
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder"> </el-select>
+                      </el-form-item>
+                    </div>
+                    <!-- 区县 -->
+                    <div v-if="element.countyIsShow" class="addresItem">
+                      <el-form-item :label="element.countyTitle">
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder"> </el-select>
+                      </el-form-item>
+                    </div>
+                    <!-- 详细地址 -->
+                    <div v-if="element.detailedAdressISShow" class="addresItem">
+                      <el-form-item :label="element.detailedAdressTitle">
+                        <el-input :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+                      </el-form-item>
+                    </div>
+                    <!-- 邮编 -->
+                    <div v-if="element.postcodeIsShow" class="addresItem">
+                      <el-form-item :label="element.postcodeTitle">
+                        <el-input :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </el-form-item>
+
+                <el-form-item v-else :label="element.title">
+                  <!-- 性别 -->
+                  <div v-if="element.mapCode == 'sex'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
+                    <el-radio v-model="setForm.sex" :label="element.options[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
+                  </div>
+
+                  <!-- 证件 -->
+                  <div v-if="element.mapCode == 'certificate'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <div>
+                      <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
+                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+                      </el-select>
+                      <br />
+                      <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 照片 -->
+                  <div v-if="element.mapCode == 'photo'" class="form-item-input">
+                    <div v-if="setForm.photo" style="width: 100px; height: 100px" class="picture">
+                      <!-- <img v-if="setForm.photo" :src="setForm.photo" class="avatar"> -->
+                      <img class="avatar el-upload-list__item-thumbnail" :src="setForm.photo" alt="" />
+                      <span class="el-upload-list__item-actions" style="width: 100px">
+                        <span class="el-upload-list__item-preview">
+                          <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
+                        </span>
+                        <span class="el-upload-list__item-preview">
+                          <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView))" @click="deleteImg(setForm.photo)"></i>
+                        </span>
+                      </span>
+                    </div>
+                    <el-upload v-else class="avatar-uploader" :disabled="element.photeTailor == '手动裁剪'" action>
+                      <i class="el-icon-plus avatar-uploader-icon" @click="showCropperModel(element)"></i>
+                    </el-upload>
+                  </div>
+
+                  <!-- 手机号 -->
+                  <div v-if="element.mapCode == 'mobile'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <div>
+                      <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                          <el-option> </el-option>
+                        </el-select>
+                      </el-input>
+                    </div>
+                  </div>
+
+                  <!-- 备用手机号 -->
+                  <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                          <el-option> </el-option>
+                        </el-select>
+                      </el-input>
+                    </div>
+                  </div>
+
+                  <!-- 固定电话 -->
+                  <div v-if="element.mapCode == 'phone'" class="form-item-input">
+                    <div style="width: 80%; display: inline-block; vertical-align: top">
+                      <span style="display: inline-block">
+                        <el-form-item label-width="0">
+                          <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                              <el-option> </el-option>
+                            </el-select>
+                          </el-input>
+                        </el-form-item>
+                      </span>
+                      <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
+                      <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                    </div>
+                  </div>
+
+                  <!-- 传真 -->
+                  <div v-if="element.mapCode == 'fax'" class="form-item-input">
+                    <div style="width: 80%; display: inline-block; vertical-align: top">
+                      <span style="display: inline-block">
+                        <el-form-item label-width="0">
+                          <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                              <el-option> </el-option>
+                            </el-select>
+                          </el-input>
+                        </el-form-item>
+                      </span>
+                      <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
+                      <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                    </div>
+                  </div>
+
+                  <!-- 邮箱 -->
+                  <div v-if="element.mapCode == 'email'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 备用邮箱 -->
+                  <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
+                    <div>
+                      <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 微信号 -->
+                  <div v-if="element.mapCode == 'wechat'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- qq -->
+                  <div v-if="element.mapCode == 'qq'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 公司 -->
+                  <div v-if="element.mapCode == 'company'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 部门 -->
+                  <div v-if="element.mapCode == 'department'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+
+                  <!-- 职位 -->
+                  <div v-if="element.mapCode == 'position'" class="form-item-input">
+                    <div>
+                      <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                    </div>
+                  </div>
+                </el-form-item>
+              </div>
+            </div>
+          </div>
+        </el-form>
+      </div>
+
+      <div class="applySetForm">
+        <el-form ref="applySetForm" validate-on-rule-change="false" @submit.native.prevent label-position="right" label-width="180px" :model="applySetForm">
+          <div class="setItemTitle">
+            <h3>注册登录</h3>
+            <span>
+              <span style="margin-right: 20px">{{ isRegisterSetShow ? '收起' : '展开' }}</span>
+              <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow" style="vertical-align: middle; padding: 0">
+                <i v-if="isRegisterSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+              </el-button>
+            </span>
+          </div>
+          <el-divider></el-divider>
+          <div v-show="isRegisterSetShow">
+            <el-form-item label="验证方式" prop="isVerification">
+              <el-radio v-model="applySetForm.isVerification" :label="0">不验证</el-radio>
+              <el-radio v-model="applySetForm.isVerification" :label="1">验证</el-radio>
+            </el-form-item>
+            <el-form-item v-if="applySetForm.isVerification" label="注册验证" prop="registerVerification">
+              <el-checkbox-group v-model="applySetForm.registerVerification">
+                <el-checkbox label="短信验证"></el-checkbox>
+                <el-checkbox label="邮箱验证"></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item v-if="applySetForm.isVerification" label="登录验证" prop="loginVerification">
+              <el-checkbox-group v-model="applySetForm.loginVerification">
+                <el-checkbox label="短信验证"></el-checkbox>
+                <el-checkbox label="邮箱验证"></el-checkbox>
+                <el-checkbox label="账号密码"></el-checkbox>
+                <el-checkbox label="自定义验证"></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes('自定义验证')" label="自定义验证项" prop="coustomVerification">
+              <el-checkbox-group v-model="applySetForm.coustomVerification">
+                <el-checkbox label="姓名"></el-checkbox>
+                <el-checkbox label="手机号"></el-checkbox>
+                <el-checkbox label="邮箱"></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="登录前需完善必填信息" prop="isNeedCompleteMustInfo">
+              <el-switch v-model="applySetForm.isNeedCompleteMustInfo" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item label="隐私协议" prop="IsIintimateAgreement">
+              <el-switch v-model="applySetForm.IsIintimateAgreement" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              <el-button type="text">编辑隐私协议</el-button>
+            </el-form-item>
+          </div>
+
+          <div class="setItemTitle">
+            <h3>报名基础信息</h3>
+            <span>
+              <span style="margin-right: 20px">{{ isApplyBaseInfoShow ? '收起' : '展开' }}</span>
+              <el-button type="text" @click="isApplyBaseInfoShow = !isApplyBaseInfoShow" style="vertical-align: middle; padding: 0">
+                <i v-if="isApplyBaseInfoShow" class="el-icon-caret-top" style="font-size: 30px"></i>
+                <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
+              </el-button>
+            </span>
+          </div>
+          <el-divider></el-divider>
+          <div v-show="isApplyBaseInfoShow">
+            <el-form-item label="报名日期" prop="applyDate">
+              <el-date-picker v-model="applySetForm.applyDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="参会码设置">
+              <el-form-item label="前缀" prop="attendanceCodePrefix" label-width="50px">
+                <el-input v-model="applySetForm.attendanceCodePrefix" placeholder="请输入内容"></el-input>
+              </el-form-item>
+              <el-form-item label="长度" prop="attendanceCodeLength" label-width="50px" style="margin-bottom: 0">
+                <el-input v-model="applySetForm.attendanceCodeLength" style="width: 150px" placeholder="请输入内容"></el-input> 位
+                <p>前缀位数不包含在长度内</p>
+              </el-form-item>
+              <el-form-item label="生成类型" prop="createType" label-width="80px" style="margin-bottom: 0">
+                <el-radio v-model="applySetForm.createType" :label="0">随机码</el-radio>
+                <el-radio v-model="applySetForm.createType" :label="1">顺序码</el-radio>
+              </el-form-item>
+              <el-form-item v-if="applySetForm.createType == '1'" label="起始码" prop="attendanceCodeStartNum">
+                <el-input v-model="applySetForm.attendanceCodeStartNum" placeholder="请输入内容"></el-input>
+                <p>起始码如：001、002等</p>
+              </el-form-item>
+            </el-form-item>
+            <el-form-item label="报名审核" prop="applyCheck">
+              <el-radio v-model="applySetForm.applyCheck" :label="0">不需要审核</el-radio>
+              <el-radio v-model="applySetForm.applyCheck" :label="1">需要审核</el-radio>
+              <el-form-item v-if="applySetForm.applyCheck" label="添加审核结果页" label-width="110px">
+                <el-button type="text" @click="setResult">审核结果页</el-button>
+              </el-form-item>
+              <el-form-item v-if="applySetForm.applyCheck" label="审核权限用户" label-width="100px" prop="checkUser" style="margin-bottom: 0">
+                <el-select v-model="applySetForm.checkUser" placeholder="请选择">
+                  <el-option v-for="item in checkUseroptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form-item>
+            <el-form-item label="协助报名" prop="assistApply">
+              <el-switch v-model="applySetForm.assistApply" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-form-item>
+            <el-form-item v-if="applySetForm.assistApply" label="协助报名权限" prop="assistApplyPermission">
+              <el-radio v-model="applySetForm.assistApplyPermission" :label="0">仅限编辑</el-radio>
+              <el-radio v-model="applySetForm.assistApplyPermission" :label="1">支持新增</el-radio>
+            </el-form-item>
+            <el-form-item v-if="applySetForm.assistApply" label="协助报名开放字段" prop="assistApplyOpenField">
+              <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
+                <el-checkbox label="姓名"></el-checkbox>
+                <el-checkbox label="手机号"></el-checkbox>
+                <el-checkbox label="邮箱"></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </div>
+        </el-form>
+        <div style="text-align: center">
+          <el-button type="primary">保存并生成报名链接</el-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import request from '@/utils/frame/base/request'
+export default {
+  name: 'applySet',
+  data() {
+    return {
+      setInfoList: [], // 表单配置列表
+      isRegisterSetShow: true, // 注册登录是否显示
+      isApplyBaseInfoShow: true, // 报名基础信息是否展示
+      checkUseroptions: [], // 审核权限用户列表
+      isUpdate: true,
+      setForm: {
+        personnelCode: '', // 人员编码
+        contactType: '', // 参会人类型
+        name: '', // 姓名
+        surname: '', // 姓
+        ming: '', //名
+        sex: '', // 性别
+        certificateType: '', // 证件类型
+        certificate: '', // 证件号
+        photo: '', // 照片
+        nations: '', // 国家
+        province: '', // 省份
+        city: '', //城市
+        county: '', // 区/县
+        fullAddress: '', // 详细地址
+        postcode: '', // 邮编
+        mobileIntCode: '', // 手机国际区号
+        mobile: '', // 手机号
+        mobileVerifyCode: '', // 手机验证码
+        spareMobileIntCode: '', // 备用手机号国际区号
+        spareMobile: '', // 备用手机号
+        spareMobileVerifyCode: '', // 备用手机验证码
+        phoneIntCode: '', // 电话国际区号
+        phoneAreaCode: '', // 电话区号
+        phone: '', // 固定电话
+        phoneRunNumber: '', // 电话分机号
+        faxIntCode: '', // 传真国际区号
+        faxAreaCode: '', // 传真区号
+        fax: '', // 传真
+        faxRunNumber: '', // 传真分机号
+        email: '', // 邮箱
+        emailVerifyCode: '', //邮箱验证码
+        spareEmail: '', // 备用邮箱
+        spareEmailVerifyCode: '', // 备用邮箱验证码
+        wechat: '', // 微信号
+        qq: '', // qq
+        company: '', // 公司
+        department: '', // 部门
+        position: '', // 职位
+        signupContactDtlDto: {}
+      },
+      setformOther: {},
+      etFormFile: {},
+      applySetForm: {
+        isVerification: '', // 验证方式
+        registerVerification: [], // 注册验证
+        loginVerification: [], // 登录验证
+        coustomVerification: [], // 自定义验证项
+        isNeedCompleteMustInfo: true, // 是否需要完善必填信息
+        IsIintimateAgreement: true, // 隐私协议
+        applyDate: '', // 报名日期
+        attendanceCodePrefix: '', // 参会码前缀
+        attendanceCodeLength: '', // 参会码长度
+        createType: '', // 生成类型
+        attendanceCodeStartNum: 0, // 起始码
+        applyCheck: '', // 报名审核
+        checkUser: '', // 审核权限用户
+        assistApply: true, // 协助报名
+        assistApplyPermission: '', // 协助报名权限
+        assistApplyOpenField: [] // 协助报名开放字段
+      }
+    }
+  },
+  props: {
+    eventCode: {
+      type: String,
+      default: ''
+    },
+    eventName: {
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    eventCode(newVal, oldVal) {
+      if (newVal) {
+        this.getEventInfo()
+      }
+    }
+  },
+  mounted() {
+    if (this.eventCode) {
+      this.getEventInfo()
+    }
+  },
+  methods: {
+    // 表单配置查询
+    getEventInfo() {
+      request({
+        url: '/api/biz/cmsEventInfo/get',
+        method: 'POST',
+        data: {
+          data: this.eventCode,
+          funcModule: '表单设置',
+          funcOperation: '表单初始化'
+        }
+      }).then((response) => {
+        if (response.data.json) {
+          this.setInfoList = JSON.parse(response.data.json)
+          debugger
+        } else {
+          this.setInfoList = []
+        }
+        this.setInfoList.forEach((item) => {
+          // 1：自定义属性
+          if (item.mapBase == 1) {
+            if (['复选框', '下拉复选框'].includes(item.systemName)) {
+              // this.setForm[item.mapCode] = []
+              this.$set(this.setForm.signupContactDtlDto, item.mapCode, [])
+            } else {
+              debugger
+              this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
+              // this.setForm[item.mapCode] = ''
+            }
+            if (['附件'].includes(item.systemName)) {
+              debugger
+              this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
+              this.$set(this.setFormFile, item.mapCode, [])
+              console.log(this.setFormFile)
+            }
+            this.$set(this.setformOther, item.mapCode, '')
+          } else {
+            // 国际区号设置默认值
+            if (item.mapCode == 'mobile') {
+              this.setForm.mobileIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if (!item.countryCodeIsShow) {
+                this.setForm.mobileIntCode = '86'
+              }
+            }
+            if (item.mapCode == 'spareMobile') {
+              this.setForm.spareMobileIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if (!item.countryCodeIsShow) {
+                this.setForm.mobileIntCode = '86'
+              }
+            }
+            if (item.mapCode == 'phone') {
+              this.setForm.phoneIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if (!item.countryCodeIsShow) {
+                this.setForm.mobileIntCode = '86'
+              }
+            }
+            if (item.mapCode == 'fax') {
+              this.setForm.faxIntCode = item.defaultCountryCode
+              // 国际区号不显示,后台默认86
+              if (!item.countryCodeIsShow) {
+                this.setForm.mobileIntCode = '86'
+              }
+            }
+          }
+
+          if (item.systemName == '分页') {
+            this.pagingCount++
+          }
+        })
+      })
+    },
+    setResult() {
+      this.$emit('setResult')
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.applySet {
+  min-width: 1250px;
+  display: flex;
+
+  justify-content: space-between;
+  .formSet {
+    overflow: auto;
+    width: 58%;
+    background: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+  .contactForm {
+    .setInfoItem {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px 30px;
+      // background: #eee;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .form-item-input {
+        width: 100%;
+        .addresItem {
+          margin-top: 15px;
+        }
+        .avatar-uploader {
+          // width: 100px;
+          display: inline-block;
+          vertical-align: top;
+          .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+          }
+          .el-upload:hover {
+            border-color: #409eff;
+          }
+        }
+
+        .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 100px;
+          height: 100px;
+          line-height: 100px;
+          text-align: center;
+        }
+        .avatar {
+          width: 100px;
+          height: 100px;
+          display: block;
+        }
+      }
+      .remove-button {
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 28px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .applySetForm {
+    width: 40%;
+    background: #fff;
+    padding: 20px;
+    overflow: auto;
+    .setItemTitle {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+    }
+  }
+}
+</style>
