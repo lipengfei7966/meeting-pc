@@ -81,7 +81,7 @@
                   <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">复制链接</span>
                 </div>
                 <el-form-item>
-                  <div style="margin-left:-12px">
+                  <div style="margin-left:-24px">
                     <vue-qr :text="imgUrl" :size="200"> </vue-qr>
                   </div>
                 </el-form-item>
@@ -479,7 +479,7 @@ export default {
 .share {
   position: absolute;
   bottom: 5%;
-  width: 28%;
+  width: 25%;
   display: flex;
   justify-content: space-around;
 }
