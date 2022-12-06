@@ -48,7 +48,7 @@
           <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="差旅类型：">
-                <el-select v-model="queryBasicOrderInfo.data.travelType" placeholder="全部">
+                <el-select v-model="queryBasicOrderInfo.data.businessType" placeholder="全部">
                   <template>
                     <div v-for="(item, index) in tripArr" :key="index">
                       <el-option :label="item[1]" :value="item[0]"></el-option>
@@ -150,13 +150,13 @@
                 </el-form-item>
               </div>
             </el-col>
-            <el-col :span="6">
+            <!-- <el-col :span="6">
               <div class="grid-content bg-purple">
                 <el-form-item style="margin:0 20px">
                   <el-button type="primary" @click="onImport">导出</el-button>
                 </el-form-item>
               </div>
-            </el-col>
+            </el-col> -->
           </div>
         </el-row>
       </el-form>
@@ -167,24 +167,20 @@
           <div class="grid-content bg-purple-dark">
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane :label='`快速订单(${orderStatusTotal.allOrderCount})`' name="first">
-                <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
-                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
+                <orderTable :tableData="tableData" @exportData="exportDataFn"
+                  @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <el-tab-pane :label='`已出票(${orderStatusTotal.ticketsIssuedCount})`' name="second">
-                <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
-                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
+                <orderTable :tableData="tableData" @exportData="exportDataFn"
+                  @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <el-tab-pane :label='`待付款(${orderStatusTotal.obligationCount})`' name="third">
-                <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
-                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
+                <orderTable :tableData="tableData" @exportData="exportDataFn"
+                  @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <el-tab-pane :label='`已取消(${orderStatusTotal.cancelCount})`' name="fourth">
-                <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize"
-                  @exportData="exportDataFn" @multipleSelection="multipleSelectionFn" />
+                <orderTable :tableData="tableData" @exportData="exportDataFn"
+                  @multipleSelection="multipleSelectionFn" />
               </el-tab-pane>
               <!-- <el-tab-pane :label='`退票异常订单(${orderStatusTotal.abnormalOrderCount})`' name="fifth">
                 <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
@@ -233,7 +229,7 @@ export default {
           userCode: '',
           orderNumber: '',
           updateDate: '',
-          travelType: '',
+          businessType: '',
           orderType: '',
           contactPerson: '',
           payType: '',
@@ -377,7 +373,7 @@ export default {
         this.tableData = res.data
         this.tableData.forEach(item => {
           item.orderStatus = this.orderStatusFamtter[item.orderStatus]
-          item.travelType = this.tripFamtter[item.travelType]
+          item.travelType = this.tripFamtter[item.businessType]
           item.orderType = this.orderTypeFamtter[item.orderType]
           item.payStatus = this.payStatusFamtter[item.payStatus]
           item.payType = this.payTypeFamtter[item.payType]
@@ -415,7 +411,7 @@ export default {
       this.queryBasicOrderInfo.data.userCode = ''
       this.queryBasicOrderInfo.data.orderNumber = ''
       this.queryBasicOrderInfo.data.updateDate = ''
-      this.queryBasicOrderInfo.data.travelType = ''
+      this.queryBasicOrderInfo.data.businessType = ''
       this.queryBasicOrderInfo.data.orderType = ''
       this.queryBasicOrderInfo.data.contactPerson = ''
       this.queryBasicOrderInfo.data.payType = ''

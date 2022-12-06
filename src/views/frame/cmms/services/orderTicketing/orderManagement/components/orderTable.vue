@@ -120,9 +120,8 @@ export default {
     watch: {
         'multipleSelection': {
             handler (newVal, oldVal) {
-                // this.multipleSelection = newVal
                 if (this.exportData.length >= 2) {
-                    this.exportData = this.exportData.slice(0, this.exportData.length - 1)
+                    this.exportData = this.exportData.slice(1, this.exportData.length - 1)
                 }
                 this.orderFamtter()
                 this.$emit('exportData', this.exportData)
@@ -133,10 +132,9 @@ export default {
     methods: {
         // 选中列表中某一项
         handleSelectionChange (val) {
-            // this.exportData = this.exportData.splice(1)
             this.multipleSelection = val
-            console.log(this.multipleSelection, 'this.multipleSelection')
-            console.log(this.multipleSelection.length, 'this.multipleSelection.length')
+            // console.log(this.multipleSelection, 'this.multipleSelection')
+            // console.log(this.multipleSelection.length, 'this.multipleSelection.length')
             if (this.multipleSelection.length <= 0) { return false }
             this.orderFamtter()
             this.$emit('exportData', this.exportData)
@@ -197,11 +195,14 @@ export default {
         },
         // 跳转详情页
         handleInfoClick (row) {
+            console.log(row, 'row')
             if (row.businessType === '1') {//机票
                 this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode } })
+                console.log(row)
             }
             if (row.businessType === '2') {//火车票
                 this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode } })
+                // console.log(row)
             }
         }
     },

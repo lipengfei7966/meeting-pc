@@ -63,8 +63,20 @@ export const trainDetail = (orderCode) => {
         method: 'POST',
         data: {
             'data': orderCode,
-            funcModule: '火车票退费',
-            funcOperation: '创建退票表'
+            funcModule: '火车票详情',
+            funcOperation: '火车票详情页'
+        }
+    })
+}
+// 获取机票详情页
+export const airDetail = (orderCode) => {
+    return request({
+        url: '/api/flight/flight/findPcOrderDetails',
+        method: 'POST',
+        data: {
+            'data': orderCode,
+            funcModule: '机票详情',
+            funcOperation: '机票详情页'
         }
     })
 }
