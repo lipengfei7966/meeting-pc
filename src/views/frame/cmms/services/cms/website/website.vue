@@ -81,7 +81,7 @@
                   <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">复制链接</span>
                 </div>
                 <el-form-item>
-                  <div style="margin-left:-24px">
+                  <div style="margin-left:-34px">
                     <vue-qr :text="imgUrl" :size="200"> </vue-qr>
                   </div>
                 </el-form-item>
