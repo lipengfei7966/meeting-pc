@@ -125,7 +125,7 @@
 <script>
 import request from '@/utils/frame/base/request'
 export default {
-  name: 'paymentManagement',
+  name: 'paymentManagementPay',
   data() {
     return {
       options: [
