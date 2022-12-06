@@ -41,7 +41,7 @@
           <div class="contents" style="width: 28%">
             <station @itemclick="itemclick" :title_="title_" :subTitle_="subTitle" :webpagePicDtoList="webpagePicDtoList" :listData="listData" @featureVal="featureVal" ref="station" />
           </div>
-          <div class="contents" style="width: 32%">
+          <div class="contents" style="width: 28%">
             <!-- 设置模块、默认不展示 -->
             <!-- <div v-show="isFlag == 0">
                     </div> -->
@@ -68,32 +68,51 @@
             <vue-qr :text="imgUrl" :size="250" :logoScale="0.2"> </vue-qr>
           </div> -->
           <div class="qr">
-            <div style="position: relative; top: 15%; right: 10px; transform: translateY(-30%)">
-              <el-form style="padding-top: 120px" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <div style="position: relative; top: 8%; right: 10px; transform: translateY(-30%)">
+              <el-form style="padding-top: 100px" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="微站名称" prop="mainTitle">
                   <el-input placeholder="请输入微站名称" v-model="ruleForm.mainTitle"></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="">
-                  <div>
-                    <p>微站链接：</p>
-                    <el-tooltip :content="imgUrl">
-                      <span>{{ imgUrl | commentEllipsis(imgUrl) }}</span>
-                    </el-tooltip>
-                    <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">复制链接</span>
-                  </div>
-                </el-form-item>
+                <div class="link-look">
+                  <p style="display:inline-block">微站链接：</p>
+                  <el-tooltip :content="imgUrl">
+                    <span>{{ imgUrl | commentEllipsis(imgUrl) }}</span>
+                  </el-tooltip>
+                  <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">复制链接</span>
+                </div>
                 <el-form-item>
-                  <div>
+                  <div style="margin-left:-12px">
                     <vue-qr :text="imgUrl" :size="200"> </vue-qr>
                   </div>
                 </el-form-item>
-                <el-form-item>
-                  <div>
-                    <el-button @click="resetForm('ruleForm')">返回</el-button>
-                    <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-                  </div>
-                </el-form-item>
               </el-form>
+            </div>
+            <div class="share">
+              <el-button class="share-btn-one" @click="resetForm('ruleForm')">返回</el-button>
+              <el-button class="share-btn-two" type="primary" @click="submitForm('ruleForm')">保存</el-button>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="访问权限" name="three">
+        <div class="mb-power" style="width: 100%; height: 80vh">
+          <div class="mb-power-one">
+            <p class="power-p-one">网站访问权限设置</p>
+            <el-radio-group v-model="powerRadio" @input="getPower">
+              <el-radio :label="0" class="radio-power">公开</el-radio>
+              <el-radio :label="1" class="radio-power">仅注册用户</el-radio>
+              <el-radio :label="2" class="radio-power">仅审核通过用户</el-radio>
+              <el-radio :label="3" class="radio-power">部分用户</el-radio>
+            </el-radio-group>
+            <div class="power-check" v-show="exhibition">
+              <el-checkbox-group v-model="checkList">
+                <el-checkbox v-for="(item,index) in portionList" :key="index" class="check-power" :label="item.id">{{item.dictItemName}}</el-checkbox>
+
+              </el-checkbox-group>
+            </div>
+            <div class="power-bottom">
+              <el-button class="power-btn-one" @click="powerReset">返回</el-button>
+              <el-button class="power-btn-two" type="primary" @click="powerSubmit">保存</el-button>
             </div>
           </div>
         </div>
@@ -146,7 +165,11 @@ export default {
           // { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
         ]
       },
-      activeName: 'one'
+      activeName: 'one',
+      powerRadio: 0,//权限选择
+      exhibition:false,//部分用户展示
+      checkList: [],//部分用户选中的值
+      portionList:[],//部分列表
     }
   },
   methods: {
@@ -279,6 +302,8 @@ export default {
                 url = 'https://cmms-h5-test.ctgbs.com'
               } else if (window.location.host == 'cmms.ctgbs.com') {
                 url = 'https://cmms-h5.ctgbs.com'
+              }else if(window.location.host == 'cmms-dev.ctgbs.com'){
+                url = 'https://cmms-h5-dev.ctgbs.com'
               }
               //
               this.imgUrl = `${url}/#/pages/${this.userData.templateCode}/index?tenantCode=${this.userData.tenantCode}&code=${this.code}`
@@ -350,17 +375,45 @@ export default {
     itemclick(item, index) {
       console.log(item, index, 'website标注')
       this.addEdit(item, index)
-    }
+    },
+    getPower(item){
+      if(item == 3){
+        this.exhibition = true
+      }else{
+        this.exhibition = false
+        this.checkList = []
+      }
+    },
+    powerReset(){
+      this.activeName = 'one'
+    },
+    powerSubmit(){
+      if(this.powerRadio == 3  && this.checkList.length == 0){
+      this.$message.warning('请选择用户')
+      return
+      }else{
+        
+      }
+      console.log('类型：',this.powerRadio,'列表：',this.checkList);
+    },
   },
   mounted() {
     //
     this.$refs.station.isPc = false
+    // 获取参会人类型数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then(res => {
+      this.portionList = res.data
+    })
   },
   filters: {
     commentEllipsis(value) {
       if (value.length != undefined) {
-        if (value.length > 25) {
-          return value.slice(0, 24) + '...'
+        if (value.length > 24) {
+          return value.slice(0, 23) + '...'
         } else {
           return value
         }
@@ -377,7 +430,7 @@ export default {
 
 <style scoped lang="scss">
 .contents {
-  width: 30%;
+  width: 28%;
   //   min-height: 600px;
   //   border: 1px solid olive;
   box-shadow: 0 2px 12px 0 lightgray;
@@ -407,13 +460,78 @@ export default {
   transition: all 1000ms ease, top 1s ease;
 }
 .qr {
-  width: 35%;
+  width: 28%;
   height: 80vh;
+  padding: 20px;
   // border: 1px solid red;
   margin: 0 auto;
   box-shadow: 0 2px 12px 0 lightgray;
 }
 .qr:hover {
   box-shadow: 0 2px 22px 0 lightgray;
+}
+.link-look {
+  padding-left: 35px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #606266;
+}
+.share {
+  position: absolute;
+  bottom: 5%;
+  width: 28%;
+  display: flex;
+  justify-content: space-around;
+}
+.share-btn-one {
+  width: 130px;
+  height: 40px;
+}
+.share-btn-two {
+  width: 130px;
+  height: 40px;
+}
+.mb-power {
+  display: flex;
+  justify-content: center;
+}
+.mb-power-one {
+  width: 28%;
+  padding: 20px;
+  height: 100%;
+  box-shadow: 0 2px 12px 0 lightgray;
+}
+.mb-power-one:hover {
+  box-shadow: 0 2px 22px 0 lightgray;
+}
+.power-p-one {
+  font-size: 14px;
+  color: #333333;
+  margin-bottom: 20px;
+}
+.radio-power {
+  margin-bottom: 12px;
+  display: block;
+}
+.check-power {
+  margin-bottom: 12px;
+}
+.power-check {
+  margin-top: 16px;
+}
+.power-bottom {
+  position: absolute;
+  bottom: 5%;
+  width: 25%;
+  display: flex;
+  justify-content: space-around;
+}
+.power-btn-one {
+  width: 130px;
+  height: 40px;
+}
+.power-btn-two {
+  width: 130px;
+  height: 40px;
 }
 </style>
