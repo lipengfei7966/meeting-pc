@@ -3,39 +3,41 @@
         <table border="1px" align="center" bordercolor="#d7d7d8" cellspacing="0px" style="width:100%;">
             <tr>
                 <td class="tdTitle">结算账户名</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.payAccountName ? costDetailInfo.payAccountName : '-'
+                }}
+                </td>
                 <td class="tdTitle">结算账户号</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.payAccountNo ? costDetailInfo.payAccountNo : '-' }}</td>
                 <td class="tdTitle">支付方式</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.payType ? costDetailInfo.payType : '-' }}</td>
             </tr>
             <tr>
                 <td class="tdTitle">支付订单号</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.payOrderNumber ? costDetailInfo.payOrderNumber : '-' }}</td>
                 <td class="tdTitle">支付时间</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.payTime ? costDetailInfo.payTime : '-' }}</td>
                 <td class="tdTitle">票价</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.ticketAmount ? costDetailInfo.ticketAmount : '-' }}</td>
             </tr>
             <tr>
                 <td class="tdTitle">基建</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.macTax ? costDetailInfo.macTax : '-' }}</td>
                 <td class="tdTitle">燃油</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.oilTax ? costDetailInfo.oilTax : '-' }}</td>
                 <td class="tdTitle">改期费</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.changeAmount ? costDetailInfo.changeAmount : '-' }}</td>
             </tr>
             <tr>
                 <td class="tdTitle">升舱费</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.upgradeCabinAmount ? costDetailInfo.upgradeCabinAmount : '-' }}</td>
                 <td class="tdTitle">退费手续费</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.refundServiceFee ? costDetailInfo.refundServiceFee : '-' }}</td>
                 <td class="tdTitle">服务费</td>
-                <td>{{}}</td>
+                <td>{{ costDetailInfo.serviceFee ? costDetailInfo.serviceFee : '-' }}</td>
             </tr>
             <tr>
                 <td class="tdTitle">支付总金额</td>
-                <td>{{ }}</td>
+                <td>{{ costDetailInfo.orderAmount ? costDetailInfo.orderAmount : '-' }}</td>
             </tr>
         </table>
     </div>
@@ -43,15 +45,16 @@
 
 <script>
 export default {
-    name: '',
+    props: ['costDetailInfo'],
+    name: 'airPayTable',
     data () {
         return {
-
         }
     },
     created () { },
     mounted () { },
-    methods: {},
+    methods: {
+    },
 }
 </script>
 

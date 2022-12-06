@@ -1,37 +1,37 @@
 <template>
     <div class="airTravelTableContainer">
-        <el-table :data="tableData" style="width: 100%" stripe border>
-            <el-table-column prop="date" label="子订单号" width="150">
+        <el-table :data="tripInformationList" style="width: 100%" stripe border>
+            <el-table-column prop="subOrderNo" label="子订单号" width="100">
             </el-table-column>
-            <el-table-column prop="name" label="乘客" width="120">
+            <el-table-column prop="passengerCode" label="乘客" width="100">
             </el-table-column>
-            <el-table-column prop="province" label="乘客证件类型" width="120">
+            <el-table-column prop="certificateType" label="乘客证件类型" width="100">
             </el-table-column>
-            <el-table-column prop="city" label="乘客证件号" width="120">
+            <el-table-column prop="certificateNumber" label="乘客证件号" width="100">
             </el-table-column>
-            <el-table-column prop="address" label="乘客手机号" width="300">
+            <el-table-column prop="phone" label="乘客手机号" width="150">
             </el-table-column>
-            <el-table-column prop="zip" label="车次" width="120">
+            <el-table-column prop="trainNo" label="车次" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="坐席" width="120">
+            <el-table-column prop="seatName" label="坐席" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="车厢" width="120">
+            <el-table-column prop="trainBox" label="车厢" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="座位号" width="120">
+            <el-table-column prop="seatNumber" label="座位号" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="票号" width="120">
+            <el-table-column prop="ticketNo" label="票号" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="订单状态" width="120">
+            <el-table-column prop="orderStatus" label="订单状态" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="退票订单号" width="120">
+            <el-table-column prop="refundOrderNo" label="退票订单号" width="100">
             </el-table-column>
-            <el-table-column prop="zip" label="改签订单号" width="120">
+            <el-table-column prop="changeOrderNo" label="改签订单号" width="100">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作" width="100">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
+                    <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
                         改签
-                    </el-button>
+                    </el-button> -->
                     <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
                         退票
                     </el-button>
@@ -44,24 +44,9 @@
 <script>
 export default {
     name: 'airTravelTable',
+    props: ['tripInformationList'],
     data () {
         return {
-            tableHeight: "",//表格高度
-            tableData: [{
-                date: '2016-05-03',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }, {
-                date: '2016-05-07',
-                name: '王小虎',
-                province: '上海',
-                city: '普陀区',
-                address: '上海市普陀区金沙江路 1518 弄',
-                zip: 200333
-            }]
         }
     },
     created () { },
