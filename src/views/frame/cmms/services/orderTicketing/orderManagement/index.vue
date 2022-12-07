@@ -19,10 +19,7 @@
           <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-form-item label="所属客户：">
-                <el-select v-model="queryBasicOrderInfo.data.userCode" placeholder="全部">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
+                <el-input v-model="queryBasicOrderInfo.data.userCode"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -136,14 +133,14 @@
         </el-row>
         <el-row :gutter="20">
           <div class="grid-content bg-purple" style="margin:0 0 0 80%;">
-            <el-col :span="6">
+            <el-col :span="8">
               <div class="grid-content bg-purple">
                 <el-form-item style="margin:0 20px">
                   <el-button type="primary" @click="onSubmit">查询</el-button>
                 </el-form-item>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <div class="grid-content bg-purple">
                 <el-form-item style="margin:0 20px">
                   <el-button type="primary" @click="onReset">重置</el-button>

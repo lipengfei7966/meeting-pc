@@ -87,7 +87,6 @@ export default {
     created () {
     },
     mounted () {
-        console.log('测试1', this.basicTrainInformation)
     },
     methods: {
 

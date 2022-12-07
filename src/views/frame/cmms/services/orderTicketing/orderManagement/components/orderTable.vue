@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { estimatedRefund, comfirmRefund } from '../utils/api'
+import { estimatedRefund, comfirmRefund, refundUpdateRule, fightRefund } from '../utils/api'
 export default {
     props: ['tableData'],
     name: 'orderTable',
@@ -91,7 +91,7 @@ export default {
             centerDialogVisible: false,
             refundAmount: 0,// 预估退票金额
             serviceFee: 0,// 手续费
-            thepayAmount: 0,
+            thepayAmount: 0,//退回金额
             theorderCode: '',
             multipleSelection: [],
             Relation: {
@@ -113,6 +113,9 @@ export default {
             columnNames: [],
             columnValues: [],
             exportData: [],
+            refundOrderType: 1,
+            refundType: 1,
+            updateStatus: ['107', '106', '108', '109', '104', '105', '110', '115']
         }
     },
     created () { this.headerFn() },
@@ -167,7 +170,8 @@ export default {
             this.centerDialogVisible = true
             console.log(row, '退票弹窗')
             this.thepayAmount = row.payAmount
-            this.refund(row.orderCode)
+            if (row.businessType === '1') { this.refundFightFn(row) }
+            if (row.businessType === '2') { this.refund(row.orderCode) }
             this.theorderCode = row.orderCode
 
         },
@@ -176,6 +180,15 @@ export default {
             estimatedRefund(orderCode).then(res => {
                 this.refundAmount = res.data.refundAmount
                 this.serviceFee = res.data.serviceFee
+            })
+        },
+        refundFightFn (row) {
+            if (row.orderStatus.includes(this.updateStatus)) {
+                this.refundOrderType = 2
+            }
+            this.refundType = 1
+            fightRefund({ orderCode: row.orderCode, refundOrderType: this.refundOrderType, refundType: this.refundType, refundReason: '', flightCode: row.trainOrFlightNo }).then(res => {
+                console.log(res, 'resqqq')
             })
         },
         // 取消退款

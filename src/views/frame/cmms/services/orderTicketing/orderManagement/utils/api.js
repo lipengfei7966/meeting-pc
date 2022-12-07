@@ -80,3 +80,29 @@ export const airDetail = (orderCode) => {
         }
     })
 }
+
+// 获取机票退改规则
+export const refundUpdateRule = (data) => {
+    return request({
+        url: '/api/flight/flight/findRuleAnnotable',
+        method: 'POST',
+        data: {
+            'data': data,
+            funcModule: '机票退改规则',
+            funcOperation: '机票退改规则'
+        }
+    })
+}
+// 获取机票退票
+export const fightRefund = (data) => {
+    return request({
+        url: '/api/flight/flight/ticketRefund',
+        method: 'POST',
+        data: {
+            'data': data,
+            funcModule: '机票',
+            funcOperation: '机票退票'
+        }
+    })
+}
+
