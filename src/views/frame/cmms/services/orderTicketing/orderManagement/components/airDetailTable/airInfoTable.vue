@@ -47,4 +47,9 @@ export default {
     min-height: 100px;
     border: none;
 }
+
+.el-table,
+.plTableBox {
+    min-height: 3px !important;
+}
 </style>

@@ -51,11 +51,8 @@ export default {
     border: none;
 }
 
-// ::v-deep.el-table td.el-table__cell {
-//     border: none;
-// }
-
-// ::v-deep.el-table--small ::v-deep.el-table__cell {
-//     border: none;
-// }
+.el-table,
+.plTableBox {
+    min-height: 3px !important;
+}
 </style>

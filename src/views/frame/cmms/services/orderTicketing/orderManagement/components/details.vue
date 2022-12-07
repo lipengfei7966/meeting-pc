@@ -24,7 +24,8 @@
             <aiInfoTable :flightDetailInfoList="flightDetailInfoList" />
         </commonSlot>
         <commonSlot title="行程信息">
-            <trainTravelTable v-show="status === 'train'" :tripInformationList="tripInformationList" />
+            <trainTravelTable v-show="status === 'train'" :tripInformationList="tripInformationList"
+                :payAmount="paymentInformationDto.payAmount" />
             <airTravelTable v-show="status === 'air'" :tripInfoList="tripInfoList"
                 :flightDetailInfoList="flightDetailInfoList" :orderType="tripInfoList.orderType"
                 :orderStatus="orderDetailInfo.orderStatus" />
