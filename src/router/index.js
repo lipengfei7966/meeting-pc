@@ -153,12 +153,13 @@ export const constantRouterMap = [
   //   hidden: true
   // },
   // 1012
-  // {
-  //   path: '/material',
-  //   name: '/material',
-  //   component: () => import('@/views/frame/material/index'),
-  //   hidden: true
-  // },
+  {
+    // src\views\frame\cmms\services\activityManagement
+    // path: '/aa',
+    // name: '/aa',
+    // component: () => import('@/views/frame/cmms/services/activityManagement/index'),
+    // hidden: true
+  },
   //
   {
     path: '/404',

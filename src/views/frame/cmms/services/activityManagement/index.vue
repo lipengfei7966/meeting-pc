@@ -28,7 +28,7 @@
           <el-form style="margin-top: 15px" :model="moduleVal" ref="form" label-width="100px">
             <el-col :span="5">
               <el-form-item label="分活动名称">
-                <el-input size="mini" v-model="moduleVal.name" clearable=true></el-input>
+                <el-input size="mini" v-model="moduleVal.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
@@ -38,7 +38,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动状态">
-                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态" clearable=true>
+                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态">
                   <el-option label="状态一" value="shanghai"></el-option>
                   <el-option label="状态二" value="beijing"></el-option>
                 </el-select>
@@ -46,8 +46,8 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="启用状态">
-                <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态" clearable=true>
-                <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态">
+                  <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -72,7 +72,7 @@
             <span v-if="new Date(scope.row.beginTime) > new Date()">未开始</span>
             <span v-else-if="new Date(scope.row.endTime) < new Date()">已结束</span>
             <span v-else>进行中</span>
-          </template> 
+          </template>
         </el-table-column>
         <el-table-column prop="isGoLive" label="启用">
           <template slot-scope="scope">
@@ -84,8 +84,8 @@
         <el-table-column prop="eee" label="报名人数/上限"> </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleClick(scope.row,0)" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(scope.row,1)" type="text" size="small">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -152,7 +152,7 @@ export default {
         eventCode: '',
         name: '',
         region: '',
-        date1: '',
+        date1: [],
         beginTime: '',
         endTime: '',
         triesLimit: '',
@@ -166,18 +166,17 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-        date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
-        date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
-        type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
+        date1: [{required: true, message: '请选择日期', trigger: 'change' }],
+        type: [{required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
         desc: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
         radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }],
       },
       currentPage4: 4,
-      activityList:[]//会议名称list
+      activityList:[],//会议名称list
+      isFlag:false
     }
   },
   methods: {
@@ -204,8 +203,8 @@ export default {
     },
     submitForm(formName) {
       debugger
-      //this.$refs[formName].validate((valid) => {
-      //  if (valid) {
+      this.$refs[formName].validate((valid) => {
+       if (valid) {
           this.ruleForm.eventCode = this.moduleVal.eventCode
           this.ruleForm.beginTime = this.ruleForm.date1[0]
           this.ruleForm.endTime = this.ruleForm.date1[1]
@@ -216,21 +215,17 @@ export default {
           }).then(res => {
             if (res && res.status) {
               this.dialogVisible = false
-              this.$notify(
-                notifySuccess({ msg: this.$t('biz.msg.saveSuccess') })
-              )
+              this.$message('操作成功')
             }else{
-              this.$notify(
-                notifyError({ msg: res.msgText })
-              )
+        this.$message.error('操作失败')
             }
           })
           
-      //  } else {
-      //    console.log('error submit!!')
-      //    return false
-      //  }
-     // })
+       } else {
+         console.log('error submit!!')
+         return false
+       }
+     })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -271,6 +266,16 @@ export default {
         // debugger
         this.searchSubmit()
       })
+    },
+    handleClick(item,type){
+      this.dialogVisible = true
+      if(type == 0){
+        this.isFlag = true
+      }else{
+        this.isFlag = false
+      }
+      debugger
+      console.log(item,type);
     }
   },
   created(){
