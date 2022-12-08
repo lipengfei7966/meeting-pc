@@ -166,10 +166,10 @@ export default {
         ]
       },
       activeName: 'one',
-      powerRadio: 0,//权限选择
-      exhibition:false,//部分用户展示
-      checkList: [],//部分用户选中的值
-      portionList:[],//部分列表
+      powerRadio: 0, //权限选择
+      exhibition: false, //部分用户展示
+      checkList: [], //部分用户选中的值
+      portionList: [] //部分列表
     }
   },
   methods: {
@@ -302,7 +302,7 @@ export default {
                 url = 'https://cmms-h5-test.ctgbs.com'
               } else if (window.location.host == 'cmms.ctgbs.com') {
                 url = 'https://cmms-h5.ctgbs.com'
-              }else if(window.location.host == 'cmms-dev.ctgbs.com'){
+              } else if (window.location.host == 'cmms-dev.ctgbs.com') {
                 url = 'https://cmms-h5-dev.ctgbs.com'
               }
               //
@@ -376,26 +376,25 @@ export default {
       console.log(item, index, 'website标注')
       this.addEdit(item, index)
     },
-    getPower(item){
-      if(item == 3){
+    getPower(item) {
+      if (item == 3) {
         this.exhibition = true
-      }else{
+      } else {
         this.exhibition = false
         this.checkList = []
       }
     },
-    powerReset(){
+    powerReset() {
       this.activeName = 'one'
     },
-    powerSubmit(){
-      if(this.powerRadio == 3  && this.checkList.length == 0){
-      this.$message.warning('请选择用户')
-      return
-      }else{
-        
+    powerSubmit() {
+      if (this.powerRadio == 3 && this.checkList.length == 0) {
+        this.$message.warning('请选择用户')
+        return
+      } else {
       }
-      console.log('类型：',this.powerRadio,'列表：',this.checkList);
-    },
+      console.log('类型：', this.powerRadio, '列表：', this.checkList)
+    }
   },
   mounted() {
     //

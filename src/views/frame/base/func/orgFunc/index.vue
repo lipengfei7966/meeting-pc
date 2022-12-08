@@ -95,7 +95,7 @@ export default {
         ],
         isColset: true,
         table: {
-          id: this.$route.meta.title + 'ff',
+          id: this.$route.meta.title,
 
           cols: [
             {

@@ -139,9 +139,9 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
-            } else if (component.includes('views/frame/cmms/services/orderTicketing/')) {
+            } else if (component.includes('views/frame/cmms/services/order/')) {
               //   meeting
-              require([`@/views/frame/cmms/services/orderTicketing/${component.split('views/frame/cmms/services/orderTicketing/')[1]}.vue`], resolve, e => {
+              require([`@/views/frame/cmms/services/order/${component.split('views/frame/cmms/services/order/')[1]}.vue`], resolve, e => {
                 Notification(
                   notifyError({
                     msg: `${component}找不到文件`

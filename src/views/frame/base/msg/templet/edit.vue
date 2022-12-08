@@ -43,7 +43,7 @@ export default {
               clearable: true,
               maxlength: 80,
               params: {
-                reserved_str1: 'operation'
+                reserved_str1: ''
               }
             },
             validate: [

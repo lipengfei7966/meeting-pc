@@ -88,7 +88,7 @@ export default {
             element: 'base-select',
             list: this.$t('datadict.msgBizScene'),
             attrs: {
-              clearable: false
+              clearable: true
             },
             validate: [
               {

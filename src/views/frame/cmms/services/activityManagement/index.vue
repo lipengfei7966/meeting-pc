@@ -47,7 +47,7 @@
             <el-col :span="6">
               <el-form-item label="启用状态">
                 <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态" clearable=true>
-                <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -72,7 +72,7 @@
             <span v-if="new Date(scope.row.beginTime) > new Date()">未开始</span>
             <span v-else-if="new Date(scope.row.endTime) < new Date()">已结束</span>
             <span v-else>进行中</span>
-          </template> 
+          </template>
         </el-table-column>
         <el-table-column prop="isGoLive" label="启用">
           <template slot-scope="scope">
@@ -146,8 +146,7 @@ export default {
         // 启用状态
         isGoLive: ''
       },
-      tableData: [
-      ],
+      tableData: [],
       ruleForm: {
         eventCode: '',
         name: '',
@@ -160,8 +159,8 @@ export default {
         type: [],
         resource: '',
         desc: '',
-        radio_:0,
-        inputNum:''
+        radio_: 0,
+        inputNum: ''
       },
       rules: {
         name: [
@@ -174,10 +173,10 @@ export default {
         type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
         desc: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
-        radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }],
+        radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }]
       },
       currentPage4: 4,
-      activityList:[]//会议名称list
+      activityList: [] //会议名称list
     }
   },
   methods: {
@@ -206,31 +205,27 @@ export default {
       debugger
       //this.$refs[formName].validate((valid) => {
       //  if (valid) {
-          this.ruleForm.eventCode = this.moduleVal.eventCode
-          this.ruleForm.beginTime = this.ruleForm.date1[0]
-          this.ruleForm.endTime = this.ruleForm.date1[1]
-          request({
-            url: '/api/register/cmsEventInfoChildren/save',
-            method: 'POST',
-            data: { data: this.ruleForm, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
-          }).then(res => {
-            if (res && res.status) {
-              this.dialogVisible = false
-              this.$notify(
-                notifySuccess({ msg: this.$t('biz.msg.saveSuccess') })
-              )
-            }else{
-              this.$notify(
-                notifyError({ msg: res.msgText })
-              )
-            }
-          })
-          
+      this.ruleForm.eventCode = this.moduleVal.eventCode
+      this.ruleForm.beginTime = this.ruleForm.date1[0]
+      this.ruleForm.endTime = this.ruleForm.date1[1]
+      request({
+        url: '/api/register/cmsEventInfoChildren/save',
+        method: 'POST',
+        data: { data: this.ruleForm, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
+      }).then(res => {
+        if (res && res.status) {
+          this.dialogVisible = false
+          this.$notify(notifySuccess({ msg: this.$t('biz.msg.saveSuccess') }))
+        } else {
+          this.$notify(notifyError({ msg: res.msgText }))
+        }
+      })
+
       //  } else {
       //    console.log('error submit!!')
       //    return false
       //  }
-     // })
+      // })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -241,28 +236,30 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
     },
-    getList(){
+    getList() {
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
-        data: { data: {
-          queryParams: {},
-          type: "EVENT_INFO"
-        },
-         funcModule: '分活动管理', funcOperation: '查询' }
-      })
-      .then((res) => {
-      //  debugger
+        data: {
+          data: {
+            queryParams: {},
+            type: 'EVENT_INFO'
+          },
+          funcModule: '分活动管理',
+          funcOperation: '查询'
+        }
+      }).then(res => {
+        //  debugger
         console.log(res)
         this.activityList = res.data
         this.moduleVal.eventCode = res.data[0].code
         this.searchSubmit()
       })
     },
-    eventChange(val){
+    eventChange(val) {
       this.searchSubmit()
     },
-    isGoLiveChange(val){
+    isGoLiveChange(val) {
       request({
         url: '/api/register/cmsEventInfoChildren/isGoLive',
         method: 'POST',
@@ -273,7 +270,7 @@ export default {
       })
     }
   },
-  created(){
+  created() {
     this.getList()
   }
 }

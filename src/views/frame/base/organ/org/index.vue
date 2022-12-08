@@ -18,7 +18,7 @@ export default {
         listQuery: {
           current: 1,
           size: 20,
-          isPage: true,
+          isPage: false,
           importance: undefined,
           title: undefined,
           type: undefined,
@@ -101,7 +101,7 @@ export default {
         ],
         isColset: true,
         table: {
-          id: this.$route.meta.title + 'ff',
+          id: this.$route.meta.title,
           rowKey: 'code',
           expandAll: true,
           sortable: true,

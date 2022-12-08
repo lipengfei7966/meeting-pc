@@ -125,7 +125,7 @@
 <script>
 import request from '@/utils/frame/base/request'
 export default {
-  name: 'paymentManagementPay',
+  name: 'paymentManagement',
   data() {
     return {
       options: [
@@ -347,8 +347,8 @@ export default {
       }
     }
   },
-  created(){
-this.getList()
+  created() {
+    this.getList()
   },
   methods: {
     install(item) {
@@ -367,7 +367,7 @@ this.getList()
         return
       }
       // 公验证
-      this.individualType.forEach((item) => {
+      this.individualType.forEach(item => {
         if (item.checked && item.value == '') {
           this.$message.warning('请选择已勾选支付方式的账户')
           return
@@ -377,7 +377,7 @@ this.getList()
         }
       })
       // 私验证
-      this.individualPrivateType.forEach((item) => {
+      this.individualPrivateType.forEach(item => {
         if (item.checked && item.value == '') {
           this.$message.warning('请选择已勾选支付方式的账户')
           return
@@ -392,7 +392,7 @@ this.getList()
     },
     // addUser = false
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           alert('submit!')
         } else {
@@ -401,17 +401,19 @@ this.getList()
         }
       })
     },
-    getList(){
+    getList() {
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
-        data: { data: {
-          queryParams: {},
-          type: "EVENT_INFO"
-        },
-         funcModule: '支付设置', funcOperation: '查询' }
-      })
-      .then((res) => {
+        data: {
+          data: {
+            queryParams: {},
+            type: 'EVENT_INFO'
+          },
+          funcModule: '支付设置',
+          funcOperation: '查询'
+        }
+      }).then(res => {
         console.log(res)
         // debugger
         this.options = res.data
@@ -419,21 +421,23 @@ this.getList()
         this.getBusinessInfo(this.value_)
       })
     },
-    getBusinessInfo(code){
+    getBusinessInfo(code) {
       request({
         url: '/api/pay/businessInfo/page',
         method: 'POST',
-        data: { data: {
-          evenCode:code
-        },
-        current:1,
-        size:20,
-        isPage:false,
-        defaultSortString:"createDate.desc",
-        bsQueryExtras:[],
-         funcModule: '支付设置列表', funcOperation: '查询' }
-      })
-      .then((res) => {
+        data: {
+          data: {
+            evenCode: code
+          },
+          current: 1,
+          size: 20,
+          isPage: false,
+          defaultSortString: 'createDate.desc',
+          bsQueryExtras: [],
+          funcModule: '支付设置列表',
+          funcOperation: '查询'
+        }
+      }).then(res => {
         // debugger
         console.log(res.data)
         this.individualPrivateType[0].options = res.data
@@ -442,10 +446,10 @@ this.getList()
         this.individualPrivateType[0].psd = res.data[0].apiKey
       })
     },
-    handelSelect(item){
+    handelSelect(item) {
       // debugger
-     this.value_ = item
-     this.getBusinessInfo(this.value_)
+      this.value_ = item
+      this.getBusinessInfo(this.value_)
     }
   }
 }
