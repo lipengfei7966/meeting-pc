@@ -391,7 +391,6 @@ export default {
       if (this.powerRadio == 3 && this.checkList.length == 0) {
         this.$message.warning('请选择用户')
         return
-      } else {
       }
       console.log('类型：', this.powerRadio, '列表：', this.checkList)
     }
