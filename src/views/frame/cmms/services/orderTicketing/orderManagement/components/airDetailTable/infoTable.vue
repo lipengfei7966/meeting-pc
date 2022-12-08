@@ -50,7 +50,7 @@
                 }}</td>
                 <td class="tdTitle">订单状态</td>
                 <td>{{ orderDetailInfo.orderStatus ?
-                        orderDetailInfo.orderStatus : '-'
+                        orderStatusFamtter[orderDetailInfo.orderStatus] : '-'
                 }}</td>
                 <td class="tdTitle">备注</td>
                 <td>{{ orderDetailInfo.remark ?
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { listItem } from '../../utils/api'
 export default {
     props: ['orderDetailInfo'],
     name: 'airInfoTable',
@@ -80,15 +81,47 @@ export default {
                 contactEmail: '',
                 orderStatus: '',
                 remarks: ''
-            }, infoKeys: []
-
+            },
+            infoKeys: [],
+            orderStatussArr: [],
+            orderStatusFamtter: {},
+            travelsTypeArr: [],
+            // travelTypeArr: [],
+            // travelTypeFamtter: {},
+            businesssTypeArr: [],
+            businessTypeArr: [],
+            businessTypeFamtter: {},
+            // tripsTwoType: [],
+            // tripsTwoFamtter: {},
+            orderTypeFamtter: {},
+            orderTypeArr: [],
+            payTypeArr: [],
+            payTypeFamtter: {},
+            payStatusFamtter: {},
+            payStatusArr: [],
+            tripTypeFamtter: {},
+            tripTypeArr: [],
+            tripFamtter: {},
+            tripArr: [],
         }
     },
     created () {
+        this.listItemFn()
     },
     mounted () { },
     methods: {
-
+        // 获取字典码
+        listItemFn () {
+            listItem('BASIC_ORDER_STATUS').then(res => {
+                // console.log(res, '获取字典码-订单状态')
+                for (const item of res.data) {
+                    var key = item.dictItemVal
+                    var value = item.dictItemName
+                    this.orderStatusFamtter[key] = value
+                    this.orderStatussArr.push([key, value])
+                }
+            })
+        },
     },
 }
 </script>
