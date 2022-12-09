@@ -63,7 +63,8 @@ export default {
                   }
                 ],
                 attrs: {
-                  clearable: true
+                  clearable: true,
+                  cols: 2
                 }
               },
               {
@@ -77,7 +78,8 @@ export default {
                   }
                 ],
                 attrs: {
-                  clearable: true
+                  clearable: true,
+                  cols: 2
                 }
               },
               {
