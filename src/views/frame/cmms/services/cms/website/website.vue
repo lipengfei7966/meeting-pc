@@ -294,8 +294,8 @@ export default {
               // 权限st
               // permissionType
               // someUserTypes
-              this.powerRadio = res.data.permissionType-0
-              if(res.data.someUserTypes){
+              this.powerRadio = res.data.permissionType - 0
+              if (res.data.someUserTypes) {
                 this.exhibition = true
                 this.checkList = res.data.someUserTypes.split(',')
               }
@@ -400,25 +400,29 @@ export default {
         this.$message.warning('请选择用户')
         return
       }
-      // 
-      let str = this.checkList.join(",")
+      //
+      let str = this.checkList.join(',')
       request({
-      url: '/api/biz/cmsWebpage/updatePermissionType',
-      method: 'POST',
-      data: { data: {
-        code:this.code,
-        permissionType:this.powerRadio,
-        someUserTypes:str
-      }, funcModule: '修改权限', funcOperation: '修改权限' }
-    }).then(res => {
-      debugger
-      this.$message.success('保存成功')
-      console.log(res);
-    })
-      // 
+        url: '/api/biz/cmsWebpage/updatePermissionType',
+        method: 'POST',
+        data: {
+          data: {
+            code: this.code,
+            permissionType: this.powerRadio,
+            someUserTypes: str
+          },
+          funcModule: '修改权限',
+          funcOperation: '修改权限'
+        }
+      }).then(res => {
+        debugger
+        this.$message.success('保存成功')
+        console.log(res)
+      })
+      //
       console.log('类型：', this.powerRadio, '列表：', this.checkList)
     },
-    getJurisdiction(){
+    getJurisdiction() {
       // this.$route.params.ids
       // 分享权限
     }

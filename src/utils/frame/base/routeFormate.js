@@ -148,6 +148,15 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
+            } else if (component.includes('views/frame/cmms/services/activity/')) {
+              //   activity
+              require([`@/views/frame/cmms/services/activity/${component.split('views/frame/cmms/services/activity/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
             } else if (component.includes('views/frame/cmms/services/attendee/')) {
               // attendee
               require([`@/views/frame/cmms/services/attendee/${component.split('views/frame/cmms/services/attendee/')[1]}.vue`], resolve, e => {
