@@ -99,14 +99,14 @@
           <div class="mb-power-one">
             <p class="power-p-one">网站访问权限设置</p>
             <el-radio-group v-model="powerRadio" @input="getPower">
-              <el-radio :label="0" class="radio-power">公开</el-radio>
-              <el-radio :label="1" class="radio-power">仅注册用户</el-radio>
-              <el-radio :label="2" class="radio-power">仅审核通过用户</el-radio>
-              <el-radio :label="3" class="radio-power">部分用户</el-radio>
+              <el-radio :label="1" class="radio-power">公开</el-radio>
+              <el-radio :label="2" class="radio-power">仅注册用户</el-radio>
+              <el-radio :label="3" class="radio-power">仅审核通过用户</el-radio>
+              <el-radio :label="4" class="radio-power">部分用户</el-radio>
             </el-radio-group>
             <div class="power-check" v-show="exhibition">
               <el-checkbox-group v-model="checkList">
-                <el-checkbox v-for="(item,index) in portionList" :key="index" class="check-power" :label="item.id">{{item.dictItemName}}</el-checkbox>
+                <el-checkbox v-for="(item,index) in portionList" :key="index" class="check-power" :label="item.dictItemVal">{{item.dictItemName}}</el-checkbox>
 
               </el-checkbox-group>
             </div>
@@ -166,7 +166,7 @@ export default {
         ]
       },
       activeName: 'one',
-      powerRadio: 0, //权限选择
+      powerRadio: 1, //权限选择
       exhibition: false, //部分用户展示
       checkList: [], //部分用户选中的值
       portionList: [] //部分列表
@@ -291,7 +291,15 @@ export default {
               this.code = res.data.code
               console.log(res)
               this.code = res.data.code
-
+              // 权限st
+              // permissionType
+              // someUserTypes
+              this.powerRadio = res.data.permissionType-0
+              if(res.data.someUserTypes){
+                this.exhibition = true
+                this.checkList = res.data.someUserTypes.split(',')
+              }
+              // 权限end
               if (res.data.name) {
                 this.ruleForm.mainTitle = res.data.name
               }
@@ -377,7 +385,7 @@ export default {
       this.addEdit(item, index)
     },
     getPower(item) {
-      if (item == 3) {
+      if (item == 4) {
         this.exhibition = true
       } else {
         this.exhibition = false
@@ -388,11 +396,31 @@ export default {
       this.activeName = 'one'
     },
     powerSubmit() {
-      if (this.powerRadio == 3 && this.checkList.length == 0) {
+      if (this.powerRadio == 4 && this.checkList.length == 0) {
         this.$message.warning('请选择用户')
         return
       }
+      // 
+      let str = this.checkList.join(",")
+      request({
+      url: '/api/biz/cmsWebpage/updatePermissionType',
+      method: 'POST',
+      data: { data: {
+        code:this.code,
+        permissionType:this.powerRadio,
+        someUserTypes:str
+      }, funcModule: '修改权限', funcOperation: '修改权限' }
+    }).then(res => {
+      debugger
+      this.$message.success('保存成功')
+      console.log(res);
+    })
+      // 
       console.log('类型：', this.powerRadio, '列表：', this.checkList)
+    },
+    getJurisdiction(){
+      // this.$route.params.ids
+      // 分享权限
     }
   },
   mounted() {
@@ -420,6 +448,7 @@ export default {
   },
   created() {
     this.loadData()
+    this.getJurisdiction()
     // console.log(this.userData)
     console.log(this.$route)
   }
