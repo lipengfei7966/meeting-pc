@@ -210,11 +210,11 @@ export default {
         handleInfoClick (row) {
             console.log(row, 'row')
             if (row.businessType === '1') {//机票
-                this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode } })
+                this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode, orderStatus: row.orderStatus } })
                 console.log(row)
             }
             if (row.businessType === '2') {//火车票
-                this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode } })
+                this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode, serviceFee: this.serviceFee, orderStatus: row.orderStatus } })
                 // console.log(row)
             }
         }
