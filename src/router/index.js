@@ -154,10 +154,9 @@ export const constantRouterMap = [
   // },
   // 1012
   // {
-  // src\views\frame\cmms\services\activityManagement
   // path: '/aa',
   // name: '/aa',
-  // component: () => import('@/views/frame/cmms/services/activityManagement/index'),
+  // component: () => import('@/views/frame/cmms/services/activity/manage/index'),
   // hidden: true
   // },
   //

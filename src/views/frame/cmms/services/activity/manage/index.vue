@@ -28,7 +28,7 @@
           <el-form style="margin-top: 15px" :model="moduleVal" ref="form" label-width="100px">
             <el-col :span="5">
               <el-form-item label="分活动名称">
-                <el-input size="mini" v-model="moduleVal.name" clearable=true></el-input>
+                <el-input size="mini" v-model="moduleVal.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
@@ -38,7 +38,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动状态">
-                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态" clearable=true>
+                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态">
                   <el-option label="状态一" value="shanghai"></el-option>
                   <el-option label="状态二" value="beijing"></el-option>
                 </el-select>
@@ -46,7 +46,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="启用状态">
-                <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态" clearable=true>
+                <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态">
                   <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="contentBody bs-new-container app-container">
-      <el-table :data="tableData" stripe style="width: 100%" highlight-current-row @current-change="handleCurrentChange">
+      <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="name" label="分活动名称" width="180"> </el-table-column>
         <el-table-column prop="beginTime,endTime" label="活动时间" width="360">
           <template slot-scope="scope">
@@ -90,7 +90,7 @@
         </el-table-column>
       </el-table>
       <div style="background-color: white; width: 100%; height: 52px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400"> </el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pages" :page-sizes="[20, 40,60, 80,100]" :page-size="size" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
       </div>
     </div>
     <div>
@@ -151,7 +151,7 @@ export default {
         eventCode: '',
         name: '',
         region: '',
-        date1: '',
+        date1: [],
         beginTime: '',
         endTime: '',
         triesLimit: '',
@@ -165,18 +165,19 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
         date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
-        date2: [{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }],
         type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
         desc: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
         radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }]
       },
       currentPage4: 4,
-      activityList: [] //会议名称list
+      activityList: [], //会议名称list
+      pages: 1,
+      size: 20,
+      total: 0,
     }
   },
   methods: {
@@ -185,18 +186,18 @@ export default {
       request({
         url: '/api/register/cmsEventInfoChildren/page',
         method: 'POST',
-        data: { data: this.moduleVal, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
+        data: { data: this.moduleVal,isPage: true,current:this.pages,size: this.size, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
       }).then(res => {
         // debugger
+        this.total = res.total
+        // this.pages = res.page
+        this.size = res.size
         this.tableData = res.data
       })
     },
     addSubmit() {
       this.dialogVisible = true
       console.log('addSubmit')
-    },
-    handleCurrentChange(val) {
-      console.log(val)
     },
     handleClose(done) {
       done()
@@ -232,9 +233,13 @@ export default {
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.size = val
+      this.searchSubmit()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.pages = val
+      this.searchSubmit()
     },
     getList() {
       request({
