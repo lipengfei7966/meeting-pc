@@ -35,7 +35,7 @@
                             <el-button size="mini" type="text" @click="visible = false">取消</el-button>
                             <el-button type="primary" size="mini" @click="refundFightFn">确定</el-button>
                         </div>
-                        <el-button slot="reference" type="text" size="small">退票</el-button>
+                        <el-button slot="reference" type="text" size="small" v-if="refundOrderStatus">退票</el-button>
                     </el-popover>
                 </template>
             </el-table-column>
@@ -52,14 +52,21 @@ export default {
         return {
             visible: false,
             refundOrderType: 1,
-            refundType: 1
+            refundType: 1,
+            updateStatus: ['103', '107', '106', '108'],
+            refundOrderStatus: true
         }
     },
-    created () { },
+    created () {
+        this.statusFn()
+    },
     mounted () { },
     methods: {
+        statusFn () {
+            this.refundOrderStatus = this.updateStatus.indexOf(this.orderStatus) === -1 ? false : true
+        },
         refundFightFn () {
-            if ((this.orderStatus.includes(this.updateStatus))) {
+            if (this.orderStatus.includes(this.updateStatus)) {
                 this.refundOrderType = 2
             }
             this.refundType = 1

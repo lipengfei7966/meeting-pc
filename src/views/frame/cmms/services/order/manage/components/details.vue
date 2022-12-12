@@ -90,7 +90,7 @@ export default {
             tripInformationList: [], // 火车票行程信息
             orderDetailInfo: {},//机票基本信息
             costDetailInfo: {},// 机票支付信息
-            flightDetailInfoList: [],// 机票车次信息
+            flightDetailInfoList: [],// 机票航班信息
             tripInfoList: [],// 机票行程信息
             refundVisible: false,
             baggageText: '',
@@ -131,6 +131,7 @@ export default {
                 this.costDetailInfo = res.data.costDetailInfo
                 this.flightDetailInfoList = res.data.flightDetailInfoList
                 this.tripInfoList = res.data.tripInfoList
+                // ------航班信息格式化处理---------
             })
         },
         refundVisibleFn () {
