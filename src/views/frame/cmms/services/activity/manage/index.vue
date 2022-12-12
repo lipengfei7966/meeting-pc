@@ -81,11 +81,17 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="eee" label="报名人数/上限"> </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column prop="triesLimit" label="报名人数/上限">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+            <span v-if="scope.row.triesLimit>0">{{scope.row.triesLimit}}</span>
+            <span v-else-if="scope.row.triesLimit == 0">不限</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row,0)" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(scope.row,1)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleDel(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -98,27 +104,27 @@
         <div>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
             <el-form-item label="分活动名称" prop="name">
-              <el-input style="width: 500px" v-model="ruleForm.name"></el-input>
+              <el-input :disabled="disabled_look" style="width: 500px" v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="活动时间" prop="date1">
-              <el-date-picker style="width: 500px" size="mini" v-model="ruleForm.date1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              <el-date-picker :disabled="disabled_look" style="width: 500px" size="mini" v-model="ruleForm.date1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
             </el-form-item>
-            <el-form-item label="参加人数限制" prop="radio_">
-              <el-radio-group v-model="ruleForm.radio_">
+            <el-form-item label="参加人数限制" prop="triesLimit">
+              <el-radio-group :disabled="disabled_look" v-model="ruleForm.triesLimit">
                 <el-radio :label="0">不限制</el-radio>
                 <el-radio :label="1">单人最多参与 <span>
-                    <el-input :disabled="ruleForm.radio_ == 0" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0"></el-input>
+                    <el-input :disabled="ruleForm.triesLimit == 0" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0"></el-input>
                   </span> 次</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="分活动描述" prop="desc">
-              <el-input style="width: 500px" type="textarea" v-model="ruleForm.desc"></el-input>
+            <el-form-item label="分活动描述" prop="describeInfo">
+              <el-input :disabled="disabled_look" style="width: 500px" type="textarea" v-model="ruleForm.describeInfo"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">{{btnName}}</el-button>
         </span>
       </el-dialog>
     </div>
@@ -154,30 +160,30 @@ export default {
         date1: [],
         beginTime: '',
         endTime: '',
-        triesLimit: '',
         delivery: false,
         type: [],
         resource: '',
-        desc: '',
-        radio_: 0,
-        inputNum: ''
+        describeInfo: '',
+        triesLimit: 0,
+        inputNum: 0
       },
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
         ],
         region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-        date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
-        type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
+        date1: [{ required: true, message: '请选择日期', trigger: 'change' }],
+        type: [{ required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        desc: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
-        radio_: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }]
+        describeInfo: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
+        triesLimit: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }]
       },
-      currentPage4: 4,
       activityList: [], //会议名称list
       pages: 1,
       size: 20,
       total: 0,
+      btnName:'立即创建',
+      disabled_look:false
     }
   },
   methods: {
@@ -196,32 +202,79 @@ export default {
       })
     },
     addSubmit() {
+      this.btnName = '立即创建'
       this.dialogVisible = true
+      this.ruleForm={
+        eventCode: '',
+        name: '',
+        region: '',
+        date1: [],
+        beginTime: '',
+        endTime: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        describeInfo: '',
+        triesLimit: 0,
+        inputNum: 0
+      },
       console.log('addSubmit')
     },
     handleClose(done) {
       done()
     },
     submitForm(formName) {
-      debugger
-      //this.$refs[formName].validate((valid) => {
-      //  if (valid) {
+      let this_ = this
+      if(this.btnName == "修改"){
+if(this.ruleForm.triesLimit == 1){
+          // inputNum
+          debugger
+          this.ruleForm.triesLimit = this.ruleForm.inputNum
+        }
+      this.ruleForm.eventCode = this.moduleVal.eventCode
+      this.ruleForm.beginTime = this.ruleForm.date1[0]
+      this.ruleForm.endTime = this.ruleForm.date1[1]
+      request({
+        url: '/api/register/cmsEventInfoChildren/update',
+        method: 'POST',
+        data: { data: this.ruleForm, funcModule: '分活动管理修改', funcOperation: '分活动管理修改' }
+      }).then(res => {
+        if (res && res.status) {
+          this.dialogVisible = false
+          this.$message.success('修改成功')
+          this.searchSubmit()
+        } else {
+          this.$message.error('修改失败')
+        }
+      })
+      }else if(this.btnName == "立即创建"){
+        if(this.ruleForm.triesLimit == 1){
+          // inputNum
+          debugger
+          this.ruleForm.triesLimit = this.ruleForm.inputNum
+        }
       this.ruleForm.eventCode = this.moduleVal.eventCode
       this.ruleForm.beginTime = this.ruleForm.date1[0]
       this.ruleForm.endTime = this.ruleForm.date1[1]
       request({
         url: '/api/register/cmsEventInfoChildren/save',
         method: 'POST',
-        data: { data: this.ruleForm, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
+        data: { data: this.ruleForm, funcModule: '分活动管理新增', funcOperation: '分活动管理新增' }
       }).then(res => {
         if (res && res.status) {
           this.dialogVisible = false
-          this.$notify(notifySuccess({ msg: this.$t('biz.msg.saveSuccess') }))
+          this.$message.success('新增成功')
+          this.searchSubmit()
         } else {
-          this.$notify(notifyError({ msg: res.msgText }))
+          this.$message.error('新增失败')
         }
       })
-
+      }else {
+        this.dialogVisible = false
+      }
+      // this_.$refs[formName].validate((valid) => {
+      //   debugger
+      //  if (valid) {
       //  } else {
       //    console.log('error submit!!')
       //    return false
@@ -273,7 +326,70 @@ export default {
         // debugger
         this.searchSubmit()
       })
-    }
+    },
+    handleClick(item,type){
+      if(type == 0){
+        //查看
+        this.disabled_look = true
+        this.btnName = '确定'
+        this.getEdit(item.code)
+      }else{
+        // 编辑
+        this.disabled_look = false
+        this.btnName = '修改'
+      this.getEdit(item.code)
+      }
+    },
+    handleDel(item){
+      this.$confirm('是否删除当前数据？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          request({
+        url: '/api/register/cmsEventInfoChildren/remove',
+        method: 'POST',
+        data: { data: item.code, funcModule: '分活动管理删除', funcOperation: '分活动管理删除' }
+      }).then(res => {
+        if(res){
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.searchSubmit()
+        }else{
+          this.$message({
+            type: 'info',
+            message: '删除失败'
+          }); 
+        }
+      })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    },
+    getEdit(code){
+      request({
+        url: '/api/register/cmsEventInfoChildren/get',
+        method: 'POST',
+        data: { data: code, funcModule: '分活动管理修改', funcOperation: '分活动管理修改' }
+      }).then(res => {
+        // debugger
+        this.ruleForm = res.data
+        this.ruleForm.date1 = [
+        this.ruleForm.beginTime,this.ruleForm.endTime
+        ]
+        if(this.ruleForm.triesLimit > 0){
+          this.ruleForm.inputNum = this.ruleForm.triesLimit
+          this.ruleForm.triesLimit = 1
+        }
+        this.dialogVisible = true
+       console.log(res);
+      })
+    },
   },
   created() {
     this.getList()
