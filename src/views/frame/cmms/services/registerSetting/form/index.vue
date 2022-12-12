@@ -5,7 +5,8 @@
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
     <!-- 已完成表单设置 -->
     <apply-set v-if="isFormSetComplete" :eventCode="form.listQuery.data.eventCode" :eventName="eventName"
-      @setResult="setResult" @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn"></apply-set>
+      @setResult="setResult" @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn"
+      @applySetForm="applySetForm"></apply-set>
     <!-- 未完成表单设置 -->
     <div v-else style="padding: 0 20px">
       <div class="steps">
@@ -1719,11 +1720,33 @@
       <!-- 结果页设置 -->
       <div v-if="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
-          label-width="200px" :model="resultSetForm" class="resultSetForm">
+          :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
           <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
             <el-radio v-model="resultSetForm.isNeedApprove" :label="0">不需要审核</el-radio>
             <el-radio v-model="resultSetForm.isNeedApprove" :label="1">需要审核</el-radio>
           </el-form-item>
+          <div class="transition-box" v-show="drawer">
+            <div class="content">
+              <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="centerContent">
+                <div class="themeTitle">
+                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}/
+                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
+                  </h1>
+                  <!-- <h3>地址</h3> -->
+                  <h3>{{ applySetForm.applyDate }}</h3>
+                </div>
+                <div class="successInfo">
+                  <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
+                  <pre> {{ resultSetForm.successDescribe }} </pre>
+                  <div class="previewBtnsRow">
+                    <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
+                      v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="resultSetItem">
             <div class="setItemTitle">
               <h3>1、报名成功</h3>
@@ -1739,34 +1762,14 @@
             <el-divider></el-divider>
             <div v-show="successIsShow">
               <div style="display: flex">
-
-                <div class="transition-box" v-show="drawer">
-                  <div class="content">
-                    <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">pc</div>
-                    <div class="successPreview">
-                      <!-- 背景图 -->
-                      <img v-if="resultSetForm.successBackground" :src="printSetform.successBackground" alt=""
-                        style="position: absolute; width: 100%; height: 100%" />
-                      <!-- banner 图 -->
-                      <el-image v-if="resultSetForm.successBanner" style="width: 100%"
-                        :src="resultSetForm.successBanner" :fit="fit"></el-image>
-                      <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
-                      <pre> {{ resultSetForm.successDescribe }} </pre>
-                      <div class="previewBtns">
-                        <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
-                          v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
-                  <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">pc</div>
+                  <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">电脑</div>
                   <div class="successPreview">
                     <!-- 背景图 -->
-                    <img v-if="resultSetForm.successBackground" :src="printSetform.successBackground" alt=""
+                    <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
                       style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner"
@@ -1775,7 +1778,7 @@
                     <pre> {{ resultSetForm.successDescribe }} </pre>
                     <div class="previewBtns">
                       <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
-                        v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                        v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
                     </div>
                   </div>
                 </el-card>
@@ -1818,8 +1821,8 @@
                         <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage"
                           style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
-                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label"
-                              :value="item.value"></el-option>
+                            <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal"
+                              :label="item.dictItemName" :value="item.dictItemVal"></el-option>
                           </el-select>
                           <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.successOutPageUrl" size="mini"
@@ -1833,13 +1836,13 @@
                   <el-form-item label="按钮设置:">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
                       style="display: flex">
-                      <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.btnName'">
-                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.name'">
+                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.btnFun'">
-                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
-                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label"
-                            :value="item.value"></el-option>
+                      <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                          <el-option v-for="item in skipCodeOptions" :key="item.dictItemVal" :label="item.dictItemName"
+                            :value="item.dictItemVal"></el-option>
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline"
@@ -1874,7 +1877,7 @@
                   </div>
                   <div class="waitReviewPreview">
                     <!-- 背景图 -->
-                    <img v-if="resultSetForm.waitReviewBackground" :src="printSetform.waitReviewBackground" alt=""
+                    <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
                       style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%"
@@ -1883,7 +1886,7 @@
                     <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
                     <div class="previewBtns">
                       <el-button v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex"
-                        v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                        v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
                     </div>
                   </div>
                 </el-card>
@@ -1924,8 +1927,8 @@
                         <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage"
                           style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
-                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label"
-                              :value="item.value"></el-option>
+                            <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal"
+                              :label="item.dictItemName" :value="item.dictItemVal"></el-option>
                           </el-select>
                           <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini"
@@ -1939,14 +1942,13 @@
                   <el-form-item label="按钮设置:">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex"
                       style="display: flex">
-                      <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.btnName'">
-                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.name'">
+                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px"
-                        :prop="'waitReviewButtonList.' + btnIndex + '.btnFun'">
-                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
-                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label"
-                            :value="item.value"></el-option>
+                      <el-form-item label="功能" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                          <el-option v-for="item in skipCodeOptions" :key="item.dictItemVal" :label="item.dictItemName"
+                            :value="item.dictItemVal"></el-option>
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline"
@@ -1980,7 +1982,7 @@
                   </div>
                   <div class="noPassPreview">
                     <!-- 背景图 -->
-                    <img v-if="resultSetForm.noPassBackground" :src="printSetform.noPassBackground" alt=""
+                    <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
                       style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner"
@@ -1989,7 +1991,7 @@
                     <pre> {{ resultSetForm.noPassDescribe }} </pre>
                     <div class="previewBtns">
                       <el-button v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex"
-                        v-show="btnItem.btnName" type="primary"> {{ btnItem.btnName }}</el-button>
+                        v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
                     </div>
                   </div>
                 </el-card>
@@ -2030,8 +2032,8 @@
                         <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage"
                           style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
-                            <el-option v-for="item in jumpPageOptions" :key="item.value" :label="item.label"
-                              :value="item.value"></el-option>
+                            <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal"
+                              :label="item.dictItemName" :value="item.dictItemVal"></el-option>
                           </el-select>
                           <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini"
@@ -2045,13 +2047,13 @@
                   <el-form-item label="按钮设置:">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex"
                       style="display: flex">
-                      <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.btnName'">
-                        <el-input v-model="btnItem.btnName" size="mini" placeholder="请输入按钮名称"></el-input>
+                      <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.name'">
+                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.btnFun'">
-                        <el-select v-model="btnItem.btnFun" placeholder="请选择跳转页面">
-                          <el-option v-for="item in btnOptions" :key="item.value" :label="item.label"
-                            :value="item.value"></el-option>
+                      <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                          <el-option v-for="item in skipCodeOptions" :key="item.dictItemVal" :label="item.dictItemName"
+                            :value="item.dictItemVal"></el-option>
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline"
@@ -2067,7 +2069,7 @@
         </el-form>
         <div class="resultSetBtns">
           <el-button @click="preStep">上一步(暂存)</el-button>
-          <el-button type="primary" @click="resultSetSave">生成表单</el-button>
+          <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
         </div>
       </div>
     </div>
@@ -2097,10 +2099,41 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      dialogImageUrl: '',
+      dialogVisible: false,
+      applySetForm: {
+        isVerification: '', // 验证方式
+        registerVerification: [], // 注册验证
+        loginVerification: [], // 登录验证
+        coustomVerification: [], // 自定义验证项
+        isNeedCompleteMustInfo: true, // 是否需要完善必填信息
+        IsIintimateAgreement: true, // 隐私协议
+        applyDate: '', // 报名日期
+        attendanceCodePrefix: '', // 参会码前缀
+        attendanceCodeLength: '', // 参会码长度
+        createType: '', // 生成类型
+        attendanceCodeStartNum: 0, // 起始码
+        applyCheck: '', // 报名审核
+        checkUser: '', // 审核权限用户
+        assistApply: true, // 协助报名
+        assistApplyPermission: '', // 协助报名权限
+        assistApplyOpenField: [] // 协助报名开放字段
+      },
       drawer: false,
       stepIndex: 1,
       header: {
         token: window.sessionStorage.getItem('token')
+      },
+      resultSetForm: {
+        successTitle: [
+          { required: true, message: '请输入提示主题', trigger: 'blur' }
+        ],
+        waitReviewTitle: [
+          { required: true, message: '请输入提示主题', trigger: 'blur' }
+        ],
+        noPassTitle: [
+          { required: true, message: '请输入提示主题', trigger: 'blur' }
+        ],
       },
       form: {
         moreShowFlg: false,
@@ -2307,6 +2340,8 @@ export default {
       eventName: '', // 会议名称
       drag: false,
       countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
+      buttonCodeOptions: [],//按钮字典
+      skipCodeOptions: [],//跳转页面字典
       setInfoList: [], // 选中的配置信息列表
       batchEditOptions: '', // 批量编辑信息
       // 表格高度
@@ -2353,6 +2388,18 @@ export default {
         date: ''
       },
       checkedIndex: 0, // 选中预览item下标
+      queryResult: {
+        appFile: '',//手机文件
+        backgroundFile: '',//背景图文件
+        describe: '',//描述
+        eventCode: '',//会议code
+        isSkip: '',//是否跳过当前页(1是0否)
+        resultButton: [],//结果页按钮表
+        skipPage: '',//跳转页面(数据字典SKIP_PAGE)
+        skipWebsite: '',//跳转网址
+        theme: '',//提示主题
+        type: '',//1、报名成功，2、待审核，3、不通过
+      },
       resultSetForm: {
         isNeedApprove: 0, // 是否需要审核
         successTitle: '', // 报名成功提示主题
@@ -2364,8 +2411,8 @@ export default {
         successOutPageUrl: '', // 站外页面URL
         successButtonList: [
           {
-            btnName: '', // 按钮名称
-            btnFun: '' // 按钮功能
+            name: '', // 按钮名称
+            value: '' // 按钮功能
           }
         ],
 
@@ -2378,8 +2425,8 @@ export default {
         waitReviewOutPageUrl: '', // 待审核 站外页面URL
         waitReviewButtonList: [
           {
-            btnName: '', // 按钮名称
-            btnFun: '' // 按钮功能
+            name: '', // 按钮名称
+            value: '' // 按钮功能
           }
         ],
 
@@ -2392,8 +2439,8 @@ export default {
         noPassOutPageUrl: '', // 不通过 站外页面URL
         noPassButtonList: [
           {
-            btnName: '', // 按钮名称
-            btnFun: '' // 按钮功能
+            name: '', // 按钮名称
+            value: '' // 按钮功能
           }
         ]
       },
@@ -2417,7 +2464,13 @@ export default {
       successIsShow: true, // 报名成功是否显示
       waitReviewIsShow: true, // 报名成功是否显示
       noPassIsShow: true, // 报名成功是否显示
-      isFormSetComplete: false // 表单设置是否完成
+      isFormSetComplete: false, // 表单设置是否完成
+      resultNoFrom: [{ appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }],
+      resultFrom: [
+        { appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
+        { appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
+        { appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }
+      ]
     }
   },
   components: {
@@ -2434,6 +2487,26 @@ export default {
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then((res) => {
       this.countryCodeOptions = res.data
+      // dictItemName \ dictItemVal
+    })
+    // 获取按钮下拉数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'RESULT_SKIP_PAGE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.buttonCodeOptions = res.data
+      console.log(this.buttonCodeOptions, 'this.buttonCodeOptions')
+      // dictItemName \ dictItemVal
+    })
+    // 获取跳转页面数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'RESULT_BTN', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.skipCodeOptions = res.data
+      console.log(this.skipCodeOptions, 'this.skipCodeOptions')
       // dictItemName \ dictItemVal
     })
   },
@@ -2480,6 +2553,13 @@ export default {
     }
   },
   methods: {
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    applySetFormFn (applySetForm) {
+      this.applySetForm = applySetForm
+    },
     // 外观设置保存
     appearanceSetSave () {
       this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
@@ -2531,8 +2611,70 @@ export default {
     preStep () {
       this.stepIndex = 2
     },
-    resultSetSave () {
-      this.isFormSetComplete = true
+    resultSetSave (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.isFormSetComplete = true
+          console.log(this.resultSetForm, 'resultSetFormresultSetForm')
+          if (this.resultSetForm.isNeedApprove === 0) {
+            this.resultNoFrom[0].appFile = this.resultSetForm.successBanner
+            this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
+            this.resultNoFrom[0].describe_info = this.resultSetForm.successDescribe
+            this.resultNoFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage ? 1 : 0
+            this.resultNoFrom[0].skipPage = this.resultSetForm.successJumpPage
+            this.resultNoFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
+            this.resultNoFrom[0].theme = this.resultSetForm.successTitle
+            this.resultNoFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultNoFrom[0].type = '1'
+            console.log(this.resultNoFrom, 'resultNoFrom')
+          }
+          if (this.resultSetForm.isNeedApprove === 1) {
+            this.resultFrom[0].appFile = this.resultSetForm.successBanner
+            this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
+            this.resultFrom[0].describe_info = this.resultSetForm.successDescribe
+            this.resultFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage ? 1 : 0
+            this.resultFrom[0].skipPage = this.resultSetForm.successJumpPage
+            this.resultFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
+            this.resultFrom[0].theme = this.resultSetForm.successTitle
+            this.resultFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultFrom[0].type = '1'
+
+            this.resultFrom[1].appFile = this.resultSetForm.waitReviewBanner
+            this.resultFrom[1].backgroundFile = this.resultSetForm.waitReviewBackground
+            this.resultFrom[1].describe_info = this.resultSetForm.waitReviewDescribe
+            this.resultFrom[1].isSkip = this.resultSetForm.waitReviewIsJumpCurrentPage ? 1 : 0
+            this.resultFrom[1].skipPage = this.resultSetForm.waitReviewJumpPage
+            this.resultFrom[1].skipWebsite = this.resultSetForm.waitReviewOutPageUrl
+            this.resultFrom[1].theme = this.resultSetForm.waitReviewTitle
+            this.resultFrom[1].resultButton = this.resultSetForm.waitReviewButtonList
+            this.resultFrom[1].type = '2'
+
+            this.resultFrom[2].appFile = this.resultSetForm.noPassBanner
+            this.resultFrom[2].backgroundFile = this.resultSetForm.noPassBackground
+            this.resultFrom[2].describe_info = this.resultSetForm.noPassDescribe
+            this.resultFrom[2].isSkip = this.resultSetForm.noPassIsJumpCurrentPage ? 1 : 0
+            this.resultFrom[2].skipPage = this.resultSetForm.noPassJumpPage
+            this.resultFrom[2].skipWebsite = this.resultSetForm.noPassOutPageUrl
+            this.resultFrom[2].theme = this.resultSetForm.noPassTitle
+            this.resultFrom[2].resultButton = this.resultSetForm.noPassButtonList
+            this.resultFrom[2].type = '3'
+            console.log(this.resultFrom, 'resultFrom')
+          }
+          request({
+            url: '/api/register/signupResult/save',
+            method: 'POST',
+            data: {
+              data: this.resultSetForm.isNeedApprove === 0 ? this.resultNoFrom : this.resultFrom,
+              funcModule: '表单外观设置',
+              funcOperation: '创建结果页'
+            }
+          }).then((res) => {
+            if (res.status) {
+              this.$message({ message: '生成表单成功', type: 'success' })
+            }
+          })
+        }
+      })
     },
 
     setResult () {
@@ -2863,7 +3005,6 @@ export default {
     },
     stepIndexFn (step) {
       this.stepIndex = step
-      console.log(step, 'step11')
     },
     isFormSetCompleteFn (status) {
       this.isFormSetComplete = status
@@ -2895,10 +3036,10 @@ export default {
 
     fileLimitCount (files, fileList) {
       this.$message.warning('只允许上传一个文件')
-      this.$set(fileList[0], 'raw', files[0])
-      this.$set(fileList[0], 'name', files[0].name)
-      this.$refs['rebateUpload'].clearFiles()//清除文件
-      this.$refs['rebateUpload'].handleStart(files[0])//选择文件后的赋值方法
+      // this.$set(fileList[0], 'raw', files[0])
+      // this.$set(fileList[0], 'name', files[0].name)
+      // this.$refs['rebateUpload'].clearFiles()//清除文件
+      // this.$refs['rebateUpload'].handleStart(files[0])//选择文件后的赋值方法
     },
     beforeAvatarUpload (file) {
       const fileName = file.name
@@ -2909,7 +3050,6 @@ export default {
 
       // 判断后缀名是否允许上传
       isAllowUpload = acceptType.includes(extension)
-      console.log(isAllowUpload, 'isAllowUpload')
       if (!isAllowUpload) {
         const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
         this.$message.error(errMsg)
@@ -2926,7 +3066,6 @@ export default {
     },
     // 自定义上传文件
     handleUploadForm (param, uploadType) {
-      console.log(uploadType, 'uploadType')
       console.log(param, 'param')
       let formData = new FormData()
       formData.append('file', param.file)
@@ -3189,13 +3328,15 @@ export default {
     // 结果页设置 添加按钮
     addBtn (btnList, btnIndex) {
       btnList.splice(btnIndex + 1, 0, {
-        btnName: '',
-        btnFun: ''
+        name: '',
+        value: ''
       })
+      console.log(this.resultSetForm.successButtonList, 'this.resultSetForm.successButtonList')
     },
     // 结果页设置 删除按钮
     delBtn (btnList, btnIndex) {
       btnList.splice(btnIndex, 1)
+      console.log(this.resultSetForm.successButtonList, 'this.resultSetForm.successButtonList')
     },
     //开始拖拽事件
     onStart () {
@@ -3254,7 +3395,7 @@ export default {
   position: absolute;
   left: 0;
   width: 100%;
-  height: 500px;
+  height: 600px;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -3262,10 +3403,38 @@ export default {
 }
 
 .content {
-  width: 80%;
-  height: 480px;
-  background-color: #fff;
+  width: 90%;
+  height: 90%;
+  background-color: #f2f2f2;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .centerContent {
+    width: 80%;
+    height: 400px;
+
+    .themeTitle {
+      width: 100%;
+      height: 150px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      margin-bottom: 30px;
+      display: flex;
+      direction: columns;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .successInfo {
+      width: 100%;
+      height: 200px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+
+    }
+  }
 
   .pageStatus {
     position: absolute;
@@ -3274,7 +3443,10 @@ export default {
     padding: 5px;
     border-radius: 50%;
     background-color: #f2f2f2;
+    border: 1px solid #ccc;
   }
+
+
 
 }
 
@@ -3521,6 +3693,21 @@ export default {
         right: 0;
         display: flex;
         flex-direction: column;
+        align-items: center;
+
+        .el-button {
+          width: 150px;
+          margin: 5px 0;
+        }
+      }
+
+      .previewBtnsRow {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: row;
         align-items: center;
 
         .el-button {

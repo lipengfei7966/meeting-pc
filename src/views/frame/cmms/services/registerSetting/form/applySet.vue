@@ -2,7 +2,7 @@
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
       <div class="formSet">
-        <div class="back">
+        <div class="back" style="cursor: pointer">
           <el-popover placement="top-start" width="20" trigger="click" center>
             <el-link type="primary" @click="toAppearance(1)">编辑外观</el-link><br />
             <el-link type="primary" @click="toEdit(2)">编辑表单</el-link><br />
@@ -400,8 +400,8 @@
       </div>
 
       <div class="applySetForm">
-        <el-form ref="applySetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
-          label-width="180px" :model="applySetForm">
+        <el-form ref="applySetForm" :validate-on-rule-change="false" :rules="rulesApply" @submit.native.prevent
+          label-position="right" label-width="180px" :model="applySetForm">
           <div class="setItemTitle">
             <h3>注册登录</h3>
             <span>
@@ -421,24 +421,33 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification" label="注册验证" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
-                <el-checkbox label="短信验证"></el-checkbox>
-                <el-checkbox label="邮箱验证"></el-checkbox>
+                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dispOrder"
+                  :label="item.dictItemVal">
+                  {{ item.dictItemName }}
+                </el-checkbox>
+                <!-- <el-checkbox label="短信验证"></el-checkbox>
+                <el-checkbox label="邮箱验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification" label="登录验证" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
-                <el-checkbox label="短信验证"></el-checkbox>
+                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dispOrder" :label="item.dictItemVal">
+                  {{ item.dictItemName }}
+                </el-checkbox>
+                <!-- <el-checkbox label="短信验证"></el-checkbox>
                 <el-checkbox label="邮箱验证"></el-checkbox>
                 <el-checkbox label="账号密码"></el-checkbox>
-                <el-checkbox label="自定义验证"></el-checkbox>
+                <el-checkbox label="自定义验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes('自定义验证')"
+            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes('custom')"
               label="自定义验证项" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
-                <el-checkbox label="姓名"></el-checkbox>
-                <el-checkbox label="手机号"></el-checkbox>
-                <el-checkbox label="邮箱"></el-checkbox>
+                <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dictItemVal">
+                  {{ item.dictItemName }}
+                </el-checkbox>
+                <!-- <el-checkbox label="手机号"></el-checkbox>
+                <el-checkbox label="邮箱"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
 
@@ -449,7 +458,7 @@
             <el-form-item label="隐私协议" prop="IsIintimateAgreement">
               <el-switch v-model="applySetForm.IsIintimateAgreement" active-color="#13ce66"
                 inactive-color="#ff4949"></el-switch>
-              <el-button type="text">编辑隐私协议</el-button>
+              <el-button type="text" @click="editPrivacyHandle">编辑隐私协议</el-button>
             </el-form-item>
           </div>
 
@@ -467,24 +476,26 @@
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
             <el-form-item label="报名日期" prop="applyDate">
-              <el-date-picker v-model="applySetForm.applyDate" type="daterange" range-separator="至"
-                start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              <el-date-picker v-model="applySetForm.applyDate" @change="dateChange" type="datetimerange"
+                range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="参会码设置">
-              <el-form-item label="前缀" prop="attendanceCodePrefix" label-width="50px">
+              <el-form-item label="前缀" prop="attendanceCodePrefix" label-width="70px">
                 <el-input v-model="applySetForm.attendanceCodePrefix" placeholder="请输入内容"></el-input>
               </el-form-item>
-              <el-form-item label="长度" prop="attendanceCodeLength" label-width="50px" style="margin-bottom: 0">
+              <el-form-item label="长度" prop="attendanceCodeLength" label-width="70px" style="margin-bottom: 0">
                 <el-input v-model="applySetForm.attendanceCodeLength" style="width: 150px"
                   placeholder="请输入内容"></el-input>
                 位
                 <p>前缀位数不包含在长度内</p>
               </el-form-item>
               <el-form-item label="生成类型" prop="createType" label-width="80px" style="margin-bottom: 0">
-                <el-radio v-model="applySetForm.createType" :label="0">随机码</el-radio>
-                <el-radio v-model="applySetForm.createType" :label="1">顺序码</el-radio>
+                <!-- <el-radio v-model="applySetForm.createType" :label="0">随机码</el-radio> -->
+                <el-radio v-for="item in typeOptions" :key="item.dispOrder" v-model="applySetForm.createType"
+                  :label="item.dictItemVal">{{ item.dictItemName }}</el-radio>
               </el-form-item>
-              <el-form-item v-if="applySetForm.createType == '1'" label="起始码" prop="attendanceCodeStartNum">
+              <el-form-item v-if="applySetForm.createType == '2'" label="起始码" prop="attendanceCodeStartNum">
                 <el-input v-model="applySetForm.attendanceCodeStartNum" placeholder="请输入内容"></el-input>
                 <p>起始码如：001、002等</p>
               </el-form-item>
@@ -507,32 +518,62 @@
               <el-switch v-model="applySetForm.assistApply" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名权限" prop="assistApplyPermission">
-              <el-radio v-model="applySetForm.assistApplyPermission" :label="0">仅限编辑</el-radio>
+              <el-radio v-model="applySetForm.assistApplyPermission" :label="2">仅限编辑</el-radio>
               <el-radio v-model="applySetForm.assistApplyPermission" :label="1">支持新增</el-radio>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名开放字段" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
-                <el-checkbox label="姓名"></el-checkbox>
+                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal">{{
+                    item.dictItemName
+                }}</el-checkbox>
+                <!-- <el-checkbox label="姓名"></el-checkbox>
                 <el-checkbox label="手机号"></el-checkbox>
-                <el-checkbox label="邮箱"></el-checkbox>
+                <el-checkbox label="邮箱"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
           </div>
         </el-form>
         <div style="text-align: center">
-          <el-button type="primary">保存并生成报名链接</el-button>
+          <el-button type="primary" @click="saveHrefHandle('applySetForm')">保存并生成报名链接</el-button>
         </div>
       </div>
     </div>
+    <el-dialog title="编辑隐私协议" :visible.sync="dialogFormVisible">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="协议名称" prop="name">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="协议内容" prop="privacyContent">
+          <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
+          <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html"
+            style="width: 100%; height: 30rem; border-width: 1px"></iframe>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="privacySubmitForm('ruleForm')">确定</el-button>
+          <el-button @click="resetForm()">取消</el-button>
+        </el-form-item>
+      </el-form>
+      <!-- <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
+import moment from 'moment'
 export default {
   name: 'applySet',
   data () {
     return {
+      registerVerificationOptions: [],// 获取注册验证
+      loginVerificationOptions: [],// 获取登录验证
+      customizeOptions: [],// 获取自定义验证
+      typeOptions: [],// 获取生成类型
+      signupFieldOptions: [],// 获取协助报名开放字段
+
       setInfoList: [], // 表单配置列表
       isRegisterSetShow: true, // 注册登录是否显示
       isApplyBaseInfoShow: true, // 报名基础信息是否展示
@@ -590,7 +631,7 @@ export default {
         IsIintimateAgreement: true, // 隐私协议
         applyDate: '', // 报名日期
         attendanceCodePrefix: '', // 参会码前缀
-        attendanceCodeLength: '', // 参会码长度
+        attendanceCodeLength: '2', // 参会码长度
         createType: '', // 生成类型
         attendanceCodeStartNum: 0, // 起始码
         applyCheck: '', // 报名审核
@@ -599,7 +640,43 @@ export default {
         assistApplyPermission: '', // 协助报名权限
         assistApplyOpenField: [] // 协助报名开放字段
       },
-      setFormFile: []
+      setFormFile: [],
+      dialogFormVisible: false,
+      ruleForm: {
+        name: '',
+        privacyContent: ''
+      },
+      rules: {
+        name: [{ required: true, message: '请输入协议名称', trigger: 'blur' }],
+        privacyContent: [{ required: true, message: '请填写协议内容', trigger: 'blur' }]
+      },
+      rulesApply: {
+        isVerification: [
+          { required: true, message: '请选择验证方式', trigger: 'blur' }
+        ],
+        registerVerification: [
+          { required: true, message: '请选择注册验证方式', trigger: 'blur' }
+        ],
+        loginVerification: [
+          { required: true, message: '请选择登录验证方式', trigger: 'blur' }
+        ],
+        coustomVerification: [
+          { required: true, message: '请选择自定义验证项', trigger: 'blur' }
+        ],
+        attendanceCodePrefix: [
+          { required: true, message: '请输入前缀', trigger: 'blur' }
+        ],
+        attendanceCodeLength: [
+          { required: true, message: '请输入长度', trigger: 'blur' }
+        ],
+        createType: [
+          { required: true, message: '请选择生成类型', trigger: 'blur' }
+        ],
+        attendanceCodeStartNum: [
+          { required: true, message: '请输入起始码', trigger: 'blur' }
+        ]
+      },
+
     }
   },
   props: {
@@ -623,8 +700,76 @@ export default {
     if (this.eventCode) {
       this.getEventInfo()
     }
+    // 获取注册验证数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'REGISTER_VERIFICATION', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.registerVerificationOptions = res.data
+      console.log(this.registerVerificationOptions, 'this.registerVerificationOptions')
+      // dictItemName \ dictItemVal
+    })
+    // 获取登录验证数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'LOGIN_VERIFICATION', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.loginVerificationOptions = res.data
+      console.log(this.loginVerificationOptions, 'this.loginVerificationOptions')
+      // dictItemName \ dictItemVal
+    })
+    // 获取自定义验证数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'CUSTOMIZE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.customizeOptions = res.data
+      console.log(this.customizeOptions, 'this.customizeOptions')
+      // dictItemName \ dictItemVal
+    })
+    // 获取生成类型数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'contact_code_rule_type', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.typeOptions = res.data
+      console.log(this.typeOptions, 'this.typeOptions')
+      // dictItemName \ dictItemVal
+    })
+    // 获取协助报名开放字段数据字典
+    request({
+      url: '/api/sys/dict/listItem',
+      method: 'POST',
+      data: { data: 'SIGNUP_FIELD', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    }).then((res) => {
+      this.signupFieldOptions = res.data
+      console.log(this.signupFieldOptions, 'this.signupFieldOptions')
+      // dictItemName \ dictItemVal
+    })
   },
   methods: {
+    resetForm () {
+      this.dialogFormVisible = false
+    },
+    privacySubmitForm (formName) {
+      // this.$refs[formName].resetFields()
+      const req = window.frames['myframe'].getContent()
+      const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
+      this.ruleForm.privacyContent = res.trim()
+      if (res.trim() === '') {
+        this.$message.error('请输入协议内容')
+      } else {
+        this.dialogFormVisible = false
+      }
+    },
+    editPrivacyHandle () {
+      this.dialogFormVisible = true
+      this.initDialog()
+    },
     // 表单配置查询
     getEventInfo () {
       request({
@@ -653,7 +798,7 @@ export default {
               // this.setForm[item.mapCode] = ''
             }
             if (['附件'].includes(item.systemName)) {
-              debugger
+              // debugger
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
               console.log(this.setFormFile)
               this.$set(this.setFormFile, item.mapCode, [])
@@ -701,6 +846,59 @@ export default {
     setResult () {
       this.$emit('setResult')
     },
+    saveHrefHandle (formName) {
+      this.$emit('applySetForm', this.applySetForm)
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let date1 = moment(this.applySetForm.applyDate[0]).valueOf()
+          let date2 = moment(this.applySetForm.applyDate[1]).valueOf()
+          let querySaveHref = {
+            isVerification: this.applySetForm.isVerification,
+            registerVerification: this.applySetForm.registerVerification.join(','),
+            loginVerification: this.applySetForm.loginVerification.join(','),
+            customize: this.applySetForm.coustomVerification.join(','),
+            isRequired: this.applySetForm.isNeedCompleteMustInfo ? '1' : '0',
+            isPrivacy: this.applySetForm.IsIintimateAgreement ? '1' : '0',
+            privacyName: this.ruleForm.name,
+            privacyContent: this.ruleForm.privacyContent,
+            beginTime: moment(date1).format('YYYY-MM-DD HH:mm:ss'),
+            endTime: moment(date2).format('YYYY-MM-DD HH:mm:ss'),
+            prefix: this.applySetForm.attendanceCodePrefix,
+            length: this.applySetForm.attendanceCodeLength,
+            type: this.applySetForm.createType,
+            startCode: this.applySetForm.attendanceCodeStartNum,
+            isApproval: this.applySetForm.applyCheck,
+            approvalUser: this.applySetForm.applyCheck,
+            assistSignupPower: this.applySetForm.assistApplyPermission,
+            signupField: this.applySetForm.assistApplyOpenField.join(','),
+            eventCode: this.eventCode,
+            DELETE_FLAG: 0,
+            VERSION_NUM: 1,
+            id: ''
+          }
+          console.log(querySaveHref, 'querySavveHref')
+          request({
+            url: '/api/register/signupContactCodeRule/update',
+            method: 'POST',
+            data: {
+              data: querySaveHref,
+              funcModule: '表单设置',
+              funcOperation: '保存并生成报名链接'
+            }
+          }).then((res) => {
+            console.log(res, '保存并生成报名链接')
+            if (res.status) {
+              this.$message({ message: '报名并生成链接成功', type: 'success' })
+            } else {
+              this.$message({ message: '您已报名，无需重复报名', type: 'success' })
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
     toAppearance (step) {
       this.$emit('stepIndex', step)
       this.$emit('isFormSetComplete', false)
@@ -714,7 +912,8 @@ export default {
       this.$emit('stepIndex', step)
       this.$emit('isFormSetComplete', false)
     }
-  }
+  },
+  certificateTypeChange () { }
 }
 </script>
 
