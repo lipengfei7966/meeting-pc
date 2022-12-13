@@ -125,6 +125,10 @@
                                         :class="scope.row.orderStatus === '已出票' ? 'grayColor' : ''">{{
                                                 scope.row.orderStatus
                                         }}</div>
+                                    <div v-if="scope.row.orderStatus !== '已出票' && scope.row.orderStatus !== '待付款' && scope.row.orderStatus !== '出票中'"
+                                        :class='orangeColor'>{{
+                                                scope.row.orderStatus
+                                        }}</div>
                                 </template>
                             </el-table-column>
                             <el-table-column fixed="right" label="操作" width="100">
@@ -156,21 +160,21 @@
                             <div class="smallRend">
                                 <div class="leftName">机建</div>
                                 <div class="RightMoney">￥{{ costDetailInfo.macTax }} X
-                                    {{ tripInfoList[0].length }}</div>
+                                    {{ tripInfoList.length }}</div>
                             </div>
                             <div class="smallRend">
                                 <div class="leftName">燃油</div>
                                 <div class="RightMoney">￥{{
                                         costDetailInfo.oilTax
                                 }} X
-                                    {{ tripInfoList[0].length }}</div>
+                                    {{ tripInfoList.length }}</div>
                             </div>
                             <div class="smallRend">
                                 <div class="leftName">服务费</div>
                                 <div class="RightMoney">￥{{
                                         costDetailInfo.serviceFee
                                 }} X
-                                    {{ tripInfoList[0].length }}</div>
+                                    {{ tripInfoList.length }}</div>
                             </div>
                             <div class="smallRend">
                                 <div class="leftName">升舱费</div>
@@ -509,6 +513,18 @@ export default {
     border-radius: 4px 4px 4px 4px;
     opacity: 1;
     border: 1px solid #E9E9EB;
+    text-align: center;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.orangeColor {
+    color: orange;
+    background: rgb(240, 226, 198);
+    border-radius: 4px 4px 4px 4px;
+    opacity: 1;
+    border: 1px solid orange;
     text-align: center;
     width: 50px;
     height: 30px;
