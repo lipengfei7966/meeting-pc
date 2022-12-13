@@ -316,11 +316,11 @@ export default {
         if (filterCol && filterCol.summary) {
           if (filterCol.format && filterCol.format.func) {
             const value = values.reduce((prev, curr) => {
-              const value = Number(curr)
-              if (!isNaN(value)) {
-                return prev + curr
+              const value2 = Number(curr)
+              if (!isNaN(value2)) {
+                return Number(this.$toolUtil.toDecimal2(prev).add(this.$toolUtil.toDecimal2(curr)))
               } else {
-                return prev
+                return Number(this.$toolUtil.toDecimal2(prev))
               }
             }, 0)
             sums[index] = Vue.filter(filterCol.format.func)(value, filterCol.format.dict)
@@ -329,9 +329,9 @@ export default {
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr)
               if (!isNaN(value)) {
-                return prev + curr
+                return Number(this.$toolUtil.toDecimal2(prev).add(this.$toolUtil.toDecimal2(curr)))
               } else {
-                return prev
+                return Number(this.$toolUtil.toDecimal2(prev))
               }
             }, 0)
             return
@@ -477,19 +477,19 @@ export default {
   background: #f6ecdc !important;
   // display: none !important;
 }
-.el-table--scrollable-y td:last-of-type{
+.el-table--scrollable-y td:last-of-type {
   text-align: left !important;
 }
-.el-table--scrollable-y tr{
+.el-table--scrollable-y tr {
   background: #f6ecdc !important;
 }
 
-.el-table__header-wrapper .el-table__header .has-gutter tr{
+.el-table__header-wrapper .el-table__header .has-gutter tr {
   background: transparent !important;
-      &>:last-child{
-        background: transparent !important;
-      }
-    }
+  & > :last-child {
+    background: transparent !important;
+  }
+}
 tr.el-table__row.success-row,
 tr.el-table__row.el-table__row--striped.success-row td,
 tr.el-table__row.el-table__row--striped.success-row th {
@@ -497,6 +497,6 @@ tr.el-table__row.el-table__row--striped.success-row th {
 }
 .el-table__fixed-body-wrapper,
 .is-scrolling-none {
-  min-height:256px !important;
+  min-height: 256px !important;
 }
 </style>
