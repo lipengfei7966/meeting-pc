@@ -81,6 +81,11 @@ export default {
           required: true,
           cols: [
             {
+              prop: 'reservedStr1',
+              width: '120',
+              label: 'data.warnSource.codeApp'
+            },
+            {
               prop: 'sourceName',
               width: '300',
               label: 'data.warnSource.sourceName'

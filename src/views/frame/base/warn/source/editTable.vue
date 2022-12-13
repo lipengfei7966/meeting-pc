@@ -170,6 +170,8 @@ export default {
     dialogHandler() {},
     loadColumn() {
       const sql = this.$parent.$parent.$refs.bsDialogEdit.editForm.sqlStatement
+
+      const codeApp = this.$parent.$parent.$refs.bsDialogEdit.editForm.reservedStr1
       if (sql) {
         request({
           url: '/api/warn/source/listColumnBySql',
@@ -177,7 +179,10 @@ export default {
           data: {
             funcModule: this.$t('route.' + this.$route.meta.title),
             funcOperation: this.$t('biz.btn.search'),
-            data: sql
+            data: {
+              reservedStr1: codeApp,
+              sqlStatement: sql
+            }
           }
         }).then(response => {
           response.data.forEach(col => {

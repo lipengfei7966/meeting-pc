@@ -53,6 +53,23 @@ export default {
             titleName: 'data.warnSource.sourceInfo',
             content: [
               {
+                label: 'data.warnSource.codeApp',
+                prop: 'reservedStr1',
+                element: 'base-select',
+                validate: [
+                  {
+                    required: true,
+                    trigger: 'change'
+                  }
+                ],
+                attrs: {
+                  data: 'CODE_APP',
+                  params: { usingFlag: '1' },
+                  clearable: true,
+                  cols: 2
+                }
+              },
+              {
                 label: 'data.warnSource.sourceName',
                 prop: 'sourceName',
                 element: 'input-validate',
