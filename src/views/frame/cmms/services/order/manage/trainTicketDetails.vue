@@ -1,8 +1,4 @@
 <template>
-    <!-- <div class="container"> -->
-    <!-- <Details detailTitle="火车票订单详情" status="train" /> -->
-
-    <!-- </div> -->
     <div class="detailContainer">
         <div class="info">
             <div class="baseInfo" style="width:70%;marginRight:10px">
@@ -152,14 +148,21 @@
                     </el-table-column>
                     <el-table-column prop="orderStatus" label="订单状态" width="100">
                         <template slot-scope="scope">
-                            <div v-if="scope.row.orderStatus === '待付款'"
-                                :class="scope.row.orderStatus === '待付款' ? 'redColor' : ''">{{ scope.row.orderStatus
+                            <div v-if="scope.row.orderStatus === '101'"
+                                :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{
+                                        orderStatusFamtter[scope.row.orderStatus]
                                 }}</div>
-                            <div v-if="scope.row.orderStatus === '出票中'"
-                                :class="scope.row.orderStatus === '出票中' ? 'greenColor' : ''">{{ scope.row.orderStatus
+                            <div v-if="scope.row.orderStatus === '102'"
+                                :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{
+                                        orderStatusFamtter[scope.row.orderStatus]
                                 }}</div>
-                            <div v-if="scope.row.orderStatus === '已出票'"
-                                :class="scope.row.orderStatus === '已出票' ? 'grayColor' : ''">{{ scope.row.orderStatus
+                            <div v-if="scope.row.orderStatus === '103'"
+                                :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{
+                                        orderStatusFamtter[scope.row.orderStatus]
+                                }}</div>
+                            <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'"
+                                class="">{{
+                                        orderStatusFamtter[scope.row.orderStatus]
                                 }}</div>
                         </template>
                     </el-table-column>
@@ -244,12 +247,12 @@
                     定</el-button>
                 <div class="remove-rules">
                     <div class="title">退票规则：</div>
-                    <div class="rule1">1、使用现金购买或已领取报销凭证的电子票，线上完成退票后，请持相关证件（购票证件、报销凭证）至车站窗口完成退款。</div>
-                    <div class="rule2">
-                        2、退票费按如下规则核收：票面乘车站开车时间前8天（含）以上不收取退票费，48小时以上的按票价5%计，24小时以上、不足48小时的按票价10%计，不足24小时的按票价20%计。上述计算的尾数以5角为单位，尾数小于2.5角的舍去、2.5角及以上且小于7.5角的计为5角、7.5角及以上的进为1元。退票费最低按2元计收。
+                    <div class="rule1">
+                        <p>* 退票手续费以最终退款金额以铁路部门实退为准</p>
+                        <p>* 距发车时间8天（含当日）以上，不收手续费</p>
+                        <p>* 如已取纸质车票，请携带有效证件至火车票窗口办理退票</p>
+                        <p>* 改签或变更到站后的车票乘车日期在春运期间的，退票时一律按开车时间前不足24小时标准核收退票费。2022年春运期间为1月21日至3月1日</p>
                     </div>
-                    <div class="rule3">3、应退款项按银行规定时限退还至购票时所使用的网上支付工具账户，请注意查询，如有疑问请致电人工客服查询。</div>
-                    <div class="rule4">4、跨境旅客旅行须知详见铁路跨境旅客相关运输组织规则和车站公告。</div>
                 </div>
             </span>
 
@@ -266,7 +269,14 @@ export default {
     data () {
         return {
             status: 'train',
-            basicTrainInformation: {},// 火车票基本信息
+            basicTrainInformation: {
+                contactPhone: '',
+                contacts: '',
+                externalOrderNumber: '',
+                orderNo: '',
+                orderStatus: '' || this.$route.params.orderStatus,
+                orderTime: ''
+            },// 火车票基本信息
             paymentInformationDto: {},// 火车票支付信息
             trainNumberInformationList: [
                 { "fromCityName": "", "fromStationName": "", "fromTime": "", "ticketGate": "", "ticketStatus": "", "toCityName": "", "toStationName": "", "toTime": "", "trainType": "", "useTime": 0 }
@@ -319,7 +329,7 @@ export default {
                 }
             })
             listItem('PAY_TYPE').then(res => {
-                console.log(res, '获取字典码-支付方式')
+                // console.log(res, '获取字典码-支付方式')
                 for (const item of res.data) {
                     var key = item.dictItemVal
                     var value = item.dictItemName
@@ -340,9 +350,9 @@ export default {
                 this.tripInformationList = res.data.tripInformationList
                 console.log(res.data.trainNumberInformationList, 'res.data.trainNumberInformationList')
                 // ---------------行程信息格式化处理---------------------------
-                this.tripInformationList.forEach(res => {
-                    res.orderStatus = this.$route.params.orderStatus
-                })
+                // this.tripInformationList.forEach(res => {
+                //     res.orderStatus = this.$route.params.orderStatus
+                // })
             })
         },
         // 机票订单详情数据查询
@@ -440,7 +450,7 @@ export default {
     opacity: 1;
     border: 1px solid #FDE2E2;
     text-align: center;
-    width: 70px;
+    width: 50px;
     height: 30px;
     line-height: 30px;
 }
@@ -452,7 +462,7 @@ export default {
     opacity: 1;
     border: 1px solid #E1F3D8;
     text-align: center;
-    width: 70px;
+    width: 50px;
     height: 30px;
     line-height: 30px;
 }
@@ -464,7 +474,19 @@ export default {
     opacity: 1;
     border: 1px solid #E9E9EB;
     text-align: center;
-    width: 70px;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.orangeColor {
+    color: orange;
+    background: rgb(240, 226, 198);
+    border-radius: 4px 4px 4px 4px;
+    opacity: 1;
+    border: 1px solid orange;
+    text-align: center;
+    width: 50px;
     height: 30px;
     line-height: 30px;
 }

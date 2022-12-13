@@ -1,269 +1,113 @@
 <template>
-  <div class="container">
-    <div class="order-select bs-new-container">
-      <el-form :inline="true" :model="queryBasicOrderInfo.data" class="demo-form-inline">
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-form-item label="订单状态：">
-                <el-select v-model="queryBasicOrderInfo.data.orderStatus" placeholder="全部">
-                  <template>
-                    <div v-for="(item, index) in orderStatussArr" :key="index">
-                      <el-option :label="item[1]" :value="item[0]"></el-option>
-                    </div>
-                  </template>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-form-item label="所属客户：">
-                <el-input v-model="queryBasicOrderInfo.data.userCode"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple">
-              <el-form-item label="订单号：">
-                <el-input v-model="queryBasicOrderInfo.data.orderNumber"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content bg-purple">
-              <el-form-item label="下单时间：">
-                <el-date-picker v-model="value1" @change="checkChange" type="datetimerange" range-separator="至"
-                  start-placeholder="开始日期" end-placeholder="结束日期">
-                </el-date-picker>
-
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-form-item label="差旅类型：">
-                <el-select v-model="queryBasicOrderInfo.data.businessType" placeholder="全部">
-                  <template>
-                    <div v-for="(item, index) in tripArr" :key="index">
-                      <el-option :label="item[1]" :value="item[0]"></el-option>
-                    </div>
-                  </template>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-form-item label="订单类型：">
-                <el-select v-model="queryBasicOrderInfo.data.orderType" placeholder="全部">
-                  <template>
-                    <div v-for="(item, index) in orderTypeArr" :key="index">
-                      <el-option :label="item[1]" :value="item[0]"></el-option>
-                    </div>
-                  </template>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple">
-              <el-form-item label="乘客：">
-                <el-input v-model="queryBasicOrderInfo.data.contactPerson"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content bg-purple">
-              <el-form-item label="支付方式：">
-                <el-select v-model="queryBasicOrderInfo.data.payType" placeholder="全部">
-                  <template>
-                    <div v-for="(item, index) in payTypeArr" :key="index">
-                      <el-option :label="item[1]" :value="item[0]"></el-option>
-                    </div>
-                  </template>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-form-item label="支付状态：">
-                <el-select v-model="queryBasicOrderInfo.data.payStatus" placeholder="全部">
-                  <template>
-                    <div v-for="(item, index) in payStatusArr" :key="index">
-                      <el-option :label="item[1]" :value="item[0]"></el-option>
-                    </div>
-                  </template>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-form-item label="出行类型：">
-                <el-select v-model="queryBasicOrderInfo.data.tripType" placeholder="全部">
-                  <template>
-                    <div v-for="(item, index) in tripTypeArr" :key="index">
-                      <el-option :label="item[1]" :value="item[0]"></el-option>
-                    </div>
-                  </template>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple">
-              <el-form-item label="票号：">
-                <el-input v-model="queryBasicOrderInfo.data.ticketNo"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content bg-purple">
-              <el-form-item label="联系人电话：">
-                <el-input v-model="queryBasicOrderInfo.data.contactPhone"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <div class="grid-content bg-purple" style="margin:0 0 0 80%;">
-            <el-col :span="8">
-              <div class="grid-content bg-purple">
-                <el-form-item style="margin:0 20px">
-                  <el-button type="primary" @click="onSubmit">查询</el-button>
-                </el-form-item>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content bg-purple">
-                <el-form-item style="margin:0 20px">
-                  <el-button type="primary" @click="onReset">重置</el-button>
-                </el-form-item>
-              </div>
-            </el-col>
-            <!-- <el-col :span="6">
-              <div class="grid-content bg-purple">
-                <el-form-item style="margin:0 20px">
-                  <el-button type="primary" @click="onImport">导出</el-button>
-                </el-form-item>
-              </div>
-            </el-col> -->
-          </div>
-        </el-row>
-      </el-form>
+  <div class="containerBox">
+    <div class="bs-new-container app-container">
+      <bs-form ref="bsForm" :form="form"></bs-form>
+      <template v-if="mainData.tabs"
+        :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
+        <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
+          <el-tab-pane v-for="tab in mainData.tabs" :key="tab.id" :label="tab.label" :name="tab.name">
+          </el-tab-pane>
+        </el-tabs>
+      </template>
+      <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs">
+        <template slot="operation" slot-scope="scope">
+          <el-button type="text" size="small" @click="handleRemoveClick(scope.row)">退票</el-button>
+          <el-button type="text" size="small" @click="handleInfoClick(scope.row)">详情</el-button>
+        </template>
+      </bs-table>
     </div>
-    <div class="order-table" style="maginBottom:50px">
-      <el-row>
-        <el-col :span="24" style="padding:0 20px">
-          <div class="grid-content bg-purple-dark">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane :label='`快速订单(${orderStatusTotal.allOrderCount})`' name="first">
-                <orderTable :tableData="tableData" @exportData="exportDataFn"
-                  @multipleSelection="multipleSelectionFn" />
-              </el-tab-pane>
-              <el-tab-pane :label='`已出票(${orderStatusTotal.ticketsIssuedCount})`' name="second">
-                <orderTable :tableData="tableData" @exportData="exportDataFn"
-                  @multipleSelection="multipleSelectionFn" />
-              </el-tab-pane>
-              <el-tab-pane :label='`待付款(${orderStatusTotal.obligationCount})`' name="third">
-                <orderTable :tableData="tableData" @exportData="exportDataFn"
-                  @multipleSelection="multipleSelectionFn" />
-              </el-tab-pane>
-              <el-tab-pane :label='`已取消(${orderStatusTotal.cancelCount})`' name="fourth">
-                <orderTable :tableData="tableData" @exportData="exportDataFn"
-                  @multipleSelection="multipleSelectionFn" />
-              </el-tab-pane>
-              <!-- <el-tab-pane :label='`退票异常订单(${orderStatusTotal.abnormalOrderCount})`' name="fifth">
-                <orderTable :tableData="tableData" :basicOrderInfoTotal="basicOrderInfoTotal"
-                  :basicOrderInfoPages="basicOrderInfoPages" :basicOrderInfoSize="basicOrderInfoSize" />
-              </el-tab-pane> -->
-            </el-tabs>
-          </div>
-        </el-col>
-      </el-row>
-      <div class="pages">
-        <div class="grid-content bg-purple">
-          <div class="page ">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :current-page="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="basicOrderInfoSize"
-              layout="total, sizes, prev, pager, next, jumper" :total="basicOrderInfoTotal">
-            </el-pagination>
-          </div>
+    <!-- 退票弹窗 -->
+    <el-dialog title="退票申请" :visible.sync="centerDialogVisible" width="55%" center top="10px">
+      <div class="remove-line1">
+        <img src="@/assets/frame/svg/wenhao.svg" class="wenhao" alt="" srcset="">
+        <span>您确认要退票吗？</span>
+      </div>
+      <el-divider></el-divider>
+      <div class="remove-line2">
+        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{
+            thepayAmount - serviceFee
+        }}元</span>
+      </div>
+      <el-divider></el-divider>
+      <div class="remove-line3">
+        <div class="remove-line3-1">
+          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">
+            {{ serviceFee }}元</span>
+        </div>
+        <div class="remove-line3-2">
+          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{
+              thepayAmount
+          }}元</span>
+        </div>
+        <div class="remove-line3-3">
+          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{
+              thepayAmount - serviceFee
+          }}元</span>
         </div>
       </div>
-    </div>
+      <el-divider></el-divider>
+      <div class="remove-line4">
+        <img src="@/assets/frame/svg/tanhao.svg" class="tanhao" alt="" srcset="">
+        <span>实际核收退票费及应退票款将按最终交易时间计算。</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelFn">取 消</el-button>
+        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">确 定</el-button>
+        <div class="remove-rules" v-if="businessType === '2'">
+          <div class="title">退票规则：</div>
+          <div class="rule1">1、使用现金购买或已领取报销凭证的电子票，线上完成退票后，请持相关证件（购票证件、报销凭证）至车站窗口完成退款。</div>
+          <div class="rule2">
+            2、退票费按如下规则核收：票面乘车站开车时间前8天（含）以上不收取退票费，48小时以上的按票价5%计，24小时以上、不足48小时的按票价10%计，不足24小时的按票价20%计。上述计算的尾数以5角为单位，尾数小于2.5角的舍去、2.5角及以上且小于7.5角的计为5角、7.5角及以上的进为1元。退票费最低按2元计收。
+          </div>
+          <div class="rule3">3、应退款项按银行规定时限退还至购票时所使用的网上支付工具账户，请注意查询，如有疑问请致电人工客服查询。</div>
+          <div class="rule4">4、跨境旅客旅行须知详见铁路跨境旅客相关运输组织规则和车站公告。</div>
+        </div>
+        <div class="remove-rules" v-if="businessType === '1'">
+          <div class="title">退票规则：</div>
+          <div class="rule1">
+            <p>* {{ baggageText }}</p>
+            <p>* {{ checkedBaggage }}</p>
+            <p>* {{ refundText }}</p>
+            <p>* {{ handheldLuggage }}</p>
+            <p>* {{ refundText }}</p>
+            <p>* {{ reissueText }}</p>
+            <p>* {{ transferText }}</p>
+          </div>
+        </div>
+      </span>
+
+    </el-dialog>
   </div>
+
+
 </template>
+
 <script>
-import { basicOrderInfo, listItem, getStatusCount } from './utils/api'
-import orderTable from './components/orderTable.vue'
-// 导出excel
-// import exportExcel from '@/utils/frame/base/downloadExcel'
-import { exportExcel } from "./utils/excelConfig"
+import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefund, comfirmRefund } from './utils/api'
+import axios from 'axios'
 export default {
   name: 'orderManagement',
-  components: { orderTable },
   data () {
     return {
-      value1: '',
-      activeName: 'first',
-      tableData: [],
-      multipleSelection: [],
-      queryBasicOrderInfo: {
-        current: 1,
-        size: 20,
-        isPage: true,
-        funcModule: '订单管理',
-        funcOperation: '查询',
-        data: {
-          orderStatus: '',
-          userCode: '',
-          orderNumber: '',
-          updateDate: '',
-          businessType: '',
-          orderType: '',
-          contactPerson: '',
-          payType: '',
-          payStatus: '',
-          tripType: '',
-          ticketNo: '',
-          contactPhone: '',
-          startTime: '',
-          endTime: ''
-        }
-      },
-      basicOrderInfo: [],
-      basicOrderInfoTotal: 0,
-      basicOrderInfoPages: 1,
-      basicOrderInfoSize: 20,
-      currentPage: 1,
+      theTrainOrFlightNo: '',
+      theOrderCode: '',
+      theOrderStatus: '',
+      businessType: '',
+      baggageText: '',
+      checkedBaggage: '',
+      handheldLuggage: '',
+      refundText: '',
+      reissueText: '',
+      transferText: '',
       centerDialogVisible: false,
-      orderStatussArr: [],
-      orderStatusFamtter: {},
-      travelsTypeArr: [],
-      // travelTypeArr: [],
-      // travelTypeFamtter: {},
-      businesssTypeArr: [],
-      businessTypeArr: [],
-      businessTypeFamtter: {},
-      // tripsTwoType: [],
-      // tripsTwoFamtter: {},
-      orderTypeFamtter: {},
-      orderTypeArr: [],
-      payTypeArr: [],
-      payTypeFamtter: {},
-      payStatusFamtter: {},
-      payStatusArr: [],
-      tripTypeFamtter: {},
-      tripTypeArr: [],
-      tripFamtter: {},
-      tripArr: [],
+      refundAmount: 0,// 预估退票金额
+      serviceFee: 0,// 手续费
+      thepayAmount: 0,//退回金额
+      theorderCode: '',
+      refundOrderType: 1,
+      refundType: 1,
+      updateStatus: ['107', '106', '108', '109', '104', '105', '110', '115'],
+      activeName: 'first',
       orderStatusTotal: {
         abnormalOrderCount: 0,
         allOrderCount: 0,
@@ -271,253 +115,487 @@ export default {
         obligationCount: 0,
         ticketsIssuedCount: 0
       },
-      exportData: [],
-      multipleSelection: []
+      form: {
+        moreShowFlg: true,
+        listQuery: {
+          current: 1,
+          size: 20,
+          isPage: true,
+          importance: undefined,
+          title: undefined,
+          type: undefined,
+          funcModule: this.$t('route.' + this.$route.meta.title),
+          funcOperation: this.$t('biz.btn.search'),
+          data: {
+            usingFlag: ''
+          }
+        },
+        formData: [
+          {
+            label: '订单状态',
+            prop: 'orderStatus',
+            element: 'base-select',
+            list: this.$t('datadict.basicOrderStatus'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '差旅类型',
+            prop: 'businessType',
+            element: 'base-select',
+            list: this.$t('datadict.travelType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '所属客户',
+            prop: 'userCode',
+            element: 'input-validate',
+            // list: this.$t('datadict.basicOrderStatus'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '订单号',
+            prop: 'orderNumber',
+            element: 'input-validate',
+            // list: this.$t('datadict.basicOrderStatus'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            type: 'date',
+            label: '下单时间',
+            props: ['startTime', 'endTime'],
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              'value-format': 'yyyyMMdd'
+            },
+            default: ['', '']
+          },
+          {
+            label: '差旅类型',
+            prop: 'businessType',
+            element: 'base-select',
+            list: this.$t('datadict.travelType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '订单类型',
+            prop: 'orderType',
+            element: 'base-select',
+            list: this.$t('datadict.orderType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '乘客',
+            prop: 'contactPerson',
+            element: 'input-validate',
+            // list: this.$t('datadict.orderType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '支付方式',
+            prop: 'payType',
+            element: 'base-select',
+            list: this.$t('datadict.payType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '支付状态',
+            prop: 'payStatus',
+            element: 'base-select',
+            list: this.$t('datadict.payStatus'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '出行类型',
+            prop: 'tripType',
+            element: 'base-select',
+            list: this.$t('datadict.tripType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '票号',
+            prop: 'ticketNo',
+            element: 'input-validate',
+            // list: this.$t('datadict.tripType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+          {
+            label: '联系人电话',
+            prop: 'contactPhone',
+            element: 'input-validate',
+            // list: this.$t('datadict.tripType'),
+            attrs: {
+              isDefault: true,
+              clearable: false
+            }
+          },
+        ]
+      },
+
+      mainData: {
+        tabs: [],
+        api: {
+          search: '/api/pay/basicOrderInfo/page'
+        },
+        initSearch: false,
+        isTopBar: false,
+        isColset: true,
+        topBar: [
+          {
+            name: 'export',
+            i18n: 'biz.btn.downloadTemplate',
+            event: this.exportExcel
+          },
+          {
+            name: 'export'
+          },
+          {
+            name: 'refresh'
+          }
+        ],
+        table: {
+          // showCheckbox: true,
+          cols: [
+            {
+              label: '订单状态',
+              prop: 'orderStatus',
+              sortProp: 'funcUser.name',
+              width: '100',
+              format: {
+                dict: this.$t('datadict.basicOrderStatus')
+              }
+            },
+            {
+              label: '所属客户',
+              prop: 'userCode',
+              width: '150'
+            },
+            {
+              label: '订单号',
+              prop: 'orderNumber',
+              width: '120'
+            },
+            {
+              label: '下单时间',
+              prop: 'updateDate',
+              width: '160',
+              align: 'center'
+            },
+            {
+              label: '差旅类型',
+              prop: 'travelType',
+              width: '120',
+              align: 'center',
+              format: {
+                dict: this.$t('datadict.travelType')
+              }
+            },
+            {
+              label: '订单类型',
+              prop: 'orderType',
+              width: '100',
+              align: 'center',
+              format: {
+                dict: this.$t('datadict.orderType')
+              }
+            },
+            {
+              label: '下单人',
+              prop: 'createUser',
+              width: '120'
+            },
+            {
+              label: '支付方式',
+              prop: 'payType',
+              width: '120',
+              format: {
+                dict: this.$t('datadict.payType')
+              }
+            },
+            {
+              label: '支付状态',
+              prop: 'payStatus',
+              width: '120',
+              format: {
+                dict: this.$t('datadict.payStatus')
+              }
+            },
+            {
+              label: '出行类型',
+              prop: 'tripType',
+              width: '120',
+              format: {
+                dict: this.$t('datadict.tripType')
+              }
+            },
+            {
+              label: '联系人电话',
+              prop: 'contactPhone',
+              width: '120'
+            },
+            {
+              label: '票号',
+              prop: 'ticketNo',
+              width: '140'
+            },
+            {
+              label: '车次/航班信息',
+              prop: 'info',
+              width: '200'
+            },
+            {
+              label: '支付金额',
+              prop: 'payAmount',
+              width: '120'
+            },
+            {
+              label: '操作',
+              prop: 'operation',
+              width: '120',
+              isSlot: true,
+              align: 'center',
+              fixed: "right"
+            }
+          ]
+        },
+        bottomBar: {
+          pagination: {
+            show: true,
+            layout: 'total, sizes, prev, pager, next, jumper',
+            pageSizes: [20, 40, 60, 80, 100]
+          }
+        }
+      },
+      orderDetailInfo: {},//机票基本信息
+      costDetailInfo: {},// 机票支付信息
+      flightDetailInfoList: [
+        { "airlineCompanyCode": "", "arr": "", "arrCity": "", "arrCode": "", "arrDate": "", "arrTerminal": "", "arrTime": "", "carrierAirlines": "", "dep": "", "depCity": "", "depCode": "", "depDate": "", "depTerminal": "", "depTime": "", "flightCode": "", "flightNo": "", "isMeal": "", "orderType": "", "planModel": "", "ticketNo": "", "tripType": "" }
+      ],// 机票航班信息
+      tripInfoList: [
+        { "cabin": "", "cabinName": "", "certificateNumber": "", "certificateType": "", "changeOrderCode": "", "flightCode": "", "orderStatus": "", "orderType": "", "passengerName": "", "passengerPhone": "", "refundOrderCode": "", "sonOrderCode": "", "ticketNo": "" }
+      ],// 机票行程信息
+
     }
   },
   created () {
-    this.airOrderInfoFn(this.queryBasicOrderInfo)
-    this.listItemFn()
     this.getStatusCountFn()
   },
-  mounted () { },
+  mounted () {
+  },
   methods: {
-    // 获取字典码
-    listItemFn () {
-      listItem('BASIC_ORDER_STATUS').then(res => {
-        // console.log(res, '获取字典码-订单状态')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var value = item.dictItemName
-          this.orderStatusFamtter[key] = value
-          this.orderStatussArr.push([key, value])
-        }
+    // 机票订单详情数据查询
+    airDetailFn (row) {
+      this.theOrderCode = row.orderCode
+      airDetail(this.theOrderCode).then(res => {
+        console.log(res, '机票详情')
+        this.orderDetailInfo = res.data.orderDetailInfo
+        this.costDetailInfo = res.data.costDetailInfo
+        this.flightDetailInfoList = res.data.flightDetailInfoList
+        this.tripInfoList = res.data.tripInfoList
+        // ------航班信息格式化处理---------
+        this.tripInfoList.forEach(res => {
+          res.orderStatus = this.orderDetailInfo.orderStatus
+        })
+        this.refundFn()
       })
-      listItem('TRAVEL_MODE').then(res => {
-        // console.log(res, '获取字典码-业务类型')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var travelValue = item.dictItemName
-          this.businessTypeFamtter[key] = travelValue
-          this.businesssTypeArr.push([key, travelValue])
-          this.businessTypeArr.push(item.dictItemName)
-        }
-      })
-      listItem('PAY_TYPE').then(res => {
-        // console.log(res, '获取字典码-支付方式')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var value = item.dictItemName
-          this.payTypeFamtter[key] = value
-          this.payTypeArr.push([key, value])
-        }
-      })
-      listItem('ORDER_TYPE').then(res => {
-        // console.log(res, '获取字典码-订单类型')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var value = item.dictItemName
-          this.orderTypeFamtter[key] = value
-          this.orderTypeArr.push([key, value])
-        }
-      })
-      listItem('PAY_STATUS').then(res => {
-        // console.log(res, '获取字典码-支付状态')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var value = item.dictItemName
-          this.payStatusFamtter[key] = value
-          this.payStatusArr.push([key, value])
-        }
-      })
-      listItem('TRIP_TYPE').then(res => {
-        // console.log(res, '获取字典码-出行类型')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var value = item.dictItemName
-          this.tripTypeFamtter[key] = value
-          this.tripTypeArr.push([key, value])
-        }
-      })
-      listItem('TRAVEL_TYPE').then(res => {
-        // console.log(res, '获取字典码-出行类型')
-        for (const item of res.data) {
-          var key = item.dictItemVal
-          var value = item.dictItemName
-          this.tripFamtter[key] = value
-          this.tripArr.push([key, value])
-        }
+    },
+    // 飞机票退票规则
+    refundFn () {
+      let queryRefund = {
+        airline: this.flightDetailInfoList[0].airlineCompanyCode || '',
+        cabin: this.tripInfoList[0].cabin || '',
+        dateTime: this.flightDetailInfoList[0].depTime || '',
+        des: this.flightDetailInfoList[0].arr || '',
+        ori: this.flightDetailInfoList[0].dep || '',
+        price: this.costDetailInfo.ticketAmount || ''
+      }
+      refundUpdateRule(queryRefund).then(res => {
+        console.log(res, '飞机票退票规则')
+        this.baggageText = res.data.baggageText
+        this.checkedBaggage = res.data.checkedBaggage
+        this.handheldLuggage = res.data.handheldLuggage
+        this.refundText = res.data.refundText
+        this.reissueText = res.data.reissueText
+        this.transferText = res.data.transferText
       })
     },
     // 获取订单状态总数
     getStatusCountFn () {
       getStatusCount({ orderStatus: '' }).then(res => {
-        // console.log(res, '获取订单状态总数')
-        this.orderStatusTotal.abnormalOrderCount = res.data.abnormalOrderCount
-        this.orderStatusTotal.allOrderCount = res.data.allOrderCount
-        this.orderStatusTotal.cancelCount = res.data.cancelCount
-        this.orderStatusTotal.obligationCount = res.data.obligationCount
-        this.orderStatusTotal.ticketsIssuedCount = res.data.ticketsIssuedCount
-      })
-    },
-    // 获取订单列表
-    airOrderInfoFn (queryBasicOrderInfo) {
-      basicOrderInfo(queryBasicOrderInfo).then((res) => {
-        this.basicOrderInfo = res.data
-        this.basicOrderInfoTotal = res.total
-        this.basicOrderInfoSize = res.size
-        this.basicOrderInfoPages = res.pages
-        this.tableData = res.data
-        this.tableData.forEach(item => {
-          item.orderStatus = this.orderStatusFamtter[item.orderStatus]
-          item.travelType = this.tripFamtter[item.businessType]
-          item.orderType = this.orderTypeFamtter[item.orderType]
-          item.payStatus = this.payStatusFamtter[item.payStatus]
-          item.payType = this.payTypeFamtter[item.payType]
-          item.tripType = this.tripTypeFamtter[item.tripType]
+        this.mainData.tabs = [
+          { id: 1, name: 'first', label: `快速订单(${res.data.allOrderCount})` },
+          { id: 2, name: 'second', label: `已出票(${res.data.ticketsIssuedCount})` },
+          { id: 3, name: 'third', label: `待付款(${res.data.obligationCount})` },
+          { id: 4, name: 'fourth', label: `已取消(${res.data.cancelCount})` },
+          // { id: 5, name: 'fifth', label: `退票异常订单(${res.data.abnormalOrderCount})` }
+        ]
+        this.handleTabClick(this.mainData.tabs[0])
+        this.$nextTick(() => {
+          this.$refs.bsTable.getList({ name: 'search' })
         })
-        console.log(res, '获取订单列表')
+
       })
     },
-    // 查询
-    onSubmit () {
-      this.airOrderInfoFn(this.queryBasicOrderInfo)
-      switch (this.queryBasicOrderInfo.data.orderStatus) {
-        case '103':
-          this.activeName = 'second'
-          break
-        case '101':
-          this.activeName = 'third'
-          break
-        case '110':
-          this.activeName = 'fourth'
-          break
-        case '105':
-          this.activeName = 'fifth'
-          break
-        case '':
-          this.activeName = 'first'
-          break
-        default:
-          break
-      }
+    exportExcel () {
+      axios({
+        method: 'post',
+        url: process.env.BASE_API + this.mainData.api.export,
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '参会人管理',
+          funcOperation: '模板导出'
+        },
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters.token
+          // lang: storage.get('language') || 'zh',
+          // module: session.get('auditModule') || ''
+        },
+        responseType: 'blob'
+      })
+        .then(response => {
+          if (!response.data) {
+          } else {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = url
+            link.setAttribute('download', '参会人导入模板.xlsx')
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
-    // 重置
-    onReset () {
-      this.queryBasicOrderInfo.data.orderStatus = ''
-      this.queryBasicOrderInfo.data.userCode = ''
-      this.queryBasicOrderInfo.data.orderNumber = ''
-      this.queryBasicOrderInfo.data.updateDate = ''
-      this.queryBasicOrderInfo.data.businessType = ''
-      this.queryBasicOrderInfo.data.orderType = ''
-      this.queryBasicOrderInfo.data.contactPerson = ''
-      this.queryBasicOrderInfo.data.payType = ''
-      this.queryBasicOrderInfo.data.payStatus = ''
-      this.queryBasicOrderInfo.data.tripType = ''
-      this.queryBasicOrderInfo.data.ticketNo = ''
-      this.queryBasicOrderInfo.data.contactPhone = ''
-      this.queryBasicOrderInfo.data.startTime = ''
-      this.queryBasicOrderInfo.data.endTime = ''
-      this.value1 = ''
-    },
-    // 选中数据
-    multipleSelectionFn (multipleSelection) {
-      this.multipleSelection = multipleSelection
-    },
-    // 导出的数据
-    exportDataFn (exportData) {
-      this.exportData = exportData
-    },
-    // 导出
-    onImport () {
-      console.log('onImport!')
-      // exportExcel({
-      //   fileName: '1.xlsx',
-      //   header: ['订单状态', '所属客户'],
-      //   filterVal: ['已出票', '1212'],
-      //   exportfunc: function () {
-      //   },
-      //   callBackfunc: function () {
-
-      //   }
-      // })
-      if (this.exportData.length <= 1 || this.multipleSelection.length <= 0) {
-        this.$message({ message: '您还没有选择要导出的数据', type: 'warning' })
-        return false
-      }
-      exportExcel('订单表格导出', this.exportData)
-    },
-    // tab栏
-    handleClick (tab) {
-      switch (tab._props.name) {
+    handleTabClick (tab) {
+      switch (tab.name) {
         case 'first':
-          this.queryBasicOrderInfo.data.orderStatus = ''
-          this.airOrderInfoFn(this.queryBasicOrderInfo)
+          this.form.listQuery.data.orderStatus = ''
           break
         case 'second':
-          this.queryBasicOrderInfo.data.orderStatus = '103'
-          this.airOrderInfoFn(this.queryBasicOrderInfo)
+          this.form.listQuery.data.orderStatus = '103'
           break
         case 'third':
-          this.queryBasicOrderInfo.data.orderStatus = '101'
-          this.airOrderInfoFn(this.queryBasicOrderInfo)
+          this.form.listQuery.data.orderStatus = '101'
           break
         case 'fourth':
-          this.queryBasicOrderInfo.data.orderStatus = '110'
-          this.airOrderInfoFn(this.queryBasicOrderInfo)
-          break
-        case 'fifth':
-          this.queryBasicOrderInfo.data.orderStatus = '105'
-          this.airOrderInfoFn(this.queryBasicOrderInfo)
-          break
-
-        default:
+          this.form.listQuery.data.orderStatus = '110'
           break
       }
+      this.$refs.bsTable.getList({ name: 'search' })
     },
-    // 分页-每页条数
-    handleSizeChange (val) {
-      this.basicOrderInfoSize = val
-      this.queryBasicOrderInfo.size = this.basicOrderInfoSize
-      this.airOrderInfoFn(this.queryBasicOrderInfo)
+    // 改签
+    handleUpdteClick (row) {
+      console.log(row)
     },
-    // 分页-当前页
-    handleCurrentChange (val) {
-      this.currentPage = val
-      this.queryBasicOrderInfo.current = this.currentPage
-      this.airOrderInfoFn(this.queryBasicOrderInfo)
+    //退票弹起弹窗
+    handleRemoveClick (row) {
+      this.centerDialogVisible = true
+      console.log(row, '退票弹窗')
+      this.thepayAmount = row.payAmount
+      this.businessType = row.businessType
+      this.theOrderStatus = row.orderStatus
+      this.theTrainOrFlightNo = row.trainOrFlightNo
+      if (row.businessType === '1') {
+        this.airDetailFn(row)
+      }
+      if (row.businessType === '2') { this.refund(row.orderCode) }
+      this.theorderCode = row.orderCode
+
     },
-    // 日期选择器
-    checkChange () {
-      this.queryBasicOrderInfo.data.startTime = this.value1[0]
-      this.queryBasicOrderInfo.data.endTime = this.value1[1]
+    // 退改票信息
+    refund (orderCode) {
+      estimatedRefund(orderCode).then(res => {
+        this.refundAmount = res.data.refundAmount
+        this.serviceFee = res.data.serviceFee
+      })
+    },
+    // 取消退款
+    cancelFn () {
+      this.centerDialogVisible = false
+      this.thepayAmount = 0
+      this.theorderCode = ''
+    },
+    // 确定退款
+    comfirmRefund () {
+      if (this.businessType === '1') {
+        if (this.theOrderStatus.includes(this.updateStatus)) {
+          this.refundOrderType = 2
+        }
+        this.refundType = 1
+        fightRefund({ orderCode: this.theOrderCode, refundOrderType: this.refundOrderType, refundType: this.refundType, refundReason: '', flightCode: this.theTrainOrFlightNo }).then(res => {
+          console.log(res, '退票金额')
+        })
+      }
+      if (this.businessType === '2') {
+        comfirmRefund(this.theorderCode).then(res => {
+          if (res.status === true) this.$message({ message: '退票成功', type: 'success' })
+        })
+      }
+
+      this.theorderCode = ''
+      this.centerDialogVisible = false
+      this.thepayAmount = 0
+    },
+    // 跳转详情页
+    handleInfoClick (row) {
+      console.log(row, 'row')
+      if (row.businessType === '1') {//机票
+        this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode, orderStatus: row.orderStatus } })
+        console.log(row)
+      }
+      if (row.businessType === '2') {//火车票
+        this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode, serviceFee: this.serviceFee, orderStatus: row.orderStatus } })
+        // console.log(row)
+      }
     }
-  }
+  },
 }
 </script>
 
 <style scoped lang="scss">
-.container {
-  padding: 10px;
-}
-
-.pages {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.order-select {
-  background-color: #fff;
+.detailContainer {
+  padding: 20px;
   border-radius: 5px;
-  margin-bottom: 10px;
-  padding: 10px 0;
 }
 
-.order-table {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 10px 0;
+.table-container {
+  padding: 0;
 }
 
 .el-dropdown-link {
@@ -527,10 +605,6 @@ export default {
 
 .el-icon-arrow-down {
   font-size: 12px;
-}
-
-.page {
-  padding: 20px 0 10px 0;
 }
 
 .demonstration {

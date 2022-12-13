@@ -113,29 +113,27 @@
                             </el-table-column>
                             <el-table-column prop="orderStatus" label="订单状态" width="100">
                                 <template slot-scope="scope">
-                                    <div v-if="scope.row.orderStatus === '待付款'"
-                                        :class="scope.row.orderStatus === '待付款' ? 'redColor' : ''">{{
-                                                scope.row.orderStatus
+                                    <div v-if="scope.row.orderStatus === '101'"
+                                        :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{
+                                                orderStatusFamtter[scope.row.orderStatus]
                                         }}</div>
-                                    <div v-if="scope.row.orderStatus === '出票中'"
-                                        :class="scope.row.orderStatus === '出票中' ? 'greenColor' : ''">{{
-                                                scope.row.orderStatus
+                                    <div v-if="scope.row.orderStatus === '102'"
+                                        :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{
+                                                orderStatusFamtter[scope.row.orderStatus]
                                         }}</div>
-                                    <div v-if="scope.row.orderStatus === '已出票'"
-                                        :class="scope.row.orderStatus === '已出票' ? 'grayColor' : ''">{{
-                                                scope.row.orderStatus
+                                    <div v-if="scope.row.orderStatus === '103'"
+                                        :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{
+                                                orderStatusFamtter[scope.row.orderStatus]
                                         }}</div>
-                                    <div v-if="scope.row.orderStatus !== '已出票' && scope.row.orderStatus !== '待付款' && scope.row.orderStatus !== '出票中'"
-                                        :class='orangeColor'>{{
-                                                scope.row.orderStatus
+                                    <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'"
+                                        class="">{{
+                                                orderStatusFamtter[scope.row.orderStatus]
                                         }}</div>
                                 </template>
                             </el-table-column>
                             <el-table-column fixed="right" label="操作" width="100">
                                 <template slot-scope="scope">
-                                    <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
-                        改签
-                    </el-button> -->
+                                    <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">改签</el-button> -->
                                     <el-button type="text" size="small"
                                         @click="handleRemoveClick(scope.row)">退票</el-button>
                                 </template>
@@ -202,7 +200,6 @@
                 </div>
             </div>
         </div>
-
 
         <el-dialog title="退票规则" :visible.sync="refundVisible" width="50%" center>
             <div class="centerBox">
@@ -271,12 +268,15 @@
                     定</el-button>
                 <div class="remove-rules">
                     <div class="title">退票规则：</div>
-                    <div class="rule1">1、使用现金购买或已领取报销凭证的电子票，线上完成退票后，请持相关证件（购票证件、报销凭证）至车站窗口完成退款。</div>
-                    <div class="rule2">
-                        2、退票费按如下规则核收：票面乘车站开车时间前8天（含）以上不收取退票费，48小时以上的按票价5%计，24小时以上、不足48小时的按票价10%计，不足24小时的按票价20%计。上述计算的尾数以5角为单位，尾数小于2.5角的舍去、2.5角及以上且小于7.5角的计为5角、7.5角及以上的进为1元。退票费最低按2元计收。
+                    <div class="rule1">
+                        <p>* {{ baggageText }}</p>
+                        <p>* {{ checkedBaggage }}</p>
+                        <p>* {{ refundText }}</p>
+                        <p>* {{ handheldLuggage }}</p>
+                        <p>* {{ refundText }}</p>
+                        <p>* {{ reissueText }}</p>
+                        <p>* {{ transferText }}</p>
                     </div>
-                    <div class="rule3">3、应退款项按银行规定时限退还至购票时所使用的网上支付工具账户，请注意查询，如有疑问请致电人工客服查询。</div>
-                    <div class="rule4">4、跨境旅客旅行须知详见铁路跨境旅客相关运输组织规则和车站公告。</div>
                 </div>
             </span>
 
@@ -352,7 +352,7 @@ export default {
                 }
             })
             listItem('PAY_TYPE').then(res => {
-                console.log(res, '获取字典码-支付方式')
+                // console.log(res, '获取字典码-支付方式')
                 for (const item of res.data) {
                     var key = item.dictItemVal
                     var value = item.dictItemName
@@ -389,11 +389,12 @@ export default {
                 this.tripInfoList = res.data.tripInfoList
                 // ------航班信息格式化处理---------
                 this.tripInfoList.forEach(res => {
-                    res.orderStatus = this.$route.params.orderStatus
+                    res.orderStatus = this.orderDetailInfo.orderStatus
                 })
+                this.refundFn()
             })
         },
-        refundVisibleFn () {
+        refundFn () {
             let queryRefund = {
                 airline: this.flightDetailInfoList[0].airlineCompanyCode || '',
                 cabin: this.tripInfoList[0].cabin || '',
@@ -402,9 +403,8 @@ export default {
                 ori: this.flightDetailInfoList[0].dep || '',
                 price: this.costDetailInfo.ticketAmount || ''
             }
-            this.refundVisible = true
             refundUpdateRule(queryRefund).then(res => {
-                console.log(res, 'queryRefund----')
+                console.log(res, '飞机票退票规则')
                 this.baggageText = res.data.baggageText
                 this.checkedBaggage = res.data.checkedBaggage
                 this.handheldLuggage = res.data.handheldLuggage
@@ -412,6 +412,10 @@ export default {
                 this.reissueText = res.data.reissueText
                 this.transferText = res.data.transferText
             })
+        },
+        refundVisibleFn () {
+            this.refundFn()
+            this.refundVisible = true
         },
         trainRefundVisibleFn () {
             this.trainRefundVisible = true
@@ -421,6 +425,7 @@ export default {
             this.centerDialogVisible = true
             this.thepayAmount = this.payAmount
             this.refund(this.$route.params.orderCode)
+            this.refundFn()
             this.theorderCode = this.$route.params.orderCode
         },
         // 退改票信息
