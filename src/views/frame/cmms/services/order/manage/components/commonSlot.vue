@@ -1,9 +1,12 @@
 <template>
-    <div class="container">
+    <div class="slotContainer">
         <el-row>
             <el-col :span="24">
-                <div class="pro_title">{{ title }}</div>
-                <el-divider></el-divider>
+                <div class="header">
+                    <div class="pro_title">{{ title }}</div>
+                    <slot class="refund" name="pro_refund"></slot>
+                </div>
+                <!-- <el-divider></el-divider> -->
                 <slot></slot>
             </el-col>
         </el-row>
@@ -27,6 +30,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+}
+
+.slotContainer {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 10px 10px 10px 10px;
+    border-radius: 10px;
+    padding: 0 20px 20px 20px;
+    margin-bottom: 10px;
+}
+
 .pro_title {
     font-size: 18px;
     color: #000;
@@ -42,7 +62,7 @@ export default {
         left: 0px;
         height: 18px;
         width: 6px;
-        background: #3e6db5;
+        background: #1890FF;
         border-radius: 3px;
         top: 50%;
         margin-top: 0px;
