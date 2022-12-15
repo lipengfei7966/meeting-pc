@@ -421,8 +421,8 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification" label="注册验证" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
-                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dispOrder"
-                  :label="item.dictItemVal">
+                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dispOrder" :label="item.dispOrder"
+                  :checked="applySetForm.registerVerification.includes(item.dispOrder + '')">
                   {{ item.dictItemName }}
                 </el-checkbox>
                 <!-- <el-checkbox label="短信验证"></el-checkbox>
@@ -431,7 +431,8 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification" label="登录验证" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
-                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dispOrder" :label="item.dictItemVal">
+                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dispOrder" :label="item.dispOrder"
+                  :checked="applySetForm.loginVerification.includes(item.dispOrder + '')">
                   {{ item.dictItemName }}
                 </el-checkbox>
                 <!-- <el-checkbox label="短信验证"></el-checkbox>
@@ -440,10 +441,11 @@
                 <el-checkbox label="自定义验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes('custom')"
+            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes('4')"
               label="自定义验证项" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
-                <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dictItemVal">
+                <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dispOrder"
+                  :checked="applySetForm.coustomVerification.includes(item.dispOrder + '')">
                   {{ item.dictItemName }}
                 </el-checkbox>
                 <!-- <el-checkbox label="手机号"></el-checkbox>
@@ -493,7 +495,7 @@
               <el-form-item label="生成类型" prop="createType" label-width="80px" style="margin-bottom: 0">
                 <!-- <el-radio v-model="applySetForm.createType" :label="0">随机码</el-radio> -->
                 <el-radio v-for="item in typeOptions" :key="item.dispOrder" v-model="applySetForm.createType"
-                  :label="item.dictItemVal">{{ item.dictItemName }}</el-radio>
+                  :label="item.dispOrder">{{ item.dictItemName }}</el-radio>
               </el-form-item>
               <el-form-item v-if="applySetForm.createType == '2'" label="起始码" prop="attendanceCodeStartNum">
                 <el-input v-model="applySetForm.attendanceCodeStartNum" placeholder="请输入内容"></el-input>
@@ -523,9 +525,10 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名开放字段" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
-                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal">{{
-                    item.dictItemName
-                }}</el-checkbox>
+                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal"
+                  :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{
+                      item.dictItemName
+                  }}</el-checkbox>
                 <!-- <el-checkbox label="姓名"></el-checkbox>
                 <el-checkbox label="手机号"></el-checkbox>
                 <el-checkbox label="邮箱"></el-checkbox> -->
@@ -696,6 +699,10 @@ export default {
       }
     }
   },
+  created () {
+    this.signupContactCodeRuleFn()
+    console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
+  },
   mounted () {
     if (this.eventCode) {
       this.getEventInfo()
@@ -769,6 +776,38 @@ export default {
     editPrivacyHandle () {
       this.dialogFormVisible = true
       this.initDialog()
+    },
+    // 生成规则
+    signupContactCodeRuleFn () {
+      request({
+        url: '/api/register/signupContactCodeRule/get',
+        method: 'POST',
+        data: {
+          data: this.eventCode,
+          funcModule: '表单设置',
+          funcOperation: '表单初始化'
+        }
+      }).then((res) => {
+        console.log(res, ' 生成规则')
+        this.applySetForm.isVerification = res.data.isVerification - 0
+        this.applySetForm.registerVerification = res.data.registerVerification.split(',')
+        this.applySetForm.loginVerification = res.data.loginVerification.split(',')
+        console.log(this.applySetForm.loginVerification, ' this.applySetForm.loginVerification ')
+        this.applySetForm.coustomVerification = res.data.customize.split(',')
+        this.applySetForm.isNeedCompleteMustInfo = res.data.isRequired === '1' ? true : false
+        this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
+        this.ruleForm.name = res.data.privacyName
+        this.ruleForm.privacyContent = res.data.privacyContent
+        this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
+        this.applySetForm.attendanceCodePrefix = res.data.prefix
+        this.applySetForm.attendanceCodeLength = res.data.length
+        this.applySetForm.createType = res.data.type
+        this.applySetForm.attendanceCodeStartNum = res.data.startCode || ''
+        this.applySetForm.applyCheck = res.data.isApproval
+        this.applySetForm.approvalUser = res.data.approvalUser
+        this.applySetForm.assistApplyPermission = res.data.assistSignupPower
+        this.applySetForm.assistApplyOpenField = res.data.signupField.split(',')
+      })
     },
     // 表单配置查询
     getEventInfo () {
@@ -889,6 +928,7 @@ export default {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
               this.$message({ message: '报名并生成链接成功', type: 'success' })
+              this.signupContactCodeRuleFn()
             } else {
               this.$message({ message: '您已报名，无需重复报名', type: 'success' })
             }
