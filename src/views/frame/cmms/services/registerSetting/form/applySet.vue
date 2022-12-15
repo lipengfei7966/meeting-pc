@@ -641,7 +641,9 @@ export default {
         checkUser: '', // 审核权限用户
         assistApply: true, // 协助报名
         assistApplyPermission: '', // 协助报名权限
-        assistApplyOpenField: [] // 协助报名开放字段
+        assistApplyOpenField: [], // 协助报名开放字段
+        id: '',
+        // versionNum: 0
       },
       setFormFile: [],
       dialogFormVisible: false,
@@ -700,10 +702,10 @@ export default {
     }
   },
   created () {
-    this.signupContactCodeRuleFn()
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
   },
   mounted () {
+    this.signupContactCodeRuleFn()
     if (this.eventCode) {
       this.getEventInfo()
     }
@@ -790,10 +792,9 @@ export default {
       }).then((res) => {
         console.log(res, ' 生成规则')
         this.applySetForm.isVerification = res.data.isVerification - 0
-        this.applySetForm.registerVerification = res.data.registerVerification.split(',')
-        this.applySetForm.loginVerification = res.data.loginVerification.split(',')
-        console.log(this.applySetForm.loginVerification, ' this.applySetForm.loginVerification ')
-        this.applySetForm.coustomVerification = res.data.customize.split(',')
+        this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
+        this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
+        this.applySetForm.coustomVerification = [...new Set(res.data.customize.split(','))]
         this.applySetForm.isNeedCompleteMustInfo = res.data.isRequired === '1' ? true : false
         this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
         this.ruleForm.name = res.data.privacyName
@@ -802,11 +803,14 @@ export default {
         this.applySetForm.attendanceCodePrefix = res.data.prefix
         this.applySetForm.attendanceCodeLength = res.data.length
         this.applySetForm.createType = res.data.type
-        this.applySetForm.attendanceCodeStartNum = res.data.startCode || ''
+        this.applySetForm.attendanceCodeStartNum = res.data.startCode || 0
         this.applySetForm.applyCheck = res.data.isApproval
         this.applySetForm.approvalUser = res.data.approvalUser
         this.applySetForm.assistApplyPermission = res.data.assistSignupPower
-        this.applySetForm.assistApplyOpenField = res.data.signupField.split(',')
+        this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
+        this.applySetForm.id = res.data.id
+        // this.applySetForm.versionNum = res.data.versionNum
+        console.log(this.applySetForm, ' this.applySetForm-- ')
       })
     },
     // 表单配置查询
@@ -905,15 +909,15 @@ export default {
             prefix: this.applySetForm.attendanceCodePrefix,
             length: this.applySetForm.attendanceCodeLength,
             type: this.applySetForm.createType,
-            startCode: this.applySetForm.attendanceCodeStartNum,
+            startCode: this.applySetForm.attendanceCodeStartNum - 0,
             isApproval: this.applySetForm.applyCheck,
             approvalUser: this.applySetForm.applyCheck,
             assistSignupPower: this.applySetForm.assistApplyPermission,
             signupField: this.applySetForm.assistApplyOpenField.join(','),
             eventCode: this.eventCode,
-            DELETE_FLAG: 0,
-            VERSION_NUM: 1,
-            id: ''
+            // deleteFlag: 0,
+            id: this.applySetForm.id
+            // versionNum: this.applySetForm.versionNum,
           }
           console.log(querySaveHref, 'querySavveHref')
           request({
@@ -929,6 +933,8 @@ export default {
             if (res.status) {
               this.$message({ message: '报名并生成链接成功', type: 'success' })
               this.signupContactCodeRuleFn()
+              this.$emit('stepIndex', step)
+              this.$emit('isFormSetComplete', false)
             } else {
               this.$message({ message: '您已报名，无需重复报名', type: 'success' })
             }
