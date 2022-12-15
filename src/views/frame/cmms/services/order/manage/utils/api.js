@@ -32,7 +32,7 @@ export const listItem = (data) => {
     }
   })
 }
-// 获取预估退改费
+// 获取预估火车票退改费
 export const estimatedRefund = (orderCode) => {
   return request({
     url: '/api/train/refundTicketOrder/estimatedRefund',
@@ -102,6 +102,18 @@ export const fightRefund = (data) => {
       'data': data,
       funcModule: '机票',
       funcOperation: '机票退票'
+    }
+  })
+}
+// 获取机票退票费预估价
+export const fightReissueRefund = (data) => {
+  return request({
+    url: '/api/flight/flight/getReissueRefundPriceMultiPlayer',
+    method: 'POST',
+    data: {
+      'data': data,
+      funcModule: '机票',
+      funcOperation: '机票预估退票价'
     }
   })
 }

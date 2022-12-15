@@ -237,23 +237,23 @@
             <el-divider></el-divider>
             <div class="remove-line2">
                 <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{
-                        paymentInformationDto.fare - serviceFee
+                        fightReissueRefund.returnPrice
                 }}元</span>
             </div>
             <el-divider></el-divider>
             <div class="remove-line3">
                 <div class="remove-line3-1">
                     <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">
-                        {{ serviceFee }}元</span>
+                        {{ fightReissueRefund.refundPrice }}元</span>
                 </div>
                 <div class="remove-line3-2">
                     <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{
-                            paymentInformationDto.fare
+                            costDetailInfo.ticketAmount
                     }}元</span>
                 </div>
                 <div class="remove-line3-3">
                     <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{
-                            paymentInformationDto.fare - serviceFee
+                            fightReissueRefund.returnPrice
                     }}元</span>
                 </div>
             </div>
@@ -286,7 +286,7 @@
 
 <script>
 import commonSlot from './components/commonSlot.vue'
-import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem } from './utils/api'
+import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, fightReissueRefund } from './utils/api'
 export default {
     components: { commonSlot },
     name: 'airTicketDetails',
@@ -329,6 +329,13 @@ export default {
             thepayAmount: 0,//退回金额
             theorderCode: '',
             orderStatus: '',
+            fightReissueRefund: {
+                refundPrice: 0,
+                reissuePrice: 0,
+                returnPrice: 0,
+                ticketno: '',
+                upgradecabinPrice: 0,
+            }
         }
     },
     created () {
@@ -421,11 +428,13 @@ export default {
             this.trainRefundVisible = true
         },
         //退票弹起弹窗
-        handleRemoveClick () {
+        handleRemoveClick (row) {
+            console.log(row, 'row退票')
             this.centerDialogVisible = true
             this.thepayAmount = this.payAmount
-            this.refund(this.$route.params.orderCode)
+            this.reissueRefundPrice(row)
             this.refundFn()
+
             this.theorderCode = this.$route.params.orderCode
         },
         // 退改票信息
@@ -433,6 +442,23 @@ export default {
             estimatedRefund(orderCode).then(res => {
                 this.refundAmount = res.data.refundAmount
                 this.serviceFee = res.data.serviceFee
+            })
+        },
+        // 预计改签费
+        reissueRefundPrice (row) {
+            let queryReissueRefundPrice = {
+                computedType: 1,
+                flightInfoCode: row.flightCode,
+                orderCode: this.$route.params.orderCode,
+                orderType: this.orderDetailInfo.orderStatus === '108' ? '2' : '1'
+            }
+            fightReissueRefund(queryReissueRefundPrice).then(res => {
+                console.log(res, '预计改签费')
+                this.fightReissueRefund.refundPrice = res.data[0].refundPrice
+                this.fightReissueRefund.reissuePrice = res.data[0].reissuePrice
+                this.fightReissueRefund.returnPrice = res.data[0].returnPrice
+                this.fightReissueRefund.ticketno = res.data[0].ticketno
+                this.fightReissueRefund.upgradecabinPrice = res.data[0].upgradecabinPrice
             })
         },
         // 取消退款

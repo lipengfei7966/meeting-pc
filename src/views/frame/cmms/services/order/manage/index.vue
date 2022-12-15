@@ -300,7 +300,7 @@ export default {
             },
             {
               label: '所属客户',
-              prop: 'userCode',
+              prop: 'customerName',
               width: '150'
             },
             {
@@ -373,7 +373,7 @@ export default {
             },
             {
               label: '车次/航班信息',
-              prop: 'info',
+              prop: 'tripInformation',
               width: '200'
             },
             {
@@ -577,7 +577,7 @@ export default {
       console.log(row, 'row')
       if (row.businessType === '1') {//机票
         this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode, orderStatus: row.orderStatus } })
-        console.log(row)
+        // console.log(row)
       }
       if (row.businessType === '2') {//火车票
         this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode, serviceFee: this.serviceFee, orderStatus: row.orderStatus } })
