@@ -1,0 +1,197 @@
+<template>
+  <div class="bs-new-container app-container">
+    <bs-form ref="bsForm" :form="form"></bs-form>
+
+    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+  </div>
+</template>
+
+<script>
+// 日期格式化方法
+import { dateFormate } from '@/utils/frame/base/index'
+export default {
+  name: 'eventInfoManage',
+  data() {
+    return {
+      form: {
+        moreShowFlg: true,
+        listQuery: {
+          current: 1,
+          size: 20,
+          isPage: true,
+          importance: undefined,
+          title: undefined,
+          type: undefined,
+          funcModule: this.$t('route.' + this.$route.meta.title),
+          funcOperation: this.$t('biz.btn.search'),
+          defaultSortString: 'code.desc',
+          data: {
+            usingFlag: ''
+          }
+        },
+        formData: [
+          {
+            label: 'website.eventInfo.query.eventName',
+            prop: 'eventName',
+            element: 'input-validate',
+            attrs: {
+              clearable: true
+            }
+          },
+          {
+            type: 'date',
+            label: 'website.eventInfo.query.startDate',
+            prop: 'eventBeginTime',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              'value-format': 'yyyy-MM-dd HH:mm:ss'
+            }
+          },
+          {
+            type: 'date',
+            label: 'website.eventInfo.query.endDate',
+            prop: 'eventEndTime',
+            attrs: {
+              clearable: true,
+              format: 'yyyy-MM-dd',
+              'value-format': 'yyyy-MM-dd HH:mm:ss'
+            }
+          }
+        ]
+      },
+
+      mainData: {
+        api: {
+          search: '/api/biz/cmsEventInfo/page',
+          doDelete: '/api/biz/cmsEventInfo/remove'
+        },
+        initSearch: true,
+        isTopBar: true,
+        topBar: [
+          {
+            name: 'add',
+            type: 'dialog',
+            component: () => import('./edit.vue')
+          },
+          {
+            name: 'update',
+            type: 'dialog',
+            component: () => import('./edit.vue'),
+            getParam: () => {
+              return this.$refs.bsTable.currentRow
+            }
+          },
+          {
+            name: 'view',
+            type: 'dialog',
+            component: () => import('./edit.vue'),
+            getParam: () => {
+              return this.$refs.bsTable.currentRow
+            }
+          },
+          {
+            name: 'remove',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.code
+            }
+          },
+          {
+            name: 'design',
+            type: 'route',
+            i18n: 'website.eventInfo.btn.design',
+            event: this.doDesign,
+            routeInfo: () => {
+              return {
+                name: 'microStationManagement',
+                params: {
+                  type: 'detailSet',
+                  back: 'roleManage',
+                  ids: this.$refs.bsTable.currentRow.code
+                }
+              }
+            }
+          },
+          {
+            name: 'set',
+            type: 'dialog',
+            i18n: 'website.eventInfo.btn.set',
+            component: () => import('@/views/frame/cmms/services/registerSetting/codeRule/set'),
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.code
+            }
+          },
+          {
+            name: 'refresh'
+          }
+        ],
+        isColset: true,
+        table: {
+          id: this.$route.meta.title,
+          cols: [
+            {
+              prop: 'code',
+              label: 'website.eventInfo.list.eventCode'
+            },
+            {
+              label: 'website.eventInfo.edit.eventHashCode',
+              prop: 'eventHashCode'
+            },
+            {
+              prop: 'eventName',
+              label: 'website.eventInfo.list.eventName'
+            },
+            {
+              label: 'website.eventInfo.list.customerName',
+              prop: 'customerName'
+            },
+            {
+              label: 'website.eventInfo.list.startDate',
+              prop: 'eventBeginTime'
+            },
+            {
+              label: 'website.eventInfo.list.endDate',
+              prop: 'eventEndTime'
+            },
+
+            {
+              label: 'website.eventInfo.list.eventPlace',
+              prop: 'eventPlace'
+            }
+            // {
+            //   label: 'website.eventInfo.list.eventHashCode',
+            //   prop: 'eventHashCode'
+            // }
+          ]
+        },
+        bottomBar: {
+          pagination: {
+            show: true,
+            layout: 'total, sizes, prev, pager, next, jumper',
+            pageSizes: [20, 40, 60, 80, 100]
+          }
+        }
+      }
+    }
+  },
+  mounted() {
+    // 不设置表格高度
+    //this.$refs.bsTable.isHeight = false
+    // 设置行高为38
+    // this.$refs.bsTable.rowHeight = 38
+  },
+  methods: {
+    doDesign() {
+      // console.log(this.$refs.bsTable.currentRow.code)
+      this.$router.push({
+        name: 'microStationManagement',
+        params: {
+          type: 'detailSet',
+          back: 'roleManage',
+          ids: this.$refs.bsTable.currentRow.code
+        }
+      })
+    }
+  }
+}
+</script>

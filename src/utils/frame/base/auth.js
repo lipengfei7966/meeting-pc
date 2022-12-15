@@ -35,11 +35,17 @@ export function removeToken() {
 export function getLoginUrl() {
   const loginType = session.get('loginType')
   const tenantHashCode = session.get('tenantHashCode')
+  const customHashCode = session.get('customHashCode')
 
   if (loginType === 'plat') {
     return '/platform/login'
   } else if (loginType === 'group') {
     return '/group/login'
+  } else if (loginType === 'custom') {
+    if (customHashCode) {
+      return '/custom/' + customHashCode + '/login'
+    }
+    return '/custom/login'
   } else {
     if (tenantHashCode) {
       return '/' + tenantHashCode + '/login'
@@ -55,6 +61,8 @@ export function getUpdatePasswordUrl() {
     return '/api/platform/cfgManager/updatePasswordWithOld'
   } else if (loginType === 'group') {
     return '/api/platform/cfgTenant/updatePasswordWithOld'
+  } else if (loginType === 'custom') {
+    return '/api/base/customUser/updatePasswordWithOld'
   } else {
     return '/api/func/user/updatePasswordWithOld'
   }

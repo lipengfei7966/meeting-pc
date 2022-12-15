@@ -325,6 +325,7 @@ export default {
         } else {
           this.treeHeight = this.$refs.treeTableDialog.offsetHeight - 109
         }
+        this.tableHeight = this.tableHeight - 65
       })
     },
 

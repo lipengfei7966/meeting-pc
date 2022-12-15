@@ -88,7 +88,7 @@ export default {
           {
             prop: 'zhan01',
             isShow: ['view', 'update'],
-            attrs: { cols: 2 }
+            attrs: { cols: 1 }
           },
           {
             label: 'func.user.userValidPeriodFlag',

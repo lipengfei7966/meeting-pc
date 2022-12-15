@@ -18,6 +18,7 @@ module.exports = merge(prodEnv, {
   CONTEXT_ROOT: '""',
   DEFAULT_TENANT: '"8a4577dbd919675758d57999a1e891fe"',
   DEFAULT_ENTERPRISE: '"会展"',
+  DEFAULT_CUSTOM: '"7019"',
   ATTACHMENT_TAB_FLG: true,
   ERROR_LOG: false,
   FUNC_AUTO_SEQ: true,

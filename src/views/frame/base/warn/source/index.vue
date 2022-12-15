@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
     <bs-form ref='bsForm' :form='form'></bs-form>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
   </div>
 </template>
@@ -80,6 +80,11 @@ export default {
           id: this.$route.meta.title,
           required: true,
           cols: [
+            {
+              prop: 'reservedStr1',
+              width: '120',
+              label: 'data.warnSource.codeApp'
+            },
             {
               prop: 'sourceName',
               width: '300',

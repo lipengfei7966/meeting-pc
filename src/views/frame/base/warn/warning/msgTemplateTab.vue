@@ -33,7 +33,7 @@
 
         <el-col :span="24">
           <el-form-item label="demo" prop='demo'>
-            <el-input vaue=" " placeholder='list例子：<#list dataList as item> 【${item.letterCreditNo}】 【${item.dueDate}】，</#list>' :disabled="true" type="textarea" :rows="4"></el-input>
+            <el-input value="list例子：<#list dataList as item> 【${item.letterCreditNo}】 【${item.dueDate}】，</#list>" placeholder='' :disabled="true" type="textarea" :rows="4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -57,7 +57,8 @@ export default {
         targetUrl: '',
         msgTitle: '',
         reservedStr1: '',
-        id: ''
+        id: '',
+        demo: ' '
       }
     }
   },

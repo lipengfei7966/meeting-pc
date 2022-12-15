@@ -37,7 +37,6 @@ export default {
     title_: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
         this.ruleForm.mainTitle = nVal
         console.log(nVal, oVal)
       }
@@ -45,7 +44,6 @@ export default {
     subTitle: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
         this.ruleForm.miniTitle = nVal
         console.log(nVal, oVal)
       }
@@ -53,7 +51,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           // alert('submit!')
           //
@@ -62,9 +60,8 @@ export default {
             method: 'POST',
             data: { data: { code: this.code, title: this.ruleForm.mainTitle, subTitle: this.ruleForm.miniTitle }, funcOperation: '保存标题', funcModule: '保存标题' }
           })
-            .then((data) => {
+            .then(data => {
               if (data) {
-                // debugger
                 this.$message('标题保存成功')
                 this.$emit('upData_')
               } else {

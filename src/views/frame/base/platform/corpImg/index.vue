@@ -3,7 +3,6 @@
 
     <bs-form ref='bsForm' :form='form'></bs-form>
 
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
     <!--     <template v-if='true||$route.name === $options.name || ( $route.meta && $route.meta.componentName === $options.name)'> -->
     <bs-table ref='bsTable' :mainData='mainData'></bs-table>
 

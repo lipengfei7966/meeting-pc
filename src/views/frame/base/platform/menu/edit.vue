@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
+  <div v-el-drag-dialog='"max"' class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' type='maxColumnsDialog'>
       <!-- 头部 -->
       <TitleContain :titleName="dialogTitle" @TitleFun="$emit('closeHandler')" />
@@ -200,6 +200,7 @@
                 <el-form-item label="授权方式" prop='authFlag' class='input-max-style'>
                   <el-radio-group v-model="formData.authFlag">
                     <el-radio label="4">操作员</el-radio>
+                    <el-radio label="6">客户端</el-radio>
                     <el-radio label="5">登陆</el-radio>
                     <el-radio label="3">机构管理员</el-radio>
                     <el-radio label="2">集团管理员</el-radio>

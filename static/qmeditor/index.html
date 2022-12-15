@@ -4,85 +4,98 @@
 	<meta charset="utf-8" />
 	<title>QmEditor</title>
 	<script type="text/javascript">
-		var myUrl = window.location.href;
-		if (myUrl.endsWith("/index.html")) {
-			myUrl = myUrl.substr(0, myUrl.length - 10);
-		} else if (!myUrl.endsWith("/")) {
-			myUrl = myUrl + "/";
-		}
-		window.UEDITOR_HOME_URL = myUrl;
+		var myUrl = window.location.href
+if (myUrl.endsWith('/index.html')) {
+		  myUrl = myUrl.substr(0, myUrl.length - 10)
+} else if (!myUrl.endsWith('/')) {
+		  myUrl = myUrl + '/'
+}
+		window.UEDITOR_HOME_URL = myUrl
 	</script>
 	<script type="text/javascript" charset="utf-8" src="./ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8" src="./qmeditor.all.js"></script>
 	<script type="text/javascript" charset="utf-8" src="./lang/zh-cn/zh-cn.js"></script>
 	<script type="text/javascript">
-		var ue = null;
-		var subWin = null;
-		var qmEditorData = {
-			mode: "design" // design disp view
-		};
-		function qmEditorFireParentEvent(eventName, param) {
-			var parentFrm = window.frameElement;
-			var evt = document.createEvent("CustomEvent");
-			evt.initCustomEvent(eventName, true, true, param);
-			parentFrm.dispatchEvent(evt);
+		var ue = null
+var subWin = null
+var qmEditorData = {
+		  mode: 'design' // design disp view
 		}
+function qmEditorFireParentEvent(eventName, param) {
+		  var parentFrm = window.frameElement
+  var evt = document.createEvent('CustomEvent')
+  evt.initCustomEvent(eventName, true, true, param)
+  parentFrm.dispatchEvent(evt)
+}
 		function setDisabled() {
-			ue.setDisabled(['qmeditorpreview']);
-			subWin.qmEditor_readonlyData(true);
-		}
+		  ue.setDisabled(['qmeditorpreview'])
+  subWin.qmEditor_readonlyData(true)
+}
+function setEnabled() {
+  ue.setEnabled()
+  subWin.qmEditor_readonlyData(false)
+}
+
+function setShow() {
+		  ue.setShow()
+}
+
+function setHide() {
+		  ue.setHide()
+}
+
 		function setContent(str) {
-			ue.setContent(str);
-		}
+		  ue.setContent(str)
+}
 		function getContent() {
-			return ue.getContent();
-		}
+		  return ue.getContent()
+}
 		function execCommand(data) {
-			return ue.execCommand("inserthtml",data)
+		  return ue.execCommand('inserthtml', data)
 		}
 		function editorFocus() {
-			ue.focus();
-		}
+		  ue.focus()
+}
 		function fillData(data) {
-			subWin.qmEditor_fillData(data);
-        }
-        function getData(data) {
-			return subWin.qmEditor_getData(data);
-		}
+		  subWin.qmEditor_fillData(data)
+}
+function getData(data) {
+		  return subWin.qmEditor_getData(data)
+}
 		function setMode(mode) {
-			qmEditorData.mode = mode;
-		}
+		  qmEditorData.mode = mode
+}
 		function innerWindowReady() {
-			subWin = document.querySelector("#ueditor_0").contentWindow;
-			qmEditorFireParentEvent("qmEditorInit", {
-				editor: ue,
-				editorWin: window
-			});
-		}
+		  subWin = document.querySelector('#ueditor_0').contentWindow
+  qmEditorFireParentEvent('qmEditorInit', {
+		    editor: ue,
+		    editorWin: window
+		  })
+}
 		(function () {
-			window.addEventListener("load", () => {
-				ue = UE.getEditor('editor');
-				ue.addListener('ready', function (editor) {
-					var doc = ue.body.ownerDocument;
-					UE.utils.loadFile(doc, {
-						src: "./qmEditorAddon/qmEditor/qmEditor.js",
-						tag: "script",
-						type: "text/javascript",
-						charset: "utf-8"
-					});
-					UE.utils.loadFile(doc, {
-						href: "./qmEditorAddon/qmEditor/qmEditor.css",
-						tag: "link",
-						type: "text/css",
-						rel: "stylesheet"
-					});
-					subWin = document.querySelector("#ueditor_0").contentWindow;
-				});
-				ue.addListener("beforeGetContent", function (evt, cmd, arg) {
-					subWin.qmEditor_syncInput();
-				});
-			});
-		})();
+		  window.addEventListener('load', () => {
+		    ue = UE.getEditor('editor')
+    ue.addListener('ready', function (editor) {
+		      var doc = ue.body.ownerDocument
+		      UE.utils.loadFile(doc, {
+		        src: './qmEditorAddon/qmEditor/qmEditor.js',
+		        tag: 'script',
+		        type: 'text/javascript',
+		        charset: 'utf-8'
+		      })
+		      UE.utils.loadFile(doc, {
+		        href: './qmEditorAddon/qmEditor/qmEditor.css',
+		        tag: 'link',
+		        type: 'text/css',
+		        rel: 'stylesheet'
+		      })
+		      subWin = document.querySelector('#ueditor_0').contentWindow
+    })
+    ue.addListener('beforeGetContent', function (evt, cmd, arg) {
+		      subWin.qmEditor_syncInput()
+    })
+  })
+})()
 	</script>
 	<style type="text/css">
 		body {

@@ -75,7 +75,7 @@
                 </el-form-item>
               </el-col>
 
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="下拉框说明" prop='remark'>
                   <el-input v-model="page.remark" :clearable='true'>
                   </el-input>
@@ -110,7 +110,7 @@
             <el-row :gutter="20">
               <el-col :span="8">
                 <el-form-item label="是否权限控制" prop='authFlag'>
-                  <el-checkbox v-model='page.extendDataJson.authFlag'></el-checkbox>
+                  <el-checkbox v-model='page.extendDataJson.authFlag' disabled></el-checkbox>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -832,7 +832,7 @@ export default {
           pageSize: 30,
           showMoreQuery: false,
           camelToUnderlineFlg: true,
-          authFlag: false,
+          authFlag: true,
           dataAuthDto: {
             orgCol: '',
             deptCol: '',

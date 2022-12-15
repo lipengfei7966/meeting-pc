@@ -76,7 +76,7 @@ export default {
   components: {
     material
   },
-  props: ['dataNum', 'newData', 'dataFlag', 'isFlag_one', 'code', 'dataLength'], //接收值
+  props: ['dataNum', 'newData', 'isFlag_one', 'code', 'dataLength'], //接收值
   //   components: {
   //     ColorPicker
   //   },
@@ -113,9 +113,7 @@ export default {
       classify: [],
       // process.env.BASE_API +
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
-      dialogVisible: false,
-      dataFlag_: false,
-      flag_: true
+      dialogVisible: false
     }
   },
   computed: {
@@ -140,7 +138,7 @@ export default {
           } else {
             this.ruleForm.id = ''
           }
-          // debugger
+
           if (submitVal.sort || submitVal.sort == 0) {
             if (submitVal.sort == 0) {
               this.ruleForm.sort = 0
@@ -150,19 +148,17 @@ export default {
           } else {
             this.ruleForm.sort = ''
           }
-          // debugger
+
           // console.log(this.ruleForm)
-          debugger
-          console.log(submitVal, oldValue)
           if (submitVal.title) {
-            if (this.ruleForm.title == '' || this.dataFlag_) {
-              this.ruleForm.title = submitVal.title
-            }
+            // if (this.ruleForm.title == '') {
+            this.ruleForm.title = submitVal.title
+            // }
             if (submitVal.icon) {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          console.log(this.dataFlag_)
+
           // 标注
           // if(this.ruleForm.type){
 
@@ -170,31 +166,22 @@ export default {
 
           // }
           if (submitVal.type || this.ruleForm.type) {
-            if (this.ruleForm.type == '' || this.dataFlag_) {
+            if (submitVal.type) {
               this.ruleForm.type = submitVal.type
-            }
-            if (submitVal.type == 'article') {
-              if (this.ruleForm.page == '' || this.dataFlag_) {
-                if (this.flag_) {
-                  this.ruleForm.page = submitVal.content
-                }
-                this.flag_ = true
-              }
-            } else if (submitVal.type == 'url') {
-              if (this.ruleForm.link == '' || this.dataFlag_) {
-                // hkz
-                if (this.flag_) {
-                  this.ruleForm.link = submitVal.content
-                }
-                this.flag_ = true
+              if (submitVal.type == 'article') {
+                // if (this.ruleForm.page == '') {
+                this.ruleForm.page = submitVal.content
+                // }
+              } else if (submitVal.type == 'url') {
+                // if (this.ruleForm.link == '') {
+                this.ruleForm.link = submitVal.content
+                // }
               }
             }
-            this.dataFlag_ = false
           } else {
             this.ruleForm.type = ''
             this.ruleForm.page = ''
             this.ruleForm.link = ''
-            this.dataFlag_ = false
           }
           if (submitVal.backgroundSetting) {
             this.ruleForm.backgroundSetting = submitVal.backgroundSetting
@@ -202,7 +189,6 @@ export default {
             this.ruleForm.backgroundSetting = '1'
           }
           if (submitVal.icon) {
-            // debugger
             this.ruleForm.fileList[0].url = submitVal.icon
             this.ruleForm.icon = submitVal.icon
           } else {
@@ -222,7 +208,6 @@ export default {
             this.ruleForm.webpageCode = ''
           }
           if (submitVal.backgroundColor) {
-            // debugger
             this.ruleForm.backgroundColor = submitVal.backgroundColor
           } else {
             this.ruleForm.backgroundColor = ''
@@ -234,7 +219,6 @@ export default {
     isFlag_one: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
         if (nVal == true) {
           this.ruleForm = {
             id: '',
@@ -259,10 +243,10 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           // alert('submit!')
-          debugger
+
           console.log(this.ruleForm)
           // return
           if (this.ruleForm.backgroundSetting == 3) {
@@ -287,8 +271,7 @@ export default {
             method: 'POST',
             data: { data: this.ruleForm, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
           })
-            .then((res) => {
-              // debugger
+            .then(res => {
               if (res.data) {
                 this.$message('保存成功')
                 this.$emit('upData')
@@ -303,7 +286,7 @@ export default {
       })
     },
     add(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.ruleForm.backgroundSetting == 3) {
             this.ruleForm.backgroundColor = this.colorValue
@@ -328,8 +311,7 @@ export default {
             method: 'POST',
             data: { data: this.ruleForm, funcModule: '新增模块', funcOperation: '新增模块' }
           })
-            .then((res) => {
-              // debugger
+            .then(res => {
               if (res.data) {
                 this.$message('新增成功')
                 this.$emit('upData')
@@ -348,8 +330,7 @@ export default {
     },
     selectChange(val) {
       // console.log(val)
-      debugger
-      this.flag_ = false
+
       if (val == 1) {
         this.$emit('newVal', val, this.dataNum)
       } else if (val == 2) {
@@ -359,7 +340,6 @@ export default {
       }
     },
     handleChangeColor(val) {
-      // debugger
       this.colorValue = val
       this.$emit('colorVal', this.colorValue, this.dataNum)
       console.log('输出颜色值', val) // 颜色 #6c8198
@@ -394,7 +374,7 @@ export default {
         method: 'POST',
         data: { data: 'WEBSITE_BUTTON_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
       })
-        .then((res) => {
+        .then(res => {
           this.classify = res.data
           this.console.log(res)
         })
@@ -404,9 +384,7 @@ export default {
         method: 'POST',
         data: { data: { type: 'ARTICLE', queryParams: { eventCode: this.$route.params.ids } }, funcModule: '获取页面', funcOperation: '获取页面' }
       })
-        .then((res) => {
-          // debugger
-          // debugger
+        .then(res => {
           this.pageLists = res.data
           this.console.log(res)
         })
@@ -422,7 +400,7 @@ export default {
     // 素材库选择的图片
     submit_() {
       console.log(this.$refs.material.pictureRadio, this.$refs.material.treeDatas)
-      debugger
+
       this.ruleForm.icon = JSON.parse(this.$refs.material.pictureRadio).picUrl
       // this.ruleForm.fileList = [{ name: '', url: '' }]
       this.ruleForm.fileList = [{ name: '', url: '' }]
@@ -431,8 +409,6 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      // debugger
-      // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {

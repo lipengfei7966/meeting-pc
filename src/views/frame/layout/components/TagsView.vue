@@ -13,13 +13,13 @@
       <i class='el-icon-arrow-up' v-if='visible' style='font-weight:900;cursor:pointer;'></i>
       <i class='el-icon-arrow-down' v-else style='font-weight:900;cursor:pointer;'></i>
     </div>
-    <ul class='contextmenu' v-show="visible" :style="{left, top}">
-      <li @click="handleClickFull">{{app.isScreenFull ? $t('navbar.cancelScreenFull') : $t('navbar.screenfull')}}</li>
-      <li @click="removeTab(closeTarget)">{{$t('tagsView.close')}}</li>
-      <li @click="closeOthersTags">{{$t('tagsView.closeOthers')}}</li>
-      <li @click="closeAllTags">{{$t('tagsView.closeAll')}}</li>
-    </ul>
-  </div>
+    <ul class='contextmenu' v-show=" visible" :style="{left, top}">
+              <li @click="handleClickFull">{{app.isScreenFull ? $t('navbar.cancelScreenFull') : $t('navbar.screenfull')}}</li>
+              <li @click="removeTab(closeTarget)">{{$t('tagsView.close')}}</li>
+              <li @click="closeOthersTags">{{$t('tagsView.closeOthers')}}</li>
+              <li @click="closeAllTags">{{$t('tagsView.closeAll')}}</li>
+              </ul>
+        </div>
 </template>
 
 <script>
@@ -89,7 +89,7 @@ export default {
       if (!route) {
         return false
       }
-      // debugger
+
       // let hasmenu = false;
       // this.permissionMenus.forEach(item => {
       //   if(item.children) {
@@ -158,7 +158,7 @@ export default {
       this.visible = false
     },
     handleTabClick(params) {
-      this.$router.push(params.$attrs.data);
+      this.$router.push(params.$attrs.data)
     },
     triggerMenu(e) {
       e.stopPropagation()
@@ -204,8 +204,8 @@ export default {
         })
         return false
       }
-      screenfull.toggle();
-      let leftMenu = document.getElementById('left-menu');
+      screenfull.toggle()
+      let leftMenu = document.getElementById('left-menu')
       leftMenu.style = 'width:0px !important;'
     }
   }
