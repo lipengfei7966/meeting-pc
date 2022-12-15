@@ -135,6 +135,7 @@
                                 <template slot-scope="scope">
                                     <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">改签</el-button> -->
                                     <el-button type="text" size="small"
+                                        :disabled="!fundTicket.includes(scope.row.orderStatus)"
                                         @click="handleRemoveClick(scope.row)">退票</el-button>
                                 </template>
                             </el-table-column>
@@ -293,6 +294,7 @@ export default {
     data () {
         return {
             status: 'air',
+            fundTicket: ['103', '108', '111', '112', '113'],
             orderDetailInfo: {},// 火车票基本信息
             paymentInformationDto: {},// 火车票支付信息
             trainNumberInformationList: [
@@ -339,11 +341,11 @@ export default {
         }
     },
     created () {
-        this.airDetailFn()
-        this.orderCodeFn()
         this.listItemFn()
+        this.orderCodeFn()
         this.serviceFee = this.$route.params.serviceFee
         this.orderStatus = this.$route.params.orderStatus
+        this.airDetailFn()
     },
     mounted () { },
     methods: {
@@ -395,10 +397,10 @@ export default {
                 this.flightDetailInfoList = res.data.flightDetailInfoList
                 this.tripInfoList = res.data.tripInfoList
                 // ------航班信息格式化处理---------
-                this.tripInfoList.forEach(res => {
-                    res.orderStatus = this.orderDetailInfo.orderStatus
-                })
-                this.refundFn()
+                // this.tripInfoList.forEach(res => {
+                //     res.orderStatus = this.orderDetailInfo.orderStatus
+                // })
+                // this.refundFn()
             })
         },
         refundFn () {
@@ -408,7 +410,7 @@ export default {
                 dateTime: this.flightDetailInfoList[0].depTime || '',
                 des: this.flightDetailInfoList[0].arr || '',
                 ori: this.flightDetailInfoList[0].dep || '',
-                price: this.costDetailInfo.ticketAmount || ''
+                price: this.costDetailInfo.ticketAmount || 0
             }
             refundUpdateRule(queryRefund).then(res => {
                 console.log(res, '飞机票退票规则')
@@ -432,6 +434,7 @@ export default {
             console.log(row, 'row退票')
             this.centerDialogVisible = true
             this.thepayAmount = this.payAmount
+            this.theRow = row
             this.reissueRefundPrice(row)
             this.refundFn()
 
@@ -469,7 +472,14 @@ export default {
         },
         // 确定退款
         comfirmRefund () {
-            comfirmRefund(this.theorderCode).then(res => {
+            let queryComfirmRefund = {
+                flightCode: this.theRow.flightCode,
+                orderCode: this.$route.params.orderCode,
+                refundOrderType: this.theRow.orderStatus === '108' ? 2 : 1,
+                refundReason: '',
+                refundType: 0
+            }
+            comfirmRefund(queryComfirmRefund).then(res => {
                 if (res.status === true) this.$message({ message: '退票成功', type: 'success' })
             })
             this.theorderCode = ''
