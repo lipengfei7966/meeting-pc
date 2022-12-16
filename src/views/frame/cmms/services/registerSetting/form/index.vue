@@ -2125,15 +2125,15 @@ export default {
         token: window.sessionStorage.getItem('token')
       },
       resultSetForm: {
-        successTitle: [
-          { required: true, message: '请输入提示主题', trigger: 'blur' }
-        ],
-        waitReviewTitle: [
-          { required: true, message: '请输入提示主题', trigger: 'blur' }
-        ],
-        noPassTitle: [
-          { required: true, message: '请输入提示主题', trigger: 'blur' }
-        ],
+        // successTitle: [
+        //   { required: true, message: '请输入提示主题', trigger: 'blur' }
+        // ],
+        // waitReviewTitle: [
+        //   { required: true, message: '请输入提示主题', trigger: 'blur' }
+        // ],
+        // noPassTitle: [
+        //   { required: true, message: '请输入提示主题', trigger: 'blur' }
+        // ],
       },
       form: {
         moreShowFlg: false,
@@ -2562,26 +2562,65 @@ export default {
     },
     // 外观设置保存
     appearanceSetSave () {
-      this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
-      this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
-      this.appearanceSetForm.code = ''
-      this.appearanceSetForm.id = ''
+
       request({
-        url: '/api/register/signupExterior/save',
+        url: '/api/register/signupExterior/get',
         method: 'POST',
         data: {
-          data: this.appearanceSetForm,
+          data: this.form.listQuery.data.eventCode,
           funcModule: '表单外观设置',
-          funcOperation: '表单外观设置保存'
+          funcOperation: '表单外观设置查询'
         }
       }).then((res) => {
         if (res.status) {
-          // 进入下一步 表单设置
-          this.stepIndex = 2
+          if (JSON.stringify(res.data) === "{}") {
+            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            this.appearanceSetForm.code = ''
+            this.appearanceSetForm.id = ''
+            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
+            request({
+              url: '/api/register/signupExterior/save',
+              method: 'POST',
+              data: {
+                data: this.appearanceSetForm,
+                funcModule: '表单外观设置',
+                funcOperation: '表单外观设置保存'
+              }
+            }).then((res) => {
+              if (res.status) {
+                // 进入下一步 表单设置
+                this.stepIndex = 2
+              }
+            }).catch(res => {
+              console.log(res)
+            })
+          } else {
+            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            // this.appearanceSetForm.code = ''
+            // this.appearanceSetForm.id = ''
+            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
+            request({
+              url: '/api/register/signupExterior/update',
+              method: 'POST',
+              data: {
+                data: this.appearanceSetForm,
+                funcModule: '表单外观设置',
+                funcOperation: '表单外观设置更新'
+              }
+            }).then((res) => {
+              if (res.status) {
+                // 进入下一步 表单设置
+                this.stepIndex = 2
+              }
+            }).catch(res => {
+              console.log(res)
+            })
+          }
         }
-      }).catch(res => {
-        console.log(res)
       })
+
     },
     drawerStatusHandle (status) {
       this.drawer = status
@@ -2598,14 +2637,32 @@ export default {
       }).then((res) => {
         if (res.status) {
           if (JSON.stringify(res.data) === "{}") {
-
+            this.appearanceSetForm.titleChinese = '', // 标题
+              this.appearanceSetForm.titleEnglish = '', // 英文标题
+              this.appearanceSetForm.language = ['中文'], // 语言
+              this.appearanceSetForm.language = ['中文'], // 语言
+              this.appearanceSetForm.color = '#409EFF', // 主色调
+              this.appearanceSetForm.isPropaganda = 0, // 是否开启会议宣传
+              this.appearanceSetForm.BannerList = [], // banner 列表
+              this.appearanceSetForm.meetingFile = '',
+              this.appearanceSetForm.isMeetingDate = 0, // 是否显示会议时间
+              this.appearanceSetForm.isMeetinPlace = 0, // 是否显示会议地点
+              this.appearanceSetForm.isMeetinCountdown = 0, // 是否显示倒计时
+              this.appearanceSetForm.profile = '', // 会议简介
+              this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
+              this.appearanceSetForm.loginPcFile = '',
+              this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
+              this.appearanceSetForm.loginAppFile = '',
+              this.appearanceSetForm.isLoginDate = 0, // 是否显示会议时间
+              this.appearanceSetForm.isLoginPlace = 0, // 是否显示会议地点
+              this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
             this.appearanceSetForm = res.data
             Object.keys(this.appearanceSetForm).forEach(key => {
               if (key === 'tenantCode') delete (this.appearanceSetForm[key])
             })
-            this.appearanceSetForm.code = ''
-            this.appearanceSetForm.id = ''
+            // this.appearanceSetForm.code = ''
+            // this.appearanceSetForm.id = ''
             this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
           }
         }
@@ -3006,6 +3063,21 @@ export default {
     // 分步改变
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
+      switch (setpIndex) {
+        case 1:
+          this.getAppearanceSet()
+          break
+        case 2:
+          this.getEventInfo()
+          break
+        case 3:
+
+          break
+
+        default:
+          break
+      }
+
     },
     stepIndexFn (step) {
       this.stepIndex = step
@@ -3298,10 +3370,11 @@ export default {
     onChangeAll (params) {
       // 会议编码 params.code
       // 会议名称 params.name
+      this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 1
-      this.getEventInfo()
       this.getAppearanceSet()
+      // this.getEventInfo()
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {
