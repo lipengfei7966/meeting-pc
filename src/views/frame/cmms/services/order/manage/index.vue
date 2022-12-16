@@ -162,9 +162,8 @@ export default {
           },
           {
             label: '所属客户',
-            prop: 'userCode',
+            prop: 'customerName',
             element: 'input-validate',
-            // list: this.$t('datadict.basicOrderStatus'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -174,7 +173,6 @@ export default {
             label: '订单号',
             prop: 'orderNumber',
             element: 'input-validate',
-            // list: this.$t('datadict.basicOrderStatus'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -215,7 +213,6 @@ export default {
             label: '乘客',
             prop: 'contactPerson',
             element: 'input-validate',
-            // list: this.$t('datadict.orderType'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -255,7 +252,6 @@ export default {
             label: '票号',
             prop: 'ticketNo',
             element: 'input-validate',
-            // list: this.$t('datadict.tripType'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -265,7 +261,6 @@ export default {
             label: '联系人电话',
             prop: 'contactPhone',
             element: 'input-validate',
-            // list: this.$t('datadict.tripType'),
             attrs: {
               isDefault: true,
               clearable: false
