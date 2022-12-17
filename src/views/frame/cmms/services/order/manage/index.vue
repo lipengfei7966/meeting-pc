@@ -11,7 +11,8 @@
       </template>
       <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs">
         <template slot="operation" slot-scope="scope">
-          <el-button type="text" size="small" @click="handleRemoveClick(scope.row)">退票</el-button>
+          <el-button type="text" :disabled="!fundTicket.includes(scope.row.orderStatus)"
+            @click="handleRemoveClick(scope.row)">退票</el-button>
           <el-button type="text" size="small" @click="handleInfoClick(scope.row)">详情</el-button>
         </template>
       </bs-table>
@@ -25,23 +26,23 @@
       <el-divider></el-divider>
       <div class="remove-line2">
         <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{
-            thepayAmount - serviceFee
+            fightReissueRefund.returnPrice
         }}元</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line3">
         <div class="remove-line3-1">
           <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">
-            {{ serviceFee }}元</span>
+            {{ fightReissueRefund.refundPrice }}元</span>
         </div>
         <div class="remove-line3-2">
           <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{
-              thepayAmount
+              costDetailInfo.ticketAmount
           }}元</span>
         </div>
         <div class="remove-line3-3">
           <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{
-              thepayAmount - serviceFee
+              fightReissueRefund.returnPrice
           }}元</span>
         </div>
       </div>
@@ -83,12 +84,13 @@
 </template>
 
 <script>
-import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefund, comfirmRefund } from './utils/api'
+import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefund, comfirmRefund, fightReissueRefund } from './utils/api'
 import axios from 'axios'
 export default {
   name: 'orderManagement',
   data () {
     return {
+      fundTicket: ['103', '108', '111', '112', '113'],
       theTrainOrFlightNo: '',
       theOrderCode: '',
       theOrderStatus: '',
@@ -113,7 +115,14 @@ export default {
         allOrderCount: 0,
         cancelCount: 0,
         obligationCount: 0,
-        ticketsIssuedCount: 0
+        ticketsIssuedCount: 0,
+      },
+      fightReissueRefund: {
+        refundPrice: 0,
+        reissuePrice: 0,
+        returnPrice: 0,
+        ticketno: '',
+        upgradecabinPrice: 0,
       },
       form: {
         moreShowFlg: true,
@@ -153,9 +162,8 @@ export default {
           },
           {
             label: '所属客户',
-            prop: 'userCode',
+            prop: 'customerName',
             element: 'input-validate',
-            // list: this.$t('datadict.basicOrderStatus'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -165,7 +173,6 @@ export default {
             label: '订单号',
             prop: 'orderNumber',
             element: 'input-validate',
-            // list: this.$t('datadict.basicOrderStatus'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -206,7 +213,6 @@ export default {
             label: '乘客',
             prop: 'contactPerson',
             element: 'input-validate',
-            // list: this.$t('datadict.orderType'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -246,7 +252,6 @@ export default {
             label: '票号',
             prop: 'ticketNo',
             element: 'input-validate',
-            // list: this.$t('datadict.tripType'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -256,7 +261,6 @@ export default {
             label: '联系人电话',
             prop: 'contactPhone',
             element: 'input-validate',
-            // list: this.$t('datadict.tripType'),
             attrs: {
               isDefault: true,
               clearable: false
@@ -300,7 +304,7 @@ export default {
             },
             {
               label: '所属客户',
-              prop: 'userCode',
+              prop: 'customerName',
               width: '150'
             },
             {
@@ -373,7 +377,7 @@ export default {
             },
             {
               label: '车次/航班信息',
-              prop: 'info',
+              prop: 'tripInformation',
               width: '200'
             },
             {
@@ -430,6 +434,7 @@ export default {
           res.orderStatus = this.orderDetailInfo.orderStatus
         })
         this.refundFn()
+        this.reissueRefundPrice(row)
       })
     },
     // 飞机票退票规则
@@ -440,7 +445,7 @@ export default {
         dateTime: this.flightDetailInfoList[0].depTime || '',
         des: this.flightDetailInfoList[0].arr || '',
         ori: this.flightDetailInfoList[0].dep || '',
-        price: this.costDetailInfo.ticketAmount || ''
+        price: this.costDetailInfo.ticketAmount
       }
       refundUpdateRule(queryRefund).then(res => {
         console.log(res, '飞机票退票规则')
@@ -452,6 +457,7 @@ export default {
         this.transferText = res.data.transferText
       })
     },
+
     // 获取订单状态总数
     getStatusCountFn () {
       getStatusCount({ orderStatus: '' }).then(res => {
@@ -533,10 +539,28 @@ export default {
       this.theTrainOrFlightNo = row.trainOrFlightNo
       if (row.businessType === '1') {
         this.airDetailFn(row)
+        this.theRow = row
       }
       if (row.businessType === '2') { this.refund(row.orderCode) }
       this.theorderCode = row.orderCode
 
+    },
+    // 预计改签费
+    reissueRefundPrice (row) {
+      let queryReissueRefundPrice = {
+        computedType: 1,
+        flightInfoCode: this.flightDetailInfoList[0].flightCode,
+        orderCode: row.orderCode,
+        orderType: this.orderDetailInfo.orderStatus === '108' ? 2 : 1
+      }
+      fightReissueRefund(queryReissueRefundPrice).then(res => {
+        console.log(res, '预计改签费')
+        this.fightReissueRefund.refundPrice = res.data[0].refundPrice
+        this.fightReissueRefund.reissuePrice = res.data[0].reissuePrice
+        this.fightReissueRefund.returnPrice = res.data[0].returnPrice
+        this.fightReissueRefund.ticketno = res.data[0].ticketno
+        this.fightReissueRefund.upgradecabinPrice = res.data[0].upgradecabinPrice
+      })
     },
     // 退改票信息
     refund (orderCode) {
@@ -554,11 +578,14 @@ export default {
     // 确定退款
     comfirmRefund () {
       if (this.businessType === '1') {
-        if (this.theOrderStatus.includes(this.updateStatus)) {
-          this.refundOrderType = 2
+        let queryComfirmRefund = {
+          flightCode: this.flightDetailInfoList[0].flightCode,
+          orderCode: this.theRow.orderCode,
+          refundOrderType: this.theRow.orderStatus === '108' ? 2 : 1,
+          refundReason: '',
+          refundType: 0
         }
-        this.refundType = 1
-        fightRefund({ orderCode: this.theOrderCode, refundOrderType: this.refundOrderType, refundType: this.refundType, refundReason: '', flightCode: this.theTrainOrFlightNo }).then(res => {
+        fightRefund(queryComfirmRefund).then(res => {
           console.log(res, '退票金额')
         })
       }
@@ -577,7 +604,7 @@ export default {
       console.log(row, 'row')
       if (row.businessType === '1') {//机票
         this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode, orderStatus: row.orderStatus } })
-        console.log(row)
+        // console.log(row)
       }
       if (row.businessType === '2') {//火车票
         this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode, serviceFee: this.serviceFee, orderStatus: row.orderStatus } })
