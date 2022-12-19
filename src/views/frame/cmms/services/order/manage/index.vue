@@ -245,7 +245,7 @@ export default {
             list: this.$t('datadict.tripType'),
             attrs: {
               isDefault: true,
-              clearable: false
+              clearable: true
             }
           },
           {
