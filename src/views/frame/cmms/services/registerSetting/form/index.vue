@@ -93,19 +93,19 @@
                 </el-upload>
               </el-form-item>
 
-              <el-form-item label="是否显示会议时间" prop="isMeetingDate">
+              <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示会议地点" prop="isMeetinPlace">
+              <el-form-item label="是否显示会议地点" prop="isMeetinPlace" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetinPlace" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示倒计时" prop="isMeetinCountdown">
+              <el-form-item label="是否显示倒计时" prop="isMeetinCountdown" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="会议简介" prop="profile">
+              <el-form-item label="会议简介" prop="profile" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit
                   placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input>
               </el-form-item>
@@ -1722,8 +1722,8 @@
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
           :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
           <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
-            <el-radio v-model="resultSetForm.isNeedApprove" :label="0">不需要审核</el-radio>
-            <el-radio v-model="resultSetForm.isNeedApprove" :label="1">需要审核</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" label="0">不需要审核</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" label="1">需要审核</el-radio>
           </el-form-item>
           <div class="transition-box" v-show="drawer">
             <div class="content">
@@ -1784,12 +1784,18 @@
                 </el-card>
 
                 <div class="successFormItem">
-                  <el-form-item label="提示主题:" prop="successTitle">
+                  <el-form-item label="提示主题:" prop="successTitle"
+                    :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
                     <el-input v-model="resultSetForm.successTitle" size="mini" placeholder="请输入提示主题"></el-input>
                   </el-form-item>
                   <el-form-item label="描述:" prop="successDescribe">
-                    <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini"
-                      placeholder="请输入描述文案"></el-input>
+                    <!-- <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini"
+                      placeholder="请输入描述文案"></el-input> -->
+
+                    <el-input type="textarea" :rows="4" size="mini" v-model="resultSetForm.successDescribe"
+                      placeholder="请输入描述文案" maxlength="200" show-word-limit>
+                    </el-input>
+
                   </el-form-item>
                   <el-form-item label="Banner:" prop="successBanner">
                     <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
@@ -1824,7 +1830,8 @@
                             <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal"
                               :label="item.dictItemName" :value="item.dictItemVal"></el-option>
                           </el-select>
-                          <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px">
+                          <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px"
+                            v-if="resultSetForm.successJumpPage == '7'">
                             <el-input v-model="resultSetForm.successOutPageUrl" size="mini"
                               placeholder="请输入外部链接"></el-input>
                           </el-form-item>
@@ -1856,7 +1863,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>2、待审核</h3>
               <span>
@@ -1892,7 +1899,8 @@
                 </el-card>
 
                 <div class="waitReviewFormItem">
-                  <el-form-item label="提示主题:" prop="waitReviewTitle">
+                  <el-form-item label="提示主题:" prop="waitReviewTitle"
+                    :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
                     <el-input v-model="resultSetForm.waitReviewTitle" size="mini" placeholder="请输入提示主题"></el-input>
                   </el-form-item>
                   <el-form-item label="描述:" prop="waitReviewDescribe">
@@ -1962,7 +1970,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>3、不通过</h3>
               <span>
@@ -1997,7 +2005,8 @@
                 </el-card>
 
                 <div class="noPassFormItem">
-                  <el-form-item label="提示主题:" prop="noPassTitle">
+                  <el-form-item label="提示主题:" prop="noPassTitle"
+                    :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
                     <el-input v-model="resultSetForm.noPassTitle" size="mini" placeholder="请输入提示主题"></el-input>
                   </el-form-item>
                   <el-form-item label="描述:" prop="noPassDescribe">
@@ -2068,7 +2077,12 @@
           </div>
         </el-form>
         <div class="resultSetBtns">
-          <el-button @click="preStep">上一步(暂存)</el-button>
+          <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red"
+            @cancel="preStep" title='您修改的内容已自动保存，所有信息编辑完成后请点击"确认发布"同步到手机端'> <el-button
+              slot="reference">上一步(暂存)</el-button>
+          </el-popconfirm>
+          <!-- <el-button @click="preStep">上一步(暂存)</el-button> -->
+
           <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
         </div>
       </div>
@@ -2158,7 +2172,8 @@ export default {
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
-              isDefault: true
+              isDefault: true,
+              clearable: false
             },
             event: {
               changeAll: this.onChangeAll
@@ -2351,7 +2366,7 @@ export default {
         titleChinese: '', // 标题
         titleEnglish: '', // 英文标题
         language: ['中文'], // 语言
-        language: ['中文'], // 语言
+        // language: ['中文'], // 语言
         color: '#409EFF', // 主色调
         isPropaganda: 0, // 是否开启会议宣传
         BannerList: [], // banner 列表
@@ -2401,7 +2416,7 @@ export default {
         type: '',//1、报名成功，2、待审核，3、不通过
       },
       resultSetForm: {
-        isNeedApprove: 0, // 是否需要审核
+        isNeedApprove: '0', // 是否需要审核
         successTitle: '', // 报名成功提示主题
         successDescribe: '', // 报名成功描述
         successBanner: '', // 报名成功Banner
@@ -2677,7 +2692,7 @@ export default {
         if (valid) {
           this.isFormSetComplete = true
           console.log(this.resultSetForm, 'resultSetFormresultSetForm')
-          if (this.resultSetForm.isNeedApprove === 0) {
+          if (this.resultSetForm.isNeedApprove === '0') {
             this.resultNoFrom[0].appFile = this.resultSetForm.successBanner
             this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultNoFrom[0].describe_info = this.resultSetForm.successDescribe
@@ -2689,7 +2704,7 @@ export default {
             this.resultNoFrom[0].type = '1'
             console.log(this.resultNoFrom, 'resultNoFrom')
           }
-          if (this.resultSetForm.isNeedApprove === 1) {
+          if (this.resultSetForm.isNeedApprove === '1') {
             this.resultFrom[0].appFile = this.resultSetForm.successBanner
             this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultFrom[0].describe_info = this.resultSetForm.successDescribe
@@ -2725,7 +2740,7 @@ export default {
             url: '/api/register/signupResult/save',
             method: 'POST',
             data: {
-              data: this.resultSetForm.isNeedApprove === 0 ? this.resultNoFrom : this.resultFrom,
+              data: this.resultSetForm.isNeedApprove === '0' ? this.resultNoFrom : this.resultFrom,
               funcModule: '表单外观设置',
               funcOperation: '创建结果页'
             }
@@ -2734,6 +2749,8 @@ export default {
               this.$message({ message: '生成表单成功', type: 'success' })
             }
           })
+        } else {
+          this.$message({ showClose: true, message: '为避免生成表单信息缺失，请您先完成必填设置后，再生成表单', type: 'warning' })
         }
       })
     },
@@ -2741,7 +2758,7 @@ export default {
     setResult () {
       this.isFormSetComplete = false
       this.stepIndex = 3
-      this.resultSetForm.isNeedApprove = 1
+      this.resultSetForm.isNeedApprove = '1'
     },
     getEventInfo () {
       if (this.form.listQuery.data.eventCode == '') {

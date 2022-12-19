@@ -3,7 +3,7 @@
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
       <div class="formSet">
         <div class="back" style="cursor: pointer">
-          <el-popover placement="top-start" width="20" trigger="click" center>
+          <el-popover placement="top-start" width="100" trigger="click" center>
             <el-link type="primary" @click="toAppearance(1)">编辑外观</el-link><br />
             <el-link type="primary" @click="toEdit(2)">编辑表单</el-link><br />
             <el-link type="primary" @click="toResult(3)">编辑结果页</el-link>
@@ -441,7 +441,7 @@
                 <el-checkbox label="自定义验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes('4')"
+            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes(4)"
               label="自定义验证项" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
                 <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dispOrder"
@@ -571,6 +571,7 @@ export default {
   name: 'applySet',
   data () {
     return {
+      pagingCount: 0,
       registerVerificationOptions: [],// 获取注册验证
       loginVerificationOptions: [],// 获取登录验证
       customizeOptions: [],// 获取自定义验证
@@ -630,7 +631,7 @@ export default {
         registerVerification: [], // 注册验证
         loginVerification: [], // 登录验证
         coustomVerification: [], // 自定义验证项
-        isNeedCompleteMustInfo: true, // 是否需要完善必填信息
+        isNeedCompleteMustInfo: false, // 是否需要完善必填信息
         IsIintimateAgreement: true, // 隐私协议
         applyDate: '', // 报名日期
         attendanceCodePrefix: '', // 参会码前缀

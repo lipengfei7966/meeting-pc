@@ -147,6 +147,7 @@ export default {
       dataCode_: '',
       dataNum: '',
       code: '',
+      eventHashCode: '',
       newData: {},
       listData: [],
       isFlag_one: false,
@@ -169,7 +170,7 @@ export default {
       powerRadio: 1, //权限选择
       exhibition: false, //部分用户展示
       checkList: [], //部分用户选中的值
-      portionList: [] //部分列表
+      portionList: [], //部分列表
     }
   },
   methods: {
@@ -273,7 +274,9 @@ export default {
       this.newData = val
     },
     loadData() {
+      debugger
       if (this.$route.params.ids) {
+        this.eventHashCode = this.$route.params.eventHashCode
         request({
           url: '/api/biz/cmsWebpage/getByEventCode',
           method: 'POST',
@@ -290,7 +293,7 @@ export default {
               this.subTitle = res.data.subTitle
               this.code = res.data.code
               console.log(res)
-              this.code = res.data.code
+              this.eventHashCode = res.data.eventHashCode
               // 权限st
               // permissionType
               // someUserTypes
@@ -314,7 +317,7 @@ export default {
                 url = 'https://cmms-h5-dev.ctgbs.com'
               }
               //
-              this.imgUrl = `${url}/#/pages/${this.userData.templateCode}/index?tenantCode=${this.userData.tenantCode}&code=${this.code}`
+              this.imgUrl = `${url}/#/pages/${this.userData.templateCode}/index?ev=${this.eventHashCode}`
               console.log(this.imgUrl, window.location.host)
             } else {
               this.$router.push({
