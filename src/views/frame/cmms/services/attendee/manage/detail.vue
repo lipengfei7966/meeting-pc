@@ -789,34 +789,38 @@ export default {
               funcModule: '获取模块类型',
               funcOperation: '获取模块类型'
             }
-          }).then(res => {
-            if (res.status) {
-              this.$message.success('保存成功')
-              this.back()
-            }
-            // 保存后将多选\其他数据格式恢复
-            for (const key in this.setForm.signupContactDtlDto) {
-              // 判断是否多选
-              if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0) {
-                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
-                this.setForm.signupContactDtlDto[key].shift('卍')
-
-                this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
-                  //
-                  if (checkItem.indexOf('其他&') == 0) {
-                    this.setformOther[key] = checkItem.split('&')[1]
-                    this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
-                  }
-                })
-              }
-              // 判断是否包含其他选项
-              if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('其他&') == 0) {
-                this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
-                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
-              }
-            }
-            loading.close()
           })
+            .then(res => {
+              if (res.status) {
+                this.$message.success('保存成功')
+                this.back()
+              }
+              // 保存后将多选\其他数据格式恢复
+              for (const key in this.setForm.signupContactDtlDto) {
+                // 判断是否多选
+                if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0) {
+                  this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
+                  this.setForm.signupContactDtlDto[key].shift('卍')
+
+                  this.setForm.signupContactDtlDto[key].forEach((checkItem, checkIndex) => {
+                    //
+                    if (checkItem.indexOf('其他&') == 0) {
+                      this.setformOther[key] = checkItem.split('&')[1]
+                      this.setForm.signupContactDtlDto[key][checkIndex] = checkItem.split('&')[0]
+                    }
+                  })
+                }
+                // 判断是否包含其他选项
+                if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('其他&') == 0) {
+                  this.setformOther[key] = this.setForm.signupContactDtlDto[key].split('&')[1]
+                  this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split('&')[0]
+                }
+              }
+              loading.close()
+            })
+            .catch(() => {
+              loading.close()
+            })
         } else {
           // 页面滚动到校验不通过地方
           this.$nextTick(() => {
