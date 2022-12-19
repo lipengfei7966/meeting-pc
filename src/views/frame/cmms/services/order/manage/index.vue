@@ -457,7 +457,6 @@ export default {
         this.transferText = res.data.transferText
       })
     },
-
     // 获取订单状态总数
     getStatusCountFn () {
       getStatusCount({ orderStatus: '' }).then(res => {
