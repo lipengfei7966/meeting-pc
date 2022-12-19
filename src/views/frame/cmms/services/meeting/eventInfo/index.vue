@@ -107,7 +107,7 @@ export default {
                 params: {
                   type: 'detailSet',
                   back: 'roleManage',
-                  ids: this.$refs.bsTable.currentRow.code
+                  ids: this.$refs.bsTable.currentRow.code,
                 }
               }
             }
@@ -188,7 +188,8 @@ export default {
         params: {
           type: 'detailSet',
           back: 'roleManage',
-          ids: this.$refs.bsTable.currentRow.code
+          ids: this.$refs.bsTable.currentRow.code,
+          eventHashCode: this.$refs.bsTable.currentRow.eventHashCode
         }
       })
     }
