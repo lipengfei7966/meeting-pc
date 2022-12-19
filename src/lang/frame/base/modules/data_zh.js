@@ -34,6 +34,7 @@ export default {
       operateEname: '操作英文名称'
     },
     warnSource: {
+      codeApp: '应用',
       sourceInfo: '预警源信息',
       sourceName: '预警源名称',
       sourceCode: '预警源代码',

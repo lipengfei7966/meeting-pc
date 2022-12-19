@@ -793,6 +793,7 @@ export default {
         codeName: '',
         sqlStatement: '',
         remark: '',
+        tenantFlag: '0',
         moduleCode: '',
         codeType: 'report',
         pageType: 'index',

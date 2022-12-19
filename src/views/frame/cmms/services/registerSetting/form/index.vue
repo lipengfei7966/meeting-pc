@@ -2597,13 +2597,17 @@ export default {
         }
       }).then((res) => {
         if (res.status) {
-          this.appearanceSetForm = res.data
-          Object.keys(this.appearanceSetForm).forEach(key => {
-            if (key === 'tenantCode') delete (this.appearanceSetForm[key])
-          })
-          this.appearanceSetForm.code = ''
-          this.appearanceSetForm.id = ''
-          this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
+          if (JSON.stringify(res.data) === "{}") {
+
+          } else {
+            this.appearanceSetForm = res.data
+            Object.keys(this.appearanceSetForm).forEach(key => {
+              if (key === 'tenantCode') delete (this.appearanceSetForm[key])
+            })
+            this.appearanceSetForm.code = ''
+            this.appearanceSetForm.id = ''
+            this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
+          }
         }
       })
     },
