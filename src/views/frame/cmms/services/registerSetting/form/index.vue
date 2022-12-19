@@ -130,16 +130,16 @@
             <el-divider></el-divider>
             <div v-show="isRegisterSetShow">
               <el-form-item label="Banner(pc)" prop="loginPcFile">
-                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/"
-                  :header="header" multiple>
+                <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
+                  :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload>
               </el-form-item>
               <el-form-item label="Banner(手机端)" prop="loginAppFile">
-                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/"
-                  :header="header" multiple>
+                <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
+                  :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
@@ -238,6 +238,7 @@
             </el-collapse>
           </div>
         </el-card>
+        <!-- 中间信息 -->
         <el-card class="formPreview" :style="{ height: formSetHeight + 'px' }">
           <div :style="{ minHeight: formSetHeight - 80 + 'px' }">
             <h2 style="text-align: center">{{ eventName }}</h2>
@@ -3150,7 +3151,8 @@ export default {
       const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
       console.log(extension, 'extension')
       let isAllowUpload = true
-      let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      // let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      let acceptType = ['.jpg', '.png']
 
       // 判断后缀名是否允许上传
       isAllowUpload = acceptType.includes(extension)
@@ -3429,6 +3431,7 @@ export default {
     },
     edititem (checkedItem, checkedIndex) {
       this.checkedIndex = checkedIndex
+
     },
     // 结果页设置 添加按钮
     addBtn (btnList, btnIndex) {
