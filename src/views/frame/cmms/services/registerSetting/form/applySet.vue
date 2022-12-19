@@ -571,6 +571,7 @@ export default {
   name: 'applySet',
   data () {
     return {
+      pagingCount: 0,
       registerVerificationOptions: [],// 获取注册验证
       loginVerificationOptions: [],// 获取登录验证
       customizeOptions: [],// 获取自定义验证
