@@ -4,11 +4,10 @@
 
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
     <!-- 已完成表单设置 -->
-    <apply-set v-if="isFormSetComplete" :eventCode="form.listQuery.data.eventCode" :eventName="eventName"
-      @setResult="setResult" @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn"
-      @applySetForm="applySetForm"></apply-set>
+    <!-- isFormSetComplete -->
+
     <!-- 未完成表单设置 -->
-    <div v-else style="padding: 0 20px">
+    <div style="padding: 0 20px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
           <el-step style="cursor: pointer">
@@ -22,6 +21,10 @@
           <el-step title="结果设置">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 3 </span>
             <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 结果设置 </span>
+          </el-step>
+          <el-step title="参会人编码设置">
+            <span slot="icon" @click="stepIndexChange(4)" style="cursor: pointer"> 4 </span>
+            <span slot="title" @click="stepIndexChange(4)" style="cursor: pointer"> 参会人编码设置 </span>
           </el-step>
         </el-steps>
       </div>
@@ -2086,6 +2089,13 @@
           <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
         </div>
       </div>
+
+      <!-- 参会人编码设置 -->
+      <div v-if="stepIndex == 4" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+        <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
+          @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn" @applySetForm="applySetForm"></apply-set>
+      </div>
+
     </div>
 
     <!-- 表单设置-批量新增选项 弹窗 -->
@@ -2690,6 +2700,7 @@ export default {
     resultSetSave (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.stepIndex = 4
           this.isFormSetComplete = true
           console.log(this.resultSetForm, 'resultSetFormresultSetForm')
           if (this.resultSetForm.isNeedApprove === '0') {
