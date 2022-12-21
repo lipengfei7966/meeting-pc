@@ -19,7 +19,7 @@
                             </tr>
                             <tr>
                                 <td class="tdTitle">取票号</td>
-                                <td>{{ basicTrainInformation.ticketNo ? basicTrainInformation.ticketNo : '-' }}</td>
+                                <td>{{ tripInformationList[0].ticketNo ? tripInformationList[0].ticketNo : '-' }}</td>
                                 <td class="tdTitle">联系人</td>
                                 <td>{{ basicTrainInformation.contacts ? basicTrainInformation.contacts : '-' }}</td>
                             </tr>
@@ -58,7 +58,7 @@
                                 }}</b> <span class="startText">始</span></div>
                                 <div class="startDate">{{
                                         trainNumberInformationList[0].travelTime === undefined ? '--' :
-                                            trainNumberInformationList[0].travelTime
+                                            trainNumberInformationList[0].travelTime.split(' ')[0]
                                 }}</div>
                             </div>
                             <div class="transInfo_time_center">
@@ -66,7 +66,8 @@
                                 <div class="Via">
                                     <div class="leftLine"></div>
                                     <div class="RightLine"></div>
-                                    <div class="centerBox" style="cursor:pointer">经停站</div>
+                                    <div class="centerBox" style="cursor:pointer" @click="ViaHandle">经停站
+                                    </div>
                                 </div>
                             </div>
                             <div class="transInfo_time_end">
@@ -76,7 +77,7 @@
                                 }}</b> <span class="endText">终</span></div>
                                 <div class="startDate">{{
                                         trainNumberInformationList[0].travelTime === undefined ? '--' :
-                                            trainNumberInformationList[0].travelTime
+                                            trainNumberInformationList[0].travelTime.split(' ')[0]
                                 }}</div>
                             </div>
                         </div>
@@ -257,18 +258,32 @@
             </span>
 
         </el-dialog>
+        <!-- 经停站 -->
+        <el-dialog title="经停站" :visible.sync="dialogTableVisible">
+            <div class="bs-new-container">
+                <el-table :data="viaList" :row-class-name="tableRowClassName" header-align='center'>
+                    <el-table-column property="stationNo" label="站次" width="100" align="center"></el-table-column>
+                    <el-table-column property="name" label="站名" width="150" align="center"></el-table-column>
+                    <el-table-column property="arriveTime" label="到达" width="100" align="center"></el-table-column>
+                    <el-table-column property="startTime" label="发时" width="100" align="center"></el-table-column>
+                    <el-table-column property="viaTime" label="停留" width="100" align="center"></el-table-column>
+                </el-table>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import commonSlot from './components/commonSlot.vue'
-import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem } from './utils/api'
+import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, trainVia } from './utils/api'
 export default {
     components: { commonSlot },
     name: 'trainTicketDetails',
     data () {
         return {
             status: 'train',
+            viaList: [],
+            dialogTableVisible: false,
             basicTrainInformation: {
                 contactPhone: '',
                 contacts: '',
@@ -302,6 +317,8 @@ export default {
             travelsTypeArr: [],
             payTypeFamtter: {},
             payTypeArr: [],
+            seatTypeFamtter: {},
+            seatTypeArr: [],
             centerDialogVisible: false,
             refundAmount: 0,// 预估退票金额
             serviceFee: 0,// 手续费
@@ -310,10 +327,10 @@ export default {
         }
     },
     created () {
-        this.trainDetailFn()
-        this.orderCodeFn()
         this.listItemFn()
+        this.orderCodeFn()
         this.serviceFee = this.$route.params.serviceFee
+        this.trainDetailFn()
     },
     mounted () { },
     methods: {
@@ -337,6 +354,15 @@ export default {
                     this.payTypeArr.push([key, value])
                 }
             })
+            listItem('SEAT_COED').then(res => {
+                // console.log(res, '获取字典码-支付方式')
+                for (const item of res.data) {
+                    var key = item.dictItemVal
+                    var value = item.dictItemName
+                    this.seatTypeFamtter[key] = value
+                    this.seatTypeArr.push([key, value])
+                }
+            })
         },
         orderCodeFn () { this.orderCode = this.$route.params.orderCode },
         // 火车票订单详情数据查询
@@ -348,11 +374,11 @@ export default {
                 this.paymentInformationDto = res.data.paymentInformationDto
                 this.trainNumberInformationList = res.data.trainNumberInformationList
                 this.tripInformationList = res.data.tripInformationList
-                console.log(res.data.trainNumberInformationList, 'res.data.trainNumberInformationList')
                 // ---------------行程信息格式化处理---------------------------
-                // this.tripInformationList.forEach(res => {
-                //     res.orderStatus = this.$route.params.orderStatus
-                // })
+                this.tripInformationList.forEach(v => {
+                    v.seatName = this.seatTypeFamtter[v.seatName]
+                })
+                console.log(res.data.trainNumberInformationList, 'res.data.trainNumberInformationList')
             })
         },
         // 机票订单详情数据查询
@@ -366,6 +392,66 @@ export default {
                 this.tripInfoList = res.data.tripInfoList
                 // ------航班信息格式化处理---------
             })
+        },
+        ViaHandle () {
+            this.dialogTableVisible = true
+            let queryVia = {
+                arriveStation: this.trainNumberInformationList[0].toStationName,
+                fromStation: this.trainNumberInformationList[0].fromStationName,
+                onlyLowPrice: '',
+                trainCode: this.tripInformationList[0].trainNo,
+                trainSeatType: this.tripInformationList[0].seatName,
+                trainType: this.trainNumberInformationList[0].trainType,
+                travelTime: this.trainNumberInformationList[0].travelTime
+            }
+            trainVia(queryVia).then(res => {
+                console.log(res, '经停站信息')
+                this.viaList = res.data
+                this.viaList.forEach(item => {
+                    if (item.stationNo == '01') {
+                        item.arriveTime = '--'
+                        item.viaTime = '--'
+                    } else if(item.stationNo==(this.viaList.length<10?('0'+this.viaList.length):(this.viaList.length+''))){
+                        item.viaTime = '终点'
+                    }else {
+                        item.viaTime = this.stationTimeFamtter(item.arriveTime, item.startTime)
+                    }
+                })
+            })
+        },
+        tableRowClassName ({ row, rowIndex }) {
+            console.log(row,rowIndex,'row-rowIndex');
+            if (rowIndex == 0) {
+                return 'warning-row'
+            } else if (rowIndex === (this.viaList.length - 1)) {
+                return 'success-row'
+            }
+            return ''
+        },
+        stationTimeFamtter (arriveTime, startTime) {
+            // console.log(new Date(arriveTime).getTime(), '到达时间')
+            // console.log(new Date(startTime).getTime(), '起始时间')
+            const arrHour = arriveTime.split(':')[0] - 0
+            const arrMin = arriveTime.split(':')[1] - 0
+            const staHour = startTime.split(':')[0] - 0
+            const staMin = startTime.split(':')[1] - 0
+            let mins = (arrHour - staHour) * 60 + arrMin - staMin
+            let h = mins / 60
+            let m = mins % 60
+            if (h <= 0) {
+                return m + '分钟'
+            } else {
+                if (h < 10 && m < 10) {
+                    return '0' + h + ':' + '0' + m
+                } else if (h < 10 && m > 10) {
+                    return '0' + h + ':' + m
+                } else if (h > 10 && m < 10) {
+                    return h + ':' + '0' + m
+                } else if (h > 10 && m > 10) {
+                    return h + ':' + m
+                }
+            }
+
         },
         refundVisibleFn () {
             let queryRefund = {
@@ -427,6 +513,14 @@ export default {
 .detailContainer {
     padding: 20px;
     border-radius: 5px;
+}
+
+.warning-row {
+    color: #1890FF!important;
+}
+
+.success-row {
+    color: #1890FF!important;
 }
 
 .transInfo {
