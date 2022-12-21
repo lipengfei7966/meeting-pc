@@ -607,6 +607,8 @@
 
                   <div style="display: flex; flex-direction: column; justify-content: space-around">
                     <div style="display: flex">
+                      <!-- <el-checkbox v-if="true" v-model="element.isRequire"
+                        :disabled="true">必填</el-checkbox> -->
                       <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire"
                         :disabled="element.isRequireDisabled">必填</el-checkbox>
                       <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element, index)">
@@ -625,7 +627,7 @@
             <el-button>取消</el-button>
           </div>
         </el-card>
-
+<!-- 右侧编辑 -->
         <el-card class="formEdit" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>编辑</span>
@@ -804,7 +806,7 @@
                 <!-- 省份 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">省份</p>
-                  <el-switch v-model="setInfoList[checkedIndex].provinceIsShow"> </el-switch>
+                  <el-switch v-model="setInfoList[checkedIndex].provinceIsShow" @change="provinceChange"> </el-switch>
                 </div>
                 <!-- 省份标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].provinceIsShow">
@@ -3262,11 +3264,26 @@ export default {
       this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].audioFileTypes.length
     },
     // 附件-文件上传限制类型 勾选 --- 结束
-
+    // 地址 -- 省 开关回调
+    provinceChange (e) {
+      if (e) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+      } else {
+        this.setInfoList[this.checkedIndex].provinceIsShow = false
+        this.setInfoList[this.checkedIndex].cityIsShow = false
+        this.setInfoList[this.checkedIndex].countyIsShow = false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
+      }
+    },
     // 地址 -- 城市 开关回调
     cityIsShowChange (val) {
       if (val) {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
+      }else{
+        this.setInfoList[this.checkedIndex].cityIsShow = false
+        this.setInfoList[this.checkedIndex].countyIsShow = false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
       }
     },
     // 地址 -- 区/县 开关回调
@@ -3274,6 +3291,10 @@ export default {
       if (val) {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
+        this.setInfoList[this.checkedIndex].countyIsShow = true
+      }else{
+        this.setInfoList[this.checkedIndex].countyIsShow = false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
       }
     },
     // 地址 -- 详细地址 开关回调
@@ -3282,6 +3303,8 @@ export default {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
         this.setInfoList[this.checkedIndex].countyIsShow = true
+      }else{
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
       }
     },
     // 地址 -- 邮编 开关回调
@@ -3304,11 +3327,15 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     minCheckedCountChange (val) {
-      if (val != 0) {
+      console.log(val,'val');
+      if (val == '') {
+        this.setInfoList[this.checkedIndex].isRequire = false
+        this.setInfoList[this.checkedIndex].isRequireDisabled = false
+      }else{
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-      debugger
+      // debugger
       this.setInfoList[this.checkedIndex].check[0].code = '011'
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
