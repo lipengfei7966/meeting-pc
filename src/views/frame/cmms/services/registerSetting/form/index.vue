@@ -22,9 +22,9 @@
             <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 3 </span>
             <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 结果设置 </span>
           </el-step>
-          <el-step title="参会人编码设置">
+          <el-step title="注册报名设置">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 4 </span>
-            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 参会人编码设置 </span>
+            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 注册报名设置 </span>
           </el-step>
         </el-steps>
       </div>
@@ -1887,7 +1887,7 @@
         </div>
       </div>
 
-      <!-- 参会人编码设置 -->
+      <!-- 注册报名设置 -->
       <div v-if="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult" @applySetForm="applySetForm"></apply-set>
       </div>
