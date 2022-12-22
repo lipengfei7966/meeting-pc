@@ -4,11 +4,10 @@
 
     <!-- <bs-table ref="bsTable" :mainData="mainData"></bs-table> -->
     <!-- 已完成表单设置 -->
-    <apply-set v-if="isFormSetComplete" :eventCode="form.listQuery.data.eventCode" :eventName="eventName"
-      @setResult="setResult" @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn"
-      @applySetForm="applySetForm"></apply-set>
+    <!-- isFormSetComplete -->
+
     <!-- 未完成表单设置 -->
-    <div v-else style="padding: 0 20px">
+    <div style="padding: 0 20px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
           <el-step style="cursor: pointer">
@@ -22,6 +21,10 @@
           <el-step title="结果设置">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 3 </span>
             <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 结果设置 </span>
+          </el-step>
+          <el-step title="参会人编码设置">
+            <span slot="icon" @click="stepIndexChange(4)" style="cursor: pointer"> 4 </span>
+            <span slot="title" @click="stepIndexChange(4)" style="cursor: pointer"> 参会人编码设置 </span>
           </el-step>
         </el-steps>
       </div>
@@ -93,19 +96,19 @@
                 </el-upload>
               </el-form-item>
 
-              <el-form-item label="是否显示会议时间" prop="isMeetingDate">
+              <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示会议地点" prop="isMeetinPlace">
+              <el-form-item label="是否显示会议地点" prop="isMeetinPlace" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetinPlace" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示倒计时" prop="isMeetinCountdown">
+              <el-form-item label="是否显示倒计时" prop="isMeetinCountdown" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="会议简介" prop="profile">
+              <el-form-item label="会议简介" prop="profile" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit
                   placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input>
               </el-form-item>
@@ -127,16 +130,16 @@
             <el-divider></el-divider>
             <div v-show="isRegisterSetShow">
               <el-form-item label="Banner(pc)" prop="loginPcFile">
-                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/"
-                  :header="header" multiple>
+                <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
+                  :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload>
               </el-form-item>
               <el-form-item label="Banner(手机端)" prop="loginAppFile">
-                <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/"
-                  :header="header" multiple>
+                <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
+                  :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
@@ -235,6 +238,7 @@
             </el-collapse>
           </div>
         </el-card>
+        <!-- 中间信息 -->
         <el-card class="formPreview" :style="{ height: formSetHeight + 'px' }">
           <div :style="{ minHeight: formSetHeight - 80 + 'px' }">
             <h2 style="text-align: center">{{ eventName }}</h2>
@@ -603,6 +607,8 @@
 
                   <div style="display: flex; flex-direction: column; justify-content: space-around">
                     <div style="display: flex">
+                      <!-- <el-checkbox v-if="true" v-model="element.isRequire"
+                        :disabled="true">必填</el-checkbox> -->
                       <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire"
                         :disabled="element.isRequireDisabled">必填</el-checkbox>
                       <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element, index)">
@@ -621,7 +627,7 @@
             <el-button>取消</el-button>
           </div>
         </el-card>
-
+<!-- 右侧编辑 -->
         <el-card class="formEdit" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>编辑</span>
@@ -800,7 +806,7 @@
                 <!-- 省份 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">省份</p>
-                  <el-switch v-model="setInfoList[checkedIndex].provinceIsShow"> </el-switch>
+                  <el-switch v-model="setInfoList[checkedIndex].provinceIsShow" @change="provinceChange"> </el-switch>
                 </div>
                 <!-- 省份标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].provinceIsShow">
@@ -1722,8 +1728,8 @@
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
           :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
           <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
-            <el-radio v-model="resultSetForm.isNeedApprove" :label="0">不需要审核</el-radio>
-            <el-radio v-model="resultSetForm.isNeedApprove" :label="1">需要审核</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" label="0">不需要审核</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" label="1">需要审核</el-radio>
           </el-form-item>
           <div class="transition-box" v-show="drawer">
             <div class="content">
@@ -1784,12 +1790,18 @@
                 </el-card>
 
                 <div class="successFormItem">
-                  <el-form-item label="提示主题:" prop="successTitle">
+                  <el-form-item label="提示主题:" prop="successTitle"
+                    :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
                     <el-input v-model="resultSetForm.successTitle" size="mini" placeholder="请输入提示主题"></el-input>
                   </el-form-item>
                   <el-form-item label="描述:" prop="successDescribe">
-                    <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini"
-                      placeholder="请输入描述文案"></el-input>
+                    <!-- <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini"
+                      placeholder="请输入描述文案"></el-input> -->
+
+                    <el-input type="textarea" :rows="4" size="mini" v-model="resultSetForm.successDescribe"
+                      placeholder="请输入描述文案" maxlength="200" show-word-limit>
+                    </el-input>
+
                   </el-form-item>
                   <el-form-item label="Banner:" prop="successBanner">
                     <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
@@ -1824,7 +1836,8 @@
                             <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal"
                               :label="item.dictItemName" :value="item.dictItemVal"></el-option>
                           </el-select>
-                          <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px">
+                          <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px"
+                            v-if="resultSetForm.successJumpPage == '7'">
                             <el-input v-model="resultSetForm.successOutPageUrl" size="mini"
                               placeholder="请输入外部链接"></el-input>
                           </el-form-item>
@@ -1856,7 +1869,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>2、待审核</h3>
               <span>
@@ -1892,7 +1905,8 @@
                 </el-card>
 
                 <div class="waitReviewFormItem">
-                  <el-form-item label="提示主题:" prop="waitReviewTitle">
+                  <el-form-item label="提示主题:" prop="waitReviewTitle"
+                    :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
                     <el-input v-model="resultSetForm.waitReviewTitle" size="mini" placeholder="请输入提示主题"></el-input>
                   </el-form-item>
                   <el-form-item label="描述:" prop="waitReviewDescribe">
@@ -1962,7 +1976,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove">
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>3、不通过</h3>
               <span>
@@ -1997,7 +2011,8 @@
                 </el-card>
 
                 <div class="noPassFormItem">
-                  <el-form-item label="提示主题:" prop="noPassTitle">
+                  <el-form-item label="提示主题:" prop="noPassTitle"
+                    :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
                     <el-input v-model="resultSetForm.noPassTitle" size="mini" placeholder="请输入提示主题"></el-input>
                   </el-form-item>
                   <el-form-item label="描述:" prop="noPassDescribe">
@@ -2068,10 +2083,22 @@
           </div>
         </el-form>
         <div class="resultSetBtns">
-          <el-button @click="preStep">上一步(暂存)</el-button>
+          <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red"
+            @cancel="preStep" title='您修改的内容已自动保存，所有信息编辑完成后请点击"确认发布"同步到手机端'> <el-button
+              slot="reference">上一步(暂存)</el-button>
+          </el-popconfirm>
+          <!-- <el-button @click="preStep">上一步(暂存)</el-button> -->
+
           <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
         </div>
       </div>
+
+      <!-- 参会人编码设置 -->
+      <div v-if="stepIndex == 4" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+        <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
+          @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn" @applySetForm="applySetForm"></apply-set>
+      </div>
+
     </div>
 
     <!-- 表单设置-批量新增选项 弹窗 -->
@@ -2125,15 +2152,15 @@ export default {
         token: window.sessionStorage.getItem('token')
       },
       resultSetForm: {
-        successTitle: [
-          { required: true, message: '请输入提示主题', trigger: 'blur' }
-        ],
-        waitReviewTitle: [
-          { required: true, message: '请输入提示主题', trigger: 'blur' }
-        ],
-        noPassTitle: [
-          { required: true, message: '请输入提示主题', trigger: 'blur' }
-        ],
+        // successTitle: [
+        //   { required: true, message: '请输入提示主题', trigger: 'blur' }
+        // ],
+        // waitReviewTitle: [
+        //   { required: true, message: '请输入提示主题', trigger: 'blur' }
+        // ],
+        // noPassTitle: [
+        //   { required: true, message: '请输入提示主题', trigger: 'blur' }
+        // ],
       },
       form: {
         moreShowFlg: false,
@@ -2158,7 +2185,8 @@ export default {
             element: 'base-select',
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
-              isDefault: true
+              isDefault: true,
+              clearable: false
             },
             event: {
               changeAll: this.onChangeAll
@@ -2351,7 +2379,7 @@ export default {
         titleChinese: '', // 标题
         titleEnglish: '', // 英文标题
         language: ['中文'], // 语言
-        language: ['中文'], // 语言
+        // language: ['中文'], // 语言
         color: '#409EFF', // 主色调
         isPropaganda: 0, // 是否开启会议宣传
         BannerList: [], // banner 列表
@@ -2401,7 +2429,7 @@ export default {
         type: '',//1、报名成功，2、待审核，3、不通过
       },
       resultSetForm: {
-        isNeedApprove: 0, // 是否需要审核
+        isNeedApprove: '0', // 是否需要审核
         successTitle: '', // 报名成功提示主题
         successDescribe: '', // 报名成功描述
         successBanner: '', // 报名成功Banner
@@ -2562,26 +2590,65 @@ export default {
     },
     // 外观设置保存
     appearanceSetSave () {
-      this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
-      this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
-      this.appearanceSetForm.code = ''
-      this.appearanceSetForm.id = ''
+
       request({
-        url: '/api/register/signupExterior/save',
+        url: '/api/register/signupExterior/get',
         method: 'POST',
         data: {
-          data: this.appearanceSetForm,
+          data: this.form.listQuery.data.eventCode,
           funcModule: '表单外观设置',
-          funcOperation: '表单外观设置保存'
+          funcOperation: '表单外观设置查询'
         }
       }).then((res) => {
         if (res.status) {
-          // 进入下一步 表单设置
-          this.stepIndex = 2
+          if (JSON.stringify(res.data) === "{}") {
+            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            this.appearanceSetForm.code = ''
+            this.appearanceSetForm.id = ''
+            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
+            request({
+              url: '/api/register/signupExterior/save',
+              method: 'POST',
+              data: {
+                data: this.appearanceSetForm,
+                funcModule: '表单外观设置',
+                funcOperation: '表单外观设置保存'
+              }
+            }).then((res) => {
+              if (res.status) {
+                // 进入下一步 表单设置
+                this.stepIndex = 2
+              }
+            }).catch(res => {
+              console.log(res)
+            })
+          } else {
+            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            // this.appearanceSetForm.code = ''
+            // this.appearanceSetForm.id = ''
+            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
+            request({
+              url: '/api/register/signupExterior/update',
+              method: 'POST',
+              data: {
+                data: this.appearanceSetForm,
+                funcModule: '表单外观设置',
+                funcOperation: '表单外观设置更新'
+              }
+            }).then((res) => {
+              if (res.status) {
+                // 进入下一步 表单设置
+                this.stepIndex = 2
+              }
+            }).catch(res => {
+              console.log(res)
+            })
+          }
         }
-      }).catch(res => {
-        console.log(res)
       })
+
     },
     drawerStatusHandle (status) {
       this.drawer = status
@@ -2598,14 +2665,32 @@ export default {
       }).then((res) => {
         if (res.status) {
           if (JSON.stringify(res.data) === "{}") {
-
+            this.appearanceSetForm.titleChinese = '', // 标题
+              this.appearanceSetForm.titleEnglish = '', // 英文标题
+              this.appearanceSetForm.language = ['中文'], // 语言
+              this.appearanceSetForm.language = ['中文'], // 语言
+              this.appearanceSetForm.color = '#409EFF', // 主色调
+              this.appearanceSetForm.isPropaganda = 0, // 是否开启会议宣传
+              this.appearanceSetForm.BannerList = [], // banner 列表
+              this.appearanceSetForm.meetingFile = '',
+              this.appearanceSetForm.isMeetingDate = 0, // 是否显示会议时间
+              this.appearanceSetForm.isMeetinPlace = 0, // 是否显示会议地点
+              this.appearanceSetForm.isMeetinCountdown = 0, // 是否显示倒计时
+              this.appearanceSetForm.profile = '', // 会议简介
+              this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
+              this.appearanceSetForm.loginPcFile = '',
+              this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
+              this.appearanceSetForm.loginAppFile = '',
+              this.appearanceSetForm.isLoginDate = 0, // 是否显示会议时间
+              this.appearanceSetForm.isLoginPlace = 0, // 是否显示会议地点
+              this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
             this.appearanceSetForm = res.data
             Object.keys(this.appearanceSetForm).forEach(key => {
               if (key === 'tenantCode') delete (this.appearanceSetForm[key])
             })
-            this.appearanceSetForm.code = ''
-            this.appearanceSetForm.id = ''
+            // this.appearanceSetForm.code = ''
+            // this.appearanceSetForm.id = ''
             this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
           }
         }
@@ -2618,9 +2703,10 @@ export default {
     resultSetSave (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.stepIndex = 4
           this.isFormSetComplete = true
           console.log(this.resultSetForm, 'resultSetFormresultSetForm')
-          if (this.resultSetForm.isNeedApprove === 0) {
+          if (this.resultSetForm.isNeedApprove === '0') {
             this.resultNoFrom[0].appFile = this.resultSetForm.successBanner
             this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultNoFrom[0].describe_info = this.resultSetForm.successDescribe
@@ -2632,7 +2718,7 @@ export default {
             this.resultNoFrom[0].type = '1'
             console.log(this.resultNoFrom, 'resultNoFrom')
           }
-          if (this.resultSetForm.isNeedApprove === 1) {
+          if (this.resultSetForm.isNeedApprove === '1') {
             this.resultFrom[0].appFile = this.resultSetForm.successBanner
             this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultFrom[0].describe_info = this.resultSetForm.successDescribe
@@ -2668,7 +2754,7 @@ export default {
             url: '/api/register/signupResult/save',
             method: 'POST',
             data: {
-              data: this.resultSetForm.isNeedApprove === 0 ? this.resultNoFrom : this.resultFrom,
+              data: this.resultSetForm.isNeedApprove === '0' ? this.resultNoFrom : this.resultFrom,
               funcModule: '表单外观设置',
               funcOperation: '创建结果页'
             }
@@ -2677,6 +2763,8 @@ export default {
               this.$message({ message: '生成表单成功', type: 'success' })
             }
           })
+        } else {
+          this.$message({ showClose: true, message: '为避免生成表单信息缺失，请您先完成必填设置后，再生成表单', type: 'warning' })
         }
       })
     },
@@ -2684,7 +2772,7 @@ export default {
     setResult () {
       this.isFormSetComplete = false
       this.stepIndex = 3
-      this.resultSetForm.isNeedApprove = 1
+      this.resultSetForm.isNeedApprove = '1'
     },
     getEventInfo () {
       if (this.form.listQuery.data.eventCode == '') {
@@ -3006,6 +3094,21 @@ export default {
     // 分步改变
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
+      switch (setpIndex) {
+        case 1:
+          this.getAppearanceSet()
+          break
+        case 2:
+          this.getEventInfo()
+          break
+        case 3:
+
+          break
+
+        default:
+          break
+      }
+
     },
     stepIndexFn (step) {
       this.stepIndex = step
@@ -3050,7 +3153,8 @@ export default {
       const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
       console.log(extension, 'extension')
       let isAllowUpload = true
-      let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      // let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      let acceptType = ['.jpg', '.png']
 
       // 判断后缀名是否允许上传
       isAllowUpload = acceptType.includes(extension)
@@ -3160,11 +3264,26 @@ export default {
       this.setInfoList[this.checkedIndex].audioFileIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].audioFileTypes.length
     },
     // 附件-文件上传限制类型 勾选 --- 结束
-
+    // 地址 -- 省 开关回调
+    provinceChange (e) {
+      if (e) {
+        this.setInfoList[this.checkedIndex].provinceIsShow = true
+      } else {
+        this.setInfoList[this.checkedIndex].provinceIsShow = false
+        this.setInfoList[this.checkedIndex].cityIsShow = false
+        this.setInfoList[this.checkedIndex].countyIsShow = false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
+      }
+    },
     // 地址 -- 城市 开关回调
     cityIsShowChange (val) {
       if (val) {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
+        this.setInfoList[this.checkedIndex].cityIsShow = true
+      }else{
+        this.setInfoList[this.checkedIndex].cityIsShow = false
+        this.setInfoList[this.checkedIndex].countyIsShow = false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
       }
     },
     // 地址 -- 区/县 开关回调
@@ -3172,6 +3291,10 @@ export default {
       if (val) {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
+        this.setInfoList[this.checkedIndex].countyIsShow = true
+      }else{
+        this.setInfoList[this.checkedIndex].countyIsShow = false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
       }
     },
     // 地址 -- 详细地址 开关回调
@@ -3180,6 +3303,8 @@ export default {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
         this.setInfoList[this.checkedIndex].countyIsShow = true
+      }else{
+        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
       }
     },
     // 地址 -- 邮编 开关回调
@@ -3202,11 +3327,15 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     minCheckedCountChange (val) {
-      if (val != 0) {
+      console.log(val,'val');
+      if (val == '') {
+        this.setInfoList[this.checkedIndex].isRequire = false
+        this.setInfoList[this.checkedIndex].isRequireDisabled = false
+      }else{
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-      debugger
+      // debugger
       this.setInfoList[this.checkedIndex].check[0].code = '011'
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
@@ -3298,10 +3427,11 @@ export default {
     onChangeAll (params) {
       // 会议编码 params.code
       // 会议名称 params.name
+      this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 1
-      this.getEventInfo()
       this.getAppearanceSet()
+      // this.getEventInfo()
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {
@@ -3328,6 +3458,7 @@ export default {
     },
     edititem (checkedItem, checkedIndex) {
       this.checkedIndex = checkedIndex
+
     },
     // 结果页设置 添加按钮
     addBtn (btnList, btnIndex) {

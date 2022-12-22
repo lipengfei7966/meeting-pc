@@ -287,7 +287,7 @@
 
 <script>
 import commonSlot from './components/commonSlot.vue'
-import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, fightReissueRefund } from './utils/api'
+import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, listItem, fightReissueRefund, fightRefund } from './utils/api'
 export default {
     components: { commonSlot },
     name: 'airTicketDetails',
@@ -479,7 +479,7 @@ export default {
                 refundReason: '',
                 refundType: 0
             }
-            comfirmRefund(queryComfirmRefund).then(res => {
+            fightRefund(queryComfirmRefund).then(res => {
                 if (res.status === true) this.$message({ message: '退票成功', type: 'success' })
             })
             this.theorderCode = ''

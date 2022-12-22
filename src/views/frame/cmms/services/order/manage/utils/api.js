@@ -39,7 +39,7 @@ export const estimatedRefund = (orderCode) => {
     method: 'POST',
     data: {
       'data': orderCode,
-      funcModule: '火车票退费',
+      funcModule: '火车票',
       funcOperation: '预估退改费'
     }
   })
@@ -51,7 +51,7 @@ export const comfirmRefund = (orderCode) => {
     method: 'POST',
     data: {
       'data': orderCode,
-      funcModule: '火车票退费',
+      funcModule: '火车票',
       funcOperation: '创建退票表'
     }
   })
@@ -63,7 +63,7 @@ export const trainDetail = (orderCode) => {
     method: 'POST',
     data: {
       'data': orderCode,
-      funcModule: '火车票详情',
+      funcModule: '火车票',
       funcOperation: '火车票详情页'
     }
   })
@@ -75,7 +75,7 @@ export const airDetail = (orderCode) => {
     method: 'POST',
     data: {
       'data': orderCode,
-      funcModule: '机票详情',
+      funcModule: '机票',
       funcOperation: '机票详情页'
     }
   })
@@ -88,7 +88,7 @@ export const refundUpdateRule = (data) => {
     method: 'POST',
     data: {
       'data': data,
-      funcModule: '机票退改规则',
+      funcModule: '机票',
       funcOperation: '机票退改规则'
     }
   })
@@ -114,6 +114,18 @@ export const fightReissueRefund = (data) => {
       'data': data,
       funcModule: '机票',
       funcOperation: '机票预估退票价'
+    }
+  })
+}
+// 火车票站点查询
+export const trainVia = (data) => {
+  return request({
+    url: '/api/biz/tmcTrain/querySubwayStation',
+    method: 'POST',
+    data: {
+      'data': data,
+      funcModule: '火车票',
+      funcOperation: '火车票站点查询'
     }
   })
 }
