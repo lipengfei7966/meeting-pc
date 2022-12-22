@@ -804,7 +804,9 @@ export default {
         this.ruleForm.name = res.data.privacyName
         this.ruleForm.privacyContent = res.data.privacyContent
         console.log(res.data.privacyContent,'res.data.privacyContent');
-        window.frames['myframe'].setContents(res.data.privacyContent)
+        setTimeout(()=>{
+          window.frames['myframe'].setContents(res.data.privacyContent)
+        },2000)
         this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
         this.applySetForm.attendanceCodePrefix = res.data.prefix
         this.applySetForm.attendanceCodeLength = res.data.length
