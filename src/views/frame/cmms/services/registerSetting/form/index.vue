@@ -10,7 +10,6 @@
     <div style="padding: 0 20px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
-          stepIndex:{{ stepIndex }}
           <el-step style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(0)" style="cursor: pointer"> 1 </span>
             <span slot="title" @click="stepIndexChange(0)" style="cursor: pointer"> 外观设置 </span>
@@ -2606,7 +2605,7 @@ export default {
         }
       }).then((res) => {
         if (res.status) {
-          if (JSON.stringify(res.data) === "{}") {
+          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
             this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             this.appearanceSetForm.code = ''
@@ -2669,7 +2668,7 @@ export default {
         }
       }).then((res) => {
         if (res.status) {
-          if (JSON.stringify(res.data) === "{}") {
+          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
             this.appearanceSetForm.titleChinese = '', // 标题
               this.appearanceSetForm.titleEnglish = '', // 英文标题
               this.appearanceSetForm.language = ['中文'], // 语言
