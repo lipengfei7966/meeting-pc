@@ -771,7 +771,7 @@ export default {
       // this.$refs[formName].resetFields()
       const req = window.frames['myframe'].getContent()
       // const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
-      console.log(req,'req');
+      console.log(req, 'req')
       this.ruleForm.privacyContent = req.trim()
       if (req.trim() === '') {
         this.$message.error('请输入协议内容')
@@ -803,10 +803,10 @@ export default {
         this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
         this.ruleForm.name = res.data.privacyName
         this.ruleForm.privacyContent = res.data.privacyContent
-        console.log(res.data.privacyContent,'res.data.privacyContent');
-        setTimeout(()=>{
+        console.log(res.data.privacyContent, 'res.data.privacyContent')
+        setTimeout(() => {
           window.frames['myframe'].setContents(res.data.privacyContent)
-        },2000)
+        }, 2000)
         this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
         this.applySetForm.attendanceCodePrefix = res.data.prefix
         this.applySetForm.attendanceCodeLength = res.data.length
@@ -954,17 +954,17 @@ export default {
       })
     },
     toAppearance (step) {
-      this.$emit('stepIndex', step)
-      this.$emit('isFormSetComplete', false)
-      console.log(step, 'step11')
+      // this.$emit('stepIndex', step)
+      // this.$emit('isFormSetComplete', false)
+      // console.log(step, 'step11')
     },
     toEdit (step) {
-      this.$emit('stepIndex', step)
-      this.$emit('isFormSetComplete', false)
+      // this.$emit('stepIndex', step)
+      // this.$emit('isFormSetComplete', false)
     },
     toResult (step) {
-      this.$emit('stepIndex', step)
-      this.$emit('isFormSetComplete', false)
+      // this.$emit('stepIndex', step)
+      // this.$emit('isFormSetComplete', false)
     }
   },
   certificateTypeChange () { }
