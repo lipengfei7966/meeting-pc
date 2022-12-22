@@ -31,6 +31,17 @@ export default {
         },
         formData: [
           {
+            label: 'website.eventInfo.edit.customerName',
+            prop: 'customerCode',
+            element: 'base-select',
+            attrs: {
+              clickParent: true,
+              multiple: false,
+              data: 'CUSTOMER',
+              clearable: true
+            }
+          },
+          {
             label: 'website.eventInfo.query.eventName',
             prop: 'eventName',
             element: 'input-validate',
@@ -107,7 +118,7 @@ export default {
                 params: {
                   type: 'detailSet',
                   back: 'roleManage',
-                  ids: this.$refs.bsTable.currentRow.code,
+                  ids: this.$refs.bsTable.currentRow.code
                 }
               }
             }
