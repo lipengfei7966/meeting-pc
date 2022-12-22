@@ -187,6 +187,8 @@ export default {
   methods: {
     searchSubmit() {
       console.log('searchSubmit')
+      // this.modelValue.beginTime = this.modelValue.activityTime[0]
+      // this.modelValue.endTime = this.modelValue.activityTime[1]
       request({
         url: '/api/register/cmsEventInfoChildren/page',
         method: 'POST',
