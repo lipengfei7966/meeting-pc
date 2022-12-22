@@ -170,7 +170,7 @@ export default {
       powerRadio: 1, //权限选择
       exhibition: false, //部分用户展示
       checkList: [], //部分用户选中的值
-      portionList: [], //部分列表
+      portionList: [] //部分列表
     }
   },
   methods: {
@@ -317,7 +317,7 @@ export default {
                 url = 'https://cmms-h5-dev.ctgbs.com'
               }
               //
-              this.imgUrl = `${url}/#/pages/${this.userData.templateCode}/index?ev=${this.eventHashCode}`
+              this.imgUrl = `${url}/guest/#/pages/${this.userData.templateCode}/index?ev=${this.eventHashCode}`
               console.log(this.imgUrl, window.location.host)
             } else {
               this.$router.push({
