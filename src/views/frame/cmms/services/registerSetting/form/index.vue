@@ -10,26 +10,27 @@
     <div style="padding: 0 20px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
+          stepIndex:{{ stepIndex }}
           <el-step style="cursor: pointer">
-            <span slot="icon" @click="stepIndexChange(1)" style="cursor: pointer"> 1 </span>
-            <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> 外观设置 </span>
+            <span slot="icon" @click="stepIndexChange(0)" style="cursor: pointer"> 1 </span>
+            <span slot="title" @click="stepIndexChange(0)" style="cursor: pointer"> 外观设置 </span>
           </el-step>
           <el-step title="表单设置">
-            <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 2 </span>
-            <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 表单设置 </span>
+            <span slot="icon" @click="stepIndexChange(1)" style="cursor: pointer"> 2 </span>
+            <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> 表单设置 </span>
           </el-step>
           <el-step title="结果设置">
-            <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 3 </span>
-            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 结果设置 </span>
+            <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 3 </span>
+            <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 结果设置 </span>
           </el-step>
           <el-step title="参会人编码设置">
-            <span slot="icon" @click="stepIndexChange(4)" style="cursor: pointer"> 4 </span>
-            <span slot="title" @click="stepIndexChange(4)" style="cursor: pointer"> 参会人编码设置 </span>
+            <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 4 </span>
+            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 参会人编码设置 </span>
           </el-step>
         </el-steps>
       </div>
       <!-- 外观设置 -->
-      <div v-if="stepIndex == 1" class="appearanceSet" :style="{ height: formSetHeight + 'px' }">
+      <div v-if="stepIndex == 0" class="appearanceSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="appearanceSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
           label-width="250px" :model="appearanceSetForm" class="appearanceSetForm">
           <!-- 通用设置 -->
@@ -167,7 +168,7 @@
       </div>
 
       <!-- 表单设置 -->
-      <div v-if="stepIndex == 2" class="formSet">
+      <div v-if="stepIndex == 1" class="formSet">
         <el-card class="formInfo" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
@@ -627,7 +628,7 @@
             <el-button>取消</el-button>
           </div>
         </el-card>
-<!-- 右侧编辑 -->
+        <!-- 右侧编辑 -->
         <el-card class="formEdit" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>编辑</span>
@@ -1724,7 +1725,7 @@
       </div>
 
       <!-- 结果页设置 -->
-      <div v-if="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+      <div v-if="stepIndex == 2" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
           :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
           <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
@@ -2094,10 +2095,14 @@
       </div>
 
       <!-- 参会人编码设置 -->
-      <div v-if="stepIndex == 4" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+      <div v-if="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+        <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
+          @applySetForm="applySetForm"></apply-set>
+      </div>
+      <!-- <div v-if="stepIndex == 4" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
           @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn" @applySetForm="applySetForm"></apply-set>
-      </div>
+      </div> -->
 
     </div>
 
@@ -2147,7 +2152,7 @@ export default {
         assistApplyOpenField: [] // 协助报名开放字段
       },
       drawer: false,
-      stepIndex: 1,
+      stepIndex: 0,
       header: {
         token: window.sessionStorage.getItem('token')
       },
@@ -2575,7 +2580,7 @@ export default {
       this.tableComputed()
     },
     stepIndex (newVal, oldVal) {
-      if (newVal == 1) {
+      if (newVal == 0) {
         this.getAppearanceSet()
       }
     }
@@ -2618,7 +2623,7 @@ export default {
             }).then((res) => {
               if (res.status) {
                 // 进入下一步 表单设置
-                this.stepIndex = 2
+                this.stepIndex = 1
               }
             }).catch(res => {
               console.log(res)
@@ -2640,7 +2645,7 @@ export default {
             }).then((res) => {
               if (res.status) {
                 // 进入下一步 表单设置
-                this.stepIndex = 2
+                this.stepIndex = 1
               }
             }).catch(res => {
               console.log(res)
@@ -2698,12 +2703,12 @@ export default {
     },
     // 结果页设置 上一步(暂存)
     preStep () {
-      this.stepIndex = 2
+      this.stepIndex = 1
     },
     resultSetSave (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.stepIndex = 4
+          this.stepIndex = 3
           this.isFormSetComplete = true
           console.log(this.resultSetForm, 'resultSetFormresultSetForm')
           if (this.resultSetForm.isNeedApprove === '0') {
@@ -2771,7 +2776,7 @@ export default {
 
     setResult () {
       this.isFormSetComplete = false
-      this.stepIndex = 3
+      this.stepIndex = 2
       this.resultSetForm.isNeedApprove = '1'
     },
     getEventInfo () {
@@ -2850,7 +2855,7 @@ export default {
       }).then((res) => {
         if (res.status) {
           this.$message.success('保存成功')
-          this.stepIndex = 3
+          this.stepIndex = 2
         } else {
           this.$message.error('保存失败')
         }
@@ -3110,9 +3115,9 @@ export default {
       }
 
     },
-    stepIndexFn (step) {
-      this.stepIndex = step
-    },
+    // stepIndexFn (step) {
+    //   this.stepIndex = step
+    // },
     isFormSetCompleteFn (status) {
       this.isFormSetComplete = status
     },
@@ -3272,7 +3277,7 @@ export default {
         this.setInfoList[this.checkedIndex].provinceIsShow = false
         this.setInfoList[this.checkedIndex].cityIsShow = false
         this.setInfoList[this.checkedIndex].countyIsShow = false
-        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow = false
       }
     },
     // 地址 -- 城市 开关回调
@@ -3280,10 +3285,10 @@ export default {
       if (val) {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
-      }else{
+      } else {
         this.setInfoList[this.checkedIndex].cityIsShow = false
         this.setInfoList[this.checkedIndex].countyIsShow = false
-        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow = false
       }
     },
     // 地址 -- 区/县 开关回调
@@ -3292,9 +3297,9 @@ export default {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
         this.setInfoList[this.checkedIndex].countyIsShow = true
-      }else{
+      } else {
         this.setInfoList[this.checkedIndex].countyIsShow = false
-        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
+        this.setInfoList[this.checkedIndex].detailedAdressISShow = false
       }
     },
     // 地址 -- 详细地址 开关回调
@@ -3303,8 +3308,8 @@ export default {
         this.setInfoList[this.checkedIndex].provinceIsShow = true
         this.setInfoList[this.checkedIndex].cityIsShow = true
         this.setInfoList[this.checkedIndex].countyIsShow = true
-      }else{
-        this.setInfoList[this.checkedIndex].detailedAdressISShow=false
+      } else {
+        this.setInfoList[this.checkedIndex].detailedAdressISShow = false
       }
     },
     // 地址 -- 邮编 开关回调
@@ -3327,11 +3332,11 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     minCheckedCountChange (val) {
-      console.log(val,'val');
+      console.log(val, 'val')
       if (val == '') {
         this.setInfoList[this.checkedIndex].isRequire = false
         this.setInfoList[this.checkedIndex].isRequireDisabled = false
-      }else{
+      } else {
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
@@ -3429,7 +3434,7 @@ export default {
       // 会议名称 params.name
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
-      this.stepIndex = 1
+      this.stepIndex = 0
       this.getAppearanceSet()
       // this.getEventInfo()
     },
