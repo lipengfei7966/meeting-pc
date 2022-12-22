@@ -17,7 +17,7 @@
           <el-radio-group v-model="moduleVal.radio_">
             <el-radio :label="0">不限制</el-radio>
             <el-radio :label="1">单人最多参与 <span>
-                <el-input style="width: 26%" size="mini" v-model="moduleVal.inputNum"></el-input>
+                <el-input style="width: 26%" size="mini" clearable v-model="moduleVal.inputNum"></el-input>
               </span> 次</el-radio>
           </el-radio-group>
         </div>
@@ -28,17 +28,17 @@
           <el-form style="margin-top: 15px" :model="moduleVal" ref="form" label-width="100px">
             <el-col :span="5">
               <el-form-item label="分活动名称">
-                <el-input size="mini" v-model="moduleVal.name"></el-input>
+                <el-input clearable size="mini" v-model="moduleVal.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
               <el-form-item label="活动时间">
-                <el-date-picker style="width: 100%" size="mini" v-model="moduleVal.activityTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                <el-date-picker style="width: 100%" size="mini" clearable v-model="moduleVal.activityTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动状态">
-                <el-select size="mini" v-model="moduleVal.activityState" placeholder="活动状态">
+                <el-select size="mini" clearable v-model="moduleVal.activityState" placeholder="活动状态">
                   <el-option label="状态一" value="shanghai"></el-option>
                   <el-option label="状态二" value="beijing"></el-option>
                 </el-select>
@@ -46,7 +46,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="启用状态">
-                <el-select size="mini" v-model="moduleVal.isGoLive" placeholder="启用状态">
+                <el-select size="mini" clearable v-model="moduleVal.isGoLive" placeholder="启用状态">
                   <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
