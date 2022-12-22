@@ -495,7 +495,7 @@
               <el-form-item label="生成类型" prop="createType" label-width="80px" style="margin-bottom: 0">
                 <!-- <el-radio v-model="applySetForm.createType" :label="0">随机码</el-radio> -->
                 <el-radio v-for="item in typeOptions" :key="item.dispOrder" v-model="applySetForm.createType"
-                  :label="item.dispOrder">{{ item.dictItemName }}</el-radio>
+                  :label="item.dictItemVal">{{ item.dictItemName }}</el-radio>
               </el-form-item>
               <el-form-item v-if="applySetForm.createType == '2'" label="起始码" prop="attendanceCodeStartNum">
                 <el-input v-model="applySetForm.attendanceCodeStartNum" placeholder="请输入内容"></el-input>
@@ -503,9 +503,9 @@
               </el-form-item>
             </el-form-item>
             <el-form-item label="报名审核" prop="applyCheck">
-              <el-radio v-model="applySetForm.applyCheck" :label="0">不需要审核</el-radio>
-              <el-radio v-model="applySetForm.applyCheck" :label="1">需要审核</el-radio>
-              <el-form-item v-if="applySetForm.applyCheck" label="添加审核结果页" label-width="110px">
+              <el-radio v-model="applySetForm.applyCheck" label="0">不需要审核</el-radio>
+              <el-radio v-model="applySetForm.applyCheck" label="1">需要审核</el-radio>
+              <el-form-item v-if="applySetForm.applyCheck == '1'" label="添加审核结果页" label-width="110px">
                 <el-button type="text" @click="setResult">审核结果页</el-button>
               </el-form-item>
               <el-form-item v-if="applySetForm.applyCheck" label="审核权限用户" label-width="100px" prop="checkUser"
@@ -520,8 +520,8 @@
               <el-switch v-model="applySetForm.assistApply" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名权限" prop="assistApplyPermission">
-              <el-radio v-model="applySetForm.assistApplyPermission" :label="2">仅限编辑</el-radio>
-              <el-radio v-model="applySetForm.assistApplyPermission" :label="1">支持新增</el-radio>
+              <el-radio v-model="applySetForm.assistApplyPermission" label="2">仅限编辑</el-radio>
+              <el-radio v-model="applySetForm.assistApplyPermission" label="1">支持新增</el-radio>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名开放字段" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">

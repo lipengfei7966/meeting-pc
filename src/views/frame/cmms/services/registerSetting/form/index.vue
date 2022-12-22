@@ -1803,31 +1803,50 @@
                     </el-input>
 
                   </el-form-item>
-                  <el-form-item label="Banner:" prop="successBanner">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
+                  <el-form-item label="Banner:" prop="successBanner" style="marginBottom:50px">
+                    <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                      :on-success="successBannerUploadFile" :file-list="successBannerImageList" :headers="httpHeaders"
+                      :on-remove="successBannerHandleRemove" :on-exceed="fileLimitCount"
+                      :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview">
+                      <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                      <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                    <!-- :on-remove="handleRemove" -->
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload"
                       :http-request="(file) => handleUploadForm(file, 'successBanner')">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
+                    </el-upload> -->
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="successBackground">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
+                  <el-form-item label="背景图:" prop="successBackground" style="marginBottom:50px">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload"
                       :http-request="(file) => handleUploadForm(file, 'successBackground')">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload> -->
+                    <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                      :on-success="successBgcUploadFile" :file-list="successBgcImageList" :headers="httpHeaders"
+                      :on-remove="successBgcHandleRemove" :on-exceed="fileLimitCount"
+                      :before-upload="beforeAvatarUpload" :on-preview="handleBgcPictureCardPreview">
+                      <i class="el-icon-plus"></i>
                     </el-upload>
+                    <el-dialog :visible.sync="bannerBgcVisible">
+                      <img width="100%" :src="bannerBgcImageUrl" alt="">
+                    </el-dialog>
                   </el-form-item>
 
                   <el-form-item label="提交后是否跳过当前页:" prop="successIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="false">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" :label="true">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="0">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="1">跳过</el-radio>
                       </div>
                       <div style="display: inline-block">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage"
@@ -1913,29 +1932,47 @@
                     <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini"
                       placeholder="请输入描述文案"></el-input>
                   </el-form-item>
-                  <el-form-item label="Banner:" prop="waitReviewBanner">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
+                  <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload> -->
+                    <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                      :on-success="waitReviewBannerUploadFile" :file-list="waitReviewBannerImageList"
+                      :headers="httpHeaders" :on-remove="waitReviewBannerHandleRemove" :on-exceed="fileLimitCount"
+                      :before-upload="beforeAvatarUpload" :on-preview="waitReviewhandlePictureCardPreview">
+                      <i class="el-icon-plus"></i>
                     </el-upload>
+                    <el-dialog :visible.sync="waitReviewdialogVisible">
+                      <img width="100%" :src="waitReviewdialogImageUrl" alt="">
+                    </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="waitReviewBackground">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
+                  <el-form-item label="背景图:" prop="waitReviewBackground" style="marginBottom:50px">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload> -->
+                    <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                      :on-success="waitReviewBgcUploadFile" :file-list="waitReviewBgcImageList" :headers="httpHeaders"
+                      :on-remove="waitReviewBgcHandleRemove" :on-exceed="fileLimitCount"
+                      :before-upload="beforeAvatarUpload" :on-preview="waitReviewhandleBgcPictureCardPreview">
+                      <i class="el-icon-plus"></i>
                     </el-upload>
+                    <el-dialog :visible.sync="waitReviewbannerBgcVisible">
+                      <img width="100%" :src="waitReviewbannerBgcImageUrl" alt="">
+                    </el-dialog>
                   </el-form-item>
 
                   <el-form-item label="提交后是否跳过当前页:" prop="waitReviewIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" :label="false">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" :label="true">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="0">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="1">跳过</el-radio>
                       </div>
                       <div style="display: inline-block">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage"
@@ -1946,7 +1983,7 @@
                           </el-select>
                           <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini"
-                              placeholder="请输入外部链接"></el-input>
+                              v-if="resultSetForm.waitReviewJumpPage == '7'" placeholder="请输入外部链接"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
@@ -2019,29 +2056,47 @@
                     <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini"
                       placeholder="请输入描述文案"></el-input>
                   </el-form-item>
-                  <el-form-item label="Banner:" prop="noPassBanner">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
+                  <el-form-item label="Banner:" prop="noPassBanner" style="marginBottom:50px">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload> -->
+                    <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                      :on-success="noPassBannerUploadFile" :file-list="noPassBannerImageList" :headers="httpHeaders"
+                      :on-remove="noPassBannerHandleRemove" :on-exceed="fileLimitCount"
+                      :before-upload="beforeAvatarUpload" :on-preview="noPasshandlePictureCardPreview">
+                      <i class="el-icon-plus"></i>
                     </el-upload>
+                    <el-dialog :visible.sync="noPassdialogVisible">
+                      <img width="100%" :src="noPassdialogImageUrl" alt="">
+                    </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="noPassBackground">
-                    <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
+                  <el-form-item label="背景图:" prop="noPassBackground" style="marginBottom:50px">
+                    <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                      :on-success="noPassBgcUploadFile" :file-list="noPassBgcImageList" :headers="httpHeaders"
+                      :on-remove="noPassBgcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload"
+                      :on-preview="noPasshandleBgcPictureCardPreview">
+                      <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="noPassbannerBgcVisible">
+                      <img width="100%" :src="noPassbannerBgcImageUrl" alt="">
+                    </el-dialog>
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
+                    </el-upload> -->
                   </el-form-item>
 
                   <el-form-item label="提交后是否跳过当前页:" prop="noPassIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" :label="false">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" :label="true">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="0">不跳过</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="1">跳过</el-radio>
                       </div>
                       <div style="display: inline-block">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage"
@@ -2052,7 +2107,7 @@
                           </el-select>
                           <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini"
-                              placeholder="请输入外部链接"></el-input>
+                              v-if="resultSetForm.noPassJumpPage == '7'" placeholder="请输入外部链接"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
@@ -2098,10 +2153,6 @@
         <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
           @applySetForm="applySetForm"></apply-set>
       </div>
-      <!-- <div v-if="stepIndex == 4" class="resultSet" :style="{ height: formSetHeight + 'px' }">
-        <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
-          @stepIndex="stepIndexFn" @isFormSetComplete="isFormSetCompleteFn" @applySetForm="applySetForm"></apply-set>
-      </div> -->
 
     </div>
 
@@ -2130,6 +2181,22 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      fileList: [],
+      successBannerImageList: [],
+      successBgcImageList: [],
+      uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
+      bannerBgcImageUrl: '',
+      bannerBgcVisible: false,
+      bgcVisible: false,
+      bgcImageUrl: '',
+      waitReviewdialogVisible: false,
+      waitReviewdialogImageUrl: '',
+      waitReviewbannerBgcVisible: false,
+      waitReviewbannerBgcImageUrl: '',
+      noPassdialogVisible: false,
+      noPassdialogImageUrl: '',
+      noPassbannerBgcVisible: false,
+      noPassbannerBgcImageUrl: '',
       dialogImageUrl: '',
       dialogVisible: false,
       applySetForm: {
@@ -2438,7 +2505,7 @@ export default {
         successDescribe: '', // 报名成功描述
         successBanner: '', // 报名成功Banner
         successBackground: '', // 报名成功背景图
-        successIsJumpCurrentPage: false, // 是否跳过当前页面
+        successIsJumpCurrentPage: '0', // 是否跳过当前页面
         successJumpPage: '', // 选择跳转页面
         successOutPageUrl: '', // 站外页面URL
         successButtonList: [
@@ -2452,7 +2519,7 @@ export default {
         waitReviewDescribe: '', // 待审核 描述
         waitReviewBanner: '', // 待审核 Banner
         waitReviewBackground: '', // 待审核 背景图
-        waitReviewIsJumpCurrentPage: false, // 待审核 是否跳过当前页面
+        waitReviewIsJumpCurrentPage: '0', // 待审核 是否跳过当前页面
         waitReviewJumpPage: '', // 待审核 选择跳转页面
         waitReviewOutPageUrl: '', // 待审核 站外页面URL
         waitReviewButtonList: [
@@ -2466,7 +2533,7 @@ export default {
         noPassDescribe: '', // 不通过 描述
         noPassBanner: '', // 不通过Banner
         noPassBackground: '', // 不通过背景图
-        noPassIsJumpCurrentPage: false, // 不通过 是否跳过当前页面
+        noPassIsJumpCurrentPage: '0', // 不通过 是否跳过当前页面
         noPassJumpPage: '', // 不通过 选择跳转页面
         noPassOutPageUrl: '', // 不通过 站外页面URL
         noPassButtonList: [
@@ -2543,7 +2610,12 @@ export default {
     })
   },
   computed: {
-    ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight'])
+    ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight']),
+    httpHeaders () {
+      return {
+        Authorization: 'Bearer ' + this.$store.getters.token
+      }
+    },
   },
   watch: {
     customInfoCount (newVal, oldVal) {
@@ -2585,16 +2657,108 @@ export default {
     }
   },
   methods: {
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
     applySetFormFn (applySetForm) {
       this.applySetForm = applySetForm
     },
+    claerResultFn () {
+      this.resultSetForm.successBanner = ''
+      this.resultSetForm.successBackground = ''
+      this.resultSetForm.successDescribe = ''
+      this.resultSetForm.successIsJumpCurrentPage = '0'
+      this.resultSetForm.successJumpPage = ''
+      this.resultSetForm.successOutPageUrl = ''
+      this.resultSetForm.successTitle = ''
+      this.resultSetForm.successButtonList.name = ''
+      this.resultSetForm.successButtonList.value = ''
+      this.resultSetForm.waitReviewBanner = ''
+      this.resultSetForm.waitReviewBackground = ''
+      this.resultSetForm.waitReviewDescribe = ''
+      this.resultSetForm.waitReviewIsJumpCurrentPage = '0'
+      this.resultSetForm.waitReviewJumpPage = ''
+      this.resultSetForm.waitReviewOutPageUrl = ''
+      this.resultSetForm.waitReviewTitle = ''
+      this.resultSetForm.waitReviewButtonList.name = ''
+      this.resultSetForm.waitReviewButtonList.value = ''
+      this.resultSetForm.noPassBanner = ''
+      this.resultSetForm.noPassBackground = ''
+      this.resultSetForm.noPassDescribe = ''
+      this.resultSetForm.noPassIsJumpCurrentPage = '0'
+      this.resultSetForm.noPassJumpPage = ''
+      this.resultSetForm.noPassOutPageUrl = ''
+      this.resultSetForm.noPassTitle = ''
+      this.resultSetForm.noPassButtonList.name = ''
+      this.resultSetForm.noPassButtonList.value = ''
+    },
+    getResultFn () {
+      request({
+        url: '/api/register/signupResult/resultList',
+        method: 'POST',
+        data: {
+          code: "",
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '结果页设置',
+          funcOperation: '获取结果页'
+        }
+      }).then((res) => {
+        if (res.status) {
+          res.data.length > 1 ? this.resultSetForm.isNeedApprove = '1' : this.resultSetForm.isNeedApprove = '0'
+          res.data.forEach(item => {
+            switch (item.type) {
+              case '1':
+                this.resultSetForm.successBanner = item.appFile
+                this.resultSetForm.successBackground = item.backgroundFile
+                this.resultSetForm.successDescribe = item.describeInfo
+                this.resultSetForm.successIsJumpCurrentPage = item.isSkip
+                this.resultSetForm.successJumpPage = item.skipPage
+                this.resultSetForm.successOutPageUrl = item.skipWebsite
+                this.resultSetForm.successTitle = item.theme
+                if (item.resultButton.length == 0) {
+                  this.resultSetForm.successButtonList.name = ''
+                  this.resultSetForm.successButtonList.value = ''
+                } else {
+                  this.resultSetForm.successButtonList = item.resultButton
+                }
+                break
+              case '2':
+                this.resultSetForm.waitReviewBanner = item.appFile
+                this.resultSetForm.waitReviewBackground = item.backgroundFile
+                this.resultSetForm.waitReviewDescribe = item.describeInfo
+                this.resultSetForm.waitReviewIsJumpCurrentPage = item.isSkip
+                this.resultSetForm.waitReviewJumpPage = item.skipPage
+                this.resultSetForm.waitReviewOutPageUrl = item.skipWebsite
+                this.resultSetForm.waitReviewTitle = item.theme
+                if (item.resultButton.length == 0) {
+                  this.resultSetForm.waitReviewButtonList.name = ''
+                  this.resultSetForm.waitReviewButtonList.value = ''
+                } else {
+                  this.resultSetForm.waitReviewButtonList = item.resultButton
+                }
+                break
+              case '3':
+                this.resultSetForm.noPassBanner = item.appFile
+                this.resultSetForm.noPassBackground = item.backgroundFile
+                this.resultSetForm.noPassDescribe = item.describeInfo
+                this.resultSetForm.noPassIsJumpCurrentPage = item.isSkip
+                this.resultSetForm.noPassJumpPage = item.skipPage
+                this.resultSetForm.noPassOutPageUrl = item.skipWebsite
+                this.resultSetForm.noPassTitle = item.theme
+                if (item.resultButton.length == 0) {
+                  this.resultSetForm.noPassButtonList.name = ''
+                  this.resultSetForm.noPassButtonList.value = ''
+                } else {
+                  this.resultSetForm.noPassButtonList = item.resultButton
+                }
+                break
+              default:
+                break
+            }
+          })
+
+        }
+      })
+    },
     // 外观设置保存
     appearanceSetSave () {
-
       request({
         url: '/api/register/signupExterior/get',
         method: 'POST',
@@ -2714,11 +2878,12 @@ export default {
             this.resultNoFrom[0].appFile = this.resultSetForm.successBanner
             this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultNoFrom[0].describe_info = this.resultSetForm.successDescribe
-            this.resultNoFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage ? 1 : 0
+            this.resultNoFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
             this.resultNoFrom[0].skipPage = this.resultSetForm.successJumpPage
             this.resultNoFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
             this.resultNoFrom[0].theme = this.resultSetForm.successTitle
             this.resultNoFrom[0].resultButton = this.resultSetForm.successButtonList
+            console.log(this.resultSetForm.successButtonList, 'this.resultSetForm.successButtonList')
             this.resultNoFrom[0].type = '1'
             console.log(this.resultNoFrom, 'resultNoFrom')
           }
@@ -2726,7 +2891,7 @@ export default {
             this.resultFrom[0].appFile = this.resultSetForm.successBanner
             this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultFrom[0].describe_info = this.resultSetForm.successDescribe
-            this.resultFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage ? 1 : 0
+            this.resultFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
             this.resultFrom[0].skipPage = this.resultSetForm.successJumpPage
             this.resultFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
             this.resultFrom[0].theme = this.resultSetForm.successTitle
@@ -2736,7 +2901,7 @@ export default {
             this.resultFrom[1].appFile = this.resultSetForm.waitReviewBanner
             this.resultFrom[1].backgroundFile = this.resultSetForm.waitReviewBackground
             this.resultFrom[1].describe_info = this.resultSetForm.waitReviewDescribe
-            this.resultFrom[1].isSkip = this.resultSetForm.waitReviewIsJumpCurrentPage ? 1 : 0
+            this.resultFrom[1].isSkip = this.resultSetForm.waitReviewIsJumpCurrentPage
             this.resultFrom[1].skipPage = this.resultSetForm.waitReviewJumpPage
             this.resultFrom[1].skipWebsite = this.resultSetForm.waitReviewOutPageUrl
             this.resultFrom[1].theme = this.resultSetForm.waitReviewTitle
@@ -2746,7 +2911,7 @@ export default {
             this.resultFrom[2].appFile = this.resultSetForm.noPassBanner
             this.resultFrom[2].backgroundFile = this.resultSetForm.noPassBackground
             this.resultFrom[2].describe_info = this.resultSetForm.noPassDescribe
-            this.resultFrom[2].isSkip = this.resultSetForm.noPassIsJumpCurrentPage ? 1 : 0
+            this.resultFrom[2].isSkip = this.resultSetForm.noPassIsJumpCurrentPage
             this.resultFrom[2].skipPage = this.resultSetForm.noPassJumpPage
             this.resultFrom[2].skipWebsite = this.resultSetForm.noPassOutPageUrl
             this.resultFrom[2].theme = this.resultSetForm.noPassTitle
@@ -2855,6 +3020,7 @@ export default {
         if (res.status) {
           this.$message.success('保存成功')
           this.stepIndex = 2
+          this.claerResultFn()
         } else {
           this.$message.error('保存失败')
         }
@@ -3099,14 +3265,15 @@ export default {
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
       switch (setpIndex) {
-        case 1:
+        case 0:
           this.getAppearanceSet()
           break
-        case 2:
+        case 1:
           this.getEventInfo()
           break
-        case 3:
-
+        case 2:
+          this.claerResultFn()
+          this.getResultFn()
           break
 
         default:
@@ -3175,6 +3342,98 @@ export default {
       // }
 
       return isAllowUpload
+    },
+    // handlePictureCardPreview (file) {
+    //   debugger
+    //   console.log(file, 'file')
+    //   // file 转 base64 返回 base64 和图片比例
+    //   const reader = new FileReader()
+    //   reader.readAsDataURL(img)
+    //   reader.onload = function (res) {
+    //     const image = new Image()
+    //     if (res.target && res.target.result) {
+    //       image.src = res.target.result
+    //     }
+    //   }
+    //   this.bannerImageUrl = URL.createObjectURL(file.file)
+    //   this.bannerVisible = true
+    // },
+    // handleBgcPictureCardPreview (file) {
+    //   console.log(file, 'file')
+    //   this.bgcImageUrl = file.url
+    //   this.bgcVisible = true
+    // },
+    successBannerUploadFile (response, file, fileList) {
+      this.successBannerImageList = fileList
+      this.resultSetForm.successBanner = response.data.filePath
+    },
+    waitReviewBannerUploadFile (response, file, fileList) {
+      this.waitReviewBannerImageList = fileList
+      this.resultSetForm.waitReviewBanner = response.data.filePath
+    },
+    noPassBannerUploadFile (response, file, fileList) {
+      this.noPassBannerImageList = fileList
+      this.resultSetForm.noPassBanner = response.data.filePath
+    },
+    successBgcUploadFile (response, file, fileList) {
+      this.successBgcImageList = fileList
+      this.resultSetForm.successBackground = response.data.filePath
+    },
+    waitReviewBgcUploadFile (response, file, fileList) {
+      this.waitReviewBgcImageList = fileList
+      this.resultSetForm.waitReviewBackground = response.data.filePath
+    },
+    noPassBgcUploadFile (response, file, fileList) {
+      this.noPassBgcImageList = fileList
+      this.resultSetForm.noPassBackground = response.data.filePath
+    },
+    successBannerHandleRemove (file, fileList) {
+      this.successBannerImageList = []
+      this.resultSetForm.successBanner = ''
+    },
+    waitReviewBannerHandleRemove (file, fileList) {
+      this.waitReviewBannerImageList = []
+      this.resultSetForm.waitReviewBanner = ''
+    },
+    noPassBannerHandleRemove (file, fileList) {
+      this.noPassBannerImageList = []
+      this.resultSetForm.noPassBanner = ''
+    },
+    successBgcHandleRemove (file, fileList) {
+      this.successBgcImageList = []
+      this.resultSetForm.successBackground = ''
+    },
+    waitReviewBgcHandleRemove (file, fileList) {
+      this.waitReviewBgcImageList = []
+      this.resultSetForm.waitReviewBackground = ''
+    },
+    noPassBgcHandleRemove (file, fileList) {
+      this.noPassBgcImageList = []
+      this.resultSetForm.noPassBackground = ''
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    waitReviewhandlePictureCardPreview (file) {
+      this.waitReviewdialogImageUrl = file.url
+      this.waitReviewdialogVisible = true
+    },
+    noPasshandlePictureCardPreview (file) {
+      this.noPassdialogImageUrl = file.url
+      this.noPassdialogVisible = true
+    },
+    handleBgcPictureCardPreview (file) {
+      this.bannerBgcImageUrl = file.url
+      this.bannerBgcVisible = true
+    },
+    waitReviewhandleBgcPictureCardPreview (file) {
+      this.waitReviewbannerBgcImageUrl = file.url
+      this.waitReviewbannerBgcVisible = true
+    },
+    noPasshandleBgcPictureCardPreview (file) {
+      this.noPassbannerBgcImageUrl = file.url
+      this.noPassbannerBgcVisible = true
     },
     // 自定义上传文件
     handleUploadForm (param, uploadType) {
