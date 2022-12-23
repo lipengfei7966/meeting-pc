@@ -249,7 +249,6 @@ export default {
   },
   mounted() {
     this.checkQueryCondition()
-    console.log(this.form.formData, 5666)
   },
   methods: {
     // 重置
@@ -268,7 +267,6 @@ export default {
     //刷新
     doRefresh(initFlag) {
       if (this.$refs.queryForm) {
-        console.log(111)
         this.$refs.queryForm.validate(valid => {
           if (valid) {
             if (initFlag) {
@@ -279,7 +277,6 @@ export default {
               // 点击重置获取当前页数据
             } else {
               if (this.$parent.getList) {
-                console.log(3, this.$parent.getList)
                 this.$parent.getList({ name: 'search' })
               }
             }

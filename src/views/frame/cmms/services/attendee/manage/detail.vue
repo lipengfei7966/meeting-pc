@@ -684,9 +684,9 @@ export default {
     // 参会人信息查询
     getContactInfo() {
       request({
-        url: '/api/register/signupContact/getByContactCode',
+        url: '/api/register/signupContact/getByContactId',
         method: 'POST',
-        data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+        data: { data: this.$route.params.id, funcModule: this.$t('route.' + this.$route.meta.title), funcOperation: '参会人信息查询' }
       }).then(res => {
         this.setForm = res.data
         if (this.setForm.province) {
@@ -707,7 +707,6 @@ export default {
         }
 
         for (const key in this.setForm.signupContactDtlDto) {
-          // console.log(key)
           // 判断是否多选
           if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0) {
             this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
@@ -1252,9 +1251,11 @@ export default {
     },
     // 返回上级
     back() {
+      const backName = this.$route.params.back ? this.$route.params.back : 'attendeeManage'
       this.$store.dispatch('delVisitedViews', this.$route).then(() => {
         this.$router.push({
-          name: 'attendeeManage'
+          name: backName,
+          params: { refresh: true }
         })
       })
     },
