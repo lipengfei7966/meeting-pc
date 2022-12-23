@@ -22,9 +22,9 @@
             <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 3 </span>
             <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 结果设置 </span>
           </el-step>
-          <el-step title="参会人编码设置">
+          <el-step title="注册报名设置">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 4 </span>
-            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 参会人编码设置 </span>
+            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 注册报名设置 </span>
           </el-step>
         </el-steps>
       </div>
@@ -776,7 +776,8 @@
                       v-model="setInfoList[checkedIndex].photoLimitWidth"
                       @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input
                       style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight"
-                      @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
+                      @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
+                  </div>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
@@ -1814,9 +1815,7 @@
                       <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
                     <!-- :on-remove="handleRemove" -->
-                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
-                      :before-upload="beforeAvatarUpload"
-                      :http-request="(file) => handleUploadForm(file, 'successBanner')">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file, 'successBanner')">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -1824,9 +1823,7 @@
                   </el-form-item>
 
                   <el-form-item label="背景图:" prop="successBackground" style="marginBottom:50px">
-                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
-                      :before-upload="beforeAvatarUpload"
-                      :http-request="(file) => handleUploadForm(file, 'successBackground')">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file, 'successBackground')">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -1933,8 +1930,7 @@
                       placeholder="请输入描述文案"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
-                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
-                      :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -2057,8 +2053,7 @@
                       placeholder="请输入描述文案"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="noPassBanner" style="marginBottom:50px">
-                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
-                      :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -2084,8 +2079,7 @@
                     <el-dialog :visible.sync="noPassbannerBgcVisible">
                       <img width="100%" :src="noPassbannerBgcImageUrl" alt="">
                     </el-dialog>
-                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
-                      :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
+                    <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -2183,7 +2177,11 @@ export default {
     return {
       fileList: [],
       successBannerImageList: [],
+      waitReviewBannerImageList: [],
+      noPassBannerImageList: [],
       successBgcImageList: [],
+      waitReviewBgcImageList: [],
+      noPassBgcImageList: [],
       uploadUrl: process.env.BASE_API + '/api/obs/file/uploadImg',
       bannerBgcImageUrl: '',
       bannerBgcVisible: false,
@@ -2688,6 +2686,24 @@ export default {
       this.resultSetForm.noPassTitle = ''
       this.resultSetForm.noPassButtonList.name = ''
       this.resultSetForm.noPassButtonList.value = ''
+      this.successBannerImageList = []
+      this.waitReviewBannerImageList = []
+      this.noPassBannerImageList = []
+      this.successBgcImageList = []
+      this.waitReviewBgcImageList = []
+      this.noPassBgcImageList = []
+      // this.successBannerImageList[0].name = ''
+      // this.successBannerImageList[0].url = ''
+      // this.waitReviewBannerImageList[0].name = ''
+      // this.waitReviewBannerImageList[0].url = ''
+      // this.noPassBannerImageList[0].name = ''
+      // this.noPassBannerImageList[0].url = ''
+      // this.successBgcImageList[0].name = ''
+      // this.successBgcImageList[0].url = ''
+      // this.waitReviewBgcImageList[0].name = ''
+      // this.successBgcImageList[0].url = ''
+      // this.noPassBgcImageList[0].name = ''
+      // this.noPassBgcImageList[0].url = ''
     },
     getResultFn () {
       request({
@@ -2702,11 +2718,18 @@ export default {
       }).then((res) => {
         if (res.status) {
           res.data.length > 1 ? this.resultSetForm.isNeedApprove = '1' : this.resultSetForm.isNeedApprove = '0'
+
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
                 this.resultSetForm.successBanner = item.appFile
+                // this.successBannerImageList[0].url = item.appFile
+                var urlSplits = item.appFile.split("/")
+                this.successBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
                 this.resultSetForm.successBackground = item.backgroundFile
+                // this.successBgcImageList[0].url = item.backgroundFile
+                var urlSplits = item.backgroundFile.split("/")
+                this.successBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
                 this.resultSetForm.successDescribe = item.describeInfo
                 this.resultSetForm.successIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.successJumpPage = item.skipPage
@@ -2721,7 +2744,18 @@ export default {
                 break
               case '2':
                 this.resultSetForm.waitReviewBanner = item.appFile
+                // this.waitReviewBannerImageList[0].url = item.appFile
+                if (item.appFile !== '') {
+                  var urlSplits = item.appFile.split("/")
+                  this.waitReviewBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                }
+
                 this.resultSetForm.waitReviewBackground = item.backgroundFile
+                // this.waitReviewBannerImageList[0].url = item.backgroundFile
+                if (item.backgroundFile !== '') {
+                  var urlSplits = item.backgroundFile.split("/")
+                  this.waitReviewBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
+                }
                 this.resultSetForm.waitReviewDescribe = item.describeInfo
                 this.resultSetForm.waitReviewIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.waitReviewJumpPage = item.skipPage
@@ -2736,7 +2770,17 @@ export default {
                 break
               case '3':
                 this.resultSetForm.noPassBanner = item.appFile
+                // this.noPassBannerImageList[0].url = item.appFile
+                if (item.appFile !== '') {
+                  var urlSplits = item.appFile.split("/")
+                  this.noPassBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                }
                 this.resultSetForm.noPassBackground = item.backgroundFile
+                // this.noPassBgcImageList[0].url = item.backgroundFile
+                if (item.backgroundFile !== '') {
+                  var urlSplits = item.backgroundFile.split("/")
+                  this.noPassBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
+                }
                 this.resultSetForm.noPassDescribe = item.describeInfo
                 this.resultSetForm.noPassIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.noPassJumpPage = item.skipPage
@@ -2882,8 +2926,13 @@ export default {
             this.resultNoFrom[0].skipPage = this.resultSetForm.successJumpPage
             this.resultNoFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
             this.resultNoFrom[0].theme = this.resultSetForm.successTitle
-            this.resultNoFrom[0].resultButton = this.resultSetForm.successButtonList
-            console.log(this.resultSetForm.successButtonList, 'this.resultSetForm.successButtonList')
+            this.resultNoFrom[0].eventCode = this.form.listQuery.data.eventCode
+            // this.resultNoFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultSetForm.successButtonList.forEach(item => {
+              var v = { value: item.value, name: item.name }
+              this.resultNoFrom[0].resultButton.push(v)
+            })
+            console.log(this.resultNoFrom[0].resultButton, 'this.resultNoFrom[0].resultButton')
             this.resultNoFrom[0].type = '1'
             console.log(this.resultNoFrom, 'resultNoFrom')
           }
@@ -2895,7 +2944,12 @@ export default {
             this.resultFrom[0].skipPage = this.resultSetForm.successJumpPage
             this.resultFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
             this.resultFrom[0].theme = this.resultSetForm.successTitle
-            this.resultFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultFrom[0].eventCode = this.form.listQuery.data.eventCode
+            // this.resultFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultSetForm.successButtonList.forEach(item => {
+              var v = { value: item.value, name: item.name }
+              this.resultFrom[0].resultButton.push(v)
+            })
             this.resultFrom[0].type = '1'
 
             this.resultFrom[1].appFile = this.resultSetForm.waitReviewBanner
@@ -2905,7 +2959,12 @@ export default {
             this.resultFrom[1].skipPage = this.resultSetForm.waitReviewJumpPage
             this.resultFrom[1].skipWebsite = this.resultSetForm.waitReviewOutPageUrl
             this.resultFrom[1].theme = this.resultSetForm.waitReviewTitle
-            this.resultFrom[1].resultButton = this.resultSetForm.waitReviewButtonList
+            this.resultFrom[1].eventCode = this.form.listQuery.data.eventCode
+            // this.resultFrom[1].resultButton = this.resultSetForm.waitReviewButtonList
+            this.resultSetForm.waitReviewButtonList.forEach(item => {
+              var v = { value: item.value, name: item.name }
+              this.resultFrom[1].resultButton.push(v)
+            })
             this.resultFrom[1].type = '2'
 
             this.resultFrom[2].appFile = this.resultSetForm.noPassBanner
@@ -2915,7 +2974,12 @@ export default {
             this.resultFrom[2].skipPage = this.resultSetForm.noPassJumpPage
             this.resultFrom[2].skipWebsite = this.resultSetForm.noPassOutPageUrl
             this.resultFrom[2].theme = this.resultSetForm.noPassTitle
-            this.resultFrom[2].resultButton = this.resultSetForm.noPassButtonList
+            this.resultFrom[2].eventCode = this.form.listQuery.data.eventCode
+            // this.resultFrom[2].resultButton = this.resultSetForm.noPassButtonList
+            this.resultSetForm.noPassButtonList.forEach(item => {
+              var v = { value: item.value, name: item.name }
+              this.resultFrom[2].resultButton.push(v)
+            })
             this.resultFrom[2].type = '3'
             console.log(this.resultFrom, 'resultFrom')
           }
@@ -2924,7 +2988,7 @@ export default {
             method: 'POST',
             data: {
               data: this.resultSetForm.isNeedApprove === '0' ? this.resultNoFrom : this.resultFrom,
-              funcModule: '表单外观设置',
+              funcModule: '结果页设置',
               funcOperation: '创建结果页'
             }
           }).then((res) => {
@@ -3364,27 +3428,32 @@ export default {
     //   this.bgcVisible = true
     // },
     successBannerUploadFile (response, file, fileList) {
-      this.successBannerImageList = fileList
+      console.log(fileList, 'fileList')
       this.resultSetForm.successBanner = response.data.filePath
     },
     waitReviewBannerUploadFile (response, file, fileList) {
-      this.waitReviewBannerImageList = fileList
+      // this.waitReviewBannerImageList[0].name = fileList[0].response.data.fileName
+      // this.waitReviewBannerImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.waitReviewBanner = response.data.filePath
     },
     noPassBannerUploadFile (response, file, fileList) {
-      this.noPassBannerImageList = fileList
+      // this.noPassBannerImageList[0].name = fileList[0].response.data.fileName
+      // this.noPassBannerImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.noPassBanner = response.data.filePath
     },
     successBgcUploadFile (response, file, fileList) {
-      this.successBgcImageList = fileList
+      // this.successBgcImageList[0].name = fileList[0].response.data.fileName
+      // this.successBgcImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.successBackground = response.data.filePath
     },
     waitReviewBgcUploadFile (response, file, fileList) {
-      this.waitReviewBgcImageList = fileList
+      // this.waitReviewBgcImageList[0].name = fileList[0].response.data.fileName
+      // this.waitReviewBgcImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.waitReviewBackground = response.data.filePath
     },
     noPassBgcUploadFile (response, file, fileList) {
-      this.noPassBgcImageList = fileList
+      // this.noPassBgcImageList[0].name = fileList[0].response.data.fileName
+      // this.noPassBgcImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.noPassBackground = response.data.filePath
     },
     successBannerHandleRemove (file, fileList) {

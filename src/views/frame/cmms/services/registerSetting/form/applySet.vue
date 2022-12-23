@@ -508,13 +508,6 @@
               <el-form-item v-if="applySetForm.applyCheck == '1'" label="添加审核结果页" label-width="110px">
                 <el-button type="text" @click="setResult">审核结果页</el-button>
               </el-form-item>
-              <el-form-item v-if="applySetForm.applyCheck" label="审核权限用户" label-width="100px" prop="checkUser"
-                style="margin-bottom: 0">
-                <el-select v-model="applySetForm.checkUser" placeholder="请选择">
-                  <el-option v-for="item in checkUseroptions" :key="item.value" :label="item.label"
-                    :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
             </el-form-item>
             <el-form-item label="协助报名" prop="assistApply">
               <el-switch v-model="applySetForm.assistApply" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
@@ -572,11 +565,11 @@ export default {
   data () {
     return {
       pagingCount: 0,
-      registerVerificationOptions: [],// 获取注册验证
-      loginVerificationOptions: [],// 获取登录验证
-      customizeOptions: [],// 获取自定义验证
-      typeOptions: [],// 获取生成类型
-      signupFieldOptions: [],// 获取协助报名开放字段
+      registerVerificationOptions: [], // 获取注册验证
+      loginVerificationOptions: [], // 获取登录验证
+      customizeOptions: [], // 获取自定义验证
+      typeOptions: [], // 获取生成类型
+      signupFieldOptions: [], // 获取协助报名开放字段
 
       setInfoList: [], // 表单配置列表
       isRegisterSetShow: true, // 注册登录是否显示
@@ -634,16 +627,12 @@ export default {
         isNeedCompleteMustInfo: false, // 是否需要完善必填信息
         IsIintimateAgreement: true, // 隐私协议
         applyDate: '', // 报名日期
-        attendanceCodePrefix: '', // 参会码前缀
-        attendanceCodeLength: '2', // 参会码长度
-        createType: '', // 生成类型
-        attendanceCodeStartNum: 0, // 起始码
         applyCheck: '', // 报名审核
         checkUser: '', // 审核权限用户
         assistApply: true, // 协助报名
         assistApplyPermission: '', // 协助报名权限
         assistApplyOpenField: [], // 协助报名开放字段
-        id: '',
+        id: ''
         // versionNum: 0
       },
       setFormFile: [],
@@ -657,32 +646,13 @@ export default {
         privacyContent: [{ required: true, message: '请填写协议内容', trigger: 'blur' }]
       },
       rulesApply: {
-        isVerification: [
-          { required: true, message: '请选择验证方式', trigger: 'blur' }
-        ],
-        registerVerification: [
-          { required: true, message: '请选择注册验证方式', trigger: 'blur' }
-        ],
-        loginVerification: [
-          { required: true, message: '请选择登录验证方式', trigger: 'blur' }
-        ],
-        coustomVerification: [
-          { required: true, message: '请选择自定义验证项', trigger: 'blur' }
-        ],
-        attendanceCodePrefix: [
-          { required: true, message: '请输入前缀', trigger: 'blur' }
-        ],
-        attendanceCodeLength: [
-          { required: true, message: '请输入长度', trigger: 'blur' }
-        ],
-        createType: [
-          { required: true, message: '请选择生成类型', trigger: 'blur' }
-        ],
-        attendanceCodeStartNum: [
-          { required: true, message: '请输入起始码', trigger: 'blur' }
-        ]
-      },
-
+        isVerification: [{ required: true, message: '请选择验证方式', trigger: 'blur' }],
+        registerVerification: [{ required: true, message: '请选择注册验证方式', trigger: 'blur' }],
+        loginVerification: [{ required: true, message: '请选择登录验证方式', trigger: 'blur' }],
+        coustomVerification: [{ required: true, message: '请选择自定义验证项', trigger: 'blur' }],
+        createType: [{ required: true, message: '请选择生成类型', trigger: 'blur' }],
+        attendanceCodeStartNum: [{ required: true, message: '请输入起始码', trigger: 'blur' }]
+      }
     }
   },
   props: {
@@ -704,7 +674,6 @@ export default {
   },
   created () {
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
-
   },
   mounted () {
     this.signupContactCodeRuleFn()
@@ -717,7 +686,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'REGISTER_VERIFICATION', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.registerVerificationOptions = res.data
       console.log(this.registerVerificationOptions, 'this.registerVerificationOptions')
       // dictItemName \ dictItemVal
@@ -727,7 +696,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'LOGIN_VERIFICATION', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.loginVerificationOptions = res.data
       console.log(this.loginVerificationOptions, 'this.loginVerificationOptions')
       // dictItemName \ dictItemVal
@@ -737,7 +706,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'CUSTOMIZE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.customizeOptions = res.data
       console.log(this.customizeOptions, 'this.customizeOptions')
       // dictItemName \ dictItemVal
@@ -747,7 +716,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'contact_code_rule_type', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.typeOptions = res.data
       console.log(this.typeOptions, 'this.typeOptions')
       // dictItemName \ dictItemVal
@@ -757,7 +726,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'SIGNUP_FIELD', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.signupFieldOptions = res.data
       console.log(this.signupFieldOptions, 'this.signupFieldOptions')
       // dictItemName \ dictItemVal
@@ -793,7 +762,7 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then((res) => {
+      }).then(res => {
         console.log(res, ' 生成规则')
         this.applySetForm.isVerification = res.data.isVerification - 0
         this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
@@ -808,10 +777,6 @@ export default {
           window.frames['myframe'].setContents(res.data.privacyContent)
         }, 2000)
         this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
-        this.applySetForm.attendanceCodePrefix = res.data.prefix
-        this.applySetForm.attendanceCodeLength = res.data.length
-        this.applySetForm.createType = res.data.type
-        this.applySetForm.attendanceCodeStartNum = res.data.startCode || 0
         this.applySetForm.applyCheck = res.data.isApproval
         this.applySetForm.approvalUser = res.data.approvalUser
         this.applySetForm.assistApplyPermission = res.data.assistSignupPower
@@ -831,13 +796,13 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then((response) => {
+      }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
         } else {
           this.setInfoList = []
         }
-        this.setInfoList.forEach((item) => {
+        this.setInfoList.forEach(item => {
           // 1：自定义属性
           if (item.mapBase == 1) {
             if (['复选框', '下拉复选框'].includes(item.systemName)) {
@@ -892,14 +857,13 @@ export default {
           }
         })
       })
-
     },
     setResult () {
       this.$emit('setResult')
     },
     saveHrefHandle (formName) {
       this.$emit('applySetForm', this.applySetForm)
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           let date1 = moment(this.applySetForm.applyDate[0]).valueOf()
           let date2 = moment(this.applySetForm.applyDate[1]).valueOf()
@@ -914,10 +878,6 @@ export default {
             privacyContent: this.ruleForm.privacyContent,
             beginTime: moment(date1).format('YYYY-MM-DD HH:mm:ss'),
             endTime: moment(date2).format('YYYY-MM-DD HH:mm:ss'),
-            prefix: this.applySetForm.attendanceCodePrefix,
-            length: this.applySetForm.attendanceCodeLength,
-            type: this.applySetForm.createType,
-            startCode: this.applySetForm.attendanceCodeStartNum - 0,
             isApproval: this.applySetForm.applyCheck,
             approvalUser: this.applySetForm.applyCheck,
             assistSignupPower: this.applySetForm.assistApplyPermission,
@@ -936,7 +896,7 @@ export default {
               funcModule: '表单设置',
               funcOperation: '保存并生成报名链接'
             }
-          }).then((res) => {
+          }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
               this.$message({ message: '报名并生成链接成功', type: 'success' })
@@ -976,8 +936,6 @@ export default {
   min-width: 1250px;
   display: flex;
   justify-content: space-between;
-
-
 
   .formSet {
     overflow: auto;
