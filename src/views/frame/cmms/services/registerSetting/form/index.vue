@@ -2576,7 +2576,7 @@ export default {
   },
   mounted () {
     this.tableComputed()
-    // this.getEventInfo()
+    this.getEventInfo()
     // 获取国际区号数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -3763,7 +3763,7 @@ export default {
       this.eventName = params.name
       this.stepIndex = 0
       this.getAppearanceSet()
-      // this.getEventInfo()
+      this.getEventInfo()
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {

@@ -2,14 +2,14 @@
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
       <div class="formSet">
-        <div class="back" style="cursor: pointer">
+        <!-- <div class="back" style="cursor: pointer">
           <el-popover placement="top-start" width="100" trigger="click" center>
             <el-link type="primary" @click="toAppearance(1)">编辑外观</el-link><br />
             <el-link type="primary" @click="toEdit(2)">编辑表单</el-link><br />
             <el-link type="primary" @click="toResult(3)">编辑结果页</el-link>
             <div class="shengluehao" slot="reference">...</div>
           </el-popover>
-        </div>
+        </div> -->
         <h2>{{ eventName }}</h2>
         <el-form ref="contactForm" label-position="right" :model="setForm" label-width="150px" class="contactForm"
           style="width: 50%; margin: 0 auto">
