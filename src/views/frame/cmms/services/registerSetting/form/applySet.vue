@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
-      <div class="formSet">
+      <div class="formSet" style="width:48%">
         <!-- <div class="back" style="cursor: pointer">
           <el-popover placement="top-start" width="100" trigger="click" center>
             <el-link type="primary" @click="toAppearance(1)">编辑外观</el-link><br />
@@ -676,11 +676,11 @@ export default {
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
   },
   mounted () {
-    this.signupContactCodeRuleFn()
-    console.log(this.ruleForm.privacyContent, 'this.ruleForm.privacyContent')
     if (this.eventCode) {
       this.getEventInfo()
     }
+    this.signupContactCodeRuleFn()
+    console.log(this.ruleForm.privacyContent, 'this.ruleForm.privacyContent')
     // 获取注册验证数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -774,7 +774,7 @@ export default {
         this.ruleForm.privacyContent = res.data.privacyContent
         console.log(res.data.privacyContent, 'res.data.privacyContent')
         setTimeout(() => {
-          window.frames['myframe'].setContents(res.data.privacyContent)
+          window.frames['myframe'].setContents(this.ruleForm.privacyContent)
         }, 2000)
         this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
         this.applySetForm.applyCheck = res.data.isApproval
@@ -935,11 +935,11 @@ export default {
 .applySet {
   min-width: 1250px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 
   .formSet {
     overflow: auto;
-    width: 58%;
+    width: 48% !important;
     background: #fff;
     text-align: center;
     padding: 20px;
@@ -1023,7 +1023,7 @@ export default {
   }
 
   .applySetForm {
-    width: 40%;
+    width: 55%;
     background: #fff;
     padding: 20px;
     overflow: auto;
