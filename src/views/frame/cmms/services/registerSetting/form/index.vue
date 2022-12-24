@@ -1765,7 +1765,7 @@
               <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">手机</div>
               <div class="centerContent">
                 <div class="themeTitle">
-                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}/
+                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
                     {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
                   </h1>
                   <!-- <h3>地址</h3> -->
@@ -1867,13 +1867,13 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过当前页:" prop="successIsJumpCurrentPage">
+                  <el-form-item label="提交后是否跳过结果页:" prop="successIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
                         <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="0">不跳过</el-radio>
                         <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="1">跳过</el-radio>
                       </div>
-                      <div style="display: inline-block">
+                      <div style="display: inline-block" v-show="resultSetForm.successIsJumpCurrentPage == '1'">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage"
                           style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
@@ -1992,13 +1992,13 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过当前页:" prop="waitReviewIsJumpCurrentPage">
+                  <el-form-item label="提交后是否跳过结果页:" prop="waitReviewIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
                         <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="0">不跳过</el-radio>
                         <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="1">跳过</el-radio>
                       </div>
-                      <div style="display: inline-block">
+                      <div style="display: inline-block" v-show="resultSetForm.waitReviewIsJumpCurrentPage == '1'">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage"
                           style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
@@ -2114,13 +2114,13 @@
                     </el-upload> -->
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过当前页:" prop="noPassIsJumpCurrentPage">
+                  <el-form-item label="提交后是否跳过结果页:" prop="noPassIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
                         <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="0">不跳过</el-radio>
                         <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="1">跳过</el-radio>
                       </div>
-                      <div style="display: inline-block">
+                      <div style="display: inline-block" v-show="resultSetForm.noPassIsJumpCurrentPage == '1'">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage"
                           style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
