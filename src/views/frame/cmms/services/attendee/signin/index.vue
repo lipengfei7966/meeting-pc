@@ -159,24 +159,13 @@ export default {
             name: 'add',
             type: 'dialog',
             i18n: '新增参会人',
-            component: () => import('../manage/edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode
-              }
-            }
+            event: this.toAddSetting
           },
           {
             name: 'update',
             type: 'dialog',
             i18n: '修改参会人',
-            component: () => import('../manage/edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode,
-                code: this.$refs.bsTable.currentRow.code
-              }
-            }
+            event: this.toUpdateSetting
           },
           {
             name: 'add',
@@ -285,6 +274,41 @@ export default {
   },
   mounted() {},
   methods: {
+    toAddSetting() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      this.$router.push({
+        name: 'attendeeEdit',
+        params: {
+          back: 'attendeeSignin',
+          data: this.form.listQuery.data.eventCode,
+          type: 'add'
+        }
+      })
+    },
+    toUpdateSetting() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length != 1) {
+        this.$message.warning('请选择一条数据')
+        return
+      }
+
+      this.$router.push({
+        name: 'attendeeEdit',
+        params: {
+          back: 'attendeeSignin',
+          data: this.form.listQuery.data.eventCode,
+          id: this.$refs.bsTable.currentRow[0].id,
+          type: 'update'
+        }
+      })
+    },
+
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
     },

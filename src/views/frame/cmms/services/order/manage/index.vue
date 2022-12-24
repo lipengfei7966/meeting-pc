@@ -2,17 +2,15 @@
   <div class="containerBox">
     <div class="bs-new-container app-container">
       <bs-form ref="bsForm" :form="form"></bs-form>
-      <template v-if="mainData.tabs"
-        :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
+      <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
         <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
           <el-tab-pane v-for="tab in mainData.tabs" :key="tab.id" :label="tab.label" :name="tab.name">
           </el-tab-pane>
         </el-tabs>
       </template>
-      <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs">
+      <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs" @initCallback='initCallback'>
         <template slot="operation" slot-scope="scope">
-          <el-button type="text" :disabled="!fundTicket.includes(scope.row.orderStatus)"
-            @click="handleRemoveClick(scope.row)">退票</el-button>
+          <el-button type="text" :disabled="!fundTicket.includes(scope.row.orderStatus)" @click="handleRemoveClick(scope.row)">退票</el-button>
           <el-button type="text" size="small" @click="handleInfoClick(scope.row)">详情</el-button>
         </template>
       </bs-table>
@@ -80,7 +78,6 @@
     </el-dialog>
   </div>
 
-
 </template>
 
 <script>
@@ -88,7 +85,7 @@ import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefu
 import axios from 'axios'
 export default {
   name: 'orderManagement',
-  data () {
+  data() {
     return {
       fundTicket: ['103', '108', '111', '112', '113'],
       theTrainOrFlightNo: '',
@@ -102,9 +99,9 @@ export default {
       reissueText: '',
       transferText: '',
       centerDialogVisible: false,
-      refundAmount: 0,// 预估退票金额
-      serviceFee: 0,// 手续费
-      thepayAmount: 0,//退回金额
+      refundAmount: 0, // 预估退票金额
+      serviceFee: 0, // 手续费
+      thepayAmount: 0, //退回金额
       theorderCode: '',
       refundOrderType: 1,
       refundType: 1,
@@ -115,14 +112,14 @@ export default {
         allOrderCount: 0,
         cancelCount: 0,
         obligationCount: 0,
-        ticketsIssuedCount: 0,
+        ticketsIssuedCount: 0
       },
       fightReissueRefund: {
         refundPrice: 0,
         reissuePrice: 0,
         returnPrice: 0,
         ticketno: '',
-        upgradecabinPrice: 0,
+        upgradecabinPrice: 0
       },
       form: {
         moreShowFlg: true,
@@ -135,11 +132,29 @@ export default {
           type: undefined,
           funcModule: this.$t('route.' + this.$route.meta.title),
           funcOperation: this.$t('biz.btn.search'),
-          data: {
-            usingFlag: ''
-          }
+          defaultSortString: 'createDate.desc',
+          data: {}
         },
         formData: [
+          {
+            label: 'website.signupContact.query.eventCode',
+            prop: 'eventCode',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true,
+              clearable: false
+            },
+            event: {
+              changeAll: this.onChangeAll
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
           {
             label: '订单状态',
             prop: 'orderStatus',
@@ -265,7 +280,7 @@ export default {
               isDefault: true,
               clearable: false
             }
-          },
+          }
         ]
       },
 
@@ -278,14 +293,6 @@ export default {
         isTopBar: false,
         isColset: true,
         topBar: [
-          {
-            name: 'export',
-            i18n: 'biz.btn.downloadTemplate',
-            event: this.exportExcel
-          },
-          {
-            name: 'export'
-          },
           {
             name: 'refresh'
           }
@@ -391,7 +398,7 @@ export default {
               width: '120',
               isSlot: true,
               align: 'center',
-              fixed: "right"
+              fixed: 'right'
             }
           ]
         },
@@ -403,25 +410,22 @@ export default {
           }
         }
       },
-      orderDetailInfo: {},//机票基本信息
-      costDetailInfo: {},// 机票支付信息
-      flightDetailInfoList: [
-        { "airlineCompanyCode": "", "arr": "", "arrCity": "", "arrCode": "", "arrDate": "", "arrTerminal": "", "arrTime": "", "carrierAirlines": "", "dep": "", "depCity": "", "depCode": "", "depDate": "", "depTerminal": "", "depTime": "", "flightCode": "", "flightNo": "", "isMeal": "", "orderType": "", "planModel": "", "ticketNo": "", "tripType": "" }
-      ],// 机票航班信息
-      tripInfoList: [
-        { "cabin": "", "cabinName": "", "certificateNumber": "", "certificateType": "", "changeOrderCode": "", "flightCode": "", "orderStatus": "", "orderType": "", "passengerName": "", "passengerPhone": "", "refundOrderCode": "", "sonOrderCode": "", "ticketNo": "" }
-      ],// 机票行程信息
-
+      orderDetailInfo: {}, //机票基本信息
+      costDetailInfo: {}, // 机票支付信息
+      flightDetailInfoList: [{ airlineCompanyCode: '', arr: '', arrCity: '', arrCode: '', arrDate: '', arrTerminal: '', arrTime: '', carrierAirlines: '', dep: '', depCity: '', depCode: '', depDate: '', depTerminal: '', depTime: '', flightCode: '', flightNo: '', isMeal: '', orderType: '', planModel: '', ticketNo: '', tripType: '' }], // 机票航班信息
+      tripInfoList: [{ cabin: '', cabinName: '', certificateNumber: '', certificateType: '', changeOrderCode: '', flightCode: '', orderStatus: '', orderType: '', passengerName: '', passengerPhone: '', refundOrderCode: '', sonOrderCode: '', ticketNo: '' }] // 机票行程信息
     }
   },
-  created () {
-    this.getStatusCountFn()
-  },
-  mounted () {
+  created() {},
+  mounted() {
+    //this.getStatusCountFn()
   },
   methods: {
+    initCallback() {
+      this.getStatusCountFn()
+    },
     // 机票订单详情数据查询
-    airDetailFn (row) {
+    airDetailFn(row) {
       this.theOrderCode = row.orderCode
       airDetail(this.theOrderCode).then(res => {
         console.log(res, '机票详情')
@@ -438,7 +442,7 @@ export default {
       })
     },
     // 飞机票退票规则
-    refundFn () {
+    refundFn() {
       let queryRefund = {
         airline: this.flightDetailInfoList[0].airlineCompanyCode || '',
         cabin: this.tripInfoList[0].cabin || '',
@@ -458,56 +462,20 @@ export default {
       })
     },
     // 获取订单状态总数
-    getStatusCountFn () {
-      getStatusCount({ orderStatus: '' }).then(res => {
+    getStatusCountFn() {
+      getStatusCount(this.form.listQuery.data).then(res => {
         this.mainData.tabs = [
           { id: 1, name: 'first', label: `快速订单(${res.data.allOrderCount})` },
           { id: 2, name: 'second', label: `已出票(${res.data.ticketsIssuedCount})` },
           { id: 3, name: 'third', label: `待付款(${res.data.obligationCount})` },
-          { id: 4, name: 'fourth', label: `已取消(${res.data.cancelCount})` },
+          { id: 4, name: 'fourth', label: `已取消(${res.data.cancelCount})` }
           // { id: 5, name: 'fifth', label: `退票异常订单(${res.data.abnormalOrderCount})` }
         ]
-        this.handleTabClick(this.mainData.tabs[0])
-        this.$nextTick(() => {
-          this.$refs.bsTable.getList({ name: 'search' })
-        })
+        //this.handleTabClick(this.mainData.tabs[0])
+      })
+    },
 
-      })
-    },
-    exportExcel () {
-      axios({
-        method: 'post',
-        url: process.env.BASE_API + this.mainData.api.export,
-        data: {
-          data: this.form.listQuery.data.eventCode,
-          funcModule: '参会人管理',
-          funcOperation: '模板导出'
-        },
-        headers: {
-          Authorization: 'Bearer ' + this.$store.getters.token
-          // lang: storage.get('language') || 'zh',
-          // module: session.get('auditModule') || ''
-        },
-        responseType: 'blob'
-      })
-        .then(response => {
-          if (!response.data) {
-          } else {
-            const url = window.URL.createObjectURL(new Blob([response.data]))
-            const link = document.createElement('a')
-            link.style.display = 'none'
-            link.href = url
-            link.setAttribute('download', '参会人导入模板.xlsx')
-            document.body.appendChild(link)
-            link.click()
-            link.remove()
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    handleTabClick (tab) {
+    handleTabClick(tab) {
       switch (tab.name) {
         case 'first':
           this.form.listQuery.data.orderStatus = ''
@@ -525,11 +493,11 @@ export default {
       this.$refs.bsTable.getList({ name: 'search' })
     },
     // 改签
-    handleUpdteClick (row) {
+    handleUpdteClick(row) {
       console.log(row)
     },
     //退票弹起弹窗
-    handleRemoveClick (row) {
+    handleRemoveClick(row) {
       this.centerDialogVisible = true
       console.log(row, '退票弹窗')
       this.thepayAmount = row.payAmount
@@ -540,12 +508,13 @@ export default {
         this.airDetailFn(row)
         this.theRow = row
       }
-      if (row.businessType === '2') { this.refund(row.orderCode) }
+      if (row.businessType === '2') {
+        this.refund(row.orderCode)
+      }
       this.theorderCode = row.orderCode
-
     },
     // 预计改签费
-    reissueRefundPrice (row) {
+    reissueRefundPrice(row) {
       let queryReissueRefundPrice = {
         computedType: 1,
         flightInfoCode: this.flightDetailInfoList[0].flightCode,
@@ -562,20 +531,20 @@ export default {
       })
     },
     // 退改票信息
-    refund (orderCode) {
+    refund(orderCode) {
       estimatedRefund(orderCode).then(res => {
         this.refundAmount = res.data.refundAmount
         this.serviceFee = res.data.serviceFee
       })
     },
     // 取消退款
-    cancelFn () {
+    cancelFn() {
       this.centerDialogVisible = false
       this.thepayAmount = 0
       this.theorderCode = ''
     },
     // 确定退款
-    comfirmRefund () {
+    comfirmRefund() {
       if (this.businessType === '1') {
         let queryComfirmRefund = {
           flightCode: this.flightDetailInfoList[0].flightCode,
@@ -599,18 +568,20 @@ export default {
       this.thepayAmount = 0
     },
     // 跳转详情页
-    handleInfoClick (row) {
+    handleInfoClick(row) {
       console.log(row, 'row')
-      if (row.businessType === '1') {//机票
+      if (row.businessType === '1') {
+        //机票
         this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode, orderStatus: row.orderStatus } })
         // console.log(row)
       }
-      if (row.businessType === '2') {//火车票
+      if (row.businessType === '2') {
+        //火车票
         this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode, serviceFee: this.serviceFee, orderStatus: row.orderStatus } })
         // console.log(row)
       }
     }
-  },
+  }
 }
 </script>
 
@@ -649,7 +620,7 @@ export default {
 }
 
 .el-icon-arrow-down:before {
-  content: "\e6df";
+  content: '\e6df';
   position: absolute;
   right: 5px;
   top: 7px;
@@ -677,7 +648,6 @@ export default {
   height: 48px;
   margin-bottom: 20px;
 }
-
 
 .el-dialog__body .wenhao {
   width: 48px;
@@ -712,7 +682,6 @@ export default {
   font-size: 16px;
   font-weight: 900;
 }
-
 
 .fontSize2Right {
   font-size: 20px;
