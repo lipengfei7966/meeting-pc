@@ -405,7 +405,7 @@
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
             <el-form-item label="报名日期" prop="applyDate">
-              <el-date-picker v-model="applySetForm.applyDate" @change="dateChange" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="报名审核" prop="applyCheck">
@@ -658,7 +658,7 @@ export default {
     },
     // 生成规则
     signupContactCodeRuleFn(evevtCodeByIndex) {
-      var evCode = this.eventCode ? this.eventCode : evevtCodeByIndex
+      var evCode = evevtCodeByIndex ? evevtCodeByIndex : this.eventCode
       request({
         url: '/api/register/signupContactCodeRule/get',
         method: 'POST',
@@ -679,7 +679,7 @@ export default {
         this.ruleForm.privacyContent = res.data.privacyContent
         console.log(res.data.privacyContent, 'res.data.privacyContent')
         setTimeout(() => {
-          window.frames['myframe'].setContents(this.ruleForm.privacyContent)
+          if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
         }, 2000)
         this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
         this.applySetForm.applyCheck = res.data.isApproval
@@ -832,9 +832,10 @@ export default {
     toResult(step) {
       // this.$emit('stepIndex', step)
       // this.$emit('isFormSetComplete', false)
-    }
-  },
-  certificateTypeChange() {}
+    },
+
+    certificateTypeChange() {}
+  }
 }
 </script>
 

@@ -1641,7 +1641,7 @@
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
-                    <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner" :fit="fit"></el-image>
+                    <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner" fit="fill"></el-image>
                     <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
                     <pre> {{ resultSetForm.successDescribe }} </pre>
                     <div class="previewBtns">
@@ -1751,7 +1751,7 @@
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
-                    <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%" :src="resultSetForm.waitReviewBanner" :fit="fit"></el-image>
+                    <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%" :src="resultSetForm.waitReviewBanner" fit="fill"></el-image>
                     <h3 style="text-align: center">{{ resultSetForm.waitReviewTitle }}</h3>
                     <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
                     <div class="previewBtns">
@@ -1856,7 +1856,7 @@
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
-                    <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner" :fit="fit"></el-image>
+                    <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner" fit="fill"></el-image>
                     <h3 style="text-align: center">{{ resultSetForm.noPassTitle }}</h3>
                     <pre> {{ resultSetForm.noPassDescribe }} </pre>
                     <div class="previewBtns">
@@ -2848,7 +2848,6 @@ export default {
     },
     // 获取表单设置
     getEventInfo() {
-      debugger
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
@@ -3386,19 +3385,16 @@ export default {
           loading.close()
         })
         .catch(res => {
-          debugger
           loading.close()
         })
     },
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
-      debugger
       this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
-      debugger
       let checkedCount = value.length
       this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
@@ -3544,7 +3540,6 @@ export default {
       setInfoListItem.options.push(optionValue)
     },
     delRadioOption(setInfoListItem, option, optionIndex) {
-      debugger
       // this.setInfoList.splice(itemIndex,1);
       setInfoListItem.options.splice(optionIndex, 1)
     },
@@ -3587,7 +3582,7 @@ export default {
       // 005：手机号格式校验(中国大陆)
       // 006：手机号格式校验(港澳台)
       // 007：手机号格式校验(国际)
-      debugger
+
       this.setInfoList[this.checkedIndex].check = []
       val.forEach(element => {
         if (element == '中国大陆') {
@@ -3604,10 +3599,11 @@ export default {
     onChangeAll(params) {
       // 会议编码 params.code
       // 会议名称 params.name
+
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
-      debugger
+
       this.getEventInfo()
       this.getAppearanceSet()
       this.getResultFn()
