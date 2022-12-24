@@ -2894,7 +2894,11 @@ export default {
       }).then(res => {
         if (res.status) {
           res.data.length > 1 ? (this.resultSetForm.isNeedApprove = '1') : (this.resultSetForm.isNeedApprove = '0')
-
+          debugger
+          this.resultSetForm.noPassButtonList = []
+          this.resultSetForm.successButtonList = []
+          this.resultSetForm.waitReviewButtonList = []
+          console.log(this.resultSetForm.noPassButtonList, 'this.resultSetForm.noPassButtonList')
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
@@ -2919,6 +2923,7 @@ export default {
                   this.resultSetForm.successButtonList.name = ''
                   this.resultSetForm.successButtonList.value = ''
                 } else {
+
                   this.resultSetForm.successButtonList = item.resultButton
                 }
                 break
@@ -2945,6 +2950,7 @@ export default {
                   this.resultSetForm.waitReviewButtonList.name = ''
                   this.resultSetForm.waitReviewButtonList.value = ''
                 } else {
+
                   this.resultSetForm.waitReviewButtonList = item.resultButton
                 }
                 break
@@ -2997,6 +3003,7 @@ export default {
             this.resultNoFrom[0].theme = this.resultSetForm.successTitle
             this.resultNoFrom[0].eventCode = this.form.listQuery.data.eventCode
             // this.resultNoFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.this.resultNoFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultNoFrom[0].resultButton.push(v)
@@ -3015,6 +3022,7 @@ export default {
             this.resultFrom[0].theme = this.resultSetForm.successTitle
             this.resultFrom[0].eventCode = this.form.listQuery.data.eventCode
             // this.resultFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultFrom[0].resultButton.push(v)
@@ -3030,6 +3038,7 @@ export default {
             this.resultFrom[1].theme = this.resultSetForm.waitReviewTitle
             this.resultFrom[1].eventCode = this.form.listQuery.data.eventCode
             // this.resultFrom[1].resultButton = this.resultSetForm.waitReviewButtonList
+            this.resultFrom[1].resultButton = []
             this.resultSetForm.waitReviewButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultFrom[1].resultButton.push(v)
@@ -3045,6 +3054,7 @@ export default {
             this.resultFrom[2].theme = this.resultSetForm.noPassTitle
             this.resultFrom[2].eventCode = this.form.listQuery.data.eventCode
             // this.resultFrom[2].resultButton = this.resultSetForm.noPassButtonList
+            this.resultFrom[2].resultButton = []
             this.resultSetForm.noPassButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultFrom[2].resultButton.push(v)
