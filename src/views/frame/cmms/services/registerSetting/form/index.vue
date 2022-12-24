@@ -3943,6 +3943,11 @@ export default {
 }
 </script>
 <style>
+.el-upload .el-upload-dragger {
+  width: 150px;
+  height: 150px;
+}
+
 .upload-demo .el-upload--picture-card {
   position: static;
   overflow: inherit;
