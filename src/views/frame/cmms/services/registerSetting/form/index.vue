@@ -7,7 +7,7 @@
     <!-- isFormSetComplete -->
 
     <!-- 未完成表单设置 -->
-    <div style="padding: 0 20px">
+    <div style="padding: 0 5px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
           <el-step style="cursor: pointer">
@@ -1637,7 +1637,8 @@
                     </el-checkbox-group>
                     <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate"
                         v-model="setInfoList[checkedIndex].documentCheckAll"
-                        @change="documentCheckAllChange">全选</el-checkbox></p>
+                        @change="documentCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].documentCheckedTypes"
                       @change="documentCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].documentTypes" :key="item" :label="item"
@@ -1645,7 +1646,8 @@
                     </el-checkbox-group>
                     <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate"
                         v-model="setInfoList[checkedIndex].compressedFileCheckAll"
-                        @change="compressedFileCheckAllChange">全选</el-checkbox></p>
+                        @change="compressedFileCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].compressedFileCheckedTypes"
                       @change="compressedFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].compressedFileTypes" :key="item"
@@ -1653,7 +1655,8 @@
                     </el-checkbox-group>
                     <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate"
                         v-model="setInfoList[checkedIndex].videoFileCheckAll"
-                        @change="videoFileCheckAllChange">全选</el-checkbox></p>
+                        @change="videoFileCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].videoFileCheckedTypes"
                       @change="videoFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].videoFileTypes" :key="item" :label="item"
@@ -1661,7 +1664,8 @@
                     </el-checkbox-group>
                     <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate"
                         v-model="setInfoList[checkedIndex].audioFileCheckAll"
-                        @change="audioFileCheckAllChange">全选</el-checkbox></p>
+                        @change="audioFileCheckAllChange">全选</el-checkbox>
+                    </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].audioFileCheckedTypes"
                       @change="audioFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].audioFileTypes" :key="item" :label="item"
@@ -1688,7 +1692,8 @@
                       v-model="setInfoList[checkedIndex].photoLimitWidth"
                       @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input
                       style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight"
-                      @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input></div>
+                      @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
+                  </div>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
@@ -2161,10 +2166,9 @@
         </el-form>
         <div class="resultSetBtns">
           <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red"
-            @cancel="preStep" title='您修改的内容已自动保存，所有信息编辑完成后请点击"确认发布"同步到手机端'> <el-button
-              slot="reference">上一步(暂存)</el-button>
+            @cancel="preStep" title='您修改的内容已自动保存，所有信息编辑完成后请点击"确认发布"同步到手机端'>
+            <el-button slot="reference">上一步(暂存)</el-button>
           </el-popconfirm>
-          <!-- <el-button @click="preStep">上一步(暂存)</el-button> -->
 
           <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
         </div>
@@ -2474,8 +2478,8 @@ export default {
       eventName: '', // 会议名称
       drag: false,
       countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
-      buttonCodeOptions: [],//按钮字典
-      skipCodeOptions: [],//跳转页面字典
+      buttonCodeOptions: [], //按钮字典
+      skipCodeOptions: [], //跳转页面字典
       setInfoList: [], // 选中的配置信息列表
       batchEditOptions: '', // 批量编辑信息
       // 表格高度
@@ -2523,16 +2527,16 @@ export default {
       },
       checkedIndex: 0, // 选中预览item下标
       queryResult: {
-        appFile: '',//手机文件
-        backgroundFile: '',//背景图文件
-        describe: '',//描述
-        eventCode: '',//会议code
-        isSkip: '',//是否跳过当前页(1是0否)
-        resultButton: [],//结果页按钮表
-        skipPage: '',//跳转页面(数据字典SKIP_PAGE)
-        skipWebsite: '',//跳转网址
-        theme: '',//提示主题
-        type: '',//1、报名成功，2、待审核，3、不通过
+        appFile: '', //手机文件
+        backgroundFile: '', //背景图文件
+        describe: '', //描述
+        eventCode: '', //会议code
+        isSkip: '', //是否跳过当前页(1是0否)
+        resultButton: [], //结果页按钮表
+        skipPage: '', //跳转页面(数据字典SKIP_PAGE)
+        skipWebsite: '', //跳转网址
+        theme: '', //提示主题
+        type: '' //1、报名成功，2、待审核，3、不通过
       },
       resultSetForm: {
         isNeedApprove: '0', // 是否需要审核
@@ -2619,7 +2623,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.countryCodeOptions = res.data
       // dictItemName \ dictItemVal
     })
@@ -2628,7 +2632,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'RESULT_SKIP_PAGE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.buttonCodeOptions = res.data
       console.log(this.buttonCodeOptions, 'this.buttonCodeOptions')
       // dictItemName \ dictItemVal
@@ -2638,7 +2642,7 @@ export default {
       url: '/api/sys/dict/listItem',
       method: 'POST',
       data: { data: 'RESULT_BTN', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then((res) => {
+    }).then(res => {
       this.skipCodeOptions = res.data
       console.log(this.skipCodeOptions, 'this.skipCodeOptions')
       // dictItemName \ dictItemVal
@@ -2650,7 +2654,7 @@ export default {
       return {
         Authorization: 'Bearer ' + this.$store.getters.token
       }
-    },
+    }
   },
   watch: {
     customInfoCount (newVal, oldVal) {
@@ -2696,7 +2700,7 @@ export default {
       this.applySetForm = applySetForm
     },
     claerResultFn () {
-      debugger
+
       var btnObj = { name: '', value: '' }
       this.resultSetForm.successBanner = ''
       this.resultSetForm.successBackground = ''
@@ -2748,9 +2752,9 @@ export default {
           funcModule: '外观设置',
           funcOperation: '外观设置查询'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.status) {
-          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
+          if (JSON.stringify(res.data) === '{}' || res.data == undefined) {
             this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             this.appearanceSetForm.code = ''
@@ -2764,15 +2768,17 @@ export default {
                 funcModule: '外观设置',
                 funcOperation: '外观设置保存'
               }
-            }).then((res) => {
-              if (res.status) {
-                // 进入下一步 表单设置
-                this.stepIndex = 1
-                this.getAppearanceSet()
-              }
-            }).catch(res => {
-              console.log(res)
             })
+              .then(res => {
+                if (res.status) {
+                  // 进入下一步 表单设置
+                  this.stepIndex = 1
+                  this.getAppearanceSet()
+                }
+              })
+              .catch(res => {
+                console.log(res)
+              })
           } else {
             this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
@@ -2787,19 +2793,20 @@ export default {
                 funcModule: '表单外观设置',
                 funcOperation: '表单外观设置更新'
               }
-            }).then((res) => {
-              if (res.status) {
-                // 进入下一步 表单设置
-                this.stepIndex = 1
-                this.getAppearanceSet()
-              }
-            }).catch(res => {
-              console.log(res)
             })
+              .then(res => {
+                if (res.status) {
+                  // 进入下一步 表单设置
+                  this.stepIndex = 1
+                  this.getAppearanceSet()
+                }
+              })
+              .catch(res => {
+                console.log(res)
+              })
           }
         }
       })
-
     },
     drawerStatusHandle (status) {
       this.drawer = status
@@ -2818,28 +2825,28 @@ export default {
           funcModule: '表单外观设置',
           funcOperation: '表单外观设置查询'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.status) {
-          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
-            this.appearanceSetForm.titleChinese = '', // 标题
-              this.appearanceSetForm.titleEnglish = '', // 英文标题
-              this.appearanceSetForm.language = ['中文'], // 语言
+          if (JSON.stringify(res.data) === '{}' || res.data == undefined) {
+            ; (this.appearanceSetForm.titleChinese = ''), // 标题
+              (this.appearanceSetForm.titleEnglish = ''), // 英文标题
+              (this.appearanceSetForm.language = ['中文']), // 语言
               // this.appearanceSetForm.language = ['中文'], // 语言
-              this.appearanceSetForm.color = '#409EFF', // 主色调
-              this.appearanceSetForm.isPropaganda = 0, // 是否开启会议宣传
+              (this.appearanceSetForm.color = '#409EFF'), // 主色调
+              (this.appearanceSetForm.isPropaganda = 0), // 是否开启会议宣传
               // this.appearanceSetForm.BannerList = [], // banner 列表
-              this.appearanceSetForm.meetingFile = '',
-              this.appearanceSetForm.isMeetingDate = 0, // 是否显示会议时间
-              this.appearanceSetForm.isMeetinPlace = 0, // 是否显示会议地点
-              this.appearanceSetForm.isMeetinCountdown = 0, // 是否显示倒计时
-              this.appearanceSetForm.profile = '', // 会议简介
+              (this.appearanceSetForm.meetingFile = ''),
+              (this.appearanceSetForm.isMeetingDate = 0), // 是否显示会议时间
+              (this.appearanceSetForm.isMeetinPlace = 0), // 是否显示会议地点
+              (this.appearanceSetForm.isMeetinCountdown = 0), // 是否显示倒计时
+              (this.appearanceSetForm.profile = ''), // 会议简介
               // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
-              this.appearanceSetForm.loginPcFile = '',
+              (this.appearanceSetForm.loginPcFile = ''),
               // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
-              this.appearanceSetForm.loginAppFile = '',
-              this.appearanceSetForm.isLoginDate = 0, // 是否显示会议时间
-              this.appearanceSetForm.isLoginPlace = 0, // 是否显示会议地点
-              this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
+              (this.appearanceSetForm.loginAppFile = ''),
+              (this.appearanceSetForm.isLoginDate = 0), // 是否显示会议时间
+              (this.appearanceSetForm.isLoginPlace = 0), // 是否显示会议地点
+              (this.appearanceSetForm.isLoginCountdown = 0) // 是否显示倒计时
           } else {
             this.appearanceSetForm = res.data
             // this.meetingImageList = res.data.meetingFile
@@ -2847,20 +2854,20 @@ export default {
             this.resPcImageList = []
             this.resAppImageList = []
             if (res.data.meetingFile !== '') {
-              var urlSplits = res.data.meetingFile.split("/")
+              var urlSplits = res.data.meetingFile.split('/')
               this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
             }
             if (res.data.loginPcFile !== '') {
-              var urlSplits = res.data.loginPcFile.split("/")
+              var urlSplits = res.data.loginPcFile.split('/')
               this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
             }
             if (res.data.loginAppFile !== '') {
-              var urlSplits = res.data.loginAppFile.split("/")
+              var urlSplits = res.data.loginAppFile.split('/')
               this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
             }
             console.log(res.data, '外观设置')
             Object.keys(this.appearanceSetForm).forEach(key => {
-              if (key === 'tenantCode') delete (this.appearanceSetForm[key])
+              if (key === 'tenantCode') delete this.appearanceSetForm[key]
             })
             // this.appearanceSetForm.code = ''
             // this.appearanceSetForm.id = ''
@@ -2919,14 +2926,14 @@ export default {
         url: '/api/register/signupResult/resultList',
         method: 'POST',
         data: {
-          code: "",
+          code: '',
           data: this.form.listQuery.data.eventCode,
           funcModule: '结果页设置',
           funcOperation: '获取结果页'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.status) {
-          res.data.length > 1 ? this.resultSetForm.isNeedApprove = '1' : this.resultSetForm.isNeedApprove = '0'
+          res.data.length > 1 ? (this.resultSetForm.isNeedApprove = '1') : (this.resultSetForm.isNeedApprove = '0')
 
           res.data.forEach(item => {
             switch (item.type) {
@@ -2934,12 +2941,12 @@ export default {
                 this.resultSetForm.successBanner = item.appFile
                 // this.successBannerImageList[0].url = item.appFile
                 if (item.appFile !== '') {
-                  var urlSplits = item.appFile.split("/")
+                  var urlSplits = item.appFile.split('/')
                   this.successBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
                 }
                 this.resultSetForm.successBackground = item.backgroundFile
                 if (item.backgroundFile !== '') {
-                  var urlSplits = item.backgroundFile.split("/")
+                  var urlSplits = item.backgroundFile.split('/')
                   this.successBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
                 }
                 // this.successBgcImageList[0].url = item.backgroundFile
@@ -2959,14 +2966,14 @@ export default {
                 this.resultSetForm.waitReviewBanner = item.appFile
                 // this.waitReviewBannerImageList[0].url = item.appFile
                 if (item.appFile !== '') {
-                  var urlSplits = item.appFile.split("/")
+                  var urlSplits = item.appFile.split('/')
                   this.waitReviewBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
                 }
 
                 this.resultSetForm.waitReviewBackground = item.backgroundFile
                 // this.waitReviewBannerImageList[0].url = item.backgroundFile
                 if (item.backgroundFile !== '') {
-                  var urlSplits = item.backgroundFile.split("/")
+                  var urlSplits = item.backgroundFile.split('/')
                   this.waitReviewBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
                 }
                 this.resultSetForm.waitReviewDescribe = item.describeInfo
@@ -2985,13 +2992,13 @@ export default {
                 this.resultSetForm.noPassBanner = item.appFile
                 // this.noPassBannerImageList[0].url = item.appFile
                 if (item.appFile !== '') {
-                  var urlSplits = item.appFile.split("/")
+                  var urlSplits = item.appFile.split('/')
                   this.noPassBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
                 }
                 this.resultSetForm.noPassBackground = item.backgroundFile
                 // this.noPassBgcImageList[0].url = item.backgroundFile
                 if (item.backgroundFile !== '') {
-                  var urlSplits = item.backgroundFile.split("/")
+                  var urlSplits = item.backgroundFile.split('/')
                   this.noPassBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
                 }
                 this.resultSetForm.noPassDescribe = item.describeInfo
@@ -3010,13 +3017,12 @@ export default {
                 break
             }
           })
-
         }
       })
     },
     // 保存结果设置
     resultSetSave (formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.stepIndex = 3
           this.isFormSetComplete = true
@@ -3094,7 +3100,7 @@ export default {
               funcModule: '结果页设置',
               funcOperation: '创建结果页'
             }
-          }).then((res) => {
+          }).then(res => {
             if (res.status) {
               this.$message({ message: '生成表单成功', type: 'success' })
               this.getResultFn()
@@ -3117,13 +3123,13 @@ export default {
         this.$message.warning('请选择会议')
         return
       }
-      this.baseInfoList.forEach((baseInfoItem) => {
+      this.baseInfoList.forEach(baseInfoItem => {
         baseInfoItem.isSee = false
       })
-      this.contactWayList.forEach((contactWayItem) => {
+      this.contactWayList.forEach(contactWayItem => {
         contactWayItem.isSee = false
       })
-      this.workInfoList.forEach((workInfoItem) => {
+      this.workInfoList.forEach(workInfoItem => {
         workInfoItem.isSee = false
       })
       request({
@@ -3134,28 +3140,28 @@ export default {
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
-      }).then((response) => {
+      }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
         } else {
           this.setInfoList = []
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
-        this.setInfoList.forEach((setInfoItem) => {
+        this.setInfoList.forEach(setInfoItem => {
           // 基本信息
-          this.baseInfoList.forEach((baseInfoItem) => {
+          this.baseInfoList.forEach(baseInfoItem => {
             if (baseInfoItem.value == setInfoItem.mapCode) {
               baseInfoItem.isSee = true
             }
           })
           // 联系方式
-          this.contactWayList.forEach((contactWayItem) => {
+          this.contactWayList.forEach(contactWayItem => {
             if (contactWayItem.value == setInfoItem.mapCode) {
               contactWayItem.isSee = true
             }
           })
           // 工作信息
-          this.workInfoList.forEach((workInfoItem) => {
+          this.workInfoList.forEach(workInfoItem => {
             if (workInfoItem.value == setInfoItem.mapCode) {
               workInfoItem.isSee = true
             }
@@ -3168,7 +3174,7 @@ export default {
     },
     // 表单设置保存
     save () {
-      this.setInfoList.forEach((item) => {
+      this.setInfoList.forEach(item => {
         if (item.systemName == '附件') {
           item.allFileTypes = [...item.imageCheckedTypes, ...item.documentCheckedTypes, ...item.compressedFileCheckedTypes, ...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
         }
@@ -3184,7 +3190,7 @@ export default {
           funcModule: '获取模块类型',
           funcOperation: '获取模块类型'
         }
-      }).then((res) => {
+      }).then(res => {
         if (res.status) {
           this.$message.success('保存成功')
           this.getEventInfo()
@@ -3199,7 +3205,7 @@ export default {
     delSetInfoList (itemList, itemIndex) {
       switch (itemList.parentListName) {
         case 'baseInfoList':
-          var index = this.baseInfoList.findIndex((item) => {
+          var index = this.baseInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -3207,7 +3213,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'contactWayList':
-          var index = this.contactWayList.findIndex((item) => {
+          var index = this.contactWayList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -3215,7 +3221,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'workInfoList':
-          var index = this.workInfoList.findIndex((item) => {
+          var index = this.workInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -3223,7 +3229,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           break
         case 'customInfoList':
-          var index = this.customInfoList.findIndex((item) => {
+          var index = this.customInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -3232,7 +3238,7 @@ export default {
           this.customInfoCount--
           break
         case 'specialInfoList':
-          var index = this.specialInfoList.findIndex((item) => {
+          var index = this.specialInfoList.findIndex(item => {
             return item.value == itemList.mapCode
           })
           this.checkedIndex = 0
@@ -3381,7 +3387,7 @@ export default {
       if (parentListName == 'specialInfoList') {
         obj.isSpecialInfo = true
       }
-      var index = parentList.findIndex((item) => {
+      var index = parentList.findIndex(item => {
         return item.value == itemList.value
       })
       // 性别添加选项
@@ -3427,8 +3433,7 @@ export default {
       }
       this.setInfoList.push(obj)
     },
-    selectMultipleChange (val) {
-    },
+    selectMultipleChange (val) { },
     // 分步改变
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
@@ -3627,31 +3632,33 @@ export default {
         url: '/api/obs/file/uploadImg',
         method: 'POST',
         data: formData
-      }).then((data) => {
-        if (data.status) {
-          this.$message('上传文件成功')
-          // this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
-          if (uploadType == 'successBanner') {
-            this.resultSetForm.successBanner = data.data.filePath
-          } else if (uploadType == 'successBackground') {
-            this.resultSetForm.successBackground = data.data.filePath
-          } else if (uploadType == 'waitReviewBanner') {
-            this.resultSetForm.waitReviewBanner = data.data.filePath
-          } else if (uploadType == 'waitReviewBackground') {
-            this.resultSetForm.waitReviewBackground = data.data.filePath
-          } else if (uploadType == 'noPassBanner') {
-            this.resultSetForm.noPassBanner = data.data.filePath
-          } else if (uploadType == 'noPassBackground') {
-            this.resultSetForm.noPassBackground = data.data.filePath
-          }
-          param.onSuccess(data)
-        }
-        // console.log(this.setFormFile[element.mapCode])
-        loading.close()
-      }).catch(res => {
-        debugger
-        loading.close()
       })
+        .then(data => {
+          if (data.status) {
+            this.$message('上传文件成功')
+            // this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+            if (uploadType == 'successBanner') {
+              this.resultSetForm.successBanner = data.data.filePath
+            } else if (uploadType == 'successBackground') {
+              this.resultSetForm.successBackground = data.data.filePath
+            } else if (uploadType == 'waitReviewBanner') {
+              this.resultSetForm.waitReviewBanner = data.data.filePath
+            } else if (uploadType == 'waitReviewBackground') {
+              this.resultSetForm.waitReviewBackground = data.data.filePath
+            } else if (uploadType == 'noPassBanner') {
+              this.resultSetForm.noPassBanner = data.data.filePath
+            } else if (uploadType == 'noPassBackground') {
+              this.resultSetForm.noPassBackground = data.data.filePath
+            }
+            param.onSuccess(data)
+          }
+          // console.log(this.setFormFile[element.mapCode])
+          loading.close()
+        })
+        .catch(res => {
+          debugger
+          loading.close()
+        })
     },
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange (val) {
@@ -3780,11 +3787,11 @@ export default {
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
     maxCheckedCountChange (val) {
-      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some((checkItem) => {
+      let hasMaxLimit = this.setInfoList[this.checkedIndex].check.some(checkItem => {
         return checkItem.code == '012'
       })
       if (hasMaxLimit) {
-        let maxLimit = this.setInfoList[this.checkedIndex].check.find((checkItem) => {
+        let maxLimit = this.setInfoList[this.checkedIndex].check.find(checkItem => {
           return checkItem.code == '012'
         })
         maxLimit.name = val
@@ -3852,7 +3859,7 @@ export default {
       // 007：手机号格式校验(国际)
       debugger
       this.setInfoList[this.checkedIndex].check = []
-      val.forEach((element) => {
+      val.forEach(element => {
         if (element == '中国大陆') {
           this.setInfoList[this.checkedIndex].check.push({ code: '005', name: '' })
         } else if (element == '港澳台') {
@@ -3890,7 +3897,7 @@ export default {
           funcOperation: '表单初始化'
         }
       })
-        .then((response) => {
+        .then(response => {
           this.$notify(notifySuccess({ msg: this.$t('biz.msg.updateSuccess') }))
           this.loading = false
           this.handleCloseDialog(true)
@@ -3901,7 +3908,6 @@ export default {
     },
     edititem (checkedItem, checkedIndex) {
       this.checkedIndex = checkedIndex
-
     },
     // 结果页设置 添加按钮
     addBtn (btnList, btnIndex) {
@@ -3975,7 +3981,7 @@ export default {
 
 <style lang="scss" scoped>
 .transition-box {
-  background: rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, 0.3);
   position: absolute;
   left: 0;
   width: 100%;
@@ -4016,7 +4022,6 @@ export default {
       height: 200px;
       border: 1px solid #ccc;
       background-color: #fff;
-
     }
   }
 
@@ -4029,9 +4034,6 @@ export default {
     background-color: #f2f2f2;
     border: 1px solid #ccc;
   }
-
-
-
 }
 
 .steps {
@@ -4236,7 +4238,7 @@ export default {
 }
 
 .resultSet {
-  padding: 20px 50px;
+  padding: 20px 10px;
   min-width: 1250px;
   background: #fff;
   overflow: auto;
