@@ -26,7 +26,7 @@
 
             <el-form-item label="应用于">
               <el-checkbox-group v-model="printSetform.contactTypeArray">
-                <el-checkbox :label="item.dictItemVal" v-for="(item,index) in contactTypeArrayList" :key="index"> {{ item.dictItemName }} </el-checkbox>
+                <el-checkbox :label="item.value" v-for="(item,index) in contactTypeArrayList" :key="index"> {{ item.label }} </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="打印区域(mm)">
@@ -79,12 +79,6 @@
     <div class="printPreview">
       <h2>证件预览</h2>
       <el-card class="printPreview-box-card" style="background:rgba(242, 242, 242, 1);" ref="printTest" id="printTest">
-        <!-- <div>
-          <p class="printItem" v-for="(dictItemVal,index) in printSetform.certificateContent" :key="index">
-            {{ certificateContentList.find(item => {return dictItemVal == item.dictItemVal}).dictItemName }}
-          </p>
-          <vue-qr v-if="false" text="test" :size="200"> </vue-qr>
-        </div> -->
 
         <div class="p-event" id="print" :key="changecount" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto',backgroundImage:`url(${printSetform.printBackground})`,backgroundSize:'100% 100%'}">
           <img v-if="printSetform.printBackground && printSetform.printBackgroundFlg" :src="printSetform.printBackground" alt="" style="position:absolute;width:100%;height:100%">
@@ -241,13 +235,8 @@ export default {
     this.printSetformInit()
 
     // 获取参会人类型数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.contactTypeArrayList = res.data
-    })
+
+    this.contactTypeArrayList = this.$t('datadict.contantType')
 
     // 获取打印类型数据字典
     request({

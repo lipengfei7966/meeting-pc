@@ -334,11 +334,10 @@
                   <!-- 手机号 -->
                   <div v-if="element.mapCode == 'mobile'" class="form-item-input">
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
-
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.defaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                       <br />
@@ -355,7 +354,7 @@
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.secondPhonedefaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                       <br />
@@ -372,7 +371,7 @@
                     <div style="width: 80%; display: inline-block; vertical-align: top">
                       <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.telephoneDefaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                       <span> - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
@@ -388,7 +387,7 @@
                     <div style="width: 80%; display: inline-block; vertical-align: top">
                       <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxDefaultCountryCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                       <span> - <el-input style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input>
@@ -865,7 +864,7 @@
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
                   <el-select style="margin-top: 5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" filterable v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
-                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                    <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
@@ -920,7 +919,7 @@
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
                   <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
-                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                    <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
@@ -971,7 +970,7 @@
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
                   <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
-                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                    <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
@@ -1014,7 +1013,7 @@
                   <p class="eidtContentItemTitle">国际区号</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
                   <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
-                    <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                    <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
@@ -1700,7 +1699,7 @@
                       <div style="display: inline-block" v-show="resultSetForm.successIsJumpCurrentPage == '1'">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
-                            <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+                            <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px" v-if="resultSetForm.successJumpPage == '7'">
                             <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
@@ -1717,7 +1716,7 @@
                       </el-form-item>
                       <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
                         <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
-                          <el-option v-for="item in skipCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+                          <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.successButtonList, btnIndex)"></div>
@@ -1805,7 +1804,7 @@
                       <div style="display: inline-block" v-show="resultSetForm.waitReviewIsJumpCurrentPage == '1'">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
-                            <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+                            <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" v-if="resultSetForm.waitReviewJumpPage == '7'" placeholder="请输入外部链接"></el-input>
@@ -1822,7 +1821,7 @@
                       </el-form-item>
                       <el-form-item label="功能" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
                         <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
-                          <el-option v-for="item in skipCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+                          <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
@@ -1909,7 +1908,7 @@
                       <div style="display: inline-block" v-show="resultSetForm.noPassIsJumpCurrentPage == '1'">
                         <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
                           <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
-                            <el-option v-for="item in buttonCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+                            <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
                             <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" v-if="resultSetForm.noPassJumpPage == '7'" placeholder="请输入外部链接"></el-input>
@@ -1926,7 +1925,7 @@
                       </el-form-item>
                       <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
                         <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
-                          <el-option v-for="item in skipCodeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+                          <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline" @click.stop="addBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
@@ -2248,7 +2247,7 @@ export default {
       pagingCount: 0, // 分页数量
       eventName: '', // 会议名称
       drag: false,
-      countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
+      countryCodeOptions: [], // 国际区号下拉选项  label - value
       buttonCodeOptions: [], //按钮字典
       skipCodeOptions: [], //跳转页面字典
       setInfoList: [], // 选中的配置信息列表
@@ -2353,32 +2352,15 @@ export default {
           }
         ]
       },
-      jumpPageOptions: [
-        { label: '首页菜单', value: '001' },
-        { label: '个人中心', value: '002' },
-        { label: '参观码', value: '003' },
-        { label: '报名页面', value: '004' },
-        { label: '会议简介', value: '005' },
-        { label: '站内页面', value: '006' },
-        { label: '站外页面', value: '007' }
-      ], // 跳转页面选项
-      btnOptions: [
-        { label: '返回首页', value: '001' },
-        { label: '重新报名', value: '002' },
-        { label: '查看报名信息', value: '003' },
-        { label: '前往个人中心', value: '004' },
-        { label: '退出登录', value: '005' },
-        { label: '修改信息', value: '006' }
-      ],
       successIsShow: true, // 报名成功是否显示
       waitReviewIsShow: true, // 报名成功是否显示
       noPassIsShow: true, // 报名成功是否显示
       isFormSetComplete: false, // 表单设置是否完成
-      resultNoFrom: [{ appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }],
+      resultNoFrom: [{ appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }],
       resultFrom: [
-        { appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
-        { appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
-        { appFile: '', backgroundFile: '', describe_info: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }
+        { appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
+        { appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
+        { appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }
       ]
     }
   },
@@ -2390,34 +2372,11 @@ export default {
     this.tableComputed()
     // this.getEventInfo()
     // 获取国际区号数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.countryCodeOptions = res.data
-      // dictItemName \ dictItemVal
-    })
+    this.countryCodeOptions = this.$t('datadict.countryCode')
     // 获取按钮下拉数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'RESULT_SKIP_PAGE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.buttonCodeOptions = res.data
-      console.log(this.buttonCodeOptions, 'this.buttonCodeOptions')
-      // dictItemName \ dictItemVal
-    })
+    this.buttonCodeOptions = this.$t('datadict.resultSkipPage')
     // 获取跳转页面数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'RESULT_BTN', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.skipCodeOptions = res.data
-      console.log(this.skipCodeOptions, 'this.skipCodeOptions')
-      // dictItemName \ dictItemVal
-    })
+    this.skipCodeOptions = this.$t('datadict.resultBtn')
   },
   computed: {
     ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight']),
@@ -2800,13 +2759,12 @@ export default {
           if (this.resultSetForm.isNeedApprove === '0') {
             this.resultNoFrom[0].appFile = this.resultSetForm.successBanner
             this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
-            this.resultNoFrom[0].describe_info = this.resultSetForm.successDescribe
+            this.resultNoFrom[0].describeInfo = this.resultSetForm.successDescribe
             this.resultNoFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
             this.resultNoFrom[0].skipPage = this.resultSetForm.successJumpPage
             this.resultNoFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
             this.resultNoFrom[0].theme = this.resultSetForm.successTitle
             this.resultNoFrom[0].eventCode = this.form.listQuery.data.eventCode
-            // this.resultNoFrom[0].resultButton = this.resultSetForm.successButtonList
             this.resultSetForm.successButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultNoFrom[0].resultButton.push(v)
@@ -2818,13 +2776,13 @@ export default {
           if (this.resultSetForm.isNeedApprove === '1') {
             this.resultFrom[0].appFile = this.resultSetForm.successBanner
             this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
-            this.resultFrom[0].describe_info = this.resultSetForm.successDescribe
+            this.resultFrom[0].describeInfo = this.resultSetForm.successDescribe
             this.resultFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
             this.resultFrom[0].skipPage = this.resultSetForm.successJumpPage
             this.resultFrom[0].skipWebsite = this.resultSetForm.successOutPageUrl
             this.resultFrom[0].theme = this.resultSetForm.successTitle
             this.resultFrom[0].eventCode = this.form.listQuery.data.eventCode
-            // this.resultFrom[0].resultButton = this.resultSetForm.successButtonList
+            this.resultFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultFrom[0].resultButton.push(v)
@@ -2833,13 +2791,13 @@ export default {
 
             this.resultFrom[1].appFile = this.resultSetForm.waitReviewBanner
             this.resultFrom[1].backgroundFile = this.resultSetForm.waitReviewBackground
-            this.resultFrom[1].describe_info = this.resultSetForm.waitReviewDescribe
+            this.resultFrom[1].describeInfo = this.resultSetForm.waitReviewDescribe
             this.resultFrom[1].isSkip = this.resultSetForm.waitReviewIsJumpCurrentPage
             this.resultFrom[1].skipPage = this.resultSetForm.waitReviewJumpPage
             this.resultFrom[1].skipWebsite = this.resultSetForm.waitReviewOutPageUrl
             this.resultFrom[1].theme = this.resultSetForm.waitReviewTitle
             this.resultFrom[1].eventCode = this.form.listQuery.data.eventCode
-            // this.resultFrom[1].resultButton = this.resultSetForm.waitReviewButtonList
+            this.resultFrom[1].resultButton = []
             this.resultSetForm.waitReviewButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultFrom[1].resultButton.push(v)
@@ -2848,13 +2806,13 @@ export default {
 
             this.resultFrom[2].appFile = this.resultSetForm.noPassBanner
             this.resultFrom[2].backgroundFile = this.resultSetForm.noPassBackground
-            this.resultFrom[2].describe_info = this.resultSetForm.noPassDescribe
+            this.resultFrom[2].describeInfo = this.resultSetForm.noPassDescribe
             this.resultFrom[2].isSkip = this.resultSetForm.noPassIsJumpCurrentPage
             this.resultFrom[2].skipPage = this.resultSetForm.noPassJumpPage
             this.resultFrom[2].skipWebsite = this.resultSetForm.noPassOutPageUrl
             this.resultFrom[2].theme = this.resultSetForm.noPassTitle
             this.resultFrom[2].eventCode = this.form.listQuery.data.eventCode
-            // this.resultFrom[2].resultButton = this.resultSetForm.noPassButtonList
+            this.resultFrom[2].resultButton = []
             this.resultSetForm.noPassButtonList.forEach(item => {
               var v = { value: item.value, name: item.name }
               this.resultFrom[2].resultButton.push(v)
@@ -3268,7 +3226,7 @@ export default {
       return isAllowUpload
     },
     // handlePictureCardPreview (file) {
-    //   debugger
+    //
     //   console.log(file, 'file')
     //   // file 转 base64 返回 base64 和图片比例
     //   const reader = new FileReader()
@@ -3431,13 +3389,11 @@ export default {
     },
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
-      debugger
       this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
-      debugger
       let checkedCount = value.length
       this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
@@ -3551,7 +3507,7 @@ export default {
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-      // debugger
+      //
       this.setInfoList[this.checkedIndex].check[0].code = '011'
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
@@ -3583,7 +3539,6 @@ export default {
       setInfoListItem.options.push(optionValue)
     },
     delRadioOption(setInfoListItem, option, optionIndex) {
-      debugger
       // this.setInfoList.splice(itemIndex,1);
       setInfoListItem.options.splice(optionIndex, 1)
     },
@@ -3647,7 +3602,7 @@ export default {
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
-      debugger
+
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()

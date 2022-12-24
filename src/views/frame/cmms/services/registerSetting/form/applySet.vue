@@ -592,8 +592,6 @@ export default {
       data: { data: 'REGISTER_VERIFICATION', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       this.registerVerificationOptions = res.data
-      console.log(this.registerVerificationOptions, 'this.registerVerificationOptions')
-      // dictItemName \ dictItemVal
     })
     // 获取登录验证数据字典
     request({
@@ -602,8 +600,6 @@ export default {
       data: { data: 'LOGIN_VERIFICATION', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       this.loginVerificationOptions = res.data
-      console.log(this.loginVerificationOptions, 'this.loginVerificationOptions')
-      // dictItemName \ dictItemVal
     })
     // 获取自定义验证数据字典
     request({
@@ -612,8 +608,6 @@ export default {
       data: { data: 'CUSTOMIZE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       this.customizeOptions = res.data
-      console.log(this.customizeOptions, 'this.customizeOptions')
-      // dictItemName \ dictItemVal
     })
     // 获取生成类型数据字典
     request({
@@ -622,8 +616,6 @@ export default {
       data: { data: 'contact_code_rule_type', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       this.typeOptions = res.data
-      console.log(this.typeOptions, 'this.typeOptions')
-      // dictItemName \ dictItemVal
     })
     // 获取协助报名开放字段数据字典
     request({
@@ -632,8 +624,6 @@ export default {
       data: { data: 'SIGNUP_FIELD', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
     }).then(res => {
       this.signupFieldOptions = res.data
-      console.log(this.signupFieldOptions, 'this.signupFieldOptions')
-      // dictItemName \ dictItemVal
     })
   },
   methods: {

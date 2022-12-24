@@ -6,9 +6,9 @@
         <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" placeholder="请输入人员编码"></el-input>
       </el-form-item>
       <el-form-item label="参会人类型" prop="contactType">
-        <el-select v-model="setForm.contactType" style="width: 50%" placeholder="请选择参会人类型">
-          <el-option v-for="item in contactTypeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
-        </el-select>
+
+        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" placeholder="请选择参会人类型"></base-select>
+
       </el-form-item>
 
       <div v-for="element in setInfoList" :key="element.mapCode">
@@ -158,7 +158,7 @@
                 <div v-if="element.nationIsShow" class="addresItem">
                   <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.value"> </el-option>
                     </el-select>
                   </el-form-item>
                 </div>
@@ -249,7 +249,7 @@
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
                     <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
                 </div>
@@ -260,7 +260,7 @@
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
                     <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
                 </div>
@@ -273,7 +273,7 @@
                     <el-form-item prop="phoneAreaCode" label-width="0">
                       <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
@@ -290,7 +290,7 @@
                     <el-form-item prop="faxAreaCode" label-width="0">
                       <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
@@ -399,8 +399,7 @@ export default {
       previewDialogVisible: false, // 预览图片弹窗
       previewImgUrl: '', // 预览图片地址
       cropperModel: false, // 图片裁剪弹窗
-      countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
-      contactTypeOptions: [], // 参会人类型列表
+      countryCodeOptions: [], // 国际区号下拉选项  lable - value
       setForm: {
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
@@ -505,9 +504,6 @@ export default {
 
     // 表单配置查询
     this.getEventInfo()
-
-    // 获取参会人类型数据字典
-    this.getcontactTypeList()
 
     // 国际编码字典项查询
     this.getCountryCode()
@@ -1224,31 +1220,14 @@ export default {
     selectMultipleChange(val) {},
     // 国际编码字典项查询
     getCountryCode() {
-      request({
-        url: '/api/sys/dict/listItem',
-        method: 'POST',
-        data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        // dictItemName \ dictItemVal
+      this.countryCodeOptions = this.$t('datadict.countryCode')
+      // 86 大陆, 852 香港, 853 澳门, 886 台湾
+      this.nationsList = res.data.filter(item => {
+        //
+        return item.value != '852' && item.value != '853' && item.value != '886'
+      })
+    },
 
-        this.countryCodeOptions = res.data
-        // 86 大陆, 852 香港, 853 澳门, 886 台湾
-        this.nationsList = res.data.filter(item => {
-          //
-          return item.dictItemVal != '852' && item.dictItemVal != '853' && item.dictItemVal != '886'
-        })
-      })
-    },
-    // 获取参会人类型数据字典
-    getcontactTypeList() {
-      request({
-        url: '/api/sys/dict/listItem',
-        method: 'POST',
-        data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        this.contactTypeOptions = res.data
-      })
-    },
     // 返回上级
     back() {
       const backName = this.$route.params.back ? this.$route.params.back : 'attendeeManage'

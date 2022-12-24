@@ -9,7 +9,7 @@
       </el-form-item> -->
       <el-form-item label="模块类型" prop="type">
         <el-select @change="select_" v-model="ruleForm.type" placeholder="请选择模块类型" style="width: 100%">
-          <el-option v-for="(item, index) in classify" :key="index" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
+          <el-option v-for="(item, index) in classify" :key="index" :label="item.lable" :value="item.value"></el-option>
           <!-- <el-option label="站外链接" value="站外链接"></el-option> -->
         </el-select>
       </el-form-item>
@@ -369,16 +369,8 @@ export default {
       this.ruleForm.link = ''
     },
     getCode() {
-      request({
-        url: '/api/sys/dict/listItem',
-        method: 'POST',
-        data: { data: 'WEBSITE_BUTTON_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      })
-        .then(res => {
-          this.classify = res.data
-          this.console.log(res)
-        })
-        .catch(() => {})
+      this.classify = this.$t('datadict.websiteButtonType')
+
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
@@ -386,7 +378,6 @@ export default {
       })
         .then(res => {
           this.pageLists = res.data
-          this.console.log(res)
         })
         .catch(() => {})
     },
