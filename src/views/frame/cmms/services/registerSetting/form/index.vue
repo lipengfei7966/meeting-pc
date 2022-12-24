@@ -62,7 +62,7 @@
               </el-form-item>
             </div>
           </div>
-          <!-- 会议宣传 -->el-upload
+          <!-- 会议宣传 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
               <h3>会议宣传</h3>
@@ -2462,7 +2462,7 @@ export default {
       this.resultSetForm.noPassTitle = ''
       // this.resultSetForm.noPassButtonList.name = ''
       // this.resultSetForm.noPassButtonList.value = ''
-      this.this.resultSetForm.noPassButtonList = []
+      this.resultSetForm.noPassButtonList = []
       this.resultSetForm.noPassButtonList.push(btnObj)
       this.successBannerImageList = []
       this.waitReviewBannerImageList = []
@@ -2611,46 +2611,7 @@ export default {
     },
     // 获取结果页
     getResultFn() {
-      var btnObj = { name: '', value: '' }
-      this.resultSetForm.successBanner = ''
-      this.resultSetForm.successBackground = ''
-      this.resultSetForm.successDescribe = ''
-      this.resultSetForm.successIsJumpCurrentPage = '0'
-      this.resultSetForm.successJumpPage = ''
-      this.resultSetForm.successOutPageUrl = ''
-      this.resultSetForm.successTitle = ''
-      // this.resultSetForm.successButtonList.name = ''
-      // this.resultSetForm.successButtonList.value = ''
-      this.resultSetForm.successButtonList = []
-      this.resultSetForm.successButtonList.push(btnObj)
-      this.resultSetForm.waitReviewBanner = ''
-      this.resultSetForm.waitReviewBackground = ''
-      this.resultSetForm.waitReviewDescribe = ''
-      this.resultSetForm.waitReviewIsJumpCurrentPage = '0'
-      this.resultSetForm.waitReviewJumpPage = ''
-      this.resultSetForm.waitReviewOutPageUrl = ''
-      this.resultSetForm.waitReviewTitle = ''
-      // this.resultSetForm.waitReviewButtonList.name = ''
-      // this.resultSetForm.waitReviewButtonList.value = ''
-      this.resultSetForm.waitReviewButtonList = []
-      this.resultSetForm.waitReviewButtonList.push(btnObj)
-      this.resultSetForm.noPassBanner = ''
-      this.resultSetForm.noPassBackground = ''
-      this.resultSetForm.noPassDescribe = ''
-      this.resultSetForm.noPassIsJumpCurrentPage = '0'
-      this.resultSetForm.noPassJumpPage = ''
-      this.resultSetForm.noPassOutPageUrl = ''
-      this.resultSetForm.noPassTitle = ''
-      // this.resultSetForm.noPassButtonList.name = ''
-      // this.resultSetForm.noPassButtonList.value = ''
-      this.resultSetForm.noPassButtonList = []
-      this.resultSetForm.noPassButtonList.push(btnObj)
-      this.successBannerImageList = []
-      this.waitReviewBannerImageList = []
-      this.noPassBannerImageList = []
-      this.successBgcImageList = []
-      this.waitReviewBgcImageList = []
-      this.noPassBgcImageList = []
+      this.claerResultFn()
       request({
         url: '/api/register/signupResult/resultList',
         method: 'POST',
@@ -2663,7 +2624,11 @@ export default {
       }).then(res => {
         if (res.status) {
           res.data.length > 1 ? (this.resultSetForm.isNeedApprove = '1') : (this.resultSetForm.isNeedApprove = '0')
-
+          debugger
+          this.resultSetForm.noPassButtonList = []
+          this.resultSetForm.successButtonList = []
+          this.resultSetForm.waitReviewButtonList = []
+          console.log(this.resultSetForm.noPassButtonList, 'this.resultSetForm.noPassButtonList')
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
@@ -3698,6 +3663,11 @@ export default {
 }
 </script>
 <style>
+.el-upload .el-upload-dragger {
+  width: 150px;
+  height: 150px;
+}
+
 .upload-demo .el-upload--picture-card {
   position: static;
   overflow: inherit;

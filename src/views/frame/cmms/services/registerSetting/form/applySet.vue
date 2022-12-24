@@ -11,7 +11,8 @@
           </el-popover>
         </div> -->
         <h2>{{ eventName }}</h2>
-        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="150px" class="contactForm" style="width: 95%; margin: 0 auto">
+        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="150px" class="contactForm"
+          style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
             <!-- 分割线 -->
             <div v-if="element.systemName == '分割线'" class="form-item-input">
@@ -35,32 +36,42 @@
                   <!-- 短文本 -->
                   <div v-if="element.systemName == '短文本'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate"
+                        :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
                     </div>
                   </div>
 
                   <!-- 长文本 -->
                   <div v-if="element.systemName == '长文本'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea"
+                        :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true"
+                        :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
                     </div>
                   </div>
 
                   <!-- 数字 -->
                   <div v-if="element.systemName == '数字'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])" size="mini"></el-input>
+                      <el-input v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder"
+                        @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])"
+                        size="mini"></el-input>
                     </div>
                   </div>
 
                   <!-- 单选框 -->
                   <div v-if="element.systemName == '单选框'" class="form-item-input">
                     <div style="min-width: 300px; display: inline-block; vertical-align: top">
-                      <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                      <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :disabled="element.notAllowEdit && isUpdate"
+                        :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
                         <div v-for="item in element.options" :key="item">
                           <el-radio v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                           <el-radio v-else :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
-                          <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'" placeholder="请输入其他选项" size="mini" style="width: 200px"></el-input>
+                          <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'"
+                            placeholder="请输入其他选项" size="mini" style="width: 200px"></el-input>
                         </div>
                       </el-radio-group>
                     </div>
@@ -69,12 +80,17 @@
                   <!-- 复选框 -->
                   <div v-if="element.systemName == '复选框'" class="form-item-input">
                     <div style="width: 100%; min-width: 300px; display: inline-block; vertical-align: top">
-                      <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
+                      <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :disabled="element.notAllowEdit && isUpdate"
+                        :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }"
+                        :min="element.minCheckedCount || 0"
+                        :max="element.maxCheckedCount || element.options.length || 0">
                         <div v-for="item in element.options" :key="item">
                           <el-checkbox v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}
                           </el-checkbox>
                           <el-checkbox v-else :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
-                          <el-input v-if="false" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width: 200px; margin-top: 5px"></el-input>
+                          <el-input v-if="false" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项"
+                            size="mini" style="width: 200px; margin-top: 5px"></el-input>
                         </div>
                       </el-checkbox-group>
                     </div>
@@ -84,7 +100,9 @@
                   <div v-if="element.systemName == '下拉列表'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
-                      <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px" :placeholder="element.placeholder">
+                      <el-select v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px"
+                        :placeholder="element.placeholder">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
@@ -93,7 +111,10 @@
                   <!-- 下拉复选框 -->
                   <div v-if="element.systemName == '下拉复选框'" class="form-item-input">
                     <div>
-                      <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px" :placeholder="element.placeholder" :multiple="true" :multiple-limit="element.maxCheckedCount || 0">
+                      <el-select v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px"
+                        :placeholder="element.placeholder" :multiple="true"
+                        :multiple-limit="element.maxCheckedCount || 0">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
@@ -111,7 +132,9 @@
                   <div v-if="element.systemName == '日期'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
-                      <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+                      <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]"
+                        :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini"
+                        :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
                     </div>
                   </div>
                 </el-form-item>
@@ -120,22 +143,26 @@
               <!-- 固定信息 -->
               <div v-else>
                 <!-- 姓名 -->
-                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '150px'">
+                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title"
+                  :label-width="element.nameSplit ? '0' : '150px'">
                   <!-- 姓名 -->
                   <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                    <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.placeholder"></el-input>
+                    <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" size="mini"
+                      :placeholder="element.placeholder"></el-input>
                   </div>
                   <!-- 姓名拆分 -->
                   <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                     <div>
                       <el-form-item label="姓">
-                        <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
+                        <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" size="mini"
+                          :placeholder="element.surnamePlaceholder"></el-input>
                       </el-form-item>
                     </div>
                     <div>
                       <el-form-item label="名">
-                        <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.namePlaceholder"></el-input>
+                        <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" size="mini"
+                          :placeholder="element.namePlaceholder"></el-input>
                       </el-form-item>
                     </div>
                   </div>
@@ -147,37 +174,43 @@
                     <!-- 国家 -->
                     <div v-if="element.nationIsShow" class="addresItem">
                       <el-form-item :label="element.nationTitle">
-                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" :placeholder="element.nationPlaceholder"> </el-select>
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations"
+                          :placeholder="element.nationPlaceholder"> </el-select>
                       </el-form-item>
                     </div>
                     <!-- 省份 -->
                     <div v-if="element.provinceIsShow" class="addresItem">
                       <el-form-item :label="element.provinceTitle">
-                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder"> </el-select>
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province"
+                          :placeholder="element.provincePlaceholder"> </el-select>
                       </el-form-item>
                     </div>
                     <!-- 城市 -->
                     <div v-if="element.cityIsShow" class="addresItem">
                       <el-form-item :label="element.cityTitle">
-                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder"> </el-select>
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city"
+                          :placeholder="element.cityPlaceholder"> </el-select>
                       </el-form-item>
                     </div>
                     <!-- 区县 -->
                     <div v-if="element.countyIsShow" class="addresItem">
                       <el-form-item :label="element.countyTitle">
-                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder"> </el-select>
+                        <el-select :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county"
+                          :placeholder="element.countyPlaceholder"> </el-select>
                       </el-form-item>
                     </div>
                     <!-- 详细地址 -->
                     <div v-if="element.detailedAdressISShow" class="addresItem">
                       <el-form-item :label="element.detailedAdressTitle">
-                        <el-input :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+                        <el-input :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress"
+                          :placeholder="element.detailedAdressPlaceholder"></el-input>
                       </el-form-item>
                     </div>
                     <!-- 邮编 -->
                     <div v-if="element.postcodeIsShow" class="addresItem">
                       <el-form-item :label="element.postcodeTitle">
-                        <el-input :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                        <el-input :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode"
+                          :placeholder="element.postcodePlaceholder"></el-input>
                       </el-form-item>
                     </div>
                   </div>
@@ -187,19 +220,24 @@
                   <!-- 性别 -->
                   <div v-if="element.mapCode == 'sex'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                    <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
-                    <el-radio v-model="setForm.sex" :label="element.options[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
+                    <el-radio v-model="setForm.sex" :label="element.options[0]"
+                      :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
+                    <el-radio v-model="setForm.sex" :label="element.options[1]"
+                      :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
                   </div>
 
                   <!-- 证件 -->
                   <div v-if="element.mapCode == 'certificate'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
-                      <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
+                      <el-select style="width: 100%" v-model="setForm.certificateType"
+                        :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate"
+                        @change="certificateTypeChange">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                       <br />
-                      <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                      <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable
+                        style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
                     </div>
                   </div>
 
@@ -213,7 +251,8 @@
                           <i class="el-icon-zoom-in" @click="previewImg(setForm.photo)"></i>
                         </span>
                         <span class="el-upload-list__item-preview">
-                          <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView))" @click="deleteImg(setForm.photo)"></i>
+                          <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView))"
+                            @click="deleteImg(setForm.photo)"></i>
                         </span>
                       </span>
                     </div>
@@ -226,8 +265,11 @@
                   <div v-if="element.mapCode == 'mobile'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
-                      <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.mobile" :placeholder="element.placeholder"
+                        :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
+                          slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode"
+                          @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
                           <el-option> </el-option>
                         </el-select>
                       </el-input>
@@ -237,8 +279,11 @@
                   <!-- 备用手机号 -->
                   <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
+                          slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode"
+                          @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
                           <el-option> </el-option>
                         </el-select>
                       </el-input>
@@ -250,15 +295,21 @@
                     <div style="width: 80%; display: inline-block; vertical-align: top">
                       <span style="display: inline-block">
                         <el-form-item label-width="0">
-                          <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                          <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate"
+                            style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini"
+                            class="input-with-select">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
+                              slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
                               <el-option> </el-option>
                             </el-select>
                           </el-input>
                         </el-form-item>
                       </span>
-                      <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
-                      <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                      <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate"
+                          style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
+                      <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber"
+                          :disabled="element.notAllowEdit && isUpdate" style="width: 120px"
+                          :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
                     </div>
                   </div>
 
@@ -267,22 +318,29 @@
                     <div style="width: 80%; display: inline-block; vertical-align: top">
                       <span style="display: inline-block">
                         <el-form-item label-width="0">
-                          <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                          <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate"
+                            style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini"
+                            class="input-with-select">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
+                              slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
                               <el-option> </el-option>
                             </el-select>
                           </el-input>
                         </el-form-item>
                       </span>
-                      <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
-                      <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                      <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate"
+                          style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
+                      <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber"
+                          :disabled="element.notAllowEdit && isUpdate" style="width: 120px"
+                          :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
                     </div>
                   </div>
 
                   <!-- 邮箱 -->
                   <div v-if="element.mapCode == 'email'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
@@ -290,42 +348,48 @@
                   <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
-                      <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 微信号 -->
                   <div v-if="element.mapCode == 'wechat'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- qq -->
                   <div v-if="element.mapCode == 'qq'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 公司 -->
                   <div v-if="element.mapCode == 'company'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 部门 -->
                   <div v-if="element.mapCode == 'department'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
 
                   <!-- 职位 -->
                   <div v-if="element.mapCode == 'position'" class="form-item-input">
                     <div>
-                      <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                      <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate"
+                        :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
                   </div>
                 </el-form-item>
@@ -336,12 +400,14 @@
       </div>
 
       <div class="applySetForm">
-        <el-form ref="applySetForm" :validate-on-rule-change="false" :rules="rulesApply" @submit.native.prevent label-position="right" label-width="180px" :model="applySetForm">
+        <el-form ref="applySetForm" :validate-on-rule-change="false" :rules="rulesApply" @submit.native.prevent
+          label-position="right" label-width="180px" :model="applySetForm">
           <div class="setItemTitle">
             <h3>注册登录</h3>
             <span>
               <span style="margin-right: 20px">{{ isRegisterSetShow ? '收起' : '展开' }}</span>
-              <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow" style="vertical-align: middle; padding: 0">
+              <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow"
+                style="vertical-align: middle; padding: 0">
                 <i v-if="isRegisterSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                 <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
               </el-button>
@@ -350,44 +416,53 @@
           <el-divider></el-divider>
           <div v-show="isRegisterSetShow">
             <el-form-item label="验证方式" prop="isVerification">
-              <el-radio v-model="applySetForm.isVerification" :label="0">不验证</el-radio>
-              <el-radio v-model="applySetForm.isVerification" :label="1">验证</el-radio>
+              <el-radio v-model="applySetForm.isVerification" label="0">不验证</el-radio>
+              <el-radio v-model="applySetForm.isVerification" label="1">验证</el-radio>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification" label="注册验证" prop="registerVerification">
+            <el-form-item v-if="applySetForm.isVerification == '1'" label="注册验证" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
-                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dispOrder" :label="item.dispOrder" :checked="applySetForm.registerVerification.includes(item.dispOrder + '')">
+                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dispOrder"
+                  :label="item.dispOrder + ''">
                   {{ item.dictItemName }}
                 </el-checkbox>
+                <!-- :checked="applySetForm.registerVerification.length && applySetForm.registerVerification.includes(item.dispOrder + '')" -->
                 <!-- <el-checkbox label="短信验证"></el-checkbox>
                 <el-checkbox label="邮箱验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification" label="登录验证" prop="loginVerification">
+            <el-form-item v-if="applySetForm.isVerification == '1'" label="登录验证" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
-                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dispOrder" :label="item.dispOrder" :checked="applySetForm.loginVerification.includes(item.dispOrder + '')">
+                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dispOrder"
+                  :label="item.dispOrder + ''">
                   {{ item.dictItemName }}
                 </el-checkbox>
+                <!-- :checked="applySetForm.loginVerification.length && applySetForm.loginVerification.includes(item.dispOrder + '')" -->
                 <!-- <el-checkbox label="短信验证"></el-checkbox>
                 <el-checkbox label="邮箱验证"></el-checkbox>
                 <el-checkbox label="账号密码"></el-checkbox>
                 <el-checkbox label="自定义验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification && applySetForm.loginVerification.includes(4)" label="自定义验证项" prop="coustomVerification">
+            <el-form-item
+              v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('4')"
+              label="自定义验证项" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
-                <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dispOrder" :checked="applySetForm.coustomVerification.includes(item.dispOrder + '')">
+                <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dispOrder + ''">
                   {{ item.dictItemName }}
                 </el-checkbox>
+                <!-- :checked="applySetForm.coustomVerification.length && applySetForm.coustomVerification.includes(item.dispOrder + '')" -->
                 <!-- <el-checkbox label="手机号"></el-checkbox>
                 <el-checkbox label="邮箱"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
 
             <el-form-item label="登录前需完善必填信息" prop="isNeedCompleteMustInfo">
-              <el-switch v-model="applySetForm.isNeedCompleteMustInfo" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              <el-switch v-model="applySetForm.isNeedCompleteMustInfo" active-color="#13ce66"
+                inactive-color="#ff4949"></el-switch>
             </el-form-item>
             <el-form-item label="隐私协议" prop="IsIintimateAgreement">
-              <el-switch v-model="applySetForm.IsIintimateAgreement" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              <el-switch v-model="applySetForm.IsIintimateAgreement" active-color="#13ce66"
+                inactive-color="#ff4949"></el-switch>
               <el-button type="text" @click="editPrivacyHandle">编辑隐私协议</el-button>
             </el-form-item>
           </div>
@@ -396,7 +471,8 @@
             <h3>报名基础信息</h3>
             <span>
               <span style="margin-right: 20px">{{ isApplyBaseInfoShow ? '收起' : '展开' }}</span>
-              <el-button type="text" @click="isApplyBaseInfoShow = !isApplyBaseInfoShow" style="vertical-align: middle; padding: 0">
+              <el-button type="text" @click="isApplyBaseInfoShow = !isApplyBaseInfoShow"
+                style="vertical-align: middle; padding: 0">
                 <i v-if="isApplyBaseInfoShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                 <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
               </el-button>
@@ -405,7 +481,8 @@
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
             <el-form-item label="报名日期" prop="applyDate">
-              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" range-separator="至"
+                start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="报名审核" prop="applyCheck">
@@ -424,7 +501,8 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名开放字段" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
-                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal" :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{
+                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal"
+                  :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{
                       item.dictItemName
                   }}</el-checkbox>
                 <!-- <el-checkbox label="姓名"></el-checkbox>
@@ -446,7 +524,8 @@
         </el-form-item>
         <el-form-item label="协议内容" prop="privacyContent">
           <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-          <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
+          <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html"
+            style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="privacySubmitForm('ruleForm')">确定</el-button>
@@ -466,7 +545,7 @@ import request from '@/utils/frame/base/request'
 import moment from 'moment'
 export default {
   name: 'applySet',
-  data() {
+  data () {
     return {
       setForm: {
         personnelCode: '', // 人员编码
@@ -570,16 +649,16 @@ export default {
     }
   },
   watch: {
-    eventCode(newVal, oldVal) {
+    eventCode (newVal, oldVal) {
       if (newVal) {
         this.getEventInfo()
       }
     }
   },
-  created() {
+  created () {
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
   },
-  mounted() {
+  mounted () {
     if (this.eventCode) {
       this.getEventInfo()
       this.signupContactCodeRuleFn()
@@ -627,10 +706,10 @@ export default {
     })
   },
   methods: {
-    resetForm() {
+    resetForm () {
       this.dialogFormVisible = false
     },
-    privacySubmitForm(formName) {
+    privacySubmitForm (formName) {
       // this.$refs[formName].resetFields()
       const req = window.frames['myframe'].getContent()
       // const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
@@ -642,12 +721,12 @@ export default {
         this.dialogFormVisible = false
       }
     },
-    editPrivacyHandle() {
+    editPrivacyHandle () {
       this.dialogFormVisible = true
       this.initDialog()
     },
     // 生成规则
-    signupContactCodeRuleFn(evevtCodeByIndex) {
+    signupContactCodeRuleFn (evevtCodeByIndex) {
       var evCode = evevtCodeByIndex ? evevtCodeByIndex : this.eventCode
       request({
         url: '/api/register/signupContactCodeRule/get',
@@ -659,7 +738,7 @@ export default {
         }
       }).then(res => {
         console.log(res, ' 生成规则')
-        this.applySetForm.isVerification = res.data.isVerification - 0
+        this.applySetForm.isVerification = res.data.isVerification
         this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
         this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
         this.applySetForm.coustomVerification = [...new Set(res.data.customize.split(','))]
@@ -683,7 +762,7 @@ export default {
       })
     },
     // 表单配置查询
-    getEventInfo() {
+    getEventInfo () {
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -754,10 +833,10 @@ export default {
         })
       })
     },
-    setResult() {
+    setResult () {
       this.$emit('setResult')
     },
-    saveHrefHandle(formName) {
+    saveHrefHandle (formName) {
       this.$emit('applySetForm', this.applySetForm)
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -810,21 +889,21 @@ export default {
         }
       })
     },
-    toAppearance(step) {
+    toAppearance (step) {
       // this.$emit('stepIndex', step)
       // this.$emit('isFormSetComplete', false)
       // console.log(step, 'step11')
     },
-    toEdit(step) {
+    toEdit (step) {
       // this.$emit('stepIndex', step)
       // this.$emit('isFormSetComplete', false)
     },
-    toResult(step) {
+    toResult (step) {
       // this.$emit('stepIndex', step)
       // this.$emit('isFormSetComplete', false)
     },
 
-    certificateTypeChange() {}
+    certificateTypeChange () { }
   }
 }
 </script>
