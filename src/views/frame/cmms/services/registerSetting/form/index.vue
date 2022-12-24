@@ -62,7 +62,7 @@
               </el-form-item>
             </div>
           </div>
-          <!-- 会议宣传 -->
+          <!-- 会议宣传 -->el-upload
           <div class="appearanceSetItem">
             <div class="setItemTitle">
               <h3>会议宣传</h3>
@@ -1729,7 +1729,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-show="resultSetForm.isNeedApprove === '1'">
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>2、待审核</h3>
               <span>
@@ -1834,7 +1834,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-show="resultSetForm.isNeedApprove === '1'">
+          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>3、不通过</h3>
               <span>
@@ -2471,6 +2471,7 @@ export default {
       this.applySetForm = applySetForm
     },
     claerResultFn() {
+      var btnObj = { name: '', value: '' }
       this.resultSetForm.successBanner = ''
       this.resultSetForm.successBackground = ''
       this.resultSetForm.successDescribe = ''
@@ -2478,8 +2479,10 @@ export default {
       this.resultSetForm.successJumpPage = ''
       this.resultSetForm.successOutPageUrl = ''
       this.resultSetForm.successTitle = ''
-      this.resultSetForm.successButtonList.name = ''
-      this.resultSetForm.successButtonList.value = ''
+      // this.resultSetForm.successButtonList.name = ''
+      // this.resultSetForm.successButtonList.value = ''
+      this.resultSetForm.successButtonList = []
+      this.resultSetForm.successButtonList.push(btnObj)
       this.resultSetForm.waitReviewBanner = ''
       this.resultSetForm.waitReviewBackground = ''
       this.resultSetForm.waitReviewDescribe = ''
@@ -2487,8 +2490,10 @@ export default {
       this.resultSetForm.waitReviewJumpPage = ''
       this.resultSetForm.waitReviewOutPageUrl = ''
       this.resultSetForm.waitReviewTitle = ''
-      this.resultSetForm.waitReviewButtonList.name = ''
-      this.resultSetForm.waitReviewButtonList.value = ''
+      // this.resultSetForm.waitReviewButtonList.name = ''
+      // this.resultSetForm.waitReviewButtonList.value = ''
+      this.resultSetForm.waitReviewButtonList = []
+      this.resultSetForm.waitReviewButtonList.push(btnObj)
       this.resultSetForm.noPassBanner = ''
       this.resultSetForm.noPassBackground = ''
       this.resultSetForm.noPassDescribe = ''
@@ -2496,8 +2501,10 @@ export default {
       this.resultSetForm.noPassJumpPage = ''
       this.resultSetForm.noPassOutPageUrl = ''
       this.resultSetForm.noPassTitle = ''
-      this.resultSetForm.noPassButtonList.name = ''
-      this.resultSetForm.noPassButtonList.value = ''
+      // this.resultSetForm.noPassButtonList.name = ''
+      // this.resultSetForm.noPassButtonList.value = ''
+      this.this.resultSetForm.noPassButtonList = []
+      this.resultSetForm.noPassButtonList.push(btnObj)
       this.successBannerImageList = []
       this.waitReviewBannerImageList = []
       this.noPassBannerImageList = []
@@ -2645,6 +2652,40 @@ export default {
     },
     // 获取结果页
     getResultFn() {
+      var btnObj = { name: '', value: '' }
+      this.resultSetForm.successBanner = ''
+      this.resultSetForm.successBackground = ''
+      this.resultSetForm.successDescribe = ''
+      this.resultSetForm.successIsJumpCurrentPage = '0'
+      this.resultSetForm.successJumpPage = ''
+      this.resultSetForm.successOutPageUrl = ''
+      this.resultSetForm.successTitle = ''
+      // this.resultSetForm.successButtonList.name = ''
+      // this.resultSetForm.successButtonList.value = ''
+      this.resultSetForm.successButtonList = []
+      this.resultSetForm.successButtonList.push(btnObj)
+      this.resultSetForm.waitReviewBanner = ''
+      this.resultSetForm.waitReviewBackground = ''
+      this.resultSetForm.waitReviewDescribe = ''
+      this.resultSetForm.waitReviewIsJumpCurrentPage = '0'
+      this.resultSetForm.waitReviewJumpPage = ''
+      this.resultSetForm.waitReviewOutPageUrl = ''
+      this.resultSetForm.waitReviewTitle = ''
+      // this.resultSetForm.waitReviewButtonList.name = ''
+      // this.resultSetForm.waitReviewButtonList.value = ''
+      this.resultSetForm.waitReviewButtonList = []
+      this.resultSetForm.waitReviewButtonList.push(btnObj)
+      this.resultSetForm.noPassBanner = ''
+      this.resultSetForm.noPassBackground = ''
+      this.resultSetForm.noPassDescribe = ''
+      this.resultSetForm.noPassIsJumpCurrentPage = '0'
+      this.resultSetForm.noPassJumpPage = ''
+      this.resultSetForm.noPassOutPageUrl = ''
+      this.resultSetForm.noPassTitle = ''
+      // this.resultSetForm.noPassButtonList.name = ''
+      // this.resultSetForm.noPassButtonList.value = ''
+      this.resultSetForm.noPassButtonList = []
+      this.resultSetForm.noPassButtonList.push(btnObj)
       this.successBannerImageList = []
       this.waitReviewBannerImageList = []
       this.noPassBannerImageList = []
@@ -2923,7 +2964,7 @@ export default {
         if (res.status) {
           this.$message.success('保存成功')
           this.getEventInfo()
-          this.getResultFn()
+          this.stepIndex = 2
         } else {
           this.$message.error('保存失败')
         }
@@ -3390,11 +3431,13 @@ export default {
     },
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange(val) {
+      debugger
       this.setInfoList[this.checkedIndex].imageCheckedTypes = val ? this.setInfoList[this.checkedIndex].imageTypes : []
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = false
       this.setInfoList[this.checkedIndex].allFileTypes = this.setInfoList[this.checkedIndex].allFileTypes.concat(this.setInfoList[this.checkedIndex].imageCheckedTypes)
     },
     imageCheckChange(value) {
+      debugger
       let checkedCount = value.length
       this.setInfoList[this.checkedIndex].imageCheckAll = checkedCount === this.setInfoList[this.checkedIndex].imageTypes.length
       this.setInfoList[this.checkedIndex].imageIsIndeterminate = checkedCount > 0 && checkedCount < this.setInfoList[this.checkedIndex].imageTypes.length
@@ -3540,6 +3583,7 @@ export default {
       setInfoListItem.options.push(optionValue)
     },
     delRadioOption(setInfoListItem, option, optionIndex) {
+      debugger
       // this.setInfoList.splice(itemIndex,1);
       setInfoListItem.options.splice(optionIndex, 1)
     },
@@ -3603,10 +3647,10 @@ export default {
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
-
+      debugger
+      this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()
-      this.getResultFn()
       this.$refs.attCodeSet.signupContactCodeRuleFn(params.code)
     },
     initialize() {
@@ -3698,6 +3742,12 @@ export default {
   }
 }
 </script>
+<style>
+.upload-demo .el-upload--picture-card {
+  position: static;
+  overflow: inherit;
+}
+</style>
 
 <style lang="scss" scoped>
 .transition-box {
