@@ -2624,7 +2624,6 @@ export default {
       }).then(res => {
         if (res.status) {
           res.data.length > 1 ? (this.resultSetForm.isNeedApprove = '1') : (this.resultSetForm.isNeedApprove = '0')
-          debugger
           this.resultSetForm.noPassButtonList = []
           this.resultSetForm.successButtonList = []
           this.resultSetForm.waitReviewButtonList = []
