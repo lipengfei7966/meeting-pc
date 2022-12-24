@@ -87,13 +87,22 @@
               </el-form-item>
 
               <el-form-item label="Banner(pc)" prop="meetingFile">
-                <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" ref="rebateUpload"
+                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                  :on-success="meetingUploadFile" :file-list="meetingImageList" :headers="httpHeaders"
+                  :on-remove="meetingHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload"
+                  :on-preview="mweetngHandlePreview">
+                  <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog :visible.sync="meetingdialogVisible">
+                  <img width="100%" :src="mettingdialogImageUrl" alt="">
+                </el-dialog>
+                <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" ref="rebateUpload"
                   :before-upload="beforeAvatarUpload" :multiple="false"
                   :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
-                </el-upload>
+                </el-upload> -->
               </el-form-item>
 
               <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
@@ -130,20 +139,39 @@
             <el-divider></el-divider>
             <div v-show="isRegisterSetShow">
               <el-form-item label="Banner(pc)" prop="loginPcFile">
-                <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
+                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                  :on-success="resPcUploadFile" :file-list="resPcImageList" :headers="httpHeaders"
+                  :on-remove="resPcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload"
+                  :on-preview="resPcHandlePreview">
+                  <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog :visible.sync="resPcdialogVisible">
+                  <img width="100%" :src="resPcdialogImageUrl" alt="">
+                </el-dialog>
+                <!-- <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
                   :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
-                </el-upload>
+                </el-upload> -->
+
               </el-form-item>
               <el-form-item label="Banner(手机端)" prop="loginAppFile">
-                <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
+                <!-- <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
                   :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload> -->
+                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1"
+                  :on-success="resAppUploadFile" :file-list="resAppImageList" :headers="httpHeaders"
+                  :on-remove="resAppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload"
+                  :on-preview="resAppHandlePreview">
+                  <i class="el-icon-plus"></i>
                 </el-upload>
+                <el-dialog :visible.sync="resAppdialogVisible">
+                  <img width="100%" :src="resAppdialogImageUrl" alt="">
+                </el-dialog>
               </el-form-item>
               <el-form-item label="是否显示会议时间" prop="isLoginDate">
                 <el-switch v-model="appearanceSetForm.isLoginDate" active-color="#13ce66" inactive-color="#ff4949"
@@ -2175,6 +2203,15 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      resPcImageList: [],
+      resPcdialogImageUrl: '',
+      resPcdialogVisible: false,
+      resAppImageList: [],
+      resAppdialogImageUrl: '',
+      resAppdialogVisible: false,
+      meetingImageList: [],
+      mettingdialogImageUrl: '',
+      meetingdialogVisible: false,
       fileList: [],
       successBannerImageList: [],
       waitReviewBannerImageList: [],
@@ -2451,16 +2488,16 @@ export default {
         // language: ['中文'], // 语言
         color: '#409EFF', // 主色调
         isPropaganda: 0, // 是否开启会议宣传
-        BannerList: [], // banner 列表
+        // BannerList: [], // banner 列表
         meetingFile: '',
         isMeetingDate: 0, // 是否显示会议时间
         isMeetinPlace: 0, // 是否显示会议地点
         isMeetinCountdown: 0, // 是否显示倒计时
         profile: '', // 会议简介
 
-        registerBannerPCList: [], // 注册登录PC BannerList
+        // registerBannerPCList: [], // 注册登录PC BannerList
         loginPcFile: '',
-        registerBannerMobileList: [], // 注册登录移动端 BannerList
+        // registerBannerMobileList: [], // 注册登录移动端 BannerList
         loginAppFile: '',
         isLoginDate: 0, // 是否显示会议时间
         isLoginPlace: 0, // 是否显示会议地点
@@ -2692,18 +2729,6 @@ export default {
       this.successBgcImageList = []
       this.waitReviewBgcImageList = []
       this.noPassBgcImageList = []
-      // this.successBannerImageList[0].name = ''
-      // this.successBannerImageList[0].url = ''
-      // this.waitReviewBannerImageList[0].name = ''
-      // this.waitReviewBannerImageList[0].url = ''
-      // this.noPassBannerImageList[0].name = ''
-      // this.noPassBannerImageList[0].url = ''
-      // this.successBgcImageList[0].name = ''
-      // this.successBgcImageList[0].url = ''
-      // this.waitReviewBgcImageList[0].name = ''
-      // this.successBgcImageList[0].url = ''
-      // this.noPassBgcImageList[0].name = ''
-      // this.noPassBgcImageList[0].url = ''
     },
     getResultFn () {
       request({
@@ -2724,12 +2749,16 @@ export default {
               case '1':
                 this.resultSetForm.successBanner = item.appFile
                 // this.successBannerImageList[0].url = item.appFile
-                var urlSplits = item.appFile.split("/")
-                this.successBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                if (item.appFile !== '') {
+                  var urlSplits = item.appFile.split("/")
+                  this.successBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                }
                 this.resultSetForm.successBackground = item.backgroundFile
+                if (item.backgroundFile !== '') {
+                  var urlSplits = item.backgroundFile.split("/")
+                  this.successBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
+                }
                 // this.successBgcImageList[0].url = item.backgroundFile
-                var urlSplits = item.backgroundFile.split("/")
-                this.successBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
                 this.resultSetForm.successDescribe = item.describeInfo
                 this.resultSetForm.successIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.successJumpPage = item.skipPage
@@ -2808,8 +2837,8 @@ export default {
         method: 'POST',
         data: {
           data: this.form.listQuery.data.eventCode,
-          funcModule: '表单外观设置',
-          funcOperation: '表单外观设置查询'
+          funcModule: '外观设置',
+          funcOperation: '外观设置查询'
         }
       }).then((res) => {
         if (res.status) {
@@ -2824,8 +2853,8 @@ export default {
               method: 'POST',
               data: {
                 data: this.appearanceSetForm,
-                funcModule: '表单外观设置',
-                funcOperation: '表单外观设置保存'
+                funcModule: '外观设置',
+                funcOperation: '外观设置保存'
               }
             }).then((res) => {
               if (res.status) {
@@ -2866,6 +2895,10 @@ export default {
       this.drawer = status
     },
     getAppearanceSet () {
+      // 清空列表
+      this.meetingImageList = []
+      this.resPcImageList = []
+      this.resAppImageList = []
       request({
         url: '/api/register/signupExterior/get',
         method: 'POST',
@@ -2880,24 +2913,41 @@ export default {
             this.appearanceSetForm.titleChinese = '', // 标题
               this.appearanceSetForm.titleEnglish = '', // 英文标题
               this.appearanceSetForm.language = ['中文'], // 语言
-              this.appearanceSetForm.language = ['中文'], // 语言
+              // this.appearanceSetForm.language = ['中文'], // 语言
               this.appearanceSetForm.color = '#409EFF', // 主色调
               this.appearanceSetForm.isPropaganda = 0, // 是否开启会议宣传
-              this.appearanceSetForm.BannerList = [], // banner 列表
+              // this.appearanceSetForm.BannerList = [], // banner 列表
               this.appearanceSetForm.meetingFile = '',
               this.appearanceSetForm.isMeetingDate = 0, // 是否显示会议时间
               this.appearanceSetForm.isMeetinPlace = 0, // 是否显示会议地点
               this.appearanceSetForm.isMeetinCountdown = 0, // 是否显示倒计时
               this.appearanceSetForm.profile = '', // 会议简介
-              this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
+              // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
               this.appearanceSetForm.loginPcFile = '',
-              this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
+              // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
               this.appearanceSetForm.loginAppFile = '',
               this.appearanceSetForm.isLoginDate = 0, // 是否显示会议时间
               this.appearanceSetForm.isLoginPlace = 0, // 是否显示会议地点
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
             this.appearanceSetForm = res.data
+            // this.meetingImageList = res.data.meetingFile
+            this.meetingImageList = []
+            this.resPcImageList = []
+            this.resAppImageList = []
+            if (res.data.meetingFile !== '') {
+              var urlSplits = res.data.meetingFile.split("/")
+              this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
+            }
+            if (res.data.loginPcFile !== '') {
+              var urlSplits = res.data.loginPcFile.split("/")
+              this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
+            }
+            if (res.data.loginAppFile !== '') {
+              var urlSplits = res.data.loginAppFile.split("/")
+              this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
+            }
+            console.log(res.data, '外观设置')
             Object.keys(this.appearanceSetForm).forEach(key => {
               if (key === 'tenantCode') delete (this.appearanceSetForm[key])
             })
@@ -3084,7 +3134,13 @@ export default {
         if (res.status) {
           this.$message.success('保存成功')
           this.stepIndex = 2
-          this.claerResultFn()
+          this.successBannerImageList = []
+          this.waitReviewBannerImageList = []
+          this.noPassBannerImageList = []
+          this.successBgcImageList = []
+          this.waitReviewBgcImageList = []
+          this.noPassBgcImageList = []
+          this.getResultFn()
         } else {
           this.$message.error('保存失败')
         }
@@ -3336,7 +3392,12 @@ export default {
           this.getEventInfo()
           break
         case 2:
-          this.claerResultFn()
+          this.successBannerImageList = []
+          this.waitReviewBannerImageList = []
+          this.noPassBannerImageList = []
+          this.successBgcImageList = []
+          this.waitReviewBgcImageList = []
+          this.noPassBgcImageList = []
           this.getResultFn()
           break
 
@@ -3427,34 +3488,45 @@ export default {
     //   this.bgcImageUrl = file.url
     //   this.bgcVisible = true
     // },
+    meetingUploadFile (response, file, fileList) {
+      this.appearanceSetForm.meetingFile = response.data.filePath
+    },
+    resPcUploadFile (response, file, fileList) {
+      this.appearanceSetForm.loginPcFile = response.data.filePath
+    },
+    resAppUploadFile (response, file, fileList) {
+      this.appearanceSetForm.loginAppFile = response.data.filePath
+    },
     successBannerUploadFile (response, file, fileList) {
       console.log(fileList, 'fileList')
       this.resultSetForm.successBanner = response.data.filePath
     },
     waitReviewBannerUploadFile (response, file, fileList) {
-      // this.waitReviewBannerImageList[0].name = fileList[0].response.data.fileName
-      // this.waitReviewBannerImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.waitReviewBanner = response.data.filePath
     },
     noPassBannerUploadFile (response, file, fileList) {
-      // this.noPassBannerImageList[0].name = fileList[0].response.data.fileName
-      // this.noPassBannerImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.noPassBanner = response.data.filePath
     },
     successBgcUploadFile (response, file, fileList) {
-      // this.successBgcImageList[0].name = fileList[0].response.data.fileName
-      // this.successBgcImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.successBackground = response.data.filePath
     },
     waitReviewBgcUploadFile (response, file, fileList) {
-      // this.waitReviewBgcImageList[0].name = fileList[0].response.data.fileName
-      // this.waitReviewBgcImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.waitReviewBackground = response.data.filePath
     },
     noPassBgcUploadFile (response, file, fileList) {
-      // this.noPassBgcImageList[0].name = fileList[0].response.data.fileName
-      // this.noPassBgcImageList[0].url = fileList[0].response.data.filePath
       this.resultSetForm.noPassBackground = response.data.filePath
+    },
+    meetingHandleRemove (file, fileList) {
+      this.meetingImageList = []
+      this.appearanceSetForm.meetingFile = ''
+    },
+    resPcHandleRemove (file, fileList) {
+      this.resPcImageList = []
+      this.appearanceSetForm.loginPcFile = ''
+    },
+    resAppHandleRemove (file, fileList) {
+      this.resAppImageList = []
+      this.appearanceSetForm.loginAppFile = ''
     },
     successBannerHandleRemove (file, fileList) {
       this.successBannerImageList = []
@@ -3479,6 +3551,18 @@ export default {
     noPassBgcHandleRemove (file, fileList) {
       this.noPassBgcImageList = []
       this.resultSetForm.noPassBackground = ''
+    },
+    mweetngHandlePreview (file) {
+      this.mettingdialogImageUrl = file.url
+      this.meetingdialogVisible = true
+    },
+    resAppHandlePreview (file) {
+      this.resAppdialogImageUrl = file.url
+      this.resAppdialogVisible = true
+    },
+    resPcHandlePreview (file) {
+      this.resPcdialogImageUrl = file.url
+      this.resPcdialogVisible = true
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
