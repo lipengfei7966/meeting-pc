@@ -29,7 +29,7 @@
         </el-steps>
       </div>
       <!-- 外观设置 -->
-      <div v-if="stepIndex == 0" class="appearanceSet" :style="{ height: formSetHeight + 'px' }">
+      <div v-show="stepIndex == 0" class="appearanceSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="appearanceSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
           label-width="250px" :model="appearanceSetForm" class="appearanceSetForm">
           <!-- 通用设置 -->
@@ -117,7 +117,7 @@
                 <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="会议简介" prop="profile" v-if="appearanceSetForm.isPropaganda == '1'">
+              <el-form-item label="会议简介" prop="profile" v-show="appearanceSetForm.isPropaganda == '1'">
                 <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit
                   placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input>
               </el-form-item>
@@ -190,12 +190,12 @@
         </el-form>
         <div class="appearanceSetBtns">
           <el-button type="primary" @click="appearanceSetSave">保存,进入下一步</el-button>
-          <el-button>取消</el-button>
+          <!-- <el-button>取消</el-button> -->
         </div>
       </div>
 
       <!-- 表单设置 -->
-      <div v-if="stepIndex == 1" class="formSet">
+      <div v-show="stepIndex == 1" class="formSet">
         <el-card class="formInfo" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
             <span>表单信息</span>
@@ -1753,7 +1753,7 @@
       </div>
 
       <!-- 结果页设置 -->
-      <div v-if="stepIndex == 2" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+      <div v-show="stepIndex == 2" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
           :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
           <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
@@ -1913,7 +1913,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
+          <div class="resultSetItem" v-show="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>2、待审核</h3>
               <span>
@@ -2037,7 +2037,7 @@
             </div>
           </div>
 
-          <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
+          <div class="resultSetItem" v-show="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
               <h3>3、不通过</h3>
               <span>
@@ -2171,9 +2171,9 @@
       </div>
 
       <!-- 参会人编码设置 -->
-      <div v-if="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
+      <div v-show="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult"
-          @applySetForm="applySetForm"></apply-set>
+          ref="attCodeSet" @applySetForm="applySetForm"></apply-set>
       </div>
 
     </div>
@@ -2613,7 +2613,7 @@ export default {
   },
   mounted () {
     this.tableComputed()
-    this.getEventInfo()
+    // this.getEventInfo()
     // 获取国际区号数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -2687,7 +2687,7 @@ export default {
     },
     stepIndex (newVal, oldVal) {
       if (newVal == 0) {
-        this.getAppearanceSet()
+        // this.getAppearanceSet()
       }
     }
   },
@@ -2730,7 +2730,149 @@ export default {
       this.waitReviewBgcImageList = []
       this.noPassBgcImageList = []
     },
+    // 外观设置保存
+    appearanceSetSave () {
+      request({
+        url: '/api/register/signupExterior/get',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '外观设置',
+          funcOperation: '外观设置查询'
+        }
+      }).then((res) => {
+        if (res.status) {
+          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
+            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            this.appearanceSetForm.code = ''
+            this.appearanceSetForm.id = ''
+            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
+            request({
+              url: '/api/register/signupExterior/save',
+              method: 'POST',
+              data: {
+                data: this.appearanceSetForm,
+                funcModule: '外观设置',
+                funcOperation: '外观设置保存'
+              }
+            }).then((res) => {
+              if (res.status) {
+                // 进入下一步 表单设置
+                this.stepIndex = 1
+                this.getAppearanceSet()
+              }
+            }).catch(res => {
+              console.log(res)
+            })
+          } else {
+            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
+            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            // this.appearanceSetForm.code = ''
+            // this.appearanceSetForm.id = ''
+            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
+            request({
+              url: '/api/register/signupExterior/update',
+              method: 'POST',
+              data: {
+                data: this.appearanceSetForm,
+                funcModule: '表单外观设置',
+                funcOperation: '表单外观设置更新'
+              }
+            }).then((res) => {
+              if (res.status) {
+                // 进入下一步 表单设置
+                this.stepIndex = 1
+                this.getAppearanceSet()
+              }
+            }).catch(res => {
+              console.log(res)
+            })
+          }
+        }
+      })
+
+    },
+    drawerStatusHandle (status) {
+      this.drawer = status
+    },
+    // 获取外观设置
+    getAppearanceSet () {
+      // 清空列表
+      this.meetingImageList = []
+      this.resPcImageList = []
+      this.resAppImageList = []
+      request({
+        url: '/api/register/signupExterior/get',
+        method: 'POST',
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '表单外观设置',
+          funcOperation: '表单外观设置查询'
+        }
+      }).then((res) => {
+        if (res.status) {
+          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
+            this.appearanceSetForm.titleChinese = '', // 标题
+              this.appearanceSetForm.titleEnglish = '', // 英文标题
+              this.appearanceSetForm.language = ['中文'], // 语言
+              // this.appearanceSetForm.language = ['中文'], // 语言
+              this.appearanceSetForm.color = '#409EFF', // 主色调
+              this.appearanceSetForm.isPropaganda = 0, // 是否开启会议宣传
+              // this.appearanceSetForm.BannerList = [], // banner 列表
+              this.appearanceSetForm.meetingFile = '',
+              this.appearanceSetForm.isMeetingDate = 0, // 是否显示会议时间
+              this.appearanceSetForm.isMeetinPlace = 0, // 是否显示会议地点
+              this.appearanceSetForm.isMeetinCountdown = 0, // 是否显示倒计时
+              this.appearanceSetForm.profile = '', // 会议简介
+              // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
+              this.appearanceSetForm.loginPcFile = '',
+              // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
+              this.appearanceSetForm.loginAppFile = '',
+              this.appearanceSetForm.isLoginDate = 0, // 是否显示会议时间
+              this.appearanceSetForm.isLoginPlace = 0, // 是否显示会议地点
+              this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
+          } else {
+            this.appearanceSetForm = res.data
+            // this.meetingImageList = res.data.meetingFile
+            this.meetingImageList = []
+            this.resPcImageList = []
+            this.resAppImageList = []
+            if (res.data.meetingFile !== '') {
+              var urlSplits = res.data.meetingFile.split("/")
+              this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
+            }
+            if (res.data.loginPcFile !== '') {
+              var urlSplits = res.data.loginPcFile.split("/")
+              this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
+            }
+            if (res.data.loginAppFile !== '') {
+              var urlSplits = res.data.loginAppFile.split("/")
+              this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
+            }
+            console.log(res.data, '外观设置')
+            Object.keys(this.appearanceSetForm).forEach(key => {
+              if (key === 'tenantCode') delete (this.appearanceSetForm[key])
+            })
+            // this.appearanceSetForm.code = ''
+            // this.appearanceSetForm.id = ''
+            this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
+          }
+        }
+      })
+    },
+    // 结果页设置 上一步(暂存)
+    preStep () {
+      this.stepIndex = 1
+    },
+    // 获取结果页
     getResultFn () {
+      this.successBannerImageList = []
+      this.waitReviewBannerImageList = []
+      this.noPassBannerImageList = []
+      this.successBgcImageList = []
+      this.waitReviewBgcImageList = []
+      this.noPassBgcImageList = []
       request({
         url: '/api/register/signupResult/resultList',
         method: 'POST',
@@ -2830,138 +2972,7 @@ export default {
         }
       })
     },
-    // 外观设置保存
-    appearanceSetSave () {
-      request({
-        url: '/api/register/signupExterior/get',
-        method: 'POST',
-        data: {
-          data: this.form.listQuery.data.eventCode,
-          funcModule: '外观设置',
-          funcOperation: '外观设置查询'
-        }
-      }).then((res) => {
-        if (res.status) {
-          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
-            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
-            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
-            this.appearanceSetForm.code = ''
-            this.appearanceSetForm.id = ''
-            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
-            request({
-              url: '/api/register/signupExterior/save',
-              method: 'POST',
-              data: {
-                data: this.appearanceSetForm,
-                funcModule: '外观设置',
-                funcOperation: '外观设置保存'
-              }
-            }).then((res) => {
-              if (res.status) {
-                // 进入下一步 表单设置
-                this.stepIndex = 1
-              }
-            }).catch(res => {
-              console.log(res)
-            })
-          } else {
-            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
-            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
-            // this.appearanceSetForm.code = ''
-            // this.appearanceSetForm.id = ''
-            console.log(this.appearanceSetForm, 'this.appearanceSetForm')
-            request({
-              url: '/api/register/signupExterior/update',
-              method: 'POST',
-              data: {
-                data: this.appearanceSetForm,
-                funcModule: '表单外观设置',
-                funcOperation: '表单外观设置更新'
-              }
-            }).then((res) => {
-              if (res.status) {
-                // 进入下一步 表单设置
-                this.stepIndex = 1
-              }
-            }).catch(res => {
-              console.log(res)
-            })
-          }
-        }
-      })
-
-    },
-    drawerStatusHandle (status) {
-      this.drawer = status
-    },
-    getAppearanceSet () {
-      // 清空列表
-      this.meetingImageList = []
-      this.resPcImageList = []
-      this.resAppImageList = []
-      request({
-        url: '/api/register/signupExterior/get',
-        method: 'POST',
-        data: {
-          data: this.form.listQuery.data.eventCode,
-          funcModule: '表单外观设置',
-          funcOperation: '表单外观设置查询'
-        }
-      }).then((res) => {
-        if (res.status) {
-          if (JSON.stringify(res.data) === "{}" || res.data == undefined) {
-            this.appearanceSetForm.titleChinese = '', // 标题
-              this.appearanceSetForm.titleEnglish = '', // 英文标题
-              this.appearanceSetForm.language = ['中文'], // 语言
-              // this.appearanceSetForm.language = ['中文'], // 语言
-              this.appearanceSetForm.color = '#409EFF', // 主色调
-              this.appearanceSetForm.isPropaganda = 0, // 是否开启会议宣传
-              // this.appearanceSetForm.BannerList = [], // banner 列表
-              this.appearanceSetForm.meetingFile = '',
-              this.appearanceSetForm.isMeetingDate = 0, // 是否显示会议时间
-              this.appearanceSetForm.isMeetinPlace = 0, // 是否显示会议地点
-              this.appearanceSetForm.isMeetinCountdown = 0, // 是否显示倒计时
-              this.appearanceSetForm.profile = '', // 会议简介
-              // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
-              this.appearanceSetForm.loginPcFile = '',
-              // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
-              this.appearanceSetForm.loginAppFile = '',
-              this.appearanceSetForm.isLoginDate = 0, // 是否显示会议时间
-              this.appearanceSetForm.isLoginPlace = 0, // 是否显示会议地点
-              this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
-          } else {
-            this.appearanceSetForm = res.data
-            // this.meetingImageList = res.data.meetingFile
-            this.meetingImageList = []
-            this.resPcImageList = []
-            this.resAppImageList = []
-            if (res.data.meetingFile !== '') {
-              var urlSplits = res.data.meetingFile.split("/")
-              this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
-            }
-            if (res.data.loginPcFile !== '') {
-              var urlSplits = res.data.loginPcFile.split("/")
-              this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
-            }
-            if (res.data.loginAppFile !== '') {
-              var urlSplits = res.data.loginAppFile.split("/")
-              this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
-            }
-            console.log(res.data, '外观设置')
-            Object.keys(this.appearanceSetForm).forEach(key => {
-              if (key === 'tenantCode') delete (this.appearanceSetForm[key])
-            })
-            // this.appearanceSetForm.code = ''
-            // this.appearanceSetForm.id = ''
-            this.appearanceSetForm.language = this.appearanceSetForm.language.split(',')
-          }
-        }
-      })
-    },
-    // 结果页设置 上一步(暂存)
-    preStep () {
-      this.stepIndex = 1
-    },
+    // 保存结果设置
     resultSetSave (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -3044,6 +3055,7 @@ export default {
           }).then((res) => {
             if (res.status) {
               this.$message({ message: '生成表单成功', type: 'success' })
+              this.getResultFn()
             }
           })
         } else {
@@ -3057,7 +3069,9 @@ export default {
       this.stepIndex = 2
       this.resultSetForm.isNeedApprove = '1'
     },
+    // 获取表单设置
     getEventInfo () {
+      debugger
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
@@ -3071,7 +3085,6 @@ export default {
       this.workInfoList.forEach((workInfoItem) => {
         workInfoItem.isSee = false
       })
-
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -3133,13 +3146,7 @@ export default {
       }).then((res) => {
         if (res.status) {
           this.$message.success('保存成功')
-          this.stepIndex = 2
-          this.successBannerImageList = []
-          this.waitReviewBannerImageList = []
-          this.noPassBannerImageList = []
-          this.successBgcImageList = []
-          this.waitReviewBgcImageList = []
-          this.noPassBgcImageList = []
+          this.getEventInfo()
           this.getResultFn()
         } else {
           this.$message.error('保存失败')
@@ -3384,31 +3391,7 @@ export default {
     // 分步改变
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
-      switch (setpIndex) {
-        case 0:
-          this.getAppearanceSet()
-          break
-        case 1:
-          this.getEventInfo()
-          break
-        case 2:
-          this.successBannerImageList = []
-          this.waitReviewBannerImageList = []
-          this.noPassBannerImageList = []
-          this.successBgcImageList = []
-          this.waitReviewBgcImageList = []
-          this.noPassBgcImageList = []
-          this.getResultFn()
-          break
-
-        default:
-          break
-      }
-
     },
-    // stepIndexFn (step) {
-    //   this.stepIndex = step
-    // },
     isFormSetCompleteFn (status) {
       this.isFormSetComplete = status
     },
@@ -3846,8 +3829,11 @@ export default {
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
-      this.getAppearanceSet()
+      debugger
       this.getEventInfo()
+      this.getAppearanceSet()
+      this.getResultFn()
+      this.$refs.attCodeSet.signupContactCodeRuleFn(params.code)
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {

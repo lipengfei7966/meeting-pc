@@ -564,18 +564,6 @@ export default {
   name: 'applySet',
   data () {
     return {
-      pagingCount: 0,
-      registerVerificationOptions: [], // 获取注册验证
-      loginVerificationOptions: [], // 获取登录验证
-      customizeOptions: [], // 获取自定义验证
-      typeOptions: [], // 获取生成类型
-      signupFieldOptions: [], // 获取协助报名开放字段
-
-      setInfoList: [], // 表单配置列表
-      isRegisterSetShow: true, // 注册登录是否显示
-      isApplyBaseInfoShow: true, // 报名基础信息是否展示
-      checkUseroptions: [], // 审核权限用户列表
-      isUpdate: true,
       setForm: {
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
@@ -617,6 +605,18 @@ export default {
         position: '', // 职位
         signupContactDtlDto: {}
       },
+      pagingCount: 0,
+      registerVerificationOptions: [], // 获取注册验证
+      loginVerificationOptions: [], // 获取登录验证
+      customizeOptions: [], // 获取自定义验证
+      typeOptions: [], // 获取生成类型
+      signupFieldOptions: [], // 获取协助报名开放字段
+
+      setInfoList: [], // 表单配置列表
+      isRegisterSetShow: true, // 注册登录是否显示
+      isApplyBaseInfoShow: true, // 报名基础信息是否展示
+      checkUseroptions: [], // 审核权限用户列表
+      isUpdate: true,
       setformOther: {},
       etFormFile: {},
       applySetForm: {
@@ -624,12 +624,16 @@ export default {
         registerVerification: [], // 注册验证
         loginVerification: [], // 登录验证
         coustomVerification: [], // 自定义验证项
+        attendanceCodePrefix: '',//前缀
+        attendanceCodeLength: '',//长度
+        createType: '',//生成类型
+        attendanceCodeStartNum: '2',//起始码
         isNeedCompleteMustInfo: false, // 是否需要完善必填信息
         IsIintimateAgreement: true, // 隐私协议
         applyDate: '', // 报名日期
         applyCheck: '', // 报名审核
         checkUser: '', // 审核权限用户
-        assistApply: true, // 协助报名
+        assistApply: false, // 协助报名
         assistApplyPermission: '', // 协助报名权限
         assistApplyOpenField: [], // 协助报名开放字段
         id: ''
@@ -678,8 +682,8 @@ export default {
   mounted () {
     if (this.eventCode) {
       this.getEventInfo()
+      this.signupContactCodeRuleFn()
     }
-    this.signupContactCodeRuleFn()
     console.log(this.ruleForm.privacyContent, 'this.ruleForm.privacyContent')
     // 获取注册验证数据字典
     request({
@@ -753,14 +757,15 @@ export default {
       this.initDialog()
     },
     // 生成规则
-    signupContactCodeRuleFn () {
+    signupContactCodeRuleFn (evevtCodeByIndex) {
+      var evCode = this.eventCode ? this.eventCode : evevtCodeByIndex
       request({
         url: '/api/register/signupContactCodeRule/get',
         method: 'POST',
         data: {
-          data: this.eventCode,
-          funcModule: '表单设置',
-          funcOperation: '表单初始化'
+          data: evCode,
+          funcModule: '规则设置',
+          funcOperation: '规则设置查询'
         }
       }).then(res => {
         console.log(res, ' 生成规则')
@@ -777,7 +782,12 @@ export default {
           window.frames['myframe'].setContents(this.ruleForm.privacyContent)
         }, 2000)
         this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
+        this.applySetForm.attendanceCodePrefix = res.data.prefix
+        this.applySetForm.attendanceCodeLength = res.data.length
+        this.applySetForm.createType = res.data.type
+        this.applySetForm.attendanceCodeStartNum = res.data.startCode
         this.applySetForm.applyCheck = res.data.isApproval
+        this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false
         this.applySetForm.approvalUser = res.data.approvalUser
         this.applySetForm.assistApplyPermission = res.data.assistSignupPower
         this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
@@ -878,8 +888,12 @@ export default {
             privacyContent: this.ruleForm.privacyContent,
             beginTime: moment(date1).format('YYYY-MM-DD HH:mm:ss'),
             endTime: moment(date2).format('YYYY-MM-DD HH:mm:ss'),
+            prefix: this.applySetForm.attendanceCodePrefix,
+            length: this.applySetForm.attendanceCodeLength,
+            type: this.applySetForm.createType,
+            startCode: this.applySetForm.attendanceCodeStartNum,
             isApproval: this.applySetForm.applyCheck,
-            approvalUser: this.applySetForm.applyCheck,
+            approvalUser: this.applySetForm.approvalUser,
             assistSignupPower: this.applySetForm.assistApplyPermission,
             signupField: this.applySetForm.assistApplyOpenField.join(','),
             eventCode: this.eventCode,
