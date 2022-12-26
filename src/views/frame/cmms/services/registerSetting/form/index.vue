@@ -1809,6 +1809,8 @@
                   <div class="successPreview"
                     :style="'backgroundImage;url(' + resultSetForm.successBackground ? resultSetForm.successBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
                     <!-- 背景图 -->
+                    <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
+                      style="position: absolute; width: 100%; height: 100%;z-index:-1" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner"
                       fit="fill"></el-image>
@@ -1935,11 +1937,10 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
-                  <div class="waitReviewPreview"
-                    :style="'backgroundImage;url(' + resultSetForm.waitReviewBackground ? resultSetForm.waitReviewBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
+                  <div class="waitReviewPreview">
                     <!-- 背景图 -->
-                    <!-- <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%" /> -->
+                    <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
+                      style="position: absolute; width: 100%; height: 100%;z-index:-1" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%"
                       :src="resultSetForm.waitReviewBanner" fit="fill"></el-image>
@@ -2059,11 +2060,10 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
-                  <div class="noPassPreview"
-                    :style="'backgroundImage;url(' + resultSetForm.noPassBackground ? resultSetForm.noPassBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
+                  <div class="noPassPreview">
                     <!-- 背景图 -->
-                    <!-- <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%" /> -->
+                    <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
+                      style="position: absolute; width: 100%; height: 100%;z-index:-1" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner"
                       fit="fill"></el-image>
