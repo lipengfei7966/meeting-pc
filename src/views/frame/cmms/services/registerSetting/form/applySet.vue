@@ -503,8 +503,8 @@
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal"
                   :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{
-                      item.dictItemName
-                  }}</el-checkbox>
+    item.dictItemName
+}}</el-checkbox>
                 <!-- <el-checkbox label="姓名"></el-checkbox>
                 <el-checkbox label="手机号"></el-checkbox>
                 <el-checkbox label="邮箱"></el-checkbox> -->
@@ -765,7 +765,7 @@ export default {
           console.log(res.data.privacyContent, 'res.data.privacyContent')
           setTimeout(() => {
             if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
-          }, 2000)
+          }, 3000)
           this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
           this.applySetForm.applyCheck = res.data.isApproval
           this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false

@@ -1775,13 +1775,72 @@
                   <!-- <h3>地址</h3> -->
                   <h3>{{ applySetForm.applyDate }}</h3>
                 </div>
-                <div class="successInfo">
-                  <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
-                  <pre> {{ resultSetForm.successDescribe }} </pre>
-                  <div class="previewBtnsRow">
-                    <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
-                      v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                <div class="successInfo" style="display:flex;justify-content:center">
+                  <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
+                    style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
+                    <h3 style="margin:20px">{{ resultSetForm.successTitle }}</h3>
+                    <pre> {{ resultSetForm.successDescribe }} </pre>
                   </div>
+
+                </div>
+                <div class="previewBtnsRow" style="display: flex;justify-content: center;">
+                  <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
+                    v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="transition-box" v-show="auditStatusDrawer">
+            <div class="content">
+              <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="centerContent">
+                <div class="themeTitle">
+                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
+                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
+                  </h1>
+                  <!-- <h3>地址</h3> -->
+                  <h3>{{ applySetForm.applyDate }}</h3>
+                </div>
+                <div class="successInfo" style="display:flex;justify-content:center">
+                  <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
+                    style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
+                    <h3 style="margin:20px">{{ resultSetForm.waitReviewTitle }}</h3>
+                    <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
+                  </div>
+
+                </div>
+                <div class="previewBtnsRow" style="display: flex;justify-content: center;">
+                  <el-button v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex"
+                    v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="transition-box" v-show="noPassDrawer">
+            <div class="content">
+              <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="centerContent">
+                <div class="themeTitle">
+                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
+                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
+                  </h1>
+                  <!-- <h3>地址</h3> -->
+                  <h3>{{ applySetForm.applyDate }}</h3>
+                </div>
+                <div class="successInfo" style="display:flex;justify-content:center">
+                  <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
+                    style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
+                    <h3 style="margin:20px">{{ resultSetForm.noPassTitle }}</h3>
+                    <pre> {{ resultSetForm.noPassDescribe }} </pre>
+                  </div>
+
+                </div>
+                <div class="previewBtnsRow" style="display: flex;justify-content: center;">
+                  <el-button v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex"
+                    v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
                 </div>
               </div>
             </div>
@@ -1939,6 +1998,7 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
+                  <div class="pageStatus" @click="auditStatusDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
                   <div class="waitReviewPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
@@ -2064,6 +2124,7 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
+                  <div class="pageStatus" @click="noPassDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
                   <div class="noPassPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
@@ -2263,6 +2324,8 @@ export default {
         assistApplyOpenField: [] // 协助报名开放字段
       },
       drawer: false,
+      auditStatusDrawer: false,
+      noPassDrawer: false,
       stepIndex: 0,
       header: {
         token: window.sessionStorage.getItem('token')
@@ -2733,6 +2796,12 @@ export default {
     },
     drawerStatusHandle (status) {
       this.drawer = status
+    },
+    auditStatusDrawerStatusHandle (status) {
+      this.auditStatusDrawer = status
+    },
+    noPassDrawerStatusHandle (status) {
+      this.noPassDrawer = status
     },
     // 获取外观设置
     getAppearanceSet () {
@@ -3945,7 +4014,7 @@ export default {
   position: absolute;
   left: 0;
   width: 100%;
-  height: 600px;
+  height: 700px;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -3963,7 +4032,7 @@ export default {
 
   .centerContent {
     width: 80%;
-    height: 400px;
+    height: 500px;
 
     .themeTitle {
       width: 100%;
@@ -3978,10 +4047,12 @@ export default {
     }
 
     .successInfo {
+      position: relative;
       width: 100%;
       height: 200px;
       border: 1px solid #ccc;
       background-color: #fff;
+      margin-bottom: 80px;
     }
   }
 
@@ -4247,14 +4318,19 @@ export default {
         }
       }
 
-      .previewBtnsRow {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        right: 0;
+      .centerContent .previewBtnsRow {
+        // position: absolute;
+        width: 100%;
+        height: 100px;
+        // bottom: 20px;
+        // margin: 20px 0;
+        // left: 50%;
+        // right: 50%;
+        // transform: translate(-50%, -50%);
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        justify-content: center;
+        // flex-direction: row;
+        // align-items: center;
 
         .el-button {
           width: 150px;
