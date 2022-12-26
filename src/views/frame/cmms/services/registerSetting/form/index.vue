@@ -2658,48 +2658,6 @@ export default {
     applySetFormFn (applySetForm) {
       this.applySetForm = applySetForm
     },
-    claerResultFn () {
-      var btnObj = { name: '', value: '' }
-      this.resultSetForm.successBanner = ''
-      this.resultSetForm.successBackground = ''
-      this.resultSetForm.successDescribe = ''
-      this.resultSetForm.successIsJumpCurrentPage = '0'
-      this.resultSetForm.successJumpPage = ''
-      this.resultSetForm.successOutPageUrl = ''
-      this.resultSetForm.successTitle = ''
-      // this.resultSetForm.successButtonList.name = ''
-      // this.resultSetForm.successButtonList.value = ''
-      this.resultSetForm.successButtonList = []
-      this.resultSetForm.successButtonList.push(btnObj)
-      this.resultSetForm.waitReviewBanner = ''
-      this.resultSetForm.waitReviewBackground = ''
-      this.resultSetForm.waitReviewDescribe = ''
-      this.resultSetForm.waitReviewIsJumpCurrentPage = '0'
-      this.resultSetForm.waitReviewJumpPage = ''
-      this.resultSetForm.waitReviewOutPageUrl = ''
-      this.resultSetForm.waitReviewTitle = ''
-      // this.resultSetForm.waitReviewButtonList.name = ''
-      // this.resultSetForm.waitReviewButtonList.value = ''
-      this.resultSetForm.waitReviewButtonList = []
-      this.resultSetForm.waitReviewButtonList.push(btnObj)
-      this.resultSetForm.noPassBanner = ''
-      this.resultSetForm.noPassBackground = ''
-      this.resultSetForm.noPassDescribe = ''
-      this.resultSetForm.noPassIsJumpCurrentPage = '0'
-      this.resultSetForm.noPassJumpPage = ''
-      this.resultSetForm.noPassOutPageUrl = ''
-      this.resultSetForm.noPassTitle = ''
-      // this.resultSetForm.noPassButtonList.name = ''
-      // this.resultSetForm.noPassButtonList.value = ''
-      this.resultSetForm.noPassButtonList = []
-      this.resultSetForm.noPassButtonList.push(btnObj)
-      this.successBannerImageList = []
-      this.waitReviewBannerImageList = []
-      this.noPassBannerImageList = []
-      this.successBgcImageList = []
-      this.waitReviewBgcImageList = []
-      this.noPassBgcImageList = []
-    },
     // 外观设置保存
     appearanceSetSave () {
       request({
@@ -2838,9 +2796,50 @@ export default {
     preStep () {
       this.stepIndex = 1
     },
+    claerResultFn () {
+      var btnObj = { name: '', value: '' }
+      this.resultSetForm.successBanner = ''
+      this.resultSetForm.successBackground = ''
+      this.resultSetForm.successDescribe = ''
+      this.resultSetForm.successIsJumpCurrentPage = '0'
+      this.resultSetForm.successJumpPage = ''
+      this.resultSetForm.successOutPageUrl = ''
+      this.resultSetForm.successTitle = ''
+      // this.resultSetForm.successButtonList.name = ''
+      // this.resultSetForm.successButtonList.value = ''
+      this.resultSetForm.successButtonList = []
+      this.resultSetForm.successButtonList.push(btnObj)
+      this.resultSetForm.waitReviewBanner = ''
+      this.resultSetForm.waitReviewBackground = ''
+      this.resultSetForm.waitReviewDescribe = ''
+      this.resultSetForm.waitReviewIsJumpCurrentPage = '0'
+      this.resultSetForm.waitReviewJumpPage = ''
+      this.resultSetForm.waitReviewOutPageUrl = ''
+      this.resultSetForm.waitReviewTitle = ''
+      // this.resultSetForm.waitReviewButtonList.name = ''
+      // this.resultSetForm.waitReviewButtonList.value = ''
+      this.resultSetForm.waitReviewButtonList = []
+      this.resultSetForm.waitReviewButtonList.push(btnObj)
+      this.resultSetForm.noPassBanner = ''
+      this.resultSetForm.noPassBackground = ''
+      this.resultSetForm.noPassDescribe = ''
+      this.resultSetForm.noPassIsJumpCurrentPage = '0'
+      this.resultSetForm.noPassJumpPage = ''
+      this.resultSetForm.noPassOutPageUrl = ''
+      this.resultSetForm.noPassTitle = ''
+      // this.resultSetForm.noPassButtonList.name = ''
+      // this.resultSetForm.noPassButtonList.value = ''
+      this.resultSetForm.noPassButtonList = []
+      this.resultSetForm.noPassButtonList.push(btnObj)
+      this.successBannerImageList = []
+      this.waitReviewBannerImageList = []
+      this.noPassBannerImageList = []
+      this.successBgcImageList = []
+      this.waitReviewBgcImageList = []
+      this.noPassBgcImageList = []
+    },
     // 获取结果页
     getResultFn () {
-      this.claerResultFn()
       request({
         url: '/api/register/signupResult/resultList',
         method: 'POST',
@@ -2853,9 +2852,10 @@ export default {
       }).then(res => {
         if (res.status) {
           res.data.length > 1 ? (this.resultSetForm.isNeedApprove = '1') : (this.resultSetForm.isNeedApprove = '0')
-          this.resultSetForm.noPassButtonList = []
-          this.resultSetForm.successButtonList = []
-          this.resultSetForm.waitReviewButtonList = []
+          // this.resultSetForm.noPassButtonList = []
+          // this.resultSetForm.successButtonList = []
+          // this.resultSetForm.waitReviewButtonList = []
+          this.claerResultFn()
           console.log(this.resultSetForm.noPassButtonList, 'this.resultSetForm.noPassButtonList')
           res.data.forEach(item => {
             switch (item.type) {
@@ -2907,10 +2907,10 @@ export default {
                 this.resultSetForm.waitReviewOutPageUrl = item.skipWebsite
                 this.resultSetForm.waitReviewTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  // this.resultSetForm.waitReviewButtonList.name = ''
-                  // this.resultSetForm.waitReviewButtonList.value = ''
-                  var nullButton = { name: '', value: '' }
-                  this.resultSetForm.waitReviewButtonList.push(nullButton)
+                  this.resultSetForm.waitReviewButtonList.name = ''
+                  this.resultSetForm.waitReviewButtonList.value = ''
+                  // var nullButton = { name: '', value: '' }
+                  // this.resultSetForm.waitReviewButtonList.push(nullButton)
                 } else {
                   this.resultSetForm.waitReviewButtonList = []
                   this.resultSetForm.waitReviewButtonList = item.resultButton
@@ -2935,12 +2935,12 @@ export default {
                 this.resultSetForm.noPassOutPageUrl = item.skipWebsite
                 this.resultSetForm.noPassTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  // this.resultSetForm.noPassButtonList.name = ''
-                  // this.resultSetForm.noPassButtonList.value = ''
-                  var nullButton = { name: '', value: '' }
-                  this.resultSetForm.noPassButtonList.push(nullButton)
+                  this.resultSetForm.noPassButtonList.name = ''
+                  this.resultSetForm.noPassButtonList.value = ''
+                  // var nullButton = { name: '', value: '' }
+                  // this.resultSetForm.noPassButtonList.push(nullButton)
                 } else {
-                  this.this.resultSetForm.noPassButtonList = []
+                  this.resultSetForm.noPassButtonList = []
                   this.resultSetForm.noPassButtonList = item.resultButton
                 }
                 break
