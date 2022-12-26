@@ -310,7 +310,8 @@
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                       <br />
-                      <el-input style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                      <el-input style="margin-top: 10px" size="mini"
+                        :placeholder="element.certificateNumPlaceholder"></el-input>
                     </div>
                   </div>
 
@@ -729,8 +730,10 @@
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">证件类型提示文本</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                  <p class="eidtContentItemTitle">证件号提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].certificateNumPlaceholder"></el-input>
                 </div>
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
@@ -3290,6 +3293,7 @@ export default {
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
         placeholder: `请输入${itemList.label}`, // 提示文本
+        certificateNumPlaceholder: '请输入您的证件号码',
         surnamePlaceholder: '请输入姓', // 姓-提示文本
         namePlaceholder: '请输入名', // 名-提示文本
         nameSplit: false, //姓名拆分
@@ -3427,6 +3431,7 @@ export default {
       if (itemList.value == 'certificate') {
         obj.options = ['居民身份证']
         obj.check[0].code = '001'
+        obj.placeholder = `请选择您的${itemList.label}类型`
       }
       // 分割线
       if (itemList.value == 'crossLine') {
