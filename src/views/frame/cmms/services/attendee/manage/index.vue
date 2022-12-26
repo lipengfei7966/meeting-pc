@@ -215,7 +215,7 @@ export default {
             getParam: () => {
               return {
                 id: this.$refs.bsTable.currentRow.id,
-                checkFlag: '2'
+                checkFlag: '0'
               }
             }
           },
@@ -480,7 +480,7 @@ export default {
   mounted() {},
   methods: {
     onChangeAll(params) {
-      this.mainData.topBar.forEach(item => {
+      this.mainData.topBar.forEach((item) => {
         if (item.name === 'upload') {
           item.atrrs.paramData = {
             eventCode: this.form.listQuery.data.eventCode
@@ -506,7 +506,7 @@ export default {
         },
         responseType: 'blob'
       })
-        .then(response => {
+        .then((response) => {
           if (!response.data) {
           } else {
             const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -519,7 +519,7 @@ export default {
             link.remove()
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
