@@ -317,7 +317,7 @@ export default {
                 url = 'https://cmms-h5-dev.ctgbs.com'
               }
               //
-              this.imgUrl = `${url}/guest/#/pages/${this.userData.templateCode}/index?ev=${this.eventHashCode}`
+              this.imgUrl = `${url}/guest/#/pages/${this.userData.templateCode}/index?ehc=${this.eventHashCode}&&ec=${this.code}`
               console.log(this.imgUrl, window.location.host)
             } else {
               this.$router.push({
