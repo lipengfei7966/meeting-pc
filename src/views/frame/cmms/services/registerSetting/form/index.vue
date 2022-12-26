@@ -1910,9 +1910,9 @@
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline"
-                        @click.stop="addBtn(resultSetForm.successButtonList, btnIndex)"></div>
+                        @click.stop="addBtnSuccess(resultSetForm.successButtonList, btnIndex)"></div>
                       <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0"
-                        @click.stop="delBtn(resultSetForm.successButtonList, btnIndex)"></div>
+                        @click.stop="delBtnSuccess(resultSetForm.successButtonList, btnIndex)"></div>
                     </div>
                   </el-form-item>
                 </div>
@@ -2036,9 +2036,9 @@
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline"
-                        @click.stop="addBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
+                        @click.stop="addBtnWaitReview(resultSetForm.waitReviewButtonList, btnIndex)"></div>
                       <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0"
-                        @click.stop="delBtn(resultSetForm.waitReviewButtonList, btnIndex)"></div>
+                        @click.stop="delBtnWaitReview(resultSetForm.waitReviewButtonList, btnIndex)"></div>
                     </div>
                   </el-form-item>
                 </div>
@@ -2067,9 +2067,9 @@
                   <div class="noPassPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
-                      style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
+                      style="position: absolute; left:0;top:60px;width: 100%; height: 100%;" />
                     <!-- banner 图 -->
-                    <div style="position: absolute;left:0;top:50px;z-index:2;width: 100%;">
+                    <div style="position: absolute;left:0;top:60px;z-index:2;width: 100%;">
                       <el-image v-if="resultSetForm.noPassBanner" style="width: 100%;text-align:center"
                         :src="resultSetForm.noPassBanner" fit="fill"></el-image>
                       <h3 style="text-align: center">{{ resultSetForm.noPassTitle }}</h3>
@@ -2160,9 +2160,9 @@
                         </el-select>
                       </el-form-item>
                       <div class="remove-button el-icon-circle-plus-outline"
-                        @click.stop="addBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
+                        @click.stop="addBtnNoPass(resultSetForm.noPassButtonList, btnIndex)"></div>
                       <div class="remove-button el-icon-remove-outline" v-if="btnIndex != 0"
-                        @click.stop="delBtn(resultSetForm.noPassButtonList, btnIndex)"></div>
+                        @click.stop="delBtnNoPass(resultSetForm.noPassButtonList, btnIndex)"></div>
                     </div>
                   </el-form-item>
                 </div>
@@ -3846,17 +3846,36 @@ export default {
       this.checkedIndex = checkedIndex
     },
     // 结果页设置 添加按钮
-    addBtn (btnList, btnIndex) {
+    addBtnSuccess (btnList, btnIndex) {
       btnList.splice(btnIndex + 1, 0, {
         name: '',
         value: ''
       })
-      console.log(this.resultSetForm.successButtonList, 'this.resultSetForm.successButtonList')
+    },
+    addBtnWaitReview (btnList, btnIndex) {
+      btnList.splice(btnIndex + 1, 0, {
+        name: '',
+        value: ''
+      })
+    },
+    addBtnNoPass (btnList, btnIndex) {
+      btnList.splice(btnIndex + 1, 0, {
+        name: '',
+        value: ''
+      })
     },
     // 结果页设置 删除按钮
-    delBtn (btnList, btnIndex) {
+    delBtnSuccess (btnList, btnIndex) {
       btnList.splice(btnIndex, 1)
       console.log(this.resultSetForm.successButtonList, 'this.resultSetForm.successButtonList')
+    },
+    delBtnWaitReview (btnList, btnIndex) {
+      btnList.splice(btnIndex, 1)
+      console.log(this.resultSetForm.waitReviewButtonList, 'this.resultSetForm.waitReviewButtonList')
+    },
+    delBtnNoPass (btnList, btnIndex) {
+      btnList.splice(btnIndex, 1)
+      console.log(this.resultSetForm.noPassButtonList, 'this.resultSetForm.noPassButtonList')
     },
     //开始拖拽事件
     onStart () {
