@@ -724,6 +724,9 @@ export default {
     editPrivacyHandle () {
       this.dialogFormVisible = true
       this.initDialog()
+      setTimeout(() => {
+        if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
+      }, 3000)
     },
     // 生成规则
     signupContactCodeRuleFn (evevtCodeByIndex) {
