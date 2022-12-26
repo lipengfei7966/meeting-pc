@@ -210,8 +210,8 @@
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex"
                     v-show="!baseInfoItem.isSee" @click="addSetInfoList(baseInfoItem, baseInfoList, 'baseInfoList')">{{
-                        baseInfoItem.label
-                    }}</li>
+    baseInfoItem.label
+}}</li>
                 </ul>
               </el-collapse-item>
 
@@ -234,8 +234,8 @@
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex"
                     v-show="!workInfoItem.isSee" @click="addSetInfoList(workInfoItem, workInfoList, 'workInfoList')">{{
-                        workInfoItem.label
-                    }}</li>
+    workInfoItem.label
+}}</li>
                 </ul>
               </el-collapse-item>
 
@@ -259,8 +259,8 @@
                   <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList"
                     :key="specialInfoIndex" v-show="!specialInfoItem.isSee"
                     @click="addSetInfoList(specialInfoItem, specialInfoList, 'specialInfoList')">{{
-                        specialInfoItem.label
-                    }}</li>
+    specialInfoItem.label
+}}</li>
                 </ul>
               </el-collapse-item>
             </el-collapse>
@@ -296,9 +296,9 @@
                   <div v-if="element.mapCode == 'sex'" class="form-item-input">
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0]
-                    }}</el-radio>
+}}</el-radio>
                     <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1]
-                    }}</el-radio>
+}}</el-radio>
                   </div>
 
                   <!-- 证件 -->
@@ -553,8 +553,8 @@
                       <el-radio-group
                         :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
                         <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{
-                            item
-                        }}</el-radio>
+    item
+}}</el-radio>
                       </el-radio-group>
                     </div>
                   </div>
@@ -1737,8 +1737,8 @@
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
                   <p style="width: 100%; text-align: center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{
-                      pagingCount
-                  }} 页 ]</p>
+    pagingCount
+}} 页 ]</p>
                 </div>
               </div>
 
@@ -1806,10 +1806,9 @@
                     <h3>预览</h3>
                   </div>
                   <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">电脑</div>
-                  <div class="successPreview">
+                  <div class="successPreview"
+                    :style="'backgroundImage;url(' + resultSetForm.successBackground ? resultSetForm.successBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
                     <!-- 背景图 -->
-                    <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%" />
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner"
                       fit="fill"></el-image>
@@ -1936,10 +1935,11 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
-                  <div class="waitReviewPreview">
+                  <div class="waitReviewPreview"
+                    :style="'backgroundImage;url(' + resultSetForm.waitReviewBackground ? resultSetForm.waitReviewBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
                     <!-- 背景图 -->
-                    <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%" />
+                    <!-- <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
+                      style="position: absolute; width: 100%; height: 100%" /> -->
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%"
                       :src="resultSetForm.waitReviewBanner" fit="fill"></el-image>
@@ -2059,10 +2059,11 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
-                  <div class="noPassPreview">
+                  <div class="noPassPreview"
+                    :style="'backgroundImage;url(' + resultSetForm.noPassBackground ? resultSetForm.noPassBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
                     <!-- 背景图 -->
-                    <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%" />
+                    <!-- <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
+                      style="position: absolute; width: 100%; height: 100%" /> -->
                     <!-- banner 图 -->
                     <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner"
                       fit="fill"></el-image>

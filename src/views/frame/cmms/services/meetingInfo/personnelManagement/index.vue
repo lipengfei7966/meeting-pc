@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="bs-new-container app-container">
-            <!-- <bs-form ref="bsForm" :form="form"></bs-form> -->
+            <bs-form ref="bsForm" :form="form"></bs-form>
             <!-- <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table> -->
         </div>
     </div>
