@@ -738,27 +738,45 @@ export default {
         }
       }).then(res => {
         console.log(res, ' 生成规则')
-        this.applySetForm.isVerification = res.data.isVerification
-        this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
-        this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
-        this.applySetForm.coustomVerification = [...new Set(res.data.customize.split(','))]
-        this.applySetForm.isNeedCompleteMustInfo = res.data.isRequired === '1' ? true : false
-        this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
-        this.ruleForm.name = res.data.privacyName
-        this.ruleForm.privacyContent = res.data.privacyContent
-        console.log(res.data.privacyContent, 'res.data.privacyContent')
-        setTimeout(() => {
-          if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
-        }, 2000)
-        this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
-        this.applySetForm.applyCheck = res.data.isApproval
-        this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false
-        this.applySetForm.approvalUser = res.data.approvalUser
-        this.applySetForm.assistApplyPermission = res.data.assistSignupPower
-        this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
-        this.applySetForm.id = res.data.id
-        // this.applySetForm.versionNum = res.data.versionNum
-        console.log(this.applySetForm, ' this.applySetForm-- ')
+        if (JSON.stringify(res.data) === '{}' || res.data == undefined) {
+          this.applySetForm.isVerification = ''
+          this.applySetForm.registerVerification = []
+          this.applySetForm.loginVerification = []
+          this.applySetForm.coustomVerification = []
+          this.applySetForm.isNeedCompleteMustInfo = false
+          this.applySetForm.IsIintimateAgreement = true
+          this.ruleForm.privacyName = ''
+          this.ruleForm.privacyContent = ''
+          this.applySetForm.applyDate = ''
+          this.applySetForm.applyCheck = ''
+          this.applySetForm.assistApply = false
+          this.applySetForm.assistApplyPermission = ''
+          this.applySetForm.assistApplyOpenField = ''
+          this.applySetForm.id = ''
+        } else {
+          this.applySetForm.isVerification = res.data.isVerification
+          this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
+          this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
+          this.applySetForm.coustomVerification = [...new Set(res.data.customize.split(','))]
+          this.applySetForm.isNeedCompleteMustInfo = res.data.isRequired === '1' ? true : false
+          this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
+          this.ruleForm.name = res.data.privacyName
+          this.ruleForm.privacyContent = res.data.privacyContent
+          console.log(res.data.privacyContent, 'res.data.privacyContent')
+          setTimeout(() => {
+            if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
+          }, 2000)
+          this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
+          this.applySetForm.applyCheck = res.data.isApproval
+          this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false
+          this.applySetForm.approvalUser = res.data.approvalUser
+          this.applySetForm.assistApplyPermission = res.data.assistSignupPower
+          this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
+          this.applySetForm.id = res.data.id
+          // this.applySetForm.versionNum = res.data.versionNum
+          console.log(this.applySetForm, ' this.applySetForm-- ')
+        }
+
       })
     },
     // 表单配置查询
@@ -857,7 +875,7 @@ export default {
             isApproval: this.applySetForm.applyCheck,
             approvalUser: this.applySetForm.approvalUser,
             assistSignupPower: this.applySetForm.assistApplyPermission,
-            signupField: this.applySetForm.assistApplyOpenField.join(','),
+            signupField: this.applySetForm.assistApplyOpenField ? this.applySetForm.assistApplyOpenField.join(',') : [],
             eventCode: this.eventCode,
             // deleteFlag: 0,
             id: this.applySetForm.id
