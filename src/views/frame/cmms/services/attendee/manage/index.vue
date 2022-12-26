@@ -187,6 +187,14 @@ export default {
           },
           {
             name: 'set',
+            permitName: ['resetPassword'],
+            i18n: 'biz.btn.resetPwd',
+            getParam: () => {
+              return this.$refs.bsTable.currentRow.id
+            }
+          },
+          {
+            name: 'set',
             permitName: ['audit'],
             url: '/api/register/signupContact/auditing',
             successMsgInfo: '审核完成',
