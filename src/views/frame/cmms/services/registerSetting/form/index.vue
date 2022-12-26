@@ -106,7 +106,7 @@
               </el-form-item>
 
               <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
-                <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-color="#ff4949"
+                <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-co lor="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
               <el-form-item label="是否显示会议地点" prop="isMeetinPlace" v-if="appearanceSetForm.isPropaganda == '1'">
@@ -1769,11 +1769,14 @@
               <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">手机</div>
               <div class="centerContent">
                 <div class="themeTitle">
-                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
-                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
-                  </h1>
-                  <!-- <h3>地址</h3> -->
-                  <h3>{{ applySetForm.applyDate }}</h3>
+                  <!-- <h2>1</h2>
+                  <h3>2</h3>
+                  <h3>3</h3> -->
+                  <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
+    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
+}}</h3>
+                  <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
                   <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
@@ -1796,11 +1799,11 @@
               <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
               <div class="centerContent">
                 <div class="themeTitle">
-                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
-                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
-                  </h1>
-                  <!-- <h3>地址</h3> -->
-                  <h3>{{ applySetForm.applyDate }}</h3>
+                  <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
+    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
+}}</h3>
+                  <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
                   <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
@@ -1823,11 +1826,11 @@
               <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
               <div class="centerContent">
                 <div class="themeTitle">
-                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
-                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
-                  </h1>
-                  <!-- <h3>地址</h3> -->
-                  <h3>{{ applySetForm.applyDate }}</h3>
+                  <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
+                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{
+    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
+}}</h3>
+                  <h3>会议地点：{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
                   <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
@@ -2274,6 +2277,7 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      getActiveObj: {},
       resPcImageList: [],
       resPcdialogImageUrl: '',
       resPcdialogVisible: false,
@@ -3149,10 +3153,13 @@ export default {
           funcOperation: '表单初始化'
         }
       }).then(response => {
-        if (response.data.json) {
-          this.setInfoList = JSON.parse(response.data.json)
-        } else {
-          this.setInfoList = []
+        if (response.status) {
+          this.getActiveObj = response.data
+          if (response.data.json) {
+            this.setInfoList = JSON.parse(response.data.json)
+          } else {
+            this.setInfoList = []
+          }
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
         this.setInfoList.forEach(setInfoItem => {
@@ -3997,6 +4004,10 @@ export default {
 }
 </script>
 <style>
+.el-form-label__frameBox {
+  display: none;
+}
+
 .el-upload .el-upload-dragger {
   width: 150px;
   height: 150px;
@@ -4037,13 +4048,15 @@ export default {
     .themeTitle {
       width: 100%;
       height: 150px;
+      padding-top: 40px;
       border: 1px solid #ccc;
       background-color: #fff;
       margin-bottom: 30px;
-      display: flex;
-      direction: columns;
-      justify-content: center;
-      align-items: center;
+      text-align: center;
+      // display: flex;
+      // flex-direction: columns;
+      // justify-content: center;
+      // align-items: center;
     }
 
     .successInfo {
