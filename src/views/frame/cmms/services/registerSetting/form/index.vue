@@ -1806,16 +1806,18 @@
                     <h3>预览</h3>
                   </div>
                   <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">电脑</div>
-                  <div class="successPreview"
-                    :style="'backgroundImage;url(' + resultSetForm.successBackground ? resultSetForm.successBackground + ');' : ');' + 'backgroundSize:width:' + 100 + '%;height:' + 100 + '%'">
+                  <div class="successPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%;z-index:-1" />
+                      style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
                     <!-- banner 图 -->
-                    <el-image v-if="resultSetForm.successBanner" style="width: 100%" :src="resultSetForm.successBanner"
-                      fit="fill"></el-image>
-                    <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
-                    <pre> {{ resultSetForm.successDescribe }} </pre>
+                    <div style="position: absolute;left:0;top:50px;z-index:2;width: 100%;">
+                      <el-image v-if="resultSetForm.successBanner" style="width: 100%;text-align:center"
+                        :src="resultSetForm.successBanner" fit="fill"></el-image>
+                      <h3 style="text-align: center;">
+                        {{ resultSetForm.successTitle }}</h3>
+                      <pre style=""> {{ resultSetForm.successDescribe }} </pre>
+                    </div>
                     <div class="previewBtns">
                       <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
                         v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
@@ -1940,12 +1942,14 @@
                   <div class="waitReviewPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%;z-index:-1" />
+                      style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
                     <!-- banner 图 -->
-                    <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%"
-                      :src="resultSetForm.waitReviewBanner" fit="fill"></el-image>
-                    <h3 style="text-align: center">{{ resultSetForm.waitReviewTitle }}</h3>
-                    <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
+                    <div style="position: absolute;left:0;top:50px;z-index:2;width: 100%;">
+                      <el-image v-if="resultSetForm.waitReviewBanner" style="width: 100%;text-align: center;"
+                        :src="resultSetForm.waitReviewBanner" fit="fill"></el-image>
+                      <h3 style="text-align:center">{{ resultSetForm.waitReviewTitle }}</h3>
+                      <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
+                    </div>
                     <div class="previewBtns">
                       <el-button v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex"
                         v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
@@ -2063,12 +2067,14 @@
                   <div class="noPassPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
-                      style="position: absolute; width: 100%; height: 100%;z-index:-1" />
+                      style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
                     <!-- banner 图 -->
-                    <el-image v-if="resultSetForm.noPassBanner" style="width: 100%" :src="resultSetForm.noPassBanner"
-                      fit="fill"></el-image>
-                    <h3 style="text-align: center">{{ resultSetForm.noPassTitle }}</h3>
-                    <pre> {{ resultSetForm.noPassDescribe }} </pre>
+                    <div style="position: absolute;left:0;top:50px;z-index:2;width: 100%;">
+                      <el-image v-if="resultSetForm.noPassBanner" style="width: 100%;text-align:center"
+                        :src="resultSetForm.noPassBanner" fit="fill"></el-image>
+                      <h3 style="text-align: center">{{ resultSetForm.noPassTitle }}</h3>
+                      <pre> {{ resultSetForm.noPassDescribe }} </pre>
+                    </div>
                     <div class="previewBtns">
                       <el-button v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex"
                         v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
