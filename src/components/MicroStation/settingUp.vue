@@ -9,7 +9,7 @@
       </el-form-item> -->
       <el-form-item label="模块类型" prop="type">
         <el-select @change="select_" v-model="ruleForm.type" placeholder="请选择模块类型" style="width: 100%">
-          <el-option v-for="(item, index) in classify" :key="index" :label="item.lable" :value="item.value"></el-option>
+          <el-option v-for="(item, index) in classify" :key="index" :label="item.label" :value="item.value"></el-option>
           <!-- <el-option label="站外链接" value="站外链接"></el-option> -->
         </el-select>
       </el-form-item>
@@ -130,6 +130,7 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
+        debugger
         console.log(newValue, oldValue)
         if (newValue) {
           let submitVal = newValue
@@ -211,6 +212,15 @@ export default {
             this.ruleForm.backgroundColor = submitVal.backgroundColor
           } else {
             this.ruleForm.backgroundColor = ''
+          }
+          // 切换时进来
+          if(submitVal.isSwitchover){
+            console.log(submitVal.type);
+            if(!submitVal.type){
+            this.ruleForm.type = ''
+            this.ruleForm.page = ''
+            this.ruleForm.link = ''
+            }
           }
         }
       },
@@ -370,7 +380,6 @@ export default {
     },
     getCode() {
       this.classify = this.$t('datadict.websiteButtonType')
-
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',

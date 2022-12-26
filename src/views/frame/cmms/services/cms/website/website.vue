@@ -267,6 +267,8 @@ export default {
       this.isFlag = val
     },
     addEdit(val, index) {
+      val.isSwitchover = true
+      // debugger
       // console.log(val, index, this.Functionality)
       this.isFlag = 1
       this.isFlag_one = false
