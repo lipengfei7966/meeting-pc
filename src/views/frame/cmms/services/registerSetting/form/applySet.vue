@@ -515,6 +515,10 @@
         <div style="text-align: center">
           <el-button type="primary" @click="saveHrefHandle('applySetForm')">保存并生成报名链接</el-button>
         </div>
+        <div class="copyHref" @click="copyTxt">
+          <span> 点击复制报名链接:</span>
+          <h2>{{ imgUrl }}</h2>
+        </div>
       </div>
     </div>
     <el-dialog title="编辑隐私协议" :visible.sync="dialogFormVisible">
@@ -547,6 +551,10 @@ export default {
   name: 'applySet',
   data () {
     return {
+      eventList: [],
+      theHashCode: '',
+      url: '',
+      imgUrl: '',
       setForm: {
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
@@ -779,7 +787,6 @@ export default {
           // this.applySetForm.versionNum = res.data.versionNum
           console.log(this.applySetForm, ' this.applySetForm-- ')
         }
-
       })
     },
     // 表单配置查询
@@ -852,6 +859,19 @@ export default {
             this.pagingCount++
           }
         })
+        debugger
+        if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+          this.url = 'https://cmms-h5-test.ctgbs.com'
+        } else if (window.location.host == 'cmms.ctgbs.com') {
+          this.url = 'https://cmms-h5.ctgbs.com'
+        } else if (window.location.host == 'cmms-dev.ctgbs.com') {
+          this.url = 'https://cmms-h5-dev.ctgbs.com'
+        }
+        console.log(response.data.eventHashCode, 'response.data.eventHashCode')
+        console.log(response.data.code, 'response.data.code')
+        console.log(this.url)
+        this.imgUrl = `${this.url}pages/pagesUser/login/login/index?eventCode=${response.data.eventHashCode}&&eventHashCode=${response.data.code}`
+
       })
     },
     setResult () {
@@ -905,7 +925,7 @@ export default {
             }
           })
         } else {
-          this.$message({ showClose: true, message: '请您填写完全部必填项后再保存生成报链接', type: 'warning' })
+          this.$message({ showClose: true, message: '请您填写完全部必填项后再保存生成报名链接', type: 'warning' })
           return false
         }
       })
@@ -922,6 +942,23 @@ export default {
     toResult (step) {
       // this.$emit('stepIndex', step)
       // this.$emit('isFormSetComplete', false)
+    },
+    copyTxt () {
+      if (this.imgUrl == '') {
+        this.$message({ showClose: true, message: '生成报名链接失败', type: 'error' })
+        return false
+      } else {
+        var copyTest = this.imgUrl
+        var inputTest = document.createElement('input')
+        inputTest.value = copyTest
+        document.body.appendChild(inputTest)
+        inputTest.select()
+        document.execCommand('Copy')
+        inputTest.className = 'oInput'
+        inputTest.style.display = 'none'
+        this.$message.success('复制成功')
+      }
+
     },
 
     certificateTypeChange () { }
@@ -1030,6 +1067,31 @@ export default {
       display: flex;
       justify-content: space-between;
       font-size: 20px;
+    }
+  }
+
+  .copyHref {
+    margin-top: 30px;
+    width: 100%;
+    height: 60px;
+    border-radius: 15px;
+    background-color: rgb(228, 251, 226);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      width: 150px;
+      color: rgb(119, 189, 119);
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    h2 {
+      color: rgb(119, 189, 119);
+      font-weight: bold;
+      font-size: 12px;
+      width: 500px;
     }
   }
 }
