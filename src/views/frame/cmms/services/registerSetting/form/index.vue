@@ -10,19 +10,19 @@
     <div style="padding: 0 5px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
-          <el-step style="cursor: pointer">
+          <el-step style="cursor: pointer" @click="stepIndexChange(0)">
             <span slot="icon" @click="stepIndexChange(0)" style="cursor: pointer"> 1 </span>
             <span slot="title" @click="stepIndexChange(0)" style="cursor: pointer"> 外观设置 </span>
           </el-step>
-          <el-step title="表单设置">
+          <el-step title="表单设置" style="cursor: pointer" @click="stepIndexChange(1)">
             <span slot="icon" @click="stepIndexChange(1)" style="cursor: pointer"> 2 </span>
             <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> 表单设置 </span>
           </el-step>
-          <el-step title="结果设置">
+          <el-step title="结果设置" @click="stepIndexChange(2)" style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 3 </span>
             <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 结果设置 </span>
           </el-step>
-          <el-step title="注册报名设置">
+          <el-step title="注册报名设置" @click="stepIndexChange(3)" style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 4 </span>
             <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 注册报名设置 </span>
           </el-step>
@@ -104,9 +104,8 @@
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload> -->
               </el-form-item>
-
-              <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
-                <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-color="#ff4949"
+              · <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
+                <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-co lor="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
               <el-form-item label="是否显示会议地点" prop="isMeetinPlace" v-if="appearanceSetForm.isPropaganda == '1'">
@@ -310,7 +309,8 @@
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                       <br />
-                      <el-input style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                      <el-input style="margin-top: 10px" size="mini"
+                        :placeholder="element.certificateNumPlaceholder"></el-input>
                     </div>
                   </div>
 
@@ -729,8 +729,10 @@
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">证件类型提示文本</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+                  <p class="eidtContentItemTitle">证件号提示文本</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].certificateNumPlaceholder"></el-input>
                 </div>
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
@@ -1769,19 +1771,81 @@
               <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">手机</div>
               <div class="centerContent">
                 <div class="themeTitle">
-                  <h1>{{ this.appearanceSetForm.language.indexOf('中文') !== -1 ? appearanceSetForm.titleChinese : '' }}
-                    {{ this.appearanceSetForm.language.indexOf('英文') !== -1 ? appearanceSetForm.titleEnglish : '' }}
-                  </h1>
-                  <!-- <h3>地址</h3> -->
-                  <h3>{{ applySetForm.applyDate }}</h3>
+                  <!-- <h2>1</h2>
+                  <h3>2</h3>
+                  <h3>3</h3> -->
+                  <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
+    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
+}}</h3>
+                  <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
-                <div class="successInfo">
-                  <h3 style="text-align: center">{{ resultSetForm.successTitle }}</h3>
-                  <pre> {{ resultSetForm.successDescribe }} </pre>
-                  <div class="previewBtnsRow">
-                    <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
-                      v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                <div class="successInfo" style="display:flex;justify-content:center">
+                  <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt=""
+                    style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
+                    <h3 style="margin:20px">{{ resultSetForm.successTitle }}</h3>
+                    <pre> {{ resultSetForm.successDescribe }} </pre>
                   </div>
+
+                </div>
+                <div class="previewBtnsRow" style="display: flex;justify-content: center;">
+                  <el-button v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex"
+                    v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="transition-box" v-show="auditStatusDrawer">
+            <div class="content">
+              <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="centerContent">
+                <div class="themeTitle">
+                  <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
+    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
+}}</h3>
+                  <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
+                </div>
+                <div class="successInfo" style="display:flex;justify-content:center">
+                  <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
+                    style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
+                    <h3 style="margin:20px">{{ resultSetForm.waitReviewTitle }}</h3>
+                    <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
+                  </div>
+
+                </div>
+                <div class="previewBtnsRow" style="display: flex;justify-content: center;">
+                  <el-button v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex"
+                    v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="transition-box" v-show="noPassDrawer">
+            <div class="content">
+              <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="centerContent">
+                <div class="themeTitle">
+                  <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
+                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{
+    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
+}}</h3>
+                  <h3>会议地点：{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
+                </div>
+                <div class="successInfo" style="display:flex;justify-content:center">
+                  <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
+                    style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
+                    <h3 style="margin:20px">{{ resultSetForm.noPassTitle }}</h3>
+                    <pre> {{ resultSetForm.noPassDescribe }} </pre>
+                  </div>
+
+                </div>
+                <div class="previewBtnsRow" style="display: flex;justify-content: center;">
+                  <el-button v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex"
+                    v-show="btnItem.name" type="primary"> {{ btnItem.name }}</el-button>
                 </div>
               </div>
             </div>
@@ -1939,6 +2003,7 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
+                  <div class="pageStatus" @click="auditStatusDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
                   <div class="waitReviewPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt=""
@@ -2064,6 +2129,7 @@
                   <div slot="header" style="text-align: center">
                     <h3>预览</h3>
                   </div>
+                  <div class="pageStatus" @click="noPassDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
                   <div class="noPassPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt=""
@@ -2213,6 +2279,7 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      getActiveObj: {},
       resPcImageList: [],
       resPcdialogImageUrl: '',
       resPcdialogVisible: false,
@@ -2263,6 +2330,8 @@ export default {
         assistApplyOpenField: [] // 协助报名开放字段
       },
       drawer: false,
+      auditStatusDrawer: false,
+      noPassDrawer: false,
       stepIndex: 0,
       header: {
         token: window.sessionStorage.getItem('token')
@@ -2734,6 +2803,12 @@ export default {
     drawerStatusHandle (status) {
       this.drawer = status
     },
+    auditStatusDrawerStatusHandle (status) {
+      this.auditStatusDrawer = status
+    },
+    noPassDrawerStatusHandle (status) {
+      this.noPassDrawer = status
+    },
     // 获取外观设置
     getAppearanceSet () {
       // 清空列表
@@ -3080,10 +3155,13 @@ export default {
           funcOperation: '表单初始化'
         }
       }).then(response => {
-        if (response.data.json) {
-          this.setInfoList = JSON.parse(response.data.json)
-        } else {
-          this.setInfoList = []
+        if (response.status) {
+          this.getActiveObj = response.data
+          if (response.data.json) {
+            this.setInfoList = JSON.parse(response.data.json)
+          } else {
+            this.setInfoList = []
+          }
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
         this.setInfoList.forEach(setInfoItem => {
@@ -3214,6 +3292,7 @@ export default {
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
         placeholder: `请输入${itemList.label}`, // 提示文本
+        certificateNumPlaceholder: '请输入您的证件号码',
         surnamePlaceholder: '请输入姓', // 姓-提示文本
         namePlaceholder: '请输入名', // 名-提示文本
         nameSplit: false, //姓名拆分
@@ -3351,6 +3430,7 @@ export default {
       if (itemList.value == 'certificate') {
         obj.options = ['居民身份证']
         obj.check[0].code = '001'
+        obj.placeholder = `请选择您的${itemList.label}类型`
       }
       // 分割线
       if (itemList.value == 'crossLine') {
@@ -3928,6 +4008,10 @@ export default {
 }
 </script>
 <style>
+.el-form-label__frameBox {
+  display: none;
+}
+
 .el-upload .el-upload-dragger {
   width: 150px;
   height: 150px;
@@ -3945,7 +4029,7 @@ export default {
   position: absolute;
   left: 0;
   width: 100%;
-  height: 600px;
+  height: 700px;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -3963,25 +4047,29 @@ export default {
 
   .centerContent {
     width: 80%;
-    height: 400px;
+    height: 500px;
 
     .themeTitle {
       width: 100%;
       height: 150px;
+      padding-top: 40px;
       border: 1px solid #ccc;
       background-color: #fff;
       margin-bottom: 30px;
-      display: flex;
-      direction: columns;
-      justify-content: center;
-      align-items: center;
+      text-align: center;
+      // display: flex;
+      // flex-direction: columns;
+      // justify-content: center;
+      // align-items: center;
     }
 
     .successInfo {
+      position: relative;
       width: 100%;
       height: 200px;
       border: 1px solid #ccc;
       background-color: #fff;
+      margin-bottom: 80px;
     }
   }
 
@@ -4247,14 +4335,19 @@ export default {
         }
       }
 
-      .previewBtnsRow {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        right: 0;
+      .centerContent .previewBtnsRow {
+        // position: absolute;
+        width: 100%;
+        height: 100px;
+        // bottom: 20px;
+        // margin: 20px 0;
+        // left: 50%;
+        // right: 50%;
+        // transform: translate(-50%, -50%);
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        justify-content: center;
+        // flex-direction: row;
+        // align-items: center;
 
         .el-button {
           width: 150px;

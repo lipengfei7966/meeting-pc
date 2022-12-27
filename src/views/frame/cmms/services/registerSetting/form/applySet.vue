@@ -503,8 +503,8 @@
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal"
                   :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{
-                      item.dictItemName
-                  }}</el-checkbox>
+    item.dictItemName
+}}</el-checkbox>
                 <!-- <el-checkbox label="姓名"></el-checkbox>
                 <el-checkbox label="手机号"></el-checkbox>
                 <el-checkbox label="邮箱"></el-checkbox> -->
@@ -724,6 +724,9 @@ export default {
     editPrivacyHandle () {
       this.dialogFormVisible = true
       this.initDialog()
+      setTimeout(() => {
+        if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
+      }, 3000)
     },
     // 生成规则
     signupContactCodeRuleFn (evevtCodeByIndex) {
@@ -765,7 +768,7 @@ export default {
           console.log(res.data.privacyContent, 'res.data.privacyContent')
           setTimeout(() => {
             if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
-          }, 2000)
+          }, 3000)
           this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
           this.applySetForm.applyCheck = res.data.isApproval
           this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false
@@ -902,7 +905,7 @@ export default {
             }
           })
         } else {
-          console.log('error submit!!')
+          this.$message({ showClose: true, message: '请您填写完全部必填项后再保存生成报链接', type: 'warning' })
           return false
         }
       })
