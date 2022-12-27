@@ -985,6 +985,7 @@ export default {
   }
 
   .copyHref {
+    cursor: pointer;
     margin-top: 30px;
     // width: 100%;
     height: 60px;

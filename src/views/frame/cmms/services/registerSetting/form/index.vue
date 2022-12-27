@@ -2843,8 +2843,11 @@ export default {
 
             this.resultNoFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
-              var v = { value: item.value, name: item.name }
-              this.resultNoFrom[0].resultButton.push(v)
+              if(item.value==''&&item.name==''){
+              }else{
+                var v = { value: item.value, name: item.name }
+                this.resultNoFrom[0].resultButton.push(v)
+              }
             })
             console.log(this.resultNoFrom[0].resultButton, 'this.resultNoFrom[0].resultButton')
             this.resultNoFrom[0].type = '1'
@@ -2861,8 +2864,11 @@ export default {
             this.resultFrom[0].eventCode = this.form.listQuery.data.eventCode
             this.resultFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
+              if(item.value==''&&item.name==''){
+              }else{
               var v = { value: item.value, name: item.name }
               this.resultFrom[0].resultButton.push(v)
+              }
             })
             this.resultFrom[0].type = '1'
 
@@ -2876,8 +2882,11 @@ export default {
             this.resultFrom[1].eventCode = this.form.listQuery.data.eventCode
             this.resultFrom[1].resultButton = []
             this.resultSetForm.waitReviewButtonList.forEach(item => {
+              if(item.value==''&&item.name==''){
+              }else{
               var v = { value: item.value, name: item.name }
               this.resultFrom[1].resultButton.push(v)
+              }
             })
             this.resultFrom[1].type = '2'
 
