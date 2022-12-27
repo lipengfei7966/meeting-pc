@@ -10,8 +10,8 @@
             <div class="shengluehao" slot="reference">...</div>
           </el-popover>
         </div> -->
-        <h2>{{ eventName }}</h2>
-        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="150px" class="contactForm" style="width: 95%; margin: 0 auto">
+        <h2 style="textAlign:center">{{ eventName }}</h2>
+        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
             <!-- 分割线 -->
             <div v-if="element.systemName == '分割线'" class="form-item-input">
@@ -120,7 +120,7 @@
               <!-- 固定信息 -->
               <div v-else>
                 <!-- 姓名 -->
-                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '150px'">
+                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '100px'">
                   <!-- 姓名 -->
                   <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
@@ -355,7 +355,7 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1'" label="注册验证" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
-                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dispOrder" :label="item.dispOrder + ''">
+                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
                   {{ item.dictItemName }}
                 </el-checkbox>
                 <!-- :checked="applySetForm.registerVerification.length && applySetForm.registerVerification.includes(item.dispOrder + '')" -->
@@ -365,7 +365,7 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1'" label="登录验证" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
-                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dispOrder" :label="item.dispOrder + ''">
+                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
                   {{ item.dictItemName }}
                 </el-checkbox>
                 <!-- :checked="applySetForm.loginVerification.length && applySetForm.loginVerification.includes(item.dispOrder + '')" -->
@@ -375,9 +375,9 @@
                 <el-checkbox label="自定义验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('4')" label="自定义验证项" prop="coustomVerification">
+            <el-form-item v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('custom')" label="自定义验证项" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
-                <el-checkbox v-for="item in customizeOptions" :key="item.dispOrder" :label="item.dispOrder + ''">
+                <el-checkbox v-for="item in customizeOptions" :key="item.dictItemVal" :label="item.dictItemVal">
                   {{ item.dictItemName }}
                 </el-checkbox>
                 <!-- :checked="applySetForm.coustomVerification.length && applySetForm.coustomVerification.includes(item.dispOrder + '')" -->
@@ -453,8 +453,7 @@
         </el-form-item>
         <el-form-item label="协议内容" prop="privacyContent">
           <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-          <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html"
-            style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
+          <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
           <bs-editor></bs-editor>
         </el-form-item>
         <el-form-item>
@@ -477,6 +476,7 @@ export default {
   name: 'applySet',
   data() {
     return {
+      copyHrefShow: false,
       eventList: [],
       theHashCode: '',
       url: '',
@@ -590,6 +590,7 @@ export default {
     }
   },
   created() {
+    this.copyHrefShow = false
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
   },
   mounted() {
@@ -657,10 +658,10 @@ export default {
     },
     editPrivacyHandle() {
       this.dialogFormVisible = true
-      //this.initDialog()
+      // this.initDialog()
       setTimeout(() => {
         if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
-      }, 3000)
+      }, 1000)
     },
     // 生成规则
     signupContactCodeRuleFn(evevtCodeByIndex) {
@@ -785,14 +786,18 @@ export default {
             this.pagingCount++
           }
         })
-        if (window.location.host == 'cmms-test.ctgbs.com') {
+        if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
           this.url = 'https://cmms-h5-test.ctgbs.com'
         } else if (window.location.host == 'cmms.ctgbs.com') {
           this.url = 'https://cmms-h5.ctgbs.com'
         } else if (window.location.host == 'cmms-dev.ctgbs.com' || window.location.host == 'localhost:9527') {
           this.url = 'https://cmms-h5-dev.ctgbs.com'
         }
-        this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&&ec=${response.data.code}`
+        console.log(response.data.eventHashCode, 'response.data.eventHashCode')
+        console.log(response.data.code, 'response.data.code')
+        console.log(this.url)
+        this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
+        //https://cmms-h5-dev.ctgbs.com/guest/#/login?ehc=d74ef61897b39fbee433473dc0843d41&ec=15613
       })
     },
     setResult() {
@@ -837,6 +842,7 @@ export default {
           }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
+              this.copyHrefShow = true
               this.$message({ message: '报名并生成链接成功', type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)
@@ -850,19 +856,6 @@ export default {
           return false
         }
       })
-    },
-    toAppearance(step) {
-      // this.$emit('stepIndex', step)
-      // this.$emit('isFormSetComplete', false)
-      // console.log(step, 'step11')
-    },
-    toEdit(step) {
-      // this.$emit('stepIndex', step)
-      // this.$emit('isFormSetComplete', false)
-    },
-    toResult(step) {
-      // this.$emit('stepIndex', step)
-      // this.$emit('isFormSetComplete', false)
     },
     copyTxt() {
       if (this.imgUrl == '') {
@@ -896,7 +889,8 @@ export default {
     overflow: auto;
     width: 48% !important;
     background: #fff;
-    text-align: center;
+    // text-align: center;
+    min-width: 50px;
     padding: 20px;
     position: relative;
 
@@ -992,26 +986,28 @@ export default {
 
   .copyHref {
     margin-top: 30px;
-    width: 100%;
+    // width: 100%;
     height: 60px;
     border-radius: 15px;
     background-color: rgb(228, 251, 226);
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px 20px;
 
     span {
       width: 150px;
       color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 18px;
+      margin-right: 2 0px;
     }
 
     h2 {
       color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 12px;
-      width: 500px;
+      // width: 500px;
     }
   }
 }

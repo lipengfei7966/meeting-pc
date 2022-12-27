@@ -158,9 +158,14 @@
                 <div v-if="element.nationIsShow" class="addresItem">
                   <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.value"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.label"> </el-option>
                     </el-select>
                   </el-form-item>
+                  <!-- <el-form-item :label="element.nationTitle" prop="nations">
+                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.value"> </el-option>
+                    </el-select>
+                  </el-form-item> -->
                 </div>
                 <!-- 省份 -->
                 <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
@@ -1222,7 +1227,7 @@ export default {
     getCountryCode() {
       this.countryCodeOptions = this.$t('datadict.countryCode')
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
-      this.nationsList = res.data.filter(item => {
+      this.nationsList = this.countryCodeOptions.filter(item => {
         //
         return item.value != '852' && item.value != '853' && item.value != '886'
       })

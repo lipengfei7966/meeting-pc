@@ -46,7 +46,12 @@
                 arr = sessionStorage.getItem('cmms-user-key');
                 url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
               }else if(window.location.host == 'cmms-dev.ctgbs.com' || window.location.host == 'localhost:9527'){
-                arr =  sessionStorage.getItem('dev-user-key');
+                // debugger
+                if(sessionStorage.getItem('dev-user-key')){
+                  arr = sessionStorage.getItem('dev-user-key');
+                }else{
+                  arr = sessionStorage.getItem('cmms-user-key');
+                }
                 url = 'https://cmms-dev.ctgbs.com/cmms-api/api/obs/file/uploadImg'
               }
 			// 
