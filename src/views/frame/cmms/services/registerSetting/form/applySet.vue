@@ -440,20 +440,21 @@
         <div style="text-align: center">
           <el-button type="primary" @click="saveHrefHandle('applySetForm')">保存并生成报名链接</el-button>
         </div>
-        <div class="copyHref" @click="copyTxt" v-if="copyHrefShow===true">
+        <div class="copyHref" @click="copyTxt">
           <span> 点击复制报名链接:</span>
           <h2>{{ imgUrl }}</h2>
         </div>
       </div>
     </div>
-    <el-dialog title="编辑隐私协议" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑隐私协议" v-el-drag-dialog :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="协议名称" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item label="协议内容" prop="privacyContent">
           <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-          <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
+          <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
+          <bs-editor></bs-editor>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="privacySubmitForm('ruleForm')">确定</el-button>
@@ -473,9 +474,9 @@ import request from '@/utils/frame/base/request'
 import moment from 'moment'
 export default {
   name: 'applySet',
-  data () {
+  data() {
     return {
-      copyHrefShow:false,
+      copyHrefShow: false,
       eventList: [],
       theHashCode: '',
       url: '',
@@ -582,17 +583,17 @@ export default {
     }
   },
   watch: {
-    eventCode (newVal, oldVal) {
+    eventCode(newVal, oldVal) {
       if (newVal) {
         this.getEventInfo()
       }
     }
   },
-  created () {
-    this.copyHrefShow=false
+  created() {
+    this.copyHrefShow = false
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
   },
-  mounted () {
+  mounted() {
     if (this.eventCode) {
       this.getEventInfo()
       this.signupContactCodeRuleFn()
@@ -640,10 +641,10 @@ export default {
     })
   },
   methods: {
-    resetForm () {
+    resetForm() {
       this.dialogFormVisible = false
     },
-    privacySubmitForm (formName) {
+    privacySubmitForm(formName) {
       // this.$refs[formName].resetFields()
       const req = window.frames['myframe'].getContent()
       // const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
@@ -655,7 +656,7 @@ export default {
         this.dialogFormVisible = false
       }
     },
-    editPrivacyHandle () {
+    editPrivacyHandle() {
       this.dialogFormVisible = true
       // this.initDialog()
       setTimeout(() => {
@@ -663,7 +664,7 @@ export default {
       }, 1000)
     },
     // 生成规则
-    signupContactCodeRuleFn (evevtCodeByIndex) {
+    signupContactCodeRuleFn(evevtCodeByIndex) {
       var evCode = evevtCodeByIndex ? evevtCodeByIndex : this.eventCode
       request({
         url: '/api/register/signupContactCodeRule/get',
@@ -716,7 +717,7 @@ export default {
       })
     },
     // 表单配置查询
-    getEventInfo () {
+    getEventInfo() {
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -789,7 +790,7 @@ export default {
           this.url = 'https://cmms-h5-test.ctgbs.com'
         } else if (window.location.host == 'cmms.ctgbs.com') {
           this.url = 'https://cmms-h5.ctgbs.com'
-        } else if (window.location.host == 'cmms-dev.ctgbs.com') {
+        } else if (window.location.host == 'cmms-dev.ctgbs.com' || window.location.host == 'localhost:9527') {
           this.url = 'https://cmms-h5-dev.ctgbs.com'
         }
         console.log(response.data.eventHashCode, 'response.data.eventHashCode')
@@ -797,13 +798,12 @@ export default {
         console.log(this.url)
         this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
         //https://cmms-h5-dev.ctgbs.com/guest/#/login?ehc=d74ef61897b39fbee433473dc0843d41&ec=15613
-
       })
     },
-    setResult () {
+    setResult() {
       this.$emit('setResult')
     },
-    saveHrefHandle (formName) {
+    saveHrefHandle(formName) {
       this.$emit('applySetForm', this.applySetForm)
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -842,12 +842,11 @@ export default {
           }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
-              this.copyHrefShow=true
+              this.copyHrefShow = true
               this.$message({ message: '报名并生成链接成功', type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)
               this.$emit('isFormSetComplete', false)
-
             } else {
               this.$message({ message: '您已报名，无需重复报名', type: 'success' })
             }
@@ -858,7 +857,7 @@ export default {
         }
       })
     },
-    copyTxt () {
+    copyTxt() {
       if (this.imgUrl == '') {
         this.$message({ showClose: true, message: '生成报名链接失败', type: 'error' })
         return false
@@ -873,10 +872,9 @@ export default {
         inputTest.style.display = 'none'
         this.$message.success('复制成功')
       }
-
     },
 
-    certificateTypeChange () { }
+    certificateTypeChange() {}
   }
 }
 </script>
