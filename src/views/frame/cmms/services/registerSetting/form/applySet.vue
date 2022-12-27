@@ -859,7 +859,6 @@ export default {
             this.pagingCount++
           }
         })
-        debugger
         if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
           this.url = 'https://cmms-h5-test.ctgbs.com'
         } else if (window.location.host == 'cmms.ctgbs.com') {
@@ -870,7 +869,8 @@ export default {
         console.log(response.data.eventHashCode, 'response.data.eventHashCode')
         console.log(response.data.code, 'response.data.code')
         console.log(this.url)
-        this.imgUrl = `${this.url}pages/pagesUser/login/login/index?eventCode=${response.data.eventHashCode}&&eventHashCode=${response.data.code}`
+        this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
+        //https://cmms-h5-dev.ctgbs.com/guest/#/login?ehc=d74ef61897b39fbee433473dc0843d41&ec=15613
 
       })
     },
@@ -1085,6 +1085,7 @@ export default {
       color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 18px;
+      margin-right: 20px;
     }
 
     h2 {
