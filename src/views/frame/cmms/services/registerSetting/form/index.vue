@@ -2596,6 +2596,7 @@ export default {
     getAppearanceSet () {
       // 清空列表
       this.meetingImageList = []
+      this.AppImageList = []
       this.resPcImageList = []
       this.resAppImageList = []
       request({
