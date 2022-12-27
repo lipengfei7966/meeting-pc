@@ -11,7 +11,7 @@
           </el-popover>
         </div> -->
         <h2>{{ eventName }}</h2>
-        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="150px" class="contactForm" style="width: 95%; margin: 0 auto">
+        <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
             <!-- 分割线 -->
             <div v-if="element.systemName == '分割线'" class="form-item-input">
@@ -891,7 +891,8 @@ export default {
     overflow: auto;
     width: 48% !important;
     background: #fff;
-    text-align: center;
+    // text-align: center;
+    min-width: 50px;
     padding: 20px;
     position: relative;
 
