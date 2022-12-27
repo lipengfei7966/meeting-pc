@@ -10,19 +10,19 @@
     <div style="padding: 0 5px">
       <div class="steps">
         <el-steps :active="stepIndex" align-center>
-          <el-step style="cursor: pointer">
+          <el-step style="cursor: pointer" @click="stepIndexChange(0)">
             <span slot="icon" @click="stepIndexChange(0)" style="cursor: pointer"> 1 </span>
             <span slot="title" @click="stepIndexChange(0)" style="cursor: pointer"> 外观设置 </span>
           </el-step>
-          <el-step title="表单设置">
+          <el-step title="表单设置" style="cursor: pointer" @click="stepIndexChange(1)">
             <span slot="icon" @click="stepIndexChange(1)" style="cursor: pointer"> 2 </span>
             <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> 表单设置 </span>
           </el-step>
-          <el-step title="结果设置">
+          <el-step title="结果设置" @click="stepIndexChange(2)" style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 3 </span>
             <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 结果设置 </span>
           </el-step>
-          <el-step title="注册报名设置">
+          <el-step title="注册报名设置" @click="stepIndexChange(3)" style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 4 </span>
             <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 注册报名设置 </span>
           </el-step>
@@ -104,8 +104,7 @@
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload> -->
               </el-form-item>
-
-              <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
+              · <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-co lor="#ff4949"
                   active-value="1" inactive-value="0"></el-switch>
               </el-form-item>

@@ -905,7 +905,7 @@ export default {
             }
           })
         } else {
-          console.log('error submit!!')
+          this.$message({ showClose: true, message: '请您填写完全部必填项后再保存生成报链接', type: 'warning' })
           return false
         }
       })
