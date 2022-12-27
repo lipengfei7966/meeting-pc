@@ -3699,6 +3699,7 @@ export default {
       this.getEventInfo()
       this.getAppearanceSet()
       this.$refs.attCodeSet.signupContactCodeRuleFn(params.code)
+      this.$refs.attCodeSet.copyHrefShow=false
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {

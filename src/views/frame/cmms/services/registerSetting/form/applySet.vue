@@ -440,7 +440,7 @@
         <div style="text-align: center">
           <el-button type="primary" @click="saveHrefHandle('applySetForm')">保存并生成报名链接</el-button>
         </div>
-        <div class="copyHref" @click="copyTxt">
+        <div class="copyHref" @click="copyTxt" v-if="copyHrefShow===true">
           <span> 点击复制报名链接:</span>
           <h2>{{ imgUrl }}</h2>
         </div>
@@ -475,6 +475,7 @@ export default {
   name: 'applySet',
   data () {
     return {
+      copyHrefShow:false,
       eventList: [],
       theHashCode: '',
       url: '',
@@ -588,6 +589,7 @@ export default {
     }
   },
   created () {
+    this.copyHrefShow=false
     console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
   },
   mounted () {
@@ -840,10 +842,12 @@ export default {
           }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
+              this.copyHrefShow=true
               this.$message({ message: '报名并生成链接成功', type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)
               this.$emit('isFormSetComplete', false)
+
             } else {
               this.$message({ message: '您已报名，无需重复报名', type: 'success' })
             }
