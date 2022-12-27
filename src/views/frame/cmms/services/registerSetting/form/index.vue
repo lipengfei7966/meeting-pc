@@ -2843,7 +2843,7 @@ export default {
 
             this.resultNoFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
-              if(item.value==''&&item.name==''){
+              if(item.value==''||item.name==''){
               }else{
                 var v = { value: item.value, name: item.name }
                 this.resultNoFrom[0].resultButton.push(v)
@@ -2864,7 +2864,7 @@ export default {
             this.resultFrom[0].eventCode = this.form.listQuery.data.eventCode
             this.resultFrom[0].resultButton = []
             this.resultSetForm.successButtonList.forEach(item => {
-              if(item.value==''&&item.name==''){
+              if(item.value==''||item.name==''){
               }else{
               var v = { value: item.value, name: item.name }
               this.resultFrom[0].resultButton.push(v)
@@ -2882,7 +2882,7 @@ export default {
             this.resultFrom[1].eventCode = this.form.listQuery.data.eventCode
             this.resultFrom[1].resultButton = []
             this.resultSetForm.waitReviewButtonList.forEach(item => {
-              if(item.value==''&&item.name==''){
+              if(item.value==''||item.name==''){
               }else{
               var v = { value: item.value, name: item.name }
               this.resultFrom[1].resultButton.push(v)
@@ -2900,8 +2900,11 @@ export default {
             this.resultFrom[2].eventCode = this.form.listQuery.data.eventCode
             this.resultFrom[2].resultButton = []
             this.resultSetForm.noPassButtonList.forEach(item => {
+              if(item.value==''||item.name==''){
+              }else{
               var v = { value: item.value, name: item.name }
               this.resultFrom[2].resultButton.push(v)
+              }
             })
             this.resultFrom[2].type = '3'
             console.log(this.resultFrom, 'resultFrom')
