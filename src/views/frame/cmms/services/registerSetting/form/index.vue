@@ -1357,7 +1357,7 @@
                   <p>
                     <el-input-number style="width: 80px; line-height: 32px"
                       v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9"
-                      @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                      @change="numberDigitLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
@@ -1368,7 +1368,7 @@
                     小数点后
                     <el-input-number style="width: 80px; line-height: 32px"
                       v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6"
-                      @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
+                      @change="decimalPlacesLimitChange(setInfoList[checkedIndex])"></el-input-number>
                     位
                   </p>
                 </div>
