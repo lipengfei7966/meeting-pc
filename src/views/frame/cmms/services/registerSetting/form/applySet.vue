@@ -10,7 +10,7 @@
             <div class="shengluehao" slot="reference">...</div>
           </el-popover>
         </div> -->
-        <h2>{{ eventName }}</h2>
+        <h2 style="textAlign:center">{{ eventName }}</h2>
         <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
             <!-- 分割线 -->
@@ -120,7 +120,7 @@
               <!-- 固定信息 -->
               <div v-else>
                 <!-- 姓名 -->
-                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '150px'">
+                <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '100px'">
                   <!-- 姓名 -->
                   <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
