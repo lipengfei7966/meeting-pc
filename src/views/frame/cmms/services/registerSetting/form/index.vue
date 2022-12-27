@@ -1784,7 +1784,7 @@
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:">
+                  <el-form-item label="按钮设置:" v-show="resultSetForm.successIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.name'">
                         <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
@@ -1892,7 +1892,7 @@
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:">
+                  <el-form-item label="按钮设置:" v-show="resultSetForm.waitReviewIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.name'">
                         <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
@@ -1999,7 +1999,7 @@
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:">
+                  <el-form-item label="按钮设置:" v-show="resultSetForm.noPassIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.name'">
                         <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
