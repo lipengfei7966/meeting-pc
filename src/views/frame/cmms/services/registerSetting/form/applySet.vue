@@ -528,7 +528,8 @@
         </el-form-item>
         <el-form-item label="协议内容" prop="privacyContent">
           <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-          <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" r-width: 1px"></iframe>
+          <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html"
+            style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="privacySubmitForm('ruleForm')">确定</el-button>
@@ -944,10 +945,10 @@ export default {
     },
     copyTxt () {
       if (this.imgUrl == '') {
-.$message({ showClose: true, message: '生成报名链接失败', type: 'error' })
+        this.$message({ showClose: true, message: '生成报名链接失败', type: 'error' })
         return false
-  } else {
-    var copyTest = this.imgUrl
+      } else {
+        var copyTest = this.imgUrl
         var inputTest = document.createElement('input')
         inputTest.value = copyTest
         document.body.appendChild(inputTest)
@@ -956,11 +957,11 @@ export default {
         inputTest.className = 'oInput'
         inputTest.style.display = 'none'
         this.$message.success('复制成功')
-  }
+      }
 
-},
+    },
 
-certificateTypeChange() { }
+    certificateTypeChange () { }
   }
 }
 </script>
