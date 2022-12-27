@@ -26,8 +26,8 @@
 			}
 		}
 		function uploadImg(e) {
-			debugger
-			var arr = sessionStorage.getItem('cmms-user-key');
+			// debugger
+			var arr = ''
 			console.log(arr);
 			// 
 			var imgFile = e.target.files[0]; //获取图片文件
@@ -39,10 +39,15 @@
       formData.append('file', imgFile);
 			// 处理地址问题
 			let url = ''
-              if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {
+              if (window.location.host == 'cmms-test.ctgbs.com') {
                 url = 'https://cmms-test.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+                arr = sessionStorage.getItem('cmms-user-key');
               } else if (window.location.host == 'cmms.ctgbs.com') {
+                arr = sessionStorage.getItem('cmms-user-key');
                 url = 'https://cmms.ctgbs.com/cmms-api/api/obs/file/uploadImg'
+              }else if(window.location.host == 'cmms-dev.ctgbs.com' || window.location.host == 'localhost:9527'){
+                arr =  sessionStorage.getItem('dev-user-key');
+                url = 'https://cmms-dev.ctgbs.com/cmms-api/api/obs/file/uploadImg'
               }
 			// 
 			$.ajax({
@@ -61,6 +66,7 @@
     data:formData,
     success:function(data){
         //请求成功函数内容
+        console.log(data.data.filePath);
 				document.getElementById("previewDiv").style.backgroundImage = "url('" + data.data.filePath + "')";
 			      document.getElementById("previewDiv").setAttribute("imgSrc", "W");
     },
