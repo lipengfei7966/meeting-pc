@@ -686,7 +686,7 @@
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">可选择证件类型</p>
-                  this=={{ $t('datadict.cardType') }}
+                  <!-- this=={{ $t('datadict.cardType') }} -->
                   <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1" @change="certificateTypeChange">
                     <el-checkbox v-for="item in $t('datadict.cardType')" :label="item.label" :key="item.key" :value="item.label"></el-checkbox>
                     <!-- <el-checkbox v-for="item in setInfoList[checkedIndex].certificateAllTypes" :label="item" :key="item"></el-checkbox> -->
