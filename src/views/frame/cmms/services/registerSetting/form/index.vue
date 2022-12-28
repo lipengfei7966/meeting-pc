@@ -3259,6 +3259,9 @@ export default {
     // 分步改变
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
+      if (setpIndex==3) {
+        this.getEventInfo()
+      }
     },
     isFormSetCompleteFn (status) {
       this.isFormSetComplete = status
