@@ -686,14 +686,14 @@
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">可选择证件类型</p>
-                  <!-- this=={{ $t('datadict.cardType') }} -->
+                  <!-- this=={{ $t('datadict.certificateType') }} -->
                   <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1" @change="certificateTypeChange">
-                    <el-checkbox v-for="item in $t('datadict.cardType')" :label="item.label" :key="item.key" :value="item.label"></el-checkbox>
+                    <el-checkbox v-for="item in $t('datadict.certificateType')" :label="item.label" :key="item.key" :value="item.label"></el-checkbox>
                     <!-- <el-checkbox v-for="item in setInfoList[checkedIndex].certificateAllTypes" :label="item" :key="item"></el-checkbox> -->
                   </el-checkbox-group>
                 </div>
                 <!-- 校验 -->
-                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('居民身份证')">
+                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('二代身份证')">
                   <p class="eidtContentItemTitle">校验</p>
                   <el-radio-group class="certificateVerify" style="width: 100%" v-model="setInfoList[checkedIndex].check[0].code" @change="certificateVerifyChange">
                     <el-radio label="001">
@@ -2968,6 +2968,7 @@ export default {
           this.getActiveObj = response.data
           if (response.data.json) {
             this.setInfoList = JSON.parse(response.data.json)
+            console.log(JSON.parse(response.data.json),'JSON.parse(response.data.json)');
           } else {
             this.setInfoList = []
           }
@@ -3111,7 +3112,7 @@ export default {
         notAllowEdit: false, // 报名后不允许编辑
 
         // sexRadioOptions: ['先生','女士'], // 性别选项
-        certificateAllTypes: ['居民身份证', '护照', '军人证', '港澳居民来往内地通行证', '台湾居民来往内地通行证', '港澳台居民居住证', '其他法定有效证件'], // 证件可选类型
+        // certificateAllTypes: ['居民身份证', '护照', '军人证', '港澳居民来往内地通行证', '台湾居民来往内地通行证', '港澳台居民居住证', '其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
         certificateVerifyOptions: ['号码逻辑校验', '身份证实名校验', '人像实名校验'], //校验选项
         certificateVerify: '号码逻辑校验', // 选中校验方式
@@ -3240,7 +3241,7 @@ export default {
 
       // 证件
       if (itemList.value == 'certificate') {
-        obj.options = ['居民身份证']
+        obj.options = ['二代身份证']
         obj.check[0].code = '001'
         obj.placeholder = `请选择您的${itemList.label}类型`
       }
@@ -3274,12 +3275,13 @@ export default {
       this.isFormSetComplete = status
     },
     certificateTypeChange (certificateOptions) {
+      console.log(certificateOptions,'certificateOptions');
       // 证件类型不包括居民身份证时 校验code设为空
-      if (!certificateOptions.includes('居民身份证')) {
+      if (!certificateOptions.includes('二代身份证')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
       }
       // 勾选 居民身份证 后, 是最后一项
-      if (certificateOptions[certificateOptions.length - 1] == '居民身份证') {
+      if (certificateOptions[certificateOptions.length - 1] == '二代身份证') {
         this.setInfoList[this.checkedIndex].check[0].code = '001'
       }
       console.log(this.setInfoList[this.checkedIndex])
