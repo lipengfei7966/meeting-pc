@@ -2455,7 +2455,9 @@ export default {
         { appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
         { appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' },
         { appFile: '', backgroundFile: '', describeInfo: '', isSkip: 0, skipPage: '', skipWebsite: '', theme: '', resultButton: [], type: '' }
-      ]
+      ],
+      numDigit:{code:'009',name:4},
+      decimalPlaces:{code:'010',name:4}
     }
   },
   components: {
@@ -3005,7 +3007,19 @@ export default {
         if (item.systemName == '附件') {
           item.allFileTypes = [...item.imageCheckedTypes, ...item.documentCheckedTypes, ...item.compressedFileCheckedTypes, ...item.videoFileCheckedTypes, ...item.audioFileCheckedTypes]
         }
+        if (item.systemName == '数字') {
+          item.check=[]
+        item.check.push(this.numDigit)
+        item.check.push(this.decimalPlaces)
+        // item.check.forEach((i,x)=>{
+        //   if(i.code==''||i.name==''){
+        //     item.check.splice(x)
+        //   }
+        // })
+        // item.check=[...item.check]
+      }
       })
+
       request({
         url: 'api/register/signupContactCol/save',
         method: 'POST',
@@ -3683,15 +3697,19 @@ export default {
     },
     // 数字位数限制 添加校验
     numberDigitLimitChange (setInfoListItem) {
-      setInfoListItem.check[0].code = '009'
-      setInfoListItem.check[0].name = setInfoListItem.numberDigitLimit
-      console.log(this.setInfoList)
+      this.numDigit={ code:'009',name:this.setInfoList[this.checkedIndex].numberDigitLimit}
+      // setInfoListItem.check.push(numDigit)
+      // setInfoListItem.check[0].code = '009'
+      // setInfoListItem.check[0].name = setInfoListItem.numberDigitLimit
+      // console.log(this.setInfoList)
     },
     // 小数位数限制 添加校验
     decimalPlacesLimitChange (setInfoListItem) {
-      setInfoListItem.check[1].code = '010'
-      setInfoListItem.check[1].name = setInfoListItem.decimalPlacesLimit
-      console.log(this.setInfoList)
+      this.decimalPlaces={ code:'010',name:this.setInfoList[this.checkedIndex].decimalPlacesLimit}
+      // setInfoListItem.check.push(decimalPlaces)
+      // setInfoListItem.check[1].code = '010'
+      // setInfoListItem.check[1].name = setInfoListItem.Limit
+      // console.log(this.setInfoList)
     },
     // 手机号 校验勾选
     mobilePhoneVerifyChange (val) {
