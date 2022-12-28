@@ -825,7 +825,6 @@ export default {
         console.log(response.data.code, 'response.data.code')
         console.log(this.url)
         this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
-        //https://cmms-h5-dev.ctgbs.com/guest/#/login?ehc=d74ef61897b39fbee433473dc0843d41&ec=15613
       })
     },
     setResult() {
