@@ -20,7 +20,10 @@
 
             <!-- 分页 -->
             <div v-else-if="element.systemName == '分页'" class="form-item-input">
+              <!-- <el-form-item :label="element.pageTitle" label-width="100px"> -->
+              <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
               <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+              <!-- </el-form-item> -->
             </div>
 
             <!-- 说明信息 -->
@@ -580,14 +583,39 @@ export default {
     eventName: {
       type: String,
       default: ''
-    }
+    },
+    formUpdateStatus:{
+      type:Array,
+      default:()=>[]
+    },
+    isNeedApprove:{
+      type:String,
+      default:'0'
+    },
   },
   watch: {
     eventCode(newVal, oldVal) {
       if (newVal) {
         this.getEventInfo()
       }
-    }
+    },
+    isNeedApprove(newVal, oldVal) {
+      if (newVal) {
+        this.applySetForm.applyCheck=this.isNeedApprove
+        this.$emit('update:isNeedApprove',this.applySetForm.applyCheck)
+      }
+    },
+    'applySetForm.applyCheck'(newVal, oldVal) {
+      if (newVal) {
+        this.$emit('update:isNeedApprove',this.applySetForm.applyCheck)
+      }
+    },
+    formUpdateStatus(newVal, oldVal) {
+      if (newVal==true) {
+        this.getEventInfo()
+        this.$emit('update:formUpdateStatus',false)
+      }
+    },
   },
   created() {
     this.copyHrefShow = false

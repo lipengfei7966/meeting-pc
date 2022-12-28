@@ -579,6 +579,7 @@
 
                   <!-- 分页 -->
                   <div v-if="element.systemName == '分页'" class="form-item-input">
+                    <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
                     <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
                     <!-- <el-divider content-position="center">{{ element.placeholder }}</el-divider> -->
                   </div>
@@ -1581,10 +1582,12 @@
                 </div>
               </div>
 
-              <!-- 分页 -->
+              <!-- 11 -->
               <div v-if="setInfoList[checkedIndex].systemName == '分页'">
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
+                  <p class="eidtContentItemTitle">分页标题</p>
+                  <el-input size="mini" v-model="setInfoList[checkedIndex].pageTitle" :placeholder="setInfoList[checkedIndex].placeholder"></el-input>
                   <p style="width: 100%; text-align: center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{
     pagingCount
 }} 页 ]</p>
@@ -2029,7 +2032,7 @@
 
       <!-- 参会人编码设置 -->
       <div v-show="stepIndex == 3" class="resultSet" :style="{ height: formSetHeight + 'px' }">
-        <apply-set :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult" ref="attCodeSet" @applySetForm="applySetForm"></apply-set>
+        <apply-set :isNeedApprove.sync="resultSetForm.isNeedApprove" :formUpdateStatus.sync="formUpdateStatus" :eventCode="form.listQuery.data.eventCode" :eventName="eventName" @setResult="setResult" ref="attCodeSet" @applySetForm="applySetForm"></apply-set>
       </div>
 
     </div>
@@ -2058,6 +2061,7 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      formUpdateStatus:false,
       getActiveObj: {},
       resPcImageList: [],
       resPcdialogImageUrl: '',
@@ -3015,6 +3019,7 @@ export default {
           this.$message.success('保存成功')
           this.getEventInfo()
           this.stepIndex = 2
+          this.formUpdateStatus=true
         } else {
           this.$message.error('保存失败')
         }
@@ -3094,10 +3099,12 @@ export default {
         title: itemList.label, // 标题
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
+        pageTitle:'分页标题',
         placeholder: `请输入${itemList.label}`, // 提示文本
         certificateNumPlaceholder: '请输入您的证件号码',
         surnamePlaceholder: '请输入姓', // 姓-提示文本
         namePlaceholder: '请输入名', // 名-提示文本
+        //pageTitlePlaceholder: '请输入分页标题', // 分页标题-提示文本
         nameSplit: false, //姓名拆分
         notAllowEdit: false, // 报名后不允许编辑
 
@@ -3244,6 +3251,7 @@ export default {
       if (itemList.value == 'paging') {
         obj.isPaging = true
         this.pagingCount++
+        obj.placeholder = `请输入${itemList.label}标题`
       }
 
       // 说明信息
@@ -3259,9 +3267,6 @@ export default {
     // 分步改变
     stepIndexChange (setpIndex) {
       this.stepIndex = setpIndex
-      if (setpIndex==3) {
-        this.getEventInfo()
-      }
     },
     isFormSetCompleteFn (status) {
       this.isFormSetComplete = status
