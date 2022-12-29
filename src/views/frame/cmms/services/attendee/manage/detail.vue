@@ -1259,24 +1259,11 @@ export default {
       // window.open(file.file_path, "_blank");
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
       let a_link = document.createElement('a')
-      // 这里是将url转成blob地址，
-      fetch(fileUrl, {
-        mode: 'no-cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'text/plain'
-        }
-      })
-        .then(res => res.blob())
-        .then(blob => {
-          // 将链接地址字符内容转变成blob地址
-
-          a_link.href = URL.createObjectURL(blob)
-          console.log(a_link.href)
-          a_link.download = fileName //下载的文件的名字
-          document.body.appendChild(a_link)
-          a_link.click()
-        })
+      a_link.href = fileUrl
+      a_link.download = fileName //下载的文件的名字/
+      a_link.target = '_blank'
+      document.body.appendChild(a_link)
+      a_link.click()
     }
   }
 }
