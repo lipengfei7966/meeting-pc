@@ -1256,14 +1256,28 @@ export default {
     },
 
     downloadPhoto(fileUrl) {
-      // window.open(file.file_path, "_blank");
+      // // window.open(file.file_path, "_blank");
+      // let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
+      // let a_link = document.createElement('a')
+      // a_link.href = fileUrl
+      // a_link.download = fileName //下载的文件的名字/
+      // a_link.target = '_blank'
+      // document.body.appendChild(a_link)
+      // a_link.click()
+      const blob = new Blob([fileUrl])
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
-      let a_link = document.createElement('a')
-      a_link.href = fileUrl
-      a_link.download = fileName //下载的文件的名字/
-      a_link.target = '_blank'
-      document.body.appendChild(a_link)
-      a_link.click()
+				const extName = fileUrl.substring(
+					fileUrl.lastIndexOf('.')
+				)
+				const link = document.createElement('a')
+				link.download = fileName
+				link.target = '_blank'
+				link.style.display = 'none'
+				link.href = URL.createObjectURL(blob)
+				document.body.appendChild(link)
+				link.click()
+				URL.revokeObjectURL(link.href)
+				document.body.removeChild(link)
     }
   }
 }
