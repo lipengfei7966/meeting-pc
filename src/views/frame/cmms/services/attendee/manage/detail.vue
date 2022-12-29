@@ -602,7 +602,7 @@ export default {
                 // 显示国家
 
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
-                this.setForm.nations = '国家'
+                // this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
                 // 显示省份
