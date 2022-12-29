@@ -7,17 +7,17 @@
             会议名称
           </div>
           <div>
-            <el-select style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" placeholder="会议名称">
+            <el-select filterable style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" placeholder="会议名称">
               <el-option v-for="(item,index) in activityList" :key="index" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </div>
         </div>
         <div>
           <span class="sp_one">参会人是否可参加多项分活动：</span>
-          <el-radio-group v-model="moduleVal.radio_">
+          <el-radio-group @input="triesLimitRadio" v-model="moduleVal.triesLimit">
             <el-radio :label="0">不限制</el-radio>
             <el-radio :label="1">单人最多参与 <span>
-                <el-input style="width: 26%" size="mini" clearable v-model="moduleVal.inputNum"></el-input>
+                <el-input style="width: 26%" size="mini" :disabled="moduleVal.triesLimit == 0" clearable v-model="moduleVal.inputNum"></el-input>
               </span> 次</el-radio>
           </el-radio-group>
         </div>
@@ -38,9 +38,10 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动状态">
-                <el-select size="mini" clearable v-model="moduleVal.activityState" placeholder="活动状态">
-                  <el-option label="状态一" value="shanghai"></el-option>
-                  <el-option label="状态二" value="beijing"></el-option>
+                <el-select multiple size="mini" clearable v-model="moduleVal.status" placeholder="活动状态">
+                  <el-option label="未开始" value="notStart"></el-option>
+                  <el-option label="进行中" value="haveInHand"></el-option>
+                  <el-option label="已结束" value="end"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -100,7 +101,7 @@
       </div>
     </div>
     <div>
-      <el-dialog destroy-on-close title="分活动管理" :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
+      <el-dialog destroy-on-close :title="handleTitle" :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
         <div>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
             <el-form-item label="分活动名称" prop="name">
@@ -112,9 +113,9 @@
             <el-form-item label="参加人数限制" prop="triesLimit">
               <el-radio-group :disabled="disabled_look" v-model="ruleForm.triesLimit">
                 <el-radio :label="0">不限制</el-radio>
-                <el-radio :label="1">单人最多参与 <span>
+                <el-radio :label="1">活动最多允许 <span>
                     <el-input :disabled="ruleForm.triesLimit == 0" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0"></el-input>
-                  </span> 次</el-radio>
+                  </span> 人参与</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="分活动描述" prop="describeInfo">
@@ -137,10 +138,11 @@ export default {
   name: 'activityManagement',
   data() {
     return {
+      handleTitle:'新建分活动',
       dialogVisible: false,
       moduleVal: {
         eventCode: '',
-        radio_: 0,
+        triesLimit: 0,
         // 单人最多参与人次
         inputNum: '',
         // 活动名称
@@ -148,9 +150,11 @@ export default {
         // 活动时间
         activityTime: '',
         // 活动状态
-        activityState: '',
+        status: [],
         // 启用状态
-        isGoLive: ''
+        isGoLive: '',
+        beginTime:'',
+        endTime:''
       },
       tableData: [],
       ruleForm: {
@@ -173,7 +177,7 @@ export default {
         date1: [{ required: true, message: '请选择日期', trigger: 'change' }],
         type: [{ required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
         resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        describeInfo: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
+        // describeInfo: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
         triesLimit: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }]
       },
       activityList: [], //会议名称list
@@ -186,15 +190,37 @@ export default {
   },
   methods: {
     searchSubmit() {
-      console.log('searchSubmit')
+      // debugger
+      console.log('searchSubmit',this.moduleVal)
       // this.modelValue.beginTime = this.modelValue.activityTime[0]
       // this.modelValue.endTime = this.modelValue.activityTime[1]
+      if(this.moduleVal.status){
+        this.moduleVal.status = this.moduleVal.status.join(',')
+        // debugger
+      }
+      if(this.moduleVal.activityTime !=null && this.moduleVal.activityTime.length>0){
+          this.moduleVal.beginTime = this.moduleVal.activityTime[0]
+          this.moduleVal.endTime = this.moduleVal.activityTime[1]
+        }
+        if(this.moduleVal.activityTime == null){
+          this.moduleVal.beginTime = ''
+          this.moduleVal.endTime = ''
+        }
+        // if(this.moduleVal.triesLimit == 1){
+        //   this.moduleVal.triesLimit = this.moduleVal.inputNum
+        // }
       request({
         url: '/api/register/cmsEventInfoChildren/page',
         method: 'POST',
         data: { data: this.moduleVal, isPage: true, current: this.pages, size: this.size, funcModule: '分活动管理', funcOperation: '获取分活动列表' }
       }).then(res => {
         // debugger
+        if(this.moduleVal.status.length>0){
+          this.moduleVal.status = this.moduleVal.status.split(',')
+        }
+        // if(this.moduleVal.triesLimit != 0){
+        //   this.moduleVal.triesLimit = 1
+        // }
         this.total = res.total
         // this.pages = res.page
         this.size = res.size
@@ -203,7 +229,9 @@ export default {
     },
     addSubmit() {
       this.btnName = '立即创建'
+      this.handleTitle = '新建分活动'
       this.dialogVisible = true
+      this.disabled_look = false
       ;(this.ruleForm = {
         eventCode: '',
         name: '',
@@ -224,8 +252,9 @@ export default {
       done()
     },
     submitForm(formName) {
-      let this_ = this
-      if (this.btnName == '修改') {
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (this.btnName == '修改') {
         if (this.ruleForm.triesLimit == 1) {
           // inputNum
           debugger
@@ -272,14 +301,11 @@ export default {
       } else {
         this.dialogVisible = false
       }
-      // this_.$refs[formName].validate((valid) => {
-      //   debugger
-      //  if (valid) {
-      //  } else {
-      //    console.log('error submit!!')
-      //    return false
-      //  }
-      // })
+          } else {
+            // debugger
+            return false;
+          }
+        });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -332,11 +358,13 @@ export default {
         //查看
         this.disabled_look = true
         this.btnName = '确定'
+      this.handleTitle = '查看分活动'
         this.getEdit(item.code)
       } else {
         // 编辑
         this.disabled_look = false
         this.btnName = '修改'
+      this.handleTitle = '修改分活动'
         this.getEdit(item.code)
       }
     },
@@ -389,6 +417,9 @@ export default {
         this.dialogVisible = true
         console.log(res)
       })
+    },
+    triesLimitRadio(val){
+      console.log(val);
     }
   },
   created() {
