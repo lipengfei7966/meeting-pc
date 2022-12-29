@@ -1024,7 +1024,7 @@ export default {
     padding: 10px 20px;
 
     span {
-      width: 150px;
+      padding: 0 20px;
       color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 18px;
