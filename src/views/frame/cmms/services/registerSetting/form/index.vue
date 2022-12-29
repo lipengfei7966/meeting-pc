@@ -3243,6 +3243,14 @@ export default {
       if (itemList.value == 'phone') {
         obj.check[0].code = '014'
       }
+      // 手机添加校验
+      if (itemList.value == 'mobile') {
+        obj.isOnly=true
+      }
+      // 邮箱添加校验
+      if (itemList.value == 'email') {
+        obj.isOnly=true
+      }
       // 传真添加校验
       if (itemList.value == 'fax') {
         obj.check[0].code = '015'

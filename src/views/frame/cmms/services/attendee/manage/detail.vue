@@ -602,7 +602,7 @@ export default {
                 // 显示国家
 
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
-                this.setForm.nations = '国家'
+                // this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
                 // 显示省份
@@ -1255,28 +1255,58 @@ export default {
       a_link.click()
     },
 
+    downloadIamge(imgsrc, name) {
+      //下载图片地址和图片名
+      var image = new Image()
+      // 解决跨域 Canvas 污染问题
+      image.setAttribute('crossOrigin', 'anonymous')
+      image.onload = function () {
+        var canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        var context = canvas.getContext('2d')
+        context.drawImage(image, 0, 0, image.width, image.height)
+        var url = canvas.toDataURL('image/png') //得到图片的base64编码数据
+        var a = document.createElement('a') // 生成一个a元素
+        var event = new MouseEvent('click') // 创建一个单击事件
+        a.download = name || 'photo' // 设置图片名称
+        a.href = url // 将生成的URL设置为a.href属性
+        a.dispatchEvent(event) // 触发a的单击事件
+      }
+      image.src = imgsrc
+    },
     downloadPhoto(fileUrl) {
+      debugger
+      console.log(fileUrl,'fileUrl');
+      window.open(fileUrl,"_blank")
+				const extName = fileUrl.substring(
+					fileUrl.lastIndexOf('.')
+				)
+      this.downloadIamge(fileUrl, extName)
+      // -----------------------------------
       // window.open(file.file_path, "_blank");
-      let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
-      let a_link = document.createElement('a')
-      // 这里是将url转成blob地址，
-      fetch(fileUrl, {
-        mode: 'no-cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'text/plain'
-        }
-      })
-        .then(res => res.blob())
-        .then(blob => {
-          // 将链接地址字符内容转变成blob地址
-
-          a_link.href = URL.createObjectURL(blob)
-          console.log(a_link.href)
-          a_link.download = fileName //下载的文件的名字
-          document.body.appendChild(a_link)
-          a_link.click()
-        })
+      // let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
+      // let a_link = document.createElement('a')
+      // a_link.href = fileUrl
+      // a_link.download = fileName //下载的文件的名字/
+      // a_link.target = '_blank'
+      // document.body.appendChild(a_link)
+      // a_link.click()
+      // -----------------------------------------
+      // const blob = new Blob([fileUrl])
+      // let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
+			// 	const extName = fileUrl.substring(
+			// 		fileUrl.lastIndexOf('.')
+			// 	)
+			// 	const link = document.createElement('a')
+			// 	link.download = fileName
+			// 	link.target = '_blank'
+			// 	link.style.display = 'none'
+			// 	link.href = URL.createObjectURL(blob)
+			// 	document.body.appendChild(link)
+			// 	link.click()
+			// 	URL.revokeObjectURL(link.href)
+			// 	document.body.removeChild(link)
     }
   }
 }
