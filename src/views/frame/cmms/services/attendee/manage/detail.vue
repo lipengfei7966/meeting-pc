@@ -1258,7 +1258,7 @@ export default {
     },
     downloadEvt(url, name) {
       let image = new Image()
-      // image.setAttribute('crossOrigin', 'anonymous')
+      image.setAttribute('crossOrigin', 'anonymous')
       image.src = url
       image.onload = () => {
         let canvas = document.createElement('canvas')
