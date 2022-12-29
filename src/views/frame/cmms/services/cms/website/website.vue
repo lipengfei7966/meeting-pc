@@ -106,7 +106,7 @@
             </el-radio-group>
             <div class="power-check" v-show="exhibition">
               <el-checkbox-group v-model="checkList">
-                <el-checkbox v-for="(item,index) in portionList" :key="index" class="check-power" :label="item.dictItemVal">{{item.dictItemName}}</el-checkbox>
+                <el-checkbox v-for="(item,index) in portionList" :key="index" class="check-power" :label="item.value">{{item.label}}</el-checkbox>
 
               </el-checkbox-group>
             </div>
@@ -267,6 +267,8 @@ export default {
       this.isFlag = val
     },
     addEdit(val, index) {
+      val.isSwitchover = true
+      // debugger
       // console.log(val, index, this.Functionality)
       this.isFlag = 1
       this.isFlag_one = false
@@ -318,7 +320,7 @@ export default {
                 url = 'https://cmms-h5-dev.ctgbs.com'
               }
               //
-              this.imgUrl = `${url}/guest/#/pages/${this.userData.templateCode}/index?ev=${this.eventHashCode}`
+              this.imgUrl = `${url}/guest/#/pages/${this.userData.templateCode}/index?ehc=${this.eventHashCode}&ec=${this.code}`
               console.log(this.imgUrl, window.location.host)
             } else {
               this.$router.push({
@@ -435,13 +437,7 @@ export default {
     //
     this.$refs.station.isPc = false
     // 获取参会人类型数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.portionList = res.data
-    })
+    this.portionList = this.$t('datadict.contantType')
   },
   filters: {
     commentEllipsis(value) {

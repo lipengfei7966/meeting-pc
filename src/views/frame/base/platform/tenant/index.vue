@@ -3,7 +3,6 @@
 
     <bs-form ref='bsForm' :form='form'></bs-form>
 
-    <!--     <template v-if='true||$route.name === $options.name || ( $route.meta && $route.meta.componentName === $options.name)'> -->
     <bs-table ref='bsTable' :mainData='mainData'>
 
     </bs-table>

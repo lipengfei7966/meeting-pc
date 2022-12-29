@@ -170,34 +170,15 @@ export default {
         topBar: [
           {
             name: 'add',
-            type: 'dialog',
+            type: 'route',
             i18n: '新增参会人',
-            component: () => import('../manage/edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode
-              }
-            }
+            event: this.toAddSetting
           },
           {
             name: 'update',
-            type: 'dialog',
+            type: 'route',
             i18n: '修改参会人',
-            component: () => import('../manage/edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode,
-                code: this.$refs.bsTable.currentRow[0].code
-              }
-            },
-            validate: () => {
-              if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length != 1) {
-                return false
-              } else {
-                return true
-              }
-            },
-            msg: '请选择一条数据'
+            event: this.toUpdateSetting
           },
           {
             name: 'record',
@@ -307,6 +288,41 @@ export default {
     // this.onChangeAll()
   },
   methods: {
+    toAddSetting() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      this.$router.push({
+        name: 'attendeeEdit',
+        params: {
+          back: 'attendeeCertificate',
+          data: this.form.listQuery.data.eventCode,
+          type: 'add'
+        }
+      })
+    },
+    toUpdateSetting() {
+      if (this.form.listQuery.data.eventCode == '') {
+        this.$message.warning('请选择会议')
+        return
+      }
+      if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length != 1) {
+        this.$message.warning('请选择一条数据')
+        return
+      }
+
+      this.$router.push({
+        name: 'attendeeEdit',
+        params: {
+          back: 'attendeeCertificate',
+          data: this.form.listQuery.data.eventCode,
+          id: this.$refs.bsTable.currentRow[0].id,
+          type: 'update'
+        }
+      })
+    },
+
     onChangeAll(params) {
       //
       this.$refs.bsTable.doRefresh()

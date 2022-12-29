@@ -157,6 +157,15 @@ export const formatRoutes = aMenu => {
                   })
                 )
               })
+            } else if (component.includes('views/frame/cmms/services/meetingInfo/')) {
+              // meetingInfo
+              require([`@/views/frame/cmms/services/meetingInfo/${component.split('views/frame/cmms/services/meetingInfo/')[1]}.vue`], resolve, e => {
+                Notification(
+                  notifyError({
+                    msg: `${component}找不到文件`
+                  })
+                )
+              })
             } else if (component.includes('views/frame/cmms/services/attendee/')) {
               // attendee
               require([`@/views/frame/cmms/services/attendee/${component.split('views/frame/cmms/services/attendee/')[1]}.vue`], resolve, e => {
