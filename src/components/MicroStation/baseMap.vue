@@ -5,7 +5,7 @@
       <el-button size="small" type="primary" @click="materialSelection">从素材库选择</el-button>
     </div>
     <div style="text-align: center; margin-top: 50px">
-      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+      <el-upload :disabled="true" accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible_">
@@ -48,7 +48,6 @@ export default {
       console.log(file, fileList)
     },
     handlePictureCardPreview(file) {
-      debugger
       this.dialogImageUrl = file.url
       this.dialogVisible_ = true
     },
@@ -73,7 +72,7 @@ export default {
         method: 'POST',
         data: formData
       })
-        .then((data) => {
+        .then(data => {
           if (data) {
             thiz.$message('上传文件成功')
             this.$emit('upData_')
@@ -86,8 +85,6 @@ export default {
       console.log(param)
     },
     beforeUpload(param) {
-      debugger
-      // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
@@ -113,8 +110,7 @@ export default {
         method: 'POST',
         data: { data: obj, funcModule: '素材库选择背景图片', funcOperation: '素材库选择背景图片' }
       })
-        .then((res) => {
-          debugger
+        .then(res => {
           if (res.data) {
             console.log(res.data)
             this.$message('上传文件成功')
@@ -139,7 +135,6 @@ export default {
     webpagePicDtoList: {
       immediate: true,
       handler(nVal, oVal) {
-        // debugger
         this.webpagePicDtoList_ = []
         nVal.forEach((element, index) => {
           if (element.picDictionary == 'background') {

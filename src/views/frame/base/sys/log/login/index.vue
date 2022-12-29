@@ -11,7 +11,7 @@
         </template>
       </el-tabs>
     </template>
-    <!-- table必须包上v-if清除缓存 防止切换tab速度过慢 -->
+
     <bs-table ref='bsTable' :mainData='mainData' @initCallback='initCallback'>
       <!-- isException 此列特殊处理-->
       <template slot='isException' slot-scope='scope'>

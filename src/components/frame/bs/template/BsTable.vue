@@ -591,11 +591,11 @@ export default {
         if (filterCol && filterCol.summary) {
           if (filterCol.format && filterCol.format.func) {
             const value = values.reduce((prev, curr) => {
-              const value = Number(curr)
-              if (!isNaN(value)) {
-                return prev + curr
+              const value2 = Number(curr)
+              if (!isNaN(value2)) {
+                return Number(this.$toolUtil.toDecimal2(prev).add(this.$toolUtil.toDecimal2(curr)))
               } else {
-                return prev
+                return Number(this.$toolUtil.toDecimal2(prev))
               }
             }, 0)
             sums[index] = Vue.filter(filterCol.format.func)(value, filterCol.format.dict)
@@ -604,9 +604,9 @@ export default {
             sums[index] = values.reduce((prev, curr) => {
               const value = Number(curr)
               if (!isNaN(value)) {
-                return prev + curr
+                return Number(this.$toolUtil.toDecimal2(prev).add(this.$toolUtil.toDecimal2(curr)))
               } else {
-                return prev
+                return Number(this.$toolUtil.toDecimal2(prev))
               }
             }, 0)
             return
@@ -1459,7 +1459,6 @@ export default {
     },
     // 增行
     addFile(file) {
-      debugger
       if (file && file.response && file.response.data) {
         this.$emit('fileCallback', file.response.data)
       }

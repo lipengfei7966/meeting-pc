@@ -8,11 +8,6 @@
         </template>
       </el-option>
     </el-select>
-    <tree-org v-else-if='attrs.data === "TREE_ORGAN"' v-model="newValue" v-bind='attrs' @change='change' @handleNode='changeAll'></tree-org>
-    <tree-dept v-else-if='attrs.data === "TREE_DEPT"' v-model="newValue" v-bind='attrs' @change='change' @handleNode='changeAll'></tree-dept>
-    <tree-employee v-else-if='attrs.data === "TREE_STAFF"' v-model="newValue" v-bind='attrs' @change='change' @handleNode='changeAll'></tree-employee>
-    <tree-org-base-dept v-else-if='attrs.data === "TREE_ORG_DEPT"' v-model="newValue" v-bind='attrs' @change='change' @handleNode='changeAll'></tree-org-base-dept>
-    <tree-area v-else-if='attrs.data === "TREE_AREA"' v-model="newValue" v-bind='attrs' @change='change' @handleNode='changeAll'></tree-area>
     <el-select v-else-if="!!attrs.showMoreList" ref='bsBaseSelect' class="el-icon-search_1" v-model="newValue" v-bind='attrs' :remote="attrs.remote || remoteSelectData.has(attrs.data)" :remote-method="attrs.remote || remoteSelectData.has(attrs.data) ? remoteMethod : null" :filter-method="attrs.labelShowCode ? filterMethod : null" :size='size' :loading='loading' :placeholder="$t('biz.placeholder.choose')" @change="change" @visible-change="visibleChange" @click.native="listDataShow($event)">
       <el-option v-for="item in list" :key="item.code" :label="item.name" :disabled="item.disabled" :value="item.code">
         <span style="float:left;margin-right:2px;" v-if="labelShowCode">{{ item.name }}</span>
@@ -51,12 +46,7 @@ export default {
     prop: 'value',
     event: 'evn'
   },
-  components: {
-    treeOrg: () => import('@/views/frame/base/organ/components/TreeOrg.vue'),
-    treeDept: () => import('@/views/frame/base/organ/components/TreeDept.vue'),
-    treeEmployee: () => import('@/views/frame/base/organ/components/TreeEmployee.vue'),
-    TreeOrgBaseDept: () => import('@/views/frame/base/organ/components/TreeOrgBaseDept.vue')
-  },
+  components: {},
   props: {
     value: {
       type: [String, Array],

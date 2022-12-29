@@ -29,6 +29,10 @@ import zhFunc from '@/lang/frame/base/modules/func_zh'
 import zhWebsite from '@/lang/frame/website/website_zh'
 import enWebsite from '@/lang/frame/website/website_en'
 
+// 订单
+import zhOrder from '@/lang/frame/base/modules/order_zh'
+import enOrder from '@/lang/frame/base/modules/order_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -39,7 +43,8 @@ const messages = {
     ...enDashboard,
     ...enPlatform,
     ...enFunc,
-    ...enWebsite
+    ...enWebsite,
+    ...enOrder
   },
   zh: {
     ...zhBase,
@@ -50,7 +55,8 @@ const messages = {
     ...zhDashboard,
     ...zhPlatform,
     ...zhFunc,
-    ...zhWebsite
+    ...zhWebsite,
+    ...zhOrder
   }
 }
 

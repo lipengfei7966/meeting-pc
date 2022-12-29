@@ -582,9 +582,9 @@ export default {
     setTableHeight() {
       $(document).ready(() => {
         if (this.dialog.mainData.linkTable) {
-          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 303 - this.$refs.formTableDialogHeader.offsetHeight
+          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 355 - this.$refs.formTableDialogHeader.offsetHeight
         } else {
-          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 115 - this.$refs.formTableDialogHeader.offsetHeight
+          this.tableHeight = this.$refs.formTableDialog.offsetHeight - 168 - this.$refs.formTableDialogHeader.offsetHeight
         }
       })
     },

@@ -34,7 +34,25 @@ export function groupLogin(account, password, captcha, captchaToken) {
     }
   })
 }
-
+export function guestLogin(account, password, captcha, captchaToken, eventHashCode) {
+  return request({
+    url: '/api/guest/login',
+    method: 'post',
+    data: {
+      funcModule: '登录页面',
+      funcOperation: '登录',
+      // isEncrypt: true,
+      data: {
+        'terminal': 'PC',
+        'account': account,
+        'password': password,
+        'eventHashCode': eventHashCode,
+        'captcha': captcha,
+        'captchaToken': captchaToken
+      }
+    }
+  })
+}
 export function userLogin(account, password, tenantHashCode, captcha, captchaToken, enterpriseName) {
   return request({
     url: '/api/user/login',
@@ -51,6 +69,27 @@ export function userLogin(account, password, tenantHashCode, captcha, captchaTok
         'captcha': captcha,
         'captchaToken': captchaToken,
         'enterpriseName': enterpriseName
+      }
+    }
+  })
+}
+
+export function customLogin(account, password, captcha, captchaToken, customCode, customHashCode) {
+  return request({
+    url: '/api/custom/login',
+    method: 'post',
+    data: {
+      // isEncrypt: true,
+      funcModule: '登录页面',
+      funcOperation: '登录',
+      data: {
+        'terminal': 'PC',
+        'account': account,
+        'password': password,
+        'captcha': captcha,
+        'captchaToken': captchaToken,
+        'customCode': customCode,
+        'customHashCode': customHashCode
       }
     }
   })

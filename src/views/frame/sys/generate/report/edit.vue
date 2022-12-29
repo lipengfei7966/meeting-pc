@@ -1,5 +1,5 @@
 <template>
-  <div v-el-drag-dialog class='bs-new-container dialog-wrapper'>
+  <div v-el-drag-dialog='"max"' class='bs-new-container dialog-wrapper'>
     <div class='dialog-container' style="width:1183px;">
       <title-contain :titleName='titleName' @TitleFun="$emit('closeHandler')"></title-contain>
       <!-- el-row top-operate -->
@@ -793,6 +793,7 @@ export default {
         codeName: '',
         sqlStatement: '',
         remark: '',
+        tenantFlag: '0',
         moduleCode: '',
         codeType: 'report',
         pageType: 'index',

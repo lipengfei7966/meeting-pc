@@ -1,8 +1,8 @@
 import axios from 'axios'
 import Vue from 'vue'
-import { Notification, Message } from 'element-ui'
+import { Notification } from 'element-ui'
 import store from '../../../store'
-import { getToken, setToken, setMd5, getMd5 } from '@/utils/frame/base/auth'
+import { getToken, getMd5 } from '@/utils/frame/base/auth'
 import { sign } from '@/utils/frame/base/encript.js'
 
 import { getRandom, rsaEncrypt, aesEncrypt, aesDecrypt } from '@/utils/frame/base/crypto'
@@ -65,25 +65,6 @@ let errorCount = 0
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    // 判断一下响应中是否有 token，如果有就直接使用此 token 替换掉本地的 token。你可以根据你的业务需求自己编写更新 token 的逻辑
-    const authToken = response.headers.auth_token
-    const md5AuthToken = response.headers.md5_auth_token
-    const licVerify = response.headers.lic_verify
-    if (authToken && md5AuthToken) {
-      // 刷新指令
-      setToken(authToken)
-      setMd5(md5AuthToken)
-      store.commit('SET_TOKEN', { accessToken: authToken, md5Token: md5AuthToken })
-    }
-    if (licVerify && (!session.get('licVerify'))) {
-      session.set('licVerify', licVerify)
-      Message({
-        message: '使用期限快过期，请尽快延长注册.',
-        type: 'warning',
-        showClose: true
-      })
-    }
-
     /**
      * code为非200是抛错 可结合自己业务进行修改
      */

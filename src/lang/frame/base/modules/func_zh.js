@@ -89,6 +89,7 @@ export default {
       roleCode: '角色代码',
       organId: '所属机构',
       deptId: '所属部门',
+      dataperItem: '客户代码',
       usingFlag: '状态',
       organName: '所属机构',
       deptName: '所属部门',
@@ -124,12 +125,14 @@ export default {
       authDirection: '控制方向',
       authLimit: '限制设置',
       authExtend: '扩展设置',
+      custName: '客户名称',
       tab: {
         treeName: '组织机构',
         user: '操作员',
         func: '功能权限',
         org: '机构权限',
         dept: '部门权限',
+        cust: '客户权限',
         employee: '员工权限',
         menuData: '菜单数据权限',
         apiData: '接口权限'

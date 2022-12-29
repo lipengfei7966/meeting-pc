@@ -100,6 +100,12 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: '/guest/login',
+    name: 'guestlogin',
+    component: () => import('@/views/frame/login/guest/index'),
+    hidden: true
+  },
+  {
     path: '/user/login',
     name: 'templogin',
     component: () => import('@/views/frame/login/user/index'),
@@ -109,6 +115,17 @@ export const constantRouterMap = [
     path: '/platform/login',
     name: 'platformlogin',
     component: () => import('@/views/frame/login/platform/index'),
+    hidden: true
+  },
+  {
+    path: '/custom/login',
+    name: 'customlogin',
+    component: () => import('@/views/frame/login/custom/index'),
+    hidden: true
+  },
+  {
+    path: '/custom/:hashCode/login',
+    component: () => import('@/views/frame/login/custom/index'),
     hidden: true
   },
   {
@@ -137,10 +154,10 @@ export const constantRouterMap = [
   // },
   // 1012
   // {
-  //   path: '/material',
-  //   name: '/material',
-  //   component: () => import('@/views/frame/material/index'),
-  //   hidden: true
+  // path: '/aa',
+  // name: '/aa',
+  // component: () => import('@/views/frame/cmms/services/activity/manage/index'),
+  // hidden: true
   // },
   //
   {
@@ -258,7 +275,7 @@ const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     routes: constantRouterMap,
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior (to, from, savedPosition) {
       return {
         x: 100,
         y: 100
@@ -269,7 +286,7 @@ const createRouter = () =>
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
+export function resetRouter () {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
   // router.options.routes = []
