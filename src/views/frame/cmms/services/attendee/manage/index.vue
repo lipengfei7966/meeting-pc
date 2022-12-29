@@ -58,6 +58,7 @@ export default {
               clearable: true
             }
           },
+
           {
             label: 'website.signupContact.query.mobile',
             prop: 'mobile',
@@ -167,43 +168,21 @@ export default {
             name: 'add',
             type: 'route',
             event: this.toAddSetting
-
-            // component: () => import('./edit.vue'),
-            // getParam: () => {
-            //   return {
-            //     eventCode: this.form.listQuery.data.eventCode,
-            //     type: 'add'
-            //   }
-            // }
           },
           {
             name: 'update',
             type: 'route',
-            event: this.toUpdateSetting,
-            // component: () => import('./edit.vue'),
-            getParam: () => {
-              return {
-                eventCode: this.form.listQuery.data.eventCode,
-                code: this.$refs.bsTable.currentRow.code
-              }
-            }
+            event: this.toUpdateSetting
           },
           {
             name: 'view',
             type: 'route',
             event: this.toViewSetting
-            // component: () => import('./edit.vue'),
-            // getParam: () => {
-            //   return {
-            //     eventCode: this.form.listQuery.data.eventCode,
-            //     code: this.$refs.bsTable.currentRow.code
-            //   }
-            // }
           },
           {
             name: 'remove',
             getParam: () => {
-              return this.$refs.bsTable.currentRow.code
+              return this.$refs.bsTable.currentRow.id
             }
           },
           {
@@ -212,6 +191,32 @@ export default {
             i18n: 'biz.btn.resetPwd',
             getParam: () => {
               return this.$refs.bsTable.currentRow.id
+            }
+          },
+          {
+            name: 'set',
+            permitName: ['audit'],
+            url: '/api/register/signupContact/auditing',
+            successMsgInfo: '审核完成',
+            i18n: '审核通过',
+            getParam: () => {
+              return {
+                id: this.$refs.bsTable.currentRow.id,
+                checkFlag: '1'
+              }
+            }
+          },
+          {
+            name: 'set',
+            permitName: ['audit'],
+            url: '/api/register/signupContact/auditing',
+            successMsgInfo: '审核完成',
+            i18n: '审核不通过',
+            getParam: () => {
+              return {
+                id: this.$refs.bsTable.currentRow.id,
+                checkFlag: '0'
+              }
             }
           },
           {
@@ -255,11 +260,13 @@ export default {
           cols: [
             {
               prop: 'code',
-              label: 'website.signupContact.list.code'
+              label: 'website.signupContact.list.code',
+              width: 120
             },
             {
               prop: 'personnelCode',
-              label: 'website.signupContact.list.personnelCode'
+              label: 'website.signupContact.list.personnelCode',
+              width: 120
             },
             {
               prop: 'contactType',
@@ -267,11 +274,33 @@ export default {
               align: 'center',
               format: {
                 dict: this.$t('datadict.contantType')
-              }
+              },
+              width: 120
             },
             {
               prop: 'name',
-              label: 'website.signupContact.list.name'
+              label: 'website.signupContact.list.name',
+              width: 120
+            },
+            {
+              prop: 'mobile',
+              label: 'website.signupContact.list.mobile',
+              width: 150
+            },
+
+            {
+              prop: 'checkFlag',
+              label: 'website.signupContact.list.checkFlag',
+              align: 'center',
+              format: {
+                dict: this.$t('datadict.checkFlag')
+              },
+              width: 120
+            },
+            {
+              prop: 'email',
+              label: 'website.signupContact.list.email',
+              width: 120
             },
             // {
             //   prop: 'surname',
@@ -283,59 +312,66 @@ export default {
             // },
             {
               prop: 'sex',
-              label: 'website.signupContact.list.sex'
+              label: 'website.signupContact.list.sex',
+              width: 120
             },
             {
               prop: 'certificateType',
-              label: 'website.signupContact.list.certificateType'
+              label: 'website.signupContact.list.certificateType',
+              width: 120
             },
             {
               prop: 'certificate',
-              label: 'website.signupContact.list.certificate'
+              label: 'website.signupContact.list.certificate',
+              width: 120
             },
-            {
-              prop: 'photo',
-              label: 'website.signupContact.list.photo'
-            },
+            // {
+            //   prop: 'photo',
+            //   label: 'website.signupContact.list.photo',
+            //   width: 120
+            // },
             {
               prop: 'nations',
-              label: 'website.signupContact.list.nations'
+              label: 'website.signupContact.list.nations',
+              width: 120
             },
             {
               prop: 'province',
-              label: 'website.signupContact.list.province'
+              label: 'website.signupContact.list.province',
+              width: 120
             },
             {
               prop: 'city',
-              label: 'website.signupContact.list.city'
+              label: 'website.signupContact.list.city',
+              width: 120
             },
             {
               prop: 'county',
-              label: 'website.signupContact.list.county'
+              label: 'website.signupContact.list.county',
+              width: 120
             },
             {
               prop: 'fullAddress',
-              label: 'website.signupContact.list.fullAddress'
+              label: 'website.signupContact.list.fullAddress',
+              width: 120
             },
             {
               prop: 'postcode',
-              label: 'website.signupContact.list.postcode'
+              label: 'website.signupContact.list.postcode',
+              width: 120
             },
             // {
             //   prop: 'mobileIntCode',
             //   label: 'website.signupContact.list.mobileIntCode'
             // },
-            {
-              prop: 'mobile',
-              label: 'website.signupContact.list.mobile'
-            },
             // {
             //   prop: 'spareMobileIntXode',
             //   label: 'website.signupContact.list.spareMobileIntXode'
             // },
             {
               prop: 'spareMobile',
-              label: 'website.signupContact.list.spareMobile'
+              label: 'website.signupContact.list.spareMobile',
+              width: 120
             },
             // {
             //   prop: 'phoneIntCode',
@@ -347,7 +383,8 @@ export default {
             // },
             {
               prop: 'phone',
-              label: 'website.signupContact.list.phone'
+              label: 'website.signupContact.list.phone',
+              width: 120
             },
             // {
             //   prop: 'phoneRunNumber',
@@ -363,39 +400,42 @@ export default {
             // },
             {
               prop: 'fax',
-              label: 'website.signupContact.list.fax'
+              label: 'website.signupContact.list.fax',
+              width: 120
             },
             // {
             //   prop: 'faxRunNumber',
             //   label: 'website.signupContact.list.faxRunNumber'
             // },
             {
-              prop: 'email',
-              label: 'website.signupContact.list.email'
-            },
-            {
               prop: 'spareEmail',
-              label: 'website.signupContact.list.spareEmail'
+              label: 'website.signupContact.list.spareEmail',
+              width: 120
             },
             {
               prop: 'wechat',
-              label: 'website.signupContact.list.wechat'
+              label: 'website.signupContact.list.wechat',
+              width: 120
             },
             {
               prop: 'qq',
-              label: 'website.signupContact.list.qq'
+              label: 'website.signupContact.list.qq',
+              width: 120
             },
             {
               prop: 'company',
-              label: 'website.signupContact.list.company'
+              label: 'website.signupContact.list.company',
+              width: 120
             },
             {
               prop: 'department',
-              label: 'website.signupContact.list.department'
+              label: 'website.signupContact.list.department',
+              width: 120
             },
             {
               prop: 'position',
-              label: 'website.signupContact.list.position'
+              label: 'website.signupContact.list.position',
+              width: 120
             },
             {
               prop: 'certificateFlag',
@@ -403,7 +443,8 @@ export default {
               align: 'center',
               format: {
                 dict: this.$t('datadict.certificateFlag')
-              }
+              },
+              width: 120
             },
             {
               prop: 'signFlag',
@@ -411,23 +452,18 @@ export default {
               align: 'center',
               format: {
                 dict: this.$t('datadict.signFlag')
-              }
+              },
+              width: 120
             },
             {
               prop: 'signNum',
-              label: 'website.signupContact.list.signNum'
-            },
-            {
-              prop: 'checkFlag',
-              label: 'website.signupContact.list.checkFlag',
-              align: 'center',
-              format: {
-                dict: this.$t('datadict.checkFlag')
-              }
+              label: 'website.signupContact.list.signNum',
+              width: 120
             },
             {
               prop: 'createDate',
-              label: 'website.signupContact.list.createDate'
+              label: 'website.signupContact.list.createDate',
+              width: 140
             }
           ]
         },
@@ -444,9 +480,14 @@ export default {
   mounted() {},
   methods: {
     onChangeAll(params) {
-      this.mainData.topBar[5].atrrs.paramData = {
-        eventCode: this.form.listQuery.data.eventCode
-      }
+      this.mainData.topBar.forEach((item) => {
+        if (item.name === 'upload') {
+          item.atrrs.paramData = {
+            eventCode: this.form.listQuery.data.eventCode
+          }
+        }
+      })
+
       this.$refs.bsTable.doRefresh()
     },
     exportExcel() {
@@ -465,7 +506,7 @@ export default {
         },
         responseType: 'blob'
       })
-        .then(response => {
+        .then((response) => {
           if (!response.data) {
           } else {
             const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -478,7 +519,7 @@ export default {
             link.remove()
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
@@ -517,7 +558,7 @@ export default {
         params: {
           back: 'attendeeManage',
           data: this.form.listQuery.data.eventCode,
-          contactCode: this.$refs.bsTable.currentRow.code,
+          id: this.$refs.bsTable.currentRow.id,
           type: 'update'
         }
       })
@@ -537,7 +578,7 @@ export default {
         params: {
           back: 'attendeeManage',
           data: this.form.listQuery.data.eventCode,
-          contactCode: this.$refs.bsTable.currentRow.code,
+          id: this.$refs.bsTable.currentRow.id,
           type: 'view'
         }
       })

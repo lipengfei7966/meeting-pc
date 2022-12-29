@@ -6,9 +6,9 @@
         <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" placeholder="请输入人员编码"></el-input>
       </el-form-item>
       <el-form-item label="参会人类型" prop="contactType">
-        <el-select v-model="setForm.contactType" style="width: 50%" placeholder="请选择参会人类型">
-          <el-option v-for="item in contactTypeOptions" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"></el-option>
-        </el-select>
+
+        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" placeholder="请选择参会人类型"></base-select>
+
       </el-form-item>
 
       <div v-for="element in setInfoList" :key="element.mapCode">
@@ -158,12 +158,17 @@
                 <div v-if="element.nationIsShow" class="addresItem">
                   <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.dictItemVal" :label="item.dictItemName" :value="item.dictItemVal"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.label"> </el-option>
                     </el-select>
                   </el-form-item>
+                  <!-- <el-form-item :label="element.nationTitle" prop="nations">
+                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.value"> </el-option>
+                    </el-select>
+                  </el-form-item> -->
                 </div>
                 <!-- 省份 -->
-                <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
+                <div v-if="element.provinceIsShow && setForm.nations == '国家'" class="addresItem">
                   <el-form-item :label="element.provinceTitle" prop="province">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
                       <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
@@ -171,7 +176,7 @@
                   </el-form-item>
                 </div>
                 <!-- 城市 -->
-                <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
+                <div v-if="element.cityIsShow && setForm.nations == '国家'" class="addresItem">
                   <el-form-item :label="element.cityTitle" prop="city">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
                       <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
@@ -179,7 +184,7 @@
                   </el-form-item>
                 </div>
                 <!-- 区县 -->
-                <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                <div v-if="element.countyIsShow && setForm.nations == '国家'" class="addresItem">
                   <el-form-item :label="element.countyTitle" prop="county">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
                       <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
@@ -193,7 +198,7 @@
                   </el-form-item>
                 </div>
                 <!-- 邮编 -->
-                <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                <div v-if="element.postcodeIsShow && setForm.nations == '国家'" class="addresItem">
                   <el-form-item :label="element.postcodeTitle" prop="postcode">
                     <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
                   </el-form-item>
@@ -249,7 +254,7 @@
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
                     <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
                 </div>
@@ -260,7 +265,7 @@
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
                     <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
                 </div>
@@ -273,7 +278,7 @@
                     <el-form-item prop="phoneAreaCode" label-width="0">
                       <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
@@ -290,7 +295,7 @@
                     <el-form-item prop="faxAreaCode" label-width="0">
                       <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
                         <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.dictItemVal" :label="'+' + item.dictItemVal" :value="item.dictItemVal"> </el-option>
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
@@ -399,8 +404,7 @@ export default {
       previewDialogVisible: false, // 预览图片弹窗
       previewImgUrl: '', // 预览图片地址
       cropperModel: false, // 图片裁剪弹窗
-      countryCodeOptions: [], // 国际区号下拉选项  dictItemName - dictItemVal
-      contactTypeOptions: [], // 参会人类型列表
+      countryCodeOptions: [], // 国际区号下拉选项  lable - value
       setForm: {
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
@@ -506,9 +510,6 @@ export default {
     // 表单配置查询
     this.getEventInfo()
 
-    // 获取参会人类型数据字典
-    this.getcontactTypeList()
-
     // 国际编码字典项查询
     this.getCountryCode()
   },
@@ -601,7 +602,7 @@ export default {
                 // 显示国家
 
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
-                this.setForm.nations = '86'
+                // this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
                 // 显示省份
@@ -684,9 +685,9 @@ export default {
     // 参会人信息查询
     getContactInfo() {
       request({
-        url: '/api/register/signupContact/getByContactCode',
+        url: '/api/register/signupContact/getByContactId',
         method: 'POST',
-        data: { data: this.$route.params.contactCode, funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+        data: { data: this.$route.params.id, funcModule: this.$t('route.' + this.$route.meta.title), funcOperation: '参会人信息查询' }
       }).then(res => {
         this.setForm = res.data
         if (this.setForm.province) {
@@ -707,7 +708,6 @@ export default {
         }
 
         for (const key in this.setForm.signupContactDtlDto) {
-          // console.log(key)
           // 判断是否多选
           if (typeof this.setForm.signupContactDtlDto[key] == 'string' && this.setForm.signupContactDtlDto[key].indexOf('卍') == 0) {
             this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].split(',')
@@ -1225,36 +1225,21 @@ export default {
     selectMultipleChange(val) {},
     // 国际编码字典项查询
     getCountryCode() {
-      request({
-        url: '/api/sys/dict/listItem',
-        method: 'POST',
-        data: { data: 'COUNTRY_CODE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        // dictItemName \ dictItemVal
+      this.countryCodeOptions = this.$t('datadict.countryCode')
+      // 86 大陆, 852 香港, 853 澳门, 886 台湾
+      this.nationsList = this.countryCodeOptions.filter(item => {
+        //
+        return item.value != '852' && item.value != '853' && item.value != '886'
+      })
+    },
 
-        this.countryCodeOptions = res.data
-        // 86 大陆, 852 香港, 853 澳门, 886 台湾
-        this.nationsList = res.data.filter(item => {
-          //
-          return item.dictItemVal != '852' && item.dictItemVal != '853' && item.dictItemVal != '886'
-        })
-      })
-    },
-    // 获取参会人类型数据字典
-    getcontactTypeList() {
-      request({
-        url: '/api/sys/dict/listItem',
-        method: 'POST',
-        data: { data: 'CONTANT_TYPE', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-      }).then(res => {
-        this.contactTypeOptions = res.data
-      })
-    },
     // 返回上级
     back() {
+      const backName = this.$route.params.back ? this.$route.params.back : 'attendeeManage'
       this.$store.dispatch('delVisitedViews', this.$route).then(() => {
         this.$router.push({
-          name: 'attendeeManage'
+          name: backName,
+          params: { refresh: true }
         })
       })
     },
@@ -1271,27 +1256,28 @@ export default {
     },
 
     downloadPhoto(fileUrl) {
-      // window.open(file.file_path, "_blank");
+      // // window.open(file.file_path, "_blank");
+      // let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
+      // let a_link = document.createElement('a')
+      // a_link.href = fileUrl
+      // a_link.download = fileName //下载的文件的名字/
+      // a_link.target = '_blank'
+      // document.body.appendChild(a_link)
+      // a_link.click()
+      const blob = new Blob([fileUrl])
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
-      let a_link = document.createElement('a')
-      // 这里是将url转成blob地址，
-      fetch(fileUrl, {
-        mode: 'no-cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'text/plain'
-        }
-      })
-        .then(res => res.blob())
-        .then(blob => {
-          // 将链接地址字符内容转变成blob地址
-
-          a_link.href = URL.createObjectURL(blob)
-          console.log(a_link.href)
-          a_link.download = fileName //下载的文件的名字
-          document.body.appendChild(a_link)
-          a_link.click()
-        })
+				const extName = fileUrl.substring(
+					fileUrl.lastIndexOf('.')
+				)
+				const link = document.createElement('a')
+				link.download = fileName
+				link.target = '_blank'
+				link.style.display = 'none'
+				link.href = URL.createObjectURL(blob)
+				document.body.appendChild(link)
+				link.click()
+				URL.revokeObjectURL(link.href)
+				document.body.removeChild(link)
     }
   }
 }
