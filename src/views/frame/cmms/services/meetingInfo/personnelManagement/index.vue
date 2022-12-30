@@ -1,10 +1,15 @@
 <template>
-    <div class="container">
-        <div class="bs-new-container app-container">
-            <bs-form ref="bsForm" :form="form"></bs-form>
-            <!-- <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table> -->
-        </div>
+  <div class="container">
+    <div class="bs-new-container app-container">
+      <bs-form ref="bsForm" :form="form"></bs-form>
+      <!-- <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table> -->
+      <!-- <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
+        <el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="item.title" :name="item.name">
+          {{item.content}}
+        </el-tab-pane>
+      </el-tabs> -->
     </div>
+  </div>
 </template>
 
 <script>
@@ -12,6 +17,19 @@ export default {
     name: 'personnelManagement',
     data () {
         return {
+          //控制当前显示在第几个tab标签
+        editableTabsValue: '2',
+        editableTabs: [{
+          title: 'Tab 1',
+          name: '1',
+          content: 'Tab 1 content'
+        }, {
+          title: 'Tab 2',
+          name: '2',
+          content: 'Tab 2 content'
+        }],
+        //这个tabIndex等于数据项长度（增加tab标签会用到的），不然会报错的
+        tabIndex: 2,
             form: {
                 moreShowFlg: true,
                 listQuery: {
@@ -191,10 +209,42 @@ export default {
     },
     created () { },
     mounted () { },
-    methods: {},
+    methods: {
+      handleTabsEdit(targetName, action) {
+        if (action === 'add') {
+          let newTabName = ++this.tabIndex + '';
+          //增加的数据项
+          this.editableTabs.push({
+            title: 'New Tab',
+            name: newTabName,
+            content: 'New Tab content'
+          });
+            //显示到添加的这个tab标签上
+          this.editableTabsValue = newTabName;
+        }
+        if (action === 'remove') {
+          let tabs = this.editableTabs;
+          let activeName = this.editableTabsValue;
+          //主要为了确定删除后显示在哪一个tab标签上
+          if (activeName === targetName) {
+            tabs.forEach((tab, index) => {
+              if (tab.name === targetName) {
+              //默认显示在后面的一个tab标签上，不过原来的删除了
+                let nextTab = tabs[index + 1] || tabs[index - 1];
+                if (nextTab) {
+                  activeName = nextTab.name;
+                }
+              }
+            });
+          }
+
+          this.editableTabsValue = activeName;
+          this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+        }
+      }
+    },
 }
 </script>
 
 <style scoped lang="scss">
-
 </style>

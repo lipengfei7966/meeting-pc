@@ -320,7 +320,6 @@ export default {
                     this.seatTypeArr.push([key, value])
                 }
             })
-            // certificateType
             listItem('CERTIFICATE_TYPE').then(res => {
                 console.log(res, '获取字典码-支付方式')
                 for (const item of res.data) {
@@ -397,15 +396,16 @@ export default {
             return ''
         },
         stationTimeFamtter (arriveTime, startTime) {
+          debugger
             // console.log(new Date(arriveTime).getTime(), '到达时间')
             // console.log(new Date(startTime).getTime(), '起始时间')
             const arrHour = arriveTime.split(':')[0] - 0
             const arrMin = arriveTime.split(':')[1] - 0
             const staHour = startTime.split(':')[0] - 0
             const staMin = startTime.split(':')[1] - 0
-            let mins = (arrHour - staHour) * 60 + arrMin - staMin
-            let h = mins / 60
-            let m = mins % 60
+            let mins = ( staHour - arrHour) * 60 + staMin - arrMin
+            let h = parseInt(mins / 60)
+            let m = parseInt(mins % 60)
             if (h <= 0) {
                 return m + '分钟'
             } else {
