@@ -454,6 +454,7 @@ export default {
         personnelCode: [{ required: true, message: '请输入人员编码', trigger: 'blur' }],
         contactType: [{ required: true, message: '请选择参会人类型', trigger: 'change' }]
       },
+      isAllowUploadPhoto:false,
       pickerOptions: {
         disabledDate(time) {
           // return time.getTime() > Date.now();
@@ -932,7 +933,7 @@ export default {
     fileUploadSuccess(res, file) {
       console.log(this.setFormFile)
     },
-    async beforeAvatarUpload(file, element) {
+     beforeAvatarUpload(file, element) {
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -942,14 +943,17 @@ export default {
       // audioFileCheckedTypes: [],// 音频文件选中类型
       // allFileTypes:[], // 允许上传文件类型合集
       // fileSizeLimit: 50, // 文件大小限制
+      console.log(file,'file');
       const fileName = file.name
       const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
-      let isAllowUpload = true
-      let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      console.log(extension,'extension');
+      let isAllUpload = false
+      // let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      var acceptType = ['.jpg', '.png']
 
       // 判断后缀名是否允许上传
-      isAllowUpload = acceptType.includes(extension)
-      if (!isAllowUpload) {
+      isAllUpload = acceptType.includes(extension)
+      if (!isAllUpload) {
         const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
         this.$message.error(errMsg)
         return false
@@ -964,7 +968,7 @@ export default {
       // if(element.imageTypes.includes(extension) && element.mapCode == 'photo' && element.pictureSizeLimit){
       //  isAllowUpload = await this.imageSizeLimit(file, element)
       // }
-      return isAllowUpload
+      return isAllUpload
     },
     async imageSizeLimit(file, element) {
       const _this = this
@@ -996,7 +1000,7 @@ export default {
       )
       return await isSize
     },
-    fileBeforeUpload(file, element) {
+     fileBeforeUpload(file, element) {
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -1008,11 +1012,11 @@ export default {
       // fileSizeLimit: 50, // 文件大小限制
       const fileName = file.name
       const extension = fileName.substr(fileName.lastIndexOf('.'))
-      let isAllowUpload = true
+      this.isAllowUploadPhoto = false
       if (element.fileTypeLimit) {
         // 判断后缀名是否允许上传
-        isAllowUpload = element.allFileTypes.includes(extension)
-        if (!isAllowUpload) {
+        this.isAllowUploadPhoto = element.allFileTypes.includes(extension)
+        if (!this.isAllowUploadPhoto) {
           const errMsg = '注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、')
           this.$message.error(errMsg)
           return false
@@ -1024,10 +1028,10 @@ export default {
         this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
         return false
       }
-      return isAllowUpload
     },
     // 自定义上传文件
     flieHandleUploadForm(param, element) {
+      if(isAllowUploadPhoto){
       // let thiz = this
       let formData = new FormData()
       // formData.append('webpageCode', '') // 额外参数
@@ -1062,6 +1066,7 @@ export default {
         }
         loading.close()
       })
+    }
     },
     // 自定义上传照片
     handleUploadForm(param, element) {
