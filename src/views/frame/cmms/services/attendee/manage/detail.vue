@@ -864,15 +864,15 @@ export default {
         // this.downloadUrl = encodeURIComponent(filepath)
         let a_link = document.createElement('a')
         document.body.appendChild(a_link);
-        a_link.style.display = "none";
+        // a_link.style.display = "none";
         a_link.setAttribute(
           "href",
           filepath + "?response-content-type=application/octet-stream"
         );
         a_link.target = '_blank'
         document.body.appendChild(a_link);
-        a_link.click();
-        document.body.removeChild(a_link);
+        // a_link.click();
+        // document.body.removeChild(a_link);
       } else {
         this.$message.info('文件格式不支持预览，下载后查看')
         return
