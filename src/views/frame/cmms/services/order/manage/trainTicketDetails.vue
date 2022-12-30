@@ -396,7 +396,6 @@ export default {
             return ''
         },
         stationTimeFamtter (arriveTime, startTime) {
-          debugger
             // console.log(new Date(arriveTime).getTime(), '到达时间')
             // console.log(new Date(startTime).getTime(), '起始时间')
             const arrHour = arriveTime.split(':')[0] - 0
