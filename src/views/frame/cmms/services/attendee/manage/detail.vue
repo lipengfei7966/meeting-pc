@@ -111,7 +111,8 @@
                       <el-button type="text" @click="delFile(setFormFile[element.mapCode], file)">删除</el-button>
                     </span>
                     <span>
-                      <el-button type="text" @click="downloadFile(file)">下载</el-button>
+                      <!-- @click="downloadFile(file)" -->
+                      <el-button type="text" v-downLoadUrl="downloadFile(file)">下载</el-button>
                     </span>
                   </li>
                 </ul>
@@ -1245,16 +1246,21 @@ export default {
     },
     // 下载附件
     downloadFile(file) {
-      debugger
-      console.log(file,'file');
-      let downloadUrl = file.response ? file.response.data.filePath : file.url
-      let filename = file.response ? file.response.data.fileName : file.name
-      let a_link = document.createElement('a')
-      a_link.href = downloadUrl
-      a_link.download = filename //下载的文件的名字/
-      a_link.target = '_blank'
-      document.body.appendChild(a_link)
-      a_link.click()
+      let obj = {}
+      obj = {
+        url:file.url,
+        name:file.name
+      }
+      return obj
+      // console.log(file,'file');
+      // let downloadUrl = file.response ? file.response.data.filePath : file.url
+      // let filename = file.response ? file.response.data.fileName : file.name
+      // let a_link = document.createElement('a')
+      // a_link.href = downloadUrl
+      // a_link.download = filename //下载的文件的名字/
+      // a_link.target = '_blank'
+      // document.body.appendChild(a_link)
+      // a_link.click()
     },
     downloadEvt(url, name) {
       let image = new Image()
@@ -1283,6 +1289,7 @@ export default {
       eleLink.remove()
     },
     downloadPhoto(fileUrl) {
+      debugger
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
       this.downloadEvt(fileUrl, fileName)
       // // window.open(file.file_path, "_blank");

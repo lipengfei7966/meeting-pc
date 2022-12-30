@@ -95,6 +95,9 @@ Vue.component('el-table-column-set', elTableColumnSet)
 // 取色器
 import vcolorpicker from 'vcolorpicker'
 Vue.use(vcolorpicker)
+// 下载附件（地址）
+import downLoadUrl from "@/utils/frame/base/downLoadUrl/index"
+Vue.use(downLoadUrl)
 // 基础模板组件
 const path = require('path')
 const bsTmp = require.context('./components/frame/bs/template', true, /\.vue$/)
