@@ -85,7 +85,7 @@
         <el-table-column prop="triesLimit" label="报名人数/上限">
           <template slot-scope="scope">
             <div v-if="scope.row.triesLimit>0">
-              <span>{{scope.row.triesLimit}} <span>/{{ 100 }}</span> </span>
+              <span>{{ 1 }}<span>/{{scope.row.triesLimit}}</span> </span>
               <span style="margin:0px 4px">|</span>
               <el-button type="text" size="small">查看</el-button>
             </div>
