@@ -859,7 +859,7 @@ export default {
       filepath = filepath.replace(/http:/, 'https:')
       this.downloadUrl = filepath
       if (types2.includes(suffix)) {
-        this.downloadUrl = window.open('https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath))
+        this.downloadUrl = window.open('https://view.officeapps.live.com/op/view.aspx?src=' + filepath)
       } else if (types1.includes(suffix)) {
         // this.downloadUrl = encodeURIComponent(filepath)
         let a_link = document.createElement('a')
