@@ -23,25 +23,18 @@
       </div>
       <el-divider></el-divider>
       <div class="remove-line2">
-        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{
-            fightReissueRefund.returnPrice
-        }}元</span>
+        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{fightReissueRefund.returnPrice }}元</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line3">
         <div class="remove-line3-1">
-          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">
-            {{ fightReissueRefund.refundPrice }}元</span>
+          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">{{ fightReissueRefund.refundPrice }}元</span>
         </div>
         <div class="remove-line3-2">
-          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{
-              costDetailInfo.ticketAmount
-          }}元</span>
+          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{costDetailInfo.ticketAmount}}元</span>
         </div>
         <div class="remove-line3-3">
-          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{
-              fightReissueRefund.returnPrice
-          }}元</span>
+          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
         </div>
       </div>
       <el-divider></el-divider>

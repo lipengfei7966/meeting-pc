@@ -455,6 +455,7 @@ export default {
         personnelCode: [{ required: true, message: '请输入人员编码', trigger: 'blur' }],
         contactType: [{ required: true, message: '请选择参会人类型', trigger: 'change' }]
       },
+      isAllowUploadPhoto:false,
       pickerOptions: {
         disabledDate(time) {
           // return time.getTime() > Date.now();
@@ -848,6 +849,7 @@ export default {
     // 预览附件
     handlePreview(file) {
       let filepath = file.url
+      let filename=filepath.slice(filepath.lastIndexOf('/') + 1)
       if (!filepath) return
       // 获取文件后缀名
       let suffix = filepath.substring(filepath.lastIndexOf('.') + 1).toLowerCase()
@@ -857,9 +859,20 @@ export default {
       filepath = filepath.replace(/http:/, 'https:')
       this.downloadUrl = filepath
       if (types2.includes(suffix)) {
-        this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
+        this.downloadUrl = window.open('https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath))
       } else if (types1.includes(suffix)) {
-        this.downloadUrl = encodeURIComponent(filepath)
+        // this.downloadUrl = encodeURIComponent(filepath)
+        let a_link = document.createElement('a')
+        document.body.appendChild(a_link);
+        // a_link.style.display = "none";
+        a_link.setAttribute(
+          "href",
+          filepath + "?response-content-type=application/octet-stream"
+        );
+        a_link.target = '_blank'
+        document.body.appendChild(a_link);
+        // a_link.click();
+        // document.body.removeChild(a_link);
       } else {
         this.$message.info('文件格式不支持预览，下载后查看')
         return
@@ -933,7 +946,7 @@ export default {
     fileUploadSuccess(res, file) {
       console.log(this.setFormFile)
     },
-    async beforeAvatarUpload(file, element) {
+     beforeAvatarUpload(file, element) {
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -943,14 +956,17 @@ export default {
       // audioFileCheckedTypes: [],// 音频文件选中类型
       // allFileTypes:[], // 允许上传文件类型合集
       // fileSizeLimit: 50, // 文件大小限制
+      console.log(file,'file');
       const fileName = file.name
       const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
-      let isAllowUpload = true
-      let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      console.log(extension,'extension');
+      let isAllUpload = false
+      // let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
+      var acceptType = ['.jpg', '.png']
 
       // 判断后缀名是否允许上传
-      isAllowUpload = acceptType.includes(extension)
-      if (!isAllowUpload) {
+      isAllUpload = acceptType.includes(extension)
+      if (!isAllUpload) {
         const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
         this.$message.error(errMsg)
         return false
@@ -965,7 +981,7 @@ export default {
       // if(element.imageTypes.includes(extension) && element.mapCode == 'photo' && element.pictureSizeLimit){
       //  isAllowUpload = await this.imageSizeLimit(file, element)
       // }
-      return isAllowUpload
+      return isAllUpload
     },
     async imageSizeLimit(file, element) {
       const _this = this
@@ -998,72 +1014,72 @@ export default {
       return await isSize
     },
     fileBeforeUpload(file, element) {
-      // fileTypeLimit // 是否限制文件类型
-      // pictureSizeLimit: false, // 是否限制图片尺寸
-      // imageCheckedTypes:[], // 图片文件选中类型
-      // documentCheckedTypes: [], // 文档选中类型
-      // compressedFileCheckedTypes: [], // 压缩文件选中类型
-      // videoFileCheckedTypes: [], // 视频文件选中类型
-      // audioFileCheckedTypes: [],// 音频文件选中类型
-      // allFileTypes:[], // 允许上传文件类型合集
-      // fileSizeLimit: 50, // 文件大小限制
-      const fileName = file.name
-      const extension = fileName.substr(fileName.lastIndexOf('.'))
-      let isAllowUpload = true
-      if (element.fileTypeLimit) {
-        // 判断后缀名是否允许上传
-        isAllowUpload = element.allFileTypes.includes(extension)
-        if (!isAllowUpload) {
-          const errMsg = '注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、')
-          this.$message.error(errMsg)
-          return false
-        }
-      }
+            // fileTypeLimit // 是否限制文件类型
+            // pictureSizeLimit: false, // 是否限制图片尺寸
+            // imageCheckedTypes:[], // 图片文件选中类型
+            // documentCheckedTypes: [], // 文档选中类型
+            // compressedFileCheckedTypes: [], // 压缩文件选中类型
+            // videoFileCheckedTypes: [], // 视频文件选中类型
+            // audioFileCheckedTypes: [],// 音频文件选中类型
+            // allFileTypes:[], // 允许上传文件类型合集
+            // fileSizeLimit: 50, // 文件大小限制
+            const fileName = file.name
+            const extension = fileName.substr(fileName.lastIndexOf('.'))
+            let isAllowUpload = true
+            if (element.fileTypeLimit) {
+                // 判断后缀名是否允许上传
+                isAllowUpload = element.allFileTypes.includes(extension)
+                if (!isAllowUpload) {
+                    const errMsg = '注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、')
+                    this.$message.error(errMsg)
+                    return false
+                }
+            }
 
-      const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit
-      if (!sizeLimit) {
-        this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
-        return false
-      }
-      return isAllowUpload
-    },
-    // 自定义上传文件
-    flieHandleUploadForm(param, element) {
-      // let thiz = this
-      let formData = new FormData()
-      // formData.append('webpageCode', '') // 额外参数
-      formData.append('file', param.file)
-      let loading = this.$loading({
-        lock: true,
-        text: '上传中，请稍候...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      request({
-        url: '/api/obs/file/uploadImg',
-        method: 'POST',
-        data: formData
-      }).then(data => {
-        if (data.status) {
-          this.$message('上传文件成功')
-          this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
+            const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit
+            if (!sizeLimit) {
+                this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
+                return false
+            }
+            return isAllowUpload
+        },
+        // 自定义上传文件
+        flieHandleUploadForm(param, element) {
+            // let thiz = this
+            let formData = new FormData()
+            // formData.append('webpageCode', '') // 额外参数
+            formData.append('file', param.file)
+            let loading = this.$loading({
+                lock: true,
+                text: '上传中，请稍候...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+            request({
+                url: '/api/obs/file/uploadImg',
+                method: 'POST',
+                data: formData
+            }).then(data => {
+                if (data.status) {
+                    this.$message('上传文件成功')
+                    this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
 
-          this.setFormFile[element.mapCode].push({
-            name: data.data.fileName,
-            url: data.data.filePath
-          })
+                    this.setFormFile[element.mapCode].push({
+                        name: data.data.fileName,
+                        url: data.data.filePath
+                    })
 
-          console.log(this.setForm.signupContactDtlDto[element.mapCode])
-          param.onSuccess(data, element)
-        } else {
-          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
-          this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
-          // param.file.splice(idx, 1)
-          this.$message('上传文件失败')
-        }
-        loading.close()
-      })
-    },
+                    console.log(this.setForm.signupContactDtlDto[element.mapCode])
+                    param.onSuccess(data, element)
+                } else {
+                    const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
+                    this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
+                    // param.file.splice(idx, 1)
+                    this.$message('上传文件失败')
+                }
+                loading.close()
+            })
+        },
     // 自定义上传照片
     handleUploadForm(param, element) {
       // let thiz = this
