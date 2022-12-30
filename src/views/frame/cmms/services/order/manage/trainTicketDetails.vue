@@ -41,43 +41,27 @@
         <commonSlot title="车次信息">
           <div class="transInfo">
             <div class="transInfo_train">
-              <h2 class="transInfo_train_code">{{
-                                    tripInformationList[0].trainNo != '' ? tripInformationList[0].trainNo : '--'
-                            }}</h2>
-              <div class="transInfo_train_in">{{
-                                    trainNumberInformationList[0].ticketGate != '' ?
-                                        trainNumberInformationList[0].ticketGate : '--'
-                            }}</div>
+              <h2 class="transInfo_train_code">{{tripInformationList[0].trainNo != '' ? tripInformationList[0].trainNo : '--'}}</h2>
+              <div class="transInfo_train_in">{{trainNumberInformationList[0].ticketGate != '' ? trainNumberInformationList[0].ticketGate : '--'}}</div>
             </div>
             <div class="transInfo_time">
               <div class="transInfo_time_start">
                 <h2 class="startTime">{{ trainNumberInformationList[0].fromTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;">{{
-                                        trainNumberInformationList[0].fromStationName
-                                }}</b> <span class="startText">始</span></div>
-                <div class="startDate">{{
-                                        trainNumberInformationList[0].travelTime === undefined ? '--' :
-                                            trainNumberInformationList[0].travelTime.split(' ')[0]
-                                }}</div>
+                <div class="startStrain"><b style="font-size: 14px;">{{trainNumberInformationList[0].fromStationName}}</b> <span class="startText">始</span></div>
+                <div class="startDate">{{trainNumberInformationList[0].travelTime === undefined ? '--' :trainNumberInformationList[0].travelTime.split(' ')[0]}}</div>
               </div>
               <div class="transInfo_time_center">
                 <div class="tripLengthTime">{{ trainNumberInformationList[0].useTime }}</div>
                 <div class="Via">
                   <div class="leftLine"></div>
                   <div class="RightLine"></div>
-                  <div class="centerBox" style="cursor:pointer" @click="ViaHandle">经停站
-                  </div>
+                  <div class="centerBox" style="cursor:pointer" @click="ViaHandle">经停站</div>
                 </div>
               </div>
               <div class="transInfo_time_end">
                 <h2 class="startTime">{{ trainNumberInformationList[0].toTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;">{{
-                                        trainNumberInformationList[0].toStationName
-                                }}</b> <span class="endText">终</span></div>
-                <div class="startDate">{{
-                                        trainNumberInformationList[0].travelTime === undefined ? '--' :
-                                            trainNumberInformationList[0].travelTime.split(' ')[0]
-                                }}</div>
+                <div class="startStrain"><b style="font-size: 14px;">{{trainNumberInformationList[0].toStationName}}</b> <span class="endText">终</span></div>
+                <div class="startDate">{{trainNumberInformationList[0].travelTime === undefined ? '--' :trainNumberInformationList[0].travelTime.split(' ')[0]}}</div>
               </div>
             </div>
           </div>
@@ -92,29 +76,19 @@
               <span>￥{{ (paymentInformationDto.fare * tripInformationList.length) }}</span>
             </div>
             <div class="jine">
-              <h3>{{ trainNumberInformationList[0].fromCityName }}-{{
-                                    trainNumberInformationList[0].toCityName
-                            }}
+              <h3>{{ trainNumberInformationList[0].fromCityName }}-{{trainNumberInformationList[0].toCityName}}
               </h3>
               <div class="smallRend">
                 <div class="leftName">出票价</div>
-                <div class="RightMoney">￥{{ paymentInformationDto.fare }} X
-                  {{ tripInformationList.length }}</div>
+                <div class="RightMoney">￥{{ paymentInformationDto.fare }} X{{ tripInformationList.length }}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">改签差额</div>
-                <div class="RightMoney">￥{{
-                                        paymentInformationDto.changeDifference === '' ?
-                                            paymentInformationDto.changeDifference : 0
-                                }} X
-                  {{ tripInformationList.length }}</div>
+                <div class="RightMoney">￥{{paymentInformationDto.changeDifference === '' ?paymentInformationDto.changeDifference : 0}} X{{ tripInformationList.length }}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">退款金额</div>
-                <div class="RightMoney">￥{{
-                                        paymentInformationDto.refundAmount === '' ? paymentInformationDto.refundAmount : 0
-                                }} X
-                  {{ tripInformationList.length }}</div>
+                <div class="RightMoney">￥{{paymentInformationDto.refundAmount === '' ? paymentInformationDto.refundAmount : 0}} X {{ tripInformationList.length }}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">退改手续费</div>
@@ -148,18 +122,10 @@
           </el-table-column>
           <el-table-column prop="orderStatus" label="订单状态" width="100">
             <template slot-scope="scope">
-              <div v-if="scope.row.orderStatus === '101'" :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{
-                                        orderStatusFamtter[scope.row.orderStatus]
-                                }}</div>
-              <div v-if="scope.row.orderStatus === '102'" :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{
-                                        orderStatusFamtter[scope.row.orderStatus]
-                                }}</div>
-              <div v-if="scope.row.orderStatus === '103'" :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{
-                                        orderStatusFamtter[scope.row.orderStatus]
-                                }}</div>
-              <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'" class="">{{
-                                        orderStatusFamtter[scope.row.orderStatus]
-                                }}</div>
+              <div v-if="scope.row.orderStatus === '101'" :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+              <div v-if="scope.row.orderStatus === '102'" :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+              <div v-if="scope.row.orderStatus === '103'" :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+              <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'" class="">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
@@ -211,25 +177,18 @@
       </div>
       <el-divider></el-divider>
       <div class="remove-line2">
-        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{
-                        paymentInformationDto.fare - serviceFee
-                }}元</span>
+        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{paymentInformationDto.fare - serviceFee}}元</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line3">
         <div class="remove-line3-1">
-          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">
-            {{ serviceFee }}元</span>
+          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">{{ serviceFee }}元</span>
         </div>
         <div class="remove-line3-2">
-          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{
-                            paymentInformationDto.fare
-                    }}元</span>
+          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{paymentInformationDto.fare}}元</span>
         </div>
         <div class="remove-line3-3">
-          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{
-                            paymentInformationDto.fare - serviceFee
-                    }}元</span>
+          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{paymentInformationDto.fare - serviceFee}}元</span>
         </div>
       </div>
       <el-divider></el-divider>

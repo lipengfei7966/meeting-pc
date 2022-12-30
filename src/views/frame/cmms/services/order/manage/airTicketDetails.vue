@@ -19,17 +19,13 @@
               </tr>
               <tr>
                 <td class="tdTitle">订单状态</td>
-                <td>{{ orderDetailInfo.orderStatus
-                                        ? orderStatusFamtter[orderDetailInfo.orderStatus] : '-'
-                                }}</td>
+                <td>{{ orderDetailInfo.orderStatus? orderStatusFamtter[orderDetailInfo.orderStatus] : '-'}}</td>
                 <td class="tdTitle">联系人</td>
                 <td>{{ orderDetailInfo.contactPerson ? orderDetailInfo.contactPerson : '-' }}</td>
               </tr>
               <tr>
                 <td class="tdTitle">联系人电话</td>
-                <td>{{ orderDetailInfo.contactPhone ?
-                                        orderDetailInfo.contactPhone : '-'
-                                }}</td>
+                <td>{{ orderDetailInfo.contactPhone ?orderDetailInfo.contactPhone : '-'}}</td>
                 <td class="tdTitle">备注</td>
                 <td>{{ orderDetailInfo.remark ? orderDetailInfo.remark : '-' }}</td>
               </tr>
@@ -39,34 +35,18 @@
         <commonSlot title="航班信息">
           <div class=" transInfo">
             <div class="transInfo_train">
-              <div class="tripType">
-                {{ flightDetailInfoList[0].tripType.split(',').length >= 2 ? '双程' :
-                                        flightDetailInfoList[0].tripType.split(',').length === 1 ? '单程' : '--'
-                                }}</div>
-              <h2 class="transInfo_train_code">{{
-                                    flightDetailInfoList[0].carrierAirlines != '' ? flightDetailInfoList[0].carrierAirlines
-                                        : '--'
-                            }}</h2>
-              <div class="transInfo_train_in">{{
-                                    flightDetailInfoList[0].flightNo != '' ?
-                                        flightDetailInfoList[0].flightNo : '--'
-                            }}</div>
+              <div class="tripType">{{ flightDetailInfoList[0].tripType.split(',').length >= 2 ? '双程' :flightDetailInfoList[0].tripType.split(',').length === 1 ? '单程' : '--'}}</div>
+              <h2 class="transInfo_train_code">{{flightDetailInfoList[0].carrierAirlines != '' ? flightDetailInfoList[0].carrierAirlines: '--'}}</h2>
+              <div class="transInfo_train_in">{{flightDetailInfoList[0].flightNo != '' ?flightDetailInfoList[0].flightNo : '--'}}</div>
             </div>
             <div class="transInfo_time">
               <div class="transInfo_time_start">
                 <h2 class="startTime">{{ flightDetailInfoList[0].depTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;">{{
-                                        flightDetailInfoList[0].dep
-                                }}</b> <span class="startText">始</span></div>
-                <div class="startDate">{{
-                                        flightDetailInfoList[0].depDate === undefined ? '--' :
-                                            flightDetailInfoList[0].depDate.split(' ')[0]
-                                }}</div>
+                <div class="startStrain"><b style="font-size: 14px;">{{flightDetailInfoList[0].dep}}</b> <span class="startText">始</span></div>
+                <div class="startDate">{{flightDetailInfoList[0].depDate === undefined ? '--' :flightDetailInfoList[0].depDate.split(' ')[0]}}</div>
               </div>
               <div class="transInfo_time_center">
-                <div class="tripLengthTime">{{
-                                        flightDetailInfoList[0].timeLong ? flightDetailInfoList[0].timeLong : '--'
-                                }}</div>
+                <div class="tripLengthTime">{{flightDetailInfoList[0].timeLong ? flightDetailInfoList[0].timeLong : '--'}}</div>
                 <div class="Via">
                   <div class="leftLine"></div>
                   <div class="RightLine"></div>
@@ -77,23 +57,13 @@
               </div>
               <div class="transInfo_time_end">
                 <h2 class="startTime">{{ flightDetailInfoList[0].arrTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;">{{
-                                        flightDetailInfoList[0].arr
-                                }}</b> <span class="endText">终</span></div>
-                <div class="startDate">{{
-                                        flightDetailInfoList[0].arrDate === undefined ? '--' :
-                                            flightDetailInfoList[0].arrDate.split(' ')[0]
-                                }}</div>
+                <div class="startStrain"><b style="font-size: 14px;">{{flightDetailInfoList[0].arr}}</b> <span class="endText">终</span></div>
+                <div class="startDate">{{flightDetailInfoList[0].arrDate === undefined ? '--' :flightDetailInfoList[0].arrDate.split(' ')[0]}}</div>
               </div>
             </div>
             <div class="meal">
-              <div class="planModel">{{ flightDetailInfoList[0].planModel != '' ?
-                                    flightDetailInfoList[0].planModel
-                                    : '--'
-                            }}</div>
-              <div class="isMeal"> {{ flightDetailInfoList[0].isMeal != '1' ? '有餐食' :
-                                    flightDetailInfoList[0].isMeal != '0' ? '无餐食' : '--'
-                            }}</div>
+              <div class="planModel">{{ flightDetailInfoList[0].planModel != '' ?flightDetailInfoList[0].planModel: '--' }}</div>
+              <div class="isMeal"> {{ flightDetailInfoList[0].isMeal != '1' ? '有餐食' :flightDetailInfoList[0].isMeal != '0' ? '无餐食' : '--'}}</div>
             </div>
           </div>
 
@@ -113,18 +83,10 @@
               </el-table-column>
               <el-table-column prop="orderStatus" label="订单状态" width="100">
                 <template slot-scope="scope">
-                  <div v-if="scope.row.orderStatus === '101'" :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{
-                                                orderStatusFamtter[scope.row.orderStatus]
-                                        }}</div>
-                  <div v-if="scope.row.orderStatus === '102'" :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{
-                                                orderStatusFamtter[scope.row.orderStatus]
-                                        }}</div>
-                  <div v-if="scope.row.orderStatus === '103'" :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{
-                                                orderStatusFamtter[scope.row.orderStatus]
-                                        }}</div>
-                  <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'" class="">{{
-                                                orderStatusFamtter[scope.row.orderStatus]
-                                        }}</div>
+                  <div v-if="scope.row.orderStatus === '101'" :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+                  <div v-if="scope.row.orderStatus === '102'" :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+                  <div v-if="scope.row.orderStatus === '103'" :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+                  <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'" class="">{{ orderStatusFamtter[scope.row.orderStatus]}}</div>
                 </template>
               </el-table-column>
               <el-table-column fixed="right" label="操作" width="100">
@@ -152,33 +114,23 @@
               <h3>{{ flightDetailInfoList[0].dep }}-{{ flightDetailInfoList[0].arr }}</h3>
               <div class="smallRend">
                 <div class="leftName">机建</div>
-                <div class="RightMoney">￥{{ costDetailInfo.macTax }} X
-                  {{ tripInfoList.length }}</div>
+                <div class="RightMoney">￥{{ costDetailInfo.macTax }} X{{ tripInfoList.length }}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">燃油</div>
-                <div class="RightMoney">￥{{
-                                        costDetailInfo.oilTax
-                                }} X
-                  {{ tripInfoList.length }}</div>
+                <div class="RightMoney">￥{{ costDetailInfo.oilTax}} X{{ tripInfoList.length }}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">服务费</div>
-                <div class="RightMoney">￥{{
-                                        costDetailInfo.serviceFee
-                                }} X
-                  {{ tripInfoList.length }}</div>
+                <div class="RightMoney">￥{{costDetailInfo.serviceFee}} X{{ tripInfoList.length }}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">升舱费</div>
-                <div class="RightMoney">￥{{ costDetailInfo.upgradeCabinAmount }} X {{
-                                        tripInfoList.length
-                                }}</div>
+                <div class="RightMoney">￥{{ costDetailInfo.upgradeCabinAmount }} X {{tripInfoList.length}}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">退票手续费</div>
-                <div class="RightMoney">￥{{ costDetailInfo.refundServiceFee }} X {{ tripInfoList.length
-                                }}</div>
+                <div class="RightMoney">￥{{ costDetailInfo.refundServiceFee }} X {{ tripInfoList.length}}</div>
               </div>
               <div class="smallRend">
                 <div class="leftName">改期费</div>
@@ -231,9 +183,7 @@
       </div>
       <el-divider></el-divider>
       <div class="remove-line2">
-        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{
-                        fightReissueRefund.returnPrice
-                }}元</span>
+        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line3">
@@ -242,14 +192,10 @@
             {{ fightReissueRefund.refundPrice }}元</span>
         </div>
         <div class="remove-line3-2">
-          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{
-                            costDetailInfo.ticketAmount
-                    }}元</span>
+          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{costDetailInfo.ticketAmount}}元</span>
         </div>
         <div class="remove-line3-3">
-          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{
-                            fightReissueRefund.returnPrice
-                    }}元</span>
+          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
         </div>
       </div>
       <el-divider></el-divider>
@@ -259,8 +205,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelFn">取 消</el-button>
-        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">确
-          定</el-button>
+        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">确 定</el-button>
         <div class="remove-rules">
           <div class="title">退票规则：</div>
           <div class="rule1">
