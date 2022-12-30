@@ -849,6 +849,7 @@ export default {
     // 预览附件
     handlePreview(file) {
       let filepath = file.url
+      let filename=filepath.slice(filepath.lastIndexOf('/') + 1)
       if (!filepath) return
       // 获取文件后缀名
       let suffix = filepath.substring(filepath.lastIndexOf('.') + 1).toLowerCase()
@@ -860,7 +861,18 @@ export default {
       if (types2.includes(suffix)) {
         this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
       } else if (types1.includes(suffix)) {
-        this.downloadUrl = encodeURIComponent(filepath)
+        // this.downloadUrl = encodeURIComponent(filepath)
+        let a_link = document.createElement('a')
+        document.body.appendChild(a_link);
+        a_link.style.display = "none";
+        a_link.setAttribute(
+          "href",
+          filepath + "?response-content-type=application/octet-stream"
+        );
+        a_link.target = '_blank'
+        document.body.appendChild(a_link);
+        a_link.click();
+        document.body.removeChild(a_link);
       } else {
         this.$message.info('文件格式不支持预览，下载后查看')
         return
