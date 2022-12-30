@@ -109,7 +109,7 @@
         <div>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
             <el-form-item label="分活动名称" prop="name">
-              <el-input :disabled="disabled_look" style="width: 500px" v-model="ruleForm.name"></el-input>
+              <el-input placeholder="请输入分活动名称" :disabled="disabled_look" style="width: 500px" v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="活动时间" prop="date1">
               <el-date-picker :disabled="disabled_look" style="width: 500px" size="mini" v-model="ruleForm.date1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
@@ -118,12 +118,12 @@
               <el-radio-group :disabled="disabled_look" v-model="ruleForm.triesLimit">
                 <el-radio :label="0">不限制</el-radio>
                 <el-radio :label="1">活动最多允许 <span>
-                    <el-input :disabled="ruleForm.triesLimit == 0" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0"></el-input>
+                    <el-input :disabled="ruleForm.triesLimit == 0 || btnName == '确定'" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0" @input="numChange"></el-input>
                   </span> 人参与</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="分活动描述" prop="describeInfo">
-              <el-input :disabled="disabled_look" style="width: 500px" type="textarea" v-model="ruleForm.describeInfo"></el-input>
+              <el-input placeholder="请输入分活动描述" :disabled="disabled_look" style="width: 500px" type="textarea" v-model="ruleForm.describeInfo"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -424,6 +424,12 @@ export default {
     },
     triesLimitRadio(val){
       console.log(val);
+    },
+    numChange(){
+      this.ruleForm.describeInfo += '.卐.'
+      let str = new RegExp(".卐.","g")
+      var str_one = this.ruleForm.describeInfo.replace(str,"");
+      this.ruleForm.describeInfo = str_one
     }
   },
   created() {
