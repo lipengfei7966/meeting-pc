@@ -1625,13 +1625,11 @@
                   <h3>2</h3>
                   <h3>3</h3> -->
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
-    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
-}}</h3>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
                   <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
-                  <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <!-- <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
                   <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
                     <h3 style="margin:20px">{{ resultSetForm.successTitle }}</h3>
                     <pre> {{ resultSetForm.successDescribe }} </pre>
@@ -1650,13 +1648,11 @@
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
-    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
-}}</h3>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
                   <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
-                  <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <!-- <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
                   <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
                     <h3 style="margin:20px">{{ resultSetForm.waitReviewTitle }}</h3>
                     <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
@@ -1675,13 +1671,11 @@
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{
-    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
-}}</h3>
+                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
                   <h3>会议地点：{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
-                  <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <!-- <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
                   <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
                     <h3 style="margin:20px">{{ resultSetForm.noPassTitle }}</h3>
                     <pre> {{ resultSetForm.noPassDescribe }} </pre>
