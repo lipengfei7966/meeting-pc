@@ -859,16 +859,7 @@ export default {
       filepath = filepath.replace(/http:/, 'https:')
       this.downloadUrl = filepath
       if (types2.includes(suffix)) {
-        // this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
-        let a_link = document.createElement('a')
-        document.body.appendChild(a_link);
-        // a_link.style.display = "none";
-        a_link.setAttribute(
-          "href",
-          filepath + "?response-content-type=application/octet-stream"
-        );
-        a_link.target = '_blank'
-        document.body.appendChild(a_link);
+        this.downloadUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(filepath)
       } else if (types1.includes(suffix)) {
         // this.downloadUrl = encodeURIComponent(filepath)
         let a_link = document.createElement('a')
