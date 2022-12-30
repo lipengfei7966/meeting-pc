@@ -47,7 +47,9 @@
             <div class="transInfo_time">
               <div class="transInfo_time_start">
                 <h2 class="startTime">{{ trainNumberInformationList[0].fromTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;">{{trainNumberInformationList[0].fromStationName}}</b> <span class="startText">始</span></div>
+                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{trainNumberInformationList[0].fromStationName}}</b>
+                  <el-tag>始</el-tag>
+                </div>
                 <div class="startDate">{{trainNumberInformationList[0].travelTime === undefined ? '--' :trainNumberInformationList[0].travelTime.split(' ')[0]}}</div>
               </div>
               <div class="transInfo_time_center">
@@ -60,7 +62,9 @@
               </div>
               <div class="transInfo_time_end">
                 <h2 class="startTime">{{ trainNumberInformationList[0].toTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;">{{trainNumberInformationList[0].toStationName}}</b> <span class="endText">终</span></div>
+                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{trainNumberInformationList[0].toStationName}}</b>
+                  <el-tag type="danger">终</el-tag>
+                </div>
                 <div class="startDate">{{trainNumberInformationList[0].travelTime === undefined ? '--' :trainNumberInformationList[0].travelTime.split(' ')[0]}}</div>
               </div>
             </div>
@@ -122,10 +126,10 @@
           </el-table-column>
           <el-table-column prop="orderStatus" label="订单状态" width="100">
             <template slot-scope="scope">
-              <div v-if="scope.row.orderStatus === '101'" :class="scope.row.orderStatus === '101' ? 'redColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
-              <div v-if="scope.row.orderStatus === '102'" :class="scope.row.orderStatus === '102' ? 'greenColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
-              <div v-if="scope.row.orderStatus === '103'" :class="scope.row.orderStatus === '103' ? 'grayColor' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
-              <div v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'" class="">{{orderStatusFamtter[scope.row.orderStatus]}}</div>
+              <el-tag v-if="scope.row.orderStatus === '101'" :type="scope.row.orderStatus === '101' ? 'danger' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
+              <el-tag v-if="scope.row.orderStatus === '102'" :type="scope.row.orderStatus === '102' ? 'success' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
+              <el-tag v-if="scope.row.orderStatus === '103'" :type="scope.row.orderStatus === '103' ? 'info' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
+              <el-tag v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
