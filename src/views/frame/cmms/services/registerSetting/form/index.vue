@@ -119,7 +119,8 @@
                 <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
               <el-form-item label="会议简介" prop="profile" v-show="appearanceSetForm.isPropaganda == '1'">
-                <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input>
+                <!-- <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input> -->
+                <bs-editor></bs-editor>
               </el-form-item>
             </div>
           </div>
@@ -2536,6 +2537,8 @@ export default {
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             this.appearanceSetForm.code = ''
             this.appearanceSetForm.id = ''
+            const req = window.frames['myframe'].getContent()
+            this.appearanceSetForm.profile = req.trim()
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
             request({
               url: '/api/register/signupExterior/save',
@@ -2559,6 +2562,8 @@ export default {
           } else {
             this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            const req = window.frames['myframe'].getContent()
+            this.appearanceSetForm.profile = req.trim()
             // this.appearanceSetForm.code = ''
             // this.appearanceSetForm.id = ''
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
@@ -2625,6 +2630,11 @@ export default {
               this.appearanceSetForm.isMeetinPlace = 0 // 是否显示会议地点
               this.appearanceSetForm.isMeetinCountdown = 0 // 是否显示倒计时
               this.appearanceSetForm.profile = ''// 会议简介
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContentProfile('')
+                }
+              }, 1000)
               // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
               this.appearanceSetForm.loginPcFile = ''
               // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
@@ -2634,6 +2644,12 @@ export default {
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
             this.appearanceSetForm = res.data
+            setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContentProfile('')
+                  window.frames['myframe'].setContentProfile(this.appearanceSetForm.profile)
+                }
+              }, 2000)
             this.appearanceSetForm.language=res.data.language.split(',')
             // this.meetingImageList = res.data.meetingFile
             this.meetingImageList = []
