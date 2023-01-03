@@ -366,14 +366,16 @@ export default {
         },
         ViaHandle () {
             this.dialogTableVisible = true
+            let trainDate=this.trainNumberInformationList[0].travelTime.split(' ')[0]
+            console.log(trainDate,'trainDatetrainDate');
             let queryVia = {
-                arriveStation: this.trainNumberInformationList[0].toStationName,
-                fromStation: this.trainNumberInformationList[0].fromStationName,
-                onlyLowPrice: '',
+                // arriveStation: this.trainNumberInformationList[0].toStationName,
+                // fromStation: this.trainNumberInformationList[0].fromStationName,
+                // onlyLowPrice: '',
                 trainCode: this.tripInformationList[0].trainNo,
-                trainSeatType: this.tripInformationList[0].seatName,
-                trainType: this.trainNumberInformationList[0].trainType,
-                travelTime: this.trainNumberInformationList[0].travelTime
+                // trainSeatType: this.tripInformationList[0].seatName,
+                // trainType: this.trainNumberInformationList[0].trainType,
+                trainDate: trainDate
             }
             trainVia(queryVia).then(res => {
                 console.log(res, '经停站信息')

@@ -457,7 +457,8 @@
         <el-form-item label="协议内容" prop="privacyContent">
           <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
           <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
-          <bs-editor></bs-editor>
+          <!-- <bs-deditor></bs-deditor> -->
+          <iframe name="myframe_" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="privacySubmitForm('ruleForm')">确定</el-button>
@@ -585,7 +586,7 @@ export default {
       default: ''
     },
     formUpdateStatus:{
-      type:Array,
+      type:Boolean,
       default:()=>[]
     },
     isNeedApprove:{
@@ -674,7 +675,7 @@ export default {
     },
     privacySubmitForm(formName) {
       // this.$refs[formName].resetFields()
-      const req = window.frames['myframe'].getContent()
+      const req = window.frames['myframe_'].getContent()
       // const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
       console.log(req, 'req')
       this.ruleForm.privacyContent = req.trim()
@@ -688,7 +689,12 @@ export default {
       this.dialogFormVisible = true
       // this.initDialog()
       setTimeout(() => {
-        if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
+        // debugger
+        console.log(this.ruleForm.privacyContent);
+        if (window.frames['myframe_']){
+          // debugger
+          window.frames['myframe_'].setContentProfile(this.ruleForm.privacyContent)
+        }
       }, 1000)
     },
     // 生成规则
@@ -713,6 +719,11 @@ export default {
           this.applySetForm.IsIintimateAgreement = true
           this.ruleForm.privacyName = ''
           this.ruleForm.privacyContent = ''
+          setTimeout(() => {
+            if (window.frames['myframe_']){
+              window.frames['myframe_'].setContents('')
+            }
+          },1000)
           this.applySetForm.applyDate = ''
           this.applySetForm.applyCheck = ''
           this.applySetForm.assistApply = false
@@ -730,8 +741,10 @@ export default {
           this.ruleForm.privacyContent = res.data.privacyContent
           console.log(res.data.privacyContent, 'res.data.privacyContent')
           setTimeout(() => {
-            if (window.frames['myframe']) window.frames['myframe'].setContents(this.ruleForm.privacyContent)
-          }, 3000)
+            if (window.frames['myframe_']){
+              window.frames['myframe_'].setContents(this.ruleForm.privacyContent)
+            }
+          },1000)
           this.applySetForm.applyDate = [res.data.beginTime, res.data.endTime]
           this.applySetForm.applyCheck = res.data.isApproval
           this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false
