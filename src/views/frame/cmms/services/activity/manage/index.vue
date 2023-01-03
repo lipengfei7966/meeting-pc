@@ -17,7 +17,7 @@
           <el-radio-group @input="triesLimitRadio" v-model="moduleVal.triesLimit">
             <el-radio :label="0">不限制</el-radio>
             <el-radio :label="1">单人最多参与 <span>
-                <el-input style="width: 26%" size="mini" :disabled="moduleVal.triesLimit == 0" clearable v-model="moduleVal.inputNum"></el-input>
+                <el-input @blur="limitBlur" style="width: 26%" size="mini" :disabled="moduleVal.triesLimit == 0" clearable v-model="moduleVal.inputNum"></el-input>
               </span> 次</el-radio>
           </el-radio-group>
         </div>
@@ -85,7 +85,7 @@
         <el-table-column prop="triesLimit" label="报名人数/上限">
           <template slot-scope="scope">
             <div v-if="scope.row.triesLimit>0">
-              <span>{{ 1 }}<span>/{{scope.row.triesLimit}}</span> </span>
+              <span>无<span>/{{scope.row.triesLimit}}</span> </span>
               <span style="margin:0px 4px">|</span>
               <el-button type="text" size="small">查看</el-button>
             </div>
@@ -341,10 +341,26 @@ export default {
         console.log(res)
         this.activityList = res.data
         this.moduleVal.eventCode = res.data[0].code
+        if(res.data[0].data.triesLimit){
+          this.moduleVal.triesLimit = 1
+          this.moduleVal.inputNum = res.data[0].data.triesLimit
+        }
+        // hkz
         this.searchSubmit()
       })
     },
     eventChange(val) {
+      this.activityList.forEach(item=>{
+        if(item.code == val){
+          if(item.data.triesLimit){
+          this.moduleVal.triesLimit = 1
+          this.moduleVal.inputNum = item.data.triesLimit
+        }else{
+          this.moduleVal.triesLimit = 0
+          this.moduleVal.inputNum = ''
+        }
+        }
+      })
       this.searchSubmit()
     },
     isGoLiveChange(val) {
@@ -423,7 +439,31 @@ export default {
       })
     },
     triesLimitRadio(val){
-      console.log(val);
+      if(val == 0){
+        request({
+        url: '/api/biz/cmsEventInfo/updateTriesLimit',
+        method: 'POST',
+        data: { data: {triesLimit:val,code:this.moduleVal.eventCode}, funcModule: '分活动人数限制', funcOperation: '分活动人数限制' }
+      }).then(res => {
+        this.$message({
+                type: 'success',
+                message: '保存成功!'
+              })
+      })
+      this.moduleVal.inputNum = ''
+      }
+    },
+    limitBlur(val){
+      request({
+        url: '/api/biz/cmsEventInfo/updateTriesLimit',
+        method: 'POST',
+        data: { data: {triesLimit:this.moduleVal.inputNum,code:this.moduleVal.eventCode}, funcModule: '分活动人数限制', funcOperation: '分活动人数限制' }
+      }).then(res => {
+        this.$message({
+                type: 'success',
+                message: '保存成功!'
+              })
+      })
     },
     numChange(){
       this.ruleForm.describeInfo += '.卐.'
