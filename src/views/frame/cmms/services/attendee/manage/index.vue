@@ -318,6 +318,9 @@ export default {
             {
               prop: 'certificateType',
               label: 'website.signupContact.list.certificateType',
+              format: {
+                dict: this.$t('datadict.certificateType')
+              },
               width: 120
             },
             {
