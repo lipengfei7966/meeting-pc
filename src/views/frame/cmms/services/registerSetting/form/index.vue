@@ -2635,7 +2635,7 @@ export default {
                 if (window.frames['myframe']){
                   window.frames['myframe'].setContentProfile('')
                 }
-              }, 1000)
+              }, 2000)
               // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
               this.appearanceSetForm.loginPcFile = ''
               // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
@@ -3763,6 +3763,11 @@ export default {
       this.eventName = params.name
       this.stepIndex = 0
       this.pageTotal=0
+      setTimeout(() => {
+        if (window.frames['myframe']){
+          window.frames['myframe'].setContentProfile('')
+        }
+      }, 2000)
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()

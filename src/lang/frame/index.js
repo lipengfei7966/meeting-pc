@@ -33,6 +33,10 @@ import enWebsite from '@/lang/frame/website/website_en'
 import zhOrder from '@/lang/frame/base/modules/order_zh'
 import enOrder from '@/lang/frame/base/modules/order_en'
 
+// 报名设置
+import zhApply from '@/lang/frame/base/modules/apply_zh'
+import enApply from '@/lang/frame/base/modules/apply_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -44,7 +48,8 @@ const messages = {
     ...enPlatform,
     ...enFunc,
     ...enWebsite,
-    ...enOrder
+    ...enOrder,
+    ...zhApply
   },
   zh: {
     ...zhBase,
@@ -56,7 +61,8 @@ const messages = {
     ...zhPlatform,
     ...zhFunc,
     ...zhWebsite,
-    ...zhOrder
+    ...zhOrder,
+    ...enApply
   }
 }
 
