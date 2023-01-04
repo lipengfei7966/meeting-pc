@@ -3762,7 +3762,7 @@ export default {
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
-
+      this.pageTotal=0
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()
