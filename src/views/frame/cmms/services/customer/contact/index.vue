@@ -10,7 +10,7 @@ import request from '@/utils/frame/base/request'
 import { notifyInfo, notifySuccess } from '@/utils/frame/base/notifyParams'
 
 export default {
-  name: 'customerUsergroup',
+  name: 'customerContact',
   data() {
     return {
       treeTableData: {

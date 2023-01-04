@@ -130,7 +130,7 @@ export default {
             component: () => import('@/views/frame/cmms/services/registerSetting/codeRule/set'),
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
-            }
+            },
           },
           {
             name: 'refresh'

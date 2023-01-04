@@ -148,7 +148,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+      this.$refs.bsDialog.formData.eventCode = this.param
+  },
   methods: {
     initFun() {
       this.changeType()
@@ -160,6 +162,7 @@ export default {
       this.$refs.bsDialog.formData.contactCode = ''
       const parentCodeRef = toolUtil.getDefDialogItemByProp(this, 'contactCode')
       parentCodeRef.attrs.params.customerCode = item.code
+      // formData
     },
     changeType() {
       let val = this.$refs.bsDialog.formData.type

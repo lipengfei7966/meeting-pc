@@ -119,7 +119,8 @@
                 <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
               <el-form-item label="会议简介" prop="profile" v-show="appearanceSetForm.isPropaganda == '1'">
-                <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input>
+                <!-- <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input> -->
+                <bs-editor></bs-editor>
               </el-form-item>
             </div>
           </div>
@@ -580,7 +581,7 @@
                   <!-- 分页 -->
                   <div v-if="element.systemName == '分页'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
-                    <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+                    <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pageTotal }} 页 ]</p>
                     <!-- <el-divider content-position="center">{{ element.placeholder }}</el-divider> -->
                   </div>
 
@@ -1591,7 +1592,7 @@
                   <p class="eidtContentItemTitle">分页标题</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].pageTitle" :placeholder="setInfoList[checkedIndex].placeholder"></el-input>
                   <p style="width: 100%; text-align: center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{
-    pagingCount
+    pageTotal
 }} 页 ]</p>
                 </div>
               </div>
@@ -1625,13 +1626,11 @@
                   <h3>2</h3>
                   <h3>3</h3> -->
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
-    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
-}}</h3>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
                   <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
-                  <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <!-- <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
                   <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
                     <h3 style="margin:20px">{{ resultSetForm.successTitle }}</h3>
                     <pre> {{ resultSetForm.successDescribe }} </pre>
@@ -1650,13 +1649,11 @@
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{
-    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
-}}</h3>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
                   <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
-                  <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <!-- <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
                   <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
                     <h3 style="margin:20px">{{ resultSetForm.waitReviewTitle }}</h3>
                     <pre> {{ resultSetForm.waitReviewDescribe }} </pre>
@@ -1675,13 +1672,11 @@
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{
-    getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'
-}}</h3>
+                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
                   <h3>会议地点：{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
-                  <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" />
+                  <!-- <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
                   <div style="position:absolute;width:80%;height:100%;text-align:center;z-index:2">
                     <h3 style="margin:20px">{{ resultSetForm.noPassTitle }}</h3>
                     <pre> {{ resultSetForm.noPassDescribe }} </pre>
@@ -2338,6 +2333,7 @@ export default {
       customInfoCount: 0, // 自定义信息数量
       textareaNum: 35, // 长文本字段序号为 36-40
       pagingCount: 0, // 分页数量
+      pageTotal:0,
       eventName: '', // 会议名称
       drag: false,
       countryCodeOptions: [], // 国际区号下拉选项  label - value
@@ -2542,6 +2538,8 @@ export default {
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             this.appearanceSetForm.code = ''
             this.appearanceSetForm.id = ''
+            const req = window.frames['myframe'].getContent()
+            this.appearanceSetForm.profile = req.trim()
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
             request({
               url: '/api/register/signupExterior/save',
@@ -2565,6 +2563,8 @@ export default {
           } else {
             this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
             this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            const req = window.frames['myframe'].getContent()
+            this.appearanceSetForm.profile = req.trim()
             // this.appearanceSetForm.code = ''
             // this.appearanceSetForm.id = ''
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
@@ -2631,6 +2631,11 @@ export default {
               this.appearanceSetForm.isMeetinPlace = 0 // 是否显示会议地点
               this.appearanceSetForm.isMeetinCountdown = 0 // 是否显示倒计时
               this.appearanceSetForm.profile = ''// 会议简介
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContentProfile('')
+                }
+              }, 1000)
               // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
               this.appearanceSetForm.loginPcFile = ''
               // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
@@ -2640,6 +2645,12 @@ export default {
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
             this.appearanceSetForm = res.data
+            setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContentProfile('')
+                  window.frames['myframe'].setContentProfile(this.appearanceSetForm.profile)
+                }
+              }, 2000)
             this.appearanceSetForm.language=res.data.language.split(',')
             // this.meetingImageList = res.data.meetingFile
             this.meetingImageList = []
@@ -2977,6 +2988,7 @@ export default {
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
         this.setInfoList.forEach(setInfoItem => {
+
           // 基本信息
           this.baseInfoList.forEach(baseInfoItem => {
             if (baseInfoItem.value == setInfoItem.mapCode) {
@@ -2997,6 +3009,9 @@ export default {
           })
           if (setInfoItem.isCoustomInfo) {
             this.customInfoCount++
+          }
+          if(setInfoItem.systemName == '分页'){
+            this.pageTotal++
           }
         })
       })
@@ -3088,6 +3103,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           if (itemList.isPaging) {
             this.pagingCount--
+            this.pageTotal--
           }
           break
         default:
@@ -3276,6 +3292,7 @@ export default {
       if (itemList.value == 'paging') {
         obj.isPaging = true
         this.pagingCount++
+        this.pageTotal++
         obj.placeholder = `请输入${itemList.label}标题`
       }
 
@@ -3745,7 +3762,7 @@ export default {
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
-
+      this.pageTotal=0
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()
