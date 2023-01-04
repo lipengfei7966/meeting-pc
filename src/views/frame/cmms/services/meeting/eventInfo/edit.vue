@@ -67,7 +67,7 @@ export default {
               cols: 3,
               data: 'CUSTOMER_CONTACT',
               params: {
-                customerCode: this.param.customerCode == undefined ? '' : this.param.customerCode
+                companyId: this.param.customerCode == undefined ? '' : this.param.customerCode
               },
               clearable: true
             },
@@ -169,7 +169,7 @@ export default {
     changeAllOrg(item) {
       this.$refs.bsDialog.formData.contactCode = ''
       const parentCodeRef = toolUtil.getDefDialogItemByProp(this, 'contactCode')
-      parentCodeRef.attrs.params.customerCode = item.code
+      parentCodeRef.attrs.params.companyId = item.code
     }
   }
 }
