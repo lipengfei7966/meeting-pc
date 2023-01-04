@@ -748,6 +748,17 @@ export default {
             this.spareMobileIntCodeChange(this.setForm.spareMobileIntCode, element)
           }
         })
+        // debugger
+        if(this.setForm.certificateType){
+         let cardCode = this.$t('datadict.certificateType')
+         cardCode.forEach(item=>{
+          if(item.value == this.setForm.certificateType){
+            this.setForm.certificateType = item.label
+          }
+         })
+          // console.log(this.$t('datadict.certificateType'));
+        }
+        // console.log(this.setForm);
       })
     },
     submit() {
@@ -783,6 +794,17 @@ export default {
               }
             }
           }
+          debugger
+          if(this.setForm.certificateType){
+             let cardCode = this.$t('datadict.certificateType')
+         cardCode.forEach(item=>{
+          if(item.label == this.setForm.certificateType){
+            this.setForm.certificateType = item.value
+          }
+         }) 
+          }
+          console.log(this.setForm);
+          // return
           request({
             url: queryUrl,
             method: 'POST',
