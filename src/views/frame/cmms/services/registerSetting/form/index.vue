@@ -581,7 +581,7 @@
                   <!-- 分页 -->
                   <div v-if="element.systemName == '分页'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
-                    <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+                    <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pageTotal }} 页 ]</p>
                     <!-- <el-divider content-position="center">{{ element.placeholder }}</el-divider> -->
                   </div>
 
@@ -1592,7 +1592,7 @@
                   <p class="eidtContentItemTitle">分页标题</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].pageTitle" :placeholder="setInfoList[checkedIndex].placeholder"></el-input>
                   <p style="width: 100%; text-align: center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{
-    pagingCount
+    pageTotal
 }} 页 ]</p>
                 </div>
               </div>
@@ -2333,6 +2333,7 @@ export default {
       customInfoCount: 0, // 自定义信息数量
       textareaNum: 35, // 长文本字段序号为 36-40
       pagingCount: 0, // 分页数量
+      pageTotal:0,
       eventName: '', // 会议名称
       drag: false,
       countryCodeOptions: [], // 国际区号下拉选项  label - value
@@ -2987,6 +2988,7 @@ export default {
         }
         // 初始化数据,如果返回数据有 基本信息、联系方式、工作信息，隐藏左侧选项
         this.setInfoList.forEach(setInfoItem => {
+
           // 基本信息
           this.baseInfoList.forEach(baseInfoItem => {
             if (baseInfoItem.value == setInfoItem.mapCode) {
@@ -3007,6 +3009,9 @@ export default {
           })
           if (setInfoItem.isCoustomInfo) {
             this.customInfoCount++
+          }
+          if(setInfoItem.systemName == '分页'){
+            this.pageTotal++
           }
         })
       })
@@ -3098,6 +3103,7 @@ export default {
           this.setInfoList.splice(itemIndex, 1)
           if (itemList.isPaging) {
             this.pagingCount--
+            this.pageTotal--
           }
           break
         default:
@@ -3286,6 +3292,7 @@ export default {
       if (itemList.value == 'paging') {
         obj.isPaging = true
         this.pagingCount++
+        this.pageTotal++
         obj.placeholder = `请输入${itemList.label}标题`
       }
 
