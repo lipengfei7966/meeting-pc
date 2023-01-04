@@ -2644,6 +2644,7 @@ export default {
               this.appearanceSetForm.isLoginPlace = 0 // 是否显示会议地点
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
+            debugger
             this.appearanceSetForm = res.data
             setTimeout(() => {
                 if (window.frames['myframe']){
@@ -2657,20 +2658,20 @@ export default {
             this.AppImageList = []
             this.resPcImageList = []
             this.resAppImageList = []
-            if (res.data.meetingFile !== '') {
-              var urlSplits = res.data.meetingFile.split('/')
+            if (res.data.meetingFile !== ''&&res.data.meetingFile!=undefined) {
+              var urlSplits = res.data.meetingFile && res.data.meetingFile.split('/')
               this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
             }
-            if (res.data.appFile !== '') {
-              var urlSplits = res.data.appFile.split('/')
+            if (res.data.appFile !== ''&&res.data.appFile!=undefined) {
+              var urlSplits = res.data.appFile && res.data.appFile.split('/')
               this.AppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.appFile })
             }
-            if (res.data.loginPcFile !== '') {
-              var urlSplits = res.data.loginPcFile.split('/')
+            if (res.data.loginPcFile !== ''&&res.data.loginPcFile!=undefined) {
+              var urlSplits = res.data.loginPcFile && res.data.loginPcFile.split('/')
               this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
             }
-            if (res.data.loginAppFile !== '') {
-              var urlSplits = res.data.loginAppFile.split('/')
+            if (res.data.loginAppFile !== ''&&res.data.loginAppFile!=undefined) {
+              var urlSplits = res.data.loginAppFile && res.data.loginAppFile.split('/')
               this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
             }
             console.log(res.data, '外观设置')
@@ -3397,6 +3398,7 @@ export default {
       this.appearanceSetForm.loginPcFile = response.data.filePath
     },
     resAppUploadFile (response, file, fileList) {
+      debugger
       this.appearanceSetForm.loginAppFile = response.data.filePath
     },
     AppUploadFile (response, file, fileList) {
@@ -3434,6 +3436,7 @@ export default {
       this.appearanceSetForm.loginPcFile = ''
     },
     resAppHandleRemove (file, fileList) {
+      debugger
       this.resAppImageList = []
       this.appearanceSetForm.loginAppFile = ''
     },
