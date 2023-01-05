@@ -13,67 +13,67 @@ export default {
         eventCode: 'Conference Code', // 会议代码
         eventName: 'Meeting Names', // 会议名称
         customerName: 'Customer Name', // 客户名称
-        startDate: '开始时间', // 开始时间
-        endDate: '结束时间', // 结束时间
-        eventPlace: '活动地点', // 活动地点
-        eventHashCode: '会议哈希'// 会议哈希
+        startDate: 'Start Time', // 开始时间
+        endDate: 'End Time', // 结束时间
+        eventPlace: 'Activity Place', // 活动地点
+        eventHashCode: 'Conference Hashing'// 会议哈希
       },
       edit: {
-        eventName: '会议名称', // 会议名称
-        customerName: '客户名称', // 客户名称
-        contactCode: '联系人', // 联系人
-        startDate: '开始时间', // 开始时间
-        endDate: '结束时间', // 结束时间
-        eventPlace: '活动地点', // 活动地点
-        eventDate: '会议时间', // 会议时间
-        eventHashCode: '会议哈希'// 会议哈希
+        eventName: 'Meeting Names', // 会议名称
+        customerName: 'Customer Name', // 客户名称
+        contactCode: 'Contact Person', // 联系人
+        startDate: 'Start Time', // 开始时间
+        endDate: 'End Time', // 结束时间
+        eventPlace: 'Activity Place', // 活动地点
+        eventDate: 'Meeting Time', // 会议时间
+        eventHashCode: 'Conference Hashing'// 会议哈希
       },
       btn: {
-        design: '微站设计', // 微站设计
-        set: '参会人编码设置'// 参会人编码设置
+        design: 'Micro Station Design', // 微站设计
+        set: 'Participants Coding Settings'// 参会人编码设置
       }
     },
     article: {
-      title: '会议管理', // 会议管理
+      title: 'Conference Management', // 会议管理
       query: {
-        articleName: '文章名称', // 文章名称
-        articleTitle: '文章标题', // 文章标题
-        eventCode: '会议名称'// 会议名称
+        articleName: 'Title of Article', // 文章名称
+        articleTitle: 'Article Title', // 文章标题
+        eventCode: 'Meeting Names'// 会议名称
       },
       list: {
-        articleName: '文章名称', // 文章名称
-        articleTitle: '文章标题'// 文章标题
+        articleName: 'Title of Article', // 文章名称
+        articleTitle: 'Article Title'// 文章标题
       },
       edit: {
-        articleName: '文章名称', // 文章名称
-        articleTitle: '文章标题', // 文章标题
-        articlePic: '文章首图', // 文章首图
-        articleContent: '文章内容'// 文章内容
+        articleName: 'Title of Article', // 文章名称
+        articleTitle: 'Article Title', // 文章标题
+        articlePic: 'First Image', // 文章首图
+        articleContent: 'Contents of Article'// 文章内容
       }
     },
     activityManagement: {
-      title: '分活动管理', // 分活动管理
+      title: 'Sub-activity Management', // 分活动管理
       // query: {
       //   articleName: '文章名称',
       //   articleTitle: '文章标题',
       //   eventCode: '会议名称'
       // },
       list: {
-        aaa: '分活动名称', // 分活动名称
-        bbb: '活动时间', // 活动时间
-        ccc: '活动状态', // 活动状态
-        ddd: '启用', // 启用
-        eee: '报名人数/上限'// 报名人数/上限
+        aaa: 'Sub-activity Name', // 分活动名称
+        bbb: 'Activity Time', // 活动时间
+        ccc: 'Activity Status', // 活动状态
+        ddd: 'Enabled', // 启用
+        eee: 'Number of Participants/Upper Limit'// 报名人数/上限
       },
       edit: {
-        articleName: '文章名称', // 文章名称
-        articleTitle: '文章标题', // 文章标题
-        articlePic: '文章首图', // 文章首图
-        articleContent: '文章内容'// 文章内容
+        articleName: 'Title of Article', // 文章名称
+        articleTitle: 'Article Title', // 文章标题
+        articlePic: 'First Image', // 文章首图
+        articleContent: 'Contents of Article'// 文章内容
       }
     },
     customer: {
-      title: '客户管理', // 客户管理
+      title: 'Customer Management', // 客户管理
       code: '客户编码', // 客户编码
       hashCode: '客户哈希', // 客户哈希
       name: '客户名称', // 客户名称
@@ -83,7 +83,7 @@ export default {
       title: '参会人管理', // 参会人管理
       query: {
         name: '姓名', // 姓名
-        eventCode: '会议名称', // 会议名称
+        eventCode: 'Meeting Names', // 会议名称
         mobile: '手机', // 手机
         email: '邮箱', // 邮箱
         department: '单位', // 单位
@@ -139,7 +139,7 @@ export default {
         createDate: '报名时间'// 报名时间
       },
       edit: {
-        eventCode: '会议名称', // 会议名称
+        eventCode: 'Meeting Names', // 会议名称
         name: '姓名', // 姓名
         mobile: '手机', // 手机
         email: '邮箱', // 邮箱
@@ -150,25 +150,25 @@ export default {
       }
     },
     signupCertificate: {
-      title: '办证管理',
+      title: '办证管理', // 办证管理
       query: {
-        eventCode: '会议名称',
-        name: '姓名',
-        mobile: '手机',
-        email: '邮箱',
-        department: '单位',
-        code: '参会人编码',
-        contactType: '参会人类型',
-        certificateFlag: '办证状态',
-        signFlag: '签到状态',
-        signNum: '签到次数',
-        checkFlag: '状态',
-        contactCode: '参会人编码',
-        personnelCode: '人员编码',
-        createDate: '报名时间'
+        eventCode: 'Meeting Names', // 会议名称
+        name: '姓名', // 姓名
+        mobile: '手机', // 手机
+        email: '邮箱', // 邮箱
+        department: '单位', // 单位
+        code: '参会人编码', // 参会人编码
+        contactType: '参会人类型', // 参会人类型
+        certificateFlag: '办证状态', // 办证状态
+        signFlag: '签到状态', // 签到状态
+        signNum: '签到次数', // 签到次数
+        checkFlag: '状态', // 状态
+        contactCode: '参会人编码', // 参会人编码
+        personnelCode: '人员编码', // 人员编码
+        createDate: '报名时间'// 报名时间
       },
       list: {
-        name: '姓名',
+        name: '姓名', // 姓名
         mobile: '手机',
         email: '邮箱',
         department: '单位',
@@ -183,7 +183,7 @@ export default {
         createDate: '报名时间'
       },
       edit: {
-        eventCode: '会议名称',
+        eventCode: 'Meeting Names',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -197,7 +197,7 @@ export default {
       title: '办证记录管理',
       query: {
         certificateType: '证件类型',
-        eventCode: '会议名称',
+        eventCode: 'Meeting Names',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -228,7 +228,7 @@ export default {
         certificateTime: '办证时间'
       },
       edit: {
-        eventCode: '会议名称',
+        eventCode: 'Meeting Names',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -241,7 +241,7 @@ export default {
     },
     signin: {
       query: {
-        eventCode: '会议名称',
+        eventCode: 'Meeting Names',
         name: '姓名',
         mobile: '手机',
         email: '邮箱',
@@ -271,7 +271,7 @@ export default {
         sceneName: '场景名称',
         signupData: '报名时间',
         title: '添加参会人',
-        eventCode: '会议名称',
+        eventCode: 'Meeting Names',
         code: '参会人编码',
         createDate: '报名时间'
       }
@@ -280,7 +280,7 @@ export default {
       title: '表单管理',
       query: {
         name: '姓名',
-        eventCode: '会议名称'
+        eventCode: 'Meeting Names'
       },
       list: {
         mapCode: '名称',
@@ -297,7 +297,7 @@ export default {
         mapBase: '组件归属',
         mapCompAttr: '组件属性',
         enumLable: '字典表code',
-        eventCode: '会议名称',
+        eventCode: 'Meeting Names',
         mapCode: '名称',
         mapName: '显示名称',
         mapComp: '组件类型',
@@ -341,7 +341,7 @@ export default {
     },
     signupContactCodeRule: {
       edit: {
-        eventName: '会议名称',
+        eventName: 'Meeting Names',
         prefix: '前缀',
         length: '长度',
         type: '生成类型',
