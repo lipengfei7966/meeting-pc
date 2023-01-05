@@ -556,7 +556,7 @@ export default {
             }
             this.$set(this.setformOther, item.mapCode, '')
             // 添加必填校验
-            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: 'blur' }])
+            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur','change'] }])
           } else {
             // 国际区号设置默认值
             if (item.mapCode == 'mobile') {
@@ -801,7 +801,7 @@ export default {
           if(item.label == this.setForm.certificateType){
             this.setForm.certificateType = item.value
           }
-         }) 
+         })
           }
           console.log(this.setForm);
           // return
