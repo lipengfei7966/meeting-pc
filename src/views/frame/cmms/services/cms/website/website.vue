@@ -274,6 +274,7 @@ export default {
       this.isFlag_one = false
       this.dataNum = index
       this.newData = val
+      this.$refs.settingUp_.dataFlag_ = true
     },
     loadData() {
       debugger
