@@ -575,7 +575,7 @@ export default {
             }
             if (item.mapCode == 'phone') {
               this.setForm.phoneIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur','change'] }])
               // 国际区号不显示,后台默认86
               if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
@@ -583,7 +583,7 @@ export default {
             }
             if (item.mapCode == 'fax') {
               this.setForm.faxIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur','change'] }])
               // 国际区号不显示,后台默认86
               if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
@@ -591,11 +591,11 @@ export default {
             }
 
             // 添加必填校验
-            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: 'blur' }])
+            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur','change'] }])
             if (item.mapCode == 'name' && item.nameSplit) {
               this.rules.name[0].required = false
-              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: 'blur' }])
-              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: ['blur','change'] }])
+              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: ['blur','change'] }])
             }
 
             if (item.mapCode == 'addres') {
@@ -603,30 +603,30 @@ export default {
               if (item.nationIsShow) {
                 // 显示国家
 
-                this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur','change'] }])
                 this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
                 // 显示省份
-                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: ['blur','change'] }])
               }
               if (item.cityIsShow) {
                 // 显示城市
-                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: ['blur','change'] }])
               }
               if (item.countyIsShow) {
                 // 显示区县
-                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: ['blur','change'] }])
               }
               if (item.detailedAdressISShow) {
                 // 显示详细地址
-                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: 'blur' }])
+                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: ['blur','change'] }])
               }
               if (item.postcodeIsShow) {
                 // 显示邮编
                 this.$set(this.rules, 'postcode', [
-                  { required: item.isRequire, message: '邮编是必填项', trigger: 'blur' },
-                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: 'blur' }
+                  { required: item.isRequire, message: '邮编是必填项', trigger: ['blur','change'] },
+                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: ['blur','change'] }
                 ])
               }
               // this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
@@ -638,32 +638,32 @@ export default {
                 // 是否设置国际默认区号
                 if (item.check.some(item => item.code == '005') && item.defaultCountryCode == '86') {
                   // 中国大陆 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '852') {
                   // 香港区号 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '853') {
                   // 澳门区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '886') {
                   // 台湾区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 }
               } else {
                 if (item.check.some(checkItem => checkItem.code == '005') && !item.check.some(checkItem => checkItem.code == '006')) {
                   // 中国大陆手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (!item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 港澳台手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 大陆加港澳台手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 }
               }
             }
             if (item.mapCode == 'email' || item.mapCode == 'spareEmail') {
-              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: 'blur' })
+              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: ['blur','change'] })
             }
           }
 
