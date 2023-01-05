@@ -101,7 +101,7 @@
         <div class="button-group clearfix">
           <div class="button-group-item search-btn" v-permission="['query']" v-if="refreshNum != 0 && form.moreShowFlg || form.formData.length > 1">
             <el-button @click="onReset" v-db-click>
-              重置
+              {{$t('biz.btn.reset')}}
             </el-button>
           </div>
           <div class="button-group-item search-btn" v-permission="['query']">
@@ -111,7 +111,8 @@
           </div>
           <div class="button-group-item search-btn" @click='expand' v-show='form.moreShowFlg || form.formData.length > 4' v-permission="['query']">
             <el-button type="text" class="fold" v-db-click>
-              {{expandText}}
+              {{!expandStatus ? this.$t('biz.btn.stow') : $t('biz.btn.open')}}
+              <!-- this.expandText = !this.expandStatus ? this.$t('biz.btn.stow') : this.$t('biz.btn.open') -->
             </el-button>
             <span :class="['jt',{ 't': !expandStatus}]"></span>
             <!-- <span class="jt t"></span> -->
@@ -158,7 +159,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
-      expandText: '展开',
+      expandText: this.$t('biz.btn.open'),
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},
@@ -412,7 +413,7 @@ export default {
     // 展开收起
     expand() {
       this.expandStatus = !this.expandStatus
-      this.expandText = !this.expandStatus ? '收起' : '展开'
+    
       if (!this.$parent.mainData) return
       this.$nextTick(() => {
         this.$parent.$refs.bsTable.tableComputed()

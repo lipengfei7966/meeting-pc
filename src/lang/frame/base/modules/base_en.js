@@ -193,6 +193,8 @@ export default {
       choose: 'choose', // 选择
       close: 'close', // 关闭
       reset: 'reset', // 重置
+      open: 'open', // 展开
+      stow: 'stow', // 收起
       expand: 'spread out', // 展开
       contract: 'retract', // 收起
       clear: 'clear', // 清空
@@ -261,6 +263,7 @@ export default {
       saveSuccess: 'Saving succeeded', // 保存成功
       saveHashCheck: 'Data not modified or repeatedly submitted', // 数据没有修改或数据重复提交
       saveFailed: 'Save failed', // 保存失败
+      updateFailed: 'update failed', // 修改失败
       deleteSuccess: 'Deletion succeeded', // 删除成功
       deleteFailed: 'Delete failed', // 删除失败
       deleteTip: 'The data cannot be deleted in the current state', // 当前状态不可删除该条数据
