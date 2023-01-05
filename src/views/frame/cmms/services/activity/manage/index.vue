@@ -4,7 +4,7 @@
       <div style="display: flex;margin-left: 18px;">
         <div style="width:200px;display: flex;">
           <div class="meeting-name">
-            会议名称
+            <!-- {{$t('navbar.meetingName')}} 格式-->
           </div>
           <div>
             <el-select filterable style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" placeholder="会议名称">
