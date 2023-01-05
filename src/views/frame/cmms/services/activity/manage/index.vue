@@ -33,7 +33,7 @@
             </el-col>
             <el-col :span="7">
               <el-form-item label="活动时间">
-                <el-date-picker style="width: 100%" size="mini" clearable v-model="moduleVal.activityTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                <el-date-picker value-format="yyyyMMdd" style="width: 100%" size="mini" clearable v-model="moduleVal.activityTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="6">

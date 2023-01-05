@@ -2635,7 +2635,7 @@ export default {
                 if (window.frames['myframe']){
                   window.frames['myframe'].setContentProfile('')
                 }
-              }, 1000)
+              }, 2000)
               // this.appearanceSetForm.registerBannerPCList = [], // 注册登录PC BannerList
               this.appearanceSetForm.loginPcFile = ''
               // this.appearanceSetForm.registerBannerMobileList = [], // 注册登录移动端 BannerList
@@ -2657,20 +2657,20 @@ export default {
             this.AppImageList = []
             this.resPcImageList = []
             this.resAppImageList = []
-            if (res.data.meetingFile !== '') {
-              var urlSplits = res.data.meetingFile.split('/')
+            if (res.data.meetingFile !== ''&&res.data.meetingFile!=undefined) {
+              var urlSplits = res.data.meetingFile && res.data.meetingFile.split('/')
               this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
             }
-            if (res.data.appFile !== '') {
-              var urlSplits = res.data.appFile.split('/')
+            if (res.data.appFile !== ''&&res.data.appFile!=undefined) {
+              var urlSplits = res.data.appFile && res.data.appFile.split('/')
               this.AppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.appFile })
             }
-            if (res.data.loginPcFile !== '') {
-              var urlSplits = res.data.loginPcFile.split('/')
+            if (res.data.loginPcFile !== ''&&res.data.loginPcFile!=undefined) {
+              var urlSplits = res.data.loginPcFile && res.data.loginPcFile.split('/')
               this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
             }
-            if (res.data.loginAppFile !== '') {
-              var urlSplits = res.data.loginAppFile.split('/')
+            if (res.data.loginAppFile !== ''&&res.data.loginAppFile!=undefined) {
+              var urlSplits = res.data.loginAppFile && res.data.loginAppFile.split('/')
               this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
             }
             console.log(res.data, '外观设置')
@@ -3763,9 +3763,20 @@ export default {
       this.eventName = params.name
       this.stepIndex = 0
       this.pageTotal=0
+      setTimeout(() => {
+        if (window.frames['myframe']){
+          window.frames['myframe'].setContentProfile('')
+        }
+      }, 2000)
+      setTimeout(() => {
+       if (window.frames['myframe_']){
+          window.frames['myframe_'].setContentProfile('')
+        }
+      }, 1000)
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()
+      this.$refs.attCodeSet.pagingCount=0
       this.$refs.attCodeSet.signupContactCodeRuleFn(params.code)
       this.$refs.attCodeSet.copyHrefShow=false
     },
