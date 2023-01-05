@@ -758,6 +758,15 @@ export default {
          })
           // console.log(this.$t('datadict.certificateType'));
         }
+        if(this.setForm.nations){
+         let cardCode = this.$t('datadict.countryCode')
+         cardCode.forEach(item=>{
+          if(item.value == this.setForm.nations){
+            this.setForm.nations = item.label
+          }
+         })
+          // console.log(this.$t('datadict.certificateType'));
+        }
         // console.log(this.setForm);
       })
     },
@@ -800,6 +809,14 @@ export default {
          cardCode.forEach(item=>{
           if(item.label == this.setForm.certificateType){
             this.setForm.certificateType = item.value
+          }
+         })
+          }
+          if(this.setForm.nations){
+             let cardCode = this.$t('datadict.countryCode')
+         cardCode.forEach(item=>{
+          if(item.label == this.setForm.nations){
+            this.setForm.nations = item.value
           }
          })
           }
