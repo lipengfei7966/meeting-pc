@@ -37,6 +37,10 @@ import enOrder from '@/lang/frame/service/orderManage/order_en'
 import zhApply from '@/lang/frame/service/applySetting/apply_zh'
 import enApply from '@/lang/frame/service/applySetting/apply_en'
 
+// 分活动管理
+import zhSub from '@/lang/frame/service/subActivities/sub_zh'
+import enSub from '@/lang/frame/service/subActivities/sub_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -49,7 +53,8 @@ const messages = {
     ...enFunc,
     ...enWebsite,
     ...enOrder,
-    ...zhApply
+    ...enApply,
+    ...enSub
   },
   zh: {
     ...zhBase,
@@ -62,7 +67,8 @@ const messages = {
     ...zhFunc,
     ...zhWebsite,
     ...zhOrder,
-    ...enApply
+    ...zhApply,
+    ...zhSub
   }
 }
 
