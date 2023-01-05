@@ -336,6 +336,9 @@ export default {
             {
               prop: 'nations',
               label: 'website.signupContact.list.nations',
+              format: {
+                dict: this.$t('datadict.countryCode')
+              },
               width: 120
             },
             {
