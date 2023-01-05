@@ -2955,6 +2955,7 @@ export default {
     },
     // 获取表单设置
     getEventInfo () {
+      this.pageTotal=0
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning('请选择会议')
         return
