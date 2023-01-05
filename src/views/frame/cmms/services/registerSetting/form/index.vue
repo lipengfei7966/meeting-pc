@@ -2644,7 +2644,6 @@ export default {
               this.appearanceSetForm.isLoginPlace = 0 // 是否显示会议地点
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
-            debugger
             this.appearanceSetForm = res.data
             setTimeout(() => {
                 if (window.frames['myframe']){
@@ -3398,7 +3397,6 @@ export default {
       this.appearanceSetForm.loginPcFile = response.data.filePath
     },
     resAppUploadFile (response, file, fileList) {
-      debugger
       this.appearanceSetForm.loginAppFile = response.data.filePath
     },
     AppUploadFile (response, file, fileList) {
@@ -3436,7 +3434,6 @@ export default {
       this.appearanceSetForm.loginPcFile = ''
     },
     resAppHandleRemove (file, fileList) {
-      debugger
       this.resAppImageList = []
       this.appearanceSetForm.loginAppFile = ''
     },
@@ -3771,9 +3768,15 @@ export default {
           window.frames['myframe'].setContentProfile('')
         }
       }, 2000)
+      setTimeout(() => {
+       if (window.frames['myframe_']){
+          window.frames['myframe_'].setContentProfile('')
+        }
+      }, 1000)
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()
+      this.$refs.attCodeSet.pagingCount=0
       this.$refs.attCodeSet.signupContactCodeRuleFn(params.code)
       this.$refs.attCodeSet.copyHrefShow=false
     },
