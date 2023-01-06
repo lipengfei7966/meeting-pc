@@ -30,16 +30,20 @@ export default {
     specialInformation: '特殊信息', // 特殊信息
     selectInternationalCode: '请选择国际区号', // 请选择国际区号
     enterVerification: '请输入验证码', // 请输入验证码
+    getVerificationCode: '获取验证码', // 获取验证码
     required: '必填', // 必填
     edit: '编辑', // 编辑
     systemName: '系统姓名', // 系统姓名
     title: '标题', // 标题
+    Alertingtext: '提示文本', // 提示文本
+    nameSplitting: '姓名拆分', // 姓名拆分
     alertingText: '提示姓名拆分', // 提示姓名拆分
     unAllowedEditing: '报名后不允许编辑', // 报名后不允许编辑
     options: '选项', // 选项
     documentTypeTips: '证件类型提示文本', // 证件类型提示文本
     documentNumberTips: '证件号提示文本', // 证件号提示文本
     chooseDocumentType: '可选择证件类型', // 可选择证件类型
+    verify: '校验', // 校验
     numberlogicvalidation: '号码逻辑校验', // 号码逻辑校验
     onlytherulesoftheIDnumber: '仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号', // 仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号
     idcardrealnameverification: '身份证实名校验', // 身份证实名校验
@@ -67,13 +71,15 @@ export default {
     sMSVerification: '短信验证', // 短信验证
     extensionNumber: '分机号', // 分机号
     backgroundManagementOnly: '仅限于后台管理', // 仅限于后台管理
+    setsthedefaultCountry: '设置默认的国家/地区', // 设置默认的国家/地区
     mailboxVerification: '邮箱验证', // 邮箱验证
     wordLimit: '限制字数', // 限制字数
     limitthenumberofdigits: '限制数字位数', // 限制数字位数
-    limitthenumberofdecimalplaces: '小数点后', // 小数点后
+    limitthenumberofdecimalplaces: '限制小数点后位数', // 限制小数点后位数
     the: '小数点后', // 小数点后
     decimalPlace: '位', // 位
-    batchAddition: 'Batch Addition', // 批量新增
+    bit: '位', // 位
+    batchAddition: '批量新增', // 批量新增
     pleaseEnterOptions: '请输入选项', // 请输入选项
     add: '添加', // 添加
     addOther: '添加其他', // 添加其他
@@ -98,11 +104,13 @@ export default {
     di: '第', // 第
     total: '页/共 ', // 页/共
     Page: '页', // 页
+    pageTitle: '分页标题', // 分页标题
     caption: '说明文字', // 说明文字
     enterOptionValues: '输入选项值（每行一个）', // 输入选项值（每行一个）
     cancel: '取 消', // 取 消
     confirm: '确 定', // 确 定
     pleaseSelectMeeting: '请选择会议', // 请选择会议
+    generatedformsuccess: '生成表单成功', // 生成表单成功
     saveSuccess: '保存成功', // 保存成功
     saveFail: '保存失败', // 保存失败
     customInformationExceeds: '新增自定义信息数量超出最大限制', // 新增自定义信息数量超出最大限制
@@ -160,6 +168,7 @@ export default {
     registerAndLogin: '注册登录', // 注册登录
     fewer: '收起', // 收起
     expand: '展开', // 展开
+    authenticationMethods: '验证方式', // 验证方式
     noverification: '不验证', // 不验证
     verification: '验证', // 验证
     registrationVerification: '注册验证', // 注册验证
@@ -176,7 +185,8 @@ export default {
     noneedtoaudit: '不需要审核', // 不需要审核
     needtoaudit: '需要审核', // 需要审核
     addtheauditresultspage: '添加审核结果页', // 添加审核结果页
-    auditresultspage: '协助报名', // 协助报名
+    auditresultspage: '审核结果页', // 审核结果页
+    assistin: '协助报名', // 协助报名
     assistinregistration: '协助报名权限', // 协助报名权限
     permissiontoassistRegistration: '仅限编辑', // 仅限编辑
     editingOnly: '支持新增', // 支持新增
@@ -200,6 +210,8 @@ export default {
     alreadyRegistered: '您已报名，无需重复报名', // 您已报名，无需重复报名
     fillAll: '请您填写完全部必填项后再保存生成报名链接', // 请您填写完全部必填项后再保存生成报名链接
     failedtolink: '生成报名链接失败', // 生成报名链接失败
+    successtolink: '生成报名链接成功', // 生成报名链接成功
+    SignUpAndGenerateLinkSuccessfully: '报名并生成链接成功', // 报名并生成链接成功
     copySuccess: '复制成功' // 复制成功
   }
 }

@@ -30,16 +30,20 @@ export default {
     specialInformation: 'Special Information', // 特殊信息
     selectInternationalCode: 'Please select the international area code', // 请选择国际区号
     enterVerification: 'Please enter the verification code', // 请输入验证码
+    getVerificationCode: 'Get Verification Code', // 获取验证码
     required: 'Required', // 必填
     edit: 'Edit', // 编辑
     systemName: 'System Name', // 系统姓名
     title: 'Title', // 标题
-    alertingText: 'Alerting text', // 提示姓名拆分
+    Alertingtext: 'Alerting text', // 提示文本
+    nameSplitting: 'Name splitting', // 姓名拆分
+    alertingText: 'Prompt name splitting', // 提示姓名拆分
     unAllowedEditing: 'Editing is not allowed after registration', // 报名后不允许编辑
     options: 'Options', // 选项
     documentTypeTips: 'Document type prompt text', // 证件类型提示文本
     documentNumberTips: 'Document number prompt text', // 证件号提示文本
     chooseDocumentType: 'You can choose the type of document', // 可选择证件类型
+    verify: 'Verify', // 校验
     numberlogicvalidation: 'Number logic validation', // 号码逻辑校验
     onlytherulesoftheIDnumber: 'Only the rules of the ID number filled in are logically verified, and it is confirmed to be the normal ID number', // 仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号
     idcardrealnameverification: 'Id card real name verification', // 身份证实名校验
@@ -67,12 +71,14 @@ export default {
     sMSVerification: 'SMS Verification', // 短信验证
     extensionNumber: 'Extension Number', // 分机号
     backgroundManagementOnly: 'Background Management Only', // 仅限于后台管理
+    setsthedefaultCountry: 'Sets the default country/地区', // 设置默认的国家/地区
     mailboxVerification: 'Mailbox Verification', // 邮箱验证
     wordLimit: 'Word Limit', // 限制字数
     limitthenumberofdigits: 'Limit the number of digits', // 限制数字位数
     limitthenumberofdecimalplaces: 'Limit the number of decimal places', // 小数点后
     the: 'The', // 小数点后
     decimalPlace: 'Decimal Place', // 位
+    bit: 'bit', // 位
     batchAddition: 'Batch Addition', // 批量新增
     pleaseEnterOptions: 'Please Enter Options', // 请输入选项
     add: 'Add', // 添加
@@ -96,13 +102,15 @@ export default {
     limitFileSize: 'Limit File Size', // 限制文件大小
     limitingTheImageSize: 'Limiting The Image Size', // 限制图片尺寸
     di: 'Page', // 第
-    total: '/Total ', // 页/共
-    Page: 'Page', // 页
+    total: '/Page ', // 页/共
+    Page: '', // 页
+    pageTitle: 'Page Title', // 分页标题
     caption: 'Caption', // 说明文字
     enterOptionValues: 'Enter Option Values(Select one in each row)', // 输入选项值（每行一个）
     cancel: 'Cancel', // 取 消
     confirm: 'Confirm', // 确 定
     pleaseSelectMeeting: 'Please Select Meeting', // 请选择会议
+    generatedformsuccess: 'Generated form success', // 生成表单成功
     saveSuccess: 'Save Success', // 保存成功
     saveFail: 'Save Fail', // 保存失败
     customInformationExceeds: 'The amount of new custom information exceeds the maximum limit', // 新增自定义信息数量超出最大限制
@@ -121,6 +129,7 @@ export default {
     registrationSuccess: 'Registration Success', // 报名成功
     fewer: 'Fewer', // 收起
     expand: 'Expand', // 展开
+    authenticationMethods: 'Authentication Methods', // 验证方式
     preview: 'Preview', // 预览
     computer: 'Computer', // 电脑
     tipTopics: 'Tip Topics', // 提示主题
@@ -151,8 +160,8 @@ export default {
   applySet: {
     registrationSetup: 'Registration Setup', // 注册报名设置
     di: 'Page', // 第
-    total: '/Total ', // 页/共
-    page: 'Page', // 页
+    total: '/Page', // 页/共
+    page: '', // 页
     pleaseenteradifferentoption: 'Please enter a different option', // 请输入其他选项
     surname: 'Surname', // 姓
     name: 'Name', // 名
@@ -176,7 +185,8 @@ export default {
     noneedtoaudit: 'No need to audit', // 不需要审核
     needtoaudit: 'Need to audit', // 需要审核
     addtheauditresultspage: 'Add the audit results page', // 添加审核结果页
-    auditresultspage: 'Audit results page', // 协助报名
+    auditresultspage: 'Audit results page', // 审核结果页
+    assistin: 'Assist in registration', // 协助报名
     assistinregistration: 'Assist in registration', // 协助报名权限
     permissiontoassistRegistration: 'Permission to assist Registration', // 仅限编辑
     editingOnly: 'Editing Only', // 支持新增
@@ -200,6 +210,8 @@ export default {
     alreadyRegistered: 'You have already registered. There is no need to register again', // 您已报名，无需重复报名
     fillAll: 'Please fill in all required fields before saving and generating the registration link', // 请您填写完全部必填项后再保存生成报名链接
     failedtolink: 'Failed to generate the registration link', // 生成报名链接失败
+    successtolink: 'Successed to generate the registration link', // 生成报名链接成功
+    SignUpAndGenerateLinkSuccessfully: 'Sign up and generate link successfully', // 报名并生成链接成功
     copySuccess: 'Copy Success' // 复制成功
   }
 }
