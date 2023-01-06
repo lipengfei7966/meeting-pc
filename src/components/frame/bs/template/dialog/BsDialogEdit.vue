@@ -347,6 +347,7 @@
       </div>
       <!-- 顶部按钮 -->
       <div class='dialog-footer'>
+      nmsl
         <template v-for='(button, index) in edit.topButtons.filter(v => { return v.isShow.includes(edit.type) })'>
           <bs-upload-v2 v-if='button.type && button.type === "upload"' v-bind='button.atrrs' :btnName='button.name' :permission="button.permitName" :key='index'></bs-upload-v2>
           <el-button v-else size="mini" v-db-click :key='index' :loading="button.showLoading ? button.loading : false" v-bind='button.attrs' @click='triggerEvent(button.callback, button)'>

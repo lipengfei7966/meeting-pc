@@ -9,7 +9,9 @@
       <img src="@/assets/frame/img/hamburger.png" alt="">
     </div> -->
     <div class="business-module" :style="{ width: moduleWidth + 'px' }">
-      <div :class="[menu.name === activeModule || menu.name === app.moduleName ? 'module active' : 'module']" v-for="menu in permissionMenus.slice(0, Math.floor(moduleWidth / 140))" :key="menu.name" @click="moduleClick(menu.name)"><svg-icon :icon-class="menu.meta.icon || ''"></svg-icon>{{ generateTitle(menu.meta.title) }}</div>
+      <div :class="[menu.name === activeModule || menu.name === app.moduleName ? 'module active' : 'module']" v-for="menu in permissionMenus.slice(0, Math.floor(moduleWidth / 140))" :key="menu.name" @click="moduleClick(menu.name)">
+        <svg-icon :icon-class="menu.meta.icon || ''"></svg-icon>{{ generateTitle(menu.meta.title) }}
+      </div>
     </div>
     <div class="more-module" v-if="permissionMenus.length > Math.floor(moduleWidth / 140)">
       <el-dropdown placement="bottom">

@@ -5,7 +5,7 @@
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
         <template v-for="tab in mainData.tabs">
           <el-tab-pane :key="tab.name" :index="tab.name" :name="tab.name">
-            <span slot="label">{{ $t(tab.label) }} </span>
+            <span slot="label">{{$t(`attendee.record.${tab.name}`) }} </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -294,6 +294,7 @@ export default {
       }
     }).then(response => {
       response.data.forEach(element => {
+        console.log(element,112)
         this.mainData.tabs.push({
           label: element.name,
           name: element.code
