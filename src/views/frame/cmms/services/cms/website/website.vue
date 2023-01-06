@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-tabs type="border-card" tab-position="left" :stretch="true" v-model="activeName">
-      <el-tab-pane label="模块设置" name="one">
+      <el-tab-pane :label="$t('website.microStationDesign.moduleSetup')" name="one">
         <div style="display: flex; justify-content: space-between">
           <div class="contents" style="width: 28%">
-            <el-button class="btn" type="success" @click="handelAdd">新增模块</el-button>
+            <el-button class="btn" type="success" @click="handelAdd">{{$t('website.microStationDesign.addModules')}}</el-button>
             <ul class="lookUl">
               <!--  -->
               <li>
@@ -47,7 +47,7 @@
                     </div> -->
             <div v-if="isFlag == 0" style="font-size: 20px; color: lightgray; text-align: center; position: relative; top: 45%" @click="handel()">
               <span>
-                <span>请选择模块进行新增/编辑 </span>
+                <span>{{$t('website.microStationDesign.moduleAdd')}} </span>
                 <i class="el-icon-more-outline"></i>
               </span>
             </div>
@@ -61,7 +61,7 @@
       <!-- <el-tab-pane label="页面管理">页面管理</el-tab-pane>
       <el-tab-pane label="图片集">图片集</el-tab-pane>
       <el-tab-pane label="访问权限">访问权限</el-tab-pane> -->
-      <el-tab-pane label="分享设置" name="two">
+      <el-tab-pane :label="$t('website.microStationDesign.sharingSetting')" name="two">
         <div style="width: 100%; height: 80vh">
           <!-- <div class="qrCode" style="width: 37%; padding-top: 5vh; margin: 5vh auto; height: 62vh; text-align: center; box-shadow: 0 2px 12px 0 lightgray">
             <span style="font-size: 18px; margin: 20px 0px; display: block">请使用移动设备扫描二维码</span>
@@ -70,15 +70,15 @@
           <div class="qr">
             <div style="position: relative; top: 8%; right: 10px; transform: translateY(-30%)">
               <el-form style="padding-top: 100px" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="微站名称" prop="mainTitle">
-                  <el-input placeholder="请输入微站名称" v-model="ruleForm.mainTitle"></el-input>
+                <el-form-item :label="$t('website.microStationDesign.microStationName')" prop="mainTitle">
+                  <el-input :placeholder="$t('website.microStationDesign.enterMicroStationName')" v-model="ruleForm.mainTitle"></el-input>
                 </el-form-item>
                 <div class="link-look">
-                  <p style="display:inline-block">微站链接：</p>
+                  <p style="display:inline-block">{{$t('website.microStationDesign.micrositeLinks')}}：</p>
                   <el-tooltip :content="imgUrl">
                     <span>{{ imgUrl | commentEllipsis(imgUrl) }}</span>
                   </el-tooltip>
-                  <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">复制链接</span>
+                  <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">{{$t('website.microStationDesign.copyLink')}}</span>
                 </div>
                 <el-form-item>
                   <div style="margin-left:-34px">
@@ -88,21 +88,21 @@
               </el-form>
             </div>
             <div class="share">
-              <el-button class="share-btn-one" @click="resetForm('ruleForm')">返回</el-button>
-              <el-button class="share-btn-two" type="primary" @click="submitForm('ruleForm')">保存</el-button>
+              <el-button class="share-btn-one" @click="resetForm('ruleForm')">{{$t('website.microStationDesign.return')}}</el-button>
+              <el-button class="share-btn-two" type="primary" @click="submitForm('ruleForm')">{{$t('website.microStationDesign.save')}}</el-button>
             </div>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="访问权限" name="three">
+      <el-tab-pane :label="$t('website.microStationDesign.accessPermission')" name="three">
         <div class="mb-power" style="width: 100%; height: 80vh">
           <div class="mb-power-one">
-            <p class="power-p-one">网站访问权限设置</p>
+            <p class="power-p-one">{{$t('website.microStationDesign.siteAccessSettings')}}</p>
             <el-radio-group v-model="powerRadio" @input="getPower">
-              <el-radio :label="1" class="radio-power">公开</el-radio>
-              <el-radio :label="2" class="radio-power">仅注册用户</el-radio>
-              <el-radio :label="3" class="radio-power">仅审核通过用户</el-radio>
-              <el-radio :label="4" class="radio-power">部分用户</el-radio>
+              <el-radio :label="1" class="radio-power">{{$t('website.microStationDesign.public')}}</el-radio>
+              <el-radio :label="2" class="radio-power">{{$t('website.microStationDesign.usersOnly')}}</el-radio>
+              <el-radio :label="3" class="radio-power">{{$t('website.microStationDesign.onlyApprovedusers')}}</el-radio>
+              <el-radio :label="4" class="radio-power">{{$t('website.microStationDesign.someUsers')}}</el-radio>
             </el-radio-group>
             <div class="power-check" v-show="exhibition">
               <el-checkbox-group v-model="checkList">
@@ -111,8 +111,8 @@
               </el-checkbox-group>
             </div>
             <div class="power-bottom">
-              <el-button class="power-btn-one" @click="powerReset">返回</el-button>
-              <el-button class="power-btn-two" type="primary" @click="powerSubmit">保存</el-button>
+              <el-button class="power-btn-one" @click="powerReset">{{$t('website.microStationDesign.return')}}</el-button>
+              <el-button class="power-btn-two" type="primary" @click="powerSubmit">{{$t('website.microStationDesign.save')}}</el-button>
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@ export default {
       },
       rules: {
         mainTitle: [
-          { required: true, message: '请输入微站名称', trigger: 'blur' }
+          { required: true, message: this.$t('website.microStationDesign.enterMicroStationName'), trigger: 'blur' }
           // { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
         ]
       },
@@ -177,7 +177,7 @@ export default {
     handelClick(item, data, type) {
       if (type == 0) {
         if (item.sort == 0) {
-          this.$message.warning('无法上移')
+          this.$message.warning(this.$t('website.microStationDesign.cannotmoveup'))
         } else {
           request({
             url: '/api/biz/cmsWebpageButton/move',
@@ -186,10 +186,10 @@ export default {
           })
             .then(res => {
               if (res.data) {
-                this.$message('上移成功')
+                this.$message(this.$t('website.microStationDesign.moveUpSuccess'))
                 this.loadData()
               } else {
-                this.$message('上移失败')
+                this.$message(this.$t('website.microStationDesign.moveUpFail'))
               }
             })
             .catch(() => {})
@@ -197,7 +197,7 @@ export default {
         console.log(item, data, type)
       } else if (type == 1) {
         if (item.sort == data.length - 1) {
-          this.$message.warning('无法下移')
+          this.$message.warning(this.$t('website.microStationDesign.cannotgodown'))
         } else {
           request({
             url: '/api/biz/cmsWebpageButton/move',
@@ -206,10 +206,10 @@ export default {
           })
             .then(res => {
               if (res.data) {
-                this.$message('下移成功')
+                this.$message(this.$t('website.microStationDesign.downMoveSuccess'))
                 this.loadData()
               } else {
-                this.$message('下移失败')
+                this.$message(this.$t('website.microStationDesign.downMoveFail'))
               }
             })
             .catch(() => {})
@@ -223,12 +223,12 @@ export default {
         })
           .then(res => {
             if (res.data) {
-              this.$message('删除成功')
+              this.$message(this.$t('website.microStationDesign.deleteSuccess'))
               //
               this.loadData()
               this.isFlag = 0
             } else {
-              this.$message('删除失败')
+              this.$message(this.$t('website.microStationDesign.deleteFail'))
             }
           })
           .catch(() => {})
@@ -359,10 +359,10 @@ export default {
           })
             .then(res => {
               if (res.data) {
-                this.$message('修改成功')
+                this.$message(this.$t('website.microStationDesign.updateSuccess'))
                 this.loadData()
               } else {
-                this.$message('修改失败')
+                this.$message(this.$t('website.microStationDesign.updateFail'))
               }
             })
             .catch(() => {})
@@ -384,7 +384,7 @@ export default {
       document.execCommand('Copy')
       inputTest.className = 'oInput'
       inputTest.style.display = 'none'
-      this.$message.success('复制成功')
+      this.$message.success(this.$t('website.microStationDesign.copySuccess'))
     },
     itemclick(item, index) {
       console.log(item, index, 'website标注')
@@ -403,7 +403,7 @@ export default {
     },
     powerSubmit() {
       if (this.powerRadio == 4 && this.checkList.length == 0) {
-        this.$message.warning('请选择用户')
+        this.$message.warning(this.$t('website.microStationDesign.pleaseselectUser'))
         return
       }
       //
@@ -422,7 +422,7 @@ export default {
         }
       }).then(res => {
         debugger
-        this.$message.success('保存成功')
+        this.$message.success(this.$t('website.microStationDesign.saveSuccess'))
         console.log(res)
       })
       //

@@ -437,6 +437,42 @@ export default {
       userValidPeriodDate: 'User Expiration Date', // 用户有效期
       passwdValidPeriodFlag: 'Password Always Valid', // 密码始终有效
       passwdValidPeriodDay: 'Password Expiration Date'// 密码有效期
+    },
+    microStationDesign: {
+      moduleSetup: 'Module Setup', // 模块设置
+      addModules: 'Add Modules', // 新增模块
+      moduleAdd: 'Please select module to add/edit', // 请选择模块进行新增/编辑
+      sharingSetting: 'Sharing Setting', // 分享设置
+      microStationName: 'Name of micro station', // 微站名称
+      enterMicroStationName: 'Please enter the name of the micro station', // 请输入微站名称
+      micrositeLinks: 'Microsite Links', // 微站链接
+      copyLink: 'Copy Link', // 复制链接
+      return: 'Return', // 返回
+      save: 'Save', // 保存
+      accessPermission: 'Access Permission', // 访问权限
+      siteAccessSettings: 'Site Access Settings', // 网站访问权限设置
+      public: 'Public', // 公开
+      usersOnly: 'Users Only', // 仅注册用户
+      onlyApprovedusers: 'Only approved users are approved', // 仅审核通过用户
+      someUsers: 'Some Users', // 部分用户
+      cannotmoveup: 'Can not move up', // 无法上移
+      cannotgodown: 'Can not go down', // 无法下移
+      moveUpSuccess: 'Move Up Success', // 上移成功
+      moveUpFail: 'Move Up Fail', // 上移失败
+      downMoveSuccess: 'Down Move Success', // 下移成功
+      downMoveFail: 'Down Move Fail', // 下移失败
+      deleteSuccess: 'Delete Success', // 删除成功
+      deleteFail: 'Delete Fail', // 删除失败
+      updateSuccess: 'Update Success', // 修改成功
+      updateFail: 'Update Fail', // 修改失败
+      copySuccess: 'Copy Success', // 复制成功
+      pleaseselectUser: 'Please select user', // 请选择用户
+      saveSuccess: 'Save Success', // 保存成功
+      chooseTemplate: 'Choose Template', // 选择模板
+      reselectTheTemplate: 'Reselect the template', // 重新选择模板
+      moreTemplatesExpect: 'More Templates Expect', // 更多模板 敬请期待
+      PleaseSelectaTemplate: 'Please select a template!', // 请选择一个模板！
+      noMoreTemplatesYet: 'No more templates yet!' // 暂无更多模板！
     }
   }
 }

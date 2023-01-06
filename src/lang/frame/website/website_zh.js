@@ -437,6 +437,84 @@ export default {
       userValidPeriodDate: '用户有效期',
       passwdValidPeriodFlag: '密码始终有效',
       passwdValidPeriodDay: '密码有效期'
+    },
+    microStationDesign: {
+      moduleSetup: '模块设置', // 模块设置
+      addModules: '新增模块', // 新增模块
+      moduleAdd: '请选择模块进行新增/编辑', // 请选择模块进行新增/编辑
+      sharingSetting: '分享设置', // 分享设置
+      microStationName: '微站名称', // 微站名称
+      enterMicroStationName: '请输入微站名称', // 请输入微站名称
+      micrositeLinks: '微站链接', // 微站链接
+      copyLink: '复制链接', // 复制链接
+      return: '返回', // 返回
+      save: '保存', // 保存
+      accessPermission: '访问权限', // 访问权限
+      siteAccessSettings: '网站访问权限设置', // 网站访问权限设置
+      public: '公开', // 公开
+      usersOnly: '仅注册用户', // 仅注册用户
+      onlyApprovedusers: '仅审核通过用户', // 仅审核通过用户
+      someUsers: '部分用户', // 部分用户
+      cannotmoveup: '无法上移', // 无法上移
+      cannotgodown: '无法下移', // 无法下移
+      moveUpSuccess: '上移成功', // 上移成功
+      moveUpFail: '上移失败', // 上移失败
+      downMoveSuccess: '下移成功', // 下移成功
+      downMoveFail: '下移失败', // 下移失败
+      deleteSuccess: '删除成功', // 删除成功
+      deleteFail: '删除失败', // 删除失败
+      updateSuccess: '修改成功', // 修改成功
+      updateFail: '修改失败', // 修改失败
+      copySuccess: '复制成功', // 复制成功
+      pleaseselectUser: '请选择用户', // 请选择用户
+      saveSuccess: '保存成功', // 保存成功
+      chooseTemplate: '选择模板', // 选择模板
+      reselectTheTemplate: '重新选择模板', // 重新选择模板
+      moreTemplatesExpect: '更多模板 敬请期待', // 更多模板 敬请期待
+      PleaseSelectaTemplate: '请选择一个模板！', // 请选择一个模板！
+      noMoreTemplatesYet: '暂无更多模板！' // 暂无更多模板！
+      // noMoreTemplatesYet: '从素材库选择', // 从素材库选择
+      // noMoreTemplatesYet: '素材选择', // 素材选择
+      // noMoreTemplatesYet: '点击上传', // 点击上传
+      // noMoreTemplatesYet: '请删除已存在图片后再进行上传操作', // 请删除已存在图片后再进行上传操作
+      // noMoreTemplatesYet: '上传中，请稍候...', // 上传中，请稍候...
+      // noMoreTemplatesYet: '上传文件成功', // 上传文件成功
+      // noMoreTemplatesYet: '上传文件失败', // 上传文件失败
+      // noMoreTemplatesYet: '请上传jpg，png，jpeg，psd 类型的图片', // 请上传jpg，png，jpeg，psd 类型的图片
+      // noMoreTemplatesYet: '文件类型', // 文件类型
+      // noMoreTemplatesYet: '排序', // 排序
+      // noMoreTemplatesYet: '文件名称', // 文件名称
+      // noMoreTemplatesYet: '请选择文件夹', // 请选择文件夹
+      // noMoreTemplatesYet: '图片', // 图片
+      // noMoreTemplatesYet: '视频', // 视频
+      // noMoreTemplatesYet: '按上传时间升序', // 按上传时间升序
+      // noMoreTemplatesYet: '按上传时间降序', // 按上传时间降序
+      // noMoreTemplatesYet: '加载中', // 加载中
+      // noMoreTemplatesYet: '模块标题', // 模块标题
+      // noMoreTemplatesYet: '请输入模块标题', // 请输入模块标题
+      // noMoreTemplatesYet: '模块类型', // 模块类型
+      // noMoreTemplatesYet: '请选择模块类型', // 请选择模块类型
+      // noMoreTemplatesYet: '选择页面', // 选择页面
+      // noMoreTemplatesYet: '请选择页面', // 请选择页面
+      // noMoreTemplatesYet: '站外链接', // 站外链接
+      // noMoreTemplatesYet: '请输入站外链接', // 请输入站外链接
+      // noMoreTemplatesYet: '背景设置', // 背景设置
+      // noMoreTemplatesYet: '默认', // 默认
+      // noMoreTemplatesYet: '隐藏', // 隐藏
+      // noMoreTemplatesYet: '自定义', // 自定义
+      // noMoreTemplatesYet: '图标', // 图标
+      // noMoreTemplatesYet: '上传', // 上传
+      // noMoreTemplatesYet: '只能上传jpeg/png/jpg/psd文件', // 只能上传jpeg/png/jpg/psd文件
+      // noMoreTemplatesYet: '从素材库选择', // 从素材库选择
+      // noMoreTemplatesYet: '新增', // 新增
+      // noMoreTemplatesYet: '素材选择', // 素材选择
+      // noMoreTemplatesYet: '取 消', // 取 消
+      // noMoreTemplatesYet: '确 定', // 确 定
+      // noMoreTemplatesYet: '请输入模块标题', // 请输入模块标题
+      // noMoreTemplatesYet: '请选择模块类型', // 请选择模块类型
+      // noMoreTemplatesYet: '请选择页面', // 请选择页面
+      // noMoreTemplatesYet: '请输入站外链接', // 请输入站外链接
+      // noMoreTemplatesYet: '新增成功', // 新增成功
     }
   }
 }
