@@ -2,12 +2,12 @@
   <div class="content">
     <a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
     <el-form ref="contactForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :disabled="isView" :rules="rules" :model="setForm" label-width="150px" class="contactForm">
-      <el-form-item label="人员编码" prop="personnelCode">
-        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" placeholder="请输入人员编码"></el-input>
+      <el-form-item :label="$t('attendee.detail.personnelCode')" prop="personnelCode">
+        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" :placeholder="$t('attendee.detail.placehorder.personnelCodePH')"></el-input>
       </el-form-item>
-      <el-form-item label="参会人类型" prop="contactType">
+      <el-form-item :label="$t('attendee.detail.participantsType')" prop="contactType">
 
-        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" placeholder="请选择参会人类型"></base-select>
+        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" :placeholder="$t('attendee.detail.placehorder.participantsTypePH')"></base-select>
 
       </el-form-item>
 
@@ -140,12 +140,12 @@
               <!-- 姓名拆分 -->
               <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                 <div>
-                  <el-form-item label="姓" prop="surname">
+                  <el-form-item :label="$t('attendee.detail.surname')" prop="surname">
                     <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
                   </el-form-item>
                 </div>
                 <div>
-                  <el-form-item label="名" prop="ming">
+                  <el-form-item :label="$t('attendee.detail.name')" prop="ming">
                     <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
                   </el-form-item>
                 </div>
@@ -363,7 +363,7 @@
       <div v-if="!isView" style="width: 100%; text-align: center">
         <el-button type="primary" @click="submit">
           <span class="el-icon-upload2"></span>
-          提交
+          {{$t('biz.btn.submit')}}
         </el-button>
       </div>
     </el-form>
@@ -538,6 +538,7 @@ export default {
 
         this.setInfoList.forEach(item => {
           // 1：自定义属性
+          console.log(item,891)
           if (item.mapBase == 1) {
             if (['复选框', '下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
@@ -758,6 +759,15 @@ export default {
          })
           // console.log(this.$t('datadict.certificateType'));
         }
+        if(this.setForm.nations){
+         let cardCode = this.$t('datadict.countryCode')
+         cardCode.forEach(item=>{
+          if(item.value == this.setForm.nations){
+            this.setForm.nations = item.label
+          }
+         })
+          // console.log(this.$t('datadict.certificateType'));
+        }
         // console.log(this.setForm);
       })
     },
@@ -800,6 +810,14 @@ export default {
          cardCode.forEach(item=>{
           if(item.label == this.setForm.certificateType){
             this.setForm.certificateType = item.value
+          }
+         })
+          }
+          if(this.setForm.nations){
+             let cardCode = this.$t('datadict.countryCode')
+         cardCode.forEach(item=>{
+          if(item.label == this.setForm.nations){
+            this.setForm.nations = item.value
           }
          })
           }
@@ -1432,5 +1450,13 @@ export default {
       margin-left: 15px;
     }
   }
+}
+.el-form-item__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.el-form-label__frame{
+  position: absolute;
 }
 </style>

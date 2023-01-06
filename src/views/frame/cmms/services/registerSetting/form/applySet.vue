@@ -22,7 +22,7 @@
             <div v-else-if="element.systemName == '分页'" class="form-item-input">
               <!-- <el-form-item :label="element.pageTitle" label-width="100px"> -->
               <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
-              <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+              <p style="text-align: center">[ {{$t('applySet.di')}} {{ element.pagingIndex }} {{$t('applySet.total')}} {{ pagingCount }} {{$t('applySet.page')}} ]</p>
               <!-- </el-form-item> -->
             </div>
 
@@ -63,7 +63,7 @@
                         <div v-for="item in element.options" :key="item">
                           <el-radio v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                           <el-radio v-else :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
-                          <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'" placeholder="请输入其他选项" size="mini" style="width: 200px"></el-input>
+                          <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'" :placeholder="$t('applySet.pleaseenteradifferentoption')" size="mini" style="width: 200px"></el-input>
                         </div>
                       </el-radio-group>
                     </div>
@@ -77,7 +77,7 @@
                           <el-checkbox v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}
                           </el-checkbox>
                           <el-checkbox v-else :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
-                          <el-input v-if="false" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width: 200px; margin-top: 5px"></el-input>
+                          <el-input v-if="false" v-model="setformOther[element.mapCode]" :placeholder="$t('applySet.pleaseenteradifferentoption')" size="mini" style="width: 200px; margin-top: 5px"></el-input>
                         </div>
                       </el-checkbox-group>
                     </div>
@@ -132,12 +132,12 @@
                   <!-- 姓名拆分 -->
                   <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                     <div>
-                      <el-form-item label="姓">
+                      <el-form-item :label="$t('applySet.surname')">
                         <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
                       </el-form-item>
                     </div>
                     <div>
-                      <el-form-item label="名">
+                      <el-form-item :label="$t('applySet.name')">
                         <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.namePlaceholder"></el-input>
                       </el-form-item>
                     </div>
@@ -202,7 +202,7 @@
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
                       </el-select>
                       <br />
-                      <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                      <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" :placeholder="$t('applySet.pleaseenteryourIDnumber')"></el-input>
                     </div>
                   </div>
 
@@ -341,9 +341,9 @@
       <div class="applySetForm">
         <el-form ref="applySetForm" :validate-on-rule-change="false" :rules="rulesApply" @submit.native.prevent label-position="right" label-width="180px" :model="applySetForm">
           <div class="setItemTitle">
-            <h3>注册登录</h3>
+            <h3>{{$t('applySet.registerAndLogin')}}</h3>
             <span>
-              <span style="margin-right: 20px">{{ isRegisterSetShow ? '收起' : '展开' }}</span>
+              <span style="margin-right: 20px">{{ isRegisterSetShow ? $t('applySet.fewer') : $t('applySet.expand') }}</span>
               <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow" style="vertical-align: middle; padding: 0">
                 <i v-if="isRegisterSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                 <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -352,11 +352,11 @@
           </div>
           <el-divider></el-divider>
           <div v-show="isRegisterSetShow">
-            <el-form-item label="验证方式" prop="isVerification">
-              <el-radio v-model="applySetForm.isVerification" label="0">不验证</el-radio>
-              <el-radio v-model="applySetForm.isVerification" label="1">验证</el-radio>
+            <el-form-item :label="$t('applySet.authenticationMethods')" prop="isVerification">
+              <el-radio v-model="applySetForm.isVerification" label="0">{{$t('applySet.noverification')}}</el-radio>
+              <el-radio v-model="applySetForm.isVerification" label="1">{{$t('applySet.verification')}}</el-radio>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification == '1'" label="注册验证" prop="registerVerification">
+            <el-form-item v-if="applySetForm.isVerification == '1'" :label="$t('applySet.registrationVerification')" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
                 <el-checkbox v-for="item in registerVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
                   {{ item.dictItemName }}
@@ -366,7 +366,7 @@
                 <el-checkbox label="邮箱验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification == '1'" label="登录验证" prop="loginVerification">
+            <el-form-item v-if="applySetForm.isVerification == '1'" :label="$t('applySet.loginVerification')" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
                 <el-checkbox v-for="item in loginVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
                   {{ item.dictItemName }}
@@ -378,7 +378,7 @@
                 <el-checkbox label="自定义验证"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('custom')" label="自定义验证项" prop="coustomVerification">
+            <el-form-item v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('custom')" :label="$t('applySet.customValidationEntries')" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
                 <el-checkbox v-for="item in customizeOptions" :key="item.dictItemVal" :label="item.dictItemVal">
                   {{ item.dictItemName }}
@@ -389,19 +389,19 @@
               </el-checkbox-group>
             </el-form-item>
 
-            <el-form-item label="登录前需完善必填信息" prop="isNeedCompleteMustInfo">
+            <el-form-item :label="$t('applySet.completeRequiredInformation')" prop="isNeedCompleteMustInfo">
               <el-switch v-model="applySetForm.isNeedCompleteMustInfo" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </el-form-item>
-            <el-form-item label="隐私协议" prop="IsIintimateAgreement">
+            <el-form-item :label="$t('applySet.privacyAgreement')" prop="IsIintimateAgreement">
               <el-switch v-model="applySetForm.IsIintimateAgreement" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-              <el-button type="text" @click="editPrivacyHandle">编辑隐私协议</el-button>
+              <el-button type="text" @click="editPrivacyHandle">{{$t('applySet.editorialPrivacyAgreement')}}</el-button>
             </el-form-item>
           </div>
 
           <div class="setItemTitle">
-            <h3>报名基础信息</h3>
+            <h3>{{$t('applySet.registrationBasicInformation')}}</h3>
             <span>
-              <span style="margin-right: 20px">{{ isApplyBaseInfoShow ? '收起' : '展开' }}</span>
+              <span style="margin-right: 20px">{{ isApplyBaseInfoShow ? $t('applySet.fewer') : $t('applySet.expand') }}</span>
               <el-button type="text" @click="isApplyBaseInfoShow = !isApplyBaseInfoShow" style="vertical-align: middle; padding: 0">
                 <i v-if="isApplyBaseInfoShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                 <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -410,29 +410,27 @@
           </div>
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
-            <el-form-item label="报名日期" prop="applyDate">
+            <el-form-item :label="$t('applySet.dateofRegistration')" prop="applyDate">
               <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="报名审核" prop="applyCheck">
-              <el-radio v-model="applySetForm.applyCheck" label="0">不需要审核</el-radio>
-              <el-radio v-model="applySetForm.applyCheck" label="1">需要审核</el-radio>
-              <el-form-item v-if="applySetForm.applyCheck == '1'" label="添加审核结果页" label-width="110px">
-                <el-button type="text" @click="setResult">审核结果页</el-button>
+            <el-form-item :label="$t('applySet.privacyAgreement')" prop="applyCheck">
+              <el-radio v-model="applySetForm.applyCheck" label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
+              <el-radio v-model="applySetForm.applyCheck" label="1">{{$t('applySet.needtoaudit')}}</el-radio>
+              <el-form-item v-if="applySetForm.applyCheck == '1'" :label="$t('applySet.addtheauditresultspage')" label-width="110px">
+                <el-button type="text" @click="setResult">{{$t('applySet.auditresultspage')}}</el-button>
               </el-form-item>
             </el-form-item>
-            <el-form-item label="协助报名" prop="assistApply">
+            <el-form-item :label="$t('applySet.assistin')" prop="assistApply">
               <el-switch v-model="applySetForm.assistApply" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </el-form-item>
-            <el-form-item v-if="applySetForm.assistApply" label="协助报名权限" prop="assistApplyPermission">
-              <el-radio v-model="applySetForm.assistApplyPermission" label="2">仅限编辑</el-radio>
-              <el-radio v-model="applySetForm.assistApplyPermission" label="1">支持新增</el-radio>
+            <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.assistinregistration')" prop="assistApplyPermission">
+              <el-radio v-model="applySetForm.assistApplyPermission" label="2">{{$t('applySet.permissiontoassistRegistration')}}</el-radio>
+              <el-radio v-model="applySetForm.assistApplyPermission" label="1">{{$t('applySet.editingOnly')}}</el-radio>
             </el-form-item>
-            <el-form-item v-if="applySetForm.assistApply" label="协助报名开放字段" prop="assistApplyOpenField">
+            <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
-                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal" :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{
-    item.dictItemName
-}}</el-checkbox>
+                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal" :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{item.dictItemName}}</el-checkbox>
                 <!-- <el-checkbox label="姓名"></el-checkbox>
                 <el-checkbox label="手机号"></el-checkbox>
                 <el-checkbox label="邮箱"></el-checkbox> -->
@@ -441,28 +439,28 @@
           </div>
         </el-form>
         <div style="text-align: center">
-          <el-button type="primary" @click="saveHrefHandle('applySetForm')">保存并生成报名链接</el-button>
+          <el-button type="primary" @click="saveHrefHandle('applySetForm')">{{$t('applySet.assistRegistrationOpenField')}}</el-button>
         </div>
         <div class="copyHref" @click="copyTxt">
-          <span> 点击复制报名链接:</span>
+          <span> {{$t('applySet.saveandgeneratetheregistrationlink')}}:</span>
           <h2>{{ imgUrl }}</h2>
         </div>
       </div>
     </div>
-    <el-dialog title="编辑隐私协议" v-el-drag-dialog :visible.sync="dialogFormVisible">
+    <el-dialog :title="$t('applySet.clickonthecopyregistrationlink')" v-el-drag-dialog :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="协议名称" prop="name">
+        <el-form-item :label="$t('applySet.protocolName')" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="协议内容" prop="privacyContent">
+        <el-form-item :label="$t('applySet.agreementContent')" prop="privacyContent">
           <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
           <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
           <!-- <bs-deditor></bs-deditor> -->
           <iframe name="myframe_" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="privacySubmitForm('ruleForm')">确定</el-button>
-          <el-button @click="resetForm()">取消</el-button>
+          <el-button type="primary" @click="privacySubmitForm('ruleForm')">{{$t('applySet.confrim')}}</el-button>
+          <el-button @click="resetForm()">{{$t('applySet.cancel')}}</el-button>
         </el-form-item>
       </el-form>
       <!-- <div slot="footer" class="dialog-footer">
@@ -563,16 +561,16 @@ export default {
         privacyContent: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入协议名称', trigger: 'blur' }],
-        privacyContent: [{ required: true, message: '请填写协议内容', trigger: 'blur' }]
+        name: [{ required: true, message: this.$t('applySet.pleaseenteraprotocolname'), trigger: 'blur' }],
+        privacyContent: [{ required: true, message: this.$t('applySet.pleasefillintheagreement'), trigger: 'blur' }]
       },
       rulesApply: {
-        isVerification: [{ required: true, message: '请选择验证方式', trigger: 'blur' }],
-        registerVerification: [{ required: true, message: '请选择注册验证方式', trigger: 'blur' }],
-        loginVerification: [{ required: true, message: '请选择登录验证方式', trigger: 'blur' }],
-        coustomVerification: [{ required: true, message: '请选择自定义验证项', trigger: 'blur' }],
-        createType: [{ required: true, message: '请选择生成类型', trigger: 'blur' }],
-        attendanceCodeStartNum: [{ required: true, message: '请输入起始码', trigger: 'blur' }]
+        isVerification: [{ required: true, message: this.$t('applySet.pleaseselectthevalidationmethod'), trigger: 'blur' }],
+        registerVerification: [{ required: true, message: this.$t('applySet.pleaseselecttheregistrationverificationmethod'), trigger: 'blur' }],
+        loginVerification: [{ required: true, message: this.$t('applySet.pleaseselecttheloginverificationmethod'), trigger: 'blur' }],
+        coustomVerification: [{ required: true, message: this.$t('applySet.selectcustomvalidation'), trigger: 'blur' }],
+        createType: [{ required: true, message: this.$t('applySet.selectthebuildtype'), trigger: 'blur' }],
+        attendanceCodeStartNum: [{ required: true, message: this.$t('applySet.pleaseenterthestartcode'), trigger: 'blur' }]
       }
     }
   },
@@ -680,7 +678,7 @@ export default {
       console.log(req, 'req')
       this.ruleForm.privacyContent = req.trim()
       if (req.trim() === '') {
-        this.$message.error('请输入协议内容')
+        this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
       } else {
         this.dialogFormVisible = false
       }
@@ -759,6 +757,7 @@ export default {
     },
     // 表单配置查询
     getEventInfo() {
+      this.pageTotal=0
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -883,23 +882,23 @@ export default {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
               this.copyHrefShow = true
-              this.$message({ message: '报名并生成链接成功', type: 'success' })
+              this.$message({ message: this.$t('applySet.SignUpAndGenerateLinkSuccessfully'), type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)
               this.$emit('isFormSetComplete', false)
             } else {
-              this.$message({ message: '您已报名，无需重复报名', type: 'success' })
+              this.$message({ message: this.$t('applySet.alreadyRegistered'), type: 'success' })
             }
           })
         } else {
-          this.$message({ showClose: true, message: '请您填写完全部必填项后再保存生成报名链接', type: 'warning' })
+          this.$message({ showClose: true, message: this.$t('applySet.fillAll'), type: 'warning' })
           return false
         }
       })
     },
     copyTxt() {
       if (this.imgUrl == '') {
-        this.$message({ showClose: true, message: '生成报名链接失败', type: 'error' })
+        this.$message({ showClose: true, message: this.$t('applySet.failedtolink'), type: 'error' })
         return false
       } else {
         var copyTest = this.imgUrl
@@ -910,7 +909,7 @@ export default {
         document.execCommand('Copy')
         inputTest.className = 'oInput'
         inputTest.style.display = 'none'
-        this.$message.success('复制成功')
+        this.$message.success(this.$t('applySet.copySuccess'))
       }
     },
 

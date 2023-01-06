@@ -1,84 +1,105 @@
 <template>
-  <header id='elHead' :style="{'width': (clientWidth < 1366 && !app.isScreenFull) ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto'}">
-    <el-form ref='queryForm' @submit.native.prevent label-position="left" :rules='rules' :inline="true" :model="form.listQuery.data" class='header-form-inline'>
-      <el-row :gutter="20" style='width:94%;' justify="space-between">
-        <template v-for='(f, index) in expandStatus ?  (form.formData[0].attrs&&form.formData[0].attrs.cols) ? form.formData.slice(0,2) : form.formData.slice(0, 3) :form.formData'>
-          <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if='f.isShow' :key='index'>
+  <header id="elHead" :style="{ width: clientWidth < 1366 && !app.isScreenFull ? (this.sidebar.opened ? '1163px' : '1323px') : 'auto' }">
+    <el-form ref="queryForm" @submit.native.prevent label-position="left" :rules="rules" :inline="true" :model="form.listQuery.data" class="header-form-inline">
+      <el-row :gutter="20" style="width: 94%" justify="space-between">
+        <template v-for="(f, index) in expandStatus ? (form.formData[0].attrs && form.formData[0].attrs.cols ? form.formData.slice(0, 2) : form.formData.slice(0, 3)) : form.formData">
+          <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if="f.isShow" :key="index">
             <!-- 日期 -->
-            <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(f.label)" :prop='f.bind'>
-              <el-date-picker v-model="form.listQuery.data[f.bind]" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
-              </el-date-picker>
+            <el-form-item v-if="f.type === 'daterange' || f.type === 'datetimerange'" :label="$t(f.label)" :prop="f.bind">
+              <el-date-picker v-model="form.listQuery.data[f.bind]" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" v-bind="f.attrs" @change="changeDaterangeTime(f)"> </el-date-picker>
             </el-form-item>
-            <template v-else-if='f.type === "date" ||f.type === "datetime"|| f.type === "year" || f.type === "month" || f.type === "week"'>
-              <el-form-item v-if='f.props && f.props instanceof Array && f.props.length>1' :required='Array.isArray(form.props) && Array.isArray(form.validate)' :label="$t(f.label)">
+            <template v-else-if="f.type === 'date' || f.type === 'datetime' || f.type === 'year' || f.type === 'month' || f.type === 'week'">
+              <el-form-item v-if="f.props && f.props instanceof Array && f.props.length > 1" :required="Array.isArray(form.props) && Array.isArray(form.validate)" :label="$t(f.label)">
                 <el-row :gutter="0">
                   <el-col :span="11">
-                    <el-date-picker v-model="form.listQuery.data[f.props[0]]" v-bind='f.attrs' v-on='f.event' @change="(date) => { changeStartTime(date, f.attrs.pickEnd) }" :picker-options='f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                    <el-date-picker
+                      v-model="form.listQuery.data[f.props[0]]"
+                      v-bind="f.attrs"
+                      v-on="f.event"
+                      @change="
+                        (date) => {
+                          changeStartTime(date, f.attrs.pickEnd)
+                        }
+                      "
+                      :picker-options="f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore"
+                      :type="f.type"
+                      :placeholder="$t('biz.placeholder.dateInput')"
+                    >
                     </el-date-picker>
                   </el-col>
-                  <el-col :span="2" align='center'>~</el-col>
+                  <el-col :span="2" align="center">~</el-col>
                   <el-col :span="11">
-                    <el-date-picker v-model="form.listQuery.data[f.props[1]]" v-bind='f.attrs' v-on='f.event' @change="(date) => { changeEndTime(date, f.attrs.pickStart) }" :picker-options='f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
+                    <el-date-picker
+                      v-model="form.listQuery.data[f.props[1]]"
+                      v-bind="f.attrs"
+                      v-on="f.event"
+                      @change="
+                        (date) => {
+                          changeEndTime(date, f.attrs.pickStart)
+                        }
+                      "
+                      :picker-options="f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore"
+                      :type="f.type"
+                      :placeholder="$t('biz.placeholder.dateInput')"
+                    >
                     </el-date-picker>
                   </el-col>
                 </el-row>
               </el-form-item>
-              <el-form-item v-else :label="$t(f.label)" :prop='f.prop'>
-                <el-date-picker v-model="form.listQuery.data[f.prop]" v-bind='f.attrs' :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
-                </el-date-picker>
-
+              <el-form-item v-else :label="$t(f.label)" :prop="f.prop">
+                <el-date-picker v-model="form.listQuery.data[f.prop]" v-bind="f.attrs" :type="f.type" :placeholder="$t('biz.placeholder.dateInput')"> </el-date-picker>
               </el-form-item>
             </template>
             <!-- 单选框 -->
-            <el-form-item v-else-if='f.type === "radio"' :label="$t(f.label)" :prop='f.prop'>
+            <el-form-item v-else-if="f.type === 'radio'" :label="$t(f.label)" :prop="f.prop">
               <el-radio-group v-model="form.listQuery.data[f.prop]">
-                <el-radio v-for='item in f.list || $t(f.dictlist)' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-radio>
+                <el-radio v-for="item in f.list || $t(f.dictlist)" :key="item.value" :label="item.value" v-bind="f.attrs">{{ item.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
             <!-- 多选框 -->
-            <el-form-item v-else-if='f.type === "checkbox"' :label="$t(f.label)" :prop='f.prop'>
+            <el-form-item v-else-if="f.type === 'checkbox'" :label="$t(f.label)" :prop="f.prop">
               <el-checkbox-group v-model="form.listQuery.data[f.prop]">
-                <el-checkbox v-for='item in f.list || $t(f.dictlist)' :key="item.value" :label="item.value" v-bind='f.attrs'>{{item.label}}</el-checkbox>
+                <el-checkbox v-for="item in f.list || $t(f.dictlist)" :key="item.value" :label="item.value" v-bind="f.attrs">{{ item.label }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <!-- 数值区间 -->
-            <el-form-item v-else-if='f.type === "numberInterval"' :label="$t(f.label)" :prop='f.prop'>
+            <el-form-item v-else-if="f.type === 'numberInterval'" :label="$t(f.label)" :prop="f.prop">
               <el-row :gutter="0">
                 <el-col :span="11">
-                  <input-formatter :min='f.attrs.startMin' :max='f.attrs.startMax !== undefined ? f.attrs.startMax : form.listQuery.data[f.props[1]]' v-model="form.listQuery.data[f.props[0]]" v-bind='f.attrs' size="mini"></input-formatter>
+                  <input-formatter :min="f.attrs.startMin" :max="f.attrs.startMax !== undefined ? f.attrs.startMax : form.listQuery.data[f.props[1]]" v-model="form.listQuery.data[f.props[0]]" v-bind="f.attrs" size="mini"></input-formatter>
                 </el-col>
-                <el-col :span="2" align='center'>~</el-col>
+                <el-col :span="2" align="center">~</el-col>
                 <el-col :span="11">
-                  <input-formatter :min='f.attrs.endMin !== undefined ? f.attrs.endMin : form.listQuery.data[f.props[0]]' :max='f.attrs.endMax' v-model="form.listQuery.data[f.props[1]]" v-bind='f.attrs' size="mini"></input-formatter>
+                  <input-formatter :min="f.attrs.endMin !== undefined ? f.attrs.endMin : form.listQuery.data[f.props[0]]" :max="f.attrs.endMax" v-model="form.listQuery.data[f.props[1]]" v-bind="f.attrs" size="mini"></input-formatter>
                 </el-col>
               </el-row>
             </el-form-item>
             <!-- 下拉输入 -->
-            <el-form-item v-else :label="$t(f.label)" :prop='f.prop'>
+            <el-form-item v-else :label="$t(f.label)" :prop="f.prop">
               <!-- 字典码表 -->
-              <el-select v-if='f.dictlist' v-model="form.listQuery.data[f.prop]" v-bind='f.attrs' :placeholder="$t('biz.placeholder.choose')" @change='f.event && f.event.change()'>
+              <el-select v-if="f.dictlist" v-model="form.listQuery.data[f.prop]" v-bind="f.attrs" :placeholder="$t('biz.placeholder.choose')" @change="f.event && f.event.change()">
                 <el-option v-for="item in $t(f.dictlist)" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
               <!-- 字典码表list -->
-              <el-select v-else-if='f.list && (!f.attrs || !f.attrs.data)' v-model="form.listQuery.data[f.prop]" v-bind='f.attrs' :placeholder="$t('biz.placeholder.choose')" @change='f.event && f.event.change()'>
+              <el-select v-else-if="f.list && (!f.attrs || !f.attrs.data)" v-model="form.listQuery.data[f.prop]" v-bind="f.attrs" :placeholder="$t('biz.placeholder.choose')" @change="f.event && f.event.change()">
                 <el-option v-for="item in f.list" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
               <!-- 公用组件 -->
-              <component v-else :is='f.element' v-model='form.listQuery.data[f.prop]' v-bind='f.attrs' v-on='f.event' :attrs='f.attrs' :newList='f.list' @change='f.event && f.event.change' @changeAll='f.event && f.event.changeAll' @handleSelect='dialogSelect(f)'></component>
+              <component v-else :is="f.element" v-model="form.listQuery.data[f.prop]" v-bind="f.attrs" v-on="f.event" :attrs="f.attrs" :newList="f.list" @change="f.event && f.event.change" @changeAll="f.event && f.event.changeAll" @handleSelect="dialogSelect(f)"></component>
             </el-form-item>
           </el-col>
         </template>
         <!-- 更多 -->
-        <template v-if='!expandStatus'>
-          <el-col :span="6" v-for='item in items' :key='item.bind' class='el-form-item-more'>
-            <div class='el-form-item-more-left'>
-              <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change='handleExtraQueryChange'>
-                <el-option v-for='i in item.list' :label="i.label" :value="i.prop" :key="i.prop" :disabled="extraChoice.includes(i.prop)"></el-option>
+        <template v-if="!expandStatus">
+          <el-col :span="6" v-for="item in items" :key="item.bind" class="el-form-item-more">
+            <div class="el-form-item-more-left">
+              <el-select clearable v-model="extraQuery[item.bind].label" filterable :placeholder="$t('biz.placeholder.choose')" @change="handleExtraQueryChange">
+                <el-option v-for="i in item.list" :label="i.label" :value="i.prop" :key="i.prop" :disabled="extraChoice.includes(i.prop)"></el-option>
               </el-select>
             </div>
-            <div class='el-form-item-more-right'>
-              <el-input v-model='extraQuery[item.bind].value' clearable class="input-with-select">
-                <el-select v-model="extraQuery[item.bind].type" slot="prepend" placeholder="条件" style="width: 60px;">
+            <div class="el-form-item-more-right">
+              <el-input v-model="extraQuery[item.bind].value" clearable class="input-with-select">
+                <el-select v-model="extraQuery[item.bind].type" slot="prepend" placeholder="条件" style="width: 60px">
                   <el-option label="等于" value="="></el-option>
                   <el-option label="包含" value="like"></el-option>
                   <el-option label="大于" value=">="></el-option>
@@ -90,8 +111,8 @@
               </el-input>
             </div>
           </el-col>
-          <el-col :span="6" v-if='form.moreShowFlg && addQueryConditionVisible'>
-            <span class='more-query' ref="moreQuery" @click='addQueryCondition'>查询扩展&nbsp;+</span>
+          <el-col :span="6" v-if="form.moreShowFlg && addQueryConditionVisible">
+            <span class="more-query" ref="moreQuery" @click="addQueryCondition">查询扩展&nbsp;+</span>
           </el-col>
         </template>
         <el-col class="none"></el-col>
@@ -99,34 +120,34 @@
       <!-- 右侧搜索按钮 -->
       <el-col :span="6">
         <div class="button-group clearfix">
-          <div class="button-group-item search-btn" v-permission="['query']" v-if="refreshNum != 0 && form.moreShowFlg || form.formData.length > 1">
+          <div class="button-group-item search-btn" v-permission="['query']" v-if="(refreshNum != 0 && form.moreShowFlg) || form.formData.length > 1">
             <el-button @click="onReset" v-db-click>
-              {{$t('biz.btn.reset')}}
+              {{ $t('biz.btn.reset') }}
             </el-button>
           </div>
           <div class="button-group-item search-btn" v-permission="['query']">
             <el-button type="primary" :loading="loading" @click="onSubmit" v-db-click>
-              {{$t('biz.lbl.search')}}
+              {{ $t('biz.lbl.search') }}
             </el-button>
           </div>
-          <div class="button-group-item search-btn" @click='expand' v-show='form.moreShowFlg || form.formData.length > 4' v-permission="['query']">
+          <div class="button-group-item search-btn" @click="expand" v-show="form.moreShowFlg || form.formData.length > 4" v-permission="['query']">
             <el-button type="text" class="fold" v-db-click>
-              {{!expandStatus ? this.$t('biz.btn.stow') : $t('biz.btn.open')}}
+              {{ !expandStatus ? this.$t('biz.btn.stow') : $t('biz.btn.open') }}
               <!-- this.expandText = !this.expandStatus ? this.$t('biz.btn.stow') : this.$t('biz.btn.open') -->
             </el-button>
-            <span :class="['jt',{ 't': !expandStatus}]"></span>
+            <span :class="['jt', { t: !expandStatus }]"></span>
             <!-- <span class="jt t"></span> -->
           </div>
         </div>
       </el-col>
       <!-- 展开收起 -->
-      <div class='expand' @click="expand()" v-show='form.moreShowFlg || form.formData.length > 4'>
-        <i v-if='expandStatus' class='el-icon-arrow-up'></i>
-        <i v-else class='el-icon-arrow-down'></i>
+      <div class="expand" @click="expand()" v-show="form.moreShowFlg || form.formData.length > 4">
+        <i v-if="expandStatus" class="el-icon-arrow-up"></i>
+        <i v-else class="el-icon-arrow-down"></i>
       </div>
     </el-form>
     <!-- 二级弹窗 -->
-    <view-form ref='viewForm' v-if='dialogSelectVisible' @closeHandler='dialogHandler'></view-form>
+    <view-form ref="viewForm" v-if="dialogSelectVisible" @closeHandler="dialogHandler"></view-form>
   </header>
 </template>
 <style>
@@ -142,9 +163,9 @@ import { encriptPwd } from '@/utils/frame/base/encript.js'
 import toolUtil from '@/utils/frame/base/toolUtil.js'
 
 // 注册组件
-const registerComponent = data => {
+const registerComponent = (data) => {
   if (data && data.length > 0) {
-    data.forEach(item => {
+    data.forEach((item) => {
       if (item.component && item.element !== 'base-dialog-select' && item.element !== 'base-select') {
         Vue.component(item.element, item.component)
       }
@@ -200,7 +221,7 @@ export default {
     // 组件注册
     registerComponent(this.form.formData)
     // 初始化数据
-    this.form.formData.forEach(v => {
+    this.form.formData.forEach((v) => {
       if (v.props instanceof Array && (v.type === 'date' || v.type === 'datetime' || v.type === 'month' || v.type === 'daterange' || v.type === 'datetimerange')) {
         let defaultVal = ['', '']
         if (v.default === undefined) {
@@ -268,7 +289,7 @@ export default {
     //刷新
     doRefresh(initFlag) {
       if (this.$refs.queryForm) {
-        this.$refs.queryForm.validate(valid => {
+        this.$refs.queryForm.validate((valid) => {
           if (valid) {
             if (initFlag) {
               this.$parent.form.listQuery.current = 1
@@ -294,9 +315,9 @@ export default {
       for (const i in this.extraQuery) {
         if (this.extraQuery[i].label) {
           let dictVal = ''
-          const prop = this.$parent.mainData.table.cols.filter(item => item.prop === this.extraQuery[i].label)[0]
+          const prop = this.$parent.mainData.table.cols.filter((item) => item.prop === this.extraQuery[i].label)[0]
           if (prop.format && prop.format.dict instanceof Array) {
-            dictVal = prop.format.dict.filter(item => item.label === this.extraQuery[i].value)[0]
+            dictVal = prop.format.dict.filter((item) => item.label === this.extraQuery[i].value)[0]
           }
           bsQueryExtras.push({
             prop: this.extraQuery[i].label,
@@ -307,12 +328,12 @@ export default {
       }
       this.form.listQuery.bsQueryExtras = bsQueryExtras
 
-      this.form.formData.forEach(v => {
+      this.form.formData.forEach((v) => {
         if (v.attrs && v.attrs.encript) {
           this.form.listQuery.data[v.prop] = encriptPwd(this.form.listQuery.data[v.prop])
         }
       })
-      this.$refs.queryForm.validate(valid => {
+      this.$refs.queryForm.validate((valid) => {
         if (valid) {
           this.$parent.form.listQuery.current = 1
           if (this.$parent.$refs.bsTable) {
@@ -337,10 +358,7 @@ export default {
         // 将弹窗插入body防止被遮盖
         $(document).ready(() => {
           $(this.$refs.viewForm.$el).appendTo('body')
-          $('body > .dialog-wrapper > .mask')
-            .css('z-index', 1999)
-            .siblings('.dialog-container')
-            .css('z-index', 2000)
+          $('body > .dialog-wrapper > .mask').css('z-index', 1999).siblings('.dialog-container').css('z-index', 2000)
         })
       }
     },
@@ -413,7 +431,7 @@ export default {
     // 展开收起
     expand() {
       this.expandStatus = !this.expandStatus
-    
+
       if (!this.$parent.mainData) return
       this.$nextTick(() => {
         this.$parent.$refs.bsTable.tableComputed()
@@ -423,7 +441,7 @@ export default {
       if (!this.$parent.mainData) return
       const list = []
       const hasList = Object.keys(this.form.listQuery.data)
-      this.$parent.mainData.table.cols.forEach(v => {
+      this.$parent.mainData.table.cols.forEach((v) => {
         if (v.sortable !== false && v.isShow) {
           list.push({
             label: this.$t(v.label),
@@ -440,7 +458,7 @@ export default {
       if (!this.$parent.mainData) return
       const list = []
       const hasList = Object.keys(this.form.listQuery.data)
-      this.$parent.mainData.table.cols.forEach(v => {
+      this.$parent.mainData.table.cols.forEach((v) => {
         if (v.sortable !== false && v.isShow) {
           list.push({
             label: this.$t(v.label),
@@ -476,7 +494,7 @@ export default {
   },
   watch: {
     form(val) {
-      val.formData.forEach(item => {
+      val.formData.forEach((item) => {
         if (item.validate) {
           this.refreshNum += 1
         }
