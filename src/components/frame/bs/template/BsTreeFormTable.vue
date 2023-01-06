@@ -15,7 +15,7 @@
       <div class='tree-wrapper' ref="treebox" @scroll="handleScroll" :style='{height: treeTableData.form.isTopBar ? (treeTableData.form.topBar.length > 4 ? treeHeight - 87 + "px" : treeHeight - 70 + "px") : treeHeight - 32 + "px"}'>
         <el-form v-if='treeTableData.form.isSearch'>
           <el-form-item>
-            <input-validate v-model="filterText" clearable size="mini" placeholder="输入关键字进行过滤" style="padding:5px;"></input-validate>
+            <input-validate v-model="filterText" clearable size="mini" :placeholder="$t('website.department.filterTips')" style="padding:5px;"></input-validate>
           </el-form-item>
         </el-form>
         <el-tree ref="tree" :key='key' highlight-current :data="treeData" :expand-on-click-node='treeTableData.form.expandOnClickNode' :show-checkbox="treeTableData.form.showCheckbox" :node-key="treeTableData.form.defaultProps.key ? treeTableData.form.defaultProps.key : 'id'" :default-expand-all="treeTableData.form.expandAll" :props="treeTableData.form.defaultProps" :check-on-click-node="true" :filter-node-method="filterNode" @node-click="handleNodeClick">
@@ -86,7 +86,7 @@
           <div class="button-group clearfix">
             <div class="button-group-item search-btn" v-permission="['query']">
               <el-button :loading="loading" @click="onReset" v-db-click>
-                重置
+                {{$t('website.department.reset')}}
               </el-button>
             </div>
             <div class="button-group-item search-btn" v-permission="['query']">
@@ -105,7 +105,7 @@
       </header>
       <main>
         <div class="top-operate" v-if="treeTableData.mainData.isTopBar">
-          <span class="left-title">应用列表</span>
+          <span class="left-title">{{$t('website.department.appList')}}</span>
           <el-row type='flex'>
             <slot name='add'></slot>
             <slot name='upload'></slot>
@@ -173,7 +173,7 @@ import exportExcel from '@/utils/frame/base/downloadExcel'
 export default {
   data() {
     return {
-      expandText: '展开',
+      expandText: this.$t('website.department.expand'),
       expandStatus: process.env.EXPAND_FLG,
       scrolbox: '',
       scrollY: 0,
@@ -396,7 +396,7 @@ export default {
     // 展开收起
     expand() {
       this.expandStatus = !this.expandStatus
-      this.expandText = !this.expandStatus ? '收起' : '展开'
+      this.expandText = !this.expandStatus ? this.$t('website.department.fewer') : this.$t('website.department.expand')
       if (!this.$parent.mainData) return
       this.$nextTick(() => {
         this.$parent.$refs.bsTable.tableComputed()
