@@ -27,6 +27,8 @@ export default {
     cantAddMsg: 'Participants cannot be added in the default scenario', // 默认场景无法添加参会人
     cantRemoveMsg: 'Participants cannot be removed in the default scenario', // 默认场景无法移除参会人
     contDelMsg: 'Unable to delete scene', // 无法删除场景
+    cantDelMsg: 'Cannot delete default scene', // 无法删除默认场景
+    cantCodeMsg: 'Unable to get scene code', // 无法获取场景code
     btn: {
       addAttendee: 'New participants', // 新增参会人
       changeAttendee: 'Modify participants', // 修改参会人
