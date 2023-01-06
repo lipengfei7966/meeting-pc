@@ -9,13 +9,13 @@
  *  2. 注册指令 directives:{downLoad}
  *  3. 使用,在要下载按钮上以指令的形式使用 例如: <el-button v-downLoad="url">下载</el-button>
  */
- 
+
 import downLoad from './downLoad'
- 
+
 const install = function(Vue) {
-    Vue.directive('downLoadUrl', downLoad)
+  Vue.directive('downLoadUrl', downLoad)
 }
- 
+
 downLoad.install = install
- 
+
 export default downLoad
