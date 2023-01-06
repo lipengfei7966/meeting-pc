@@ -3099,7 +3099,11 @@ export default {
           // this.specialInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex, 1)
           if (itemList.isPaging) {
-            this.pagingCount--
+            if(this.pagingCount>0){
+              this.pagingCount--
+            }else{
+              this.pagingCount=0
+            }
             this.pageTotal--
           }
           break
@@ -3290,6 +3294,7 @@ export default {
         obj.isPaging = true
         this.pagingCount++
         this.pageTotal++
+        obj.pageTitle=`第${this.pagingCount}页`
         obj.placeholder = `请输入${itemList.label}标题`
       }
 
