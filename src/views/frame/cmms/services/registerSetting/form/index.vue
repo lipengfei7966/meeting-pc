@@ -1609,13 +1609,13 @@
       <!-- 结果页设置 -->
       <div v-show="stepIndex == 2" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
-          <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
-            <el-radio v-model="resultSetForm.isNeedApprove" label="0">不需要审核</el-radio>
-            <el-radio v-model="resultSetForm.isNeedApprove" label="1">需要审核</el-radio>
+          <el-form-item :label="$t('result.registrationReview')" label-width="100px" prop="isNeedApprove">
+            <el-radio v-model="resultSetForm.isNeedApprove" label="0">{{$t('result.noNeedtoAudit')}}</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" label="1">{{$t('result.needtoaudit')}}</el-radio>
           </el-form-item>
           <div class="transition-box" v-show="drawer">
             <div class="content">
-              <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">{{$t('result.mobile')}}</div>
               <div class="centerContent">
                 <div class="themeTitle">
                   <!-- <h2>1</h2>
@@ -1641,7 +1641,7 @@
           </div>
           <div class="transition-box" v-show="auditStatusDrawer">
             <div class="content">
-              <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">{{$t('result.mobile')}}</div>
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
@@ -1664,12 +1664,12 @@
           </div>
           <div class="transition-box" v-show="noPassDrawer">
             <div class="content">
-              <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">{{$t('result.mobile')}}</div>
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
-                  <h3>会议地点：{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
+                  <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
                   <!-- <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
@@ -1687,9 +1687,9 @@
           </div>
           <div class="resultSetItem">
             <div class="setItemTitle">
-              <h3>1、报名成功</h3>
+              <h3>1、{{$t('result.registrationSuccess')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ successIsShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ successIsShow ? $t('result.fewer') : $t('result.expand') }}</span>
                 <el-button type="text" @click="successIsShow = !successIsShow" style="vertical-align: middle; padding: 0">
                   <i v-if="successIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -1701,9 +1701,9 @@
               <div style="display: flex">
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
-                    <h3>预览</h3>
+                    <h3>{{$t('result.preview')}}</h3>
                   </div>
-                  <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">电脑</div>
+                  <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">{{$t('result.computer')}}</div>
                   <div class="successPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
@@ -1721,14 +1721,14 @@
                 </el-card>
 
                 <div class="successFormItem">
-                  <el-form-item label="提示主题:" prop="successTitle" :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
-                    <el-input v-model="resultSetForm.successTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  <el-form-item :label="$t('result.tipTopics')+':'" prop="successTitle" :rules="[{ required: true, message: $t('result.pleaseenterapromptsubject'), trigger: 'blur' }]">
+                    <el-input v-model="resultSetForm.successTitle" size="mini" :placeholder="$t('result.pleaseenterapromptsubject')"></el-input>
                   </el-form-item>
-                  <el-form-item label="描述:" prop="successDescribe">
+                  <el-form-item :label="$t('result.describe')+':'" prop="successDescribe">
                     <!-- <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini"
                       placeholder="请输入描述文案"></el-input> -->
 
-                    <el-input type="textarea" :rows="4" size="mini" v-model="resultSetForm.successDescribe" placeholder="请输入描述文案" maxlength="200" show-word-limit>
+                    <el-input type="textarea" :rows="4" size="mini" v-model="resultSetForm.successDescribe" :placeholder="$t('result.pleaseenterthedescriptiontext')" maxlength="200" show-word-limit>
                     </el-input>
 
                   </el-form-item>
@@ -1747,7 +1747,7 @@
                     </el-upload> -->
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="successBackground" style="marginBottom:50px">
+                  <el-form-item :label="$t('result.backgroundImage')+':'" prop="successBackground" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file, 'successBackground')">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -1761,32 +1761,32 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过结果页:" prop="successIsJumpCurrentPage">
+                  <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="successIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="0">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="1">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="0">{{$t('result.dontskip')}}</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="1">{{$t('result.skip')}}</el-radio>
                       </div>
                       <div style="display: inline-block" v-show="resultSetForm.successIsJumpCurrentPage == '1'">
-                        <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
-                          <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
+                        <el-form-item :label="$t('result.jumptothepage')+':'" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.successJumpPage" :placeholder="$t('result.pleaseselectthepagetogoto')">
                             <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px" v-if="resultSetForm.successJumpPage == '7'">
-                            <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                            <el-input v-model="resultSetForm.successOutPageUrl" size="mini" :placeholder="$t('result.Pleaseentertheexternallink')"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:" v-show="resultSetForm.successIsJumpCurrentPage=='0'">
+                  <el-form-item :label="$t('result.buttonSettings')+':'" v-show="resultSetForm.successIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.name'">
-                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
+                        <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
-                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                      <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                           <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
@@ -1801,9 +1801,9 @@
 
           <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
-              <h3>2、待审核</h3>
+              <h3>2、{{$t('result.pendingReview')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ waitReviewIsShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ waitReviewIsShow ? $t('result.fewer') : $t('result.expand') }}</span>
                 <el-button type="text" @click="waitReviewIsShow = !waitReviewIsShow" style="vertical-align: middle; padding: 0">
                   <i v-if="waitReviewIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -1815,9 +1815,9 @@
               <div style="display: flex">
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
-                    <h3>预览</h3>
+                    <h3>{{$t('result.preview')}}</h3>
                   </div>
-                  <div class="pageStatus" @click="auditStatusDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
+                  <div class="pageStatus" @click="auditStatusDrawerStatusHandle(true)" style="cursor: pointer">{{$t('result.computer')}}</div>
                   <div class="waitReviewPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
@@ -1834,11 +1834,11 @@
                 </el-card>
 
                 <div class="waitReviewFormItem">
-                  <el-form-item label="提示主题:" prop="waitReviewTitle" :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
-                    <el-input v-model="resultSetForm.waitReviewTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  <el-form-item :label="$t('result.tipTopics')+':'" prop="waitReviewTitle" :rules="[{ required: true, message: $t('result.pleaseenterapromptsubject'), trigger: 'blur' }]">
+                    <el-input v-model="resultSetForm.waitReviewTitle" size="mini" :placeholder="$t('result.pleaseenterapromptsubject')"></el-input>
                   </el-form-item>
-                  <el-form-item label="描述:" prop="waitReviewDescribe">
-                    <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  <el-form-item :label="$t('result.describe')+':'" prop="waitReviewDescribe">
+                    <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
@@ -1854,7 +1854,7 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="waitReviewBackground" style="marginBottom:50px">
+                  <el-form-item :label="$t('result.backgroundImage')+':'" prop="waitReviewBackground" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
@@ -1869,32 +1869,32 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过结果页:" prop="waitReviewIsJumpCurrentPage">
+                  <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="waitReviewIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="0">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="1">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="0">{{$t('result.dontskip')}}</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="1">{{$t('result.skip')}}</el-radio>
                       </div>
                       <div style="display: inline-block" v-show="resultSetForm.waitReviewIsJumpCurrentPage == '1'">
-                        <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
-                          <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
+                        <el-form-item :label="$t('result.jumptothepage')+':'" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.waitReviewJumpPage" :placeholder="$t('result.pleaseselectthepagetogoto')">
                             <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
-                            <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" v-if="resultSetForm.waitReviewJumpPage == '7'" placeholder="请输入外部链接"></el-input>
+                            <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" v-if="resultSetForm.waitReviewJumpPage == '7'" :placeholder="$t('result.Pleaseentertheexternallink')"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:" v-show="resultSetForm.waitReviewIsJumpCurrentPage=='0'">
+                  <el-form-item :label="$t('result.buttonSettings')+':'" v-show="resultSetForm.waitReviewIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.name'">
-                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
+                        <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
-                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                      <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                           <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
@@ -1909,9 +1909,9 @@
 
           <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
-              <h3>3、不通过</h3>
+              <h3>3、{{$t('result.noPass')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ noPassIsShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ noPassIsShow ? $t('result.fewer') : $t('result.expand') }}</span>
                 <el-button type="text" @click="noPassIsShow = !noPassIsShow" style="vertical-align: middle; padding: 0">
                   <i v-if="noPassIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -1923,9 +1923,9 @@
               <div style="display: flex">
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
-                    <h3>预览</h3>
+                    <h3>{{$t('result.preview')}}</h3>
                   </div>
-                  <div class="pageStatus" @click="noPassDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
+                  <div class="pageStatus" @click="noPassDrawerStatusHandle(true)" style="cursor: pointer">{{$t('result.computer')}}</div>
                   <div class="noPassPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:60px;width: 100%; height: 100%;" />
@@ -1942,11 +1942,11 @@
                 </el-card>
 
                 <div class="noPassFormItem">
-                  <el-form-item label="提示主题:" prop="noPassTitle" :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
-                    <el-input v-model="resultSetForm.noPassTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  <el-form-item :label="$t('result.tipTopics')+':'" prop="noPassTitle" :rules="[{ required: true, message: $t('result.pleaseenterapromptsubject'), trigger: 'blur' }]">
+                    <el-input v-model="resultSetForm.noPassTitle" size="mini" :placeholder="$t('result.pleaseenterapromptsubject')"></el-input>
                   </el-form-item>
-                  <el-form-item label="描述:" prop="noPassDescribe">
-                    <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  <el-form-item :label="$t('result.describe')+':'" prop="noPassDescribe">
+                    <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="noPassBanner" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
@@ -1962,7 +1962,7 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="noPassBackground" style="marginBottom:50px">
+                  <el-form-item :label="$t('result.backgroundImage')+':'" prop="noPassBackground" style="marginBottom:50px">
                     <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="noPassBgcUploadFile" :file-list="noPassBgcImageList" :headers="httpHeaders" :on-remove="noPassBgcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="noPasshandleBgcPictureCardPreview">
                       <i class="el-icon-plus"></i>
                     </el-upload>
@@ -1976,32 +1976,32 @@
                     </el-upload> -->
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过结果页:" prop="noPassIsJumpCurrentPage">
+                  <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="noPassIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="0">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="1">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="0">{{$t('result.dontskip')}}</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="1">{{$t('result.skip')}}</el-radio>
                       </div>
                       <div style="display: inline-block" v-show="resultSetForm.noPassIsJumpCurrentPage == '1'">
-                        <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
-                          <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
+                        <el-form-item :label="$t('result.jumptothepage')+':'" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.noPassJumpPage" :placeholder="$t('result.pleaseselectthepagetogoto')">
                             <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
-                            <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" v-if="resultSetForm.noPassJumpPage == '7'" placeholder="请输入外部链接"></el-input>
+                            <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" v-if="resultSetForm.noPassJumpPage == '7'" :placeholder="$t('result.Pleaseentertheexternallink')"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:" v-show="resultSetForm.noPassIsJumpCurrentPage=='0'">
+                  <el-form-item :label="$t('result.buttonSettings')+':'" v-show="resultSetForm.noPassIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.name'">
-                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
+                        <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
-                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                      <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                           <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
@@ -2015,11 +2015,11 @@
           </div>
         </el-form>
         <div class="resultSetBtns">
-          <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red" @cancel="preStep" title='您修改的内容已自动保存，所有信息编辑完成后请点击"确认发布"同步到手机端'>
-            <el-button slot="reference">上一步(暂存)</el-button>
+          <el-popconfirm :confirm-button-text='$t("result.ok")' :cancel-button-text='$t("result.no")' icon="el-icon-info" icon-color="red" @cancel="preStep" :title='$t("result.confirmReleaseTips")'>
+            <el-button slot="reference">{{$t('result.preNext')}}</el-button>
           </el-popconfirm>
 
-          <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
+          <el-button type="primary" @click="resultSetSave('resultSetForm')">{{$t('result.generatingtheform')}}</el-button>
         </div>
       </div>
 
@@ -2032,11 +2032,11 @@
 
     <!-- 表单设置-批量新增选项 弹窗 -->
     <el-dialog :title="$t('form.batchAddition')" width="500px" :visible.sync="batchEditDiologVisible" :modal-append-to-body="true" :append-to-body="true">
-      <p>输入选项值（每行一个）</p>
+      <p>{{$t('form.enterOptionValues')}}</p>
       <el-input type="textarea" :rows="10" v-model="batchEditOptions"></el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="batchEditDiologVisible = false">取 消</el-button>
-        <el-button type="primary" @click="batchEditOptionsComfirm">确 定</el-button>
+        <el-button @click="batchEditDiologVisible = false">{{$t('form.cancel')}}</el-button>
+        <el-button type="primary" @click="batchEditOptionsComfirm">{{$t('form.confirm')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -2934,12 +2934,12 @@ export default {
             }
           }).then(res => {
             if (res.status) {
-              this.$message({ message: '生成表单成功', type: 'success' })
+              this.$message({ message: this.$t('form.pleaseSelectMeeting'), type: 'success' })
               this.getResultFn()
             }
           })
         } else {
-          this.$message({ showClose: true, message: '为避免生成表单信息缺失，请您先完成必填设置后，再生成表单', type: 'warning' })
+          this.$message({ showClose: true, message: this.$t('form.missingTips'), type: 'warning' })
         }
       })
     },
@@ -2953,7 +2953,7 @@ export default {
     getEventInfo () {
       this.pageTotal=0
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('form.pleaseSelectMeeting'))
         return
       }
       this.baseInfoList.forEach(baseInfoItem => {
@@ -3045,12 +3045,12 @@ export default {
         }
       }).then(res => {
         if (res.status) {
-          this.$message.success('保存成功')
+          this.$message.success(this.$t('form.saveSuccess'))
           this.getEventInfo()
           this.stepIndex = 2
           this.formUpdateStatus=true
         } else {
-          this.$message.error('保存失败')
+          this.$message.error(this.$t('form.saveFail'))
         }
       })
       console.log(this.setInfoList)
@@ -3129,7 +3129,7 @@ export default {
         title: itemList.label, // 标题
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
-        pageTitle:'分页标题',
+        pageTitle:'',
         placeholder: `请输入${itemList.label}`, // 提示文本
         certificateNumPlaceholder: '请输入您的证件号码',
         surnamePlaceholder: '请输入姓', // 姓-提示文本
@@ -3223,7 +3223,7 @@ export default {
       if (parentListName == 'customInfoList') {
         this.customInfoCount++
         if (this.customInfoCount > 40) {
-          this.$message.warning('新增自定义信息数量超出最大限制')
+          this.$message.warning(this.$t('form.customInformationExceeds'))
           return
         }
         // obj.mapCode = 'reservedStr' + this.customInfoCount
@@ -3337,7 +3337,7 @@ export default {
     },
 
     fileLimitCount (files, fileList) {
-      this.$message.warning('只允许上传一个文件')
+      this.$message.warning(this.$t('form.onlyonefileisallowedtoupload'))
       // this.$set(fileList[0], 'raw', files[0])
       // this.$set(fileList[0], 'name', files[0].name)
       // this.$refs['rebateUpload'].clearFiles()//清除文件
@@ -3354,7 +3354,7 @@ export default {
       // 判断后缀名是否允许上传
       isAllowUpload = acceptType.includes(extension)
       if (!isAllowUpload) {
-        const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
+        const errMsg = this.$t('form.uploadedNotice') + acceptType.join('、')
         this.$message.error(errMsg)
         return false
       }
@@ -3779,7 +3779,7 @@ export default {
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('form.pleaseSelectMeeting'))
         return
       }
       request({

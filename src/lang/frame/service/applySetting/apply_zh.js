@@ -110,6 +110,7 @@ export default {
     cancel: '取 消', // 取 消
     confirm: '确 定', // 确 定
     pleaseSelectMeeting: '请选择会议', // 请选择会议
+    generatedformsuccess: '生成表单成功', // 生成表单成功
     saveSuccess: '保存成功', // 保存成功
     saveFail: '保存失败', // 保存失败
     customInformationExceeds: '新增自定义信息数量超出最大限制', // 新增自定义信息数量超出最大限制
@@ -167,6 +168,7 @@ export default {
     registerAndLogin: '注册登录', // 注册登录
     fewer: '收起', // 收起
     expand: '展开', // 展开
+    authenticationMethods: '验证方式', // 验证方式
     noverification: '不验证', // 不验证
     verification: '验证', // 验证
     registrationVerification: '注册验证', // 注册验证
@@ -183,7 +185,8 @@ export default {
     noneedtoaudit: '不需要审核', // 不需要审核
     needtoaudit: '需要审核', // 需要审核
     addtheauditresultspage: '添加审核结果页', // 添加审核结果页
-    auditresultspage: '协助报名', // 协助报名
+    auditresultspage: '审核结果页', // 审核结果页
+    assistin: '协助报名', // 协助报名
     assistinregistration: '协助报名权限', // 协助报名权限
     permissiontoassistRegistration: '仅限编辑', // 仅限编辑
     editingOnly: '支持新增', // 支持新增
@@ -207,6 +210,8 @@ export default {
     alreadyRegistered: '您已报名，无需重复报名', // 您已报名，无需重复报名
     fillAll: '请您填写完全部必填项后再保存生成报名链接', // 请您填写完全部必填项后再保存生成报名链接
     failedtolink: '生成报名链接失败', // 生成报名链接失败
+    successtolink: '生成报名链接成功', // 生成报名链接成功
+    SignUpAndGenerateLinkSuccessfully: '报名并生成链接成功', // 报名并生成链接成功
     copySuccess: '复制成功' // 复制成功
   }
 }

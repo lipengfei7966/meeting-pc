@@ -110,6 +110,7 @@ export default {
     cancel: 'Cancel', // 取 消
     confirm: 'Confirm', // 确 定
     pleaseSelectMeeting: 'Please Select Meeting', // 请选择会议
+    generatedformsuccess: 'Generated form success', // 生成表单成功
     saveSuccess: 'Save Success', // 保存成功
     saveFail: 'Save Fail', // 保存失败
     customInformationExceeds: 'The amount of new custom information exceeds the maximum limit', // 新增自定义信息数量超出最大限制
@@ -128,6 +129,7 @@ export default {
     registrationSuccess: 'Registration Success', // 报名成功
     fewer: 'Fewer', // 收起
     expand: 'Expand', // 展开
+    authenticationMethods: 'Authentication Methods', // 验证方式
     preview: 'Preview', // 预览
     computer: 'Computer', // 电脑
     tipTopics: 'Tip Topics', // 提示主题
@@ -183,7 +185,8 @@ export default {
     noneedtoaudit: 'No need to audit', // 不需要审核
     needtoaudit: 'Need to audit', // 需要审核
     addtheauditresultspage: 'Add the audit results page', // 添加审核结果页
-    auditresultspage: 'Audit results page', // 协助报名
+    auditresultspage: 'Audit results page', // 审核结果页
+    assistin: 'Assist in registration', // 协助报名
     assistinregistration: 'Assist in registration', // 协助报名权限
     permissiontoassistRegistration: 'Permission to assist Registration', // 仅限编辑
     editingOnly: 'Editing Only', // 支持新增
@@ -207,6 +210,8 @@ export default {
     alreadyRegistered: 'You have already registered. There is no need to register again', // 您已报名，无需重复报名
     fillAll: 'Please fill in all required fields before saving and generating the registration link', // 请您填写完全部必填项后再保存生成报名链接
     failedtolink: 'Failed to generate the registration link', // 生成报名链接失败
+    successtolink: 'Successed to generate the registration link', // 生成报名链接成功
+    SignUpAndGenerateLinkSuccessfully: 'Sign up and generate link successfully', // 报名并生成链接成功
     copySuccess: 'Copy Success' // 复制成功
   }
 }
