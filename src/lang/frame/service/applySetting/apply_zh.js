@@ -30,16 +30,20 @@ export default {
     specialInformation: '特殊信息', // 特殊信息
     selectInternationalCode: '请选择国际区号', // 请选择国际区号
     enterVerification: '请输入验证码', // 请输入验证码
+    getVerificationCode: '获取验证码', // 获取验证码
     required: '必填', // 必填
     edit: '编辑', // 编辑
     systemName: '系统姓名', // 系统姓名
     title: '标题', // 标题
+    Alertingtext: '提示文本', // 提示文本
+    nameSplitting: '姓名拆分', // 姓名拆分
     alertingText: '提示姓名拆分', // 提示姓名拆分
     unAllowedEditing: '报名后不允许编辑', // 报名后不允许编辑
     options: '选项', // 选项
     documentTypeTips: '证件类型提示文本', // 证件类型提示文本
     documentNumberTips: '证件号提示文本', // 证件号提示文本
     chooseDocumentType: '可选择证件类型', // 可选择证件类型
+    verify: '校验', // 校验
     numberlogicvalidation: '号码逻辑校验', // 号码逻辑校验
     onlytherulesoftheIDnumber: '仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号', // 仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号
     idcardrealnameverification: '身份证实名校验', // 身份证实名校验
@@ -67,13 +71,15 @@ export default {
     sMSVerification: '短信验证', // 短信验证
     extensionNumber: '分机号', // 分机号
     backgroundManagementOnly: '仅限于后台管理', // 仅限于后台管理
+    setsthedefaultCountry: '设置默认的国家/地区', // 设置默认的国家/地区
     mailboxVerification: '邮箱验证', // 邮箱验证
     wordLimit: '限制字数', // 限制字数
     limitthenumberofdigits: '限制数字位数', // 限制数字位数
-    limitthenumberofdecimalplaces: '小数点后', // 小数点后
+    limitthenumberofdecimalplaces: '限制小数点后位数', // 限制小数点后位数
     the: '小数点后', // 小数点后
     decimalPlace: '位', // 位
-    batchAddition: 'Batch Addition', // 批量新增
+    bit: '位', // 位
+    batchAddition: '批量新增', // 批量新增
     pleaseEnterOptions: '请输入选项', // 请输入选项
     add: '添加', // 添加
     addOther: '添加其他', // 添加其他
@@ -98,6 +104,7 @@ export default {
     di: '第', // 第
     total: '页/共 ', // 页/共
     Page: '页', // 页
+    pageTitle: '分页标题', // 分页标题
     caption: '说明文字', // 说明文字
     enterOptionValues: '输入选项值（每行一个）', // 输入选项值（每行一个）
     cancel: '取 消', // 取 消
