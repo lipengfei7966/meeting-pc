@@ -317,7 +317,8 @@ export default {
       reset: 'Reset', // 重置
       expand: 'Expand', // 展开
       fewer: 'Fewer', // 收起
-      appList: 'AppList' // 应用列表
+      appList: 'AppList', // 应用列表
+      customerOrganizationInformation: 'Customer Organization Information' // 客户组织信息
     },
     customerContact: {
       title: 'Customer Contact Management', // 客户联系人管理
@@ -429,6 +430,7 @@ export default {
       identity: 'Operator Identity', // 操作员身份
       resetPassword: 'Reset Password', // 重置密码
       resetSuccess: 'Reset Password Success', // 密码重置成功
+      unlockSuccess: 'Unlock Success', // 解锁成功
       resetInfoP1: 'Confirm Reset', // 确认重置
       resetInfoP2: 'Is the default system password 123456', // 的系统密码为默认密码123456吗
       userValidPeriodFlag: 'The user is always valid', // 用户始终有效

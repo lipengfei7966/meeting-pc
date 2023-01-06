@@ -317,7 +317,8 @@ export default {
       reset: '重置', // 重置
       expand: '展开', // 展开
       fewer: '收起', // 收起
-      appList: '应用列表' // 应用列表
+      appList: '应用列表', // 应用列表
+      customerOrganizationInformation: '客户组织信息' // 客户组织信息
     },
     customerContact: {
       title: '客户联系人管理',
@@ -429,6 +430,7 @@ export default {
       identity: '操作员身份',
       resetPassword: '重置密码',
       resetSuccess: '密码重置成功',
+      unlockSuccess: '解锁成功',
       resetInfoP1: '确认重置',
       resetInfoP2: '的系统密码为默认密码123456吗',
       userValidPeriodFlag: '用户始终有效',
