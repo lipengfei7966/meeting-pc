@@ -312,7 +312,12 @@ export default {
       parentCode: 'The parent client organizes the code', // 父级客户组织编码
       parentName: 'Parent customer organization name', // 父级客户组织名称
       customerName: 'Customer Name', // 客户名称
-      treeName: 'Customer'// 客户
+      treeName: 'Customer', // 客户
+      filterTips: 'Enter keywords to filter', // 输入关键字进行过滤
+      reset: 'Reset', // 重置
+      expand: 'Expand', // 展开
+      fewer: 'Fewer', // 收起
+      appList: 'AppList' // 应用列表
     },
     customerContact: {
       title: 'Customer Contact Management', // 客户联系人管理

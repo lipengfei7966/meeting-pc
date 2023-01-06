@@ -413,7 +413,7 @@ export default {
     // 展开收起
     expand() {
       this.expandStatus = !this.expandStatus
-    
+
       if (!this.$parent.mainData) return
       this.$nextTick(() => {
         this.$parent.$refs.bsTable.tableComputed()
