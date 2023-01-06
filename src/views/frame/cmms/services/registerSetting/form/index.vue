@@ -276,10 +276,8 @@
                   <!-- 性别 -->
                   <div v-if="element.mapCode == 'sex'" class="form-item-input">
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
-                    <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0]
-}}</el-radio>
-                    <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1]
-}}</el-radio>
+                    <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0]}}</el-radio>
+                    <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1]}}</el-radio>
                   </div>
 
                   <!-- 证件 -->
