@@ -439,6 +439,9 @@ export default {
       passwdValidPeriodDay: 'Password Expiration Date'// 密码有效期
     },
     microStationDesign: {
+      carouselGraphManagement: 'Carousel Graph Management', // 轮播图管理
+      baseMapManagement: 'Base Map Management', // 底图管理
+      TitleManagement: 'Title Management', // 标题管理
       moduleSetup: 'Module Setup', // 模块设置
       addModules: 'Add Modules', // 新增模块
       moduleAdd: 'Please select module to add/edit', // 请选择模块进行新增/编辑
@@ -472,7 +475,52 @@ export default {
       reselectTheTemplate: 'Reselect the template', // 重新选择模板
       moreTemplatesExpect: 'More Templates Expect', // 更多模板 敬请期待
       PleaseSelectaTemplate: 'Please select a template!', // 请选择一个模板！
-      noMoreTemplatesYet: 'No more templates yet!' // 暂无更多模板！
+      noMoreTemplatesYet: 'No more templates yet!', // 暂无更多模板！
+      clickUpload: 'Click Upload', // 点击上传
+      deleteOruploading: 'Please delete the existing images before uploading', // 请删除已存在图片后再进行上传操作
+      UploadPleaseWait: 'Upload, please wait...', // 上传中，请稍候...
+      uploadedFileSuccess: 'Upload File Success', // 上传文件成功
+      uploadedFileFail: 'Upload File Fail', // 上传文件失败
+      pleaseUploadType: 'Please upload jpg, png, jpeg, psd type images', // 请上传jpg，png，jpeg，psd 类型的图片
+      fileType: 'File Type', // 文件类型
+      sort: 'Sort', // 排序
+      fileName: 'File Name', // 文件名称
+      selectFolder: 'Please select a folder', // 请选择文件夹
+      picture: 'Picture', // 图片
+      video: 'Video', // 视频
+      ascendingUploadTime: 'Ascending by upload time', // 按上传时间升序
+      DescendUploadTime: 'Descending order by upload time', // 按上传时间降序
+      loading: 'Loading', // 加载中
+      moduleTitle: 'Module Title', // 模块标题
+      enterModuleTitle: 'Please enter a module title', // 请输入模块标题
+      moduleType: 'Module Type', // 模块类型
+      selectmoduleType: 'Please select the module type', // 请选择模块类型
+      selectThePage: 'Select the page', // 选择页面
+      selectPage: 'Please select page', // 请选择页面
+      backLink: 'Back Link', // 站外链接
+      enterExternalLink: 'Please enter the external link', // 请输入站外链接
+      backgroundSetting: 'Background Setting', // 背景设置
+      default: 'Default', // 默认
+      hide: 'Hide', // 隐藏
+      custom: 'Custom', // 自定义
+      icon: 'Icon', // 图标
+      upload: 'Upload', // 上传
+      onlyUploadType: 'Only jpeg/png/jpg/psd files can be uploaded', // 只能上传jpeg/png/jpg/psd文件
+      selectMaterialLibrary: 'Select from the material library', // 从素材库选择
+      add: 'Add', // 新增
+      materialSelection: 'Material selection', // 素材选择
+      canel: 'Canel', // 取 消
+      confirm: 'Confirm', // 确 定
+      inputModuleTitle: 'Please enter a module title', // 请输入模块标题
+      inputModuleType: 'Please select the module type', // 请选择模块类型
+      pleaseSelectPage: 'Please select page', // 请选择页面
+      addSuccess: 'Add Success', // 新增成功
+      mainHeading: 'Main Head', // 主标题
+      subtitle: 'Subtitle', // 副标题
+      enterMainHeading: 'Please enter a main title', // 请输入主标题
+      lengthRanges: 'The length ranges from 2 to 100 characters', // 请输入主标题
+      titleSaveSuccess: 'Title Save Success', // 请输入主标题
+      titleSaveFail: 'Title Save Fail' // 请输入主标题
     }
   }
 }

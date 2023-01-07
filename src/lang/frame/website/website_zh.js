@@ -439,6 +439,9 @@ export default {
       passwdValidPeriodDay: '密码有效期'
     },
     microStationDesign: {
+      carouselGraphManagement: '轮播图管理', // 轮播图管理
+      baseMapManagement: '底图管理', // 底图管理
+      TitleManagement: '标题管理', // 标题管理
       moduleSetup: '模块设置', // 模块设置
       addModules: '新增模块', // 新增模块
       moduleAdd: '请选择模块进行新增/编辑', // 请选择模块进行新增/编辑
@@ -472,49 +475,53 @@ export default {
       reselectTheTemplate: '重新选择模板', // 重新选择模板
       moreTemplatesExpect: '更多模板 敬请期待', // 更多模板 敬请期待
       PleaseSelectaTemplate: '请选择一个模板！', // 请选择一个模板！
-      noMoreTemplatesYet: '暂无更多模板！' // 暂无更多模板！
-      // noMoreTemplatesYet: '从素材库选择', // 从素材库选择
-      // noMoreTemplatesYet: '素材选择', // 素材选择
-      // noMoreTemplatesYet: '点击上传', // 点击上传
-      // noMoreTemplatesYet: '请删除已存在图片后再进行上传操作', // 请删除已存在图片后再进行上传操作
-      // noMoreTemplatesYet: '上传中，请稍候...', // 上传中，请稍候...
-      // noMoreTemplatesYet: '上传文件成功', // 上传文件成功
-      // noMoreTemplatesYet: '上传文件失败', // 上传文件失败
-      // noMoreTemplatesYet: '请上传jpg，png，jpeg，psd 类型的图片', // 请上传jpg，png，jpeg，psd 类型的图片
-      // noMoreTemplatesYet: '文件类型', // 文件类型
-      // noMoreTemplatesYet: '排序', // 排序
-      // noMoreTemplatesYet: '文件名称', // 文件名称
-      // noMoreTemplatesYet: '请选择文件夹', // 请选择文件夹
-      // noMoreTemplatesYet: '图片', // 图片
-      // noMoreTemplatesYet: '视频', // 视频
-      // noMoreTemplatesYet: '按上传时间升序', // 按上传时间升序
-      // noMoreTemplatesYet: '按上传时间降序', // 按上传时间降序
-      // noMoreTemplatesYet: '加载中', // 加载中
-      // noMoreTemplatesYet: '模块标题', // 模块标题
-      // noMoreTemplatesYet: '请输入模块标题', // 请输入模块标题
-      // noMoreTemplatesYet: '模块类型', // 模块类型
-      // noMoreTemplatesYet: '请选择模块类型', // 请选择模块类型
-      // noMoreTemplatesYet: '选择页面', // 选择页面
-      // noMoreTemplatesYet: '请选择页面', // 请选择页面
-      // noMoreTemplatesYet: '站外链接', // 站外链接
-      // noMoreTemplatesYet: '请输入站外链接', // 请输入站外链接
-      // noMoreTemplatesYet: '背景设置', // 背景设置
-      // noMoreTemplatesYet: '默认', // 默认
-      // noMoreTemplatesYet: '隐藏', // 隐藏
-      // noMoreTemplatesYet: '自定义', // 自定义
-      // noMoreTemplatesYet: '图标', // 图标
-      // noMoreTemplatesYet: '上传', // 上传
-      // noMoreTemplatesYet: '只能上传jpeg/png/jpg/psd文件', // 只能上传jpeg/png/jpg/psd文件
-      // noMoreTemplatesYet: '从素材库选择', // 从素材库选择
-      // noMoreTemplatesYet: '新增', // 新增
-      // noMoreTemplatesYet: '素材选择', // 素材选择
-      // noMoreTemplatesYet: '取 消', // 取 消
-      // noMoreTemplatesYet: '确 定', // 确 定
-      // noMoreTemplatesYet: '请输入模块标题', // 请输入模块标题
-      // noMoreTemplatesYet: '请选择模块类型', // 请选择模块类型
-      // noMoreTemplatesYet: '请选择页面', // 请选择页面
-      // noMoreTemplatesYet: '请输入站外链接', // 请输入站外链接
-      // noMoreTemplatesYet: '新增成功', // 新增成功
+      noMoreTemplatesYet: '暂无更多模板！', // 暂无更多模板！
+      clickUpload: '点击上传', // 点击上传
+      deleteOruploading: '请删除已存在图片后再进行上传操作', // 请删除已存在图片后再进行上传操作
+      UploadPleaseWait: '上传中，请稍候...', // 上传中，请稍候...
+      uploadedFileSuccess: '上传文件成功', // 上传文件成功
+      uploadedFileFail: '上传文件失败', // 上传文件失败
+      pleaseUploadType: '请上传jpg，png，jpeg，psd 类型的图片', // 请上传jpg，png，jpeg，psd 类型的图片
+      fileType: '文件类型', // 文件类型
+      sort: '排序', // 排序
+      fileName: '文件名称', // 文件名称
+      selectFolder: '请选择文件夹', // 请选择文件夹
+      picture: '图片', // 图片
+      video: '视频', // 视频
+      ascendingUploadTime: '按上传时间升序', // 按上传时间升序
+      DescendUploadTime: '按上传时间降序', // 按上传时间降序
+      loading: '加载中', // 加载中
+      moduleTitle: '模块标题', // 模块标题
+      enterModuleTitle: '请输入模块标题', // 请输入模块标题
+      moduleType: '模块类型', // 模块类型
+      selectmoduleType: '请选择模块类型', // 请选择模块类型
+      selectThePage: '选择页面', // 选择页面
+      selectPage: '请选择页面', // 请选择页面
+      backLink: '站外链接', // 站外链接
+      enterExternalLink: '请输入站外链接', // 请输入站外链接
+      backgroundSetting: '背景设置', // 背景设置
+      default: '默认', // 默认
+      hide: '隐藏', // 隐藏
+      custom: '自定义', // 自定义
+      icon: '图标', // 图标
+      upload: '上传', // 上传
+      onlyUploadType: '只能上传jpeg/png/jpg/psd文件', // 只能上传jpeg/png/jpg/psd文件
+      selectMaterialLibrary: '从素材库选择', // 从素材库选择
+      add: '新增', // 新增
+      materialSelection: '素材选择', // 素材选择
+      canel: '取 消', // 取 消
+      confirm: '确 定', // 确 定
+      inputModuleTitle: '请输入模块标题', // 请输入模块标题
+      inputModuleType: '请选择模块类型', // 请选择模块类型
+      pleaseSelectPage: '请选择页面', // 请选择页面
+      addSuccess: '新增成功', // 新增成功
+      mainHeading: '主标题', // 主标题
+      subtitle: '副标题', // 副标题
+      enterMainHeading: '请输入主标题', // 请输入主标题
+      lengthRanges: '长度在 2 到 100 个字符', // 请输入主标题
+      titleSaveSuccess: '标题保存成功', // 请输入主标题
+      titleSaveFail: '标题保存失败' // 请输入主标题
+
     }
   }
 }

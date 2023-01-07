@@ -9,17 +9,17 @@
               <!--  -->
               <li>
                 <div @click="management(2)" style="display: flex; justify-content: space-between; cursor: pointer">
-                  <span>轮播图管理</span>
+                  <span>{{$t('website.microStationDesign.carouselGraphManagement')}}</span>
                 </div>
               </li>
               <li>
                 <div @click="management(3)" style="display: flex; justify-content: space-between; cursor: pointer">
-                  <span>底图管理</span>
+                  <span>{{$t('website.microStationDesign.baseMapManagement')}}</span>
                 </div>
               </li>
               <li>
                 <div @click="management(4)" style="display: flex; justify-content: space-between; cursor: pointer">
-                  <span>标题管理</span>
+                  <span>{{$t('website.microStationDesign.TitleManagement')}}</span>
                 </div>
               </li>
               <!--  -->
