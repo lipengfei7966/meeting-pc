@@ -172,7 +172,7 @@ export default {
         topBar: [
           {
             name: 'add',
-            i18n: '添加场景',
+            i18n: 'attendee.btn.adScene',
             type: 'dialog',
             component: () => import('./sceneAdd.vue'),
             getParam: () => {
@@ -181,7 +181,7 @@ export default {
           },
           {
             name: 'removeScene',
-            i18n: '删除场景',
+            i18n: 'attendee.btn.delScene',
             event: this.removeScene,
             type: 'dialog',
             getParam: () => {
@@ -189,14 +189,14 @@ export default {
             },
             validate: () => {
               if (this.$refs.bsTable.length > 0) {
-                this.$notify(notifyInfo({ msg: '无法删除场景' }))
+                this.$notify(notifyInfo({ msg: this.$t('attendee.contDelMsg') }))
                 return false
               }
             }
           },
           {
             name: 'addSign',
-            i18n: '签到',
+            i18n: 'attendee.btn.signIn',
             type: 'dialog',
             event: this.signAdd,
             getParam: () => {
@@ -206,8 +206,8 @@ export default {
           {
             name: 'add',
             type: 'dialog',
-            i18n: '添加参会人',
-            msg: '默认场景无法添加参会人',
+            i18n: 'attendee.btn.addAttendee',
+            msg: this.$t('attendee.cantAddMsg'),
             component: () => import('../component/signupContactSelect.vue'),
             validate: () => {
               if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
@@ -231,7 +231,7 @@ export default {
             getParam: () => {
               return this.$refs.bsTable.currentRow.code
             },
-            msg: '默认场景无法移除参会人',
+            msg: this.$t('attendee.cantRemoveMsg'),
             validate: () => {
               if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
                 return false
@@ -353,7 +353,7 @@ export default {
     },
     signAdd() {
       if (this.$refs.bsTable.currentRow == undefined) {
-        this.$notify(notifyInfo({ msg: '请选择一条数据' }))
+        this.$notify(notifyInfo({ msg: this.$t('attendee.chooseData') }))
         return
       }
       console.log(this.$refs.bsTable.currentRow)
@@ -374,7 +374,7 @@ export default {
         .then(response => {
           if (response.status) {
             this.$refs.bsTable.doRefresh()
-            this.$notify(notifyInfo({ msg: '签到成功' }))
+            this.$notify(notifyInfo({ msg: this.$t('attendee.signInSuccess') }))
           } else {
             this.sceneList()
           }
@@ -400,14 +400,14 @@ export default {
     },
     removeScene() {
       if (this.form.listQuery.data.sceneCode == '' || this.form.listQuery.data.sceneCode == undefined) {
-        this.$notify(notifyInfo({ msg: '无法删除默认场景' }))
+        this.$notify(notifyInfo({ msg: this.$t('attendee.cantDelMsg') }))
         return
       }
       if (this.form.listQuery.data.sceneCode == undefined) {
-        this.$notify(notifyInfo({ msg: '无法获取场景code' }))
+        this.$notify(notifyInfo({ msg: this.$t('attendee.cantCodeMsg') }))
         return
       }
-      this.$confirm('确认删除?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
+      this.$confirm(this.$t('attendee.msg.confirmDelete'), this.$t('attendee.msg.tip'), { confirmButtonText: this.$t('attendee.btn.confirm'), cancelButtonText: this.$t('attendee.btn.cancel'), type: 'warning' })
         .then(() => {
           request({
             url: '/api/register/signupDictype/remove',
@@ -420,7 +420,7 @@ export default {
           })
             .then(response => {
               if (response.status) {
-                this.$notify(notifyInfo({ msg: '删除成功' }))
+                this.$notify(notifyInfo({ msg: this.$t('biz.msg.deleteSuccess') }))
                 this.sceneList()
               } else {
                 this.sceneList()
@@ -429,7 +429,7 @@ export default {
             .catch(() => {})
         })
         .catch(() => {
-          this.$message({ type: 'info', message: '已取消删除' })
+          this.$message({ type: 'info', message: this.$t('attendee.deletionCancelled') })
         })
     }
   }

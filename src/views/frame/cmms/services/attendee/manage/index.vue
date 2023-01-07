@@ -197,8 +197,8 @@ export default {
             name: 'set',
             permitName: ['audit'],
             url: '/api/register/signupContact/auditing',
-            successMsgInfo: '审核完成',
-            i18n: '审核通过',
+            successMsgInfo: this.$t('attendee.AuditApprovedMsg'),
+            i18n: this.$t('attendee.ApprovedMsg'),
             getParam: () => {
               return {
                 id: this.$refs.bsTable.currentRow.id,
@@ -210,8 +210,8 @@ export default {
             name: 'set',
             permitName: ['audit'],
             url: '/api/register/signupContact/auditing',
-            successMsgInfo: '审核完成',
-            i18n: '审核不通过',
+            successMsgInfo: this.$t('attendee.AuditApprovedMsg'),
+            i18n: this.$t('attendee.FailedApprovedMsg'),
             getParam: () => {
               return {
                 id: this.$refs.bsTable.currentRow.id,
@@ -224,7 +224,7 @@ export default {
             permitName: ['unlock'],
             i18n: 'biz.btn.unlock',
             url: '/api/register/signupContact/unlock',
-            successMsgInfo: '解锁成功',
+            successMsgInfo: this.$t('attendee.UnlockSucess'),
             getParam: () => {
               return this.$refs.bsTable.currentRow.id
             }
@@ -537,7 +537,7 @@ export default {
     },
     toAddSetting() {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       this.$router.push({
@@ -551,11 +551,11 @@ export default {
     },
     toUpdateSetting() {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       if (!this.$refs.bsTable.currentRow) {
-        this.$message.warning('请选择参会人')
+        this.$message.warning(this.$t('attendee.chooseAttendeeMsg'))
         return
       }
 
@@ -571,12 +571,12 @@ export default {
     },
     toViewSetting() {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
 
       if (!this.$refs.bsTable.currentRow) {
-        this.$message.warning('请选择参会人')
+        this.$message.warning(this.$t('attendee.chooseAttendeeMsg'))
         return
       }
       this.$router.push({
