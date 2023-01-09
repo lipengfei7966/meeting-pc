@@ -209,6 +209,10 @@
                           </el-form-item>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </el-form-item>
 
             <el-form-item v-else :label="element.title" :prop="element.mapCode">
@@ -420,7 +424,7 @@ export default {
         certificateType: '', // 证件类型
         certificate: '', // 证件号
         photo: '', // 照片
-        nations: '', // 国家
+        nations: '86', // 国家
         province: '', // 省份
         city: '', //城市
         county: '', // 区/县
@@ -515,8 +519,8 @@ export default {
 
     // 国际编码字典项查询
     this.getCountryCode()
-    // 表单配置查询
-    this.getEventInfo()
+    // // 表单配置查询
+    // this.getEventInfo()
 
   },
   methods: {
@@ -609,7 +613,7 @@ export default {
                 // 显示国家
 
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur','change'] }])
-                this.setForm.nations = '86'
+                // this.setForm.nations = '86'
                 // this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
