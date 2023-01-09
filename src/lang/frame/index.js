@@ -49,6 +49,10 @@ import enMaterial from '@/lang/frame/service/CMS/material_en'
 import zhAttendee from '@/lang/frame/service/Attendee/Attendee_zh'
 import enAttendee from '@/lang/frame/service/Attendee/Attendee_en'
 
+// 参会人管理
+import zhCount from '@/lang/frame/service/count/count_zh'
+import enCount from '@/lang/frame/service/count/count_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -64,7 +68,8 @@ const messages = {
     ...enApply,
     ...enSub,
     ...enMaterial,
-    ...enAttendee
+    ...enAttendee,
+    ...enCount
   },
   zh: {
     ...zhBase,
@@ -80,7 +85,8 @@ const messages = {
     ...zhApply,
     ...zhSub,
     ...zhMaterial,
-    ...zhAttendee
+    ...zhAttendee,
+    ...zhCount
   }
 }
 
