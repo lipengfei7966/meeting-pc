@@ -159,12 +159,12 @@
                 <div v-if="element.nationIsShow" class="addresItem">
                   <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.label"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                   </el-form-item>
                   <!-- <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.value"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                   </el-form-item> -->
                 </div>
@@ -425,7 +425,7 @@ export default {
         certificateType: '', // 证件类型
         certificate: '', // 证件号
         photo: '', // 照片
-        nations: '', // 国家
+        nations: '86', // 国家
         province: '', // 省份
         city: '', //城市
         county: '', // 区/县
@@ -518,7 +518,7 @@ export default {
     // 国际编码字典项查询
     this.getCountryCode()
     // 获取地址级联选项
-
+    this.getComCityTreeList()
     // // 表单配置查询
     // this.getEventInfo()
 
@@ -612,7 +612,7 @@ export default {
               this.rules.addres[0].required = false
               if (item.nationIsShow) {
                 // 显示国家
-
+                // debugger
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur','change'] }])
                 // this.setForm.nations = '86'
                 // this.setForm.nations = '国家'
@@ -1308,12 +1308,12 @@ export default {
     // 国际编码字典项查询
     getCountryCode() {
       this.countryCodeOptions = this.$t('datadict.countryCode')
+      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       this.nationsList = this.countryCodeOptions.filter(item => {
         //
         return item.value != '852' && item.value != '853' && item.value != '886'
       })
-      this.getComCityTreeList()
     },
 
     // 返回上级
