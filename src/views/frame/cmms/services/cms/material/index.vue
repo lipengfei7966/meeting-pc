@@ -13,21 +13,21 @@
           <el-form :model="fileSearch" label-width="90px">
             <el-row>
               <el-col :span="8">
-                <el-form-item label="文件类型">
+                <el-form-item :label="$t('material.form.fileType')">
                   <el-select filterable size="mini" v-model="fileSearch.picType" clearable>
                     <el-option v-for="item in leixingOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="排序">
+                <el-form-item :label="$t('material.form.sort')">
                   <el-select filterable size="mini" v-model="fileSearch.rank_" clearable>
                     <el-option v-for="item in paixuOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="文件名称">
+                <el-form-item :label="$t('material.form.fileName')">
                   <el-input size="mini" v-model="fileSearch.picName" clearable>
                     <template slot="append">
                       <span @click="searchClick" style="padding: 0px 20px; cursor: pointer; line-height: 26px; display: inline-block">
@@ -48,7 +48,7 @@
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
             <el-image style="width: 100%; height: 70%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
-            <span style="display: inline-block; line-height: 47px; color: #409eff; cursor: pointer" @click="details(item, index)">文件信息</span>
+            <span style="display: inline-block; line-height: 47px; color: #409eff; cursor: pointer" @click="details(item, index)">{{$t('material.fileTxt')}}</span>
           </li>
           <!-- <li class="resource">视频</li> -->
         </ul>
@@ -59,7 +59,7 @@
         <!-- @/assets/image/wushuju.png -->
       </div>
       <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span>
-        <el-empty description="请选择文件夹"></el-empty>
+        <el-empty :description="$t('material.form.choose')"></el-empty>
       </div>
     </el-card>
     <!-- 右侧详细信息 -->
@@ -70,33 +70,33 @@
         </div>
         <div class="set_two">
           <div class="particulars">
-            <span style="font-size: 12px; color: black">文件名：</span>
-            <el-input size="mini" @blur="blur_" v-model="workName" style="width: 70%" placeholder="请输入文件名"></el-input>
+            <span style="font-size: 12px; color: black">{{$t('material.fileName')}}：</span>
+            <el-input size="mini" @blur="blur_" v-model="workName" style="width: 70%" :placeholder="$t('material.fileNamePH')"></el-input>
             <p>
-              大小：<span class="sp">{{ more.big | formatbytes(more.big) }}</span>
+              {{$t('material.fileSize')}}：<span class="sp">{{ more.big | formatbytes(more.big) }}</span>
             </p>
             <p>
-              格式：<span class="sp">{{ more.format }}</span>
+              {{$t('material.fileFormat')}}：<span class="sp">{{ more.format }}</span>
             </p>
             <p>
-              类型：<span class="sp">{{ more.type }}</span>
+              {{$t('material.fileType')}}：<span class="sp">{{ more.type }}</span>
             </p>
             <p>
-              尺寸：<span class="sp">{{ more.size }}</span>
+              {{$t('material.documentSize')}}：<span class="sp">{{ more.size }}</span>
             </p>
             <p>
-              上传时间：<span class="sp">{{ more.createdTime }}</span>
+              {{$t('material.updateTime')}}：<span class="sp">{{ more.createdTime }}</span>
             </p>
             <p>
-              所在文件夹：<span class="sp">{{ more.place }}</span>
+              {{$t('material.atFolder')}}：<span class="sp">{{ more.place }}</span>
             </p>
             <p>
-              文件链接：<span class="sp">{{ more.link | commentEllipsis(more.link) }}</span>
-              <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">复制链接</el-button>
+              {{$t('material.fileUrl')}}：<span class="sp">{{ more.link | commentEllipsis(more.link) }}</span>
+              <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">{{$t('material.copyUrl')}}</el-button>
             </p>
             <div class="btn">
               <!-- 上传（替换文件） -->
-              <el-button type="primary" @click="upload_" style="margin-right: 2vw">替换文件</el-button>
+              <el-button type="primary" @click="upload_" style="margin-right: 2vw">{{$t('material.replaceFile')}}</el-button>
               <input v-show="false" ref="fileRef" type="file" @change="fileChange($event)" />
               <!--  -->
               <!-- <el-button type="primary" @click="download_()">下载</el-button> -->
@@ -105,7 +105,7 @@
         </div>
       </div>
       <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span>
-        <el-empty description="请选择文件"></el-empty>
+        <el-empty :description="$t('material.chooseFile')"></el-empty>
       </div>
     </el-card>
   </div>
@@ -184,7 +184,7 @@ export default {
       document.execCommand('Copy')
       inputTest.className = 'oInput'
       inputTest.style.display = 'none'
-      this.$message.success('复制成功')
+      this.$message.success(this.$t('biz.msg.copySuccess'))
     },
     // 顶部搜索
     searchClick() {
@@ -248,7 +248,7 @@ export default {
         formData.append('file', e.target.files[0])
         let loading_ = thiz.$loading({
           lock: true,
-          text: '上传中，请稍候...',
+          text: this.$t('material.msg.UploadingMsg'),
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
@@ -260,18 +260,18 @@ export default {
           .then(data => {
             if (data) {
               loading_.close()
-              thiz.$message('上传文件成功')
+              thiz.$message(this.$t('material.msg.successMsg'))
               this.loadData(this.treeDatas, true)
               this.exhibitionRight = false
             } else {
               loading_.close()
-              thiz.$message('上传文件失败')
+              thiz.$message(this.$t('material.msg.errorMsg'))
             }
           })
           .catch(() => {})
         //替换文件--- end
       } else {
-        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        this.$message(this.$t('material.msg.restrictionsMsg'))
         return
       }
     },
@@ -315,7 +315,7 @@ export default {
     loadData(data, isFile) {
       const loading = this.$loading({
         lock: true,
-        text: '加载中',
+        text: this.$t('material.msg.loadingMsg'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })

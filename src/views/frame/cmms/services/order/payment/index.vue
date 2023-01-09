@@ -4,119 +4,119 @@
     <el-card class="box-card" style="overflow: auto; width: 100%; height: 90vh">
       <!-- 公 -->
       <div style="width: 240px; float: right">
-        <el-select @change="handelSelect" size="mini" v-model="value_" placeholder="请选择">
+        <el-select @change="handelSelect" size="mini" v-model="value_" :placeholder="$t('order.payment.pleaseSelect')">
           <el-option v-for="item in options" :key="item.code" :label="item.name" :value="item.code"> </el-option>
         </el-select>
       </div>
       <div>
-        <span class="sp_one">会议门票支付收款账户设置：</span>
+        <span class="sp_one">{{$t('order.payment.accountSettings')}}：</span>
         <div class="individual" v-for="(item, index) in individualType" :key="index">
           <div style="display: inline-block; width: 20%">
             <el-checkbox :disabled="item.disabled" v-model="item.checked">{{ item.name }}</el-checkbox>
           </div>
           <div style="display: inline-block">
-            <el-select :disabled="item.disabled" clearable size="mini" v-model="item.value" placeholder="请选择账户">
+            <el-select :disabled="item.disabled" clearable size="mini" v-model="item.value" :placeholder="$t('order.payment.selectAccount')">
               <el-option v-for="item_ in item.options" :key="item_.value" :label="item_.label" :value="item_.value"> </el-option>
             </el-select>
           </div>
           <div style="display: inline-block; margin-left: 10px; width: 5%">
-            <el-button :disabled="item.disabled" size="mini" type="text" @click="install(item)">设置</el-button>
+            <el-button :disabled="item.disabled" size="mini" type="text" @click="install(item)">{{$t('order.payment.setting')}}</el-button>
           </div>
           <div style="display: inline-block; margin-left: 10px; width: 25%">
-            <span class="sp_two">商户号：</span><span style="font-size: 13px">{{ item.num ? item.num : '-' }}</span>
+            <span class="sp_two">{{$t('order.payment.MERCHANT_NO')}}：</span><span style="font-size: 13px">{{ item.num ? item.num : '-' }}</span>
           </div>
           <div style="display: inline-block; width: 25%">
-            <span class="sp_two">密钥：</span><span class="sp_three">{{ item.psd ? item.psd : '-' }}</span>
+            <span class="sp_two">{{$t('order.payment.PDK')}}：</span><span class="sp_three">{{ item.psd ? item.psd : '-' }}</span>
           </div>
         </div>
         <el-divider></el-divider>
       </div>
       <!-- 私 -->
       <div>
-        <span class="sp_one">会议差旅因私支付收款账户设置:</span>
+        <span class="sp_one">{{$t('order.payment.paymentAccountSettings')}}:</span>
         <div class="individual" v-for="(item, index) in individualPrivateType" :key="index">
           <div style="display: inline-block; width: 20%">
             <el-checkbox :disabled="item.disabled" v-model="item.checked">{{ item.name }}</el-checkbox>
           </div>
           <div style="display: inline-block">
-            <el-select :disabled="item.disabled" clearable size="mini" v-model="item.value" placeholder="请选择账户">
+            <el-select :disabled="item.disabled" clearable size="mini" v-model="item.value" :placeholder="$t('order.payment.selectAccount')">
               <el-option v-for="item_ in item.options" :key="item_.code" :label="item_.companyAccount" :value="item_.code"> </el-option>
             </el-select>
           </div>
           <div style="display: inline-block; margin-left: 10px; width: 5%">
-            <el-button :disabled="item.disabled" size="mini" type="text" @click="install(item)">设置</el-button>
+            <el-button :disabled="item.disabled" size="mini" type="text" @click="install(item)">{{$t('order.payment.setting')}}</el-button>
           </div>
           <div style="display: inline-block; margin-left: 10px; width: 25%">
-            <span class="sp_two">商户号：</span><span style="font-size: 13px">{{ item.num ? item.num : '-' }}</span>
+            <span class="sp_two">{{$t('order.payment.MERCHANT_NO')}}：</span><span style="font-size: 13px">{{ item.num ? item.num : '-' }}</span>
           </div>
           <div style="display: inline-block; width: 25%">
-            <span class="sp_two">密钥：</span><span class="sp_three">{{ item.psd ? item.psd : '-' }}</span>
+            <span class="sp_two">{{$t('order.payment.PDK')}}：</span><span class="sp_three">{{ item.psd ? item.psd : '-' }}</span>
           </div>
         </div>
         <el-divider></el-divider>
       </div>
       <div>
-        <span class="sp_one">会议差旅因公支付授信账户设置:</span>
+        <span class="sp_one">{{$t('order.payment.creditAccountSettings')}}:</span>
         <div>
           <div style="width: 15%; display: inline-block">
-            <el-select size="mini" v-model="account" placeholder="请选择账户">
+            <el-select size="mini" v-model="account" :placeholder="$t('order.payment.selectAccount')">
               <el-option v-for="item in accountName" :key="item.value" :label="item.label" :value="item.value"> </el-option>
             </el-select>
           </div>
-          <div style="display: inline-block; margin-left: 72px"><span>账户总额度：</span><span>-</span></div>
-          <span style="margin-left: 80px"><span style="color: #f56c6c; margin-right: 4px">*</span>分配当前项目额度：</span>
+          <div style="display: inline-block; margin-left: 72px"><span>{{$t('order.payment.totalAccountAmount')}}：</span><span>-</span></div>
+          <span style="margin-left: 80px"><span style="color: #f56c6c; margin-right: 4px">*</span>{{$t('order.payment.allocateProjectQuota')}}：</span>
           <div style="display: inline-block; width: 15%">
-            <el-input size="mini" v-model="currentVal" placeholder="请输入分配当前项目额度"></el-input>
+            <el-input size="mini" v-model="currentVal" :placeholder="$t('order.payment.enterProjectQuota')"></el-input>
           </div>
-          <span style="margin-left: 80px">预警提醒额度：</span>
+          <span style="margin-left: 80px">{{$t('order.payment.warningWarningQuota')}}：</span>
           <div style="display: inline-block; width: 15%">
-            <el-input size="mini" v-model="warningVal" placeholder="请输入预警提醒额度："></el-input>
+            <el-input size="mini" v-model="warningVal" :placeholder="$t('order.payment.enterWarningAmount')+'：'"></el-input>
           </div>
         </div>
       </div>
     </el-card>
     <div style="height: 6vh; width: 100%; background-color: white; display: flex; align-items: center; justify-content: center">
-      <el-button @click="cancel">取消</el-button>
-      <el-button type="primary" @click="save">保存</el-button>
+      <el-button @click="cancel">{{$t('order.payment.canel')}}</el-button>
+      <el-button type="primary" @click="save">{{$t('order.payment.save')}}</el-button>
     </div>
-    <el-dialog title="设置" :visible.sync="editShow_" width="800px">
+    <el-dialog :title="$t('order.payment.setting')" :visible.sync="editShow_" width="800px">
       <div style="padding-top: 30px">
         <div style="float: right; margin-right: 10px">
-          <el-button type="primary" @click="addAccount">新增账户</el-button>
+          <el-button type="primary" @click="addAccount">{{$t('order.payment.addNewAccount')}}</el-button>
         </div>
         <template>
           <el-table stripe :data="tableData" style="width: 100%">
-            <el-table-column prop="aaa" label="账户名"> </el-table-column>
-            <el-table-column prop="bbb" label="商户号"> </el-table-column>
-            <el-table-column prop="ccc" label="秘钥"> </el-table-column>
+            <el-table-column prop="aaa" :label="$t('order.payment.accountName')"> </el-table-column>
+            <el-table-column prop="bbb" :label="$t('order.payment.MERCHANT_NO')"> </el-table-column>
+            <el-table-column prop="ccc" :label="$t('order.payment.PDK')"> </el-table-column>
           </el-table>
         </template>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="editShow_ = false">取 消</el-button>
-        <el-button type="primary" @click="editShow_ = false">确 定</el-button>
+        <el-button @click="editShow_ = false">{{$t('order.payment.canel')}}</el-button>
+        <el-button type="primary" @click="editShow_ = false">{{$t('order.payment.confirm')}}</el-button>
       </span>
     </el-dialog>
     <!-- addUser -->
-    <el-dialog destroy-on-close :modal-append-to-body="true" title="新增账户" :visible.sync="addUser" width="800px">
+    <el-dialog destroy-on-close :modal-append-to-body="true" :title="$t('order.payment.addNewAccount')" :visible.sync="addUser" width="800px">
       <div style="min-height: 300px; padding-top: 10px">
         <!-- st -->
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="账户名称" prop="name">
+          <el-form-item :label="$t('order.payment.accountNa')" prop="name">
             <el-input v-model="ruleForm.name"></el-input>
           </el-form-item>
-          <el-form-item label="商户号" prop="num">
+          <el-form-item :label="$t('order.payment.MERCHANT_NO')" prop="num">
             <el-input v-model="ruleForm.num"></el-input>
           </el-form-item>
-          <el-form-item label="密钥" prop="psd">
+          <el-form-item :label="$t('order.payment.PDK')" prop="psd">
             <el-input v-model="ruleForm.psd"></el-input>
           </el-form-item>
         </el-form>
         <!-- end -->
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addUser = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+        <el-button @click="addUser = false">{{$t('order.payment.canel')}}</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{$t('order.payment.confirm')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -138,7 +138,7 @@ export default {
       // 公
       individualType: [
         {
-          name: '微信',
+          name: this.$t('order.payment.WeChat'),
           type: '0',
           checked: false,
           value: '',
@@ -157,7 +157,7 @@ export default {
           ]
         },
         {
-          name: '支付宝',
+          name: this.$t('order.payment.alipay'),
           type: '1',
           checked: false,
           value: '',
@@ -176,7 +176,7 @@ export default {
           ]
         },
         {
-          name: '银联',
+          name: this.$t('order.payment.unionPay'),
           type: '2',
           checked: false,
           value: '',
@@ -217,7 +217,7 @@ export default {
       // 私
       individualPrivateType: [
         {
-          name: '微信',
+          name: this.$t('order.payment.WeChat'),
           type: '0',
           checked: true,
           value: '',
@@ -236,7 +236,7 @@ export default {
           ]
         },
         {
-          name: '支付宝',
+          name: this.$t('order.payment.alipay'),
           type: '1',
           checked: false,
           value: '',
@@ -255,7 +255,7 @@ export default {
           ]
         },
         {
-          name: '银联',
+          name: this.$t('order.payment.unionPay'),
           type: '2',
           checked: false,
           value: '',
@@ -341,9 +341,9 @@ export default {
         psd: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入活动名称' }],
-        num: [{ required: true, message: '请输入活动名称' }],
-        psd: [{ required: true, message: '请输入活动名称' }]
+        name: [{ required: true, message: this.$t('order.payment.enterActivityName') }],
+        num: [{ required: true, message: this.$t('order.payment.enterActivityName') }],
+        psd: [{ required: true, message: this.$t('order.payment.enterActivityName') }]
       }
     }
   },
@@ -363,26 +363,26 @@ export default {
     save() {
       // 分配当前项目额度验证
       if (!this.currentVal) {
-        this.$message.warning('请填写分配当前项目额度')
+        this.$message.warning(this.$t('order.payment.fillCurrentProject'))
         return
       }
       // 公验证
       this.individualType.forEach(item => {
         if (item.checked && item.value == '') {
-          this.$message.warning('请选择已勾选支付方式的账户')
+          this.$message.warning(this.$t('order.payment.selectPaymentMethod'))
           return
         } else if (!item.checked && item.value) {
-          this.$message.warning('请勾选已选择账户的支付方式')
+          this.$message.warning(this.$t('order.payment.checkPaymentMethod'))
           return
         }
       })
       // 私验证
       this.individualPrivateType.forEach(item => {
         if (item.checked && item.value == '') {
-          this.$message.warning('请选择已勾选支付方式的账户')
+          this.$message.warning(this.$t('order.payment.selectPaymentMethod'))
           return
         } else if (!item.checked && item.value) {
-          this.$message.warning('请勾选已选择账户的支付方式')
+          this.$message.warning(this.$t('order.payment.checkPaymentMethod'))
           return
         }
       })

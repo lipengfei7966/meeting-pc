@@ -312,7 +312,13 @@ export default {
       parentCode: 'The parent client organizes the code', // 父级客户组织编码
       parentName: 'Parent customer organization name', // 父级客户组织名称
       customerName: 'Customer Name', // 客户名称
-      treeName: 'Customer'// 客户
+      treeName: 'Customer', // 客户
+      filterTips: 'Enter keywords to filter', // 输入关键字进行过滤
+      reset: 'Reset', // 重置
+      expand: 'Expand', // 展开
+      fewer: 'Fewer', // 收起
+      appList: 'AppList', // 应用列表
+      customerOrganizationInformation: 'Customer Organization Information' // 客户组织信息
     },
     customerContact: {
       title: 'Customer Contact Management', // 客户联系人管理
@@ -424,12 +430,97 @@ export default {
       identity: 'Operator Identity', // 操作员身份
       resetPassword: 'Reset Password', // 重置密码
       resetSuccess: 'Reset Password Success', // 密码重置成功
+      unlockSuccess: 'Unlock Success', // 解锁成功
       resetInfoP1: 'Confirm Reset', // 确认重置
       resetInfoP2: 'Is the default system password 123456', // 的系统密码为默认密码123456吗
       userValidPeriodFlag: 'The user is always valid', // 用户始终有效
       userValidPeriodDate: 'User Expiration Date', // 用户有效期
       passwdValidPeriodFlag: 'Password Always Valid', // 密码始终有效
       passwdValidPeriodDay: 'Password Expiration Date'// 密码有效期
+    },
+    microStationDesign: {
+      carouselGraphManagement: 'Carousel Graph Management', // 轮播图管理
+      baseMapManagement: 'Base Map Management', // 底图管理
+      TitleManagement: 'Title Management', // 标题管理
+      moduleSetup: 'Module Setup', // 模块设置
+      addModules: 'Add Modules', // 新增模块
+      moduleAdd: 'Please select module to add/edit', // 请选择模块进行新增/编辑
+      sharingSetting: 'Sharing Setting', // 分享设置
+      microStationName: 'Name of micro station', // 微站名称
+      enterMicroStationName: 'Please enter the name of the micro station', // 请输入微站名称
+      micrositeLinks: 'Microsite Links', // 微站链接
+      copyLink: 'Copy Link', // 复制链接
+      return: 'Return', // 返回
+      save: 'Save', // 保存
+      accessPermission: 'Access Permission', // 访问权限
+      siteAccessSettings: 'Site Access Settings', // 网站访问权限设置
+      public: 'Public', // 公开
+      usersOnly: 'Users Only', // 仅注册用户
+      onlyApprovedusers: 'Only approved users are approved', // 仅审核通过用户
+      someUsers: 'Some Users', // 部分用户
+      cannotmoveup: 'Can not move up', // 无法上移
+      cannotgodown: 'Can not go down', // 无法下移
+      moveUpSuccess: 'Move Up Success', // 上移成功
+      moveUpFail: 'Move Up Fail', // 上移失败
+      downMoveSuccess: 'Down Move Success', // 下移成功
+      downMoveFail: 'Down Move Fail', // 下移失败
+      deleteSuccess: 'Delete Success', // 删除成功
+      deleteFail: 'Delete Fail', // 删除失败
+      updateSuccess: 'Update Success', // 修改成功
+      updateFail: 'Update Fail', // 修改失败
+      copySuccess: 'Copy Success', // 复制成功
+      pleaseselectUser: 'Please select user', // 请选择用户
+      saveSuccess: 'Save Success', // 保存成功
+      chooseTemplate: 'Choose Template', // 选择模板
+      reselectTheTemplate: 'Reselect the template', // 重新选择模板
+      moreTemplatesExpect: 'More Templates Expect', // 更多模板 敬请期待
+      PleaseSelectaTemplate: 'Please select a template!', // 请选择一个模板！
+      noMoreTemplatesYet: 'No more templates yet!', // 暂无更多模板！
+      clickUpload: 'Click Upload', // 点击上传
+      deleteOruploading: 'Please delete the existing images before uploading', // 请删除已存在图片后再进行上传操作
+      UploadPleaseWait: 'Upload, please wait...', // 上传中，请稍候...
+      uploadedFileSuccess: 'Upload File Success', // 上传文件成功
+      uploadedFileFail: 'Upload File Fail', // 上传文件失败
+      pleaseUploadType: 'Please upload jpg, png, jpeg, psd type images', // 请上传jpg，png，jpeg，psd 类型的图片
+      fileType: 'File Type', // 文件类型
+      sort: 'Sort', // 排序
+      fileName: 'File Name', // 文件名称
+      selectFolder: 'Please select a folder', // 请选择文件夹
+      picture: 'Picture', // 图片
+      video: 'Video', // 视频
+      ascendingUploadTime: 'Ascending by upload time', // 按上传时间升序
+      DescendUploadTime: 'Descending order by upload time', // 按上传时间降序
+      loading: 'Loading', // 加载中
+      moduleTitle: 'Module Title', // 模块标题
+      enterModuleTitle: 'Please enter a module title', // 请输入模块标题
+      moduleType: 'Module Type', // 模块类型
+      selectmoduleType: 'Please select the module type', // 请选择模块类型
+      selectThePage: 'Select the page', // 选择页面
+      selectPage: 'Please select page', // 请选择页面
+      backLink: 'Back Link', // 站外链接
+      enterExternalLink: 'Please enter the external link', // 请输入站外链接
+      backgroundSetting: 'Background Setting', // 背景设置
+      default: 'Default', // 默认
+      hide: 'Hide', // 隐藏
+      custom: 'Custom', // 自定义
+      icon: 'Icon', // 图标
+      upload: 'Upload', // 上传
+      onlyUploadType: 'Only jpeg/png/jpg/psd files can be uploaded', // 只能上传jpeg/png/jpg/psd文件
+      selectMaterialLibrary: 'Select from the material library', // 从素材库选择
+      add: 'Add', // 新增
+      materialSelection: 'Material selection', // 素材选择
+      canel: 'Canel', // 取 消
+      confirm: 'Confirm', // 确 定
+      inputModuleTitle: 'Please enter a module title', // 请输入模块标题
+      inputModuleType: 'Please select the module type', // 请选择模块类型
+      pleaseSelectPage: 'Please select page', // 请选择页面
+      addSuccess: 'Add Success', // 新增成功
+      mainHeading: 'Main Head', // 主标题
+      subtitle: 'Subtitle', // 副标题
+      enterMainHeading: 'Please enter a main title', // 请输入主标题
+      lengthRanges: 'The length ranges from 2 to 100 characters', // 请输入主标题
+      titleSaveSuccess: 'Title Save Success', // 请输入主标题
+      titleSaveFail: 'Title Save Fail' // 请输入主标题
     }
   }
 }

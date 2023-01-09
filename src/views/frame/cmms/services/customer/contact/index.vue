@@ -22,7 +22,7 @@ export default {
             defaultSortString: ''
           },
           initSearch: true,
-          treeName: '客户组织信息',
+          treeName: this.$t('website.department.customerOrganizationInformation'),
           expandAll: true,
           expandOnClickNode: false,
           api: {
