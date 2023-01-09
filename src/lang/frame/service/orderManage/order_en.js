@@ -77,7 +77,15 @@ export default {
       paperTicketTips: 'If you have taken the paper ticket, please bring your valid ID to the train ticket window for refund', // 如已取纸质车票，请携带有效证件至火车票窗口办理退票
       changeTips: 'If the date of ticket change or change after arrival is during the Spring Festival travel rush, the refund fee will be charged according to the standard of less than 24 hours before the departure time. The 2022 Spring Festival travel rush will last from Jan 21 to March 1', // 改签或变更到站后的车票乘车日期在春运期间的，退票时一律按开车时间前不足24小时标准核收退票费。2022年春运期间为1月21日至3月1日
       refundSuccess: 'Refund Success', // 退票成功
-      orderType: 'Order Type' // 订单类型
+      orderType: 'Order Type', // 订单类型
+      trainNumberInformation: 'Train Number Information', // 车次信息
+      stationNumber: 'Station Number', // 站次
+      stationName: 'Station Name', // 站名
+      arrive: 'Arrive', // 到达
+      startingTime: 'Starting Time', // 发时
+      remain: 'Remain', // 停留
+      destination: 'Destination', // 终点
+      minute: 'Minute' // 分钟
     },
     payment: {
       pleaseSelect: 'Please Select', // 请选择

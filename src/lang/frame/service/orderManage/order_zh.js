@@ -77,7 +77,15 @@ export default {
       paperTicketTips: '如已取纸质车票，请携带有效证件至火车票窗口办理退票', // 如已取纸质车票，请携带有效证件至火车票窗口办理退票
       changeTips: '改签或变更到站后的车票乘车日期在春运期间的，退票时一律按开车时间前不足24小时标准核收退票费。2022年春运期间为1月21日至3月1日', // 改签或变更到站后的车票乘车日期在春运期间的，退票时一律按开车时间前不足24小时标准核收退票费。2022年春运期间为1月21日至3月1日
       refundSuccess: '退票成功', // 退票成功
-      orderType: '订单类型' // 订单类型
+      orderType: '订单类型', // 订单类型
+      trainNumberInformation: '车次信息', // 车次信息
+      stationNumber: '站次', // 站次
+      stationName: '站名', // 站名
+      arrive: '到达', // 到达
+      startingTime: '发时', // 发时
+      remain: '停留', // 停留
+      destination: '终点', // 终点
+      minute: '分钟' // 分钟
     },
     payment: {
       pleaseSelect: '请选择', // 请选择
