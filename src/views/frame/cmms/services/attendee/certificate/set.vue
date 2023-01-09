@@ -1,14 +1,14 @@
 <template>
   <div class="content">
     <div>
-      <h2>证件设置</h2>
+      <h2>{{$t('attendee.set.certificateSettings')}}</h2>
 
       <el-card class="box-card">
         <div>
           <el-form ref="printSetform" :model="printSetform" :rules="printSetformRules" label-width="100px" label-position="left">
-            <el-form-item label="证件类型" prop="certificateType">
+            <el-form-item :label="$t('attendee.set.documentType')" prop="certificateType">
               <div style="display:flex; justify-content: space-between;">
-                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" placeholder="请选择证件类型">
+                <el-select v-model="printSetform.certificateType" @change="certificateTypeChange" :placeholder="$t('attendee.set.documentTypePH')">
                   <el-option v-for="(item,index) in certificateTypeList" :key="index" :label="item.name" :value="item.code"></el-option>
 
                 </el-select>
@@ -18,44 +18,44 @@
 
             <el-form-item>
               <div style="display:flex; justify-content: space-between">
-                <el-button type="text" @click="dialogFormVisible = true">新增证件类型</el-button>
-                <el-button v-show="printSetform.certificateType != '0001' " type="text" @click="delCertificateType">删除证件类型</el-button>
+                <el-button type="text" @click="dialogFormVisible = true">{{$t('attendee.set.newDocumentType')}}</el-button>
+                <el-button v-show="printSetform.certificateType != '0001' " type="text" @click="delCertificateType">{{$t('attendee.set.delDocumentType')}}</el-button>
               </div>
 
             </el-form-item>
 
-            <el-form-item label="应用于">
+            <el-form-item :label="$t('attendee.set.application')">
               <el-checkbox-group v-model="printSetform.contactTypeArray">
                 <el-checkbox :label="item.value" v-for="(item,index) in contactTypeArrayList" :key="index"> {{ item.label }} </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="打印区域(mm)">
+            <el-form-item :label="$t('attendee.set.printArea')+'(mm)'">
               <div style="display: flex">
                 <p style="display: flex">
-                  <span>宽</span>
+                  <span>{{ $t('attendee.set.width') }}</span>
                   <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printWight" @input="printSetform.printWight = limitInput(printSetform.printWight)" @change="WHchange"></el-input>
                 </p>
 
                 <p style="display: flex;margin-left:30px">
-                  <span>高</span>
+                  <span>{{$t('attendee.set.height')}}</span>
                   <el-input style="max-width: 80px;margin-left:15px" v-model="printSetform.printHeight" @input="printSetform.printHeight = limitInput(printSetform.printHeight)" @change="WHchange"></el-input>
                 </p>
               </div>
             </el-form-item>
-            <el-form-item label="背景图">
-              <el-checkbox v-model="printSetform.printBackgroundFlg" :true-label="1" :false-label="0">打印背景图</el-checkbox>
+            <el-form-item :label="$t('attendee.set.backgroundImg')">
+              <el-checkbox v-model="printSetform.printBackgroundFlg" :true-label="1" :false-label="0">{{$t('attendee.set.printBgimg')}}</el-checkbox>
               <el-upload style="float: right; padding: 3px 0" accept="image/*" :limit="1" :on-exceed="fileLimitCount" :before-upload="handleBeforeUpload" ref="upload" action :http-request="handleUploadForm" :on-remove="handleRemove" :on-success="uploadSuccess" :file-list="fileList" :show-file-list="true" :auto-upload="true">
-                <el-button type="text">上传背景图</el-button>
+                <el-button type="text">{{$t('attendee.set.upLoadBgimg')}}</el-button>
               </el-upload>
             </el-form-item>
 
-            <el-form-item label="最多打印次数">
+            <el-form-item :label="$t('attendee.set.maxPrint')">
               <el-input v-model="printSetform.maxPrintNumber"></el-input>
             </el-form-item>
 
             <el-form-item label="">
               <div style="margin-left: -100px">
-                <p>证件内容</p>
+                <p>{{$t('attendee.set.certificateContent')}}</p>
                 <div style="border: 1px solid;padding: 10px">
                   <el-checkbox-group v-model="printSetform.certificateContent" @change="certificateContentChange">
                     <el-checkbox :label="item.code" v-for="(item,index) in certificateContentList" :key="index"> {{ item.title }}</el-checkbox>
@@ -68,8 +68,8 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="create"> {{ printSetform.id ? '确定':'立即创建'}}</el-button>
-              <el-button @click="back">取消</el-button>
+              <el-button type="primary" @click="create"> {{ printSetform.id ? $t('biz.btn.confirm'):$t('attendee.set.createNow')}}</el-button>
+              <el-button @click="back">{{$t('biz.btn.cancel')}}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="printPreview">
-      <h2>证件预览</h2>
+      <h2>{{$t('attendee.set.documentPreview')}}</h2>
       <el-card class="printPreview-box-card" style="background:rgba(242, 242, 242, 1);" ref="printTest" id="printTest">
 
         <div class="p-event" id="print" :key="changecount" :style="{width:printSetform.printWight+'mm', height:printSetform.printHeight+'mm', margin: '0 auto',backgroundImage:`url(${printSetform.printBackground})`,backgroundSize:'100% 100%'}">
@@ -112,39 +112,39 @@
 
       </el-card>
       <p style="margin-top: 15px;margin-right:40px">
-        <span>尺寸：{{printSetform.printWight}}mm * {{printSetform.printHeight}}mm</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="doPrint">打印测试页</el-button>
+        <span>{{$t('attendee.set.size')}}：{{printSetform.printWight}}mm * {{printSetform.printHeight}}mm</span>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="doPrint">{{$t('attendee.set.printTestPage')}}</el-button>
       </p>
     </div>
 
     <div class="">
-      <h2>内容设置</h2>
+      <h2>{{ $t('attendee.set.contentSettings') }}</h2>
       <el-card class="box-card">
         <el-form :model="form" label-width="100px" label-position="left">
-          <el-form-item label="修改内容">
+          <el-form-item :label="$t('attendee.set.modification')">
             <el-select v-model="form.name" @change="changeName();changeVal()">
               <el-option v-for="(item,index) in list" :label="item.label" :key="index+item.label" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="修改类型">
+          <el-form-item :label="$t('attendee.set.modificationType')">
             <el-select v-model="form.selectVal" @change="changeHeight">
-              <el-option label="字体大小" value="fontSize"></el-option>
-              <el-option label="行高设置" key="index+item.value" value="lineHeight"></el-option>
+              <el-option :label="$t('attendee.set.fontSize')" value="fontSize"></el-option>
+              <el-option :label="$t('attendee.set.lineHeightSet')" key="index+item.value" value="lineHeight"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="大小">
+          <el-form-item :label="$t('attendee.set.extent')">
             <el-select v-model="form.fontSize" @change="changeVal">
               <el-option v-for="(item,index) in sizeList" :key="index+item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="对齐方式">
+          <el-form-item :label="$t('attendee.set.alignment')">
             <el-select v-model="form.textAlign" @change="changeVal">
-              <el-option label="靠左对齐" value="left"></el-option>
-              <el-option label="居中对齐" value="center"></el-option>
-              <el-option label="靠右对齐" value="right"></el-option>
+              <el-option :label="$t('attendee.set.left')" value="left"></el-option>
+              <el-option :label="$t('attendee.set.center')" value="center"></el-option>
+              <el-option :label="$t('attendee.set.right')" value="right"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="字体颜色">
+          <el-form-item :label="$t('attendee.set.fontColor')">
             <el-color-picker class="setColor" v-model="form.color" @change="changeVal"></el-color-picker>
             <!-- <el-color-picker v-model="form.color"></el-color-picker> -->
           </el-form-item>
@@ -152,15 +152,15 @@
       </el-card>
     </div>
 
-    <el-dialog title="新增证件类型" :visible.sync="dialogFormVisible" width="300px" label-position="left" :close-on-click-modal="false">
+    <el-dialog :title="$t('attendee.set.newCertificateType')" :visible.sync="dialogFormVisible" width="300px" label-position="left" :close-on-click-modal="false">
       <el-form :model="certificateTypeform">
-        <el-form-item label="证件类型" label-width="100px">
+        <el-form-item :label="$t('attendee.set.documentType')" label-width="100px">
           <el-input v-model="certificateTypeform.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="certificateTypeSubmit">确 定</el-button>
+        <el-button @click="dialogFormVisible = false">{{$t('biz.table.cancel')}}</el-button>
+        <el-button type="primary" @click="certificateTypeSubmit">{{$t('biz.table.confirm')}}</el-button>
       </div>
     </el-dialog>
 
@@ -375,17 +375,17 @@ export default {
           this.getCertificateType()
           this.dialogFormVisible = false
 
-          this.$message.success('新增成功')
+          this.$message.success(this.$t('attendee.createSuccess'))
         } else {
-          this.$message.error('新增失败')
+          this.$message.error(this.$t('attendee.createError'))
         }
       })
     },
     // 删除证件类型
     delCertificateType() {
-      this.$confirm('此操作将删除已选证件类型, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('attendee.delMsg'), this.$t('biz.msg.tip'), {
+        confirmButtonText: this.$t('biz.btn.confirm'),
+        cancelButtonText: this.$t('biz.btn.cancel'),
         type: 'warning'
       })
         .then(() => {
@@ -404,14 +404,14 @@ export default {
               this.printSetform.certificateType = '0001' // 删除后设置默认值
               this.certificateTypeChange('0001')
 
-              this.$message.success('删除成功')
+              this.$message.success(this.$t('biz.msg.deleteSuccess'))
             } else {
-              this.$message.error('删除失败')
+              this.$message.error(this.$t('biz.msg.deleteFailed'))
             }
           })
         })
         .catch(() => {
-          this.$message.info('已取消删除')
+          this.$message.info(this.$t('attendee.deletionCancelled'))
         })
     },
     handleUploadForm(param) {
@@ -422,7 +422,7 @@ export default {
       formData.append('file', param.file)
       let loading = thiz.$loading({
         lock: true,
-        text: '上传中，请稍候...',
+        text: this.$t('attendee.UploadingMsg'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -432,10 +432,10 @@ export default {
         data: formData
       }).then(data => {
         if (data) {
-          thiz.$message('上传文件成功')
+          thiz.$message(this.$t('attendee.UploadingSuccess'))
           this.printSetform.printBackground = data.data.filePath
         } else {
-          thiz.$message('上传文件失败')
+          thiz.$message(this.$t('attendee.UploadingError'))
         }
         loading.close()
       })
@@ -616,7 +616,7 @@ export default {
       }
     },
     fileLimitCount(files, fileList) {
-      this.$message.warning('背景图只能上传一张')
+      this.$message.warning(this.$t('attendee.onlyOneMsg'))
     },
     handleBeforeUpload(file) {
       var img = file.name.substring(file.name.lastIndexOf('.') + 1)
@@ -625,7 +625,7 @@ export default {
       const suffix3 = img === 'jpeg'
       const isLt1M = file.size / 1024 / 1024 < 1
       if (!suffix && !suffix2 && !suffix3) {
-        this.$message.error('只能上传图片！')
+        this.$message.error(this.$t('attendee.onlyOneMsg'))
         return false
       }
     },
@@ -650,7 +650,7 @@ export default {
 
       // 必填校验未通过
       if (!printSetformvalid) {
-        this.$message.warning('请录入必填项')
+        this.$message.warning(this.$t('attendee.enterMustMsg'))
         return
       }
 
@@ -672,9 +672,9 @@ export default {
         })
           .then(res => {
             if (res.data) {
-              this.$message.success('创建成功')
+              this.$message.success(this.$t('attendee.createSuccess'))
             } else {
-              this.$message.error('创建失败')
+              this.$message.error(this.$t('attendee.createError'))
             }
             this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
             this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
@@ -697,9 +697,9 @@ export default {
         })
           .then(res => {
             if (res.data) {
-              this.$message.success('创建成功')
+              this.$message.success(this.$t('attendee.createSuccess'))
             } else {
-              this.$message.error('创建失败')
+              this.$message.error(this.$t('attendee.createError'))
             }
             this.printSetform.contactTypeArray = this.printSetform.contactTypeArray ? this.printSetform.contactTypeArray.split(',') : []
             this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
@@ -725,6 +725,14 @@ export default {
 @page {
   size: auto; /* auto is the initial value */
   margin: 0mm; /* this affects the margin in the printer settings */
+}
+/deep/ .el-form-item__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/deep/ .el-form-label__frame {
+  position: absolute;
 }
 </style>
 

@@ -158,20 +158,20 @@ export default {
           {
             name: 'add',
             type: 'dialog',
-            i18n: '新增参会人',
+            i18n: 'attendee.btn.addAttendee',
             event: this.toAddSetting
           },
           {
             name: 'update',
             type: 'dialog',
-            i18n: '修改参会人',
+            i18n: 'attendee.btn.changeAttendee',
             event: this.toUpdateSetting
           },
           {
             name: 'add',
             type: 'dialog',
-            i18n: '签到',
-            msg: '请选择一条数据',
+            i18n: 'attendee.btn.signIn',
+            msg: 'attendee.chooseData',
             event: this.signin,
             getParam: () => {
               return { eventCode: this.form.listQuery.data.eventCode, contactCode: this.$refs.bsTable.currentRow.code }
@@ -180,13 +180,13 @@ export default {
           {
             name: 'record',
             type: 'route',
-            i18n: '签到设置',
+            i18n: 'attendee.btn.signInSet',
             event: this.doSet
           },
           {
             name: 'record',
             type: 'route',
-            i18n: '签到记录',
+            i18n: 'attendee.btn.signInHistory',
             event: this.toRecord
           },
           {
@@ -276,7 +276,7 @@ export default {
   methods: {
     toAddSetting() {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       this.$router.push({
@@ -290,11 +290,11 @@ export default {
     },
     toUpdateSetting() {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       if (!this.$refs.bsTable.currentRow || this.$refs.bsTable.currentRow.length != 1) {
-        this.$message.warning('请选择一条数据')
+        this.$message.warning(this.$t('attendee.chooseData'))
         return
       }
 
@@ -314,7 +314,7 @@ export default {
     },
     toRecord() {
       if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       this.$router.push({
@@ -327,7 +327,7 @@ export default {
     },
     doSet() {
       if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       this.$router.push({
@@ -340,7 +340,7 @@ export default {
     },
     signin(buttonInfo) {
       if (!this.form.listQuery.data.eventCode || this.form.listQuery.data.eventCode === '' || this.$refs.bsTable.currentRow == null) {
-        this.$notify(notifyInfo({ msg: '请选择一条数据' }))
+        this.$notify(notifyInfo({ msg: this.$t('attendee.chooseData') }))
       }
       request({
         url: '/api/register/signupContactSceneRel/listSceneSelect',
@@ -372,9 +372,9 @@ export default {
             }).then(result => {
               if (result.status) {
                 this.$refs.bsTable.getList({ name: 'search' })
-                this.$notify(notifyInfo({ msg: '签到成功' }))
+                this.$notify(notifyInfo({ msg: this.$t('attendee.signInSuccess') }))
               } else {
-                this.$notify(notifyInfo({ msg: '签到失败' }))
+                this.$notify(notifyInfo({ msg: this.$t('attendee.signInError') }))
               }
             })
           } else {

@@ -41,6 +41,14 @@ import enApply from '@/lang/frame/service/applySetting/apply_en'
 import zhSub from '@/lang/frame/service/subActivities/sub_zh'
 import enSub from '@/lang/frame/service/subActivities/sub_en'
 
+// 微站管理
+import zhMaterial from '@/lang/frame/service/CMS/material_zh'
+import enMaterial from '@/lang/frame/service/CMS/material_en'
+
+// 参会人管理
+import zhAttendee from '@/lang/frame/service/Attendee/Attendee_zh'
+import enAttendee from '@/lang/frame/service/Attendee/Attendee_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -54,7 +62,9 @@ const messages = {
     ...enWebsite,
     ...enOrder,
     ...enApply,
-    ...enSub
+    ...enSub,
+    ...enMaterial,
+    ...enAttendee
   },
   zh: {
     ...zhBase,
@@ -68,7 +78,9 @@ const messages = {
     ...zhWebsite,
     ...zhOrder,
     ...zhApply,
-    ...zhSub
+    ...zhSub,
+    ...zhMaterial,
+    ...zhAttendee
   }
 }
 

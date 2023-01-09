@@ -1,15 +1,15 @@
 <template>
   <div style="position: relative; top: 15%; transform: translateY(-30%)">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="主标题" prop="mainTitle">
+      <el-form-item :label="$t('website.microStationDesign.mainHeading')" prop="mainTitle">
         <el-input v-model="ruleForm.mainTitle"></el-input>
       </el-form-item>
-      <el-form-item label="副标题" prop="miniTitle">
+      <el-form-item :label="$t('website.microStationDesign.subtitle')" prop="miniTitle">
         <el-input v-model="ruleForm.miniTitle"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-        <el-button @click="resetForm('ruleForm')">返回</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{$t('website.microStationDesign.save')}}</el-button>
+        <el-button @click="resetForm('ruleForm')">{{$t('website.microStationDesign.return')}}</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -27,8 +27,8 @@ export default {
       },
       rules: {
         mainTitle: [
-          { required: true, message: '请输入主标题', trigger: 'blur' },
-          { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
+          { required: true, message: this.$t('website.microStationDesign.enterMainHeading'), trigger: 'blur' },
+          { min: 2, max: 100, message: this.$t('website.microStationDesign.lengthRanges'), trigger: 'blur' }
         ]
       }
     }
@@ -62,10 +62,10 @@ export default {
           })
             .then(data => {
               if (data) {
-                this.$message('标题保存成功')
+                this.$message(this.$t('website.microStationDesign.titleSaveSuccess'))
                 this.$emit('upData_')
               } else {
-                this.$message('标题保存失败')
+                this.$message(this.$t('website.microStationDesign.titleSaveFail'))
               }
               loading.close()
             })

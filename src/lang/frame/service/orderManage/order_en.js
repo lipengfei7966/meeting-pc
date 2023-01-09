@@ -35,6 +35,34 @@ export default {
       seat: 'Seat', // 坐席
       carriage: 'Carriage', // 车厢
       seatNumber: 'Seat number' // 座位号
+    },
+    payment: {
+      pleaseSelect: 'Please Select', // 请选择
+      accountSettings: 'Conference ticket payment collection account Settings', // 会议门票支付收款账户设置
+      selectAccount: 'Please select account', // 请选择账户
+      setting: 'Setting', // 设置
+      MERCHANT_NO: 'MERCHANT NO', // 商户号
+      PDK: 'PDK', // 密钥
+      paymentAccountSettings: 'Conference travel due to private payment collection account setting', // 会议差旅因私支付收款账户设置
+      creditAccountSettings: 'Conference travel and business payment credit account setting', // 会议差旅因公支付授信账户设置
+      totalAccountAmount: 'Total account amount', // 账户总额度
+      allocateProjectQuota: 'Allocate the current project quota', // 分配当前项目额度
+      enterProjectQuota: 'Please enter the current project quota', // 请输入分配当前项目额度
+      warningWarningQuota: 'Warning Warning Quota', // 预警提醒额度
+      enterWarningAmount: 'Please enter the warning amount', // 请输入预警提醒额度
+      canel: 'Canel', // 取消
+      save: 'Save', // 保存
+      addNewAccount: 'Add a new account', // 新增账户
+      accountName: 'Account Name', // 账户名
+      confirm: 'Confirm', // 确 定
+      accountNa: 'Account Name', // 账户名称
+      WeChat: 'WeChat', // 微信
+      alipay: 'Alipay', // 支付宝
+      unionPay: 'UnionPay', // 银联
+      enterActivityName: 'Please enter the activity name', // 请输入活动名称
+      fillCurrentProject: 'Please fill in the allocation amount for the current project', // 请填写分配当前项目额度
+      selectPaymentMethod: 'Please select an account with the payment method checked', // 请选择已勾选支付方式的账户
+      checkPaymentMethod: 'Please check the payment method of the selected account' // 请勾选已选择账户的支付方式
     }
   }
 }

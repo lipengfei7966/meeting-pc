@@ -1,8 +1,8 @@
 <template>
   <div>
     <div :class="!isPc ? 'place' : ''" style="margin-right: 10%; margin-top: 10px; float: right">
-      <el-button v-if="isPc" class="btn" type="success" @click="handelClick">选择模板</el-button>
-      <el-button v-if="!isPc" style="margin-right: -30px" class="btn" type="success" @click="handelEdit">重新选择模板</el-button>
+      <el-button v-if="isPc" class="btn" type="success" @click="handelClick">{{$t('website.microStationDesign.chooseTemplate')}}</el-button>
+      <el-button v-if="!isPc" style="margin-right: -30px" class="btn" type="success" @click="handelEdit">{{$t('website.microStationDesign.reselectTheTemplate')}}</el-button>
       <!-- <el-button v-if="!isPc" class="btn" type="success" @click="handelAdd">新增模块</el-button> -->
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
@@ -14,13 +14,13 @@
       <li>模板四</li> -->
       <li v-if="isPc" style="font-size: 20px; color: lightgray; text-align: center" @click="handel()">
         <span style="position: relative; top: 40%">
-          <span>更多模板 敬请期待 </span>
+          <span>{{$t('website.microStationDesign.moreTemplatesExpect')}} </span>
           <i class="el-icon-more-outline"></i>
         </span>
       </li>
       <li v-if="isPc" style="font-size: 20px; color: lightgray; text-align: center" @click="handel()">
         <span style="position: relative; top: 40%">
-          <span>更多模板 敬请期待 </span>
+          <span>{{$t('website.microStationDesign.moreTemplatesExpect')}} </span>
           <i class="el-icon-more-outline"></i>
         </span>
       </li>
@@ -123,12 +123,12 @@ export default {
           })
           .catch(() => {})
       } else {
-        this.$message('请选择一个模板！')
+        this.$message(this.$t('website.microStationDesign.PleaseSelectaTemplate'))
       }
     },
     handelAdd() {},
     handelEdit() {
-      this.$message('暂无更多模板！')
+      this.$message(this.$t('website.microStationDesign.noMoreTemplatesYet'))
     },
     handel(val) {
       if (val == 1) {

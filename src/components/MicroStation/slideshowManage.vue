@@ -2,19 +2,19 @@
   <!-- 轮播图的 -->
   <div style="height: 90vh; overflow: auto; margin-top: 10px">
     <div>
-      <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">从素材库选择</el-button>
+      <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">{{$t('website.microStationDesign.selectMaterialLibrary')}}</el-button>
       <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" :before-upload="beforeUpload" class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small" type="primary">{{$t('website.microStationDesign.clickUpload')}}</el-button>
       </el-upload>
     </div>
-    <el-dialog title="素材选择" :fullscreen="true" :visible.sync="dialogVisible" destroy-on-close>
+    <el-dialog :title="$t('website.microStationDesign.materialSelection')" :fullscreen="true" :visible.sync="dialogVisible" destroy-on-close>
       <div>
         <!-- 放内容的 -->
         <material ref="material" :MultiSelect="true" />
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit_">确 定</el-button>
+        <el-button @click="dialogVisible = false">{{$t('website.microStationDesign.canel')}}</el-button>
+        <el-button type="primary" @click="submit_">{{$t('website.microStationDesign.confirm')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -74,10 +74,10 @@ export default {
         })
           .then(data => {
             if (data) {
-              this.$message('删除成功')
+              this.$message(this.$t('website.microStationDesign.deleteSuccess'))
               this.$emit('upData_')
             } else {
-              this.$message('删除失败')
+              this.$message(this.$t('website.microStationDesign.deleteFail'))
             }
           })
           .catch(() => {})
@@ -107,7 +107,7 @@ export default {
       }
       let loading = thiz.$loading({
         lock: true,
-        text: '上传中，请稍候...',
+        text: this.$t('website.microStationDesign.UploadPleaseWait'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -118,10 +118,10 @@ export default {
       })
         .then(data => {
           if (data) {
-            thiz.$message('上传文件成功')
+            thiz.$message(this.$t('website.microStationDesign.uploadedFileSuccess'))
             this.$emit('upData_')
           } else {
-            thiz.$message('上传文件失败')
+            thiz.$message(this.$t('website.microStationDesign.uploadedFileFail'))
           }
           loading.close()
         })
@@ -154,10 +154,10 @@ export default {
         .then(res => {
           if (res.data) {
             console.log(res.data)
-            this.$message('上传文件成功')
+            this.$message(this.$t('website.microStationDesign.uploadedFileSuccess'))
             this.$emit('upData_')
           } else {
-            this.$message('上传文件失败')
+            this.$message(this.$t('website.microStationDesign.uploadedFileFail'))
           }
         })
         .catch(() => {})
@@ -171,7 +171,7 @@ export default {
         this.flag_ = true
       } else {
         this.flag_ = false
-        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        this.$message(this.$t('website.microStationDesign.pleaseUploadType'))
         return false
       }
     }
