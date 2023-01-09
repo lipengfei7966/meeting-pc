@@ -5,7 +5,7 @@
       <el-button size="small" type="primary" @click="materialSelection">{{$t('website.microStationDesign.selectMaterialLibrary')}}</el-button>
     </div>
     <div style="text-align: center; margin-top: 50px">
-      <el-upload :disabled="true" accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible_">
@@ -85,6 +85,7 @@ export default {
       console.log(param)
     },
     beforeUpload(param) {
+      debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {

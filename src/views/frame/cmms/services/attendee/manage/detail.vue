@@ -170,41 +170,45 @@
                 </div>
                 <!-- 省份 -->
                 <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
-                  <el-form-item :label="element.provinceTitle" prop="province">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
-                      <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                    </el-select>
-                  </el-form-item>
-                </div>
-                <!-- 城市 -->
-                <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
-                  <el-form-item :label="element.cityTitle" prop="city">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
-                      <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                    </el-select>
-                  </el-form-item>
-                </div>
-                <!-- 区县 -->
-                <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
-                  <el-form-item :label="element.countyTitle" prop="county">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
-                      <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                    </el-select>
-                  </el-form-item>
-                </div>
-                <!-- 详细地址 -->
-                <div v-if="element.detailedAdressISShow" class="addresItem">
-                  <el-form-item :label="element.detailedAdressTitle" prop="fullAddress">
-                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
-                  </el-form-item>
-                </div>
-                <!-- 邮编 -->
-                <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
-                  <el-form-item :label="element.postcodeTitle" prop="postcode">
-                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
-                  </el-form-item>
-                </div>
-              </div>
+                  <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.provinceTitle" prop="province">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
+                        <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
+                  <!-- 城市 -->
+                  <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
+                    <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
+                      <el-form-item :label="element.cityTitle" prop="city">
+                        <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                          <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </div>
+                    <!-- 区县 -->
+                    <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                      <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                        <el-form-item :label="element.countyTitle" prop="county">
+                          <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                            <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </div>
+                      <!-- 详细地址 -->
+                      <div v-if="element.detailedAdressISShow" class="addresItem">
+                        <el-form-item :label="element.detailedAdressTitle" prop="fullAddress">
+                          <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+                        </el-form-item>
+                      </div>
+                      <!-- 邮编 -->
+                      <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                        <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                          <el-form-item :label="element.postcodeTitle" prop="postcode">
+                            <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                          </el-form-item>
+                        </div>
+                      </div>
             </el-form-item>
 
             <el-form-item v-else :label="element.title" :prop="element.mapCode">
@@ -606,6 +610,7 @@ export default {
 
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur','change'] }])
                 this.setForm.nations = '86'
+                // this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
                 // 显示省份
@@ -1166,6 +1171,8 @@ export default {
         }
       }).then(res => {
         this.chinaProvinceList = res.data
+        // 表单配置查询
+        this.getEventInfo()
       })
     },
     // 证件类型切换
