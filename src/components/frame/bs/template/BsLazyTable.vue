@@ -26,7 +26,8 @@
     <u-table ref="singleTable" use-virtual :height='tableHeight' :key='key' :row-height="rowHeight" :pagination-show='false' border :show-summary='mainData.table.showSummary' :summary-method="getSummaries">
       <u-table-column fixed align='center' type="index" width="50" :label='$t("table.id")' />
       <template v-for="(col, index) in formThead">
-        <u-table-column :key="col.id" v-if='col.isShow' :resizable="col.resizable" v-bind='col' :show-overflow-tooltip="col.showOverflowTooltip" :sortable='mainData.table.sortable && col.sortable' :prop="col.prop" :label="$t(col.label)" :fixed="col.fixed" :width="col.width">
+        <u-table-column :key="col.id" v-if='col.isShow' :resizable="col.resizable" v-bind='col' :show-overflow-tooltip="col.showOverflowTooltip" :sortable='mainData.table.sortable && col.sortable' :prop="col.prop" :fixed="col.fixed" :width="col.width" :label=" $t(`count.${ $route.meta.title.replace('m', '' )}.${col.prop}`)">
+          <!-- :label='col.label'  :label=" $t(`count.${ $route.meta.title.replace('m', '' )}.${col.prop}`)" -->
           <template slot-scope='scope'>
             <span v-if='col.formatter'>{{ col.formatter(scope.row, scope.column, scope.row[col.prop], scope.$index) }}</span>
             <span v-else-if='!col.format'>{{ scope.row[col.prop] }}</span>
@@ -160,7 +161,7 @@ export default {
       this.tableCols.push(v)
     })
     this.formThead = this.tableCols
-
+    console.log(this.$route.meta,283)
     //  默认为true
     if (this.mainData.isColset === undefined) {
       this.$set(this.mainData, 'isColset', false)

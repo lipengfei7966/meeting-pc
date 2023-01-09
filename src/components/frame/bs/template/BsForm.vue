@@ -12,36 +12,20 @@
               <el-form-item v-if="f.props && f.props instanceof Array && f.props.length > 1" :required="Array.isArray(form.props) && Array.isArray(form.validate)" :label="$t(f.label)">
                 <el-row :gutter="0">
                   <el-col :span="11">
-                    <el-date-picker
-                      v-model="form.listQuery.data[f.props[0]]"
-                      v-bind="f.attrs"
-                      v-on="f.event"
-                      @change="
+                    <el-date-picker v-model="form.listQuery.data[f.props[0]]" v-bind="f.attrs" v-on="f.event" @change="
                         (date) => {
                           changeStartTime(date, f.attrs.pickEnd)
                         }
-                      "
-                      :picker-options="f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore"
-                      :type="f.type"
-                      :placeholder="$t('biz.placeholder.dateInput')"
-                    >
+                      " :picker-options="f.attrs.pickStart ? datePick[f.attrs.pickStart] : datePick.dateStartBefore" :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
                     </el-date-picker>
                   </el-col>
                   <el-col :span="2" align="center">~</el-col>
                   <el-col :span="11">
-                    <el-date-picker
-                      v-model="form.listQuery.data[f.props[1]]"
-                      v-bind="f.attrs"
-                      v-on="f.event"
-                      @change="
+                    <el-date-picker v-model="form.listQuery.data[f.props[1]]" v-bind="f.attrs" v-on="f.event" @change="
                         (date) => {
                           changeEndTime(date, f.attrs.pickStart)
                         }
-                      "
-                      :picker-options="f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore"
-                      :type="f.type"
-                      :placeholder="$t('biz.placeholder.dateInput')"
-                    >
+                      " :picker-options="f.attrs.pickEnd ? datePick[f.attrs.pickEnd] : datePick.dateEndBefore" :type="f.type" :placeholder="$t('biz.placeholder.dateInput')">
                     </el-date-picker>
                   </el-col>
                 </el-row>
