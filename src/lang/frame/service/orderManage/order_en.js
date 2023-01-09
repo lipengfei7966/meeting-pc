@@ -34,7 +34,50 @@ export default {
       trainNumber: 'Train number', // 车次
       seat: 'Seat', // 坐席
       carriage: 'Carriage', // 车厢
-      seatNumber: 'Seat number' // 座位号
+      seatNumber: 'Seat number', // 座位号
+      applicationForRefund: 'Application for refund', // 退票申请
+      sureRefund: 'Are you sure you want a refund?', // 您确认要退票吗？
+      refundExpected: 'Refund expected', // 预计退款
+      handlingCharge: 'Handling Charge', // 手续费用
+      ticket_Price: 'Ticket Price', // 车票票价
+      yuan: 'dollar', // 元
+      finalTransactionTime: 'The actual refund fee and refundable amount will be calculated according to the final transaction time.', // 实际核收退票费及应退票款将按最终交易时间计算。
+      confirm: 'Confirm', // 确定
+      paymentMethod: 'Payment Method', // 支付方式
+      payStatus: 'Pay Status', // 支付状态
+      typeOfTrip: 'Type of trip', // 出行类型
+      affiliatedCustomers: 'Affiliated Customers', // 所属客户
+      orderPlacer: 'Order Placer', // 下单人
+      flightInformation: 'Train/Flight Information', // 车次/航班信息
+      paymentAmount: 'Payment Amount', // 支付金额
+      quickOrder: 'Quick Order', // 快速订单
+      canceled: 'Canceled', // 已取消
+      flight_Information: 'Flight Information', // 航班信息
+      outwardVoyage: 'Outward Voyage', // 去程
+      backTracking: 'Back Tracking', // 返程
+      Start: '始', // 始
+      End: '终', // 终
+      haveMeal: 'Have a meal', // 有餐食
+      NoMeals: 'No meals', // 无餐食
+      airplanePassenger: 'Airplane Passenger', // 乘机人
+      shippingSpace: 'Shipping Space', // 舱位
+      discount: 'Discount', // 折扣
+      ordertracking: 'Order-tracking', // 订单跟踪
+      orderTotal: 'Total amount of the order', // 订单总金额
+      mechanicalConstruction: 'Mechanical Construction', // 机建
+      fuel: 'Fuel', // 燃油
+      serviceCharge: 'Service Charge', // 服务费
+      costUpgrade: 'Cost of upgrade', // 升舱费Z
+      cancellationCharge: 'Cancellation Charge', // 退票手续费
+      reschedulingFee: 'Rescheduling Fee', // 改期费
+      paymentTickets: 'Payment of tickets', // 出票费
+      refundRules: 'Refund and change rules', // 退改签票规则
+      finalRefundRules: 'The refund fee is subject to the final refund amount of the railway department', // 退票手续费以最终退款金额以铁路部门实退为准
+      noChargeTips: 'There is no charge for more than 8 days (including the same day) from the departure time', // 距发车时间8天（含当日）以上，不收手续费
+      paperTicketTips: 'If you have taken the paper ticket, please bring your valid ID to the train ticket window for refund', // 如已取纸质车票，请携带有效证件至火车票窗口办理退票
+      changeTips: 'If the date of ticket change or change after arrival is during the Spring Festival travel rush, the refund fee will be charged according to the standard of less than 24 hours before the departure time. The 2022 Spring Festival travel rush will last from Jan 21 to March 1', // 改签或变更到站后的车票乘车日期在春运期间的，退票时一律按开车时间前不足24小时标准核收退票费。2022年春运期间为1月21日至3月1日
+      refundSuccess: 'Refund Success', // 退票成功
+      orderType: 'Order Type' // 订单类型
     },
     payment: {
       pleaseSelect: 'Please Select', // 请选择

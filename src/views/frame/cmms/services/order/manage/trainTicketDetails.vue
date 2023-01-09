@@ -1,7 +1,7 @@
 <template>
   <div class="detailContainer">
     <div class="info">
-      <div class="baseInfo" style="width:70%;marginRight:10px">
+      <div class="baseInfo" style="width:78%;marginRight:10px">
         <commonSlot title="基础信息">
           <template slot="pro_refund">
             <div class="refundRule">
@@ -12,13 +12,13 @@
             <table border="1px" align="center" bordercolor="#d7d7d8" cellspacing="0px" style="width:100%">
               <tr>
                 <td class="tdTitle">订单号</td>
-                <td>{{ basicTrainInformation.orderNo ? basicTrainInformation.orderNo : '-' }}</td>
+                <td>{{ basicTrainInformation. externalOrderNumber ? basicTrainInformation. externalOrderNumber : '-' }}</td>
                 <td class="tdTitle">预定时间</td>
                 <td>{{ basicTrainInformation.orderTime ? basicTrainInformation.orderTime : '-' }}</td>
               </tr>
               <tr>
                 <td class="tdTitle">取票号</td>
-                <td>{{ tripInformationList[0].ticketNo ? tripInformationList[0].ticketNo : '-' }}</td>
+                <td>{{ basicTrainInformation.ticketNo ? basicTrainInformation.ticketNo : '-' }}</td>
                 <td class="tdTitle">联系人</td>
                 <td>{{ basicTrainInformation.contacts ? basicTrainInformation.contacts : '-' }}</td>
               </tr>
@@ -39,36 +39,75 @@
           </div>
         </commonSlot>
         <commonSlot title="车次信息">
-          <div class="transInfo">
+          <div class="transInfo" v-for="(item,index) in trainNumberInformationList" :key="index">
             <div class="transInfo_train">
-              <h2 class="transInfo_train_code">{{tripInformationList[0].trainNo != '' ? tripInformationList[0].trainNo : '--'}}</h2>
-              <div class="transInfo_train_in">{{trainNumberInformationList[0].ticketGate != '' ? trainNumberInformationList[0].ticketGate : '--'}}</div>
+              <h2 class="transInfo_train_code">{{item.trainNo != '' ? item.trainNo : '--'}}</h2>
+              <div class="transInfo_train_in">{{item.ticketGate != '' ? item.ticketGate : '--'}}</div>
             </div>
             <div class="transInfo_time">
               <div class="transInfo_time_start">
-                <h2 class="startTime">{{ trainNumberInformationList[0].fromTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{trainNumberInformationList[0].fromStationName}}</b>
+                <h2 class="startTime">{{ item.fromTime }}</h2>
+                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{item.fromStationName}}</b>
                   <el-tag>始</el-tag>
                 </div>
-                <div class="startDate">{{trainNumberInformationList[0].travelTime === undefined ? '--' :trainNumberInformationList[0].travelTime.split(' ')[0]}}</div>
+                <div class="startDate">{{item.travelTime === undefined ? '--' :item.travelTime.split(' ')[0]}}</div>
               </div>
               <div class="transInfo_time_center">
-                <div class="tripLengthTime">{{ trainNumberInformationList[0].useTime }}</div>
+                <div class="tripLengthTime">{{ item.useTime ? ChangeHourMinutestr(item.useTime) : '0h' }}</div>
                 <div class="Via">
                   <div class="leftLine"></div>
                   <div class="RightLine"></div>
-                  <div class="centerBox" style="cursor:pointer" @click="ViaHandle">经停站</div>
+                  <div class="centerBox" style="cursor:pointer" @click="ViaHandle(item)">经停站</div>
                 </div>
               </div>
               <div class="transInfo_time_end">
-                <h2 class="startTime">{{ trainNumberInformationList[0].toTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{trainNumberInformationList[0].toStationName}}</b>
+                <h2 class="startTime">{{ item.toTime }}</h2>
+                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{item.toStationName}}</b>
                   <el-tag type="danger">终</el-tag>
                 </div>
-                <div class="startDate">{{trainNumberInformationList[0].travelTime === undefined ? '--' :trainNumberInformationList[0].travelTime.split(' ')[0]}}</div>
+                <div class="startDate">{{item.travelTime === undefined ? '--' :item.travelTime.split(' ')[0]}}</div>
               </div>
             </div>
           </div>
+        </commonSlot>
+        <commonSlot title="行程信息">
+          <div class="airTravelTableContainer bs-new-container">
+            <el-table :data="tripInformationList" style="width: 100%" stripe border>
+              <el-table-column prop="passengerName" label="乘客" width="100">
+              </el-table-column>
+              <el-table-column prop="certificateType" label="乘客证件类型" width="100">
+              </el-table-column>
+              <el-table-column prop="certificateNumber" label="乘客证件号" width="100">
+              </el-table-column>
+              <el-table-column prop="trainNo" label="车次" width="100">
+              </el-table-column>
+              <el-table-column prop="seatName" label="坐席" width="100">
+              </el-table-column>
+              <el-table-column prop="trainBox" label="车厢" width="100">
+              </el-table-column>
+              <el-table-column prop="seatNumber" label="座位号" width="100">
+              </el-table-column>
+              <el-table-column prop="orderStatus" label="订单状态" width="100">
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.orderStatus === '1001'" :type="scope.row.orderStatus === '101' ? 'danger' : ''">{{scope.row.orderStatus}}</el-tag>
+                  <el-tag v-if="scope.row.orderStatus === '1004'" :type="scope.row.orderStatus === '102' ? 'success' : ''">{{scope.row.orderStatus}}</el-tag>
+                  <el-tag v-if="scope.row.orderStatus === '1006'" :type="scope.row.orderStatus === '103' ? 'info' : ''">{{scope.row.orderStatus}}</el-tag>
+                  <el-tag v-if="scope.row.orderStatus !== '1001' && scope.row.orderStatus !== '1004' && scope.row.orderStatus !== '1006'">{{scope.row.orderStatus}}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column fixed="right" label="操作" width="100">
+                <template slot-scope="scope">
+                  <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
+                            改签
+                        </el-button> -->
+                  <el-button type="text" size="small" :disabled="!(fundTicket.includes(scope.row.orderStatus))" @click="handleRemoveClick(scope.row)">退票</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+
+          </div>
+        </commonSlot>
+        <commonSlot title="订单跟踪">
         </commonSlot>
       </div>
       <div class="payDetail">
@@ -77,10 +116,10 @@
           <div class="moneyDetail">
             <div class="allTotal">
               <h3>订单总金额</h3>
-              <span>￥{{ (paymentInformationDto.fare * tripInformationList.length) }}</span>
+              <span>¥{{ costDetailInfo.totalAmountPaid ? costDetailInfo.totalAmountPaid : 0 }}</span>
             </div>
             <div class="jine">
-              <h3>{{ trainNumberInformationList[0].fromCityName }}-{{trainNumberInformationList[0].toCityName}}
+              <h3>{{ costDetailInfo.fromStationName }}-{{costDetailInfo.toStationName}}
               </h3>
               <div class="smallRend">
                 <div class="leftName">出票价</div>
@@ -107,45 +146,7 @@
         </div>
       </div>
     </div>
-    <commonSlot title="行程信息">
-      <div class="airTravelTableContainer bs-new-container">
-        <el-table :data="tripInformationList" style="width: 100%" stripe border>
-          <el-table-column prop="passengerName" label="乘客" width="100">
-          </el-table-column>
-          <el-table-column prop="certificateType" label="乘客证件类型" width="100">
-          </el-table-column>
-          <el-table-column prop="certificateNumber" label="乘客证件号" width="100">
-          </el-table-column>
-          <el-table-column prop="trainNo" label="车次" width="100">
-          </el-table-column>
-          <el-table-column prop="seatName" label="坐席" width="100">
-          </el-table-column>
-          <el-table-column prop="trainBox" label="车厢" width="100">
-          </el-table-column>
-          <el-table-column prop="seatNumber" label="座位号" width="100">
-          </el-table-column>
-          <el-table-column prop="orderStatus" label="订单状态" width="100">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.orderStatus === '101'" :type="scope.row.orderStatus === '101' ? 'danger' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
-              <el-tag v-if="scope.row.orderStatus === '102'" :type="scope.row.orderStatus === '102' ? 'success' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
-              <el-tag v-if="scope.row.orderStatus === '103'" :type="scope.row.orderStatus === '103' ? 'info' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
-              <el-tag v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" label="操作" width="100">
-            <template slot-scope="scope">
-              <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
-                        改签
-                    </el-button> -->
-              <el-button type="text" size="small" :disabled="!(fundTicket.includes(scope.row.orderStatus))" @click="handleRemoveClick(scope.row)">退票</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
 
-      </div>
-    </commonSlot>
-    <commonSlot title="订单跟踪">
-    </commonSlot>
     <el-dialog title="退票规则" :visible.sync="refundVisible" width="50%" center>
       <div class="centerBox">
         <p>* {{ baggageText }}</p>
@@ -248,7 +249,7 @@ export default {
                 contacts: '',
                 externalOrderNumber: '',
                 orderNo: '',
-                orderStatus: '' || this.$route.params.orderStatus,
+                orderStatus: '',
                 orderTime: ''
             },// 火车票基本信息
             paymentInformationDto: {},// 火车票支付信息
@@ -280,6 +281,8 @@ export default {
             seatTypeArr: [],
             certificateTypeFamtter:{},
             certificateTypeArr:[],
+            ticketStatussArr:[],
+            ticketStatusFamtter:{},
             centerDialogVisible: false,
             refundAmount: 0,// 预估退票金额
             serviceFee: 0,// 手续费
@@ -290,7 +293,6 @@ export default {
     created () {
         this.listItemFn()
         this.orderCodeFn()
-        this.serviceFee = this.$route.params.serviceFee
         this.trainDetailFn()
     },
     mounted () { },
@@ -304,6 +306,15 @@ export default {
                     var value = item.dictItemName
                     this.orderStatusFamtter[key] = value
                     this.orderStatussArr.push([key, value])
+                }
+            })
+            listItem('TICKET_STATUS').then(res => {
+                // console.log(res, '获取字典码-火车票状态')
+                for (const item of res.data) {
+                    var key = item.dictItemVal
+                    var value = item.dictItemName
+                    this.ticketStatusFamtter[key] = value
+                    this.ticketStatussArr.push([key, value])
                 }
             })
             listItem('PAY_TYPE').then(res => {
@@ -348,33 +359,24 @@ export default {
                 this.tripInformationList.forEach(v => {
                     v.seatName = this.seatTypeFamtter[v.seatName]
                     v.certificateType = this.certificateTypeFamtter[v.certificateType]
+                    v.orderStatus = this.ticketStatusFamtter[v.orderStatus]
                 })
-                console.log(res.data.trainNumberInformationList, 'res.data.trainNumberInformationList')
+                console.log(this.tripInformationList, 'this.tripInformationList')
             })
         },
-        // 机票订单详情数据查询
-        airDetailFn () {
-            this.orderCode = this.$route.params.orderCode
-            airDetail(this.orderCode).then(res => {
-                console.log(res, '机票详情')
-                this.orderDetailInfo = res.data.orderDetailInfo
-                this.costDetailInfo = res.data.costDetailInfo
-                this.flightDetailInfoList = res.data.flightDetailInfoList
-                this.tripInfoList = res.data.tripInfoList
-                // ------航班信息格式化处理---------
-            })
+        ChangeHourMinutestr(str) {
+          if (str !== '0' && str !== '' && str !== null) {
+            return (
+              (Math.floor(str / 60)).toString()) + 'h' + ((str % 60).toString()) + 'm'
+          } else {
+            return ''
+          }
         },
-        ViaHandle () {
+        ViaHandle (info) {
             this.dialogTableVisible = true
-            let trainDate=this.trainNumberInformationList[0].travelTime.split(' ')[0]
-            console.log(trainDate,'trainDatetrainDate');
+            let trainDate=info.travelTime.split(' ')[0]
             let queryVia = {
-                // arriveStation: this.trainNumberInformationList[0].toStationName,
-                // fromStation: this.trainNumberInformationList[0].fromStationName,
-                // onlyLowPrice: '',
-                trainCode: this.tripInformationList[0].trainNo,
-                // trainSeatType: this.tripInformationList[0].seatName,
-                // trainType: this.trainNumberInformationList[0].trainType,
+                trainCode: info.trainNo,
                 trainDate: trainDate
             }
             trainVia(queryVia).then(res => {
@@ -402,8 +404,6 @@ export default {
             return ''
         },
         stationTimeFamtter (arriveTime, startTime) {
-            // console.log(new Date(arriveTime).getTime(), '到达时间')
-            // console.log(new Date(startTime).getTime(), '起始时间')
             const arrHour = arriveTime.split(':')[0] - 0
             const arrMin = arriveTime.split(':')[1] - 0
             const staHour = startTime.split(':')[0] - 0
@@ -674,6 +674,7 @@ export default {
 .payDetail {
   flex: 1;
   width: 100%;
+  height: 400px;
   // box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.08);
   border-radius: 10px 10px 10px 10px;
   background-color: #fff;

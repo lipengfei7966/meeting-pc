@@ -1,54 +1,54 @@
 <template>
   <div class="detailContainer">
     <div class="info">
-      <div class="baseInfo" style="width:70%;marginRight:10px">
-        <commonSlot title="基础信息">
+      <div class="baseInfo" style="width:78%;marginRight:10px">
+        <commonSlot :title="$t('order.orderManagement.basicInformatio')">
           <template slot="pro_refund">
             <div class="refundRule">
-              <el-link class="leftRules" type="primary" underline @click="refundVisibleFn">退票规则</el-link>
-              <el-link type="primary" underline @click="refundVisibleFn">改签规则</el-link>
+              <el-link class="leftRules" type="primary" underline @click="refundVisibleFn">{{$t('order.orderManagement.refundRule')}}</el-link>
+              <el-link type="primary" underline @click="refundVisibleFn">{{$t('order.orderManagement.changeOfTicketRules')}}</el-link>
             </div>
           </template>
           <div class="info_train_container">
             <table border="1px" align="center" bordercolor="#d7d7d8" cellspacing="0px" style="width:100%">
               <tr>
-                <td class="tdTitle">订单号</td>
+                <td class="tdTitle">{{$t('order.orderManagement.orderNumber')}}</td>
                 <td>{{ orderDetailInfo.orderCode ? orderDetailInfo.orderCode : '-' }}</td>
-                <td class="tdTitle">预定时间</td>
+                <td class="tdTitle">{{$t('order.orderManagement.reservationTime')}}</td>
                 <td>{{ orderDetailInfo.orderTime ? orderDetailInfo.orderTime : '-' }}</td>
               </tr>
               <tr>
-                <td class="tdTitle">订单状态</td>
+                <td class="tdTitle">{{$t('order.orderManagement.orderStatus')}}</td>
                 <td>{{ orderDetailInfo.orderStatus? orderStatusFamtter[orderDetailInfo.orderStatus] : '-'}}</td>
-                <td class="tdTitle">联系人</td>
+                <td class="tdTitle">{{$t('order.orderManagement.contactPerson')}}</td>
                 <td>{{ orderDetailInfo.contactPerson ? orderDetailInfo.contactPerson : '-' }}</td>
               </tr>
               <tr>
-                <td class="tdTitle">联系人电话</td>
+                <td class="tdTitle">{{$t('order.orderManagement.contactPhone')}}</td>
                 <td>{{ orderDetailInfo.contactPhone ?orderDetailInfo.contactPhone : '-'}}</td>
-                <td class="tdTitle">备注</td>
+                <td class="tdTitle">{{$t('order.orderManagement.remarks')}}</td>
                 <td>{{ orderDetailInfo.remark ? orderDetailInfo.remark : '-' }}</td>
               </tr>
             </table>
           </div>
         </commonSlot>
         <commonSlot title="航班信息">
-          <div class=" transInfo">
+          <div class=" transInfo" v-for="(item,index) in flightDetailInfoList" :key="index">
             <div class="transInfo_train">
-              <div class="tripType">{{ flightDetailInfoList[0].tripType.split(',').length >= 2 ? '双程' :flightDetailInfoList[0].tripType.split(',').length === 1 ? '单程' : '--'}}</div>
-              <h2 class="transInfo_train_code">{{flightDetailInfoList[0].carrierAirlines != '' ? flightDetailInfoList[0].carrierAirlines: '--'}}</h2>
-              <div class="transInfo_train_in">{{flightDetailInfoList[0].flightNo != '' ?flightDetailInfoList[0].flightNo : '--'}}</div>
+              <div class="tripType">{{ item.tripType == 0 ? $t('order.orderManagement.outwardVoyage') : $t('order.orderManagement.backTracking')}}</div>
+              <h2 class="transInfo_train_code">{{item.carrierAirlines != '' ? item.carrierAirlines: '--'}}</h2>
+              <div class="transInfo_train_in">{{item.flightNo != '' ?item.flightNo : '--'}}</div>
             </div>
             <div class="transInfo_time">
               <div class="transInfo_time_start">
-                <h2 class="startTime">{{ flightDetailInfoList[0].depTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{flightDetailInfoList[0].dep}}</b>
-                  <el-tag>始</el-tag>
+                <h2 class="startTime">{{ item.depTime }}</h2>
+                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{item.dep}}</b>
+                  <el-tag>{{$t('order.orderManagement.Start')}}</el-tag>
                 </div>
-                <div class="startDate">{{flightDetailInfoList[0].depDate === undefined ? '--' :flightDetailInfoList[0].depDate.split(' ')[0]}}</div>
+                <div class="startDate">{{item.depDate === undefined ? '--' :item.depDate.split(' ')[0]}}</div>
               </div>
               <div class="transInfo_time_center">
-                <div class="tripLengthTime">{{flightDetailInfoList[0].timeLong ? flightDetailInfoList[0].timeLong : '--'}}</div>
+                <div class="tripLengthTime">{{item.timeLong ? ChangeHourMinutestr(item.timeLong) : '--'}}</div>
                 <div class="Via">
                   <div class="leftLine"></div>
                   <div class="RightLine"></div>
@@ -58,34 +58,34 @@
                 </div>
               </div>
               <div class="transInfo_time_end">
-                <h2 class="startTime">{{ flightDetailInfoList[0].arrTime }}</h2>
-                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{flightDetailInfoList[0].arr}}</b>
-                  <el-tag type="danger">终</el-tag>
+                <h2 class="startTime">{{ item.arrTime }}</h2>
+                <div class="startStrain"><b style="font-size: 14px;margin-right:10px">{{item.arr}}</b>
+                  <el-tag type="danger">{{$t('order.orderManagement.End')}}</el-tag>
                 </div>
-                <div class="startDate">{{flightDetailInfoList[0].arrDate === undefined ? '--' :flightDetailInfoList[0].arrDate.split(' ')[0]}}</div>
+                <div class="startDate">{{item.arrDate === undefined ? '--' :item.arrDate.split(' ')[0]}}</div>
               </div>
             </div>
             <div class="meal">
-              <div class="planModel">{{ flightDetailInfoList[0].planModel != '' ?flightDetailInfoList[0].planModel: '--' }}</div>
-              <div class="isMeal"> {{ flightDetailInfoList[0].isMeal != '1' ? '有餐食' :flightDetailInfoList[0].isMeal != '0' ? '无餐食' : '--'}}</div>
+              <div class="planModel">{{ item.planModel != '' ?item.planModel: '--' }}</div>
+              <div class="isMeal"> {{ item.isMeal != '1' ? $t('order.orderManagement.haveMeal') :item.isMeal != '0' ? $t('order.orderManagement.NoMeals') : '--'}}</div>
             </div>
           </div>
 
         </commonSlot>
-        <commonSlot title="行程信息">
+        <commonSlot :title="$t('order.orderManagement.tripInformation')">
           <div class="airTravelTableContainer bs-new-container">
             <el-table :data="tripInfoList" style="width: 100%" stripe border>
-              <el-table-column prop="passengerName" label="乘机人" width="100">
+              <el-table-column prop="passengerName" :label="$t('order.orderManagement.airplanePassenger')" width="100">
               </el-table-column>
-              <el-table-column prop="certificateType" label="乘客证件类型" width="100">
+              <el-table-column prop="certificateType" :label="$t('order.orderManagement.passengerDocumentType')" width="100">
               </el-table-column>
-              <el-table-column prop="certificateNumber" label="乘客证件号" width="100">
+              <el-table-column prop="certificateNumber" :label="$t('order.orderManagement.passengerIDNumber')" width="100">
               </el-table-column>
-              <el-table-column prop="cabinName" label="舱位" width="100">
+              <el-table-column prop="cabinName" :label="$t('order.orderManagement.shippingSpace')" width="100">
               </el-table-column>
-              <el-table-column prop="cabinRate" label="折扣" width="100">
+              <el-table-column prop="cabinRate" :label="$t('order.orderManagement.discount')" width="100">
               </el-table-column>
-              <el-table-column prop="orderStatus" label="订单状态" width="100">
+              <el-table-column prop="orderStatus" :label="$t('order.orderManagement.orderStatus')" width="100">
                 <template slot-scope="scope">
                   <el-tag v-if="scope.row.orderStatus === '101'" :type="scope.row.orderStatus === '101' ? 'danger' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
                   <el-tag v-if="scope.row.orderStatus === '102'" :type="scope.row.orderStatus === '102' ? 'success' : ''">{{orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
@@ -93,7 +93,7 @@
                   <el-tag v-if="scope.row.orderStatus !== '101' && scope.row.orderStatus !== '102' && scope.row.orderStatus !== '103'">{{ orderStatusFamtter[scope.row.orderStatus]}}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column fixed="right" label="操作" width="100">
+              <el-table-column fixed="right" :label="$t('order.orderManagement.operation')" width="100">
                 <template slot-scope="scope">
                   <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">改签</el-button> -->
                   <el-button type="text" size="small" :disabled="!(fundTicket.includes(scope.row.orderStatus))" @click="handleRemoveClick(scope.row)">退票</el-button>
@@ -103,7 +103,7 @@
 
           </div>
         </commonSlot>
-        <commonSlot title="订单跟踪">
+        <commonSlot :title="$t('order.orderManagement.ordertracking')">
         </commonSlot>
       </div>
       <div class="payDetail">
@@ -115,7 +115,7 @@
               <span>￥{{ costDetailInfo.orderAmount }}</span>
             </div>
             <div class="jine">
-              <h3>{{ flightDetailInfoList[0].dep }}-{{ flightDetailInfoList[0].arr }}</h3>
+              <h3>{{ costDetailInfo.dep }}-{{ costDetailInfo.arr }}</h3>
               <div class="smallRend">
                 <div class="leftName">机建</div>
                 <div class="RightMoney">￥{{ costDetailInfo.macTax }} X{{ tripInfoList.length }}</div>
@@ -286,7 +286,6 @@ export default {
     created () {
         this.listItemFn()
         this.orderCodeFn()
-        this.serviceFee = this.$route.params.serviceFee
         this.orderStatus = this.$route.params.orderStatus
         this.airDetailFn()
     },
@@ -313,23 +312,15 @@ export default {
                 }
             })
         },
-        orderCodeFn () { this.orderCode = this.$route.params.orderCode },
-        // 火车票订单详情数据查询
-        trainDetailFn () {
-            this.orderCode = this.$route.params.orderCode
-            trainDetail(this.orderCode).then(res => {
-                console.log(res, '火车票详情')
-                this.orderDetailInfo = res.data.orderDetailInfo
-                this.paymentInformationDto = res.data.paymentInformationDto
-                this.trainNumberInformationList = res.data.trainNumberInformationList
-                this.tripInformationList = res.data.tripInformationList
-                console.log(res.data.trainNumberInformationList, 'res.data.trainNumberInformationList')
-                // ---------------行程信息格式化处理---------------------------
-                this.tripInformationList.forEach(res => {
-                    res.orderStatus = this.$route.params.orderStatus
-                })
-            })
+        ChangeHourMinutestr(str) {
+          if (str !== '0' && str !== '' && str !== null) {
+            return (
+              (Math.floor(str / 60)).toString()) + 'h' + ((str % 60).toString()) + 'm'
+          } else {
+            return ''
+          }
         },
+        orderCodeFn () { this.orderCode = this.$route.params.orderCode },
         // 机票订单详情数据查询
         airDetailFn () {
             this.orderCode = this.$route.params.orderCode
@@ -340,19 +331,19 @@ export default {
                 this.flightDetailInfoList = res.data.flightDetailInfoList
                 this.tripInfoList = res.data.tripInfoList
                 // ------航班信息格式化处理---------
-                // this.tripInfoList.forEach(res => {
-                //     res.orderStatus = this.orderDetailInfo.orderStatus
-                // })
-                // this.refundFn()
+                this.tripInfoList.forEach(v => {
+                  v.cabinRate = (v.cabinRate / 10) == 10 ? '全价' : (v.cabinRate / 10) + '折'
+                })
             })
         },
         refundFn () {
+          let driveDetailRefund=this.flightDetailInfoList[this.flightDetailInfoList.length-1]
             let queryRefund = {
-                airline: this.flightDetailInfoList[0].airlineCompanyCode || '',
-                cabin: this.tripInfoList[0].cabin || '',
-                dateTime: this.flightDetailInfoList[0].depTime || '',
-                des: this.flightDetailInfoList[0].arr || '',
-                ori: this.flightDetailInfoList[0].dep || '',
+                airline: driveDetailRefund.airlineCompanyCode || '',
+                cabin: driveDetailRefund.cabin || '',
+                dateTime: driveDetailRefund.depTime || '',
+                des: this.costDetailInfo.arr || '',
+                ori: this.costDetailInfo.dep || '',
                 price: this.costDetailInfo.ticketAmount || 0
             }
             refundUpdateRule(queryRefund).then(res => {
@@ -380,7 +371,6 @@ export default {
             this.theRow = row
             this.reissueRefundPrice(row)
             this.refundFn()
-
             this.theorderCode = this.$route.params.orderCode
         },
         // 退改票信息
