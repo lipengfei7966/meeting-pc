@@ -177,39 +177,39 @@
                       </el-select>
                     </el-form-item>
                   </div>
-                  <!-- 城市 -->
+                </div>
+                <!-- 城市 -->
+                <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
-                    <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
-                      <el-form-item :label="element.cityTitle" prop="city">
-                        <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
-                          <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                    <!-- 区县 -->
-                    <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
-                      <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
-                        <el-form-item :label="element.countyTitle" prop="county">
-                          <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
-                            <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                          </el-select>
-                        </el-form-item>
-                      </div>
-                      <!-- 详细地址 -->
-                      <div v-if="element.detailedAdressISShow" class="addresItem">
-                        <el-form-item :label="element.detailedAdressTitle" prop="fullAddress">
-                          <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
-                        </el-form-item>
-                      </div>
-                      <!-- 邮编 -->
-                      <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
-                        <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
-                          <el-form-item :label="element.postcodeTitle" prop="postcode">
-                            <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
-                          </el-form-item>
-                        </div>
-                      </div>
-                    </div>
+                    <el-form-item :label="element.cityTitle" prop="city">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                        <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
+                </div>
+                <!-- 区县 -->
+                <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                  <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.countyTitle" prop="county">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                        <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
+                </div>
+                <!-- 详细地址 -->
+                <div v-if="element.detailedAdressISShow" class="addresItem">
+                  <el-form-item :label="element.detailedAdressTitle" prop="fullAddress">
+                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+                  </el-form-item>
+                </div>
+                <!-- 邮编 -->
+                <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                  <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.postcodeTitle" prop="postcode">
+                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                    </el-form-item>
                   </div>
                 </div>
               </div>
@@ -425,7 +425,7 @@ export default {
         certificateType: '', // 证件类型
         certificate: '', // 证件号
         photo: '', // 照片
-        nations: '86', // 国家
+        nations: '', // 国家
         province: '', // 省份
         city: '', //城市
         county: '', // 区/县
@@ -515,11 +515,10 @@ export default {
       this.isUpdate = true
     }
     // this.$route.params.type   add--新增  update--修改  view--查看
-    // 获取地址级联选项
-    this.getComCityTreeList()
-
     // 国际编码字典项查询
     this.getCountryCode()
+    // 获取地址级联选项
+
     // // 表单配置查询
     // this.getEventInfo()
 
@@ -780,15 +779,16 @@ export default {
         //  })
           // console.log(this.$t('datadict.certificateType'));
         // }
-        if(this.setForm.nations){
-         let cardCode = this.$t('datadict.countryCode')
-         cardCode.forEach(item=>{
-          if(item.value == this.setForm.nations){
-            this.setForm.nations = item.value
-          }
-         })
+        // if(this.setForm.nations){
+        //   debugger
+        //  let cardCode = this.$t('datadict.countryCode')
+        //  cardCode.forEach(item=>{
+        //   if(item.value == this.setForm.nations){
+        //     this.setForm.nations = item.label
+        //   }
+        //  })
           // console.log(this.$t('datadict.certificateType'));
-        }
+        // }
         // console.log(this.setForm);
       })
     },
@@ -1313,6 +1313,7 @@ export default {
         //
         return item.value != '852' && item.value != '853' && item.value != '886'
       })
+      this.getComCityTreeList()
     },
 
     // 返回上级
