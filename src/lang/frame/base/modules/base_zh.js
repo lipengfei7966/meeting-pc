@@ -196,6 +196,7 @@ export default {
       choose: '选择',
       close: '关闭',
       reset: '重置',
+      extend: '查询扩展',
       open: '展开',
       stow: '收起',
       expand: '展开',

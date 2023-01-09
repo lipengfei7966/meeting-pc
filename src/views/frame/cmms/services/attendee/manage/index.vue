@@ -198,7 +198,7 @@ export default {
             permitName: ['audit'],
             url: '/api/register/signupContact/auditing',
             successMsgInfo: this.$t('attendee.AuditApprovedMsg'),
-            i18n: this.$t('attendee.ApprovedMsg'),
+            i18n: 'attendee.ApprovedMsg',
             getParam: () => {
               return {
                 id: this.$refs.bsTable.currentRow.id,
@@ -211,7 +211,7 @@ export default {
             permitName: ['audit'],
             url: '/api/register/signupContact/auditing',
             successMsgInfo: this.$t('attendee.AuditApprovedMsg'),
-            i18n: this.$t('attendee.FailedApprovedMsg'),
+            i18n: 'attendee.FailedApprovedMsg',
             getParam: () => {
               return {
                 id: this.$refs.bsTable.currentRow.id,
