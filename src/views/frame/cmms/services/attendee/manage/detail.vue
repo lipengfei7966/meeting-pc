@@ -228,7 +228,7 @@
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
-                    <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+                    <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <br />
                   <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
@@ -395,6 +395,7 @@ export default {
   name: 'attendeeEdit',
   data() {
     return {
+      theCertificateType:[],
       setInfoList: [], // 选中的配置信息列表
       baseInfoList: [], // 基础信息
       customInfoList: [], // 自定义信息列表
@@ -540,6 +541,7 @@ export default {
       }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
+          console.log(JSON.parse(response.data.json),'JSON.parse(response.data.json)');
         } else {
           this.setInfoList = []
         }
@@ -676,7 +678,17 @@ export default {
               this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: ['blur','change'] })
             }
           }
-
+          if (item.systemName == '证件') {
+            let cardCode = this.$t('datadict.certificateType')
+            this.theCertificateType=[]
+            item.options.forEach(v=>{
+              cardCode.forEach(i=>{
+                if(i.label == v){
+                  this.theCertificateType.push(i)
+                }
+              })
+            })
+          }
           if (item.systemName == '分页') {
             this.pagingCount++
           }
@@ -758,21 +770,21 @@ export default {
             this.spareMobileIntCodeChange(this.setForm.spareMobileIntCode, element)
           }
         })
-        // debugger
-        if(this.setForm.certificateType){
-         let cardCode = this.$t('datadict.certificateType')
-         cardCode.forEach(item=>{
-          if(item.value == this.setForm.certificateType){
-            this.setForm.certificateType = item.label
-          }
-         })
+        // if(this.setForm.certificateType){
+        //  let cardCode = this.$t('datadict.certificateType')
+        //  console.log(cardCode,'cardCode');
+        //  cardCode.forEach(item=>{
+        //   if(item.value == this.setForm.certificateType){
+        //     this.setForm.certificateType = item.value
+        //   }
+        //  })
           // console.log(this.$t('datadict.certificateType'));
-        }
+        // }
         if(this.setForm.nations){
          let cardCode = this.$t('datadict.countryCode')
          cardCode.forEach(item=>{
           if(item.value == this.setForm.nations){
-            this.setForm.nations = item.label
+            this.setForm.nations = item.value
           }
          })
           // console.log(this.$t('datadict.certificateType'));
@@ -813,15 +825,15 @@ export default {
               }
             }
           }
-          debugger
-          if(this.setForm.certificateType){
-             let cardCode = this.$t('datadict.certificateType')
-         cardCode.forEach(item=>{
-          if(item.label == this.setForm.certificateType){
-            this.setForm.certificateType = item.value
-          }
-         })
-          }
+          // debugger
+          // if(this.setForm.certificateType){
+            //  let cardCode = this.$t('datadict.certificateType')
+            //   cardCode.forEach(item=>{
+            //     if(item.value == this.setForm.certificateType){
+            //       this.setForm.certificateType = item.label
+            //     }
+            //   })
+          // }
           if(this.setForm.nations){
              let cardCode = this.$t('datadict.countryCode')
          cardCode.forEach(item=>{
@@ -993,7 +1005,7 @@ export default {
       this.photoName = res.fileName
     },
     fileUploadSuccess(res, file) {
-      console.log(this.setFormFile)
+      console.log(this.setFormFile,"???")
     },
      beforeAvatarUpload(file, element) {
       // fileTypeLimit // 是否限制文件类型
@@ -1090,6 +1102,7 @@ export default {
                 this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
                 return false
             }
+            // debugger
             return isAllowUpload
         },
         // 自定义上传文件
@@ -1110,6 +1123,7 @@ export default {
                 data: formData
             }).then(data => {
                 if (data.status) {
+                  debugger
                     this.$message('上传文件成功')
                     this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
 
@@ -1182,7 +1196,7 @@ export default {
     // 证件类型切换
     certificateTypeChange(val) {
       this.setForm.certificate = ''
-      if (val == '居民身份证') {
+      if (val == '二代身份证') {
         this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
         // this.$set(this.rules, 'certificate', [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },{ validator: validateIDcard, trigger: "blur"}])
       } else {
