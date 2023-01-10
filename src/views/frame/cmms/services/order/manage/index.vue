@@ -75,7 +75,6 @@
 
 <script>
 import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefund, comfirmRefund, fightReissueRefund } from './utils/api'
-import axios from 'axios'
 export default {
   name: 'orderManagement',
   data() {
@@ -149,7 +148,7 @@ export default {
             ]
           },
           {
-            label: '订单状态',
+            label: this.$t('order.orderManagement.orderStatus'),
             prop: 'orderStatus',
             element: 'base-select',
             list: this.$t('datadict.basicOrderStatus'),
@@ -159,7 +158,7 @@ export default {
             }
           },
           {
-            label: '差旅类型',
+            label: this.$t('order.orderManagement.travelType'),
             prop: 'businessType',
             element: 'base-select',
             list: this.$t('datadict.travelType'),
@@ -169,7 +168,7 @@ export default {
             }
           },
           {
-            label: '所属客户',
+            label: this.$t('order.orderManagement.affiliatedCustomers'),
             prop: 'customerName',
             element: 'input-validate',
             attrs: {
@@ -178,7 +177,7 @@ export default {
             }
           },
           {
-            label: '订单号',
+            label: this.$t('order.orderManagement.orderNumber'),
             prop: 'orderNumber',
             element: 'input-validate',
             attrs: {
@@ -188,7 +187,7 @@ export default {
           },
           {
             type: 'date',
-            label: '下单时间',
+            label: this.$t('order.orderManagement.orderTime'),
             props: ['startTime', 'endTime'],
             attrs: {
               clearable: true,
@@ -197,18 +196,18 @@ export default {
             },
             default: ['', '']
           },
+          // {
+          //   label: '差旅类型',
+          //   prop: 'businessType',
+          //   element: 'base-select',
+          //   list: this.$t('datadict.travelType'),
+          //   attrs: {
+          //     isDefault: true,
+          //     clearable: false
+          //   }
+          // },
           {
-            label: '差旅类型',
-            prop: 'businessType',
-            element: 'base-select',
-            list: this.$t('datadict.travelType'),
-            attrs: {
-              isDefault: true,
-              clearable: false
-            }
-          },
-          {
-            label: '订单类型',
+            label: this.$t('order.orderManagement.orderType'),
             prop: 'orderType',
             element: 'base-select',
             list: this.$t('datadict.orderType'),
@@ -218,7 +217,7 @@ export default {
             }
           },
           {
-            label: '乘客',
+            label: this.$t('order.orderManagement.passenger'),
             prop: 'contactPerson',
             element: 'input-validate',
             attrs: {
@@ -227,7 +226,7 @@ export default {
             }
           },
           {
-            label: '支付方式',
+            label: this.$t('order.orderManagement.paymentMethod'),
             prop: 'payType',
             element: 'base-select',
             list: this.$t('datadict.payType'),
@@ -237,7 +236,7 @@ export default {
             }
           },
           {
-            label: '支付状态',
+            label: this.$t('order.orderManagement.payStatus'),
             prop: 'payStatus',
             element: 'base-select',
             list: this.$t('datadict.payStatus'),
@@ -247,7 +246,7 @@ export default {
             }
           },
           {
-            label: '出行类型',
+            label: this.$t('order.orderManagement.typeOfTrip'),
             prop: 'tripType',
             element: 'base-select',
             list: this.$t('datadict.tripType'),
@@ -257,7 +256,7 @@ export default {
             }
           },
           {
-            label: '票号',
+            label: this.$t('order.orderManagement.ticketNumber'),
             prop: 'ticketNo',
             element: 'input-validate',
             attrs: {
@@ -266,7 +265,7 @@ export default {
             }
           },
           {
-            label: '联系人电话',
+            label: this.$t('order.orderManagement.contactPhone'),
             prop: 'contactPhone',
             element: 'input-validate',
             attrs: {
@@ -294,7 +293,7 @@ export default {
           // showCheckbox: true,
           cols: [
             {
-              label: '订单状态',
+              label: this.$t('order.orderManagement.orderStatus'),
               prop: 'orderStatus',
               sortProp: 'funcUser.name',
               width: '100',
@@ -303,23 +302,23 @@ export default {
               }
             },
             {
-              label: '所属客户',
+              label: this.$t('order.orderManagement.affiliatedCustomers'),
               prop: 'customerName',
               width: '150'
             },
             {
-              label: '订单号',
+              label: this.$t('order.orderManagement.orderNumber'),
               prop: 'orderNumber',
               width: '120'
             },
             {
-              label: '下单时间',
+              label: this.$t('order.orderManagement.orderTime'),
               prop: 'updateDate',
               width: '160',
               align: 'center'
             },
             {
-              label: '差旅类型',
+              label: this.$t('order.orderManagement.travelType'),
               prop: 'travelType',
               width: '120',
               align: 'center',
@@ -328,7 +327,7 @@ export default {
               }
             },
             {
-              label: '订单类型',
+              label: this.$t('order.orderManagement.orderType'),
               prop: 'orderType',
               width: '100',
               align: 'center',
@@ -337,12 +336,12 @@ export default {
               }
             },
             {
-              label: '下单人',
-              prop: 'createUser',
+              label: this.$t('order.orderManagement.orderPlacer'),
+              prop: 'optEmployeeName',
               width: '120'
             },
             {
-              label: '支付方式',
+              label: this.$t('order.orderManagement.paymentMethod'),
               prop: 'payType',
               width: '120',
               format: {
@@ -350,7 +349,7 @@ export default {
               }
             },
             {
-              label: '支付状态',
+              label: this.$t('order.orderManagement.payStatus'),
               prop: 'payStatus',
               width: '120',
               format: {
@@ -358,7 +357,7 @@ export default {
               }
             },
             {
-              label: '出行类型',
+              label: this.$t('order.orderManagement.typeOfTrip'),
               prop: 'tripType',
               width: '120',
               format: {
@@ -366,27 +365,27 @@ export default {
               }
             },
             {
-              label: '联系人电话',
+              label: this.$t('order.orderManagement.contactPhone'),
               prop: 'contactPhone',
               width: '120'
             },
             {
-              label: '票号',
+              label: this.$t('order.orderManagement.ticketNumber'),
               prop: 'ticketNo',
               width: '140'
             },
             {
-              label: '车次/航班信息',
+              label: this.$t('order.orderManagement.flightInformation'),
               prop: 'tripInformation',
               width: '200'
             },
             {
-              label: '支付金额',
+              label: this.$t('order.orderManagement.paymentAmount'),
               prop: 'payAmount',
               width: '120'
             },
             {
-              label: '操作',
+              label: this.$t('order.orderManagement.operation'),
               prop: 'operation',
               width: '120',
               isSlot: true,
@@ -458,10 +457,10 @@ export default {
     getStatusCountFn() {
       getStatusCount(this.form.listQuery.data).then(res => {
         this.mainData.tabs = [
-          { id: 1, name: 'first', label: `快速订单(${res.data.allOrderCount})` },
-          { id: 2, name: 'second', label: `已出票(${res.data.ticketsIssuedCount})` },
-          { id: 3, name: 'third', label: `待付款(${res.data.obligationCount})` },
-          { id: 4, name: 'fourth', label: `已取消(${res.data.cancelCount})` }
+          { id: 1, name: 'first', label: this.$t('order.orderManagement.quickOrder')+`(${res.data.allOrderCount})` },
+          { id: 2, name: 'second', label: this.$t('order.orderManagement.ticketIssued')+`(${res.data.ticketsIssuedCount})` },
+          { id: 3, name: 'third', label:  this.$t('order.orderManagement.pendingPayment')+`(${res.data.obligationCount})` },
+          { id: 4, name: 'fourth', label: this.$t('order.orderManagement.canceled')+`(${res.data.cancelCount})` }
           // { id: 5, name: 'fifth', label: `退票异常订单(${res.data.abnormalOrderCount})` }
         ]
         //this.handleTabClick(this.mainData.tabs[0])
@@ -552,7 +551,7 @@ export default {
       }
       if (this.businessType === '2') {
         comfirmRefund(this.theorderCode).then(res => {
-          if (res.status === true) this.$message({ message: '退票成功', type: 'success' })
+          if (res.status === true) this.$message({ message: this.$t('order.orderManagement.refundSuccess'), type: 'success' })
         })
       }
 
@@ -565,12 +564,12 @@ export default {
       console.log(row, 'row')
       if (row.businessType === '1') {
         //机票
-        this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode, orderStatus: row.orderStatus } })
+        this.$router.push({ name: 'airTicketDetails', params: { orderCode: row.orderCode } })
         // console.log(row)
       }
       if (row.businessType === '2') {
         //火车票
-        this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode, serviceFee: this.serviceFee, orderStatus: row.orderStatus } })
+        this.$router.push({ name: 'trainTicketDetails', params: { orderCode: row.orderCode } })
         // console.log(row)
       }
     }
