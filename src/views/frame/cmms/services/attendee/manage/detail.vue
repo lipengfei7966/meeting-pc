@@ -682,7 +682,7 @@ export default {
             this.theCertificateType=[]
             item.options.forEach(v=>{
               cardCode.forEach(i=>{
-                if(i.label == v){
+                if(i.value == v){
                   this.theCertificateType.push(i)
                 }
               })
@@ -1195,8 +1195,10 @@ export default {
     },
     // 证件类型切换
     certificateTypeChange(val) {
+      console.log(val,'val');
+      debugger
       this.setForm.certificate = ''
-      if (val == '二代身份证') {
+      if (val == 'NI') {
         this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
         // this.$set(this.rules, 'certificate', [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },{ validator: validateIDcard, trigger: "blur"}])
       } else {
