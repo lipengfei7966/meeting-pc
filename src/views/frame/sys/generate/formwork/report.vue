@@ -4,7 +4,6 @@
     </el-alert>
     <template v-if='showTemplate'>
       <bs-extras-form ref='bsForm' :form='form'></bs-extras-form>
-
       <template v-if='explainData.isExplainAuth'>
         <header>
           <div class='explain-title' @click='showExplain = !showExplain'>
@@ -144,6 +143,7 @@ export default {
     } else {
       this.showError = true
     }
+    console.log(this.mainData,211)
   }
 }
 </script>

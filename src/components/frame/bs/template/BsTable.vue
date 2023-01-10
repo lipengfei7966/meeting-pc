@@ -43,7 +43,7 @@
     <!-- 列设置 -->
     <u-table use-virtual :highlight-current-row="highlightCurrentRow" fixed-columns-roll ref="singleTable" :row-class-name="mainData.table.RowClassName" :sort-orders="['descending', 'ascending', null]" :header-cell-class-name="handleHeaderClass" :key="key" :tree-config="treeConfig" :height="isHeight ? tableHeight : ''" :row-height="rowHeight" :row-id="mainData.table.rowKey || 'id'" :data-changes-scroll-top="false" :pagination-show="false" stripe border v-loading="loading" element-loading-spinner="el-icon-loading" :element-loading-text="$t('route.load')" :show-summary="mainData.table.showSummary" :summary-method="mainData.table.defineSummaryFun || getSummaries" :span-method="mainData.table.defineSpanFun ? mainData.table.defineSpanFun : arraySpanMethod" @current-change="handleSelectRow" @selection-change="handleSelectionChange" @row-click="handleClick" @sort-change="handleSortChange" @row-dblclick="handleDblClick">
       <u-table-column align="center" type="index" width="50" fixed :label="$t('table.id')" v-if="mainData.table.showIndex"></u-table-column>
-      <u-table-column align="center" type="selection" width="55" :fixed="mainData.table.selectionFixed" v-if="mainData.table.showCheckbox"></u-table-column>
+      <u-table-column align="center" type="selection" width="55" :label="cao" :fixed="mainData.table.selectionFixed" v-if="mainData.table.showCheckbox"></u-table-column>
       <slot name="cols" v-if="mainData.table.defineContent"></slot>
       <template v-else>
         <template v-for="(col, index) in formThead">

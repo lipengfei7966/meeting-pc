@@ -337,7 +337,7 @@ export default {
             },
             {
               label: this.$t('order.orderManagement.orderPlacer'),
-              prop: 'createUser',
+              prop: 'optEmployeeName',
               width: '120'
             },
             {
