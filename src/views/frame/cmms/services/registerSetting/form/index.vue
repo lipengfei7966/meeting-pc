@@ -285,7 +285,7 @@
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-select style="width: 100%" v-model="setForm.chenkedCertificate" :placeholder="element.placeholder">
-                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+                        <el-option v-for="item in theCertificateType" :key="item.key" :value="item.value" :label="item.label"> </el-option>
                       </el-select>
                       <br />
                       <el-input style="margin-top: 10px" size="mini" :placeholder="element.certificateNumPlaceholder"></el-input>
@@ -683,14 +683,13 @@
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
                   <p class="eidtContentItemTitle">{{$t('form.chooseDocumentType')}}</p>
-                  <!-- this=={{ $t('datadict.certificateType') }} -->
                   <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1" @change="certificateTypeChange">
-                    <el-checkbox v-for="item in $t('datadict.certificateType')" :label="item.label" :key="item.key" :value="item.value"></el-checkbox>
+                    <el-checkbox v-for="item in $t('datadict.certificateType')" :key="item.key" :label="item.value">{{ item.label }}</el-checkbox>
                     <!-- <el-checkbox v-for="item in setInfoList[checkedIndex].certificateAllTypes" :label="item" :key="item"></el-checkbox> -->
                   </el-checkbox-group>
                 </div>
                 <!-- 校验 -->
-                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('二代身份证')">
+                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('NI')">
                   <p class="eidtContentItemTitle">{{$t('form.verify')}}</p>
                   <el-radio-group class="certificateVerify" style="width: 100%" v-model="setInfoList[checkedIndex].check[0].code" @change="certificateVerifyChange">
                     <el-radio label="001">
@@ -2052,6 +2051,7 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      theCertificateType:[],
       formUpdateStatus:false,
       getActiveObj: {},
       resPcImageList: [],
@@ -3008,6 +3008,17 @@ export default {
           if(setInfoItem.systemName == '分页'){
             this.pageTotal++
           }
+           if (item.systemName == '证件') {
+            let cardCode = this.$t('datadict.certificateType')
+            this.theCertificateType=[]
+            item.options.forEach(v=>{
+              cardCode.forEach(i=>{
+                if(i.value == v){
+                  this.theCertificateType.push(i)
+                }
+              })
+            })
+          }
         })
       })
     },
@@ -3278,7 +3289,16 @@ export default {
 
       // 证件
       if (itemList.value == 'certificate') {
-        obj.options = ['二代身份证']
+        obj.options = ['NI']
+        this.theCertificateType=[]
+        let cardCode = this.$t('datadict.certificateType')
+        obj.options.forEach(v=>{
+          cardCode.forEach(i=>{
+            if(i.value == v){
+              this.theCertificateType.push(i)
+            }
+          })
+        })
         obj.check[0].code = '001'
         obj.placeholder = `请选择您的${itemList.label}类型`
       }
@@ -3316,14 +3336,23 @@ export default {
     certificateTypeChange (certificateOptions) {
       console.log(certificateOptions,'certificateOptions');
       // 证件类型不包括居民身份证时 校验code设为空
-      if (!certificateOptions.includes('二代身份证')) {
+      if (!certificateOptions.includes('NI')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
       }
       // 勾选 居民身份证 后, 是最后一项
-      if (certificateOptions[certificateOptions.length - 1] == '二代身份证') {
+      if (certificateOptions[certificateOptions.length - 1] == 'NI') {
         this.setInfoList[this.checkedIndex].check[0].code = '001'
       }
       console.log(this.setInfoList[this.checkedIndex])
+      let cardCode = this.$t('datadict.certificateType')
+      this.theCertificateType=[]
+      certificateOptions.forEach(v=>{
+        cardCode.forEach(i=>{
+          if(i.value == v){
+            this.theCertificateType.push(i)
+          }
+        })
+      })
     },
     numberChange (val) {
       // numberDigitLimit: 4, // 数字位数限制

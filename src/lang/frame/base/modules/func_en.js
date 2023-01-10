@@ -19,7 +19,10 @@ export default {
       organAbbr: 'Mechanism Abbreviation', // 机构性质
       organFullName: 'Full name of organization', // 机构全称
       parentName: 'Parent Body', // 上级机构
-      title: 'Rise' // 抬头
+      title: 'Rise', // 抬头
+      address: 'Address', // 地址
+      phone: 'Phone', // 电话
+      fax: 'Fax' // 传真
     }
   }
 }
