@@ -157,6 +157,7 @@ export default {
     // :'',//
   },
   applySet: {
+    to: '至', // 至
     registrationSetup: '注册报名设置', // 注册报名设置
     di: '第', // 第
     total: '页/共 ', // 页/共

@@ -2,14 +2,6 @@
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
       <div class="formSet" style="width:80%">
-        <!-- <div class="back" style="cursor: pointer">
-          <el-popover placement="top-start" width="100" trigger="click" center>
-            <el-link type="primary" @click="toAppearance(1)">编辑外观</el-link><br />
-            <el-link type="primary" @click="toEdit(2)">编辑表单</el-link><br />
-            <el-link type="primary" @click="toResult(3)">编辑结果页</el-link>
-            <div class="shengluehao" slot="reference">...</div>
-          </el-popover>
-        </div> -->
         <h2 style="textAlign:center">{{ eventName }}</h2>
         <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
@@ -20,10 +12,7 @@
 
             <!-- 分页 -->
             <div v-else-if="element.systemName == '分页'" class="form-item-input">
-              <!-- <el-form-item :label="element.pageTitle" label-width="100px"> -->
-              <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
               <p style="text-align: center">[ {{$t('applySet.di')}} {{ element.pagingIndex }} {{$t('applySet.total')}} {{ pagingCount }} {{$t('applySet.page')}} ]</p>
-              <!-- </el-form-item> -->
             </div>
 
             <!-- 说明信息 -->
@@ -85,7 +74,6 @@
 
                   <!-- 下拉列表 -->
                   <div v-if="element.systemName == '下拉列表'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px" :placeholder="element.placeholder">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
@@ -112,7 +100,6 @@
 
                   <!-- 日期 -->
                   <div v-if="element.systemName == '日期'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
                     </div>
@@ -126,7 +113,6 @@
                 <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '100px'">
                   <!-- 姓名 -->
                   <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.placeholder"></el-input>
                   </div>
                   <!-- 姓名拆分 -->
@@ -189,14 +175,12 @@
                 <el-form-item v-else :label="element.title">
                   <!-- 性别 -->
                   <div v-if="element.mapCode == 'sex'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
                     <el-radio v-model="setForm.sex" :label="element.options[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
                   </div>
 
                   <!-- 证件 -->
                   <div v-if="element.mapCode == 'certificate'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
                         <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
@@ -209,7 +193,6 @@
                   <!-- 照片 -->
                   <div v-if="element.mapCode == 'photo'" class="form-item-input">
                     <div v-if="setForm.photo" style="width: 100px; height: 100px" class="picture">
-                      <!-- <img v-if="setForm.photo" :src="setForm.photo" class="avatar"> -->
                       <img class="avatar el-upload-list__item-thumbnail" :src="setForm.photo" alt="" />
                       <span class="el-upload-list__item-actions" style="width: 100px">
                         <span class="el-upload-list__item-preview">
@@ -227,10 +210,9 @@
 
                   <!-- 手机号 -->
                   <div v-if="element.mapCode == 'mobile'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                           <el-option> </el-option>
                         </el-select>
                       </el-input>
@@ -241,7 +223,7 @@
                   <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
                     <div>
                       <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                           <el-option> </el-option>
                         </el-select>
                       </el-input>
@@ -254,7 +236,7 @@
                       <span style="display: inline-block">
                         <el-form-item label-width="0">
                           <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" :placeholder="$t('form.selectInternationalCode')">
                               <el-option> </el-option>
                             </el-select>
                           </el-input>
@@ -271,7 +253,7 @@
                       <span style="display: inline-block">
                         <el-form-item label-width="0">
                           <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" :placeholder="$t('form.selectInternationalCode')">
                               <el-option> </el-option>
                             </el-select>
                           </el-input>
@@ -291,7 +273,6 @@
 
                   <!-- 备用邮箱 -->
                   <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
@@ -358,34 +339,17 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1'" :label="$t('applySet.registrationVerification')" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
-                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
-                  {{ item.dictItemName }}
-                </el-checkbox>
-                <!-- :checked="applySetForm.registerVerification.length && applySetForm.registerVerification.includes(item.dispOrder + '')" -->
-                <!-- <el-checkbox label="短信验证"></el-checkbox>
-                <el-checkbox label="邮箱验证"></el-checkbox> -->
+                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">{{ item.dictItemName }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1'" :label="$t('applySet.loginVerification')" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
-                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
-                  {{ item.dictItemName }}
-                </el-checkbox>
-                <!-- :checked="applySetForm.loginVerification.length && applySetForm.loginVerification.includes(item.dispOrder + '')" -->
-                <!-- <el-checkbox label="短信验证"></el-checkbox>
-                <el-checkbox label="邮箱验证"></el-checkbox>
-                <el-checkbox label="账号密码"></el-checkbox>
-                <el-checkbox label="自定义验证"></el-checkbox> -->
+                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">{{ item.dictItemName }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('custom')" :label="$t('applySet.customValidationEntries')" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
-                <el-checkbox v-for="item in customizeOptions" :key="item.dictItemVal" :label="item.dictItemVal">
-                  {{ item.dictItemName }}
-                </el-checkbox>
-                <!-- :checked="applySetForm.coustomVerification.length && applySetForm.coustomVerification.includes(item.dispOrder + '')" -->
-                <!-- <el-checkbox label="手机号"></el-checkbox>
-                <el-checkbox label="邮箱"></el-checkbox> -->
+                <el-checkbox v-for="item in customizeOptions" :key="item.dictItemVal" :label="item.dictItemVal">{{ item.dictItemName }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
 
@@ -411,7 +375,7 @@
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
             <el-form-item :label="$t('applySet.dateofRegistration')" prop="applyDate">
-              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" :range-separator="$t('applySet.to')" :start-placeholder="$t('applySet.startDate')" :end-placeholder="$t('applySet.dateClosed')">
               </el-date-picker>
             </el-form-item>
             <el-form-item :label="$t('applySet.privacyAgreement')" prop="applyCheck">
@@ -431,9 +395,6 @@
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal" :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{item.dictItemName}}</el-checkbox>
-                <!-- <el-checkbox label="姓名"></el-checkbox>
-                <el-checkbox label="手机号"></el-checkbox>
-                <el-checkbox label="邮箱"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
           </div>
@@ -453,9 +414,6 @@
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item :label="$t('applySet.agreementContent')" prop="privacyContent">
-          <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-          <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
-          <!-- <bs-deditor></bs-deditor> -->
           <iframe name="myframe_" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
@@ -463,10 +421,6 @@
           <el-button @click="resetForm()">{{$t('applySet.cancel')}}</el-button>
         </el-form-item>
       </el-form>
-      <!-- <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-        </div> -->
     </el-dialog>
   </div>
 </template>

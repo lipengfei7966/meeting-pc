@@ -158,6 +158,7 @@ export default {
     // :'',//
   },
   applySet: {
+    to: 'to', // 至
     registrationSetup: 'Registration Setup', // 注册报名设置
     di: 'Page', // 第
     total: '/Page', // 页/共
