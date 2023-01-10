@@ -75,6 +75,7 @@
 
 <script>
 import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefund, comfirmRefund, fightReissueRefund } from './utils/api'
+import {mapState} from 'vuex'
 export default {
   name: 'orderManagement',
   data() {
@@ -402,6 +403,8 @@ export default {
           }
         }
       },
+      // language:0,
+      // lang:localStorage.getItem("language"),
       orderDetailInfo: {}, //机票基本信息
       costDetailInfo: {}, // 机票支付信息
       flightDetailInfoList: [{ airlineCompanyCode: '', arr: '', arrCity: '', arrCode: '', arrDate: '', arrTerminal: '', arrTime: '', carrierAirlines: '', dep: '', depCity: '', depCode: '', depDate: '', depTerminal: '', depTime: '', flightCode: '', flightNo: '', isMeal: '', orderType: '', planModel: '', ticketNo: '', tripType: '' }], // 机票航班信息
@@ -410,7 +413,22 @@ export default {
   },
   created() {},
   mounted() {
-    //this.getStatusCountFn()
+    // this.getStatusCountFn()
+  },
+  watch:{
+    language:{
+      handler(newValue, oldValue) {
+        if(newValue){
+          console.log(newValue,oldValue);
+          this.getStatusCountFn()
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed:{
+    ...mapState({language: state => state.app.language})
   },
   methods: {
     initCallback() {
@@ -456,13 +474,15 @@ export default {
     // 获取订单状态总数
     getStatusCountFn() {
       getStatusCount(this.form.listQuery.data).then(res => {
-        this.mainData.tabs = [
+        this.$nextTick(()=>{
+          this.mainData.tabs = [
           { id: 1, name: 'first', label: this.$t('order.orderManagement.quickOrder')+`(${res.data.allOrderCount})` },
           { id: 2, name: 'second', label: this.$t('order.orderManagement.ticketIssued')+`(${res.data.ticketsIssuedCount})` },
           { id: 3, name: 'third', label:  this.$t('order.orderManagement.pendingPayment')+`(${res.data.obligationCount})` },
           { id: 4, name: 'fourth', label: this.$t('order.orderManagement.canceled')+`(${res.data.cancelCount})` }
           // { id: 5, name: 'fifth', label: `退票异常订单(${res.data.abnormalOrderCount})` }
         ]
+        })
         //this.handleTabClick(this.mainData.tabs[0])
       })
     },
