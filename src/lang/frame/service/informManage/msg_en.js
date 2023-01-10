@@ -127,6 +127,16 @@ export default {
       resendSuccess: 'Resend success!',
       confirmCancel: 'Confirm cancel?',
       cancelSuccess: 'Cancel success!',
+      sendNum: 'Quantity Sent',
+      tenantCode: 'tenant',
+      msgTaskId: 'Task ID',
+      msgProcessId: 'Process ID',
+      recipientAccount: 'Receiving Account',
+      msgClassType: 'Message Level',
+      msgTitle: 'Message Headers',
+      msgContent: 'Message Content',
+      msgExtend: 'Message Extension',
+      tenantName: 'Lessee',
       required: {}
     },
     webmsg: {
