@@ -432,12 +432,9 @@ export default {
   name: 'applySet',
   data() {
     return {
-      theCertificateType:[],
-      copyHrefShow: false,
-      eventList: [],
-      theHashCode: '',
-      url: '',
-      imgUrl: '',
+      theCertificateType:[],//证件类型回显
+      url: '',//当前环境
+      imgUrl: '',//报名链接
       setForm: {
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
@@ -479,7 +476,7 @@ export default {
         position: '', // 职位
         signupContactDtlDto: {}
       },
-      pagingCount: 0,
+      pagingCount: 0,//分页数量
       registerVerificationOptions: [], // 获取注册验证
       loginVerificationOptions: [], // 获取登录验证
       customizeOptions: [], // 获取自定义验证
@@ -507,19 +504,18 @@ export default {
         assistApplyPermission: '', // 协助报名权限
         assistApplyOpenField: [], // 协助报名开放字段
         id: ''
-        // versionNum: 0
       },
-      setFormFile: [],
-      dialogFormVisible: false,
-      ruleForm: {
-        name: '',
-        privacyContent: ''
+      setFormFile: [],//附件列表
+      dialogFormVisible: false,//隐私协议显隐
+      ruleForm: {//隐私协议
+        name: '',//协议名称
+        privacyContent: ''//协议内容
       },
-      rules: {
+      rules: {//隐私协议规则
         name: [{ required: true, message: this.$t('applySet.pleaseenteraprotocolname'), trigger: 'blur' }],
         privacyContent: [{ required: true, message: this.$t('applySet.pleasefillintheagreement'), trigger: 'blur' }]
       },
-      rulesApply: {
+      rulesApply: {//注册报名规则
         isVerification: [{ required: true, message: this.$t('applySet.pleaseselectthevalidationmethod'), trigger: 'blur' }],
         registerVerification: [{ required: true, message: this.$t('applySet.pleaseselecttheregistrationverificationmethod'), trigger: 'blur' }],
         loginVerification: [{ required: true, message: this.$t('applySet.pleaseselecttheloginverificationmethod'), trigger: 'blur' }],
@@ -571,16 +567,12 @@ export default {
       }
     },
   },
-  created() {
-    this.copyHrefShow = false
-    console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
-  },
+  created() {},
   mounted() {
     if (this.eventCode) {
       this.getEventInfo()
       this.signupContactCodeRuleFn()
     }
-    console.log(this.ruleForm.privacyContent, 'this.ruleForm.privacyContent')
     // 获取注册验证数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -623,14 +615,12 @@ export default {
     })
   },
   methods: {
+    // 取消关闭隐私协议对话框
     resetForm() {
       this.dialogFormVisible = false
     },
     privacySubmitForm(formName) {
-      // this.$refs[formName].resetFields()
       const req = window.frames['myframe_'].getContent()
-      // const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
-      console.log(req, 'req')
       this.ruleForm.privacyContent = req.trim()
       if (req.trim() === '') {
         this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
@@ -640,12 +630,8 @@ export default {
     },
     editPrivacyHandle() {
       this.dialogFormVisible = true
-      // this.initDialog()
       setTimeout(() => {
-        // debugger
-        console.log(this.ruleForm.privacyContent);
         if (window.frames['myframe_']){
-          // debugger
           window.frames['myframe_'].setContentProfile(this.ruleForm.privacyContent)
         }
       }, 1000)
@@ -692,7 +678,6 @@ export default {
           this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
           this.ruleForm.name = res.data.privacyName
           this.ruleForm.privacyContent = res.data.privacyContent
-          console.log(res.data.privacyContent, 'res.data.privacyContent')
           setTimeout(() => {
             if (window.frames['myframe_']){
               window.frames['myframe_'].setContents(this.ruleForm.privacyContent)
@@ -705,8 +690,6 @@ export default {
           this.applySetForm.assistApplyPermission = res.data.assistSignupPower
           this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
           this.applySetForm.id = res.data.id
-          // this.applySetForm.versionNum = res.data.versionNum
-          console.log(this.applySetForm, ' this.applySetForm-- ')
         }
       })
     },
@@ -734,14 +717,12 @@ export default {
               // this.setForm[item.mapCode] = []
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, [])
             } else {
-              // debugger
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
               // this.setForm[item.mapCode] = ''
             }
             if (['附件'].includes(item.systemName)) {
               // debugger
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
-              console.log(this.setFormFile)
               this.$set(this.setFormFile, item.mapCode, [])
             }
             this.$set(this.setformOther, item.mapCode, '')
@@ -799,9 +780,6 @@ export default {
         } else if (window.location.host == 'cmms-dev.ctgbs.com' || window.location.host == 'localhost:9527') {
           this.url = 'https://cmms-h5-dev.ctgbs.com'
         }
-        console.log(response.data.eventHashCode, 'response.data.eventHashCode')
-        console.log(response.data.code, 'response.data.code')
-        console.log(this.url)
         this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
       })
     },
@@ -831,11 +809,8 @@ export default {
             assistSignupPower: this.applySetForm.assistApplyPermission,
             signupField: this.applySetForm.assistApplyOpenField ? this.applySetForm.assistApplyOpenField.join(',') : [],
             eventCode: this.eventCode,
-            // deleteFlag: 0,
             id: this.applySetForm.id
-            // versionNum: this.applySetForm.versionNum,
           }
-          console.log(querySaveHref, 'querySavveHref')
           request({
             url: '/api/register/signupContactCodeRule/update',
             method: 'POST',
@@ -847,7 +822,6 @@ export default {
           }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
-              this.copyHrefShow = true
               this.$message({ message: this.$t('applySet.SignUpAndGenerateLinkSuccessfully'), type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)
@@ -988,32 +962,34 @@ export default {
       font-size: 20px;
     }
   }
-
   .copyHref {
     cursor: pointer;
     margin-top: 30px;
     // width: 100%;
     height: 60px;
-    border-radius: 15px;
-    background-color: rgb(228, 251, 226);
+    border-radius: 6px;
+    background-color: #f0f2f5;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px 20px;
+    color: #00699d;
 
     span {
       padding: 0 20px;
-      color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 18px;
       margin-right: 2 0px;
     }
 
     h2 {
-      color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 12px;
       // width: 500px;
+    }
+    &:hover {
+      border: 2px solid rgb(119, 189, 119);
+      color: rgb(119, 189, 119);
     }
   }
 }
