@@ -199,7 +199,7 @@
                     <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
-                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+                        <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
                       </el-select>
                       <br />
                       <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" :placeholder="$t('applySet.pleaseenteryourIDnumber')"></el-input>
@@ -478,6 +478,7 @@ export default {
   name: 'applySet',
   data() {
     return {
+      theCertificateType:[],
       copyHrefShow: false,
       eventList: [],
       theHashCode: '',
@@ -824,6 +825,17 @@ export default {
 
           if (item.systemName == '分页') {
             this.pagingCount++
+          }
+          if (item.systemName == '证件') {
+            let cardCode = this.$t('datadict.certificateType')
+            this.theCertificateType=[]
+            item.options.forEach(v=>{
+              cardCode.forEach(i=>{
+                if(i.value == v){
+                  this.theCertificateType.push(i)
+                }
+              })
+            })
           }
         })
         if (window.location.host == 'cmms-test.ctgbs.com' || window.location.host == 'localhost:9527') {

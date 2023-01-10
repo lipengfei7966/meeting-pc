@@ -2932,7 +2932,7 @@ export default {
             }
           }).then(res => {
             if (res.status) {
-              this.$message({ message: this.$t('form.pleaseSelectMeeting'), type: 'success' })
+              this.$message({ message: this.$t('form.saveSuccess'), type: 'success' })
               this.getResultFn()
             }
           })
