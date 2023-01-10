@@ -682,7 +682,7 @@ export default {
             this.theCertificateType=[]
             item.options.forEach(v=>{
               cardCode.forEach(i=>{
-                if(i.label == v){
+                if(i.value == v){
                   this.theCertificateType.push(i)
                 }
               })

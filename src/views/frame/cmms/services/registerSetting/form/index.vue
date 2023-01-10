@@ -685,7 +685,7 @@
                   <p class="eidtContentItemTitle">{{$t('form.chooseDocumentType')}}</p>
                   <!-- this=={{ $t('datadict.certificateType') }} -->
                   <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1" @change="certificateTypeChange">
-                    <el-checkbox v-for="item in $t('datadict.certificateType')" :label="item.label" :key="item.key" :value="item.label"></el-checkbox>
+                    <el-checkbox v-for="item in $t('datadict.certificateType')" :label="item.label" :key="item.key" :value="item.value"></el-checkbox>
                     <!-- <el-checkbox v-for="item in setInfoList[checkedIndex].certificateAllTypes" :label="item" :key="item"></el-checkbox> -->
                   </el-checkbox-group>
                 </div>
