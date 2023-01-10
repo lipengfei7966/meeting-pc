@@ -32,7 +32,7 @@
             </table>
           </div>
         </commonSlot>
-        <commonSlot title="航班信息">
+        <commonSlot :title="$t('order.orderManagement.flight_Information')">
           <div class=" transInfo" v-for="(item,index) in flightDetailInfoList" :key="index">
             <div class="transInfo_train">
               <div class="tripType">{{ item.tripType == 0 ? $t('order.orderManagement.outwardVoyage') : $t('order.orderManagement.backTracking')}}</div>
@@ -96,7 +96,7 @@
               <el-table-column fixed="right" :label="$t('order.orderManagement.operation')" width="100">
                 <template slot-scope="scope">
                   <!-- <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">改签</el-button> -->
-                  <el-button type="text" size="small" :disabled="!(fundTicket.includes(scope.row.orderStatus))" @click="handleRemoveClick(scope.row)">退票</el-button>
+                  <el-button type="text" size="small" :disabled="!(fundTicket.includes(scope.row.orderStatus))" @click="handleRemoveClick(scope.row)">{{$t('order.orderManagement.refund')}}</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -108,41 +108,41 @@
       </div>
       <div class="payDetail">
         <div class="payContent">
-          <div class="payTitle">支付信息</div>
+          <div class="payTitle">{{$t('order.orderManagement.paymentInformation')}}</div>
           <div class="moneyDetail">
             <div class="allTotal">
-              <h3>订单总金额</h3>
+              <h3>{{$t('order.orderManagement.orderTotal')}}</h3>
               <span>￥{{ costDetailInfo.orderAmount }}</span>
             </div>
             <div class="jine">
               <h3>{{ costDetailInfo.dep }}-{{ costDetailInfo.arr }}</h3>
               <div class="smallRend">
-                <div class="leftName">机建</div>
+                <div class="leftName">{{$t('order.orderManagement.mechanicalConstruction')}}</div>
                 <div class="RightMoney">￥{{ costDetailInfo.macTax }} X{{ tripInfoList.length }}</div>
               </div>
               <div class="smallRend">
-                <div class="leftName">燃油</div>
+                <div class="leftName">{{$t('order.orderManagement.fuel')}}</div>
                 <div class="RightMoney">￥{{ costDetailInfo.oilTax}} X{{ tripInfoList.length }}</div>
               </div>
               <div class="smallRend">
-                <div class="leftName">服务费</div>
+                <div class="leftName">{{$t('order.orderManagement.serviceCharge')}}</div>
                 <div class="RightMoney">￥{{costDetailInfo.serviceFee}} X{{ tripInfoList.length }}</div>
               </div>
               <div class="smallRend">
-                <div class="leftName">升舱费</div>
+                <div class="leftName">{{$t('order.orderManagement.costUpgrade')}}</div>
                 <div class="RightMoney">￥{{ costDetailInfo.upgradeCabinAmount }} X {{tripInfoList.length}}</div>
               </div>
               <div class="smallRend">
-                <div class="leftName">退票手续费</div>
+                <div class="leftName">{{$t('order.orderManagement.cancellationCharge')}}</div>
                 <div class="RightMoney">￥{{ costDetailInfo.refundServiceFee }} X {{ tripInfoList.length}}</div>
               </div>
               <div class="smallRend">
-                <div class="leftName">改期费</div>
+                <div class="leftName">{{$t('order.orderManagement.reschedulingFee')}}</div>
                 <div class="RightMoney">￥{{ costDetailInfo.changeAmount }} X {{ tripInfoList.length }}
                 </div>
               </div>
               <div class="smallRend">
-                <div class="leftName">出票费</div>
+                <div class="leftName">{{$t('order.orderManagement.paymentTickets')}}</div>
                 <div class="RightMoney">￥{{ costDetailInfo.serviceFee }} X {{ tripInfoList.length }}
                 </div>
               </div>
@@ -152,7 +152,7 @@
       </div>
     </div>
 
-    <el-dialog title="退票规则" :visible.sync="refundVisible" width="50%" center>
+    <el-dialog :title="$t('order.orderManagement.refundRule')" :visible.sync="refundVisible" width="50%" center>
       <div class="centerBox">
         <p>* {{ baggageText }}</p>
         <p>* {{ checkedBaggage }}</p>
@@ -163,55 +163,55 @@
         <p>* {{ transferText }}</p>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="refundVisible = false">取 消</el-button>
-        <el-button type="primary" @click="refundVisible = false">确 定</el-button>
+        <el-button @click="refundVisible = false">{{$t('order.orderManagement.cancel')}}</el-button>
+        <el-button type="primary" @click="refundVisible = false">{{$t('order.orderManagement.confirm')}}</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="退票规则" :visible.sync="trainRefundVisible" width="50%" center>
+    <el-dialog :title="$t('order.orderManagement.refundRule')" :visible.sync="trainRefundVisible" width="50%" center>
       <div class="centerBox">
-        <p>* 退票手续费以最终退款金额以铁路部门实退为准</p>
-        <p>* 距发车时间8天（含当日）以上，不收手续费</p>
-        <p>* 如已取纸质车票，请携带有效证件至火车票窗口办理退票</p>
-        <p>* 改签或变更到站后的车票乘车日期在春运期间的，退票时一律按开车时间前不足24小时标准核收退票费。2022年春运期间为1月21日至3月1日</p>
+        <p>* {{$t('order.orderManagement.finalRefundRules')}}</p>
+        <p>* {{$t('order.orderManagement.noChargeTips')}}</p>
+        <p>* {{$t('order.orderManagement.paperTicketTips')}}</p>
+        <p>* {{$t('order.orderManagement.changeTips')}}</p>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="trainRefundVisible = false">取 消</el-button>
-        <el-button type="primary" @click="trainRefundVisible = false">确 定</el-button>
+        <el-button @click="trainRefundVisible = false">{{$t('order.orderManagement.cancel')}}</el-button>
+        <el-button type="primary" @click="trainRefundVisible = false">{{$t('order.orderManagement.confirm')}}</el-button>
       </span>
     </el-dialog>
     <!-- 退票弹窗 -->
-    <el-dialog title="退票申请" :visible.sync="centerDialogVisible" width="50%" center top="10px">
+    <el-dialog :title="$t('order.orderManagement.applicationForRefund')" :visible.sync="centerDialogVisible" width="50%" center top="10px">
       <div class="remove-line1">
         <img src="@/assets/frame/svg/wenhao.svg" class="wenhao" alt="" srcset="">
-        <span>您确认要退票吗？</span>
+        <span>{{$t('order.orderManagement.applicationForRefund')}}</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line2">
-        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
+        <span class="fontSize2Left fontWeight">{{$t('order.orderManagement.refundExpected')}}：</span><span class="fontSize2Right yellowColor">{{fightReissueRefund.returnPrice}}{{$t('order.orderManagement.yuan')}}</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line3">
         <div class="remove-line3-1">
-          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">
-            {{ fightReissueRefund.refundPrice }}元</span>
+          <span class="fontSize3Left fontWeight">{{$t('order.orderManagement.handlingCharge')}}：</span><span class="fontSize3Right yellowColor">
+            {{ fightReissueRefund.refundPrice }}{{$t('order.orderManagement.yuan')}}</span>
         </div>
         <div class="remove-line3-2">
-          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{costDetailInfo.ticketAmount}}元</span>
+          <span class="fontSize3Left fontWeight">{{$t('order.orderManagement.ticket_Price')}}：</span><span class="fontSize3Right yellowColor">{{costDetailInfo.ticketAmount}}{{$t('order.orderManagement.yuan')}}</span>
         </div>
         <div class="remove-line3-3">
-          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
+          <span class="fontSize3Left fontWeight">{{$t('order.orderManagement.refundExpected')}}：</span><span class="fontSize3Right yellowColor">{{fightReissueRefund.returnPrice}}{{$t('order.orderManagement.yuan')}}</span>
         </div>
       </div>
       <el-divider></el-divider>
       <div class="remove-line4">
         <img src="@/assets/frame/svg/tanhao.svg" class="tanhao" alt="" srcset="">
-        <span>实际核收退票费及应退票款将按最终交易时间计算。</span>
+        <span>{{$t('order.orderManagement.finalTransactionTime')}}</span>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelFn">取 消</el-button>
-        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">确 定</el-button>
+        <el-button @click="cancelFn">{{$t('order.orderManagement.cancel')}}</el-button>
+        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">{{$t('order.orderManagement.confirm')}}</el-button>
         <div class="remove-rules">
-          <div class="title">退票规则：</div>
+          <div class="title">{{$t('order.orderManagement.refundRule')}}：</div>
           <div class="rule1">
             <p>* {{ baggageText }}</p>
             <p>* {{ checkedBaggage }}</p>
@@ -413,7 +413,7 @@ export default {
                 refundType: 0
             }
             fightRefund(queryComfirmRefund).then(res => {
-                if (res.status === true) this.$message({ message: '退票成功', type: 'success' })
+                if (res.status === true) this.$message({ message: this.$t('order.orderManagement.refundSuccess'), type: 'success' })
             })
             this.theorderCode = ''
             this.centerDialogVisible = false

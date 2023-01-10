@@ -193,6 +193,7 @@ export default {
       choose: 'choose', // 选择
       close: 'close', // 关闭
       reset: 'reset', // 重置
+      extend: 'extend', // 查询扩展
       open: 'open', // 展开
       stow: 'stow', // 收起
       expand: 'spread out', // 展开
