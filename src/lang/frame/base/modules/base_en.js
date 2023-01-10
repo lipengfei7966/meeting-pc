@@ -150,7 +150,7 @@ export default {
 
       quickConfirm: 'Confirm', // 确认
       quickConfirmList: 'Batch confirm', // 批量确认
-
+      unlock: 'Unlock', // 解锁
       start: 'start', // 启动
       submitAudit: 'submitAudit', // 提交审核
       end: 'end', // 停止

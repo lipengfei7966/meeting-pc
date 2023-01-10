@@ -1,6 +1,13 @@
 export default {
   sys: {
     log: {
+      menuName: 'Function Menu',
+      funcModule: 'Vital Business Function',
+      billType: 'Document Type',
+      billNo: 'Document Number',
+      identity: 'Identity',
+      loginType: 'LoginTime',
+      tenantName: 'lessee',
       ipAddress: 'IP',
       bizModel: 'Model',
       bizTitle: 'Title',
@@ -81,6 +88,40 @@ export default {
       jobGroupSizeTip: 'Length must be less than or equal to 100',
       cronExpressionSizeTip: 'Length must be less than or equal to 100',
       remarkSizeTip: 'Length must be less than or equal to 500'
+    },
+    notice: {
+      form: {
+        noticeTitle: 'Headline',
+        noticeDate: 'Date',
+        noticeContent: 'Content',
+        topFlag: 'Up'
+      },
+      list: {
+        noticeTitle: 'Headline',
+        noticeDate: 'Date',
+        topFlag: 'Up'
+      }
+    },
+    bill: {
+      dialogPart1: 'Main Message',
+      dialogPart2: 'Signalling Rule',
+      moduleCode: 'Functional Code',
+      numLength: 'Serial number length',
+      remark: 'Notes',
+      numMode: 'Generating Patterns',
+      numDescribe: 'Rule Description',
+      numMark: 'Identifier',
+      name: 'Name',
+      part01Type: 'Rule01',
+      part02Type: 'Rule02',
+      part03Type: 'Rule03',
+      part04Type: 'Rule04',
+      part05Type: 'Rule05',
+      part06Type: 'Rule06',
+      part07Type: 'Rule07',
+      part08Type: 'Rule08',
+      part09Type: 'Rule09',
+      part10Type: 'Rule10'
     }
   }
 }
