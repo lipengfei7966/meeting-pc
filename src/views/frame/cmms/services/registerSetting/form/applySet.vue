@@ -619,6 +619,7 @@ export default {
     resetForm() {
       this.dialogFormVisible = false
     },
+    // 确定关闭隐私协议对话框
     privacySubmitForm(formName) {
       const req = window.frames['myframe_'].getContent()
       this.ruleForm.privacyContent = req.trim()
@@ -628,6 +629,7 @@ export default {
         this.dialogFormVisible = false
       }
     },
+    // 打开隐私协议对话框
     editPrivacyHandle() {
       this.dialogFormVisible = true
       setTimeout(() => {
@@ -783,9 +785,11 @@ export default {
         this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
       })
     },
+    // 编辑结果页
     setResult() {
       this.$emit('setResult')
     },
+    // 保存并生成报名链接
     saveHrefHandle(formName) {
       this.$emit('applySetForm', this.applySetForm)
       this.$refs[formName].validate(valid => {
@@ -836,6 +840,7 @@ export default {
         }
       })
     },
+    // 复制报名链接
     copyTxt() {
       if (this.imgUrl == '') {
         this.$message({ showClose: true, message: this.$t('applySet.failedtolink'), type: 'error' })
