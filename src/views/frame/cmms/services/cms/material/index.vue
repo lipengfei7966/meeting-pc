@@ -43,17 +43,31 @@
               <!-- 操作按钮位置st  后续需要从这里加 -->
               <el-col :span="24" class="operation">
                 <!-- 新增 删除功能-->
-                <el-button class="right-btn" v-db-click size="mini" style="margin-right: 3px" @click="addMaterial">
-                  <svg-icon icon-class="add" style="margin-right: 6px"></svg-icon>
-                  新增
+                <el-button class="right-btn" v-db-click size="mini" style="margin-right: 5px" @click="addMaterial">
+                  <svg-icon icon-class="upload" style="margin-right: 6px"></svg-icon>
+                  上传素材
                 </el-button>
                 <input v-show="false" ref="fileRefAdd" type="file" @change="fileChangeAdd($event)" multiple
                        accept="image/jpeg,image/psd,image/png,image/jpg" />
-                <el-button class="right-btn" v-db-click size="mini" style="margin-right: 3px" @click="delMaterial"
-                           :disabled="loading">
-                  <svg-icon icon-class="delete" style="margin-right: 6px"></svg-icon>
-                  删除
-                </el-button>
+                <el-dropdown>
+                  <el-button type="primary">
+                    更多操作<i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>
+                        <span @click="delMaterial">
+                             <svg-icon icon-class="delete" style="margin-right: 6px"></svg-icon>
+                        批量删除
+                        </span>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <span @click="moveMaterial">
+                          <i class="el-icon-top-right" style="margin-right: 6px"></i>
+                        批量移动文件夹
+                        </span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </el-col>
             </el-row>
           </el-form>
@@ -134,6 +148,7 @@
         <el-empty description="请选择文件"></el-empty>
       </div>
     </el-card>
+    <treeMove ref="treeMove" @checkFile="checkFile"></treeMove>
   </div>
 </template>
 
@@ -143,11 +158,13 @@ import { resolve } from 'path'
 import tree from './components/tree'
 import { getToken } from '@/utils/frame/base/auth'
 import store from '../../../../../../store'
+import treeMove from './components/treeMove'
 
 export default {
   name: 'material',
   components: {
-    tree
+    tree,
+    treeMove
   },
   data() {
     return {
@@ -225,6 +242,56 @@ export default {
           return item != id
         })
       }
+    },
+    //选中的文件夹
+    checkFile(id) {
+      let arr = []
+      this.checkList.forEach((item) => {
+        let obj = {}
+        obj.id = item
+        obj.materialCode = id
+        arr.push(obj)
+      })
+      this.$refs.treeMove.cancel()
+      let that_ = this
+      let loading_ = this.$loading({
+        lock: true,
+        text: '文件移动中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: '/api/cms/picinfo/updateMove',
+        method: 'POST',
+        data: {
+          data: arr,
+          funcModule: '变更文件夹',
+          funcOperation: '变更文件夹'
+        }
+      })
+        .then(data => {
+          that_.$message('移动成功')
+          that_.matterList = []
+          that_.checkList = []
+          that_.loadData(that_.treeDatas, true)
+          that_.exhibitionRight = false
+          that_.$refs.treeMove.cancel()
+        })
+        .catch(() => {
+
+        }).finally(() => {
+        that_.loading = false
+        loading_.close()
+      })
+    },
+    //移动文件
+    moveMaterial() {
+      if (this.checkList.length == 0) {
+        this.$message('请选择你要移动的素材！')
+        return
+      }
+      this.$refs.treeMove.disabledKey = [this.treeDatas.id]
+      this.$refs.treeMove.dialogVisible = true
     },
     //删除素材提示
     delMaterial() {
@@ -497,6 +564,8 @@ export default {
       this.exhibitionRight = false
       this.treeDatas = data
       this.materialCode = data.code
+      this.matterList = []
+      this.checkList = []
       this.loadData(data)
     },
     loadData(data, isFile) {
@@ -666,7 +735,7 @@ export default {
 
 .content_ {
   width: 100%;
-  height: 85vh;
+  height: 82vh;
   padding-bottom: 15px;
   text-align: center;
   overflow: auto;
@@ -772,5 +841,18 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 18px;
+}
+
+//更多样式
+.el-dropdown {
+  vertical-align: top;
+}
+
+.el-dropdown + .el-dropdown {
+  margin-left: 15px;
+}
+
+.el-icon-arrow-down {
+  font-size: 12px;
 }
 </style>
