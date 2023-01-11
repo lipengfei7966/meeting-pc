@@ -494,6 +494,8 @@ export default {
       moduleTitle: '模块标题', // 模块标题
       enterModuleTitle: '请输入模块标题', // 请输入模块标题
       moduleType: '模块类型', // 模块类型
+      apply:'站内页面',//站内页面
+      selectApply:'请选择站内页面',//请选择站内页面
       selectmoduleType: '请选择模块类型', // 请选择模块类型
       selectThePage: '选择页面', // 选择页面
       selectPage: '请选择页面', // 请选择页面

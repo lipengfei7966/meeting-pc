@@ -8,6 +8,7 @@
         <el-input v-model="ruleForm.subHeading" placeholder="请输入模块副标题"></el-input>
       </el-form-item> -->
       <el-form-item :label="$t('website.microStationDesign.moduleType')" prop="type">
+        <!-- 模块类型 -->
         <el-select @change="select_" v-model="ruleForm.type" :placeholder="$t('website.microStationDesign.selectmoduleType')" style="width: 100%">
           <el-option v-for="(item, index) in classify" :key="index" :label="item.label" :value="item.value"></el-option>
           <!-- <el-option label="站外链接" value="站外链接"></el-option> -->
@@ -24,6 +25,13 @@
       <el-form-item v-if="ruleForm.type == 'url'" :label="$t('website.microStationDesign.backLink')" prop="link">
         <el-input v-model="ruleForm.link" :placeholder="$t('website.microStationDesign.enterExternalLink')"></el-input>
       </el-form-item>
+      <!-- 站内页面 -->
+      <el-form-item v-if="ruleForm.type == 'apply'" :label="$t('website.microStationDesign.apply')" prop="apply">
+        <el-select v-model="ruleForm.apply" :placeholder="$t('website.microStationDesign.selectApply')" style="width: 100%">
+          <el-option v-for="(item, index) in instationType" :key="index" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <!--  -->
       <!--  -->
       <el-form-item :label="$t('website.microStationDesign.backgroundSetting')" prop="back">
         <el-radio-group @change="selectChange" v-model="ruleForm.backgroundSetting">
@@ -82,6 +90,7 @@ export default {
   //   },
   data() {
     return {
+      instationType:'',
       colorValue: 'rgba(198, 75, 34, 0.2)',
       ruleForm: {
         id: '',
@@ -93,6 +102,7 @@ export default {
         type: '',
         page: '',
         link: '',
+        apply:'',
         backgroundSetting: '1',
         content: '',
         icon: '',
@@ -107,7 +117,8 @@ export default {
         //         subHeading: [{ required: true, message: '请输入模块副标题', trigger: 'blur' }],
         type: [{ required: true, message: this.$t('website.microStationDesign.inputModuleType'), trigger: 'change' }],
         page: [{ required: true, message: this.$t('website.microStationDesign.pleaseSelectPage'), trigger: 'change' }],
-        link: [{ required: true, message: this.$t('website.microStationDesign.enterExternalLink'), trigger: 'blur' }]
+        link: [{ required: true, message: this.$t('website.microStationDesign.enterExternalLink'), trigger: 'blur' }],
+        apply:[{ required: true, message: this.$t('website.microStationDesign.selectApply'), trigger: 'blur' }],
       },
       pageLists: [],
       classify: [],
@@ -132,7 +143,7 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
+        // debugger
         console.log(newValue, oldValue)
         if (newValue) {
           let submitVal = newValue
@@ -153,7 +164,7 @@ export default {
           }
 
           // console.log(this.ruleForm)
-          debugger
+          // debugger
           console.log(submitVal, oldValue)
           if (submitVal.title) {
             if (this.ruleForm.title == '' || this.dataFlag_) {
@@ -163,7 +174,7 @@ export default {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          debugger
+          // debugger
           // 标注
           // if(this.ruleForm.type){
 
@@ -186,6 +197,13 @@ export default {
                 // hkz
                 if (this.flag_) {
                   this.ruleForm.link = submitVal.content
+                }
+                this.flag_ = true
+              }
+            }else if(submitVal.type == 'apply'){
+              if (this.ruleForm.apply == '' || this.dataFlag_) {
+                if (this.flag_) {
+                  this.ruleForm.apply = submitVal.content
                 }
                 this.flag_ = true
               }
@@ -253,6 +271,7 @@ export default {
             type: '',
             page: '',
             link: '',
+            apply:'',
             backgroundSetting: '1',
             content: '',
             icon: '',
@@ -281,6 +300,8 @@ export default {
           }
           if (this.ruleForm.type == 'article') {
             this.ruleForm.content = this.ruleForm.page
+          } else if(this.ruleForm.type == 'apply'){
+            this.ruleForm.content = this.ruleForm.apply
           } else {
             this.ruleForm.content = this.ruleForm.link
           }
@@ -388,12 +409,18 @@ export default {
       this.$emit('onClick')
     },
     select_(val) {
+      debugger
       console.log(val)
       this.ruleForm.page = ''
       this.ruleForm.link = ''
+      this.ruleForm.apply = ''
     },
     getCode() {
       this.classify = this.$t('datadict.websiteButtonType')
+      this.instationType = this.$t('datadict.instationType')
+      // debugger
+      console.log(this.classify);
+      console.log(this.instationType);
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
@@ -423,7 +450,7 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      debugger
+      // debugger
       // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
