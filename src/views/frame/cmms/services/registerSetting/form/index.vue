@@ -2683,7 +2683,7 @@ export default {
       this.stepIndex = 1
     },
     claerResultFn () {
-      var btnObj = { name: '', value: '' }
+      var btnObj1 = { name: '', value: '' }
       this.resultSetForm.successBanner = ''
       this.resultSetForm.successBackground = ''
       this.resultSetForm.successDescribe = ''
@@ -2694,7 +2694,7 @@ export default {
       // this.resultSetForm.successButtonList.name = ''
       // this.resultSetForm.successButtonList.value = ''
       this.resultSetForm.successButtonList = []
-      this.resultSetForm.successButtonList.push(btnObj)
+      this.resultSetForm.successButtonList.push(btnObj1)
       this.resultSetForm.waitReviewBanner = ''
       this.resultSetForm.waitReviewBackground = ''
       this.resultSetForm.waitReviewDescribe = ''
@@ -2705,7 +2705,8 @@ export default {
       // this.resultSetForm.waitReviewButtonList.name = ''
       // this.resultSetForm.waitReviewButtonList.value = ''
       this.resultSetForm.waitReviewButtonList = []
-      this.resultSetForm.waitReviewButtonList.push(btnObj)
+      var btnObj2 = { name: '', value: '' }
+      this.resultSetForm.waitReviewButtonList.push(btnObj2)
       this.resultSetForm.noPassBanner = ''
       this.resultSetForm.noPassBackground = ''
       this.resultSetForm.noPassDescribe = ''
@@ -2716,7 +2717,8 @@ export default {
       // this.resultSetForm.noPassButtonList.name = ''
       // this.resultSetForm.noPassButtonList.value = ''
       this.resultSetForm.noPassButtonList = []
-      this.resultSetForm.noPassButtonList.push(btnObj)
+      var btnObj3 = { name: '', value: '' }
+      this.resultSetForm.noPassButtonList.push(btnObj3)
       this.successBannerImageList = []
       this.waitReviewBannerImageList = []
       this.noPassBannerImageList = []
@@ -2937,7 +2939,7 @@ export default {
             }
           })
         } else {
-          this.$message({ showClose: true, message: this.$t('form.missingTips'), type: 'warning' })
+          this.$message({ showClose: true, message: this.$t('result.missingTips'), type: 'warning' })
         }
       })
     },
@@ -3008,7 +3010,7 @@ export default {
           if(setInfoItem.systemName == '分页'){
             this.pageTotal++
           }
-           if (item.systemName == '证件') {
+          if (setInfoItem.systemName == '证件') {
             let cardCode = this.$t('datadict.certificateType')
             this.theCertificateType=[]
             item.options.forEach(v=>{
