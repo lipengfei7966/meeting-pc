@@ -3010,7 +3010,7 @@ export default {
           if(setInfoItem.systemName == '分页'){
             this.pageTotal++
           }
-           if (item.systemName == '证件') {
+          if (setInfoItem.systemName == '证件') {
             let cardCode = this.$t('datadict.certificateType')
             this.theCertificateType=[]
             item.options.forEach(v=>{
