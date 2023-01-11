@@ -2937,7 +2937,7 @@ export default {
             }
           })
         } else {
-          this.$message({ showClose: true, message: this.$t('form.missingTips'), type: 'warning' })
+          this.$message({ showClose: true, message: this.$t('result.missingTips'), type: 'warning' })
         }
       })
     },
