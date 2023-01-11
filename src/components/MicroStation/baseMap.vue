@@ -2,24 +2,24 @@
   <div>
     <!-- 底图的 -->
     <div style="margin-top: 8px">
-      <el-button size="small" type="primary" @click="materialSelection">从素材库选择</el-button>
+      <el-button size="small" type="primary" @click="materialSelection">{{$t('website.microStationDesign.selectMaterialLibrary')}}</el-button>
     </div>
     <div style="text-align: center; margin-top: 50px">
-      <el-upload :disabled="true" accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
+      <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" action list-type="picture-card" :headers="httpHeaders" :before-upload="beforeUpload" :http-request="handleUploadForm" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible_">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
     </div>
-    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+    <el-dialog :title="$t('website.microStationDesign.materialSelection')" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
       <div>
         <!-- 放内容的 -->
         <material ref="material" :MultiSelect="false" />
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit_">确 定</el-button>
+        <el-button @click="dialogVisible = false">{{$t('website.microStationDesign.canel')}}</el-button>
+        <el-button type="primary" @click="submit_">{{$t('website.microStationDesign.confirm')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -53,7 +53,7 @@ export default {
     },
     handleExceed(files, fileList) {
       // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
-      this.$message.warning('请删除已存在图片后再进行上传操作')
+      this.$message.warning(this.$t('website.microStationDesign.deleteOruploading'))
     },
     //
     handleUploadForm(param) {
@@ -63,7 +63,7 @@ export default {
       formData.append('file', param.file)
       let loading = thiz.$loading({
         lock: true,
-        text: '上传中，请稍候...',
+        text: this.$t('website.microStationDesign.UploadPleaseWait'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -74,10 +74,10 @@ export default {
       })
         .then(data => {
           if (data) {
-            thiz.$message('上传文件成功')
+            thiz.$message(this.$t('website.microStationDesign.uploadedFileSuccess'))
             this.$emit('upData_')
           } else {
-            thiz.$message('上传文件失败')
+            thiz.$message(this.$t('website.microStationDesign.uploadedFileFail'))
           }
           loading.close()
         })
@@ -85,12 +85,13 @@ export default {
       console.log(param)
     },
     beforeUpload(param) {
+      debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
         // 成功
       } else {
-        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        this.$message(this.$t('website.microStationDesign.deleteOruploading'))
         return false
       }
     },
@@ -113,10 +114,10 @@ export default {
         .then(res => {
           if (res.data) {
             console.log(res.data)
-            this.$message('上传文件成功')
+            this.$message(this.$t('website.microStationDesign.uploadedFileSuccess'))
             this.$emit('upData_')
           } else {
-            this.$message('上传文件失败')
+            this.$message(this.$t('website.microStationDesign.uploadedFileFail'))
           }
         })
         .catch(() => {})

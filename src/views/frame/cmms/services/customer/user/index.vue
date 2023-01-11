@@ -112,7 +112,7 @@ export default {
             permitName: ['unlock'],
             i18n: 'biz.btn.unlock',
             url: '/api/base/customUser/unlock',
-            successMsgInfo: '解锁成功',
+            successMsgInfo: 'website.user.unlockSuccess',
             getParam: () => {
               return this.$refs.bsTable.currentRow.id
             }

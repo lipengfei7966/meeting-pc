@@ -2,12 +2,12 @@
   <div class="content">
     <a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
     <el-form ref="contactForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :disabled="isView" :rules="rules" :model="setForm" label-width="150px" class="contactForm">
-      <el-form-item label="人员编码" prop="personnelCode">
-        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" placeholder="请输入人员编码"></el-input>
+      <el-form-item :label="$t('attendee.detail.personnelCode')" prop="personnelCode">
+        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" :placeholder="$t('attendee.detail.placehorder.personnelCodePH')"></el-input>
       </el-form-item>
-      <el-form-item label="参会人类型" prop="contactType">
+      <el-form-item :label="$t('attendee.detail.participantsType')" prop="contactType">
 
-        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" placeholder="请选择参会人类型"></base-select>
+        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" :placeholder="$t('attendee.detail.placehorder.participantsTypePH')"></base-select>
 
       </el-form-item>
 
@@ -140,12 +140,12 @@
               <!-- 姓名拆分 -->
               <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                 <div>
-                  <el-form-item label="姓" prop="surname">
+                  <el-form-item :label="$t('attendee.detail.surname')" prop="surname">
                     <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
                   </el-form-item>
                 </div>
                 <div>
-                  <el-form-item label="名" prop="ming">
+                  <el-form-item :label="$t('attendee.detail.name')" prop="ming">
                     <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
                   </el-form-item>
                 </div>
@@ -159,38 +159,44 @@
                 <div v-if="element.nationIsShow" class="addresItem">
                   <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.label"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                   </el-form-item>
                   <!-- <el-form-item :label="element.nationTitle" prop="nations">
                     <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.value" :label="item.lable" :value="item.value"> </el-option>
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                   </el-form-item> -->
                 </div>
                 <!-- 省份 -->
-                <div v-if="element.provinceIsShow && setForm.nations == '国家'" class="addresItem">
-                  <el-form-item :label="element.provinceTitle" prop="province">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
-                      <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                    </el-select>
-                  </el-form-item>
+                <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
+                  <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.provinceTitle" prop="province">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
+                        <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
                 </div>
                 <!-- 城市 -->
-                <div v-if="element.cityIsShow && setForm.nations == '国家'" class="addresItem">
-                  <el-form-item :label="element.cityTitle" prop="city">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
-                      <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                    </el-select>
-                  </el-form-item>
+                <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
+                  <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.cityTitle" prop="city">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                        <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
                 </div>
                 <!-- 区县 -->
-                <div v-if="element.countyIsShow && setForm.nations == '国家'" class="addresItem">
-                  <el-form-item :label="element.countyTitle" prop="county">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
-                      <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
-                    </el-select>
-                  </el-form-item>
+                <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                  <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.countyTitle" prop="county">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                        <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
                 </div>
                 <!-- 详细地址 -->
                 <div v-if="element.detailedAdressISShow" class="addresItem">
@@ -199,10 +205,12 @@
                   </el-form-item>
                 </div>
                 <!-- 邮编 -->
-                <div v-if="element.postcodeIsShow && setForm.nations == '国家'" class="addresItem">
-                  <el-form-item :label="element.postcodeTitle" prop="postcode">
-                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
-                  </el-form-item>
+                <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                  <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
+                    <el-form-item :label="element.postcodeTitle" prop="postcode">
+                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                    </el-form-item>
+                  </div>
                 </div>
               </div>
             </el-form-item>
@@ -220,7 +228,7 @@
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
-                    <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+                    <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <br />
                   <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
@@ -363,7 +371,7 @@
       <div v-if="!isView" style="width: 100%; text-align: center">
         <el-button type="primary" @click="submit">
           <span class="el-icon-upload2"></span>
-          提交
+          {{$t('biz.btn.submit')}}
         </el-button>
       </div>
     </el-form>
@@ -387,6 +395,7 @@ export default {
   name: 'attendeeEdit',
   data() {
     return {
+      theCertificateType:[],
       setInfoList: [], // 选中的配置信息列表
       baseInfoList: [], // 基础信息
       customInfoList: [], // 自定义信息列表
@@ -416,7 +425,7 @@ export default {
         certificateType: '', // 证件类型
         certificate: '', // 证件号
         photo: '', // 照片
-        nations: '', // 国家
+        nations: '86', // 国家
         province: '', // 省份
         city: '', //城市
         county: '', // 区/县
@@ -506,14 +515,13 @@ export default {
       this.isUpdate = true
     }
     // this.$route.params.type   add--新增  update--修改  view--查看
-    // 获取地址级联选项
-    this.getComCityTreeList()
-
-    // 表单配置查询
-    this.getEventInfo()
-
     // 国际编码字典项查询
     this.getCountryCode()
+    // 获取地址级联选项
+    this.getComCityTreeList()
+    // // 表单配置查询
+    // this.getEventInfo()
+
   },
   methods: {
     validateEmail,
@@ -532,12 +540,14 @@ export default {
       }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
+          console.log(JSON.parse(response.data.json),'JSON.parse(response.data.json)');
         } else {
           this.setInfoList = []
         }
 
         this.setInfoList.forEach(item => {
           // 1：自定义属性
+          console.log(item,891)
           if (item.mapBase == 1) {
             if (['复选框', '下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
@@ -556,7 +566,7 @@ export default {
             }
             this.$set(this.setformOther, item.mapCode, '')
             // 添加必填校验
-            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: 'blur' }])
+            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur','change'] }])
           } else {
             // 国际区号设置默认值
             if (item.mapCode == 'mobile') {
@@ -575,7 +585,7 @@ export default {
             }
             if (item.mapCode == 'phone') {
               this.setForm.phoneIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur','change'] }])
               // 国际区号不显示,后台默认86
               if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
@@ -583,7 +593,7 @@ export default {
             }
             if (item.mapCode == 'fax') {
               this.setForm.faxIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur','change'] }])
               // 国际区号不显示,后台默认86
               if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
@@ -591,42 +601,43 @@ export default {
             }
 
             // 添加必填校验
-            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: 'blur' }])
+            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur','change'] }])
             if (item.mapCode == 'name' && item.nameSplit) {
               this.rules.name[0].required = false
-              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: 'blur' }])
-              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: 'blur' }])
+              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: ['blur','change'] }])
+              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: ['blur','change'] }])
             }
 
             if (item.mapCode == 'addres') {
               this.rules.addres[0].required = false
               if (item.nationIsShow) {
                 // 显示国家
-
-                this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: 'blur' }])
-                this.setForm.nations = '国家'
+                // debugger
+                this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur','change'] }])
+                // this.setForm.nations = '86'
+                // this.setForm.nations = '国家'
               }
               if (item.provinceIsShow) {
                 // 显示省份
-                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: ['blur','change'] }])
               }
               if (item.cityIsShow) {
                 // 显示城市
-                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: ['blur','change'] }])
               }
               if (item.countyIsShow) {
                 // 显示区县
-                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: 'blur' }])
+                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: ['blur','change'] }])
               }
               if (item.detailedAdressISShow) {
                 // 显示详细地址
-                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: 'blur' }])
+                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: ['blur','change'] }])
               }
               if (item.postcodeIsShow) {
                 // 显示邮编
                 this.$set(this.rules, 'postcode', [
-                  { required: item.isRequire, message: '邮编是必填项', trigger: 'blur' },
-                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: 'blur' }
+                  { required: item.isRequire, message: '邮编是必填项', trigger: ['blur','change'] },
+                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: ['blur','change'] }
                 ])
               }
               // this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
@@ -638,35 +649,45 @@ export default {
                 // 是否设置国际默认区号
                 if (item.check.some(item => item.code == '005') && item.defaultCountryCode == '86') {
                   // 中国大陆 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '852') {
                   // 香港区号 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '853') {
                   // 澳门区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '886') {
                   // 台湾区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 }
               } else {
                 if (item.check.some(checkItem => checkItem.code == '005') && !item.check.some(checkItem => checkItem.code == '006')) {
                   // 中国大陆手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (!item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 港澳台手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 } else if (item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 大陆加港澳台手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: 'blur' })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
                 }
               }
             }
             if (item.mapCode == 'email' || item.mapCode == 'spareEmail') {
-              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: 'blur' })
+              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: ['blur','change'] })
             }
           }
-
+          if (item.systemName == '证件') {
+            let cardCode = this.$t('datadict.certificateType')
+            this.theCertificateType=[]
+            item.options.forEach(v=>{
+              cardCode.forEach(i=>{
+                if(i.value == v){
+                  this.theCertificateType.push(i)
+                }
+              })
+            })
+          }
           if (item.systemName == '分页') {
             this.pagingCount++
           }
@@ -748,16 +769,26 @@ export default {
             this.spareMobileIntCodeChange(this.setForm.spareMobileIntCode, element)
           }
         })
-        // debugger
-        if(this.setForm.certificateType){
-         let cardCode = this.$t('datadict.certificateType')
-         cardCode.forEach(item=>{
-          if(item.value == this.setForm.certificateType){
-            this.setForm.certificateType = item.label
-          }
-         })
+        // if(this.setForm.certificateType){
+        //  let cardCode = this.$t('datadict.certificateType')
+        //  console.log(cardCode,'cardCode');
+        //  cardCode.forEach(item=>{
+        //   if(item.value == this.setForm.certificateType){
+        //     this.setForm.certificateType = item.value
+        //   }
+        //  })
           // console.log(this.$t('datadict.certificateType'));
-        }
+        // }
+        // if(this.setForm.nations){
+        //   debugger
+        //  let cardCode = this.$t('datadict.countryCode')
+        //  cardCode.forEach(item=>{
+        //   if(item.value == this.setForm.nations){
+        //     this.setForm.nations = item.label
+        //   }
+        //  })
+          // console.log(this.$t('datadict.certificateType'));
+        // }
         // console.log(this.setForm);
       })
     },
@@ -794,14 +825,22 @@ export default {
               }
             }
           }
-          debugger
-          if(this.setForm.certificateType){
-             let cardCode = this.$t('datadict.certificateType')
+          // debugger
+          // if(this.setForm.certificateType){
+            //  let cardCode = this.$t('datadict.certificateType')
+            //   cardCode.forEach(item=>{
+            //     if(item.value == this.setForm.certificateType){
+            //       this.setForm.certificateType = item.label
+            //     }
+            //   })
+          // }
+          if(this.setForm.nations){
+             let cardCode = this.$t('datadict.countryCode')
          cardCode.forEach(item=>{
-          if(item.label == this.setForm.certificateType){
-            this.setForm.certificateType = item.value
+          if(item.label == this.setForm.nations){
+            this.setForm.nations = item.value
           }
-         }) 
+         })
           }
           console.log(this.setForm);
           // return
@@ -966,7 +1005,7 @@ export default {
       this.photoName = res.fileName
     },
     fileUploadSuccess(res, file) {
-      console.log(this.setFormFile)
+      console.log(this.setFormFile,"???")
     },
      beforeAvatarUpload(file, element) {
       // fileTypeLimit // 是否限制文件类型
@@ -1063,6 +1102,7 @@ export default {
                 this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
                 return false
             }
+            // debugger
             return isAllowUpload
         },
         // 自定义上传文件
@@ -1083,6 +1123,7 @@ export default {
                 data: formData
             }).then(data => {
                 if (data.status) {
+                  debugger
                     this.$message('上传文件成功')
                     this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
 
@@ -1148,12 +1189,16 @@ export default {
         }
       }).then(res => {
         this.chinaProvinceList = res.data
+        // 表单配置查询
+        this.getEventInfo()
       })
     },
     // 证件类型切换
     certificateTypeChange(val) {
+      console.log(val,'val');
+      debugger
       this.setForm.certificate = ''
-      if (val == '居民身份证') {
+      if (val == 'NI') {
         this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
         // this.$set(this.rules, 'certificate', [{required: item.isRequire, message: item.title + "是必填项", trigger: "blur" },{ validator: validateIDcard, trigger: "blur"}])
       } else {
@@ -1265,6 +1310,7 @@ export default {
     // 国际编码字典项查询
     getCountryCode() {
       this.countryCodeOptions = this.$t('datadict.countryCode')
+      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       this.nationsList = this.countryCodeOptions.filter(item => {
         //
@@ -1432,5 +1478,13 @@ export default {
       margin-left: 15px;
     }
   }
+}
+.el-form-item__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.el-form-label__frame {
+  position: absolute;
 }
 </style>

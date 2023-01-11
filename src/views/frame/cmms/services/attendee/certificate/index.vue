@@ -6,7 +6,7 @@
       <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
         <template v-for="tab in mainData.tabs">
           <el-tab-pane :key="tab.name" :index="tab.name" :name="tab.name">
-            <span slot="label">{{ $t(tab.label) }} </span>
+            <span slot="label">{{$t(`attendee.tab.${tab.name}`) }} </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -158,9 +158,9 @@ export default {
       mainData: {
         isTabBar: true,
         tabs: [
-          { name: '2', label: '全部' },
-          { name: '0', label: '未办证' },
-          { name: '1', label: '已办证' }
+          { name: '2', label: this.$t('attendee.tab.all') },
+          { name: '0', label:  this.$t('attendee.tab.NoCertificate') },
+          { name: '1', label:  this.$t('attendee.tab.IssuedCertificate') }
         ],
         api: {
           search: '/api/register/signupCertificate/page'
@@ -171,31 +171,31 @@ export default {
           {
             name: 'add',
             type: 'route',
-            i18n: '新增参会人',
+            i18n: 'attendee.btn.addAttendee',
             event: this.toAddSetting
           },
           {
             name: 'update',
             type: 'route',
-            i18n: '修改参会人',
+            i18n: 'attendee.btn.changeAttendee',
             event: this.toUpdateSetting
           },
           {
             name: 'record',
             type: 'route',
-            i18n: '办证记录',
+            i18n: 'attendee.btn.certificateRecord',
             event: this.toRecord
           },
           {
             name: 'certificateSave',
             type: 'route',
-            i18n: '办证',
+            i18n: 'attendee.btn.certificate',
             event: this.print
           },
           {
             name: 'attendeeCertificateSet',
             type: 'route',
-            i18n: '办证设置',
+            i18n: 'attendee.btn.certificateSetUp',
             event: this.toSetting
           },
           {
@@ -372,7 +372,7 @@ export default {
       </style>`
       this.tableData = this.$refs.bsTable.currentRow || []
       if (this.tableData.length == 0) {
-        this.$message.warning('请选择办证人员')
+        this.$message.warning(this.$t('attendee.selectMsg'))
         return
       }
       let isCanPrint = true
@@ -392,7 +392,7 @@ export default {
             }
           })
         } else {
-          msg = msg + item.name + '未添加证件模板<br/>'
+          msg = msg + item.name + `${this.$t('attendee.noCertificateMsg')}`
         }
       })
       this.$nextTick(() => {
@@ -498,25 +498,25 @@ export default {
             }
           })
         } catch (e) {
-          this.$message.warning('参会人没有人员编码')
+          this.$message.warning(this.$t('attendee.noCodeMsg'))
           return
         }
       })
     },
     toSaveRecord() {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       if (this.$refs.bsTable.currentRow == null) {
-        this.$message.warning('请选择参会人')
+        this.$message.warning(this.$t('attendee.chooseAttendeeMsg'))
         return
       }
     },
     toSetting() {
       //
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('attendee.chooseMeetMsg'))
         return
       }
       this.$router.push({

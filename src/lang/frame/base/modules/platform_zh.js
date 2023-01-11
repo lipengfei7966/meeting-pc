@@ -66,6 +66,12 @@ export default {
     },
 
     menu: {
+      updaateTips: '因菜单信息有5分钟的缓存，业务员在5分钟后登陆可以看到新的菜单目录', // 因菜单信息有5分钟的缓存，业务员在5分钟后登陆可以看到新的菜单目录
+      deleteTips: '只能删除自有目录或者菜单,如为目录，则当前目录下没有目录/菜单', // 只能删除自有目录或者菜单,如为目录，则当前目录下没有目录/菜单
+      synchronizationSuccess: '同步成功', // 同步成功
+      noProblem: '没有问题', // 没有问题
+      notifyErrorTips: '解决办法：请重新调整问题菜单目录层级(调到别的目录，再调整回来)。问题菜单：', // 解决办法：请重新调整问题菜单目录层级(调到别的目录，再调整回来)。问题菜单：
+      confirmTips: '同步时，不会影响当前数据，只是添加平台新增加的菜单和目录结构信息', // 同步时，不会影响当前数据，只是添加平台新增加的菜单和目录结构信息
       moduleCode: '模块代码',
       name: '名称',
       catalog: '目录',
@@ -149,7 +155,8 @@ export default {
       remark: '备注',
       funcTab: '功能权限',
       dataperTab: '数据权限类别',
-      componentTab: '组件权限'
+      componentTab: '组件权限',
+      tmcCompany: 'TMC公司'
     },
     dataper: {
       name: '类别名称',

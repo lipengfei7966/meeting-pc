@@ -12,19 +12,19 @@
         <el-steps :active="stepIndex" align-center>
           <el-step style="cursor: pointer" @click="stepIndexChange(0)">
             <span slot="icon" @click="stepIndexChange(0)" style="cursor: pointer"> 1 </span>
-            <span slot="title" @click="stepIndexChange(0)" style="cursor: pointer"> 外观设置 </span>
+            <span slot="title" @click="stepIndexChange(0)" style="cursor: pointer"> {{$t('appearance.registrationSetup')}} </span>
           </el-step>
           <el-step title="表单设置" style="cursor: pointer" @click="stepIndexChange(1)">
             <span slot="icon" @click="stepIndexChange(1)" style="cursor: pointer"> 2 </span>
-            <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> 表单设置 </span>
+            <span slot="title" @click="stepIndexChange(1)" style="cursor: pointer"> {{$t('form.formSettings')}} </span>
           </el-step>
           <el-step title="结果设置" @click="stepIndexChange(2)" style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(2)" style="cursor: pointer"> 3 </span>
-            <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> 结果设置 </span>
+            <span slot="title" @click="stepIndexChange(2)" style="cursor: pointer"> {{$t('result.resultSettings')}} </span>
           </el-step>
           <el-step title="注册报名设置" @click="stepIndexChange(3)" style="cursor: pointer">
             <span slot="icon" @click="stepIndexChange(3)" style="cursor: pointer"> 4 </span>
-            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> 注册报名设置 </span>
+            <span slot="title" @click="stepIndexChange(3)" style="cursor: pointer"> {{$t('applySet.registrationSetup')}} </span>
           </el-step>
         </el-steps>
       </div>
@@ -34,9 +34,9 @@
           <!-- 通用设置 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
-              <h3>通用设置</h3>
+              <h3>{{$t('appearance.generalSettings')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ isCommonSetShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ isCommonSetShow ? $t('appearance.fewer') : $t('appearance.expand') }}</span>
                 <el-button type="text" @click="isCommonSetShow = !isCommonSetShow" style="vertical-align: middle; padding: 0">
                   <i v-if="isCommonSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -45,19 +45,19 @@
             </div>
             <el-divider></el-divider>
             <div v-show="isCommonSetShow">
-              <el-form-item label="注册标题" prop="titleChinese">
-                <el-input v-model="appearanceSetForm.titleChinese" style="width: 50%" size="mini" placeholder="注册标题"></el-input>
+              <el-form-item :label="$t('appearance.registrationTitle')" prop="titleChinese">
+                <el-input v-model="appearanceSetForm.titleChinese" style="width: 50%" size="mini" :placeholder="$t('appearance.registrationTitle')"></el-input>
               </el-form-item>
-              <el-form-item label="注册标题(英文)" prop="titleEnglish">
-                <el-input v-model="appearanceSetForm.titleEnglish" style="width: 50%" size="mini" placeholder="注册标题(英文)"></el-input>
+              <el-form-item :label="$t('appearance.registrationTitleEnglish')" prop="titleEnglish">
+                <el-input v-model="appearanceSetForm.titleEnglish" style="width: 50%" size="mini" :placeholder="$t('appearance.registrationTitleEnglish')"></el-input>
               </el-form-item>
-              <el-form-item label="语言设置" prop="language">
+              <el-form-item :label="$t('appearance.languageSettings')" prop="language">
                 <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
-                  <el-checkbox label="中文" name="CN"></el-checkbox>
-                  <el-checkbox label="英文" name="EN"></el-checkbox>
+                  <el-checkbox :label="$t('appearance.chinese')" name="CN"></el-checkbox>
+                  <el-checkbox :label="$t('appearance.english')" name="EN"></el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
-              <el-form-item label="主色调" prop="color">
+              <el-form-item :label="$t('appearance.mainColor')" prop="color">
                 <el-color-picker v-model="appearanceSetForm.color" style="width: 50%" size="mini"></el-color-picker>
               </el-form-item>
             </div>
@@ -65,9 +65,9 @@
           <!-- 会议宣传 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
-              <h3>会议宣传</h3>
+              <h3>{{$t('appearance.conferencePublicity')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ isPublicitySetShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ isPublicitySetShow ? $t('appearance.fewer') : $t('appearance.expand') }}</span>
                 <el-button type="text" @click="isPublicitySetShow = !isPublicitySetShow" style="vertical-align: middle; padding: 0">
                   <i v-if="isPublicitySetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -76,7 +76,7 @@
             </div>
             <el-divider></el-divider>
             <div v-show="isPublicitySetShow">
-              <el-form-item label="是否开启会议宣传" prop="isPropaganda">
+              <el-form-item :label="$t('appearance.isPublicity')" prop="isPropaganda">
                 <el-switch v-model="appearanceSetForm.isPropaganda" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
 
@@ -95,7 +95,7 @@
                   <div class="el-upload__tip" slot="tip" style="margin-left: 100px">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload> -->
               </el-form-item>
-              <el-form-item label="Banner(手机端)" prop="appFile">
+              <el-form-item :label="$t('appearance.mobileClientBanner')" prop="appFile">
                 <!-- <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
                   :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
@@ -109,16 +109,16 @@
                   <img width="100%" :src="AppdialogImageUrl" alt="">
                 </el-dialog>
               </el-form-item>
-              · <el-form-item label="是否显示会议时间" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
+              · <el-form-item :label="$t('appearance.isMeetingTime')" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-co lor="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示会议地点" prop="isMeetinPlace" v-if="appearanceSetForm.isPropaganda == '1'">
+              <el-form-item :label="$t('appearance.isMeetingLocation')" prop="isMeetinPlace" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetinPlace" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示倒计时" prop="isMeetinCountdown" v-if="appearanceSetForm.isPropaganda == '1'">
+              <el-form-item :label="$t('appearance.isCountdown')" prop="isMeetinCountdown" v-if="appearanceSetForm.isPropaganda == '1'">
                 <el-switch v-model="appearanceSetForm.isMeetinCountdown" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="会议简介" prop="profile" v-show="appearanceSetForm.isPropaganda == '1'">
+              <el-form-item :label="$t('appearance.conferenceIntroduction')" prop="profile" v-show="appearanceSetForm.isPropaganda == '1'">
                 <!-- <el-input type="textarea" style="width: 50%" :rows="4" :maxlength="500" show-word-limit placeholder="请输入会议简介" v-model="appearanceSetForm.profile"></el-input> -->
                 <bs-editor></bs-editor>
               </el-form-item>
@@ -127,9 +127,9 @@
           <!-- 注册登录 -->
           <div class="appearanceSetItem">
             <div class="setItemTitle">
-              <h3>注册登录</h3>
+              <h3>{{$t('appearance.registerLogin')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ isRegisterSetShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ isRegisterSetShow ? $t('appearance.fewer') : $t('appearance.expand') }}</span>
                 <el-button type="text" @click="isRegisterSetShow = !isRegisterSetShow" style="vertical-align: middle; padding: 0">
                   <i v-if="isRegisterSetShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -153,7 +153,7 @@
                 </el-upload> -->
 
               </el-form-item>
-              <el-form-item label="Banner(手机端)" prop="loginAppFile">
+              <el-form-item :label="$t('appearance.mobileClientBanner')" prop="loginAppFile">
                 <!-- <el-upload class="upload-demo" drag action multiple :before-upload="beforeAvatarUpload"
                   :http-request="(file) => handleUploadForm(file)">
                   <i class="el-icon-upload"></i>
@@ -167,20 +167,20 @@
                   <img width="100%" :src="resAppdialogImageUrl" alt="">
                 </el-dialog>
               </el-form-item>
-              <el-form-item label="是否显示会议时间" prop="isLoginDate">
+              <el-form-item :label="$t('appearance.isMeetingTime')" prop="isLoginDate">
                 <el-switch v-model="appearanceSetForm.isLoginDate" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示会议地点" prop="isLoginPlace">
+              <el-form-item :label="$t('appearance.isMeetingLocation')" prop="isLoginPlace">
                 <el-switch v-model="appearanceSetForm.isLoginPlace" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
-              <el-form-item label="是否显示倒计时" prop="isLoginCountdown">
+              <el-form-item :label="$t('appearance.isCountdown')" prop="isLoginCountdown">
                 <el-switch v-model="appearanceSetForm.isLoginCountdown" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
               </el-form-item>
             </div>
           </div>
         </el-form>
         <div class="appearanceSetBtns">
-          <el-button type="primary" @click="appearanceSetSave">保存,进入下一步</el-button>
+          <el-button type="primary" @click="appearanceSetSave">{{$t('appearance.saveAndNext')}}</el-button>
           <!-- <el-button>取消</el-button> -->
         </div>
       </div>
@@ -189,14 +189,14 @@
       <div v-show="stepIndex == 1" class="formSet">
         <el-card class="formInfo" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
-            <span>表单信息</span>
+            <span>{{$t('form.formInformation')}}</span>
           </div>
 
           <div>
             <el-collapse>
               <el-collapse-item>
                 <template slot="title">
-                  <h2>基本信息</h2>
+                  <h2>{{$t('form.basicInformation')}}</h2>
                 </template>
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(baseInfoItem, baseInfoIndex) in baseInfoList" :key="baseInfoIndex" v-show="!baseInfoItem.isSee" @click="addSetInfoList(baseInfoItem, baseInfoList, 'baseInfoList')">{{
@@ -207,7 +207,7 @@
 
               <el-collapse-item>
                 <template slot="title">
-                  <h2>联系方式</h2>
+                  <h2>{{$t('form.contactWay')}}</h2>
                 </template>
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(contactWayItem, contactWayIndex) in contactWayList" :key="contactWayIndex" v-show="!contactWayItem.isSee" @click="addSetInfoList(contactWayItem, contactWayList, 'contactWayList')">{{ contactWayItem.label }}
@@ -217,7 +217,7 @@
 
               <el-collapse-item>
                 <template slot="title">
-                  <h2>工作信息</h2>
+                  <h2>{{$t('form.jobInformantion')}}</h2>
                 </template>
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(workInfoItem, workInfoIndex) in workInfoList" :key="workInfoIndex" v-show="!workInfoItem.isSee" @click="addSetInfoList(workInfoItem, workInfoList, 'workInfoList')">{{
@@ -228,7 +228,7 @@
 
               <el-collapse-item>
                 <template slot="title">
-                  <h2>自定义信息</h2>
+                  <h2>{{$t('form.customInformation')}}</h2>
                 </template>
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(customInfoItem, customInfoIndex) in customInfoList" :key="customInfoIndex" v-show="!customInfoItem.isSee" @click="addSetInfoList(customInfoItem, customInfoList, 'customInfoList')">{{ customInfoItem.label }}
@@ -238,7 +238,7 @@
 
               <el-collapse-item>
                 <template slot="title">
-                  <h2>特殊信息</h2>
+                  <h2>{{$t('form.specialInformation')}}</h2>
                 </template>
                 <ul class="formInfoItems">
                   <li class="formInfoItem" v-for="(specialInfoItem, specialInfoIndex) in specialInfoList" :key="specialInfoIndex" v-show="!specialInfoItem.isSee" @click="addSetInfoList(specialInfoItem, specialInfoList, 'specialInfoList')">{{
@@ -276,10 +276,8 @@
                   <!-- 性别 -->
                   <div v-if="element.mapCode == 'sex'" class="form-item-input">
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
-                    <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0]
-}}</el-radio>
-                    <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1]
-}}</el-radio>
+                    <el-radio v-model="setForm.checkedSex" :label="element.options[0]">{{ element.options[0]}}</el-radio>
+                    <el-radio v-model="setForm.checkedSex" :label="element.options[1]">{{ element.options[1]}}</el-radio>
                   </div>
 
                   <!-- 证件 -->
@@ -287,7 +285,7 @@
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-select style="width: 100%" v-model="setForm.chenkedCertificate" :placeholder="element.placeholder">
-                        <el-option v-for="item in element.options" :key="item" :label="item" :value="item"> </el-option>
+                        <el-option v-for="item in theCertificateType" :key="item.key" :value="item.value" :label="item.label"> </el-option>
                       </el-select>
                       <br />
                       <el-input style="margin-top: 10px" size="mini" :placeholder="element.certificateNumPlaceholder"></el-input>
@@ -350,13 +348,13 @@
                     <span class="setInfoItemlabel"> {{ element.title }} : </span>
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.defaultCountryCode" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.defaultCountryCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                       <br />
-                      <el-input v-if="element.isNoteVerify" placeholder="请输入验证码" class="input-with-select">
-                        <el-button slot="append">获取验证码</el-button>
+                      <el-input v-if="element.isNoteVerify" :placeholder="$t('form.enterVerification')" class="input-with-select">
+                        <el-button slot="append">{{$t('form.getVerificationCode')}}</el-button>
                       </el-input>
                     </div>
                   </div>
@@ -367,13 +365,13 @@
 
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.secondPhonedefaultCountryCode" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.secondPhonedefaultCountryCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                       <br />
-                      <el-input v-if="element.isNoteVerify" placeholder="请输入验证码" class="input-with-select">
-                        <el-button slot="append">获取验证码</el-button>
+                      <el-input v-if="element.isNoteVerify" :placeholder="$t('form.enterVerification')" class="input-with-select">
+                        <el-button slot="append">{{$t('form.getVerificationCode')}}</el-button>
                       </el-input>
                     </div>
                   </div>
@@ -384,7 +382,7 @@
 
                     <div style="width: 80%; display: inline-block; vertical-align: top">
                       <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.telephoneDefaultCountryCode" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.telephoneDefaultCountryCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
@@ -400,7 +398,7 @@
 
                     <div style="width: 80%; display: inline-block; vertical-align: top">
                       <el-input style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxDefaultCountryCode" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" slot="prepend" style="width: 80px" v-model="setForm.faxDefaultCountryCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
@@ -417,8 +415,8 @@
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                       <br />
-                      <el-input v-if="element.isEmailVerify" placeholder="请输入验证码" class="input-with-select">
-                        <el-button slot="append">获取验证码</el-button>
+                      <el-input v-if="element.isEmailVerify" :placeholder="$t('form.enterVerification')" class="input-with-select">
+                        <el-button slot="append">{{$t('form.getVerificationCode')}}</el-button>
                       </el-input>
                     </div>
                   </div>
@@ -430,8 +428,8 @@
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-input :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                       <br />
-                      <el-input v-if="element.isEmailVerify" placeholder="请输入验证码" class="input-with-select">
-                        <el-button slot="append">获取验证码</el-button>
+                      <el-input v-if="element.isEmailVerify" :placeholder="$t('form.enterVerification')" class="input-with-select">
+                        <el-button slot="append">{{$t('form.getVerificationCode')}}</el-button>
                       </el-input>
                     </div>
                   </div>
@@ -514,9 +512,7 @@
 
                     <div style="width: 50%; display: inline-block; vertical-align: top">
                       <el-radio-group :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
-                        <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{
-    item
-}}</el-radio>
+                        <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{item}}</el-radio>
                       </el-radio-group>
                     </div>
                   </div>
@@ -581,7 +577,7 @@
                   <!-- 分页 -->
                   <div v-if="element.systemName == '分页'" class="form-item-input">
                     <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
-                    <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pageTotal }} 页 ]</p>
+                    <p style="text-align: center">[ {{$t('form.di')}} {{ element.pagingIndex }} {{$t('form.total')}} {{ pageTotal }} {{$t('form.Page')}} ]</p>
                     <!-- <el-divider content-position="center">{{ element.placeholder }}</el-divider> -->
                   </div>
 
@@ -594,7 +590,7 @@
                     <div style="display: flex">
                       <!-- <el-checkbox v-if="true" v-model="element.isRequire"
                         :disabled="true">必填</el-checkbox> -->
-                      <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">必填</el-checkbox>
+                      <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">{{$t('form.required')}}</el-checkbox>
                       <div class="remove-button el-icon-remove-outline" @click.stop="delSetInfoList(element, index)">
                       </div>
                     </div>
@@ -606,33 +602,33 @@
           <div class="optionBtns" style="">
             <el-button type="primary" @click="save">
               <span class="el-icon-download"></span>
-              保存,进入下一步
+              {{$t('appearance.saveAndNext')}}
             </el-button>
-            <el-button>取消</el-button>
+            <el-button>{{$t('applySet.cancel')}}</el-button>
           </div>
         </el-card>
         <!-- 右侧编辑 -->
         <el-card class="formEdit" :style="{ height: formSetHeight + 'px' }">
           <div slot="header" class="formInfoTitle">
-            <span>编辑</span>
+            <span>{{$t('form.edit')}}</span>
           </div>
 
           <div v-if="setInfoList.length > 0">
-            <p class="systemName">系统姓名: {{ setInfoList[checkedIndex].systemName }}</p>
+            <p class="systemName">{{$t('form.systemName')}}: {{ setInfoList[checkedIndex].systemName }}</p>
 
             <div class="eidtContent">
               <!-- 姓名 -->
               <div v-if="setInfoList[checkedIndex].mapCode == 'name'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input v-if="setInfoList[checkedIndex].nameSplit" size="mini" v-model="setInfoList[checkedIndex].surnameTitle"></el-input>
                   <el-input v-if="setInfoList[checkedIndex].nameSplit" size="mini" v-model="setInfoList[checkedIndex].nameTitle"></el-input>
                   <el-input v-if="!setInfoList[checkedIndex].nameSplit" style="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input v-if="setInfoList[checkedIndex].nameSplit" size="mini" v-model="setInfoList[checkedIndex].surnamePlaceholder"></el-input>
                   <el-input v-if="setInfoList[checkedIndex].nameSplit" size="mini" v-model="setInfoList[checkedIndex].namePlaceholder"></el-input>
 
@@ -640,12 +636,12 @@
                 </div>
                 <!-- 姓名拆分 -->
                 <div class="eidtContentItem" v-show="setInfoList[checkedIndex].mapCode == 'name'">
-                  <p class="eidtContentItemTitle">姓名拆分</p>
+                  <p class="eidtContentItemTitle">{{$t('form.nameSplitting')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].nameSplit"> </el-switch>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -654,18 +650,18 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'sex'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">选项</p>
+                  <p class="eidtContentItemTitle">{{$t('form.options')}}</p>
                   <el-input style="" size="mini" v-model="setInfoList[checkedIndex].options[0]"></el-input>
                   <el-input style="margin-top: 10px" size="mini" v-model="setInfoList[checkedIndex].options[1]"></el-input>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -674,53 +670,52 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'certificate'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">证件类型提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.documentTypeTips')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
-                  <p class="eidtContentItemTitle">证件号提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.documentNumberTips')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].certificateNumPlaceholder"></el-input>
                 </div>
                 <!-- 可选择证件类型 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">可选择证件类型</p>
-                  <!-- this=={{ $t('datadict.certificateType') }} -->
+                  <p class="eidtContentItemTitle">{{$t('form.chooseDocumentType')}}</p>
                   <el-checkbox-group class="certificateOptions" v-model="setInfoList[checkedIndex].options" :min="1" @change="certificateTypeChange">
-                    <el-checkbox v-for="item in $t('datadict.certificateType')" :label="item.label" :key="item.key" :value="item.label"></el-checkbox>
+                    <el-checkbox v-for="item in $t('datadict.certificateType')" :key="item.key" :label="item.value">{{ item.label }}</el-checkbox>
                     <!-- <el-checkbox v-for="item in setInfoList[checkedIndex].certificateAllTypes" :label="item" :key="item"></el-checkbox> -->
                   </el-checkbox-group>
                 </div>
                 <!-- 校验 -->
-                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('二代身份证')">
-                  <p class="eidtContentItemTitle">校验</p>
+                <div class="eidtContentItem" v-if="setInfoList[checkedIndex].options.includes('NI')">
+                  <p class="eidtContentItemTitle">{{$t('form.verify')}}</p>
                   <el-radio-group class="certificateVerify" style="width: 100%" v-model="setInfoList[checkedIndex].check[0].code" @change="certificateVerifyChange">
                     <el-radio label="001">
-                      号码逻辑校验
-                      <p class="VerifyExplain">仅对填写的身份证号的规则进行逻辑校验，确认为正常的身份证号</p>
+                      {{$t('form.numberlogicvalidation')}}
+                      <p class="VerifyExplain">{{$t('form.onlytherulesoftheIDnumber')}}</p>
                     </el-radio>
 
                     <el-radio label="002">
-                      身份证实名校验
-                      <p class="VerifyExplain">对填写的姓名+身份证号进行实名校验，确认姓名与身份证号一致</p>
+                      {{$t('form.idcardrealnameverification')}}
+                      <p class="VerifyExplain">{{$t('form.checktherealname')}}</p>
                     </el-radio>
                     <el-radio label="003">
-                      人像实名校验
-                      <p class="VerifyExplain">对上传照片与身份证号对应照片比对认证</p>
+                      {{$t('form.portraitrealnameverification')}}
+                      <p class="VerifyExplain">{{$t('form.compareandauthenticatetheuploaded')}}</p>
                     </el-radio>
                   </el-radio-group>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
               </div>
@@ -729,32 +724,32 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'photo'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 照片裁剪 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">照片裁剪</p>
+                  <p class="eidtContentItemTitle">{{$t('form.photoCropping')}}</p>
                   <el-radio-group class="certificateVerify" style="width: 100%" v-model="setInfoList[checkedIndex].photeTailor">
-                    <el-radio label="自动压缩裁剪">
-                      自动压缩裁剪
-                      <p class="VerifyExplain">用户上传照片后系统自动压缩处理（图片可能变形失真）；</p>
+                    <el-radio :label="$t('form.automaticcompressionandclipping')">
+                      {{$t('form.automaticcompressionandclipping')}}
+                      <p class="VerifyExplain"> {{$t('form.systemautomaticallycompressesTips')}}；</p>
                     </el-radio>
 
-                    <el-radio label="手动裁剪">
-                      手动裁剪
-                      <p class="VerifyExplain">用户上传照片，需进行照片裁剪选取固定尺寸图像</p>
+                    <el-radio :label="$t('form.manualClipping')">
+                      {{$t('form.manualClipping')}}
+                      <p class="VerifyExplain"> {{$t('form.photoAndNeedsToCrop')}}</p>
                     </el-radio>
                   </el-radio-group>
                 </div>
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">限制照片尺寸 (px)</p>
-                  <div style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
+                  <p class="eidtContentItemTitle">{{$t('form.limitingphotosizes')}} (px)</p>
+                  <div style="width: 100%">{{$t('form.width')}}: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> {{$t('form.height')}}: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
                   </div>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -763,104 +758,104 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'addres'">
                 <!-- 国家 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">国家</p>
+                  <p class="eidtContentItemTitle">{{$t('form.nation')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].nationIsShow"> </el-switch>
                 </div>
                 <!-- 国家标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].nationIsShow">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].nationTitle"></el-input>
                 </div>
                 <!-- 国家提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].nationIsShow">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].nationPlaceholder"></el-input>
                 </div>
 
                 <!-- 省份 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">省份</p>
+                  <p class="eidtContentItemTitle">{{$t('form.province')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].provinceIsShow" @change="provinceChange"> </el-switch>
                 </div>
                 <!-- 省份标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].provinceIsShow">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].provinceTitle"></el-input>
                 </div>
                 <!-- 省份提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].provinceIsShow">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].provincePlaceholder"></el-input>
                 </div>
 
                 <!-- 城市 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">城市</p>
+                  <p class="eidtContentItemTitle">{{$t('form.city')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].cityIsShow" @change="cityIsShowChange"> </el-switch>
                 </div>
                 <!-- 城市标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].cityIsShow">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].cityTitle"></el-input>
                 </div>
                 <!-- 城市提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].cityIsShow">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].cityPlaceholder"></el-input>
                 </div>
 
                 <!-- 区县 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">区县</p>
+                  <p class="eidtContentItemTitle">{{$t('form.districtsAndCounties')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].countyIsShow" @change="countyIsShowChange"> </el-switch>
                 </div>
                 <!-- 区县标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].countyIsShow">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].countyTitle"></el-input>
                 </div>
                 <!-- 区县提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].countyIsShow">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].countyPlaceholder"></el-input>
                 </div>
 
                 <!-- 详细地址 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">详细地址</p>
+                  <p class="eidtContentItemTitle">{{$t('form.detailedaddress')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].detailedAdressISShow" @change="detailedAdressIsShowChange"> </el-switch>
                 </div>
                 <!-- 详细地址标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].detailedAdressISShow">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].detailedAdressTitle"></el-input>
                 </div>
                 <!-- 详细地址提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].detailedAdressISShow">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].detailedAdressPlaceholder"></el-input>
                 </div>
 
                 <!-- 邮编 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">邮编</p>
+                  <p class="eidtContentItemTitle">{{$t('form.postalCode')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].postcodeIsShow" @change="postcodeIsShowChange">
                   </el-switch>
                 </div>
                 <!-- 邮编地址标题 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].postcodeIsShow">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].postcodeTitle"></el-input>
                 </div>
                 <!-- 邮编地址提示文本 -->
                 <div class="eidtContentItem" v-if="setInfoList[checkedIndex].postcodeIsShow">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].postcodePlaceholder"></el-input>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -869,27 +864,27 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'mobile'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 国际区号 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">国际区号</p>
+                  <p class="eidtContentItemTitle">{{$t('form.countryCode')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top: 5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" filterable v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" v-if="setInfoList[checkedIndex].countryCodeIsShow" filterable v-model="setInfoList[checkedIndex].defaultCountryCode" @change="defaultCountryCodeChange" :placeholder="$t('form.setsthedefaultCountry')">
                     <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
                 <!-- 格式校验 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">格式校验</p>
+                  <p class="eidtContentItemTitle">{{$t('form.formatValidation')}}</p>
                   <el-checkbox-group v-model="setInfoList[checkedIndex].mobilePhoneVerify" @change="mobilePhoneVerifyChange">
                     <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item" :disabled="item == '国际'"></el-checkbox>
                   </el-checkbox-group>
@@ -897,25 +892,25 @@
 
                 <!-- 短信验证 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">短信验证</p>
+                  <p class="eidtContentItemTitle">{{$t('form.sMSVerification')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isNoteVerify"> </el-switch>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
 
                 <!-- 仅限于后台管理 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">仅限于后台管理</p>
+                  <p class="eidtContentItemTitle">{{$t('form.backgroundManagementOnly')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
                 </div>
               </div>
@@ -924,27 +919,27 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'spareMobile'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 国际区号 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">国际区号</p>
+                  <p class="eidtContentItemTitle">{{$t('form.countryCode')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="secondphoneDefaultCountryCodeChange" :placeholder="$t('form.setsthedefaultCountry')">
                     <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
                 <!-- 格式校验 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">格式校验</p>
+                  <p class="eidtContentItemTitle">{{$t('form.formatValidation')}}</p>
                   <el-checkbox-group v-model="setInfoList[checkedIndex].mobilePhoneVerify" @change="mobilePhoneVerifyChange">
                     <el-checkbox v-for="item in setInfoList[checkedIndex].mobilePhoneVerifyOptions" :label="item" :key="item" :disabled="item == '国际'"></el-checkbox>
                   </el-checkbox-group>
@@ -952,19 +947,19 @@
 
                 <!-- 短信验证 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">短信验证</p>
+                  <p class="eidtContentItemTitle">{{$t('form.sMSVerification')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isNoteVerify"> </el-switch>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -973,12 +968,12 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'phone'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].areaCodePlaceholder"></el-input>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                   <el-input size="mini" v-if="setInfoList[checkedIndex].extensionNumbeIsShow" v-model="setInfoList[checkedIndex].extensionNumberPlaceholder"></el-input>
@@ -986,28 +981,28 @@
 
                 <!-- 国际区号 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">国际区号</p>
+                  <p class="eidtContentItemTitle">{{$t('form.countryCode')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="telephoneDefaultCountryCodeChange" :placeholder="$t('form.setsthedefaultCountry')">
                     <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
                 <!-- 分机号 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">分机号</p>
+                  <p class="eidtContentItemTitle">{{$t('form.extensionNumber')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].extensionNumbeIsShow"> </el-switch>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1016,12 +1011,12 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'fax'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].areaCodePlaceholder"></el-input>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                   <el-input size="mini" v-if="setInfoList[checkedIndex].extensionNumbeIsShow" v-model="setInfoList[checkedIndex].extensionNumberPlaceholder"></el-input>
@@ -1029,22 +1024,22 @@
 
                 <!-- 国际区号 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">国际区号</p>
+                  <p class="eidtContentItemTitle">{{$t('form.countryCode')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].countryCodeIsShow"> </el-switch>
-                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" placeholder="设置默认的国家/地区">
+                  <el-select style="margin-top: 5px" filterable v-if="setInfoList[checkedIndex].countryCodeIsShow" v-model="setInfoList[checkedIndex].defaultCountryCode" @change="faxDefaultCountryCodeChange" :placeholder="$t('form.setsthedefaultCountry')">
                     <el-option v-for="item in countryCodeOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                 </div>
 
                 <!-- 分机号 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">分机号</p>
+                  <p class="eidtContentItemTitle">{{$t('form.extensionNumber')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].extensionNumbeIsShow"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1053,36 +1048,36 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'email'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 邮箱验证 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">邮箱验证</p>
+                  <p class="eidtContentItemTitle">{{$t('form.mailboxVerification')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isEmailVerify"> </el-switch>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
 
                 <!-- 仅限于后台管理 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">仅限于后台管理</p>
+                  <p class="eidtContentItemTitle">{{$t('form.backgroundManagementOnly')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].onlyUsedByManageSys"> </el-switch>
                 </div>
               </div>
@@ -1091,30 +1086,30 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'spareEmail'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 邮箱验证 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">邮箱验证</p>
+                  <p class="eidtContentItemTitle">{{$t('form.mailboxVerification')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isEmailVerify"> </el-switch>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1123,24 +1118,24 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'wechat'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1149,24 +1144,24 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'qq'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 唯一 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">唯一</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unique')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].isOnly"> </el-switch>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1175,18 +1170,18 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'company'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1195,18 +1190,18 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'department'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1215,18 +1210,18 @@
               <div v-if="setInfoList[checkedIndex].mapCode == 'position'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1235,24 +1230,24 @@
               <div v-if="setInfoList[checkedIndex].systemName == '短文本' || setInfoList[checkedIndex].systemName == '长文本'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
                 <!-- 限制字数 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">限制字数</p>
+                  <p class="eidtContentItemTitle">{{$t('form.wordLimit')}}</p>
                   <el-input-number v-if="setInfoList[checkedIndex].systemName == '短文本'" style="width: 120px; line-height: 32px" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="50" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                   <el-input-number v-if="setInfoList[checkedIndex].systemName == '长文本'" style="width: 120px; line-height: 32px" v-model="setInfoList[checkedIndex].wordCountLimit" controls-position="right" :min="1" :max="200" @change="wordCountLimitChange(setInfoList[checkedIndex])"></el-input-number>
                   <!-- <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input> -->
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1261,34 +1256,34 @@
               <div v-if="setInfoList[checkedIndex].systemName == '数字'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
                 <!-- 限制数字位数 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 32px">限制数字位数</p>
+                  <p class="eidtContentItemTitle" style="line-height: 32px">{{$t('form.limitthenumberofdigits')}}</p>
                   <p>
                     <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].numberDigitLimit" controls-position="right" :min="1" :max="9" @change="numberDigitLimitChange(setInfoList[checkedIndex])"></el-input-number>
-                    位
+                    {{$t('form.bit')}}
                   </p>
                 </div>
                 <!-- 限制小数点后位数 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 32px">限制小数点后位数</p>
+                  <p class="eidtContentItemTitle" style="line-height: 32px">{{$t('form.limitthenumberofdecimalplaces')}}</p>
                   <p>
-                    小数点后
+                    {{$t('form.the')}}
                     <el-input-number style="width: 80px; line-height: 32px" v-model="setInfoList[checkedIndex].decimalPlacesLimit" controls-position="right" :min="1" :max="6" @change="decimalPlacesLimitChange(setInfoList[checkedIndex])"></el-input-number>
-                    位
+                    {{$t('form.decimalPlace')}}
                   </p>
                 </div>
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1297,13 +1292,13 @@
               <div v-if="setInfoList[checkedIndex].systemName == '单选框'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
-                  <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">{{$t('form.options')}}</p>
+                  <el-button type="text" @click="batchEditDiologVisible = true">{{$t('form.batchAddition')}}</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                       <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
@@ -1327,7 +1322,7 @@
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1336,13 +1331,13 @@
               <div v-if="setInfoList[checkedIndex].systemName == '复选框'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
-                  <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">{{$t('form.options')}}</p>
+                  <el-button type="text" @click="batchEditDiologVisible = true">{{$t('form.batchAddition')}}</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                       <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
@@ -1387,7 +1382,7 @@
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1396,20 +1391,20 @@
               <div v-if="setInfoList[checkedIndex].systemName == '下拉列表'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
 
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
-                  <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">{{$t('form.options')}}</p>
+                  <el-button type="text" @click="batchEditDiologVisible = true">{{$t('form.batchAddition')}}</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                       <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
@@ -1424,7 +1419,7 @@
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1433,18 +1428,18 @@
               <div v-if="setInfoList[checkedIndex].systemName == '下拉复选框'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
                 <!-- 选项 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 34px">选项</p>
-                  <el-button type="text" @click="batchEditDiologVisible = true">批量新增</el-button>
+                  <p class="eidtContentItemTitle" style="line-height: 34px">{{$t('form.options')}}</p>
+                  <el-button type="text" @click="batchEditDiologVisible = true">{{$t('form.batchAddition')}}</el-button>
                   <div class="radioOptions" style="width: 100%">
                     <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                       <p v-for="(item, index) in setInfoList[checkedIndex].options" :key="index">
@@ -1453,26 +1448,26 @@
                       </p>
                     </draggable>
                   </div>
-                  <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex]), ''">添加</el-button>
-                  <el-button type="primary" v-if="!setInfoList[checkedIndex].options.includes('其他')" @click="radioAddOption(setInfoList[checkedIndex], '其他')">添加其他</el-button>
+                  <el-button type="primary" @click="radioAddOption(setInfoList[checkedIndex]), ''">{{$t('form.add')}}</el-button>
+                  <el-button type="primary" v-if="!setInfoList[checkedIndex].options.includes('其他')" @click="radioAddOption(setInfoList[checkedIndex], '其他')">{{$t('form.addOther')}}</el-button>
                 </div>
 
                 <!-- 可选范围 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">可选范围</p>
+                  <p class="eidtContentItemTitle">{{$t('form.optionalRange')}}</p>
                   <div style="width: 100%">
                     <p style="margin: 5px 0">
-                      <span>至少选择</span>
-                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].minCheckedCount" placeholder="请选择" @change="minCheckedCountChange">
-                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + '项'" :value="index + 1" :disabled="index + 1 > setInfoList[checkedIndex].maxCheckedCount && setInfoList[checkedIndex].maxCheckedCount !== ''"></el-option>
-                        <el-option label="不限" value=""></el-option>
+                      <span>{{$t('form.atleastchoose')}}</span>
+                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].minCheckedCount" :placeholder="$t('form.pleaseChoose')" @change="minCheckedCountChange">
+                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + $t('form.item')" :value="index + 1" :disabled="index + 1 > setInfoList[checkedIndex].maxCheckedCount && setInfoList[checkedIndex].maxCheckedCount !== ''"></el-option>
+                        <el-option :label="$t('form.unlimited')" value=""></el-option>
                       </el-select>
                     </p>
                     <p style="margin: 5px 0">
-                      <span>至多选择</span>
-                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].maxCheckedCount" placeholder="请选择" @change="maxCheckedCountChange">
-                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + '项'" :value="index + 1" :disabled="index + 1 < setInfoList[checkedIndex].minCheckedCount"></el-option>
-                        <el-option label="不限" value=""></el-option>
+                      <span>{{$t('form.atmostchoice')}}</span>
+                      <el-select style="margin-left: 10px; width: 70%" v-model="setInfoList[checkedIndex].maxCheckedCount" :placeholder="$t('form.pleaseChoose')" @change="maxCheckedCountChange">
+                        <el-option v-for="(item, index) in setInfoList[checkedIndex].options" :key="index" :label="index + 1 + $t('form.item')" :value="index + 1" :disabled="index + 1 < setInfoList[checkedIndex].minCheckedCount"></el-option>
+                        <el-option :label="$t('form.unlimited')" value=""></el-option>
                       </el-select>
                     </p>
                   </div>
@@ -1480,7 +1475,7 @@
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1489,42 +1484,42 @@
               <div v-if="setInfoList[checkedIndex].systemName == '附件'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
 
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 限制文件类型 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">限制文件类型</p>
+                  <p class="eidtContentItemTitle">{{$t('form.limitingFileTypes')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].fileTypeLimit"> </el-switch>
                   <div v-if="setInfoList[checkedIndex].fileTypeLimit" style="width: 100%">
-                    <p>图片文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">全选</el-checkbox>
+                    <p>{{$t('form.pictureFile')}}: <el-checkbox :indeterminate="setInfoList[checkedIndex].imageIsIndeterminate" v-model="setInfoList[checkedIndex].imageCheckAll" @change="imageCheckAllChange">{{$t('form.checkAll')}}</el-checkbox>
                     </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].imageCheckedTypes" @change="imageCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].imageTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>文档文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">全选</el-checkbox>
+                    <p>{{$t('form.documentFile')}}: <el-checkbox :indeterminate="setInfoList[checkedIndex].documentIsIndeterminate" v-model="setInfoList[checkedIndex].documentCheckAll" @change="documentCheckAllChange">{{$t('form.checkAll')}}</el-checkbox>
                     </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].documentCheckedTypes" @change="documentCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].documentTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>压缩文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">全选</el-checkbox>
+                    <p>{{$t('form.compressedFiles')}}: <el-checkbox :indeterminate="setInfoList[checkedIndex].compressedFileIsIndeterminate" v-model="setInfoList[checkedIndex].compressedFileCheckAll" @change="compressedFileCheckAllChange">{{$t('form.checkAll')}}</el-checkbox>
                     </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].compressedFileCheckedTypes" @change="compressedFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].compressedFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>视频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">全选</el-checkbox>
+                    <p>{{$t('form.videoFile')}}: <el-checkbox :indeterminate="setInfoList[checkedIndex].videoFileIsIndeterminate" v-model="setInfoList[checkedIndex].videoFileCheckAll" @change="videoFileCheckAllChange">{{$t('form.checkAll')}}</el-checkbox>
                     </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].videoFileCheckedTypes" @change="videoFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].videoFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                     </el-checkbox-group>
-                    <p>音频文件: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">全选</el-checkbox>
+                    <p>{{$t('form.audioFile')}}: <el-checkbox :indeterminate="setInfoList[checkedIndex].audioFileIsIndeterminate" v-model="setInfoList[checkedIndex].audioFileCheckAll" @change="audioFileCheckAllChange">{{$t('form.checkAll')}}</el-checkbox>
                     </p>
                     <el-checkbox-group v-model="setInfoList[checkedIndex].audioFileCheckedTypes" @change="audioFileCheckChange">
                       <el-checkbox v-for="item in setInfoList[checkedIndex].audioFileTypes" :key="item" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
@@ -1534,7 +1529,7 @@
 
                 <!-- 限制文件大小 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle" style="line-height: 32px">限制文件大小</p>
+                  <p class="eidtContentItemTitle" style="line-height: 32px">{{$t('form.limitFileSize')}}</p>
                   <el-input style="width: 130px" class="input-with-select" v-model.number="setInfoList[checkedIndex].fileSizeLimit">
                     <span slot="append"> M </span>
                   </el-input>
@@ -1542,7 +1537,7 @@
 
                 <!-- 限制图片尺寸 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">限制图片尺寸</p>
+                  <p class="eidtContentItemTitle">{{$t('form.limitingTheImageSize')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].pictureSizeLimit"> </el-switch>
                   <div v-if="setInfoList[checkedIndex].pictureSizeLimit" style="width: 100%">宽: <el-input style="width: 70px; margin-right: 10px" size="mini" v-model="setInfoList[checkedIndex].photoLimitWidth" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input> 高: <el-input style="width: 70px" size="mini" v-model="setInfoList[checkedIndex].photoLimitHeight" @change="photoLimitSizehChange(setInfoList[checkedIndex])"></el-input>
                   </div>
@@ -1550,7 +1545,7 @@
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1559,19 +1554,19 @@
               <div v-if="setInfoList[checkedIndex].systemName == '日期'">
                 <!-- 标题 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
                   <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
                 </div>
 
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
 
                 <!-- 报名后不允许编辑 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">报名后不允许编辑</p>
+                  <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
                   <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
                 </div>
               </div>
@@ -1580,7 +1575,7 @@
               <div v-if="setInfoList[checkedIndex].systemName == '分割线'">
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">提示文本</p>
+                  <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
               </div>
@@ -1589,11 +1584,9 @@
               <div v-if="setInfoList[checkedIndex].systemName == '分页'">
                 <!-- 提示文本 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">分页标题</p>
+                  <p class="eidtContentItemTitle">{{$t('form.pageTitle')}}</p>
                   <el-input size="mini" v-model="setInfoList[checkedIndex].pageTitle" :placeholder="setInfoList[checkedIndex].placeholder"></el-input>
-                  <p style="width: 100%; text-align: center">[ 第 {{ setInfoList[checkedIndex].pagingIndex }} 页/共 {{
-    pageTotal
-}} 页 ]</p>
+                  <p style="width: 100%; text-align: center">[ {{$t('form.di')}} {{ setInfoList[checkedIndex].pagingIndex }} {{$t('form.total')}} {{pageTotal}} {{$t('form.Page')}} ]</p>
                 </div>
               </div>
 
@@ -1601,7 +1594,7 @@
               <div v-if="setInfoList[checkedIndex].systemName == '说明信息'">
                 <!-- 说明信息 -->
                 <div class="eidtContentItem">
-                  <p class="eidtContentItemTitle">说明文字</p>
+                  <p class="eidtContentItemTitle">{{$t('form.caption')}}</p>
                   <el-input type="textarea" :rows="10" size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
                 </div>
               </div>
@@ -1613,13 +1606,13 @@
       <!-- 结果页设置 -->
       <div v-show="stepIndex == 2" class="resultSet" :style="{ height: formSetHeight + 'px' }">
         <el-form ref="resultSetForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :rules="resultSetForm" label-width="200px" :model="resultSetForm" class="resultSetForm">
-          <el-form-item label="报名审核" label-width="100px" prop="isNeedApprove">
-            <el-radio v-model="resultSetForm.isNeedApprove" label="0">不需要审核</el-radio>
-            <el-radio v-model="resultSetForm.isNeedApprove" label="1">需要审核</el-radio>
+          <el-form-item :label="$t('result.registrationReview')" label-width="100px" prop="isNeedApprove">
+            <el-radio v-model="resultSetForm.isNeedApprove" label="0">{{$t('result.noNeedtoAudit')}}</el-radio>
+            <el-radio v-model="resultSetForm.isNeedApprove" label="1">{{$t('result.needtoaudit')}}</el-radio>
           </el-form-item>
           <div class="transition-box" v-show="drawer">
             <div class="content">
-              <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="pageStatus" @click="drawerStatusHandle(false)" style="cursor: pointer">{{$t('result.mobile')}}</div>
               <div class="centerContent">
                 <div class="themeTitle">
                   <!-- <h2>1</h2>
@@ -1645,7 +1638,7 @@
           </div>
           <div class="transition-box" v-show="auditStatusDrawer">
             <div class="content">
-              <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="pageStatus" @click="auditStatusDrawerStatusHandle(false)" style="cursor: pointer">{{$t('result.mobile')}}</div>
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
@@ -1668,12 +1661,12 @@
           </div>
           <div class="transition-box" v-show="noPassDrawer">
             <div class="content">
-              <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">手机</div>
+              <div class="pageStatus" @click="noPassDrawerStatusHandle(false)" style="cursor: pointer">{{$t('result.mobile')}}</div>
               <div class="centerContent">
                 <div class="themeTitle">
                   <h2>{{ getActiveObj.eventName ? getActiveObj.eventName : '--' }}</h2>
-                  <h3>会议时间：{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}到{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
-                  <h3>会议地点：{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
+                  <h3>{{ getActiveObj.eventBeginTime ? getActiveObj.eventBeginTime : '--' }}/{{getActiveObj.eventEndTime ? getActiveObj.eventEndTime : '--'}}</h3>
+                  <h3>{{ getActiveObj.eventPlace ? getActiveObj.eventPlace : '--' }}</h3>
                 </div>
                 <div class="successInfo" style="display:flex;justify-content:center">
                   <!-- <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:0px;width: 100%; height: 100%;" /> -->
@@ -1691,9 +1684,9 @@
           </div>
           <div class="resultSetItem">
             <div class="setItemTitle">
-              <h3>1、报名成功</h3>
+              <h3>1、{{$t('result.registrationSuccess')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ successIsShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ successIsShow ? $t('result.fewer') : $t('result.expand') }}</span>
                 <el-button type="text" @click="successIsShow = !successIsShow" style="vertical-align: middle; padding: 0">
                   <i v-if="successIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -1705,9 +1698,9 @@
               <div style="display: flex">
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
-                    <h3>预览</h3>
+                    <h3>{{$t('result.preview')}}</h3>
                   </div>
-                  <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">电脑</div>
+                  <div class="pageStatus" @click="drawerStatusHandle(true)" style="cursor: pointer">{{$t('result.computer')}}</div>
                   <div class="successPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.successBackground" :src="resultSetForm.successBackground" alt="" style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
@@ -1725,14 +1718,14 @@
                 </el-card>
 
                 <div class="successFormItem">
-                  <el-form-item label="提示主题:" prop="successTitle" :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
-                    <el-input v-model="resultSetForm.successTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  <el-form-item :label="$t('result.tipTopics')+':'" prop="successTitle" :rules="[{ required: true, message: $t('result.pleaseenterapromptsubject'), trigger: 'blur' }]">
+                    <el-input v-model="resultSetForm.successTitle" size="mini" :placeholder="$t('result.pleaseenterapromptsubject')"></el-input>
                   </el-form-item>
-                  <el-form-item label="描述:" prop="successDescribe">
+                  <el-form-item :label="$t('result.describe')+':'" prop="successDescribe">
                     <!-- <el-input v-model="resultSetForm.successDescribe" type="textarea" :rows="4" size="mini"
                       placeholder="请输入描述文案"></el-input> -->
 
-                    <el-input type="textarea" :rows="4" size="mini" v-model="resultSetForm.successDescribe" placeholder="请输入描述文案" maxlength="200" show-word-limit>
+                    <el-input type="textarea" :rows="4" size="mini" v-model="resultSetForm.successDescribe" :placeholder="$t('result.pleaseenterthedescriptiontext')" maxlength="200" show-word-limit>
                     </el-input>
 
                   </el-form-item>
@@ -1751,7 +1744,7 @@
                     </el-upload> -->
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="successBackground" style="marginBottom:50px">
+                  <el-form-item :label="$t('result.backgroundImage')+':'" prop="successBackground" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file, 'successBackground')">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
                       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -1765,32 +1758,32 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过结果页:" prop="successIsJumpCurrentPage">
+                  <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="successIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="0">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="1">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="0">{{$t('result.dontskip')}}</el-radio>
+                        <el-radio v-model="resultSetForm.successIsJumpCurrentPage" label="1">{{$t('result.skip')}}</el-radio>
                       </div>
                       <div style="display: inline-block" v-show="resultSetForm.successIsJumpCurrentPage == '1'">
-                        <el-form-item label="跳转页面到:" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
-                          <el-select v-model="resultSetForm.successJumpPage" placeholder="请选择跳转页面">
+                        <el-form-item :label="$t('result.jumptothepage')+':'" label-width="100px" prop="successJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.successJumpPage" :placeholder="$t('result.pleaseselectthepagetogoto')">
                             <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="successOutPageUrl" style="margin-bottom: 0px" v-if="resultSetForm.successJumpPage == '7'">
-                            <el-input v-model="resultSetForm.successOutPageUrl" size="mini" placeholder="请输入外部链接"></el-input>
+                            <el-input v-model="resultSetForm.successOutPageUrl" size="mini" :placeholder="$t('result.Pleaseentertheexternallink')"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:" v-show="resultSetForm.successIsJumpCurrentPage=='0'">
+                  <el-form-item :label="$t('result.buttonSettings')+':'" v-show="resultSetForm.successIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.successButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.name'">
-                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
+                        <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
-                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                      <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                           <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
@@ -1805,9 +1798,9 @@
 
           <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
-              <h3>2、待审核</h3>
+              <h3>2、{{$t('result.pendingReview')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ waitReviewIsShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ waitReviewIsShow ? $t('result.fewer') : $t('result.expand') }}</span>
                 <el-button type="text" @click="waitReviewIsShow = !waitReviewIsShow" style="vertical-align: middle; padding: 0">
                   <i v-if="waitReviewIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -1819,9 +1812,9 @@
               <div style="display: flex">
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
-                    <h3>预览</h3>
+                    <h3>{{$t('result.preview')}}</h3>
                   </div>
-                  <div class="pageStatus" @click="auditStatusDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
+                  <div class="pageStatus" @click="auditStatusDrawerStatusHandle(true)" style="cursor: pointer">{{$t('result.computer')}}</div>
                   <div class="waitReviewPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.waitReviewBackground" :src="resultSetForm.waitReviewBackground" alt="" style="position: absolute; left:0;top:50px;width: 100%; height: 100%;" />
@@ -1838,11 +1831,11 @@
                 </el-card>
 
                 <div class="waitReviewFormItem">
-                  <el-form-item label="提示主题:" prop="waitReviewTitle" :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
-                    <el-input v-model="resultSetForm.waitReviewTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  <el-form-item :label="$t('result.tipTopics')+':'" prop="waitReviewTitle" :rules="[{ required: true, message: $t('result.pleaseenterapromptsubject'), trigger: 'blur' }]">
+                    <el-input v-model="resultSetForm.waitReviewTitle" size="mini" :placeholder="$t('result.pleaseenterapromptsubject')"></el-input>
                   </el-form-item>
-                  <el-form-item label="描述:" prop="waitReviewDescribe">
-                    <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  <el-form-item :label="$t('result.describe')+':'" prop="waitReviewDescribe">
+                    <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
@@ -1858,7 +1851,7 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="waitReviewBackground" style="marginBottom:50px">
+                  <el-form-item :label="$t('result.backgroundImage')+':'" prop="waitReviewBackground" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount"
                       :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
                       <i class="el-icon-upload" style="margin: 16px 0"></i>
@@ -1873,32 +1866,32 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过结果页:" prop="waitReviewIsJumpCurrentPage">
+                  <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="waitReviewIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="0">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="1">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="0">{{$t('result.dontskip')}}</el-radio>
+                        <el-radio v-model="resultSetForm.waitReviewIsJumpCurrentPage" label="1">{{$t('result.skip')}}</el-radio>
                       </div>
                       <div style="display: inline-block" v-show="resultSetForm.waitReviewIsJumpCurrentPage == '1'">
-                        <el-form-item label="跳转页面到:" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
-                          <el-select v-model="resultSetForm.waitReviewJumpPage" placeholder="请选择跳转页面">
+                        <el-form-item :label="$t('result.jumptothepage')+':'" label-width="100px" prop="waitReviewJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.waitReviewJumpPage" :placeholder="$t('result.pleaseselectthepagetogoto')">
                             <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="waitReviewOutPageUrl" style="margin-bottom: 0px">
-                            <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" v-if="resultSetForm.waitReviewJumpPage == '7'" placeholder="请输入外部链接"></el-input>
+                            <el-input v-model="resultSetForm.waitReviewOutPageUrl" size="mini" v-if="resultSetForm.waitReviewJumpPage == '7'" :placeholder="$t('result.Pleaseentertheexternallink')"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:" v-show="resultSetForm.waitReviewIsJumpCurrentPage=='0'">
+                  <el-form-item :label="$t('result.buttonSettings')+':'" v-show="resultSetForm.waitReviewIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.waitReviewButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.name'">
-                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
+                        <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
-                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                      <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                           <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
@@ -1913,9 +1906,9 @@
 
           <div class="resultSetItem" v-if="resultSetForm.isNeedApprove === '1'">
             <div class="setItemTitle">
-              <h3>3、不通过</h3>
+              <h3>3、{{$t('result.noPass')}}</h3>
               <span>
-                <span style="margin-right: 20px">{{ noPassIsShow ? '收起' : '展开' }}</span>
+                <span style="margin-right: 20px">{{ noPassIsShow ? $t('result.fewer') : $t('result.expand') }}</span>
                 <el-button type="text" @click="noPassIsShow = !noPassIsShow" style="vertical-align: middle; padding: 0">
                   <i v-if="noPassIsShow" class="el-icon-caret-top" style="font-size: 30px"></i>
                   <i v-else class="el-icon-caret-bottom" style="font-size: 30px"></i>
@@ -1927,9 +1920,9 @@
               <div style="display: flex">
                 <el-card shadow="always" class="previewCard">
                   <div slot="header" style="text-align: center">
-                    <h3>预览</h3>
+                    <h3>{{$t('result.preview')}}</h3>
                   </div>
-                  <div class="pageStatus" @click="noPassDrawerStatusHandle(true)" style="cursor: pointer">电脑</div>
+                  <div class="pageStatus" @click="noPassDrawerStatusHandle(true)" style="cursor: pointer">{{$t('result.computer')}}</div>
                   <div class="noPassPreview">
                     <!-- 背景图 -->
                     <img v-if="resultSetForm.noPassBackground" :src="resultSetForm.noPassBackground" alt="" style="position: absolute; left:0;top:60px;width: 100%; height: 100%;" />
@@ -1946,11 +1939,11 @@
                 </el-card>
 
                 <div class="noPassFormItem">
-                  <el-form-item label="提示主题:" prop="noPassTitle" :rules="[{ required: true, message: '请输入提示主题', trigger: 'blur' }]">
-                    <el-input v-model="resultSetForm.noPassTitle" size="mini" placeholder="请输入提示主题"></el-input>
+                  <el-form-item :label="$t('result.tipTopics')+':'" prop="noPassTitle" :rules="[{ required: true, message: $t('result.pleaseenterapromptsubject'), trigger: 'blur' }]">
+                    <el-input v-model="resultSetForm.noPassTitle" size="mini" :placeholder="$t('result.pleaseenterapromptsubject')"></el-input>
                   </el-form-item>
-                  <el-form-item label="描述:" prop="noPassDescribe">
-                    <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" placeholder="请输入描述文案"></el-input>
+                  <el-form-item :label="$t('result.describe')+':'" prop="noPassDescribe">
+                    <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
                   </el-form-item>
                   <el-form-item label="Banner:" prop="noPassBanner" style="marginBottom:50px">
                     <!-- <el-upload class="upload-demo" drag action :limit="1" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :http-request="(file) => handleUploadForm(file)">
@@ -1966,7 +1959,7 @@
                     </el-dialog>
                   </el-form-item>
 
-                  <el-form-item label="背景图:" prop="noPassBackground" style="marginBottom:50px">
+                  <el-form-item :label="$t('result.backgroundImage')+':'" prop="noPassBackground" style="marginBottom:50px">
                     <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="noPassBgcUploadFile" :file-list="noPassBgcImageList" :headers="httpHeaders" :on-remove="noPassBgcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="noPasshandleBgcPictureCardPreview">
                       <i class="el-icon-plus"></i>
                     </el-upload>
@@ -1980,32 +1973,32 @@
                     </el-upload> -->
                   </el-form-item>
 
-                  <el-form-item label="提交后是否跳过结果页:" prop="noPassIsJumpCurrentPage">
+                  <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="noPassIsJumpCurrentPage">
                     <div style="display: flex">
                       <div>
-                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="0">不跳过</el-radio>
-                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="1">跳过</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="0">{{$t('result.dontskip')}}</el-radio>
+                        <el-radio v-model="resultSetForm.noPassIsJumpCurrentPage" label="1">{{$t('result.skip')}}</el-radio>
                       </div>
                       <div style="display: inline-block" v-show="resultSetForm.noPassIsJumpCurrentPage == '1'">
-                        <el-form-item label="跳转页面到:" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
-                          <el-select v-model="resultSetForm.noPassJumpPage" placeholder="请选择跳转页面">
+                        <el-form-item :label="$t('result.jumptothepage')+':'" label-width="100px" prop="noPassJumpPage" style="margin-bottom: 0px">
+                          <el-select v-model="resultSetForm.noPassJumpPage" :placeholder="$t('result.pleaseselectthepagetogoto')">
                             <el-option v-for="item in buttonCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                           <el-form-item label="" prop="noPassOutPageUrl" style="margin-bottom: 0px">
-                            <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" v-if="resultSetForm.noPassJumpPage == '7'" placeholder="请输入外部链接"></el-input>
+                            <el-input v-model="resultSetForm.noPassOutPageUrl" size="mini" v-if="resultSetForm.noPassJumpPage == '7'" :placeholder="$t('result.Pleaseentertheexternallink')"></el-input>
                           </el-form-item>
                         </el-form-item>
                       </div>
                     </div>
                   </el-form-item>
 
-                  <el-form-item label="按钮设置:" v-show="resultSetForm.noPassIsJumpCurrentPage=='0'">
+                  <el-form-item :label="$t('result.buttonSettings')+':'" v-show="resultSetForm.noPassIsJumpCurrentPage=='0'">
                     <div v-for="(btnItem, btnIndex) in resultSetForm.noPassButtonList" :key="btnIndex" style="display: flex">
                       <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.name'">
-                        <el-input v-model="btnItem.name" size="mini" placeholder="请输入按钮名称"></el-input>
+                        <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                       </el-form-item>
-                      <el-form-item label="功能" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
-                        <el-select v-model="btnItem.value" placeholder="请选择跳转页面">
+                      <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
+                        <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                           <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                       </el-form-item>
@@ -2019,11 +2012,11 @@
           </div>
         </el-form>
         <div class="resultSetBtns">
-          <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red" @cancel="preStep" title='您修改的内容已自动保存，所有信息编辑完成后请点击"确认发布"同步到手机端'>
-            <el-button slot="reference">上一步(暂存)</el-button>
+          <el-popconfirm :confirm-button-text='$t("result.ok")' :cancel-button-text='$t("result.no")' icon="el-icon-info" icon-color="red" @cancel="preStep" :title='$t("result.confirmReleaseTips")'>
+            <el-button slot="reference">{{$t('result.preNext')}}</el-button>
           </el-popconfirm>
 
-          <el-button type="primary" @click="resultSetSave('resultSetForm')">生成表单</el-button>
+          <el-button type="primary" @click="resultSetSave('resultSetForm')">{{$t('result.generatingtheform')}}</el-button>
         </div>
       </div>
 
@@ -2035,12 +2028,12 @@
     </div>
 
     <!-- 表单设置-批量新增选项 弹窗 -->
-    <el-dialog title="批量新增" width="500px" :visible.sync="batchEditDiologVisible" :modal-append-to-body="true" :append-to-body="true">
-      <p>输入选项值（每行一个）</p>
+    <el-dialog :title="$t('form.batchAddition')" width="500px" :visible.sync="batchEditDiologVisible" :modal-append-to-body="true" :append-to-body="true">
+      <p>{{$t('form.enterOptionValues')}}</p>
       <el-input type="textarea" :rows="10" v-model="batchEditOptions"></el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="batchEditDiologVisible = false">取 消</el-button>
-        <el-button type="primary" @click="batchEditOptionsComfirm">确 定</el-button>
+        <el-button @click="batchEditDiologVisible = false">{{$t('form.cancel')}}</el-button>
+        <el-button type="primary" @click="batchEditOptionsComfirm">{{$t('form.confirm')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -2058,6 +2051,7 @@ export default {
   name: 'attendeeFormConfig',
   data () {
     return {
+      theCertificateType:[],
       formUpdateStatus:false,
       getActiveObj: {},
       resPcImageList: [],
@@ -2644,7 +2638,6 @@ export default {
               this.appearanceSetForm.isLoginPlace = 0 // 是否显示会议地点
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
           } else {
-            debugger
             this.appearanceSetForm = res.data
             setTimeout(() => {
                 if (window.frames['myframe']){
@@ -2690,7 +2683,7 @@ export default {
       this.stepIndex = 1
     },
     claerResultFn () {
-      var btnObj = { name: '', value: '' }
+      var btnObj1 = { name: '', value: '' }
       this.resultSetForm.successBanner = ''
       this.resultSetForm.successBackground = ''
       this.resultSetForm.successDescribe = ''
@@ -2701,7 +2694,7 @@ export default {
       // this.resultSetForm.successButtonList.name = ''
       // this.resultSetForm.successButtonList.value = ''
       this.resultSetForm.successButtonList = []
-      this.resultSetForm.successButtonList.push(btnObj)
+      this.resultSetForm.successButtonList.push(btnObj1)
       this.resultSetForm.waitReviewBanner = ''
       this.resultSetForm.waitReviewBackground = ''
       this.resultSetForm.waitReviewDescribe = ''
@@ -2712,7 +2705,8 @@ export default {
       // this.resultSetForm.waitReviewButtonList.name = ''
       // this.resultSetForm.waitReviewButtonList.value = ''
       this.resultSetForm.waitReviewButtonList = []
-      this.resultSetForm.waitReviewButtonList.push(btnObj)
+      var btnObj2 = { name: '', value: '' }
+      this.resultSetForm.waitReviewButtonList.push(btnObj2)
       this.resultSetForm.noPassBanner = ''
       this.resultSetForm.noPassBackground = ''
       this.resultSetForm.noPassDescribe = ''
@@ -2723,7 +2717,8 @@ export default {
       // this.resultSetForm.noPassButtonList.name = ''
       // this.resultSetForm.noPassButtonList.value = ''
       this.resultSetForm.noPassButtonList = []
-      this.resultSetForm.noPassButtonList.push(btnObj)
+      var btnObj3 = { name: '', value: '' }
+      this.resultSetForm.noPassButtonList.push(btnObj3)
       this.successBannerImageList = []
       this.waitReviewBannerImageList = []
       this.noPassBannerImageList = []
@@ -2771,8 +2766,8 @@ export default {
                 this.resultSetForm.successOutPageUrl = item.skipWebsite
                 this.resultSetForm.successTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  var nullButton = { name: '', value: '' }
-                  this.resultSetForm.successButtonList.push(nullButton)
+                  // var nullButton = { name: '', value: '' }
+                  // this.resultSetForm.successButtonList.push(nullButton)
                   // this.resultSetForm.successButtonList.name = ''
                   // this.resultSetForm.successButtonList.value = ''
                 } else {
@@ -2800,8 +2795,8 @@ export default {
                 this.resultSetForm.waitReviewOutPageUrl = item.skipWebsite
                 this.resultSetForm.waitReviewTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  this.resultSetForm.waitReviewButtonList.name = ''
-                  this.resultSetForm.waitReviewButtonList.value = ''
+                  // this.resultSetForm.waitReviewButtonList.name = ''
+                  // this.resultSetForm.waitReviewButtonList.value = ''
                   // var nullButton = { name: '', value: '' }
                   // this.resultSetForm.waitReviewButtonList.push(nullButton)
                 } else {
@@ -2828,8 +2823,8 @@ export default {
                 this.resultSetForm.noPassOutPageUrl = item.skipWebsite
                 this.resultSetForm.noPassTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  this.resultSetForm.noPassButtonList.name = ''
-                  this.resultSetForm.noPassButtonList.value = ''
+                  // this.resultSetForm.noPassButtonList.name = ''
+                  // this.resultSetForm.noPassButtonList.value = ''
                   // var nullButton = { name: '', value: '' }
                   // this.resultSetForm.noPassButtonList.push(nullButton)
                 } else {
@@ -2939,12 +2934,12 @@ export default {
             }
           }).then(res => {
             if (res.status) {
-              this.$message({ message: '生成表单成功', type: 'success' })
+              this.$message({ message: this.$t('form.saveSuccess'), type: 'success' })
               this.getResultFn()
             }
           })
         } else {
-          this.$message({ showClose: true, message: '为避免生成表单信息缺失，请您先完成必填设置后，再生成表单', type: 'warning' })
+          this.$message({ showClose: true, message: this.$t('result.missingTips'), type: 'warning' })
         }
       })
     },
@@ -2956,8 +2951,9 @@ export default {
     },
     // 获取表单设置
     getEventInfo () {
+      this.pageTotal=0
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('form.pleaseSelectMeeting'))
         return
       }
       this.baseInfoList.forEach(baseInfoItem => {
@@ -3014,6 +3010,17 @@ export default {
           if(setInfoItem.systemName == '分页'){
             this.pageTotal++
           }
+           if (item.systemName == '证件') {
+            let cardCode = this.$t('datadict.certificateType')
+            this.theCertificateType=[]
+            item.options.forEach(v=>{
+              cardCode.forEach(i=>{
+                if(i.value == v){
+                  this.theCertificateType.push(i)
+                }
+              })
+            })
+          }
         })
       })
     },
@@ -3049,12 +3056,12 @@ export default {
         }
       }).then(res => {
         if (res.status) {
-          this.$message.success('保存成功')
+          this.$message.success(this.$t('form.saveSuccess'))
           this.getEventInfo()
           this.stepIndex = 2
           this.formUpdateStatus=true
         } else {
-          this.$message.error('保存失败')
+          this.$message.error(this.$t('form.saveFail'))
         }
       })
       console.log(this.setInfoList)
@@ -3103,7 +3110,11 @@ export default {
           // this.specialInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex, 1)
           if (itemList.isPaging) {
-            this.pagingCount--
+            if(this.pagingCount>0){
+              this.pagingCount--
+            }else{
+              this.pagingCount=0
+            }
             this.pageTotal--
           }
           break
@@ -3133,7 +3144,7 @@ export default {
         title: itemList.label, // 标题
         surnameTitle: '姓', // 姓title
         nameTitle: '名', // 名title
-        pageTitle:'分页标题',
+        pageTitle:'',
         placeholder: `请输入${itemList.label}`, // 提示文本
         certificateNumPlaceholder: '请输入您的证件号码',
         surnamePlaceholder: '请输入姓', // 姓-提示文本
@@ -3227,7 +3238,7 @@ export default {
       if (parentListName == 'customInfoList') {
         this.customInfoCount++
         if (this.customInfoCount > 40) {
-          this.$message.warning('新增自定义信息数量超出最大限制')
+          this.$message.warning(this.$t('form.customInformationExceeds'))
           return
         }
         // obj.mapCode = 'reservedStr' + this.customInfoCount
@@ -3280,7 +3291,16 @@ export default {
 
       // 证件
       if (itemList.value == 'certificate') {
-        obj.options = ['二代身份证']
+        obj.options = ['NI']
+        this.theCertificateType=[]
+        let cardCode = this.$t('datadict.certificateType')
+        obj.options.forEach(v=>{
+          cardCode.forEach(i=>{
+            if(i.value == v){
+              this.theCertificateType.push(i)
+            }
+          })
+        })
         obj.check[0].code = '001'
         obj.placeholder = `请选择您的${itemList.label}类型`
       }
@@ -3294,6 +3314,7 @@ export default {
         obj.isPaging = true
         this.pagingCount++
         this.pageTotal++
+        obj.pageTitle=`第${this.pagingCount}页`
         obj.placeholder = `请输入${itemList.label}标题`
       }
 
@@ -3317,14 +3338,23 @@ export default {
     certificateTypeChange (certificateOptions) {
       console.log(certificateOptions,'certificateOptions');
       // 证件类型不包括居民身份证时 校验code设为空
-      if (!certificateOptions.includes('二代身份证')) {
+      if (!certificateOptions.includes('NI')) {
         this.setInfoList[this.checkedIndex].check[0].code = ''
       }
       // 勾选 居民身份证 后, 是最后一项
-      if (certificateOptions[certificateOptions.length - 1] == '二代身份证') {
+      if (certificateOptions[certificateOptions.length - 1] == 'NI') {
         this.setInfoList[this.checkedIndex].check[0].code = '001'
       }
       console.log(this.setInfoList[this.checkedIndex])
+      let cardCode = this.$t('datadict.certificateType')
+      this.theCertificateType=[]
+      certificateOptions.forEach(v=>{
+        cardCode.forEach(i=>{
+          if(i.value == v){
+            this.theCertificateType.push(i)
+          }
+        })
+      })
     },
     numberChange (val) {
       // numberDigitLimit: 4, // 数字位数限制
@@ -3341,7 +3371,7 @@ export default {
     },
 
     fileLimitCount (files, fileList) {
-      this.$message.warning('只允许上传一个文件')
+      this.$message.warning(this.$t('form.onlyonefileisallowedtoupload'))
       // this.$set(fileList[0], 'raw', files[0])
       // this.$set(fileList[0], 'name', files[0].name)
       // this.$refs['rebateUpload'].clearFiles()//清除文件
@@ -3358,7 +3388,7 @@ export default {
       // 判断后缀名是否允许上传
       isAllowUpload = acceptType.includes(extension)
       if (!isAllowUpload) {
-        const errMsg = '注意: 只允许上传以下文件类型：' + acceptType.join('、')
+        const errMsg = this.$t('form.uploadedNotice') + acceptType.join('、')
         this.$message.error(errMsg)
         return false
       }
@@ -3398,7 +3428,6 @@ export default {
       this.appearanceSetForm.loginPcFile = response.data.filePath
     },
     resAppUploadFile (response, file, fileList) {
-      debugger
       this.appearanceSetForm.loginAppFile = response.data.filePath
     },
     AppUploadFile (response, file, fileList) {
@@ -3436,7 +3465,6 @@ export default {
       this.appearanceSetForm.loginPcFile = ''
     },
     resAppHandleRemove (file, fileList) {
-      debugger
       this.resAppImageList = []
       this.appearanceSetForm.loginAppFile = ''
     },
@@ -3771,15 +3799,21 @@ export default {
           window.frames['myframe'].setContentProfile('')
         }
       }, 2000)
+      setTimeout(() => {
+       if (window.frames['myframe_']){
+          window.frames['myframe_'].setContentProfile('')
+        }
+      }, 1000)
       this.getResultFn()
       this.getEventInfo()
       this.getAppearanceSet()
+      this.$refs.attCodeSet.pagingCount=0
       this.$refs.attCodeSet.signupContactCodeRuleFn(params.code)
       this.$refs.attCodeSet.copyHrefShow=false
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {
-        this.$message.warning('请选择会议')
+        this.$message.warning(this.$t('form.pleaseSelectMeeting'))
         return
       }
       request({

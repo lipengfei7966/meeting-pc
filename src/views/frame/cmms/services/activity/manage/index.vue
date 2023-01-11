@@ -2,9 +2,9 @@
   <div>
     <div class="headerSearch">
       <div style="display: flex;margin-left: 18px;">
-        <div style="width:200px;display: flex;">
+        <div class="meeting-name_box" style="display: flex;">
           <div class="meeting-name">
-            会议名称
+            {{$t('sub.meetingName')}}
           </div>
           <div>
             <el-select filterable style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" placeholder="会议名称">
@@ -12,33 +12,33 @@
             </el-select>
           </div>
         </div>
-        <div>
-          <span class="sp_one">参会人是否可参加多项分活动：</span>
+        <div style="margin-left: 19px;">
+          <span class="sp_one">{{$t('sub.askSelection')}}:</span>
           <el-radio-group @input="triesLimitRadio" v-model="moduleVal.triesLimit">
-            <el-radio :label="0">不限制</el-radio>
-            <el-radio :label="1">单人最多参与 <span>
+            <el-radio :label="0">{{$t('sub.unlimited')}}</el-radio>
+            <el-radio :label="1">{{$t('sub.optionalMaximum')}} <span>
                 <el-input @blur="limitBlur" style="width: 26%" size="mini" :disabled="moduleVal.triesLimit == 0" clearable v-model="moduleVal.inputNum"></el-input>
-              </span> 次</el-radio>
+              </span> {{$t('sub.second')}}</el-radio>
           </el-radio-group>
         </div>
       </div>
       <!--  -->
       <div style="display: flex; align-items: center">
         <div style="width: 90%">
-          <el-form style="margin-top: 15px" :model="moduleVal" ref="form" label-width="100px">
+          <el-form style="margin-top: 15px" :model="moduleVal" ref="form" label-width="100px" class="form_data">
             <el-col :span="5">
-              <el-form-item label="分活动名称">
+              <el-form-item :label="$t('sub.subActivityName')">
                 <el-input clearable size="mini" v-model="moduleVal.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
-              <el-form-item label="活动时间">
-                <el-date-picker value-format="yyyyMMdd" style="width: 100%" size="mini" clearable v-model="moduleVal.activityTime" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+              <el-form-item :label="$t('sub.activityTime')">
+                <el-date-picker value-format="yyyyMMdd" style="width: 100%" size="mini" clearable v-model="moduleVal.activityTime" type="datetimerange" :range-separator="$t('sub.to')" :start-placeholder="$t('sub.startDate')" :end-placeholder="$t('sub.endDate')"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="活动状态">
-                <el-select multiple size="mini" clearable v-model="moduleVal.status" placeholder="活动状态">
+              <el-form-item :label="$t('sub.activityStatus')">
+                <el-select multiple size="mini" clearable v-model="moduleVal.status" :placeholder="$t('sub.activityStatus')">
                   <el-option label="未开始" value="notStart"></el-option>
                   <el-option label="进行中" value="haveInHand"></el-option>
                   <el-option label="已结束" value="end"></el-option>
@@ -46,8 +46,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="启用状态">
-                <el-select size="mini" clearable v-model="moduleVal.isGoLive" placeholder="启用状态">
+              <el-form-item :label="$t('sub.enableStatus')">
+                <el-select size="mini" clearable v-model="moduleVal.isGoLive" :placeholder="$t('sub.enableStatus')">
                   <el-option v-for="item in $t('datadict.usingFlag')" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
@@ -55,48 +55,48 @@
           </el-form>
         </div>
         <div style="width: 20%; display: flex; justify-content: right">
-          <el-button type="primary" @click="searchSubmit">筛选</el-button>
-          <el-button type="primary" @click="addSubmit">新建</el-button>
+          <el-button type="primary" @click="searchSubmit">{{$t('sub.btns.screen')}}</el-button>
+          <el-button type="primary" @click="addSubmit">{{$t('sub.btns.newlyBuild')}}</el-button>
         </div>
       </div>
     </div>
     <div class="contentBody bs-new-container app-container">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="name" label="分活动名称" width="180"> </el-table-column>
-        <el-table-column prop="beginTime,endTime" label="活动时间" width="360">
+        <el-table-column prop="name" :label="$t('sub.column.subActivityName')" width="180"> </el-table-column>
+        <el-table-column prop="beginTime,endTime" :label="$t('sub.column.activityTime')" width="360">
           <template slot-scope="scope">
             {{scope.row.beginTime}}-{{scope.row.endTime}}
           </template>
         </el-table-column>
-        <el-table-column prop="beginTime,endTime" label="活动状态">
+        <el-table-column prop="beginTime,endTime" :label="$t('sub.column.activityStatus')">
           <template slot-scope="scope">
             <span v-if="new Date(scope.row.beginTime) > new Date()">未开始</span>
             <span v-else-if="new Date(scope.row.endTime) < new Date()">已结束</span>
             <span v-else>进行中</span>
           </template>
         </el-table-column>
-        <el-table-column prop="isGoLive" label="启用">
+        <el-table-column prop="isGoLive" :label="$t('sub.column.enable')">
           <template slot-scope="scope">
             <span>
               <el-switch v-model="scope.row.isGoLive==='1'?true:false" active-color="#13ce66" inactive-color="#ff4949" @change="isGoLiveChange(scope.row.code)"> </el-switch>
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="triesLimit" label="报名人数/上限">
+        <el-table-column prop="triesLimit" :label="$t('sub.column.applicantNum')">
           <template slot-scope="scope">
             <div v-if="scope.row.triesLimit>0">
-              <span>无<span>/{{scope.row.triesLimit}}</span> </span>
+              <span>{{$t('sub.dialogTxt.none')}}<span>/{{scope.row.triesLimit}}</span> </span>
               <span style="margin:0px 4px">|</span>
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small">{{$t('biz.btn.view')}}</el-button>
             </div>
-            <div v-else-if=" scope.row.triesLimit==0">不限</div>
+            <div v-else-if=" scope.row.triesLimit==0">{{$t('sub.dialogTxt.unlimited')}}</div>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="150">
+        <el-table-column fixed="right" :label="$t('sub.column.operation')" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row,0)" type="text" size="small">查看</el-button>
-            <el-button @click="handleClick(scope.row,1)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleDel(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="handleClick(scope.row,0)" type="text" size="small">{{$t('biz.btn.view')}}</el-button>
+            <el-button @click="handleClick(scope.row,1)" type="text" size="small">{{$t('biz.btn.edit')}}</el-button>
+            <el-button @click="handleDel(scope.row)" type="text" size="small">{{$t('biz.btn.delete')}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -107,23 +107,23 @@
     <div>
       <el-dialog destroy-on-close :title="handleTitle" :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
         <div>
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-            <el-form-item label="分活动名称" prop="name">
-              <el-input placeholder="请输入分活动名称" :disabled="disabled_look" style="width: 500px" v-model="ruleForm.name"></el-input>
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+            <el-form-item :label="$t('sub.subActivityName')" prop="name">
+              <el-input :placeholder="$t('sub.dialogTxt.subActivityNamePH')" :disabled="disabled_look" style="width: 500px" v-model="ruleForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="活动时间" prop="date1">
-              <el-date-picker :disabled="disabled_look" style="width: 500px" size="mini" v-model="ruleForm.date1" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+            <el-form-item :label="$t('sub.activityTime')" prop="date1">
+              <el-date-picker :disabled="disabled_look" style="width: 500px" size="mini" v-model="ruleForm.date1" type="datetimerange" :range-separator="$t('sub.to')" :start-placeholder="$t('sub.startDate')" :end-placeholder="$t('sub.endDate')"></el-date-picker>
             </el-form-item>
-            <el-form-item label="参加人数限制" prop="triesLimit">
+            <el-form-item :label="$t('sub.dialogTxt.participantsNumLimit')" prop="triesLimit">
               <el-radio-group :disabled="disabled_look" v-model="ruleForm.triesLimit">
-                <el-radio :label="0">不限制</el-radio>
-                <el-radio :label="1">活动最多允许 <span>
+                <el-radio :label="0">{{$t('sub.unlimited')}}</el-radio>
+                <el-radio :label="1">{{$t('sub.dialogTxt.participantsMax')}} <span>
                     <el-input :disabled="ruleForm.triesLimit == 0 || btnName == '确定'" style="width: 26%" size="mini" v-model="ruleForm.inputNum" type="number" :min="0" @input="numChange"></el-input>
-                  </span> 人参与</el-radio>
+                  </span> {{$t('sub.dialogTxt.participation')}}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="分活动描述" prop="describeInfo">
-              <el-input placeholder="请输入分活动描述" :disabled="disabled_look" style="width: 500px" type="textarea" v-model="ruleForm.describeInfo"></el-input>
+            <el-form-item :label="$t('sub.dialogTxt.subDescription')" prop="describeInfo">
+              <el-input :placeholder="$t('sub.dialogTxt.subDescriptionPH')" :disabled="disabled_look" style="width: 500px" type="textarea" v-model="ruleForm.describeInfo"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -142,7 +142,7 @@ export default {
   name: 'activityManagement',
   data() {
     return {
-      handleTitle:'新建分活动',
+      handleTitle:this.$t('sub.dialogTxt.newSubActivity'),
       dialogVisible: false,
       moduleVal: {
         eventCode: '',
@@ -176,13 +176,13 @@ export default {
         inputNum: 0
       },
       rules: {
-        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-        date1: [{ required: true, message: '请选择日期', trigger: 'change' }],
-        type: [{ required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
-        resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        // describeInfo: [{ required: true, message: '请填写分活动描述', trigger: 'blur' }],
-        triesLimit: [{ required: true, message: '请填参加人数限制', trigger: 'blur' }]
+        name: [{ required: true, message: this.$t('sub.msg.noEnteredMsg'), trigger: 'blur' }],
+        region: [{ required: true, message:  this.$t('sub.msg.noSelectedMsg'), trigger: 'change' }],
+        date1: [{ required: true, message:  this.$t('sub.msg.noDateMsg'), trigger: 'change' }],
+        type: [{ required: true, message:  this.$t('sub.msg.noChooseMsg'), trigger: 'change' }],
+        resource: [{ required: true, message:  this.$t('sub.msg.noResourceMsg'), trigger: 'change' }],
+        // describeInfo: [{ required: true, message:  this.$t('sub.msg.noDescribeMsg'), trigger: 'blur' }],
+        triesLimit: [{ required: true, message:  this.$t('sub.msg.nolimitMsg'), trigger: 'blur' }]
       },
       activityList: [], //会议名称list
       pages: 1,
@@ -233,7 +233,7 @@ export default {
     },
     addSubmit() {
       this.btnName = '立即创建'
-      this.handleTitle = '新建分活动'
+      this.handleTitle = this.$t('sub.dialogTxt.newSubActivity')
       this.dialogVisible = true
       this.disabled_look = false
       ;(this.ruleForm = {
@@ -274,10 +274,10 @@ export default {
         }).then(res => {
           if (res && res.status) {
             this.dialogVisible = false
-            this.$message.success('修改成功')
+            this.$message.success(this.$t('biz.msg.updateSuccess'))
             this.searchSubmit()
           } else {
-            this.$message.error('修改失败')
+            this.$message.error(this.$t('biz.msg.updateFailed'))
           }
         })
       } else if (this.btnName == '立即创建') {
@@ -384,14 +384,14 @@ export default {
         // 编辑
         this.disabled_look = false
         this.btnName = '修改'
-      this.handleTitle = '修改分活动'
+      this.handleTitle = this.$t('sub.dialogTxt.modifySubActivity')
         this.getEdit(item.code)
       }
     },
     handleDel(item) {
-      this.$confirm('是否删除当前数据？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('sub.msg.deleteDataMsg'), this.$t('biz.msg.tip'), {
+        confirmButtonText: this.$t('biz.btn.confirm'),
+        cancelButtonText: this.$t('biz.btn.cancel'),
         type: 'warning'
       })
         .then(() => {
@@ -403,13 +403,13 @@ export default {
             if (res) {
               this.$message({
                 type: 'success',
-                message: '删除成功!'
+                message: `${this.$t('biz.msg.deleteSuccess')}!`
               })
               this.searchSubmit()
             } else {
               this.$message({
                 type: 'info',
-                message: '删除失败'
+                message: this.$t('biz.msg.deleteFailed')
               })
             }
           })
@@ -417,7 +417,7 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: this.$t('sub.msg.cancelDelMsg')
           })
         })
     },
@@ -447,7 +447,7 @@ export default {
       }).then(res => {
         this.$message({
                 type: 'success',
-                message: '保存成功!'
+                message: `${this.$t('biz.msg.saveSuccess')}!`
               })
       })
       this.moduleVal.inputNum = ''
@@ -461,7 +461,7 @@ export default {
       }).then(res => {
         this.$message({
                 type: 'success',
-                message: '保存成功!'
+                message: `${this.$t('biz.msg.saveSuccess')}!`
               })
       })
     },
@@ -487,12 +487,22 @@ export default {
   background: white;
   margin: 10px;
   padding: 10px 10px 5px;
+
   .sp_one {
     font-size: 14px;
     color: #333333;
     margin-right: 30px;
-    margin-left: 19px;
   }
+}
+.form_data .el-col .el-form-item .el-form-item__label,
+.meeting-name {
+  min-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.el-form-label__frameBox {
+  position: absolute;
 }
 .el-date-editor .el-range-separator {
   width: 34px;

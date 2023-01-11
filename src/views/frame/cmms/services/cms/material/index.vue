@@ -15,14 +15,16 @@
               <el-col :span="8">
                 <el-form-item label="文件类型">
                   <el-select filterable size="mini" v-model="fileSearch.picType" clearable>
-                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.id"
+                               :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="排序">
                   <el-select filterable size="mini" v-model="fileSearch.rank_" clearable>
-                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.id"
+                               :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -30,35 +32,71 @@
                 <el-form-item label="文件名称">
                   <el-input size="mini" v-model="fileSearch.picName" clearable>
                     <template slot="append">
-                      <span @click="searchClick" style="padding: 0px 20px; cursor: pointer; line-height: 26px; display: inline-block">
+                      <span @click="searchClick"
+                            style="padding: 0px 20px; cursor: pointer; line-height: 26px; display: inline-block">
                         <i class="el-icon-search"></i>
                       </span>
                     </template>
                   </el-input>
                 </el-form-item>
               </el-col>
+              <!-- 操作按钮位置st  后续需要从这里加 -->
+              <el-col :span="24" class="operation">
+                <!-- 新增 删除功能-->
+                <el-button class="right-btn" v-db-click size="mini" style="margin-right: 5px" @click="addMaterial">
+                  <svg-icon icon-class="upload" style="margin-right: 6px"></svg-icon>
+                  上传素材
+                </el-button>
+                <input v-show="false" ref="fileRefAdd" type="file" @change="fileChangeAdd($event)" multiple
+                       accept="image/jpeg,image/psd,image/png,image/jpg" />
+                <el-dropdown>
+                  <el-button type="primary">
+                    更多操作<i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>
+                        <span @click="delMaterial">
+                             <svg-icon icon-class="delete" style="margin-right: 6px"></svg-icon>
+                        批量删除
+                        </span>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                        <span @click="moveMaterial">
+                          <i class="el-icon-top-right" style="margin-right: 6px"></i>
+                        批量移动文件夹
+                        </span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
             </el-row>
           </el-form>
         </div>
-        <!-- 操作按钮位置st  后续需要从这里加 -->
         <!-- 操作按钮位置end -->
         <ul v-if="matterList.length > 0" id="app_" class="content_" @scroll.passive="getScroll($event)">
           <li class="resource" v-for="(item, index) in matterList" :key="index">
             <el-tooltip :content="item.picName" placement="top">
               <p>{{ item.picName | headline(item.picName) }}</p>
             </el-tooltip>
-            <el-image style="width: 100%; height: 70%" :src="item.picUrl" :preview-src-list="[item.picUrl]"> </el-image>
-            <span style="display: inline-block; line-height: 47px; color: #409eff; cursor: pointer" @click="details(item, index)">文件信息</span>
+            <el-image style="width: 100%; height: 70%" :src="item.picUrl" :preview-src-list="[item.picUrl]"></el-image>
+            <!--            <span style="display: inline-block; line-height: 47px; color: #409eff; cursor: pointer"-->
+            <!--                  @click="details(item, index)">文件信息</span>-->
+            <div style="display: inline-block; line-height: 47px; ">
+              <el-checkbox @change="changeCheckBox($event,item.id)" style="margin-right: 10px"></el-checkbox>
+              <span @click="details(item, index)" style="color: #409eff; cursor: pointer">文件信息</span>
+            </div>
           </li>
           <!-- <li class="resource">视频</li> -->
         </ul>
         <!-- <div v-if="matterList.length > 0 && size >= total">到底啦</div> -->
-        <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span>
+        <div v-if="matterList.length <= 0"
+             style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span>
           <el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty>
         </div>
         <!-- @/assets/image/wushuju.png -->
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else>
+        <span></span>
         <el-empty description="请选择文件夹"></el-empty>
       </div>
     </el-card>
@@ -66,7 +104,7 @@
     <el-card class="box-card content_three">
       <div class="set" v-if="exhibitionRight">
         <div class="set_one">
-          <el-image style="width: 100%; height: 100%" :src="url" :preview-src-list="[srcList]"> </el-image>
+          <el-image style="width: 100%; height: 100%" :src="url" :preview-src-list="[srcList]"></el-image>
         </div>
         <div class="set_two">
           <div class="particulars">
@@ -92,7 +130,8 @@
             </p>
             <p>
               文件链接：<span class="sp">{{ more.link | commentEllipsis(more.link) }}</span>
-              <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">复制链接</el-button>
+              <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">复制链接
+              </el-button>
             </p>
             <div class="btn">
               <!-- 上传（替换文件） -->
@@ -104,10 +143,12 @@
           </div>
         </div>
       </div>
-      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else><span></span>
+      <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else>
+        <span></span>
         <el-empty description="请选择文件"></el-empty>
       </div>
     </el-card>
+    <treeMove ref="treeMove" @checkFile="checkFile"></treeMove>
   </div>
 </template>
 
@@ -115,13 +156,24 @@
 import request from '@/utils/frame/base/request'
 import { resolve } from 'path'
 import tree from './components/tree'
+import { getToken } from '@/utils/frame/base/auth'
+import store from '../../../../../../store'
+import treeMove from './components/treeMove'
+
 export default {
   name: 'material',
   components: {
-    tree
+    tree,
+    treeMove
   },
   data() {
     return {
+      loading: false,
+      checkList: [],
+      materialCode: '',
+      fileList: [],
+      headers: {},
+      fileUpload: process.env.BASE_API + '/api/cms/picinfo/saveBatch',
       fileSearch: {
         picType: '',
         rank_: '',
@@ -173,7 +225,202 @@ export default {
   //     console.log(nval, oval)
   //   }
   // },
+  computed: {
+    uploadAction: function() {
+      return this.fileUpload
+    }
+  },
+  created() {
+    this.headers = { 'Authorization': 'bearer ' + (getToken() ? getToken() : store.getters.token) }
+  },
   methods: {
+    changeCheckBox(check, id) {
+      if (check == true) {//选中
+        this.checkList.push(id)
+      } else if (check == false) {//取消选中
+        this.checkList = this.checkList.filter(item => {
+          return item != id
+        })
+      }
+    },
+    //选中的文件夹
+    checkFile(id) {
+      let arr = []
+      this.checkList.forEach((item) => {
+        let obj = {}
+        obj.id = item
+        obj.materialCode = id
+        arr.push(obj)
+      })
+      this.$refs.treeMove.cancel()
+      let that_ = this
+      let loading_ = this.$loading({
+        lock: true,
+        text: '文件移动中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      request({
+        url: '/api/cms/picinfo/updateMove',
+        method: 'POST',
+        data: {
+          data: arr,
+          funcModule: '变更文件夹',
+          funcOperation: '变更文件夹'
+        }
+      })
+        .then(data => {
+          that_.$message('移动成功')
+          that_.matterList = []
+          that_.checkList = []
+          that_.loadData(that_.treeDatas, true)
+          that_.exhibitionRight = false
+          that_.$refs.treeMove.cancel()
+        })
+        .catch(() => {
+
+        }).finally(() => {
+        that_.loading = false
+        loading_.close()
+      })
+    },
+    //移动文件
+    moveMaterial() {
+      if (this.checkList.length == 0) {
+        this.$message('请选择你要移动的素材！')
+        return
+      }
+      this.$refs.treeMove.disabledKey = [this.treeDatas.id]
+      this.$refs.treeMove.dialogVisible = true
+    },
+    //删除素材提示
+    delMaterial() {
+      if (this.checkList.length == 0) {
+        this.$message('请选择你要删除的素材！')
+        return
+      }
+      this.$confirm('是否要删除选中的素材?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.delMaterialId()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    //删除素材接口
+    delMaterialId() {
+      this.loading = true
+      let loading_ = this.$loading({
+        lock: true,
+        text: '删除中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      let that_ = this
+      request({
+        url: '/api/cms/picinfo/remove',
+        method: 'POST',
+        data: {
+          data: this.checkList,
+          funcModule: '删除图片管理',
+          funcOperation: '删除图片管理'
+        }
+      })
+        .then(data => {
+          that_.$message('删除成功')
+          that_.matterList = []
+          that_.checkList = []
+          that_.loadData(that_.treeDatas, true)
+          that_.exhibitionRight = false
+        })
+        .catch(() => {
+
+        }).finally(() => {
+        that_.loading = false
+        loading_.close()
+      })
+    },
+    //新增素材
+    addMaterial() {
+      this.$refs.fileRefAdd.dispatchEvent(new MouseEvent('click')) //弹出选择本地文件
+    },
+    fileChangeAdd(e) {
+      let file = e.target.files
+      let loading_ = this.$loading({
+        lock: true,
+        text: '上传中，请稍候...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      let queue = []
+      for (let i = 0; i < file.length; i++) {
+        queue.push(this.uploadFile(file[i]))
+      }
+      let that = this
+      Promise.all(queue).then(res => {
+        let fileArr = []
+        for (let j = 0; j < res.length; j++) {
+          let obj = {}
+          obj.materialCode = that.materialCode
+          obj.picName = res[j].data.fileName
+          obj.picUrl = res[j].data.filePath
+          fileArr.push(obj)
+        }
+        let that_ = that
+        let loading = loading_
+        request({
+          url: '/api/cms/picinfo/saveBatch',
+          method: 'POST',
+          data: {
+            data: fileArr,
+            funcModule: '上传素材图片',
+            funcOperation: '上传素材图片'
+          }
+        })
+          .then(data => {
+            if (data) {
+              loading.close()
+              that_.$message('上传文件成功')
+              that_.matterList = []
+              that_.checkList = []
+              that_.loadData(that_.treeDatas, true)
+              that_.exhibitionRight = false
+            } else {
+              loading.close()
+              that_.$message('上传文件失败')
+            }
+          })
+          .catch(() => {
+            loading.close()
+          })
+      }).catch(() => {
+        loading_.close()
+        that.$message('上传文件失败')
+      }).finally(() => {
+
+      })
+    },
+    //上传图片
+    uploadFile(fileInfo) {
+      let formData = new FormData()
+      formData.append('file', fileInfo)
+      return new Promise((resolve, reject) => {
+        request({
+          url: '/api/obs/file/uploadImg',
+          method: 'POST',
+          data: formData
+        }).then((res) => {
+          resolve(res)
+        }).catch(() => {
+          reject()
+        })
+      })
+    },
     // 复制文件链接
     copyUrl(item, type) {
       var copyTest = this.more.link
@@ -200,7 +447,11 @@ export default {
         request({
           url: '/api/cms/picinfo/renameFile',
           method: 'POST',
-          data: { data: { objectKey: this.title_, newObjectKey: this.workName, id: this.pId, url: this.more.link }, funcModule: '修改文件名', funcOperation: '修改文件名' }
+          data: {
+            data: { objectKey: this.title_, newObjectKey: this.workName, id: this.pId, url: this.more.link },
+            funcModule: '修改文件名',
+            funcOperation: '修改文件名'
+          }
         })
           .then(res => {
             if (res.data) {
@@ -213,7 +464,8 @@ export default {
               this.$message.success('修改失败')
             }
           })
-          .catch(() => {})
+          .catch(() => {
+          })
       }
     },
     // 滚动刷新
@@ -268,7 +520,8 @@ export default {
               thiz.$message('上传文件失败')
             }
           })
-          .catch(() => {})
+          .catch(() => {
+          })
         //替换文件--- end
       } else {
         this.$message('请上传jpg，png，jpeg，psd 类型的图片')
@@ -310,6 +563,9 @@ export default {
       // 关闭右侧展示
       this.exhibitionRight = false
       this.treeDatas = data
+      this.materialCode = data.code
+      this.matterList = []
+      this.checkList = []
       this.loadData(data)
     },
     loadData(data, isFile) {
@@ -322,7 +578,15 @@ export default {
       request({
         url: '/api/cms/picinfo/page',
         method: 'POST',
-        data: { defaultSortString: this.fileSearch.rank_, current: this.current, isPage: true, size: this.pageSize, data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName }, funcModule: '获取素材列表', funcOperation: '获取素材列表' }
+        data: {
+          defaultSortString: this.fileSearch.rank_,
+          current: this.current,
+          isPage: true,
+          size: this.pageSize,
+          data: { materialCode: data.code, picType: this.fileSearch.picType, picName: this.fileSearch.picName },
+          funcModule: '获取素材列表',
+          funcOperation: '获取素材列表'
+        }
       })
         .then(res => {
           if (res.data) {
@@ -345,7 +609,8 @@ export default {
             loading.close()
           }
         })
-        .catch(() => {})
+        .catch(() => {
+        })
     },
     details(item, index) {
       // 打开右侧详细
@@ -371,6 +636,7 @@ export default {
       }
       // 类型--- end
       // 尺寸--- start
+      this.more.size = ''
       this.getImageSize(item.picUrl)
       // 尺寸--- end
       // 上传时间 --- start
@@ -435,41 +701,48 @@ export default {
   height: 100%;
   display: flex;
   justify-content: space-between;
+
   div {
     // 暂存
   }
 }
+
 .content_one {
   width: 18%;
   height: 98%;
   margin: 5px;
 }
+
 .content_two {
   width: 58%;
   height: 98%;
   margin: 5px;
 }
+
 .content_three {
   width: 24%;
   height: 98%;
   margin: 5px;
 }
+
 .search_A {
   padding: 0px 15px;
   padding-top: 14px;
   width: 100%;
-  height: 60px;
+  //height: 60px;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
+
 .content_ {
   width: 100%;
-  height: 85vh;
+  height: 82vh;
   padding-bottom: 15px;
   text-align: center;
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+
   .resource {
     width: 32.3%;
     height: 270px;
@@ -477,67 +750,109 @@ export default {
     margin-right: 1%;
     border-radius: 10px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
     p {
       margin: 5px 0;
     }
   }
-  .resource :hover {
-    bottom: 1px;
-    right: 1px;
-  }
+
+  //.resource :hover {
+  //  bottom: 1px;
+  //  right: 1px;
+  //}
 }
+
+.check {
+  width: 100%;
+  height: 85vh;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 .el-input-group__append {
   cursor: pointer;
   padding: 0;
 }
+
 .set_one {
   width: 100%;
   height: 30vh;
   padding: 0 1%;
+
   img {
     border-radius: 10px;
   }
 }
+
 .set_two {
   margin-top: 5vh;
   width: 100%;
   height: 50vh;
 }
+
 .particulars {
   p {
     margin-top: 2vh;
     font-size: 12px;
     color: black;
   }
+
   .sp {
     font-size: 12px;
     color: lightslategrey;
   }
+
   .btn {
     margin-top: 2vh;
   }
 }
+
 .el-card__body,
 .el-main {
   padding: 10px;
 }
+
 // 改变默认滚动条样式
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
   background-color: #ebeef5;
 }
+
 ::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #ccc;
 }
+
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   background: rgba(255, 255, 255, 1);
 }
+
 .set {
   height: 95vh;
+}
+
+.operation {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+//更多样式
+.el-dropdown {
+  vertical-align: top;
+}
+
+.el-dropdown + .el-dropdown {
+  margin-left: 15px;
+}
+
+.el-icon-arrow-down {
+  font-size: 12px;
 }
 </style>

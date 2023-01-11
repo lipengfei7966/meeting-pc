@@ -1,7 +1,7 @@
 <template>
   <div class="bs-new-container app-container">
 
-    <el-alert v-show="alertShow" title="因菜单信息有5分钟的缓存，业务员在5分钟后登陆可以看到新的菜单目录" type="warning" show-icon style='margin-bottom: 3px;'></el-alert>
+    <el-alert v-show="alertShow" :title="$t('platform.menu.updaateTips')" type="warning" show-icon style='margin-bottom: 3px;'></el-alert>
     <bs-form ref='bsForm' :form='form'></bs-form>
 
     <bs-table ref='bsTable' :mainData='mainData'>
@@ -135,7 +135,7 @@ export default {
 
           {
             name: 'remove',
-            msg: '只能删除自有目录或者菜单,如为目录，则当前目录下没有目录/菜单',
+            msg: this.$t('platform.menu.deleteTips'),
             validate: this.removeValidate,
             getParam: currentRow => {
               return currentRow.id
@@ -224,7 +224,7 @@ export default {
   },
   methods: {
     syncMenu() {
-      this.$confirm('同步时，不会影响当前数据，只是添加平台新增加的菜单和目录结构信息', this.$t('biz.msg.tip'), {
+      this.$confirm(this.$t('platform.menu.confirmTips'), this.$t('biz.msg.tip'), {
         confirmButtonText: this.$t('biz.btn.confirm'),
         cancelButtonText: this.$t('biz.btn.cancel'),
         type: 'warning'
@@ -240,7 +240,7 @@ export default {
             }
           })
             .then(response => {
-              this.$notify(notifySuccess({ msg: '同步成功' }))
+              this.$notify(notifySuccess({ msg: this.$t('platform.menu.synchronizationSuccess') }))
               this.$refs.bsTable.getList()
               this.loading = false
             })
@@ -277,11 +277,11 @@ export default {
           if (response.data) {
             this.$notify(
               notifyError({
-                msg: '解决办法：请重新调整问题菜单目录层级(调到别的目录，再调整回来)。' + '问题菜单：' + response.data
+                msg: this.$t('platform.menu.notifyErrorTips') + response.data
               })
             )
           } else {
-            this.$notify(notifySuccess({ msg: '没有问题' }))
+            this.$notify(notifySuccess({ msg: this.$t('platform.menu.noProblem') }))
           }
           this.loading = false
         })

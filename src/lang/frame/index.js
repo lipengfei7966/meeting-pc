@@ -2,8 +2,8 @@
 import enBase from '@/lang/frame/base/modules/base_en'
 import zhBase from '@/lang/frame/base/modules/base_zh'
 // 消息中心
-import enMsg from '@/lang/frame/base/modules/msg_en'
-import zhMsg from '@/lang/frame/base/modules/msg_zh'
+import enMsg from '@/lang/frame/service/informManage/msg_en'
+import zhMsg from '@/lang/frame/service/informManage/msg_zh'
 // 消息中心
 import enFile from '@/lang/frame/base/modules/file_en'
 import zhFile from '@/lang/frame/base/modules/file_zh'
@@ -30,12 +30,28 @@ import zhWebsite from '@/lang/frame/website/website_zh'
 import enWebsite from '@/lang/frame/website/website_en'
 
 // 订单
-import zhOrder from '@/lang/frame/base/modules/order_zh'
-import enOrder from '@/lang/frame/base/modules/order_en'
+import zhOrder from '@/lang/frame/service/orderManage/order_zh'
+import enOrder from '@/lang/frame/service/orderManage/order_en'
 
 // 报名设置
-import zhApply from '@/lang/frame/base/modules/apply_zh'
-import enApply from '@/lang/frame/base/modules/apply_en'
+import zhApply from '@/lang/frame/service/applySetting/apply_zh'
+import enApply from '@/lang/frame/service/applySetting/apply_en'
+
+// 分活动管理
+import zhSub from '@/lang/frame/service/subActivities/sub_zh'
+import enSub from '@/lang/frame/service/subActivities/sub_en'
+
+// 微站管理
+import zhMaterial from '@/lang/frame/service/CMS/material_zh'
+import enMaterial from '@/lang/frame/service/CMS/material_en'
+
+// 参会人管理
+import zhAttendee from '@/lang/frame/service/Attendee/Attendee_zh'
+import enAttendee from '@/lang/frame/service/Attendee/Attendee_en'
+
+// 参会人管理
+import zhCount from '@/lang/frame/service/count/count_zh'
+import enCount from '@/lang/frame/service/count/count_en'
 
 const messages = {
   en: {
@@ -49,7 +65,11 @@ const messages = {
     ...enFunc,
     ...enWebsite,
     ...enOrder,
-    ...zhApply
+    ...enApply,
+    ...enSub,
+    ...enMaterial,
+    ...enAttendee,
+    ...enCount
   },
   zh: {
     ...zhBase,
@@ -62,7 +82,11 @@ const messages = {
     ...zhFunc,
     ...zhWebsite,
     ...zhOrder,
-    ...enApply
+    ...zhApply,
+    ...zhSub,
+    ...zhMaterial,
+    ...zhAttendee,
+    ...zhCount
   }
 }
 
