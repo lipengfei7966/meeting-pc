@@ -2,14 +2,6 @@
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
       <div class="formSet" style="width:80%">
-        <!-- <div class="back" style="cursor: pointer">
-          <el-popover placement="top-start" width="100" trigger="click" center>
-            <el-link type="primary" @click="toAppearance(1)">编辑外观</el-link><br />
-            <el-link type="primary" @click="toEdit(2)">编辑表单</el-link><br />
-            <el-link type="primary" @click="toResult(3)">编辑结果页</el-link>
-            <div class="shengluehao" slot="reference">...</div>
-          </el-popover>
-        </div> -->
         <h2 style="textAlign:center">{{ eventName }}</h2>
         <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
@@ -20,10 +12,7 @@
 
             <!-- 分页 -->
             <div v-else-if="element.systemName == '分页'" class="form-item-input">
-              <!-- <el-form-item :label="element.pageTitle" label-width="100px"> -->
-              <!-- <span class="setInfoItemlabel">{{ element.pageTitle }}</span> -->
               <p style="text-align: center">[ {{$t('applySet.di')}} {{ element.pagingIndex }} {{$t('applySet.total')}} {{ pagingCount }} {{$t('applySet.page')}} ]</p>
-              <!-- </el-form-item> -->
             </div>
 
             <!-- 说明信息 -->
@@ -85,7 +74,6 @@
 
                   <!-- 下拉列表 -->
                   <div v-if="element.systemName == '下拉列表'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px" :placeholder="element.placeholder">
                         <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
@@ -112,7 +100,6 @@
 
                   <!-- 日期 -->
                   <div v-if="element.systemName == '日期'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
                     </div>
@@ -126,7 +113,6 @@
                 <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" :label-width="element.nameSplit ? '0' : '100px'">
                   <!-- 姓名 -->
                   <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" size="mini" :placeholder="element.placeholder"></el-input>
                   </div>
                   <!-- 姓名拆分 -->
@@ -189,14 +175,12 @@
                 <el-form-item v-else :label="element.title">
                   <!-- 性别 -->
                   <div v-if="element.mapCode == 'sex'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
                     <el-radio v-model="setForm.sex" :label="element.options[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
                   </div>
 
                   <!-- 证件 -->
                   <div v-if="element.mapCode == 'certificate'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
                         <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
@@ -209,7 +193,6 @@
                   <!-- 照片 -->
                   <div v-if="element.mapCode == 'photo'" class="form-item-input">
                     <div v-if="setForm.photo" style="width: 100px; height: 100px" class="picture">
-                      <!-- <img v-if="setForm.photo" :src="setForm.photo" class="avatar"> -->
                       <img class="avatar el-upload-list__item-thumbnail" :src="setForm.photo" alt="" />
                       <span class="el-upload-list__item-actions" style="width: 100px">
                         <span class="el-upload-list__item-preview">
@@ -227,10 +210,9 @@
 
                   <!-- 手机号 -->
                   <div v-if="element.mapCode == 'mobile'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                           <el-option> </el-option>
                         </el-select>
                       </el-input>
@@ -241,7 +223,7 @@
                   <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
                     <div>
                       <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                           <el-option> </el-option>
                         </el-select>
                       </el-input>
@@ -254,7 +236,7 @@
                       <span style="display: inline-block">
                         <el-form-item label-width="0">
                           <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" :placeholder="$t('form.selectInternationalCode')">
                               <el-option> </el-option>
                             </el-select>
                           </el-input>
@@ -271,7 +253,7 @@
                       <span style="display: inline-block">
                         <el-form-item label-width="0">
                           <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                            <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" :placeholder="$t('form.selectInternationalCode')">
                               <el-option> </el-option>
                             </el-select>
                           </el-input>
@@ -291,7 +273,6 @@
 
                   <!-- 备用邮箱 -->
                   <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
-                    <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                     <div>
                       <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
                     </div>
@@ -358,34 +339,17 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1'" :label="$t('applySet.registrationVerification')" prop="registerVerification">
               <el-checkbox-group v-model="applySetForm.registerVerification">
-                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
-                  {{ item.dictItemName }}
-                </el-checkbox>
-                <!-- :checked="applySetForm.registerVerification.length && applySetForm.registerVerification.includes(item.dispOrder + '')" -->
-                <!-- <el-checkbox label="短信验证"></el-checkbox>
-                <el-checkbox label="邮箱验证"></el-checkbox> -->
+                <el-checkbox v-for="item in registerVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">{{ item.dictItemName }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1'" :label="$t('applySet.loginVerification')" prop="loginVerification">
               <el-checkbox-group v-model="applySetForm.loginVerification">
-                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">
-                  {{ item.dictItemName }}
-                </el-checkbox>
-                <!-- :checked="applySetForm.loginVerification.length && applySetForm.loginVerification.includes(item.dispOrder + '')" -->
-                <!-- <el-checkbox label="短信验证"></el-checkbox>
-                <el-checkbox label="邮箱验证"></el-checkbox>
-                <el-checkbox label="账号密码"></el-checkbox>
-                <el-checkbox label="自定义验证"></el-checkbox> -->
+                <el-checkbox v-for="item in loginVerificationOptions" :key="item.dictItemVal" :label="item.dictItemVal">{{ item.dictItemName }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item v-if="applySetForm.isVerification == '1' && applySetForm.loginVerification.length && applySetForm.loginVerification.includes('custom')" :label="$t('applySet.customValidationEntries')" prop="coustomVerification">
               <el-checkbox-group v-model="applySetForm.coustomVerification">
-                <el-checkbox v-for="item in customizeOptions" :key="item.dictItemVal" :label="item.dictItemVal">
-                  {{ item.dictItemName }}
-                </el-checkbox>
-                <!-- :checked="applySetForm.coustomVerification.length && applySetForm.coustomVerification.includes(item.dispOrder + '')" -->
-                <!-- <el-checkbox label="手机号"></el-checkbox>
-                <el-checkbox label="邮箱"></el-checkbox> -->
+                <el-checkbox v-for="item in customizeOptions" :key="item.dictItemVal" :label="item.dictItemVal">{{ item.dictItemName }}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
 
@@ -411,7 +375,7 @@
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
             <el-form-item :label="$t('applySet.dateofRegistration')" prop="applyDate">
-              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" :range-separator="$t('applySet.to')" :start-placeholder="$t('applySet.startDate')" :end-placeholder="$t('applySet.dateClosed')">
               </el-date-picker>
             </el-form-item>
             <el-form-item :label="$t('applySet.privacyAgreement')" prop="applyCheck">
@@ -431,9 +395,6 @@
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal" :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{item.dictItemName}}</el-checkbox>
-                <!-- <el-checkbox label="姓名"></el-checkbox>
-                <el-checkbox label="手机号"></el-checkbox>
-                <el-checkbox label="邮箱"></el-checkbox> -->
               </el-checkbox-group>
             </el-form-item>
           </div>
@@ -441,7 +402,7 @@
         <div style="text-align: center">
           <el-button type="primary" @click="saveHrefHandle('applySetForm')">{{$t('applySet.assistRegistrationOpenField')}}</el-button>
         </div>
-        <div class="copyHref" @click="copyTxt">
+        <div class="copyHref" @click="copyTxt" v-if="isSaveHref">
           <span> {{$t('applySet.saveandgeneratetheregistrationlink')}}:</span>
           <h2>{{ imgUrl }}</h2>
         </div>
@@ -453,9 +414,6 @@
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item :label="$t('applySet.agreementContent')" prop="privacyContent">
-          <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-          <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
-          <!-- <bs-deditor></bs-deditor> -->
           <iframe name="myframe_" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
@@ -463,10 +421,6 @@
           <el-button @click="resetForm()">{{$t('applySet.cancel')}}</el-button>
         </el-form-item>
       </el-form>
-      <!-- <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-        </div> -->
     </el-dialog>
   </div>
 </template>
@@ -478,12 +432,10 @@ export default {
   name: 'applySet',
   data() {
     return {
-      theCertificateType:[],
-      copyHrefShow: false,
-      eventList: [],
-      theHashCode: '',
-      url: '',
-      imgUrl: '',
+      isSaveHref:false,
+      theCertificateType:[],//证件类型回显
+      url: '',//当前环境
+      imgUrl: '',//报名链接
       setForm: {
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
@@ -525,7 +477,7 @@ export default {
         position: '', // 职位
         signupContactDtlDto: {}
       },
-      pagingCount: 0,
+      pagingCount: 0,//分页数量
       registerVerificationOptions: [], // 获取注册验证
       loginVerificationOptions: [], // 获取登录验证
       customizeOptions: [], // 获取自定义验证
@@ -553,19 +505,18 @@ export default {
         assistApplyPermission: '', // 协助报名权限
         assistApplyOpenField: [], // 协助报名开放字段
         id: ''
-        // versionNum: 0
       },
-      setFormFile: [],
-      dialogFormVisible: false,
-      ruleForm: {
-        name: '',
-        privacyContent: ''
+      setFormFile: [],//附件列表
+      dialogFormVisible: false,//隐私协议显隐
+      ruleForm: {//隐私协议
+        name: '',//协议名称
+        privacyContent: ''//协议内容
       },
-      rules: {
+      rules: {//隐私协议规则
         name: [{ required: true, message: this.$t('applySet.pleaseenteraprotocolname'), trigger: 'blur' }],
         privacyContent: [{ required: true, message: this.$t('applySet.pleasefillintheagreement'), trigger: 'blur' }]
       },
-      rulesApply: {
+      rulesApply: {//注册报名规则
         isVerification: [{ required: true, message: this.$t('applySet.pleaseselectthevalidationmethod'), trigger: 'blur' }],
         registerVerification: [{ required: true, message: this.$t('applySet.pleaseselecttheregistrationverificationmethod'), trigger: 'blur' }],
         loginVerification: [{ required: true, message: this.$t('applySet.pleaseselecttheloginverificationmethod'), trigger: 'blur' }],
@@ -617,16 +568,12 @@ export default {
       }
     },
   },
-  created() {
-    this.copyHrefShow = false
-    console.log(this.applySetForm.loginVerification, 'applySetForm.loginVerification')
-  },
+  created() {},
   mounted() {
     if (this.eventCode) {
       this.getEventInfo()
       this.signupContactCodeRuleFn()
     }
-    console.log(this.ruleForm.privacyContent, 'this.ruleForm.privacyContent')
     // 获取注册验证数据字典
     request({
       url: '/api/sys/dict/listItem',
@@ -669,14 +616,13 @@ export default {
     })
   },
   methods: {
+    // 取消关闭隐私协议对话框
     resetForm() {
       this.dialogFormVisible = false
     },
+    // 确定关闭隐私协议对话框
     privacySubmitForm(formName) {
-      // this.$refs[formName].resetFields()
       const req = window.frames['myframe_'].getContent()
-      // const res = req.replace(/<\/?.+?>/g, '').replace(/ /g, '') // req为输入，res为输出
-      console.log(req, 'req')
       this.ruleForm.privacyContent = req.trim()
       if (req.trim() === '') {
         this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
@@ -684,14 +630,11 @@ export default {
         this.dialogFormVisible = false
       }
     },
+    // 打开隐私协议对话框
     editPrivacyHandle() {
       this.dialogFormVisible = true
-      // this.initDialog()
       setTimeout(() => {
-        // debugger
-        console.log(this.ruleForm.privacyContent);
         if (window.frames['myframe_']){
-          // debugger
           window.frames['myframe_'].setContentProfile(this.ruleForm.privacyContent)
         }
       }, 1000)
@@ -729,7 +672,9 @@ export default {
           this.applySetForm.assistApplyPermission = ''
           this.applySetForm.assistApplyOpenField = ''
           this.applySetForm.id = ''
+          this.isSaveHref=false
         } else {
+          this.isSaveHref=true
           this.applySetForm.isVerification = res.data.isVerification
           this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
           this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
@@ -738,7 +683,6 @@ export default {
           this.applySetForm.IsIintimateAgreement = res.data.isPrivacy === '1' ? true : false
           this.ruleForm.name = res.data.privacyName
           this.ruleForm.privacyContent = res.data.privacyContent
-          console.log(res.data.privacyContent, 'res.data.privacyContent')
           setTimeout(() => {
             if (window.frames['myframe_']){
               window.frames['myframe_'].setContents(this.ruleForm.privacyContent)
@@ -751,8 +695,6 @@ export default {
           this.applySetForm.assistApplyPermission = res.data.assistSignupPower
           this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
           this.applySetForm.id = res.data.id
-          // this.applySetForm.versionNum = res.data.versionNum
-          console.log(this.applySetForm, ' this.applySetForm-- ')
         }
       })
     },
@@ -780,14 +722,12 @@ export default {
               // this.setForm[item.mapCode] = []
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, [])
             } else {
-              // debugger
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
               // this.setForm[item.mapCode] = ''
             }
             if (['附件'].includes(item.systemName)) {
               // debugger
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
-              console.log(this.setFormFile)
               this.$set(this.setFormFile, item.mapCode, [])
             }
             this.$set(this.setformOther, item.mapCode, '')
@@ -845,15 +785,14 @@ export default {
         } else if (window.location.host == 'cmms-dev.ctgbs.com' || window.location.host == 'localhost:9527') {
           this.url = 'https://cmms-h5-dev.ctgbs.com'
         }
-        console.log(response.data.eventHashCode, 'response.data.eventHashCode')
-        console.log(response.data.code, 'response.data.code')
-        console.log(this.url)
         this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
       })
     },
+    // 编辑结果页
     setResult() {
       this.$emit('setResult')
     },
+    // 保存并生成报名链接
     saveHrefHandle(formName) {
       this.$emit('applySetForm', this.applySetForm)
       this.$refs[formName].validate(valid => {
@@ -877,11 +816,8 @@ export default {
             assistSignupPower: this.applySetForm.assistApplyPermission,
             signupField: this.applySetForm.assistApplyOpenField ? this.applySetForm.assistApplyOpenField.join(',') : [],
             eventCode: this.eventCode,
-            // deleteFlag: 0,
             id: this.applySetForm.id
-            // versionNum: this.applySetForm.versionNum,
           }
-          console.log(querySaveHref, 'querySavveHref')
           request({
             url: '/api/register/signupContactCodeRule/update',
             method: 'POST',
@@ -893,7 +829,7 @@ export default {
           }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
-              this.copyHrefShow = true
+              this.isSaveHref=true
               this.$message({ message: this.$t('applySet.SignUpAndGenerateLinkSuccessfully'), type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)
@@ -908,6 +844,7 @@ export default {
         }
       })
     },
+    // 复制报名链接
     copyTxt() {
       if (this.imgUrl == '') {
         this.$message({ showClose: true, message: this.$t('applySet.failedtolink'), type: 'error' })
@@ -1034,32 +971,34 @@ export default {
       font-size: 20px;
     }
   }
-
   .copyHref {
     cursor: pointer;
     margin-top: 30px;
     // width: 100%;
     height: 60px;
-    border-radius: 15px;
-    background-color: rgb(228, 251, 226);
+    border-radius: 6px;
+    background-color: #f0f2f5;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px 20px;
+    color: #00699d;
 
     span {
       padding: 0 20px;
-      color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 18px;
       margin-right: 2 0px;
     }
 
     h2 {
-      color: rgb(119, 189, 119);
       font-weight: bold;
       font-size: 12px;
       // width: 500px;
+    }
+    &:hover {
+      border: 2px solid rgb(119, 189, 119);
+      color: rgb(119, 189, 119);
     }
   }
 }
