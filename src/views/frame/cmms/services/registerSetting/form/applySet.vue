@@ -402,7 +402,7 @@
         <div style="text-align: center">
           <el-button type="primary" @click="saveHrefHandle('applySetForm')">{{$t('applySet.assistRegistrationOpenField')}}</el-button>
         </div>
-        <div class="copyHref" @click="copyTxt">
+        <div class="copyHref" @click="copyTxt" v-if="isSaveHref">
           <span> {{$t('applySet.saveandgeneratetheregistrationlink')}}:</span>
           <h2>{{ imgUrl }}</h2>
         </div>
@@ -432,6 +432,7 @@ export default {
   name: 'applySet',
   data() {
     return {
+      isSaveHref:false,
       theCertificateType:[],//证件类型回显
       url: '',//当前环境
       imgUrl: '',//报名链接
@@ -671,7 +672,9 @@ export default {
           this.applySetForm.assistApplyPermission = ''
           this.applySetForm.assistApplyOpenField = ''
           this.applySetForm.id = ''
+          this.isSaveHref=false
         } else {
+          this.isSaveHref=true
           this.applySetForm.isVerification = res.data.isVerification
           this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
           this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
@@ -826,6 +829,7 @@ export default {
           }).then(res => {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
+              this.isSaveHref=true
               this.$message({ message: this.$t('applySet.SignUpAndGenerateLinkSuccessfully'), type: 'success' })
               this.signupContactCodeRuleFn()
               this.$emit('stepIndex', step)

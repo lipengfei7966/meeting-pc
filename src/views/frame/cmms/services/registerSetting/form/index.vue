@@ -2764,8 +2764,8 @@ export default {
                 this.resultSetForm.successOutPageUrl = item.skipWebsite
                 this.resultSetForm.successTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  var nullButton = { name: '', value: '' }
-                  this.resultSetForm.successButtonList.push(nullButton)
+                  // var nullButton = { name: '', value: '' }
+                  // this.resultSetForm.successButtonList.push(nullButton)
                   // this.resultSetForm.successButtonList.name = ''
                   // this.resultSetForm.successButtonList.value = ''
                 } else {
@@ -2793,8 +2793,8 @@ export default {
                 this.resultSetForm.waitReviewOutPageUrl = item.skipWebsite
                 this.resultSetForm.waitReviewTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  this.resultSetForm.waitReviewButtonList.name = ''
-                  this.resultSetForm.waitReviewButtonList.value = ''
+                  // this.resultSetForm.waitReviewButtonList.name = ''
+                  // this.resultSetForm.waitReviewButtonList.value = ''
                   // var nullButton = { name: '', value: '' }
                   // this.resultSetForm.waitReviewButtonList.push(nullButton)
                 } else {
@@ -2821,8 +2821,8 @@ export default {
                 this.resultSetForm.noPassOutPageUrl = item.skipWebsite
                 this.resultSetForm.noPassTitle = item.theme
                 if (item.resultButton.length == 0) {
-                  this.resultSetForm.noPassButtonList.name = ''
-                  this.resultSetForm.noPassButtonList.value = ''
+                  // this.resultSetForm.noPassButtonList.name = ''
+                  // this.resultSetForm.noPassButtonList.value = ''
                   // var nullButton = { name: '', value: '' }
                   // this.resultSetForm.noPassButtonList.push(nullButton)
                 } else {
