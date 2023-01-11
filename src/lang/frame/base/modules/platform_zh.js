@@ -149,7 +149,8 @@ export default {
       remark: '备注',
       funcTab: '功能权限',
       dataperTab: '数据权限类别',
-      componentTab: '组件权限'
+      componentTab: '组件权限',
+      tmcCompany: 'TMC公司'
     },
     dataper: {
       name: '类别名称',
