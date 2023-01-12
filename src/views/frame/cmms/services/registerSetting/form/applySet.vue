@@ -378,7 +378,7 @@
               <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" :range-separator="$t('applySet.to')" :start-placeholder="$t('applySet.startDate')" :end-placeholder="$t('applySet.dateClosed')">
               </el-date-picker>
             </el-form-item>
-            <el-form-item :label="$t('applySet.privacyAgreement')" prop="applyCheck">
+            <el-form-item :label="$t('applySet.applyCheck')" prop="applyCheck">
               <el-radio v-model="applySetForm.applyCheck" label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
               <el-radio v-model="applySetForm.applyCheck" label="1">{{$t('applySet.needtoaudit')}}</el-radio>
               <el-form-item v-if="applySetForm.applyCheck == '1'" :label="$t('applySet.addtheauditresultspage')" label-width="110px">
@@ -499,7 +499,7 @@ export default {
         isNeedCompleteMustInfo: false, // 是否需要完善必填信息
         IsIintimateAgreement: true, // 隐私协议
         applyDate: '', // 报名日期
-        applyCheck: '', // 报名审核
+        applyCheck: '0', // 报名审核
         checkUser: '', // 审核权限用户
         assistApply: false, // 协助报名
         assistApplyPermission: '', // 协助报名权限

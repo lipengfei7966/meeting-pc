@@ -213,6 +213,7 @@ export default {
     failedtolink: 'Failed to generate the registration link', // 生成报名链接失败
     successtolink: 'Successed to generate the registration link', // 生成报名链接成功
     SignUpAndGenerateLinkSuccessfully: 'Sign up and generate link successfully', // 报名并生成链接成功
-    copySuccess: 'Copy Success' // 复制成功
+    copySuccess: 'Copy Success', // 复制成功
+    applyCheck: 'Is Audit' // 是否需要审核
   }
 }

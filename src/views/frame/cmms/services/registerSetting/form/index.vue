@@ -3013,7 +3013,7 @@ export default {
           if (setInfoItem.systemName == '证件') {
             let cardCode = this.$t('datadict.certificateType')
             this.theCertificateType=[]
-            item.options.forEach(v=>{
+            setInfoItem.options.forEach(v=>{
               cardCode.forEach(i=>{
                 if(i.value == v){
                   this.theCertificateType.push(i)
