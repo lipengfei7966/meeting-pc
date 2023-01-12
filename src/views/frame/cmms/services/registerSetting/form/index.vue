@@ -3009,6 +3009,7 @@ export default {
           }
           if(setInfoItem.systemName == '分页'){
             this.pageTotal++
+            this.pagingCount++
           }
           if (setInfoItem.systemName == '证件') {
             let cardCode = this.$t('datadict.certificateType')
@@ -3110,12 +3111,13 @@ export default {
           // this.specialInfoList[index].isSee = false;
           this.setInfoList.splice(itemIndex, 1)
           if (itemList.isPaging) {
-            if(this.pagingCount>0){
+            if(this.pageTotal>0){
               this.pagingCount--
+              this.pageTotal--
             }else{
               this.pagingCount=0
             }
-            this.pageTotal--
+
           }
           break
         default:
@@ -3311,6 +3313,7 @@ export default {
 
       // 分页
       if (itemList.value == 'paging') {
+        debugger
         obj.isPaging = true
         this.pagingCount++
         this.pageTotal++
@@ -3793,6 +3796,7 @@ export default {
       this.form.listQuery.data.eventCode = params.code
       this.eventName = params.name
       this.stepIndex = 0
+      this.pagingCount=0
       this.pageTotal=0
       setTimeout(() => {
         if (window.frames['myframe']){
