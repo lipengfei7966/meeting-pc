@@ -612,7 +612,6 @@ export default {
               this.rules.addres[0].required = false
               if (item.nationIsShow) {
                 // 显示国家
-                // debugger
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur','change'] }])
                 // this.setForm.nations = '86'
                 // this.setForm.nations = '国家'
@@ -817,8 +816,10 @@ export default {
                   this.setForm.signupContactDtlDto[key][checkIndex] = this.setForm.signupContactDtlDto[key][checkIndex] + '&' + this.setformOther[key]
                 }
               })
-              this.setForm.signupContactDtlDto[key].unshift('卍')
-              this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
+              if( this.setForm.signupContactDtlDto[key].length){
+                this.setForm.signupContactDtlDto[key].unshift('卍')
+                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
+              }
             } else {
               if (this.setForm.signupContactDtlDto[key] == '其他') {
                 this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key] + '&' + this.setformOther[key]
@@ -1102,7 +1103,6 @@ export default {
                 this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
                 return false
             }
-            // debugger
             return isAllowUpload
         },
         // 自定义上传文件
@@ -1123,7 +1123,6 @@ export default {
                 data: formData
             }).then(data => {
                 if (data.status) {
-                  debugger
                     this.$message('上传文件成功')
                     this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
 
@@ -1196,7 +1195,6 @@ export default {
     // 证件类型切换
     certificateTypeChange(val) {
       console.log(val,'val');
-      debugger
       this.setForm.certificate = ''
       if (val == 'NI') {
         this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
@@ -1310,7 +1308,6 @@ export default {
     // 国际编码字典项查询
     getCountryCode() {
       this.countryCodeOptions = this.$t('datadict.countryCode')
-      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       this.nationsList = this.countryCodeOptions.filter(item => {
         //
@@ -1373,7 +1370,6 @@ export default {
       eleLink.remove()
     },
     downloadPhoto(fileUrl) {
-      debugger
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
       this.downloadEvt(fileUrl, fileName)
       // // window.open(file.file_path, "_blank");
