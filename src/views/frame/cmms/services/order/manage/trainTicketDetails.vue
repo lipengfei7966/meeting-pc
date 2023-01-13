@@ -251,7 +251,7 @@
 <script>
 import moment from 'moment';
 import commonSlot from './components/commonSlot.vue'
-import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, trainVia } from './utils/api'
+import { trainDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, trainVia,listByOrderCode } from './utils/api'
 export default {
     components: { commonSlot },
     name: 'trainTicketDetails',
@@ -308,43 +308,7 @@ export default {
             theorderCode: '',
             trackingList:[],
             trackingListArr:[],
-            trackingListTest: [
-              {
-                "content": "张三 ( NI41038119990822201X) K2549 (808车厢10A座) 北京-鞍山",
-                "createDate": "2023-01-13 16:17:14",
-                "id": "1613450013423161346",
-                "orderCode": "Train00000587",
-                "orderState": "1003"
-              },
-              {
-                "content": "张三 ( NI41038119990822201X) K2549 (808车厢10A座) 北京-鞍山",
-                "createDate": "2023-01-12 16:17:20",
-                "id": "1613450036017876994",
-                "orderCode": "Train00000587",
-                "orderState": "1003"
-              },
-              {
-                "content": "张三 ( NI41038119990822201X) K2549 (808车厢10A座) 北京-鞍山",
-                "createDate": "2023-01-12 16:17:18",
-                "id": "1613450028912726017",
-                "orderCode": "Train00000587",
-                "orderState": "1003"
-              },
-              {
-                "content": "张三 ( NI41038119990822201X) K2549 (808车厢10A座) 北京-鞍山",
-                "createDate": "2023-01-12 15:01:28",
-                "id": "1613430945417064449",
-                "orderCode": "Train00000587",
-                "orderState": "1002"
-              },
-              {
-                "content": "张三 ( NI41038119990822201X) K57 (805车厢10B座) 北京-鞍山",
-                "createDate": "2023-01-12 15:00:52",
-                "id": "1613430795818823682",
-                "orderCode": "Train00000587",
-                "orderState": "1001"
-              }
-          ]
+            trackingListTest: []
         }
     },
     created () {
@@ -404,7 +368,11 @@ export default {
             })
         },
         trackingFn(){
-            this.trackingListTest.forEach(item=>{
+          listByOrderCode({orderCode:this.$route.params.orderCode}).then(res=>{
+            if(res.status){
+              console.log(res,'订单跟踪');
+              this.trackingListTest=res.data
+              this.trackingListTest.forEach(item=>{
               // this.theTrickStatus=this.ticketStatusFamtter[item.orderState]
               let vitem={
                 date:item.createDate.split(' ')[0],
@@ -441,6 +409,9 @@ export default {
               this.trackingList.push(obj)
               date=v.date
            }
+          })
+
+            }
           })
 
         },

@@ -129,4 +129,16 @@ export const trainVia = (data) => {
     }
   })
 }
+// 订单跟踪查询
+export const listByOrderCode = (data) => {
+  return request({
+    url: '/api/train/orderLog/listByOrderCode',
+    method: 'POST',
+    data: {
+      'data': data,
+      funcModule: '火车票',
+      funcOperation: '火车票订单跟踪查询'
+    }
+  })
+}
 
