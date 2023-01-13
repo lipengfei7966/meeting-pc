@@ -379,8 +379,10 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item :label="$t('applySet.applyCheck')" prop="applyCheck">
-              <el-radio v-model="applySetForm.applyCheck" label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
-              <el-radio v-model="applySetForm.applyCheck" label="1">{{$t('applySet.needtoaudit')}}</el-radio>
+              <el-radio-group v-model="applySetForm.applyCheck">
+                <el-radio label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
+                <el-radio label="1">{{$t('applySet.needtoaudit')}}</el-radio>
+              </el-radio-group>
               <el-form-item v-if="applySetForm.applyCheck == '1'" :label="$t('applySet.addtheauditresultspage')" label-width="110px">
                 <el-button type="text" @click="setResult">{{$t('applySet.auditresultspage')}}</el-button>
               </el-form-item>
@@ -432,6 +434,7 @@ export default {
   name: 'applySet',
   data() {
     return {
+      pageTotal:0,
       isSaveHref:false,
       theCertificateType:[],//证件类型回显
       url: '',//当前环境
@@ -557,6 +560,7 @@ export default {
       }
     },
     'applySetForm.applyCheck'(newVal, oldVal) {
+      console.log(newVal,'newValnewVal')
       if (newVal) {
         this.$emit('update:isNeedApprove',this.applySetForm.applyCheck)
       }
