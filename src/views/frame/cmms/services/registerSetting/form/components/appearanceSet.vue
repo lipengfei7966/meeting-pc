@@ -21,12 +21,12 @@
           <el-form-item :label="$t('appearance.registrationTitleEnglish')" prop="titleEnglish">
             <el-input v-model="appearanceSetForm.titleEnglish" style="width: 50%" size="mini" :placeholder="$t('appearance.registrationTitleEnglish')"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('appearance.languageSettings')" prop="language">
+          <!-- <el-form-item :label="$t('appearance.languageSettings')" prop="language">
             <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
               <el-checkbox :label="$t('appearance.chinese')" name="中文"></el-checkbox>
               <el-checkbox :label="$t('appearance.english')" name="英文"></el-checkbox>
             </el-checkbox-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item :label="$t('appearance.mainColor')" prop="color">
             <el-color-picker v-model="appearanceSetForm.color" style="width: 50%" size="mini"></el-color-picker>
           </el-form-item>
@@ -152,7 +152,7 @@ export default {
       appearanceSetForm: {
         titleChinese: '', // 标题
         titleEnglish: '', // 英文标题
-        language: ['中文'], // 语言
+        // language: ['中文'], // 语言
         // language: ['中文'], // 语言
         color: '#409EFF', // 主色调
         isPropaganda: 0, // 是否开启会议宣传
@@ -256,7 +256,7 @@ export default {
     },
     // 获取外观设置
     getAppearanceSet (eventCode) {
-      this.eventCode=eventCode
+      this.eventCode=eventCode?eventCode:this.eventCode
       // 清空列表
       this.meetingImageList = []
       this.AppImageList = []
@@ -275,7 +275,7 @@ export default {
           if (JSON.stringify(res.data) === '{}' || res.data == undefined) {
              this.appearanceSetForm.titleChinese = '' // 标题
               this.appearanceSetForm.titleEnglish = '' // 英文标题
-              this.appearanceSetForm.language = ['中文']// 语言
+              // this.appearanceSetForm.language = ['中文']// 语言
               this.appearanceSetForm.color = '#409EFF' // 主色调
               this.appearanceSetForm.isPropaganda = 0// 是否开启会议宣传
               this.appearanceSetForm.meetingFile = ''
@@ -302,7 +302,7 @@ export default {
                   window.frames['myframe'].setContents(this.appearanceSetForm.profile)
                 }
               }, 3000)
-            this.appearanceSetForm.language=res.data.language.split(',')
+            // this.appearanceSetForm.language=res.data.language.split(',')
             // this.meetingImageList = res.data.meetingFile
             this.meetingImageList = []
             this.AppImageList = []
@@ -345,8 +345,8 @@ export default {
       }).then(res => {
         if (res.status) {
           if (JSON.stringify(res.data) === '{}' || res.data == undefined) {
-            this.appearanceSetForm.eventCode = this.form.listQuery.data.eventCode
-            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            this.appearanceSetForm.eventCode = this.eventCode
+            // this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             this.appearanceSetForm.code = ''
             this.appearanceSetForm.id = ''
             const req = window.frames['myframe'].getContent()
@@ -372,7 +372,7 @@ export default {
               })
           } else {
             this.appearanceSetForm.eventCode = this.eventCode
-            this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
+            // this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             const req = window.frames['myframe'].getContent()
             this.appearanceSetForm.profile = req.trim()
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
