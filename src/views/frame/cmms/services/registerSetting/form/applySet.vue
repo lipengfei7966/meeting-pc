@@ -701,6 +701,7 @@ export default {
     // 表单配置查询
     getEventInfo() {
       this.pageTotal=0
+      this.pagingCount=0
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',

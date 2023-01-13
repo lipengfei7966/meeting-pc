@@ -2952,6 +2952,7 @@ export default {
     // 获取表单设置
     getEventInfo () {
       this.pageTotal=0
+      this.pagingCount=0
       if (this.form.listQuery.data.eventCode == '') {
         this.$message.warning(this.$t('form.pleaseSelectMeeting'))
         return
@@ -3313,7 +3314,6 @@ export default {
 
       // 分页
       if (itemList.value == 'paging') {
-        debugger
         obj.isPaging = true
         this.pagingCount++
         this.pageTotal++
