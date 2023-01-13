@@ -33,6 +33,19 @@ export default {
         set: 'Participants Coding Settings'// 参会人编码设置
       }
     },
+    customlanguage:{
+      title:'customlanguage',//自定义数据多语言设置
+      query:{
+        dictionariesId:'Dictionaries Id',//字典ID
+        dataFunction:'Data Function',//功能
+        superiorSettingId:'Superior SettingId',//上级设置ID
+        settingItem:'Setting Item',//设置项
+        dictionaryContent:'Dictionary Content'//字典内容
+      },
+      list:{
+        
+      }
+    },
     article: {
       title: 'Conference Management', // 会议管理
       query: {

@@ -33,6 +33,19 @@ export default {
         set: '参会人编码设置'
       }
     },
+    customlanguage:{
+      title:'自定义数据多语言设置',
+      query:{
+        dictionariesId:'字典ID',
+        dataFunction:'功能',
+        superiorSettingId:'上级设置ID',
+        settingItem:'设置项',
+        dictionaryContent:'字典内容'
+      },
+      list:{
+        
+      }
+    },
     article: {
       title: '会议管理',
       query: {
