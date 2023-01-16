@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
-      <div class="formSet" style="width:80%">
+      <div class="formSet" style="width:80%;position:relative">
+        <div style="position:absolute;right:50px;top:10px;padding:6px;background-color: #00699d;color:#fff;border-radius: 5px;cursor: pointer">设置其他语言</div>
         <h2 style="textAlign:center">{{ eventName }}</h2>
         <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
@@ -379,8 +380,10 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item :label="$t('applySet.applyCheck')" prop="applyCheck">
-              <el-radio v-model="applySetForm.applyCheck" label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
-              <el-radio v-model="applySetForm.applyCheck" label="1">{{$t('applySet.needtoaudit')}}</el-radio>
+              <el-radio-group v-model="applySetForm.applyCheck">
+                <el-radio label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
+                <el-radio label="1">{{$t('applySet.needtoaudit')}}</el-radio>
+              </el-radio-group>
               <el-form-item v-if="applySetForm.applyCheck == '1'" :label="$t('applySet.addtheauditresultspage')" label-width="110px">
                 <el-button type="text" @click="setResult">{{$t('applySet.auditresultspage')}}</el-button>
               </el-form-item>
@@ -432,6 +435,7 @@ export default {
   name: 'applySet',
   data() {
     return {
+      pageTotal:0,
       isSaveHref:false,
       theCertificateType:[],//证件类型回显
       url: '',//当前环境
@@ -557,6 +561,7 @@ export default {
       }
     },
     'applySetForm.applyCheck'(newVal, oldVal) {
+      console.log(newVal,'newValnewVal')
       if (newVal) {
         this.$emit('update:isNeedApprove',this.applySetForm.applyCheck)
       }
@@ -701,6 +706,7 @@ export default {
     // 表单配置查询
     getEventInfo() {
       this.pageTotal=0
+      this.pagingCount=0
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',

@@ -108,6 +108,23 @@
           </div>
         </commonSlot>
         <commonSlot :title="$t('order.orderManagement.ordertracking')">
+          <!-- <el-empty :image-size="200" style="margin-top: 10px"></el-empty> -->
+          <el-timeline :reverse="reverse" class="orderTrace">
+            <el-timeline-item placement="top" v-for="(item, index) in trackingList" :key="index">
+              <div style="display:flex;widh:100%">
+                <div style="width:200px;">{{item.date}}/{{item.week}}</div>
+                <div style="display: flex;flex-direction: column;">
+                  <div v-for="(i,index) in item.arr" :key="index">
+                    <div class="itemTitle">{{i.time}} <el-tag type="info">{{i.orderState}}</el-tag>
+                    </div>
+                    <div class="itemInfo">
+                      <div class="itemInfo_people">{{ i.content }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-timeline-item>
+          </el-timeline>
         </commonSlot>
       </div>
       <div class="payDetail">
@@ -232,13 +249,15 @@
 </template>
 
 <script>
+import moment from 'moment';
 import commonSlot from './components/commonSlot.vue'
-import { trainDetail, airDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, trainVia } from './utils/api'
+import { trainDetail, refundUpdateRule, estimatedRefund, comfirmRefund, listItem, trainVia,listByOrderCode } from './utils/api'
 export default {
     components: { commonSlot },
     name: 'trainTicketDetails',
     data () {
         return {
+            theTrickStatus:'',
             status: 'train',
             fundTicket: ['103', '108', '111', '112', '113'],
             viaList: [],
@@ -287,12 +306,16 @@ export default {
             serviceFee: 0,// 手续费
             thepayAmount: 0,//退回金额
             theorderCode: '',
+            trackingList:[],
+            trackingListArr:[],
+            trackingListTest: []
         }
     },
     created () {
         this.listItemFn()
         this.orderCodeFn()
         this.trainDetailFn()
+        this.trackingFn()
     },
     mounted () { },
     methods: {
@@ -343,6 +366,54 @@ export default {
                     this.certificateTypeArr.push([key, value])
                 }
             })
+        },
+        trackingFn(){
+          listByOrderCode({orderCode:this.$route.params.orderCode}).then(res=>{
+            if(res.status){
+              console.log(res,'订单跟踪');
+              this.trackingListTest=res.data
+              this.trackingListTest.forEach(item=>{
+              // this.theTrickStatus=this.ticketStatusFamtter[item.orderState]
+              let vitem={
+                date:item.createDate.split(' ')[0],
+                time:item.createDate.slice(11,16),
+                week:moment(item.createDate).format('dddd'),
+                content:item.content,
+                id:item.id,
+                orderCode:item.orderCode,
+                orderState:item.orderState,
+              }
+              this.trackingListArr.push(vitem)
+          })
+          this.trackingList=[]
+          let date=''
+          this.trackingListArr.forEach(v=>{
+            debugger
+            if(date==''||date!=v.date){
+              let obj={
+                    date:v.date,
+                    week:v.week,
+                    arr:[]
+                  }
+                  let time=''
+                  let orderState=''
+              this.trackingListArr.forEach(item=>{
+                if (v.date==item.date) {
+                  if (time==''||time!=item.time&&orderState==''||orderState!=item.orderState) {
+                    obj.arr.push(item)
+                    time=item.time
+                    orderState=item.orderState
+                  }
+                }
+              })
+              this.trackingList.push(obj)
+              date=v.date
+           }
+          })
+
+            }
+          })
+
         },
         orderCodeFn () { this.orderCode = this.$route.params.orderCode },
         // 火车票订单详情数据查询
@@ -930,5 +1001,97 @@ td {
 .rule3,
 .rule4 {
   margin-bottom: 15px;
+}
+/*订单追踪*/
+.orderTrace {
+  padding: 24px 0;
+}
+
+>>> .el-timeline-item__wrapper {
+  top: 0px !important;
+}
+
+>>> .el-timeline-item__timestamp {
+  font-size: 14px;
+  color: #666666;
+}
+
+>>> .el-timeline-item__wrapper {
+  display: flex;
+}
+
+>>> .el-timeline-item__content {
+  flex: 1;
+  padding-left: 40px;
+}
+
+>>> .el-timeline-item__timestamp {
+  margin-right: 0;
+}
+
+.itemTitle {
+  font-size: 16px;
+  color: #333333;
+  font-weight: 500;
+}
+
+.itemInfo {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.itemInfo_people {
+  font-size: 14px;
+  color: #3590f6;
+  font-weight: bold;
+}
+
+.breadcrumbWrap {
+  width: 100%;
+  height: 44px;
+  overflow: hidden;
+  display: flex !important;
+  align-items: center;
+}
+
+>>> .el-breadcrumb__item:last-child span {
+  font-size: 14px;
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: 500;
+  color: #333333;
+}
+
+>>> .el-breadcrumb__item:not(:last-child) span {
+  font-size: 14px;
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: 500;
+  color: #666666;
+}
+
+.ticPathway_center {
+  font-size: 12px;
+  font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+  font-weight: 400;
+  color: #409eff;
+  border-radius: 4px 4px 4px 4px;
+  border: 1px solid #a6bdcd;
+  padding: 3px 5px;
+}
+
+>>> .cell {
+  text-align: center;
+}
+
+>>> .bs-new-container .el-table::before {
+  height: 0px !important;
+}
+
+.el-table::before {
+  display: none;
+}
+
+>>> .el-table__row:last-child td {
+  border-bottom: none !important;
 }
 </style>

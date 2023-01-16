@@ -26,6 +26,8 @@ export default {
         endDate: 'End Time', // 结束时间
         eventPlace: 'Activity Place', // 活动地点
         eventDate: 'Meeting Time', // 会议时间
+        mainLanguage: 'Main Language', // 主语言
+        multiLanguage: 'Multi-language', // 多语言
         eventHashCode: 'Conference Hashing'// 会议哈希
       },
       btn: {
@@ -494,8 +496,8 @@ export default {
       moduleTitle: 'Module Title', // 模块标题
       enterModuleTitle: 'Please enter a module title', // 请输入模块标题
       moduleType: 'Module Type', // 模块类型
-      apply:'In-site page',//站内页面
-      selectApply:'Please select page',//请选择站内页面
+      apply: 'In-site page', // 站内页面
+      selectApply: 'Please select page', // 请选择站内页面
       selectmoduleType: 'Please select the module type', // 请选择模块类型
       selectThePage: 'Select the page', // 选择页面
       selectPage: 'Please select page', // 请选择页面

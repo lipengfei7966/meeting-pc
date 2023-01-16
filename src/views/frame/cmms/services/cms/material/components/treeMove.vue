@@ -104,8 +104,8 @@ export default {
     },
     handleOk() {
       this.$nextTick(() => {
-        if (this.$refs.moveTree.getCurrentNode()) {
-          let id = this.$refs.moveTree.getCurrentNode().code
+        if (this.$refs.moveTree.getCheckedNodes()) {
+          let id = this.$refs.moveTree.getCheckedNodes()[0].code
           this.$emit('checkFile', id)
         } else {
           this.$message('请选择目标文件夹！')
