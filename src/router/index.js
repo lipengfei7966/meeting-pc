@@ -38,6 +38,16 @@ export const routeExample = [
     },
     children: [
       {
+        name: 'atlasManagement',
+        path: '/atlasManagement',
+        component: () => import('@/views/frame/cmms/services/cms/atlas/index'),
+      },
+      {
+        name: 'addAtlas',
+        path: '/addAtlas',
+        component: () => import('@/views/frame/cmms/services/cms/atlas/components/atlasAdd'),
+      },
+      {
         name: 'indexDemo',
         path: 'indexDemo',
         component: () => import('@/views/example/indexDemo/index'),
