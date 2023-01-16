@@ -530,7 +530,7 @@ export default {
     },
     formUpdateStatus (newVal, oldVal) {
       if (newVal==true) {
-        this.$refs.resultSet.getEventInfo(params.code)
+        this.$refs.resultSet.getEventInfo(this.form.listQuery.data.eventCode)
       }
     }
   },
