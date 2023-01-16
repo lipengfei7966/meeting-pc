@@ -294,7 +294,12 @@ export default {
     },
     // 查询
     onSubmit() {
+      // debugger
       const bsQueryExtras = []
+      // 从自定义数据多语言进来 需要在点击查询时，获取主语言和可用语言
+      if(this.$parent.mainData.isLang){
+        this.$parent.languageQuery()
+      }
       if (!this.$parent.mainData) return
       for (const i in this.extraQuery) {
         if (this.extraQuery[i].label) {
