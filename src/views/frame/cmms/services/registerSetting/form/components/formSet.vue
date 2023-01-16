@@ -4,7 +4,6 @@
       <div slot="header" class="formInfoTitle">
         <span>{{$t('form.formInformation')}}</span>
       </div>
-
       <div>
         <el-collapse>
           <el-collapse-item>
@@ -389,7 +388,34 @@
               <div v-if="element.systemName == '说明信息'" class="form-item-input">
                 <pre>{{ element.placeholder }}</pre>
               </div>
+              <!-- 是否出席 -->
+              <div v-if="element.systemName == '是否出席'" class="form-item-input">
+                <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
+                <div style="width: 50%; display: inline-block; vertical-align: top">
+                  <el-radio-group :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                    <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{item}}</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+              <!-- 分活动 -->
+              <div v-if="element.systemName == '分活动'" class="form-item-input">
+                <span class="setInfoItemlabel"> {{ element.title }} : </span>
+
+                <div style="width: 50%; display: inline-block; vertical-align: top">
+                  <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                    <el-checkbox v-model="setForm.activityOptions" :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人)</el-checkbox>
+                    <p style="padding:10px">场景描述：{{ item.describeInfo }}</p>
+                  </div>
+
+                  <span style="float:right">{{ element.placeholder }}</span>
+
+                </div>
+              </div>
+              <!-- 隐私协议 -->
+              <div v-if="element.systemName == '协议设置'" class="form-item-input">
+                <span class="setInfoItemlabel"> {{ element.title }} : </span>
+              </div>
               <div style="display: flex; flex-direction: column; justify-content: space-around">
                 <div style="display: flex">
                   <el-checkbox v-if="!element.isSpecialInfo" v-model="element.isRequire" :disabled="element.isRequireDisabled">{{$t('form.required')}}</el-checkbox>
@@ -1381,7 +1407,7 @@
             </div>
           </div>
 
-          <!-- 11 -->
+          <!-- 分页 -->
           <div v-if="setInfoList[checkedIndex].systemName == '分页'">
             <!-- 提示文本 -->
             <div class="eidtContentItem">
@@ -1390,13 +1416,69 @@
               <p style="width: 100%; text-align: center">[ {{$t('form.di')}} {{ setInfoList[checkedIndex].pagingIndex }} {{$t('form.total')}} {{pageTotal}} {{$t('form.Page')}} ]</p>
             </div>
           </div>
-
           <!-- 说明信息 -->
           <div v-if="setInfoList[checkedIndex].systemName == '说明信息'">
             <!-- 说明信息 -->
             <div class="eidtContentItem">
               <p class="eidtContentItemTitle">{{$t('form.caption')}}</p>
               <el-input type="textarea" :rows="10" size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
+            </div>
+          </div>
+          <!-- 是否出席 -->
+          <div v-if="setInfoList[checkedIndex].systemName == '是否出席'">
+            <!-- 标题 -->
+            <div class="eidtContentItem">
+              <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
+              <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+            </div>
+            <!-- 选项 -->
+            <div class="eidtContentItem">
+              <p class="eidtContentItemTitle" style="line-height: 34px">{{$t('form.options')}}</p>
+              <!-- <el-button type="text" @click="batchEditDiologVisible = true">{{$t('form.batchAddition')}}</el-button> -->
+              <div class="radioOptions" style="width: 100%">
+                <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
+                  <el-input style="" size="mini" v-model="setInfoList[checkedIndex].options[0]"></el-input>
+                  <el-input style="margin-top: 10px" size="mini" v-model="setInfoList[checkedIndex].options[1]"></el-input>
+                </draggable>
+              </div>
+            </div>
+
+            <!-- 排列方向 -->
+            <div class="eidtContentItem">
+              <p class="eidtContentItemTitle">排列方向</p>
+              <div style="width: 100%">
+                <el-radio v-model="setInfoList[checkedIndex].orientation" label="横向">横向</el-radio>
+                <el-radio v-model="setInfoList[checkedIndex].orientation" label="纵向">纵向</el-radio>
+              </div>
+            </div>
+
+            <!-- 报名后不允许编辑 -->
+            <!-- <div class="eidtContentItem">
+              <p class="eidtContentItemTitle">{{$t('form.unAllowedEditing')}}</p>
+              <el-switch v-model="setInfoList[checkedIndex].notAllowEdit"> </el-switch>
+            </div> -->
+          </div>
+          <!-- 协议设置 -->
+          <div v-if="setInfoList[checkedIndex].systemName == '协议设置'">
+            <!-- 标题 -->
+            checkedIndex:{{ checkedIndex }}
+            <div class="eidtContentItem">
+              <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
+              <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+            </div>
+            <el-button type="text" @click="editPrivacyHandle(checkedIndex)">编辑协议</el-button>
+          </div>
+          <!-- 分活动 -->
+          <div v-if="setInfoList[checkedIndex].systemName == '分活动'">
+            <!-- 标题 -->
+            <div class="eidtContentItem">
+              <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
+              <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
+            </div>
+            <!-- 提示文本 -->
+            <div class="eidtContentItem">
+              <p class="eidtContentItemTitle">{{$t('form.Alertingtext')}}</p>
+              <el-input size="mini" v-model="setInfoList[checkedIndex].placeholder"></el-input>
             </div>
           </div>
         </div>
@@ -1410,6 +1492,22 @@
         <el-button @click="batchEditDiologVisible = false">{{$t('form.cancel')}}</el-button>
         <el-button type="primary" @click="batchEditOptionsComfirm">{{$t('form.confirm')}}</el-button>
       </div>
+    </el-dialog>
+    <!-- 协议对话框 -->
+    <el-dialog :title="$t('applySet.clickonthecopyregistrationlink')" v-el-drag-dialog :visible.sync="protocolDiologVisible">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" v-if="protocolDiologVisible">
+        <el-form-item :label="$t('applySet.protocolName')" prop="name">
+          <el-input v-model="ruleForm[checkedIndex].name"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('applySet.agreementContent')" prop="privacyContent">
+          'myframe_'+checkedIndex:{{'myframe_'+checkedIndex}}
+          <iframe :name="'myframe_'+checkedIndex" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="privacySubmitForm(checkedIndex)">{{$t('applySet.confrim')}}</el-button>
+          <el-button @click="resetForm(checkedIndex)">{{$t('applySet.cancel')}}</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -1429,6 +1527,7 @@ export default {
       formUpdateStatus:false,
       batchEditOptions: '', // 批量编辑信息
       batchEditDiologVisible: false,
+      protocolDiologVisible: false,
       checkedIndex: 0, // 选中预览item下标
       eventCode:'',
       baseInfoList: [
@@ -1467,7 +1566,10 @@ export default {
       specialInfoList: [
         { label: '分割线', value: 'crossLine' },
         { label: '分页', value: 'paging' },
-        { label: '说明信息', value: 'explainInfo' }
+        { label: '说明信息', value: 'explainInfo' },
+        { label: '是否出席', value: 'attendance',isSee: false },
+        { label: '分活动', value: 'subactivity',isSee: false },
+        { label: '协议设置', value: 'protocol' },
       ],
       test: '',
       checkAll: false,
@@ -1517,8 +1619,7 @@ export default {
       batchEditOptions: '', // 批量编辑信息
       setInfoList: [], // 选中的配置信息列表
       batchEditOptions: '', // 批量编辑信息
-      // 表格高度
-      formSetHeight: 0,
+      formSetHeight: 0,// 表格高度
       setForm: {
         checkedSex: '',
         chenkedCertificate: [],
@@ -1535,10 +1636,18 @@ export default {
         faxDefaultCountryCode: '',
         checkedOptions: [],
         selectMultipleCheckedOptions: [],
+        activityOptions:[],
         date: ''
       },
       numDigit:{code:'009',name:4},
-      decimalPlaces:{code:'010',name:4}
+      decimalPlaces:{code:'010',name:4},
+      ruleForm: [],//隐私协议        // name: '',//协议名称// privacyContent: ''//协议内容
+      rules: {//隐私协议规则
+        name: [{ required: true, message: this.$t('applySet.pleaseenteraprotocolname'), trigger: 'blur' }],
+        privacyContent: [{ required: true, message: this.$t('applySet.pleasefillintheagreement'), trigger: 'blur' }]
+      },
+      isPrivacy:false,
+      eventInfoChildList:[]
     }
   },
   created () {},
@@ -1594,6 +1703,50 @@ export default {
     this.buttonCodeOptions = this.$t('datadict.resultSkipPage')
   },
   methods: {
+    // 确定关闭隐私协议对话框
+    privacySubmitForm(checkedIndex){
+      debugger
+      var myFramsName='myframe_'+checkedIndex
+      const req = window.frames[myFramsName].getContent()
+      this.ruleForm[checkedIndex].content = req.trim()
+      if (req.trim() === '') {
+        this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
+      } else {
+        this.protocolDiologVisible = false
+      }
+    },
+    // 取消关闭隐私协议对话框
+    resetForm(checkedIndex) {
+      var myFramsName='myframe_'+checkedIndex
+      this.protocolDiologVisible = false
+        for (let i = 0; i <=40; i++) {
+          if (window.frames['myframe_'+i+'']){
+          window.frames['myframe_'+i+''].setContentProfile('')
+        }
+        }
+    },
+    // 打开隐私协议对话框
+    editPrivacyHandle(checkedIndex) {
+      debugger
+      this.protocolDiologVisible = true
+      var myFramsName='myframe_'+checkedIndex
+      this.ruleForm.forEach(v=>{
+        if (v.index==myFramsName) {
+          this.isPrivacy=true
+        if (window.frames['myframe_'+checkedIndex+'']) {
+            window.frames['myframe_'+checkedIndex+''].setContentProfile(this.ruleForm[v].content)
+          }
+        }
+      })
+      if (!this.isPrivacy) {
+        let rules={
+            index:myFramsName,
+            name:'',
+            content:''
+        }
+        this.ruleForm.push(rules)
+      }
+    },
      // 获取表单设置
      getEventInfo (eventCode,eventName) {
       this.eventCode=eventCode?eventCode:this.eventCode
@@ -1686,12 +1839,6 @@ export default {
           item.check=[]
         item.check.push(this.numDigit)
         item.check.push(this.decimalPlaces)
-        // item.check.forEach((i,x)=>{
-        //   if(i.code==''||i.name==''){
-        //     item.check.splice(x)
-        //   }
-        // })
-        // item.check=[...item.check]
       }
       })
 
@@ -1719,6 +1866,27 @@ export default {
         }
       })
       console.log(this.setInfoList)
+    },
+    // 分活动管理
+    cmsEventInfoChildrenFn(eventCode){
+      this.eventCode=eventCode?eventCode:this.eventCode
+      request({
+        url: 'api/register/cmsEventInfoChildren/page',
+        method: 'POST',
+        data: {
+          current:1,
+          isPage: true,
+          size: 20,
+          data: {
+            eventCode: this.eventCode
+          },
+          funcModule: '分活动管理',
+          funcOperation: '获取分活动列表'
+        }
+      }).then(res => {
+        console.log(res,'resres');
+        this.eventInfoChildList=res.data
+      })
     },
     // 附件-文件上传限制类型 勾选 ---- 开始
     imageCheckAllChange (val) {
@@ -1840,7 +2008,6 @@ export default {
         this.setInfoList[this.checkedIndex].isRequire = true
         this.setInfoList[this.checkedIndex].isRequireDisabled = true
       }
-      //
       this.setInfoList[this.checkedIndex].check[0].code = '011'
       this.setInfoList[this.checkedIndex].check[0].name = val
     },
@@ -1923,6 +2090,9 @@ export default {
           // this.setInfoList[this.checkedIndex].check[0].code = '007'
         }
       })
+    },
+    handleCheckAllChangeActive(){
+      this.setInfoList[this.checkedIndex].options = this.setForm.activityOptions
     },
     selectMultipleChange (val) { },
     certificateTypeChange (certificateOptions) {
@@ -2036,6 +2206,23 @@ export default {
               this.pagingCount=0
             }
           }
+          console.log(itemList, itemIndex,'itemList, itemIndex111111111111111111');
+          if (itemList.systemName=='是否出席') {
+            debugger
+              this.specialInfoList.forEach((v,index)=>{
+              if (v.value=='attendance') {
+                this.specialInfoList[index].isSee=false
+              }
+            })
+          }
+          if (itemList.systemName=='分活动') {
+            debugger
+              this.specialInfoList.forEach((v,index)=>{
+              if (v.value=='subactivity') {
+                this.specialInfoList[index].isSee=false
+              }
+            })
+          }
           break
         default:
           break
@@ -2071,7 +2258,8 @@ export default {
         //pageTitlePlaceholder: '请输入分页标题', // 分页标题-提示文本
         nameSplit: false, //姓名拆分
         notAllowEdit: false, // 报名后不允许编辑
-
+        privacyContent:'', //协议内容
+        privacyName:'', //协议名称
         // sexRadioOptions: ['先生','女士'], // 性别选项
         // certificateAllTypes: ['居民身份证', '护照', '军人证', '港澳居民来往内地通行证', '台湾居民来往内地通行证', '港澳台居民居住证', '其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
@@ -2226,6 +2414,33 @@ export default {
       // 分割线
       if (itemList.value == 'crossLine') {
         obj.mapCode = 'crossLine' + this.setInfoList.length
+      }
+      // 是否出席
+      if (itemList.value == 'attendance') {
+        obj.mapCode = 'attendance' + this.setInfoList.length
+        obj.options = ['出席', '不出席']
+        this.specialInfoList.forEach((v,index)=>{
+          if (v.value=='attendance') {
+            this.specialInfoList[index].isSee=true
+          }
+        })
+      }
+      // 隐私协议
+      if (itemList.value == 'protocol') {
+        obj.isSpecialInfo=false
+        // obj.privacyContent=this.ruleForm.name
+        // obj.privacyContent=this.ruleForm.privacyContent
+        obj.mapCode = 'protocol' + this.setInfoList.length
+      }
+      // 分活动
+      if (itemList.value == 'subactivity') {
+        obj.mapCode = 'subactivity' + this.setInfoList.length
+        obj.placeholder='您最多可报名三项活动'
+        this.specialInfoList.forEach((v,index)=>{
+          if (v.value=='subactivity') {
+            this.specialInfoList[index].isSee=true
+          }
+        })
       }
 
       // 分页

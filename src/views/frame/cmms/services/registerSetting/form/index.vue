@@ -530,7 +530,7 @@ export default {
     },
     formUpdateStatus (newVal, oldVal) {
       if (newVal==true) {
-        this.$refs.resultSet.getEventInfo(params.code)
+        this.$refs.resultSet.getEventInfo(this.form.listQuery.data.eventCode)
       }
     }
   },
@@ -604,6 +604,7 @@ export default {
       this.$refs.attCodeSet.pagingCount=0
       this.$refs.appearanceSet.getAppearanceSet(params.code)
       this.$refs.formSet.getEventInfo(params.code,params.name )
+      this.$refs.formSet.cmsEventInfoChildrenFn(params.code )
       this.$refs.resultSet.getResultFn(params.code)
       this.$refs.resultSet.getEventInfo(params.code)
       this.$refs.attCodeSet.copyHrefShow=false
