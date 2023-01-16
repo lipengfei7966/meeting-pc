@@ -395,10 +395,19 @@
               <el-radio v-model="applySetForm.assistApplyPermission" label="2">{{$t('applySet.permissiontoassistRegistration')}}</el-radio>
               <el-radio v-model="applySetForm.assistApplyPermission" label="1">{{$t('applySet.editingOnly')}}</el-radio>
             </el-form-item>
+            <el-form-item v-if="applySetForm.assistApply" label="同行人数限制" prop="assistApplyPermission">
+              <el-radio v-model="applySetForm.assistApplyPermission" label="0">不限制</el-radio>
+              <el-radio v-model="applySetForm.assistApplyPermission" label="1">最多添加 <el-input-number v-model="applySetForm.number" controls-position="right" :min="0" size="small"></el-input-number>位</el-radio>
+            </el-form-item>
+
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
-                <el-checkbox v-for="item in signupFieldOptions" :key="item.dispOrder" :label="item.dictItemVal" :checked="applySetForm.assistApplyOpenField.includes(item.dispOrder + '')">{{item.dictItemName}}</el-checkbox>
+                <el-checkbox v-for="item in signupFieldOptions" :key="item" :label="item">{{item}}</el-checkbox>
               </el-checkbox-group>
+            </el-form-item>
+            <el-form-item v-if="applySetForm.assistApply" label="协助报名表单位置及必填项" prop="assistApplyOpenField">
+              <el-button type="text" @click="FellowEditorFn">编辑</el-button>
+              <p style="color:#aaaaaa">协助报名位置默认位于报名表单最后，协助报名开放字段必填性默认与报名表单内保持一致</p>
             </el-form-item>
           </div>
         </el-form>
@@ -411,6 +420,22 @@
         </div>
       </div>
     </div>
+    <!--  -->
+    <el-dialog title="协助报名表单位置" :visible.sync="dialogFollowVisible">
+      <el-form :model="followForm">
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="followForm.name" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="公司名称" :label-width="formLabelWidth">
+          <el-input v-model="followForm.companyName" placeholder="请输入公司名称"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFollowVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFollowVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 隐私协议 -->
     <el-dialog :title="$t('applySet.clickonthecopyregistrationlink')" v-el-drag-dialog :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item :label="$t('applySet.protocolName')" prop="name">
@@ -435,6 +460,12 @@ export default {
   name: 'applySet',
   data() {
     return {
+      dialogFollowVisible: false,
+      followForm: {
+        name: '',
+        companyName: ''
+      },
+      formLabelWidth: '120px',
       pageTotal:0,
       isSaveHref:false,
       theCertificateType:[],//证件类型回显
@@ -505,10 +536,11 @@ export default {
         applyDate: '', // 报名日期
         applyCheck: '0', // 报名审核
         checkUser: '', // 审核权限用户
-        assistApply: false, // 协助报名
+        assistApply: true, // 协助报名
         assistApplyPermission: '', // 协助报名权限
         assistApplyOpenField: [], // 协助报名开放字段
-        id: ''
+        id: '',
+        number:0
       },
       setFormFile: [],//附件列表
       dialogFormVisible: false,//隐私协议显隐
@@ -611,16 +643,19 @@ export default {
     }).then(res => {
       this.typeOptions = res.data
     })
-    // 获取协助报名开放字段数据字典
-    request({
-      url: '/api/sys/dict/listItem',
-      method: 'POST',
-      data: { data: 'SIGNUP_FIELD', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
-    }).then(res => {
-      this.signupFieldOptions = res.data
-    })
+    // // 获取协助报名开放字段数据字典
+    // request({
+    //   url: '/api/sys/dict/listItem',
+    //   method: 'POST',
+    //   data: { data: 'SIGNUP_FIELD', funcModule: '获取模块类型', funcOperation: '获取模块类型' }
+    // }).then(res => {
+    //   this.signupFieldOptions = res.data
+    // })
   },
   methods: {
+    FellowEditorFn(){
+      this.dialogFollowVisible=true
+    },
     // 取消关闭隐私协议对话框
     resetForm() {
       this.dialogFormVisible = false
@@ -673,7 +708,7 @@ export default {
           },1000)
           this.applySetForm.applyDate = ''
           this.applySetForm.applyCheck = ''
-          this.applySetForm.assistApply = false
+          this.applySetForm.assistApply = true
           this.applySetForm.assistApplyPermission = ''
           this.applySetForm.assistApplyOpenField = ''
           this.applySetForm.id = ''
@@ -718,6 +753,13 @@ export default {
       }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
+          // this.signupFieldOptions = res.data
+          this.setInfoList.forEach(v=>{//systemName
+            if (v.systemName!=='分页') {
+              this.signupFieldOptions.push(v.systemName)
+            }
+          })
+          this.signupFieldOptions=[...new Set(this.signupFieldOptions)]
         } else {
           this.setInfoList = []
         }
