@@ -29,6 +29,10 @@ export default {
     contDelMsg: '无法删除场景',
     cantDelMsg: '无法删除默认场景',
     cantCodeMsg: '无法获取场景code',
+    msg: {
+      tip: '删除场景',
+      confirmDelete: '确定要删除此场景吗？'
+    },
     btn: {
       addAttendee: '新增参会人',
       changeAttendee: '修改参会人',
@@ -38,8 +42,10 @@ export default {
       signIn: '签到',
       signInSet: '签到设置',
       signInHistory: '签到记录',
-      addScene: '添加场景',
-      delScene: '删除场景'
+      adScene: '添加场景',
+      delScene: '删除场景',
+      cancel: '取消',
+      confirm: '确定'
     },
     tab: {
       '2': '全部',

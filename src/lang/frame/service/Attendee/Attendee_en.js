@@ -29,6 +29,10 @@ export default {
     contDelMsg: 'Unable to delete scene', // 无法删除场景
     cantDelMsg: 'Cannot delete default scene', // 无法删除默认场景
     cantCodeMsg: 'Unable to get scene code', // 无法获取场景code
+    msg: {
+      tip: 'Delete Scene', // 删除场景
+      confirmDelete: 'Are you sure you want to delete this scene?'// 确定要删除此场景吗？
+    },
     btn: {
       addAttendee: 'New participants', // 新增参会人
       changeAttendee: 'Modify participants', // 修改参会人
@@ -38,8 +42,10 @@ export default {
       signIn: 'Sign in', // 签到
       signInSet: 'Sign in setting', // 签到设置
       signInHistory: 'Sign in record', // 签到记录
-      addScene: 'Add Scene', // 添加场景
-      delScene: 'Delete Scene' // 删除场景
+      adScene: 'Add Scene', // 添加场景
+      delScene: 'Delete Scene', // 删除场景
+      cancel: 'Cancel', // 取消
+      confirm: 'Confirm'// 确定
     },
     tab: {
       '2': 'Whole', // 全部
