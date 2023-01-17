@@ -108,7 +108,7 @@
           </div>
         </commonSlot>
         <commonSlot :title="$t('order.orderManagement.ordertracking')">
-          <!-- <el-empty :image-size="200" style="margin-top: 10px"></el-empty> -->
+          <el-empty :image-size="200" style="margin-top: 10px" v-if="trackingList.length==0"></el-empty>
           <el-timeline :reverse="reverse" class="orderTrace">
             <el-timeline-item placement="top" v-for="(item, index) in trackingList" :key="index">
               <div style="display:flex;widh:100%">
@@ -301,6 +301,8 @@ export default {
             certificateTypeArr:[],
             ticketStatussArr:[],
             ticketStatusFamtter:{},
+            trainOrderStatusFamtter:{},
+            trainOrderStatussArr:[],
             centerDialogVisible: false,
             refundAmount: 0,// 预估退票金额
             serviceFee: 0,// 手续费
@@ -339,6 +341,15 @@ export default {
                     this.ticketStatussArr.push([key, value])
                 }
             })
+            listItem('TRAIN_ORDER_LOG').then(res => {
+                // console.log(res, '获取字典码-火车票订单跟踪状态')
+                for (const item of res.data) {
+                    var key = item.dictItemVal
+                    var value = item.dictItemName
+                    this.trainOrderStatusFamtter[key] = value
+                    this.trainOrderStatussArr.push([key, value])
+                }
+            })
             listItem('PAY_TYPE').then(res => {
                 // console.log(res, '获取字典码-支付方式')
                 for (const item of res.data) {
@@ -368,12 +379,12 @@ export default {
             })
         },
         trackingFn(){
-          listByOrderCode({orderCode:this.$route.params.orderCode}).then(res=>{
+          listByOrderCode(this.$route.params.orderCode).then(res=>{
             if(res.status){
               console.log(res,'订单跟踪');
               this.trackingListTest=res.data
               this.trackingListTest.forEach(item=>{
-              // this.theTrickStatus=this.ticketStatusFamtter[item.orderState]
+              item.orderState=this.trainOrderStatusFamtter[item.orderState]
               let vitem={
                 date:item.createDate.split(' ')[0],
                 time:item.createDate.slice(11,16),
@@ -388,7 +399,6 @@ export default {
           this.trackingList=[]
           let date=''
           this.trackingListArr.forEach(v=>{
-            debugger
             if(date==''||date!=v.date){
               let obj={
                     date:v.date,
@@ -1044,7 +1054,7 @@ td {
 .itemInfo_people {
   font-size: 14px;
   color: #3590f6;
-  font-weight: bold;
+  // font-weight: bold;
 }
 
 .breadcrumbWrap {

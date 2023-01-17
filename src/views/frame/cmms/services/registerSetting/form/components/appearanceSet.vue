@@ -21,12 +21,6 @@
           <el-form-item :label="$t('appearance.registrationTitleEnglish')" prop="titleEnglish">
             <el-input v-model="appearanceSetForm.titleEnglish" style="width: 50%" size="mini" :placeholder="$t('appearance.registrationTitleEnglish')"></el-input>
           </el-form-item>
-          <!-- <el-form-item :label="$t('appearance.languageSettings')" prop="language">
-            <el-checkbox-group v-model="appearanceSetForm.language" style="width: 50%" size="mini">
-              <el-checkbox :label="$t('appearance.chinese')" name="中文"></el-checkbox>
-              <el-checkbox :label="$t('appearance.english')" name="英文"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item> -->
           <el-form-item :label="$t('appearance.mainColor')" prop="color">
             <el-color-picker v-model="appearanceSetForm.color" style="width: 50%" size="mini"></el-color-picker>
           </el-form-item>
@@ -77,7 +71,6 @@
           </el-form-item>
           <el-form-item :label="$t('appearance.conferenceIntroduction')" prop="profile" v-show="appearanceSetForm.isPropaganda == '1'">
             <bs-editor></bs-editor>
-            <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
           </el-form-item>
         </div>
       </div>
