@@ -147,7 +147,7 @@ export default {
             ]
           },
           {
-            label: this.$t('order.orderManagement.orderStatus'),
+            label: 'order.orderManagement.orderStatus',
             prop: 'orderStatus',
             element: 'base-select',
             list: this.$t('datadict.basicOrderStatus'),
@@ -157,7 +157,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.travelType'),
+            label: 'order.orderManagement.travelType',
             prop: 'businessType',
             element: 'base-select',
             list: this.$t('datadict.travelType'),
@@ -167,7 +167,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.affiliatedCustomers'),
+            label: 'order.orderManagement.affiliatedCustomers',
             prop: 'customerName',
             element: 'input-validate',
             attrs: {
@@ -176,7 +176,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.orderNumber'),
+            label: 'order.orderManagement.orderNumber',
             prop: 'orderNumber',
             element: 'input-validate',
             attrs: {
@@ -186,7 +186,7 @@ export default {
           },
           {
             type: 'date',
-            label: this.$t('order.orderManagement.orderTime'),
+            label: 'order.orderManagement.orderTime',
             props: ['startTime', 'endTime'],
             attrs: {
               clearable: true,
@@ -206,7 +206,7 @@ export default {
           //   }
           // },
           {
-            label: this.$t('order.orderManagement.orderType'),
+            label: 'order.orderManagement.orderType',
             prop: 'orderType',
             element: 'base-select',
             list: this.$t('datadict.orderType'),
@@ -216,7 +216,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.passenger'),
+            label: 'order.orderManagement.passenger',
             prop: 'contactPerson',
             element: 'input-validate',
             attrs: {
@@ -225,7 +225,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.paymentMethod'),
+            label: 'order.orderManagement.paymentMethod',
             prop: 'payType',
             element: 'base-select',
             list: this.$t('datadict.payType'),
@@ -235,7 +235,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.payStatus'),
+            label: 'order.orderManagement.payStatus',
             prop: 'payStatus',
             element: 'base-select',
             list: this.$t('datadict.payStatus'),
@@ -245,7 +245,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.typeOfTrip'),
+            label: 'order.orderManagement.typeOfTrip',
             prop: 'tripType',
             element: 'base-select',
             list: this.$t('datadict.tripType'),
@@ -255,7 +255,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.ticketNumber'),
+            label: 'order.orderManagement.ticketNumber',
             prop: 'ticketNo',
             element: 'input-validate',
             attrs: {
@@ -264,7 +264,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.contactPhone'),
+            label: 'order.orderManagement.contactPhone',
             prop: 'contactPhone',
             element: 'input-validate',
             attrs: {
@@ -292,7 +292,7 @@ export default {
           // showCheckbox: true,
           cols: [
             {
-              label: this.$t('order.orderManagement.orderStatus'),
+              label: 'order.orderManagement.orderStatus',
               prop: 'orderStatus',
               sortProp: 'funcUser.name',
               width: '100',
@@ -301,23 +301,23 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.affiliatedCustomers'),
+              label: 'order.orderManagement.affiliatedCustomers',
               prop: 'customerName',
               width: '150'
             },
             {
-              label: this.$t('order.orderManagement.orderNumber'),
+              label: 'order.orderManagement.orderNumber',
               prop: 'orderNumber',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.orderTime'),
+              label: 'order.orderManagement.orderTime',
               prop: 'updateDate',
               width: '160',
               align: 'center'
             },
             {
-              label: this.$t('order.orderManagement.travelType'),
+              label: 'order.orderManagement.travelType',
               prop: 'travelType',
               width: '120',
               align: 'center',
@@ -326,7 +326,7 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.orderType'),
+              label: 'order.orderManagement.orderType',
               prop: 'orderType',
               width: '100',
               align: 'center',
@@ -335,12 +335,12 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.orderPlacer'),
+              label: 'order.orderManagement.orderPlacer',
               prop: 'optEmployeeName',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.paymentMethod'),
+              label: 'order.orderManagement.paymentMethod',
               prop: 'payType',
               width: '120',
               format: {
@@ -348,7 +348,7 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.payStatus'),
+              label: 'order.orderManagement.payStatus',
               prop: 'payStatus',
               width: '120',
               format: {
@@ -356,7 +356,7 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.typeOfTrip'),
+              label: 'order.orderManagement.typeOfTrip',
               prop: 'tripType',
               width: '120',
               format: {
@@ -364,27 +364,27 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.contactPhone'),
+              label: 'order.orderManagement.contactPhone',
               prop: 'contactPhone',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.ticketNumber'),
+              label: 'order.orderManagement.ticketNumber',
               prop: 'ticketNo',
               width: '140'
             },
             {
-              label: this.$t('order.orderManagement.flightInformation'),
+              label: 'order.orderManagement.flightInformation',
               prop: 'tripInformation',
               width: '200'
             },
             {
-              label: this.$t('order.orderManagement.paymentAmount'),
+              label: 'order.orderManagement.paymentAmount',
               prop: 'payAmount',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.operation'),
+              label: 'order.orderManagement.operation',
               prop: 'operation',
               width: '120',
               isSlot: true,
@@ -401,8 +401,6 @@ export default {
           }
         }
       },
-      // language:0,
-      // lang:localStorage.getItem("language"),
       orderDetailInfo: {}, //机票基本信息
       costDetailInfo: {}, // 机票支付信息
       flightDetailInfoList: [{ airlineCompanyCode: '', arr: '', arrCity: '', arrCode: '', arrDate: '', arrTerminal: '', arrTime: '', carrierAirlines: '', dep: '', depCity: '', depCode: '', depDate: '', depTerminal: '', depTime: '', flightCode: '', flightNo: '', isMeal: '', orderType: '', planModel: '', ticketNo: '', tripType: '' }], // 机票航班信息
@@ -429,9 +427,16 @@ export default {
     ...mapState({language: state => state.app.language})
   },
   methods: {
-    initCallback() {
+    onChangeAll (params) {
+      // 会议编码 params.code
+      // 会议名称 params.name
+      this.form.listQuery.data.eventCode=params.code
       this.getStatusCountFn()
+      this.$refs.bsTable.getList({ name: 'search' })
     },
+    // initCallback() {
+    //   this.getStatusCountFn()
+    // },
     // 机票订单详情数据查询
     airDetailFn(row) {
       this.theOrderCode = row.orderCode
