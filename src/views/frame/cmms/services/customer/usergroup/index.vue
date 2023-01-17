@@ -1,5 +1,5 @@
 <template>
-  <bs-tree-form-table v-if="isLanguage" ref='bsTable' :treeTableData='treeTableData'></bs-tree-form-table>
+  <bs-tree-form-table ref='bsTable' :treeTableData='treeTableData'></bs-tree-form-table>
 </template>
   <script>
 import { Notification } from 'element-ui'
@@ -13,7 +13,6 @@ export default {
   name: 'customerUsergroup',
   data() {
     return {
-      isLanguage:true,
       treeTableData: {
         form: {
           formSelectByTree: true,
