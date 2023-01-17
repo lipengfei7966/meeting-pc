@@ -1,5 +1,5 @@
 <template>
-  <bs-tree-form-table ref='bsTable' :treeTableData='treeTableData'></bs-tree-form-table>
+  <bs-tree-form-table v-if="isLanguage" ref='bsTable' :treeTableData='treeTableData'></bs-tree-form-table>
 </template>
   <script>
 import { Notification } from 'element-ui'
@@ -8,10 +8,12 @@ import request from '@/utils/frame/base/request'
 
 // 提醒
 import { notifyInfo, notifySuccess } from '@/utils/frame/base/notifyParams'
+import {mapState} from 'vuex'
 export default {
   name: 'customerUsergroup',
   data() {
     return {
+      isLanguage:true,
       treeTableData: {
         form: {
           formSelectByTree: true,
@@ -122,6 +124,20 @@ export default {
         }
       }
     }
+  },
+  watch:{
+    language:{
+      handler(newValue, oldValue) {
+        if(oldValue!==newValue&&oldValue!=undefined){
+         this.$set(this.treeTableData.form,'treeName',this.$t('website.department.treeName'))
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed:{
+    ...mapState({language: state => state.app.language})
   },
   methods: {}
 }
