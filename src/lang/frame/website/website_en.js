@@ -53,6 +53,83 @@ export default {
         articleContent: 'Contents of Article'// 文章内容
       }
     },
+     atlas: {
+       atlasTitle:"Atlas title",
+       atlasIntroduction:"Atlas introduction",
+       numberOfPictures:"Number of pictures",
+       operation:"Operation",
+       details:"Details",
+       delete:"Delete",
+       deletionConfirmation:"Deletion confirmation",
+       deleteInformation:"After deletion, all images and information in the album will be deleted。",
+       ConfirmDelete:"Please confirm whether to delete it？",
+       determine:"Determine",
+       cancel:"Cancel",
+       save:"Save",
+       deleting:"Deleting",
+       deletSuccess:"Deleting the atlas succeeded",
+       cancelDelete:"Cancel delete",
+       add:{
+         atlasAddition:"Atlas addition",
+         save:"Save",
+         saveSuccessfully:"Save successfully"
+       },
+       edit:{
+         atlasEditor:"Atlas editor"
+       }
+     },
+    atlasAndPicture:{
+      editInformation:"Edit the brochure information",
+      picture:{
+        atlasDetails:"Atlas details",
+        pictureInformation: "Picture information",
+        searchInfo:"Please enter keywords to search for image descriptions",
+        search:"Search",
+        reset:"Reset",
+        batchUpload:"Batch upload",
+        addAPicture:"Add a picture",
+        loading: 'Loading', // 加载中
+        picture:"Picture",
+        pictureDescription:"Picture description",
+        clickEffect:"Click effect",
+        imageClickEffect:'Image click effect',
+        not:"Not",
+        ViewEnlargedImage:"View enlarged image",
+        skipColumn:"Skip column",
+        OpenTheArticle:"Open the article",
+        customLink:"Custom link",
+        jumpPosition:"Jump position",
+        language:"Language",
+        operation:"Operation",
+        edit:"edit",
+        delete:"Delete",
+        requireAtals:"Please enter the name of the album",
+        saveSuccess: 'Save Success'
+      },
+      del:{
+        delPrompt:"After deletion, the image will be deleted from the referenced page。",
+        confirmDelete:'Please confirm whether to delete it？',
+        delSuccess:"Image deleted successfully",
+
+      }
+    },
+    pictureView:{
+      loadFailure:"Load failure",
+      reupload:"Reupload",
+      clickUpload:"Click upload",
+      editPicture:"Edit picture",
+      addAPicture:"Add a picture",
+      viewPictures:"查看图片",
+      add:{
+        seletLanguage:"Please select a language",
+        selectImage:"Please select image click effect",
+        uploading:"Uploading, please hold on",
+        uploadSuccess:"Picture uploaded successfully",
+        noPicture:"Please upload pictures",
+        addSuccess:"Picture added successfully",
+        addFail:"Picture editing success",
+      }
+    },
     activityManagement: {
       title: 'Sub-activity Management', // 分活动管理
       // query: {

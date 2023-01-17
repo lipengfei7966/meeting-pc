@@ -53,6 +53,82 @@ export default {
         articleContent: '文章内容'
       }
     },
+    atlas: {
+      atlasTitle:"图册名称",
+      atlasIntroduction:"图册介绍",
+      numberOfPictures:"图片数量",
+      operation:"操作",
+      details:"详情",
+      delete:"删除",
+      deletionConfirmation:"删除确认",
+      deleteInformation:"删除后该图册内所有图片及信息均被删除。",
+      ConfirmDelete:"请确认是否删除？",
+      determine:"确定",
+      cancel:"取消",
+      save:"保存",
+      deleting:"删除中",
+      deletSuccess:"删除图册成功",
+      cancelDelete:"取消删除",
+      add:{
+        atlasAddition:"图册新增",
+        save:"保存中",
+        saveSuccessfully:"保存成功"
+      },
+      edit:{
+        atlasEditor:"图册编辑"
+      }
+    },
+    atlasAndPicture:{
+      editInformation:"编辑图册信息",
+      picture:{
+        atlasDetails:"图册详情",
+        pictureInformation: "图片信息",
+        searchInfo:"请输入关键词搜索图片描述",
+        search:"查询",
+        reset:"重置",
+        batchUpload:"批量上传",
+        addAPicture:"添加图片",
+        loading: '加载中', // 加载中
+        picture:"图片",
+        pictureDescription:"图片描述",
+        clickEffect:'点击效果',
+        imageClickEffect:'图片点击效果',
+        not:"无",
+        ViewEnlargedImage:"查看放大图片",
+        skipColumn:"跳转栏目",
+        OpenTheArticle:"打开文章",
+        customLink:"自定义链接",
+        jumpPosition:"跳转位置",
+        language:"语言",
+        operation:"操作",
+        edit:"编辑",
+        delete:"删除",
+        requireAtals:'请输入图册名称',
+        saveSuccess: '保存成功'
+      } ,
+      del:{
+        delPrompt:"删除后该图片将在被引用页面删除。",
+        confirmDelete:"请确认是否删除？",
+        delSuccess:"删除图片成功"
+      }
+    },
+    pictureView:{
+      loadFailure:"加载失败",
+      reupload:"重新上传",
+      clickUpload:"点击上传",
+      editPicture:"编辑图片",
+      addAPicture:"添加图片",
+      viewPictures:"查看图片",
+      add:{
+        seletLanguage:"请选择语言",
+        selectImage:'请选择图片点击效果',
+        uploading:"上传中，请稍候",
+        uploadSuccess:"图片上传成功",
+        noPicture:"请上传图片",
+        addSuccess:"图片新增成功",
+        addFail:"图片编辑成功",
+      }
+    },
     activityManagement: {
       title: '分活动管理',
       // query: {
