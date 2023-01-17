@@ -399,6 +399,8 @@ export default {
   name: 'attendeeEdit',
   data() {
     return {
+      enRegistration:{},
+      zhRegistration:{},
       theCertificateType: [],
       setInfoList: [], // 选中的配置信息列表
       baseInfoList: [], // 基础信息
@@ -517,16 +519,18 @@ export default {
   async mounted() {
     if (this.$route.params.data) {
       const { data } = await getLanguage({
-        data: this.$route.params.data,
+        data: 'm000151',//this.$route.params.data
         funcModule: "获取多语言JSON",
         funcOperation: "获取多语言JSON",
       })
       if (data) {
         if (data.en) {
           enRegistration.registration = data.en
+          this.enRegistration.registration = data.en
         }
         if (data.zh) {
           zhRegistration.registration = data.zh
+          this.zhRegistration.registration = data.zh
         }
       }
     }
