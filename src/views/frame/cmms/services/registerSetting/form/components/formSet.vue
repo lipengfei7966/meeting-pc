@@ -1461,12 +1461,12 @@
           <!-- 协议设置 -->
           <div v-if="setInfoList[checkedIndex].systemName == '协议设置'">
             <!-- 标题 -->
-            checkedIndex:{{ checkedIndex }}
+            checkedIndex:==>{{ checkedIndex }}
             <div class="eidtContentItem">
               <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
               <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
             </div>
-            <el-button type="text" @click="editPrivacyHandle(checkedIndex)">编辑协议</el-button>
+            <el-button type="text" @click="editPrivacyHandle">编辑协议</el-button>
           </div>
           <!-- 分活动 -->
           <div v-if="setInfoList[checkedIndex].systemName == '分活动'">
@@ -1495,17 +1495,16 @@
     </el-dialog>
     <!-- 协议对话框 -->
     <el-dialog :title="$t('applySet.clickonthecopyregistrationlink')" v-el-drag-dialog :visible.sync="protocolDiologVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" v-if="protocolDiologVisible">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item :label="$t('applySet.protocolName')" prop="name">
-          <el-input v-model="ruleForm[checkedIndex].name"></el-input>
+          <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item :label="$t('applySet.agreementContent')" prop="privacyContent">
-          'myframe_'+checkedIndex:{{'myframe_'+checkedIndex}}
-          <iframe :name="'myframe_'+checkedIndex" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
+          <iframe name="myframe_1" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="privacySubmitForm(checkedIndex)">{{$t('applySet.confrim')}}</el-button>
-          <el-button @click="resetForm(checkedIndex)">{{$t('applySet.cancel')}}</el-button>
+          <el-button type="primary" @click="privacySubmitForm">{{$t('applySet.confrim')}}</el-button>
+          <el-button @click="resetForm">{{$t('applySet.cancel')}}</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -1616,9 +1615,6 @@ export default {
       buttonCodeOptions: [], //按钮字典
       skipCodeOptions: [], //跳转页面字典
       setInfoList: [], // 选中的配置信息列表
-      batchEditOptions: '', // 批量编辑信息
-      setInfoList: [], // 选中的配置信息列表
-      batchEditOptions: '', // 批量编辑信息
       formSetHeight: 0,// 表格高度
       setForm: {
         checkedSex: '',
@@ -1641,7 +1637,10 @@ export default {
       },
       numDigit:{code:'009',name:4},
       decimalPlaces:{code:'010',name:4},
-      ruleForm: [],//隐私协议        // name: '',//协议名称// privacyContent: ''//协议内容
+      ruleForm: {
+        name:'',
+        privacyContent:'',
+      },//隐私协议        // name: '',//协议名称// privacyContent: ''//协议内容
       rules: {//隐私协议规则
         name: [{ required: true, message: this.$t('applySet.pleaseenteraprotocolname'), trigger: 'blur' }],
         privacyContent: [{ required: true, message: this.$t('applySet.pleasefillintheagreement'), trigger: 'blur' }]
@@ -1704,48 +1703,16 @@ export default {
   },
   methods: {
     // 确定关闭隐私协议对话框
-    privacySubmitForm(checkedIndex){
-      debugger
-      var myFramsName='myframe_'+checkedIndex
-      const req = window.frames[myFramsName].getContent()
-      this.ruleForm[checkedIndex].content = req.trim()
-      if (req.trim() === '') {
-        this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
-      } else {
-        this.protocolDiologVisible = false
-      }
+    privacySubmitForm(){
+      this.protocolDiologVisible = false
     },
     // 取消关闭隐私协议对话框
-    resetForm(checkedIndex) {
-      var myFramsName='myframe_'+checkedIndex
+    resetForm() {
       this.protocolDiologVisible = false
-        for (let i = 0; i <=40; i++) {
-          if (window.frames['myframe_'+i+'']){
-          window.frames['myframe_'+i+''].setContentProfile('')
-        }
-        }
     },
     // 打开隐私协议对话框
-    editPrivacyHandle(checkedIndex) {
-      debugger
+    editPrivacyHandle() {
       this.protocolDiologVisible = true
-      var myFramsName='myframe_'+checkedIndex
-      this.ruleForm.forEach(v=>{
-        if (v.index==myFramsName) {
-          this.isPrivacy=true
-        if (window.frames['myframe_'+checkedIndex+'']) {
-            window.frames['myframe_'+checkedIndex+''].setContentProfile(this.ruleForm[v].content)
-          }
-        }
-      })
-      if (!this.isPrivacy) {
-        let rules={
-            index:myFramsName,
-            name:'',
-            content:''
-        }
-        this.ruleForm.push(rules)
-      }
     },
      // 获取表单设置
      getEventInfo (eventCode,eventName) {
@@ -2417,6 +2384,7 @@ export default {
       }
       // 是否出席
       if (itemList.value == 'attendance') {
+        obj.isSpecialInfo=false
         obj.mapCode = 'attendance' + this.setInfoList.length
         obj.options = ['出席', '不出席']
         this.specialInfoList.forEach((v,index)=>{
@@ -2434,6 +2402,7 @@ export default {
       }
       // 分活动
       if (itemList.value == 'subactivity') {
+        obj.isSpecialInfo=false
         obj.mapCode = 'subactivity' + this.setInfoList.length
         obj.placeholder='您最多可报名三项活动'
         this.specialInfoList.forEach((v,index)=>{
