@@ -736,6 +736,7 @@
                 </div>
               </div>
               <!-- 同行人 -->
+              element.title:{{element.title}}||index:{{ index }}||||pageIndexArr:{{ pageIndexArr }}||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
               <div class="followBox" v-if="element.isTogethe=='1'&&element.followList.length>0">
                 <div class="followForm">
                   <div v-for="followItem in element.followList" :key="followItem.mapCode">
