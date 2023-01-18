@@ -399,7 +399,6 @@
               <el-radio v-model="applySetForm.assistApplyPermission" label="0">不限制</el-radio>
               <el-radio v-model="applySetForm.assistApplyPermission" label="1">最多添加 <el-input-number v-model="applySetForm.number" controls-position="right" :min="0" size="small"></el-input-number>位</el-radio>
             </el-form-item>
-            applySetForm.assistApplyOpenField:{{ applySetForm.assistApplyOpenField }}
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField" @click.native="clickAssistApply($event)">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.mapCode" :label="item.mapCode">{{item.systemName}}</el-checkbox>
