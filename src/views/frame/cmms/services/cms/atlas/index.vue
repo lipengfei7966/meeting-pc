@@ -1,9 +1,9 @@
 <template>
-  <div class="bs-new-container app-container">
+  <div class="bs-new-container app-container atlas">
     <bs-form ref="bsForm" :form="form"></bs-form>
     <bs-table ref="bsTable" :mainData="mainData">
       <template slot='operation' slot-scope='scope'>
-        <div class="operation">
+        <div class="operationButton">
 <!--          <el-link type="primary" :underline="false" @click="viewDetail(scope)">详情</el-link>-->
           <el-link type="primary" :underline="false" @click="editAtlas(scope)">{{ $t('website.atlas.details') }}</el-link>
           <el-link type="primary" :underline="false" @click="delAtlas(scope)">{{ $t('website.atlas.delete') }}</el-link>
@@ -208,8 +208,9 @@ export default {
 </script>
 
 <style scoped>
-.operation{
+.atlas .operationButton{
   display: flex!important;
+  justify-content: flex-start;
   gap: 12px!important;
 }
 /*label显示省略号*/

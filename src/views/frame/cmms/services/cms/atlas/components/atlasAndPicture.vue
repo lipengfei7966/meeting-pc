@@ -33,8 +33,8 @@
       </div>
       <el-divider class="dividerLine"></el-divider>
       <div class="top-operate" ref="btnWrapper" style="margin-bottom: 15px">
-        <el-row type="flex" ref="btnContainer" style="display: flex;width: 100%;justify-content: flex-end">
-          <div class="operation" >
+        <div type="flex" ref="btnContainer" style="display: flex;justify-content: flex-end">
+          <div class="operationButton" >
             <el-upload
               class="upload-demo"
               multiple
@@ -63,7 +63,7 @@
               <svg-icon icon-class="refresh" style="margin-right: 0px"></svg-icon>
             </el-button>
           </div>
-        </el-row>
+        </div>
       </div>
       <div style="overflow: auto">
         <u-table
@@ -529,7 +529,7 @@ export default {
   font-size: 16px !important;
 }
 /*操作样式*/
-.operation{
+.operationButton{
   display: flex!important;
   gap: 12px!important;
 }
@@ -579,6 +579,7 @@ export default {
 
 .top-operate {
   width: 100% !important;
+  height: 40px;
   .left-title {
     border-left: 4px solid #1890ff;
     font-size: 16px;
