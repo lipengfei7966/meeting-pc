@@ -425,7 +425,7 @@
       <div class="applySet1" :style="{ height: $parent.formSetHeight + 'px' }">
         <div class="formSet1" style="width:80%;position:relative">
           <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
-            <div v-for="element in setInfoList" :key="element.mapCode">
+            <div v-for="(element,index) in setInfoList" :key="element.mapCode">
               <!-- 分割线 -->
               <div v-if="element.systemName == '分割线'" class="form-item-input">
                 <el-divider content-position="center">{{ element.placeholder }}</el-divider>
@@ -1053,8 +1053,8 @@
                   </div>
                 </div>
                 <div class="followBtn">
-                  <el-button type="primary">上移</el-button>
-                  <el-button type="primary">下移</el-button>
+                  <el-button type="primary" @click="moveUpBtn(index)" v-if="index!=pageIndexArr[0]">上移</el-button>
+                  <el-button type="primary" @click="moveDownBtn(index)" v-if="index!=pageIndexArr[pageIndexArr.length-1]">下移</el-button>
                 </div>
               </div>
             </div>
@@ -1294,6 +1294,16 @@ export default {
     // })
   },
   methods: {
+    moveUpBtn(index){
+      this.setInfoList.splice(index,1)
+      var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
+      this.setInfoList.splice(this.pageIndexArr[pageIndex-1],0,this.queryFollowList)
+    },
+    moveDownBtn(index){
+      this.setInfoList.splice(index,1)
+      var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
+      this.setInfoList.splice(this.pageIndexArr[pageIndex+1],0,this.queryFollowList)
+    },
     FellowEditorFn(){
       this.dialogFollowVisible=true
       this.followList=[]
@@ -1309,7 +1319,6 @@ export default {
       })
       this.queryFollowList.isTogethe=1
       this.queryFollowList.followList=this.followList
-      debugger
       if (this.boxStatus) {
         if (this.pageIndexArr.length==0&&this.applySetForm.assistApplyOpenField.length!=0) {
           this.setInfoList.push(this.queryFollowList)
