@@ -1711,10 +1711,10 @@ export default {
     // 确定关闭隐私协议对话框
     privacySubmitForm(){
       const req = window.frames['myframe_1'].getContent()
+      this.ruleForm.privacyContent = req.trim()
       if (req.trim() === '') {
         this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
       } else {
-        this.ruleForm.privacyContent = req.trim()
         this.setInfoList[this.checkedIndex].privacyName=this.ruleForm.name
         this.setInfoList[this.checkedIndex].privacyContent=this.ruleForm.privacyContent
         this.protocolDiologVisible = false
