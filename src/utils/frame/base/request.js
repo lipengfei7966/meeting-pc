@@ -106,7 +106,9 @@ service.interceptors.response.use(
         // TOKEN验证不通过
         res.msgId === 'EAUT0003' ||
         // 用户权限验证失败过期
-        res.msgId === 'EAUT0004'
+        res.msgId === 'EAUT0004' ||
+        // 用户不存在
+        res.msgId === 'EAUT0005'
       ) {
         // Token失效临时刷新Token保留页面
         if ($('#relogin-dialog').length) {
