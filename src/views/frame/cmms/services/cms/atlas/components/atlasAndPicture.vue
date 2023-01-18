@@ -47,7 +47,7 @@
               style='display:inline-block;margin-right:10px;'
                >
 <!--              :http-request="requestUpload"-->
-              <el-button size="medium" :loading="uploadLoading" style="height: 32px;" class="uploadButton" >
+              <el-button size="medium" :loading="uploadLoading" style="height: 32px;font-size: 12px" class="uploadButton" >
                 <svg-icon icon-class="upload"></svg-icon>
                 {{ $t('website.atlasAndPicture.picture.batchUpload') }}
               </el-button>
