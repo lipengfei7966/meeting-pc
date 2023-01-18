@@ -2,7 +2,7 @@
   <div>
     <div class="applySet" :style="{ height: $parent.formSetHeight + 57 + 'px' }">
       <div class="formSet" style="width:80%;position:relative">
-        <div style="position:absolute;right:50px;top:10px;padding:6px;background-color: #00699d;color:#fff;border-radius: 5px;cursor: pointer">设置其他语言</div>
+        <div style="position:absolute;right:50px;top:10px;padding:6px;background-color: #00699d;color:#fff;border-radius: 5px;cursor: pointer">{{$t('applySet.settingOtherLanguages')}}</div>
         <h2 style="textAlign:center">{{ eventName }}</h2>
         <el-form ref="contactForm" label-position="right" :model="setForm" label-width="100px" class="contactForm" style="width: 95%; margin: 0 auto">
           <div v-for="element in setInfoList" :key="element.mapCode">
