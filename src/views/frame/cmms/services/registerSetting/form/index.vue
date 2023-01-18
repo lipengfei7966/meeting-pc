@@ -2456,6 +2456,14 @@ export default {
   },
   mounted () {
     this.tableComputed()
+    if(this.$route.params.data){
+      this.form.listQuery.data.eventCode = this.$route.params.data
+      let params = {
+        code:this.form.listQuery.data.eventCode,
+        name:this.$route.params.name
+      }
+        this.onChangeAll(params)
+    }
     // this.getEventInfo()
     // 获取国际区号数据字典
     this.countryCodeOptions = this.$t('datadict.countryCode')
@@ -3787,6 +3795,7 @@ export default {
       })
     },
     onChangeAll (params) {
+      debugger
       // 会议编码 params.code
       // 会议名称 params.name
 
