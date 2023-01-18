@@ -194,10 +194,10 @@ export default {
       close: 'close', // 关闭
       reset: 'reset', // 重置
       extend: 'extend', // 查询扩展
-      open: 'open', // 展开
-      stow: 'stow', // 收起
-      expand: 'spread out', // 展开
-      contract: 'retract', // 收起
+      open: 'Expand', // 展开
+      stow: 'Fewer', // 收起
+      expand: 'Expand', // 展开
+      contract: 'Fewer', // 收起
       clear: 'clear', // 清空
       print: 'print', // 打印
       retry: 'retry', // 重发
