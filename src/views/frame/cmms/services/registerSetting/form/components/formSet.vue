@@ -2196,7 +2196,6 @@ export default {
               this.pagingCount=0
             }
           }
-          console.log(itemList, itemIndex,'itemList, itemIndex111111111111111111');
           if (itemList.systemName=='是否出席') {
             debugger
               this.specialInfoList.forEach((v,index)=>{
@@ -2250,6 +2249,8 @@ export default {
         notAllowEdit: false, // 报名后不允许编辑
         privacyContent:'', //协议内容
         privacyName:'', //协议名称
+        followList:[],
+        isTogethe:0,
         // sexRadioOptions: ['先生','女士'], // 性别选项
         // certificateAllTypes: ['居民身份证', '护照', '军人证', '港澳居民来往内地通行证', '台湾居民来往内地通行证', '港澳台居民居住证', '其他法定有效证件'], // 证件可选类型
         certificatecheckedTypes: [], // 证件已选类型
