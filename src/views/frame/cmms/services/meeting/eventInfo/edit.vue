@@ -224,7 +224,12 @@ export default {
         this.$refs.bsDialog.formData.multiLanguage = []
       }else{
         if(typeof(this.$refs.bsDialog.formData.multiLanguage)=='string')this.$refs.bsDialog.formData.multiLanguage=JSON.parse(this.$refs.bsDialog.formData.multiLanguage)
-        this.$refs.bsDialog.formData.multiLanguage = [...new Set([...this.$refs.bsDialog.formData.multiLanguage,params])]
+        if (this.$refs.bsDialog.formData.multiLanguage.length>1) {
+          this.$refs.bsDialog.formData.multiLanguage=this.$refs.bsDialog.formData.multiLanguage
+          this.$refs.bsDialog.formData.multiLanguage = [...new Set([...this.$refs.bsDialog.formData.multiLanguage,params])]
+        }else{
+          this.$refs.bsDialog.formData.multiLanguage = [params]
+        }
       }
     },
     handleCloseDialog(param) {
