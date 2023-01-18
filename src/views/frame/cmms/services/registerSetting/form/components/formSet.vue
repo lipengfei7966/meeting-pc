@@ -1702,17 +1702,40 @@ export default {
     this.buttonCodeOptions = this.$t('datadict.resultSkipPage')
   },
   methods: {
+    // 清空隐私协议表单内容
+    clearRuleForm(){
+      this.ruleForm.name=''
+      this.ruleForm.privacyContent=''
+      if (window.frames['myframe_1']) window.frames['myframe_1'].setContentProfile('')
+    },
     // 确定关闭隐私协议对话框
     privacySubmitForm(){
-      this.protocolDiologVisible = false
+      const req = window.frames['myframe_1'].getContent()
+      if (req.trim() === '') {
+        this.$message.error(this.$t('applySet.pleaseenterthecontentoftheagreement'))
+      } else {
+        this.ruleForm.privacyContent = req.trim()
+        this.setInfoList[this.checkedIndex].privacyName=this.ruleForm.name
+        this.setInfoList[this.checkedIndex].privacyContent=this.ruleForm.privacyContent
+        this.protocolDiologVisible = false
+        this.clearRuleForm()
+      }
     },
     // 取消关闭隐私协议对话框
     resetForm() {
+      this.clearRuleForm()
       this.protocolDiologVisible = false
     },
     // 打开隐私协议对话框
     editPrivacyHandle() {
       this.protocolDiologVisible = true
+      this.ruleForm.name=this.setInfoList[this.checkedIndex].privacyName
+      this.ruleForm.privacyContent=this.setInfoList[this.checkedIndex].privacyContent
+      setTimeout(() => {
+        if (window.frames['myframe_1']){
+          window.frames['myframe_1'].setContentProfile(this.ruleForm.privacyContent)
+        }
+      }, 2000)
     },
      // 获取表单设置
      getEventInfo (eventCode,eventName) {
