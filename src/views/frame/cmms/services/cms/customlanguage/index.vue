@@ -24,7 +24,7 @@
         <el-button type="primary" v-show="batchShow" @click="batchClick">批量编辑</el-button>
         <el-button @click="batchCancel" v-show="!batchShow">取消</el-button>
         <el-button @click="batchSave" type="primary" v-show="!batchShow">保存</el-button>
-        <el-button type="primary">导出</el-button>
+        <el-button type="primary" @click="exportExcel">导出</el-button>
       </div>
       <!-- 表格数据 -->
       <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs" @initCallback='initCallback' v-if="date">
@@ -52,6 +52,7 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import axios from 'axios'
 export default {
   name:'customlanguage',
   data(){
@@ -151,6 +152,11 @@ export default {
         isLang:true,
         initSearch: false,
         isTopBar: false,
+        // topBar: [
+        //   {
+        //     name: 'export'
+        //   },
+        // ],
         isColset: true,
         tabs: [
           // {
@@ -195,7 +201,8 @@ export default {
           }
         ],
         api: {
-          search:'/api/register/cmsEventInfoLang/page'
+          search:'/api/register/cmsEventInfoLang/page',
+          export: '/api/register/signupContactCol/exportModel',
         },
         // sonTabs: [
         //   {
@@ -237,7 +244,7 @@ export default {
               width: '150'
             },
             {
-              label:'中文简体（主语言）',
+              label:'中文简体',
               prop: 'zh',
               isShow: false,
               width: '240',
@@ -296,6 +303,11 @@ export default {
         this.form.formData[1].list = this.$t('datadict.langWebsiteFunction')
         this.mainData.table.cols[1].format.dict = this.$t('datadict.langWebsiteFunction')
         this.form.listQuery.data.module = 'website'
+        this.$refs.bsTable.getList()
+      }else if(tab._props.label =='分活动管理'){
+        this.form.formData[1].list = []
+        this.mainData.table.cols[1].format.dict = []
+        this.form.listQuery.data.module = 'sonActivity'
         this.$refs.bsTable.getList()
       }
       // console.log(tab, this.form.listQuery.data,this.form.formData);
@@ -381,6 +393,18 @@ export default {
                   this.mainData.table.cols.forEach(item=>{
                     if(item.prop == 'zh' || item.prop == 'en'){
                         item.isShow = false
+                        console.log(this.mainLanguage);
+                      }
+                      if(item.prop == this.mainLanguage){
+                        if(item.prop == 'zh'){
+                        item.label = '中文简体（主语言）'
+                      }else if(item.prop == 'en'){
+                        item.label = '英文（主语言）'
+                      }
+                      }else{
+                        let str = new RegExp("（主语言）","g")
+                        var str_one = item.label.replace(str,"");
+                        item.label = str_one
                       }
                     if(this.multiLanguage.length>0){
                     this.multiLanguage.forEach(son=>{
@@ -453,6 +477,40 @@ export default {
           var str_one = this.dataList.data[0].setUpName.replace(str,"");
           this.dataList.data[0].setUpName = str_one
           this.batchShow = true
+    },
+    // 导出
+    exportExcel() {
+      axios({
+        method: 'post',
+        url: process.env.BASE_API + this.mainData.api.export,
+        data: {
+          data: this.form.listQuery.data.eventCode,
+          funcModule: '自定义数据多语言导出',
+          funcOperation: '模板导出'
+        },
+        headers: {
+          Authorization: 'Bearer ' + this.$store.getters.token
+          // lang: storage.get('language') || 'zh',
+          // module: session.get('auditModule') || ''
+        },
+        responseType: 'blob'
+      })
+        .then((response) => {
+          if (!response.data) {
+          } else {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = url
+            link.setAttribute('download', '参会人导入模板.xlsx')
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
   }
 }
