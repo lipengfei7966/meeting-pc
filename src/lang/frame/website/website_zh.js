@@ -127,6 +127,7 @@ export default {
         noPicture:"请上传图片",
         addSuccess:"图片新增成功",
         addFail:"图片编辑成功",
+        batchUpload:"批量上传成功",
       }
     },
     activityManagement: {

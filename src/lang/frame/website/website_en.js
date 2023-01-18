@@ -128,6 +128,7 @@ export default {
         noPicture:"Please upload pictures",
         addSuccess:"Picture added successfully",
         addFail:"Picture editing success",
+        batchUpload:"Batch upload success",
       }
     },
     activityManagement: {

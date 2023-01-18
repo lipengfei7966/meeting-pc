@@ -69,7 +69,7 @@ export default {
        this.titleName=this.$t("website.atlas.edit.atlasEditor")
      }
   },
-  props:['atlasCode'],
+  props:['atlasCode',"eventCode"],
   methods:{
     //获取图册信息
     getAtlas() {
@@ -111,11 +111,11 @@ export default {
             url = '/api/cms/atlas/update'
             funcOperation = '更改'
             data.code = this.atlasCode
-            // data.id = this.id
           } else {
             url = '/api/cms/atlas/save'
             funcOperation = '新增'
           }
+          data.eventCode=this.eventCode
           request({
             url: url,
             method: 'POST',
@@ -132,7 +132,8 @@ export default {
                 that.$router.push({
                   name:"atlasAndPicture",
                   params:{
-                    code:  res.data
+                    code:  res.data,
+                    eventCode:that.eventCode
                   }
                 })
                 that.clearData()

@@ -10,7 +10,7 @@
         </div>
       </template>
     </bs-table>
-    <atlas  v-if="dialogDetailVisible"  @closeDialogAtlas='closeDialogAtlas' @reload="reload"></atlas>
+    <atlas  v-if="dialogDetailVisible"  @closeDialogAtlas='closeDialogAtlas' @reload="reload" :eventCode="form.listQuery.data.eventCode"></atlas>
   </div>
 </template>
 
@@ -37,11 +37,32 @@ export default {
           funcOperation: "查询",
           data: {
             name:'',//图册名称
-            description:"" // 图册介绍
+            description:"" ,// 图册介绍
+            eventCode:""
           }
         },
         moreShowFlg:false,
-        formData:[{
+        formData:[
+          {
+            label: 'website.article.query.eventCode',
+            prop: 'eventCode',
+            element: 'base-select',
+            attrs: {
+              data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
+              isDefault: true,
+              clearable: false
+            },
+            event: {
+              changeAll: this.onChangeAll
+            },
+            validate: [
+              {
+                required: true,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
           label:'website.atlas.atlasTitle',
           prop:"name",
           element:"input-validate",
@@ -103,9 +124,12 @@ export default {
   },
   mounted(){
     //初始化数据
-    this.$refs.bsTable.getList({name:"search"})
+    // this.$refs.bsTable.getList({name:"search"})
   },
   methods:{
+    onChangeAll(params) {
+      this.$refs.bsTable.doRefresh()
+    },
     //刷新数据
     reload(){
       this.$refs.bsTable.getList({name:"search"})
@@ -133,6 +157,7 @@ export default {
       let that = this;
       this.$msgbox({
         title: this.$t('website.atlas.deletionConfirmation'),
+        closeOnClickModal:false,
         message: h('p', null, [
           h('div', null, this.$t('website.atlas.deleteInformation')),
           h('div', { style: 'marginTop:10px' }, this.$t('website.atlas.ConfirmDelete'))
@@ -186,5 +211,11 @@ export default {
 .operation{
   display: flex!important;
   gap: 12px!important;
+}
+/*label显示省略号*/
+>>>.el-form-item__label{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

@@ -4,7 +4,8 @@
       <!-- 头部 -->
       <title-contain :titleName="titleName" @TitleFun="cancel"></title-contain>
       <div class='dialog-content dialog-container__content'
-           :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto','padding-bottom': '0px !important'}"  v-loading="loading">
+           :style="{maxHeight: clientHeight - 80 + 'px', overflowY: 'auto','padding-bottom': '0px !important'}"
+           v-loading="loading">
         <el-row style="min-height: 310px">
           <el-col :span="8">
             <div class="uploadWrap">
@@ -26,6 +27,7 @@
                 ref="upload"
                 class="url-uploader"
                 action
+                accept="image/png, image/jpeg, image/gif, image/jpg"
                 :disabled="disabled"
                 :show-file-list="false"
                 :http-request="requestUpload"
@@ -46,13 +48,15 @@
                     <span>{{ $t('website.pictureView.reupload') }}</span>
                   </div>
                 </div>
-                <span v-else class="url-uploader-icon"><span class="require">*</span>{{  $t('website.pictureView.clickUpload') }}</span>
+                <span v-else class="url-uploader-icon"><span
+                  class="require">*</span>{{ $t('website.pictureView.clickUpload') }}</span>
               </el-upload>
             </div>
           </el-col>
           <el-col :span="14">
             <el-form :model="pictureForm" :rules="rules" ref="pictureForm" label-width="10px" class="picWrap">
-              <el-form-item :label="$t('website.atlasAndPicture.picture.pictureDescription')+'：'" prop="name" class="elFormItem">
+              <el-form-item :label="$t('website.atlasAndPicture.picture.pictureDescription')+'：'" prop="name"
+                            class="elFormItem">
                 <el-input
                   ref="description"
                   type="textarea"
@@ -61,15 +65,18 @@
                   v-model="pictureForm.description">
                 </el-input>
               </el-form-item>
-              <el-form-item :label="$t('website.atlasAndPicture.picture.language')+'：'" prop="language" class="elFormItem">
-                <el-radio-group v-model="pictureForm.language" class="formRadio" style="height: 28px" :disabled="disabled">
+              <el-form-item :label="$t('website.atlasAndPicture.picture.language')+'：'" prop="language"
+                            class="elFormItem">
+                <el-radio-group v-model="pictureForm.language" class="formRadio" style="height: 28px"
+                                :disabled="disabled">
                   <el-radio v-for="(item,index) in languageData" :key="index" :label="item.dictItemVal">
                     {{ item.dictItemName }}
                   </el-radio>
                 </el-radio-group>
               </el-form-item>
               <!--              0:无,1:查看放大图片,2:跳转栏目,3:打开文章,4:自定义链接-->
-              <el-form-item :label="$t('website.atlasAndPicture.picture.imageClickEffect')+'：'" prop="effect" class="elFormItem">
+              <el-form-item :label="$t('website.atlasAndPicture.picture.imageClickEffect')+'：'" prop="effect"
+                            class="elFormItem">
                 <el-radio-group v-model="pictureForm.effect"
                                 class="formRadio" :disabled="disabled">
                   <el-radio label="0">{{ $t('website.atlasAndPicture.picture.not') }}</el-radio>
@@ -89,10 +96,10 @@
       <div class='dialog-footer'>
         <template>
           <el-button size="mini" v-db-click @click="cancelForm" :disabled="loading" v-if="!disabled">
-            {{$t('website.atlas.cancel') }}
+            {{ $t('website.atlas.cancel') }}
           </el-button>
           <el-button size="mini" v-db-click type="primary" @click="submitForm" :disabled="loading">
-            {{$t('website.atlas.save') }}
+            {{ $t('website.atlas.save') }}
           </el-button>
         </template>
       </div>
@@ -106,27 +113,26 @@ import { mapGetters } from 'vuex'
 import dictApi from '@/api/frame/base/sys/dict'
 import request from '@/utils/frame/base/request'
 import { notifyError, notifyInfo, notifySuccess } from '@/utils/frame/base/notifyParams'
-
 export default {
   name: 'pictureView',
   data() {
     let that = this
     return {
-      titleName:"",
-      loading:false,
+      titleName: '',
+      loading: false,
       id: '',
       languageData: [],
       pictureForm: {
         language: '',
         effect: '0',
-        description:"",
-        content:""
+        description: '',
+        content: ''
       },
       rules: {
         language: { required: true, message: that.$t('website.pictureView.add.seletLanguage') },
         effect: { required: true, message: that.$t('website.pictureView.add.selectImage') }
       },
-      imageName:"",
+      imageName: '',
       imageUrl: '',
       topButtons: [{
         iconName: 'cancel',
@@ -144,28 +150,13 @@ export default {
       }]
     }
   },
-  props:["atlasCode","pictureItem","disabled"],
+  props: ['atlasCode', 'pictureItem', 'disabled'],
   computed: {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight'])
   },
-  async created() {
-     await this.getItem()
-    //判断编辑 新增
-    if(Object.keys(this.pictureItem).length > 0){
-      this.titleName=this.$t('website.pictureView.editPicture')
-      //数据回显
-      this.imageName=this.pictureItem.name
-      this.imageUrl=this.pictureItem.url
-      this.pictureForm.description=this.pictureItem.description
-      this.pictureForm.elFormItem=this.pictureItem.elFormItem
-      this.pictureForm.effect=this.pictureItem.effect
-      this.pictureForm.content=this.pictureItem.content
-    }else{
-      this.titleName=this.$t('website.pictureView.addAPicture')
-    }
-     if(this.disabled == true){
-       this.titleName=this.$t('website.pictureView.viewPictures')
-     }
+  created() {
+    this.getItem()
+
   },
   mounted() {
 
@@ -173,11 +164,11 @@ export default {
   methods: {
     //自定义上传图片
     requestUpload(fileArr) {
-      this.imageUrl=""
+      this.imageUrl = ''
       let file = fileArr.file
       let loading_ = this.$loading({
         lock: true,
-        text: this.$t('website.pictureView.add.uploading')+'...',
+        text: this.$t('website.pictureView.add.uploading') + '...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -189,12 +180,12 @@ export default {
         method: 'POST',
         data: formData
       }).then((res) => {
-        that.imageName=res.data.fileName
+        that.imageName = res.data.fileName
         that.imageUrl = res.data.filePath
         that.$notify(notifySuccess({ msg: that.$t('website.pictureView.add.uploadSuccess') }))
       }).catch(() => {
-         that.imageUrl=""
-        that.imageName=""
+        that.imageUrl = ''
+        that.imageName = ''
       }).finally(() => {
         loading_.close()
         that.$refs.description.focus()
@@ -204,66 +195,68 @@ export default {
     cancelForm() {
       this.clearData()
     },
-    clearData(){
+    clearData() {
       this.imageUrl = ''
-      this.imageName=""
+      this.imageName = ''
       this.$refs.pictureForm.resetFields()
       this.$emit('closeDialog')
     },
     //保存
     submitForm() {
-      if(this.disabled == true){
+      if (this.disabled == true) {
         this.clearData()
         return
       }
       if (!this.imageUrl) {
-        this.$message(this.$t('website.pictureView.add.noPicture')+'！')
+        this.$message(this.$t('website.pictureView.add.noPicture') + '！')
         return
       }
-      let url = ''
-      let funcOperation=""
-      let that = this;
-      this.loading=true
-      let data ={
-        ...this.pictureForm,
-        name:this.imageName,
-        url:this.imageUrl,
-        atlasCode:this.atlasCode
-      }
-      //新增或者编辑
-      if (this.pictureItem.id) { //编辑
-        url = '/api/cms/atlasDetail/update'
-        funcOperation='编辑'
-        data.id = this.pictureItem.id
-      } else { //保存
-        url = '/api/cms/atlasDetail/save'
-        funcOperation='保存'
-      }
       this.$refs.pictureForm.validate((valid) => {
+        console.log(valid)
         if (valid) {
+          let url = ''
+          let funcOperation = ''
+          let that = this
+          let data = {
+            ...this.pictureForm,
+            name: this.imageName,
+            url: this.imageUrl,
+            atlasCode: this.atlasCode
+          }
+          //新增或者编辑
+          if (this.pictureItem.id) { //编辑
+            url = '/api/cms/atlasDetail/update'
+            funcOperation = '编辑'
+            data.id = this.pictureItem.id
+          } else { //保存
+            url = '/api/cms/atlasDetail/save'
+            funcOperation = '保存'
+          }
+          this.loading = true
           request({
             url: url,
             method: 'POST',
             data: {
-              data:data,
+              data: data,
               funcModule: '图册图片',
               funcOperation: funcOperation
             }
           }).then((res) => {
-            if(!that.pictureItem.id){
-              that.$message(that.$t('website.pictureView.add.addSuccess'))
-            }else{
-              that.$message(that.$t('website.pictureView.add.addFail'))
+            if (!that.pictureItem.id) {
+              that.$notify(notifySuccess({ msg: this.$t("website.pictureView.add.addSuccess") }))
+
+            } else {
+              that.$notify(notifySuccess({ msg: this.$t("website.pictureView.add.addFail") }))
             }
-            let that_=that
-            setTimeout(()=>{
+            let that_ = that
+            setTimeout(() => {
               that_.clearData()
               that_.$emit('reloadData')
-            },500)
+            }, 500)
           }).catch(() => {
 
           }).finally(() => {
-            that.loading=false
+            that.loading = false
           })
         }
       })
@@ -278,7 +271,27 @@ export default {
         this.languageData = response.data
         this.pictureForm.language = this.languageData[0].dictItemVal
         this.$forceUpdate()
+        this.assignmentData()
       })
+    },
+    assignmentData() {
+        //判断编辑 新增
+      if (Object.keys(this.pictureItem).length > 0) {
+        this.titleName = this.$t('website.pictureView.editPicture')
+        //数据回显
+        console.log(this.pictureItem)
+        this.imageName = this.pictureItem.name //图片名称
+        this.imageUrl = this.pictureItem.url  //图片地址
+        this.pictureForm.description = this.pictureItem.description //图片描述
+        this.pictureForm.language = this.pictureItem.language ? this.pictureItem.language : null //图片语言
+        this.pictureForm.effect = this.pictureItem.effect
+        this.pictureForm.content = this.pictureItem.content
+      } else {
+        this.titleName = this.$t('website.pictureView.addAPicture')
+      }
+      if (this.disabled == true) {
+        this.titleName = this.$t('website.pictureView.viewPictures')
+      }
     },
     cancel() {
       this.clearData()
@@ -352,7 +365,7 @@ export default {
 }
 
 .bs-new-container .picWrap .el-form-item {
-  margin-bottom: 10px !important;
+  margin-bottom: 25px !important;
 }
 
 /*单选按钮格式*/
@@ -377,8 +390,9 @@ export default {
   line-height: 28px !important;
   width: 30%;
 }
+
 /*图片加载失败*/
-.image-slot{
+.image-slot {
   height: 100%;
   width: 100%;
   display: flex;
@@ -389,7 +403,8 @@ export default {
   justify-content: center;
   align-items: center;
 }
->>>.el-textarea__inner{
+
+>>> .el-textarea__inner {
   font-size: 14px;
   color: #414141;
 }

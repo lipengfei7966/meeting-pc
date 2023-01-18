@@ -3,7 +3,7 @@
     <el-page-header @back="goBack" :content="headerTitle" class="pageHeader">
     </el-page-header>
     <div class="atlas" v-loading="loading" :element-loading-text="$t('website.atlas.add.save')">
-      <el-form ref="atlasForm" :model="atlasForm" label-width="120px" label-position="right" class="formWrap"
+      <el-form ref="atlasForm" :model="atlasForm" label-width="140px" label-position="right" class="formWrap"
                :rules="rules">
         <el-form-item :label="$t('website.atlas.atlasTitle')+'：'" prop="name">
           {{atlasForm.name}}
@@ -18,7 +18,7 @@
     </div>
     <div class="atlas">
       <div class="searchWrap">
-        <el-form ref="pictureForm" label-width="130px" label-position="right" class="formWrap"
+        <el-form ref="pictureForm" label-width="150px" label-position="right" class="formWrap"
                  style="width: 50%">
           <el-form-item :label="$t('website.atlasAndPicture.picture.pictureInformation')+'：'">
             <el-input v-model="description" style="width: 40%" :placeholder="$t('website.atlasAndPicture.picture.searchInfo')"></el-input>
@@ -40,10 +40,13 @@
               multiple
               :show-file-list="false"
               ref="upload"
-              :http-request="requestUpload"
+              accept="image/png, image/jpeg, image/gif, image/jpg"
+              :auto-upload="false"
+              :on-change="handleChange"
               action
               style='display:inline-block;margin-right:10px;'
                >
+<!--              :http-request="requestUpload"-->
               <el-button size="medium" :loading="uploadLoading" style="height: 32px;" class="uploadButton" >
                 <svg-icon icon-class="upload"></svg-icon>
                 {{ $t('website.atlasAndPicture.picture.batchUpload') }}
@@ -140,16 +143,20 @@
             </template>
           </u-table-column>
         </u-table>
+<!--        分页-->
         <div>
-          <el-pagination v-if="pagination" small background :layout="pagination.layout"
+          <div class="bottom-operate-right" v-if="total == 0" >
+            <svg-icon icon-class="point" style="color: #e6a23c"></svg-icon>{{ $t('table.emptyText') }}
+          </div>
+          <el-pagination v-else small background :layout="pagination.layout"
                          :current-page="listQuery.current" :page-sizes="[20, 40, 60, 80, 100]"
                          :page-size="listQuery.size" :total="total"></el-pagination>
         </div>
       </div>
     </div>
-    <atlas v-if="dialogDetailVisibleAtlas" @closeDialogAtlas='closeDialogAtlas' :atlasCode="atlasCode" @reload="reloadDataAtals"></atlas>
+    <atlas v-if="dialogDetailVisibleAtlas" @closeDialogAtlas='closeDialogAtlas' :atlasCode="atlasCode" @reload="reloadDataAtals" :eventCode="eventCode"></atlas>
     <picture-view ref="picture" v-if="dialogDetailVisiblePic" @closeDialog='handleCloseDialog' @reloadData="reloadData"
-                 :atlasCode="atlasCode" :pictureItem="pictureItem" :disabled="picDisabled"></picture-view>
+                 :atlasCode="atlasCode" :pictureItem="pictureItem" :disabled="picDisabled" :eventCode="eventCode"></picture-view>
   </div>
 </template>
 <script>
@@ -165,6 +172,8 @@ export default {
   data() {
     let that = this
     return {
+      maxFileLen:0,
+      eventCode:"",
       uploadLoading:false,
       uploadUrl:"",
       picDisabled:false,
@@ -211,8 +220,10 @@ export default {
   created() {
     if (this.$route.params.code) {
       this.atlasCode = this.$route.params.code
+      this.eventCode=this.$route.params.eventCode
     } else {
       this.atlasCode = ''
+      this.eventCode=''
     }
     // if(this.$route.query.isDisabled){
     //   this.disabled=true
@@ -246,6 +257,7 @@ export default {
       let that = this;
       this.$msgbox({
         title: this.$t("website.atlas.deletionConfirmation"),
+        closeOnClickModal:false,
         message: h('p', null, [
           h('div', null, this.$t("website.atlasAndPicture.del.delPrompt")),
           h('div', { style: 'marginTop:10px' }, this.$t("website.atlasAndPicture.del.confirmDelete"))
@@ -291,26 +303,37 @@ export default {
         instance.confirmButtonLoading=false
       })
     },
+    //批量上传
+    handleChange(file, fileList){
+     let currLengh=fileList.length;
+     this.maxFileLen=Math.max(currLengh,this.maxFileLen);
+     setTimeout(()=>{
+        if(currLengh != this.maxFileLen) return
+        this.requestUpload(fileList)
+     })
+    },
     //自定义上传图片
-    requestUpload(fileArr) {
-      this.imageUrl=""
-      let file = fileArr.file
+    requestUpload(fileList) {
+      let formData = new FormData()
+      formData.append('atlasCode', this.atlasCode) // 额外参数
+      fileList.forEach((item)=>{
+        formData.append('file',item.raw)
+      })
       let loading_ = this.$loading({
         lock: true,
         text: '上传中，请稍候...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      let formData = new FormData()
-      formData.append('file', file)
       this.uploadLoading=true
       let that = this
       request({
-        url: '/api/obs/file/uploadImg',
+        url: '/api/cms/atlasDetail/saveBatch',
         method: 'POST',
         data: formData
       }).then((res) => {
-
+        that.$notify(notifySuccess({ msg: that.$t('website.pictureView.add.batchUpload') }))
+        that.searchPicture()
       }).catch(() => {
 
       }).finally(() => {
@@ -379,6 +402,7 @@ export default {
     },
     //关闭新增接口
     handleCloseDialog() {
+      this.pictureItem={}
       this.picDisabled=false
       this.dialogDetailVisiblePic = false
     },
@@ -527,6 +551,18 @@ export default {
     font-size: 14px;
     border-radius: 3px;
   }
+  /*label显示省略号*/
+>>>.el-form-item__label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bottom-operate-right{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
 </style>
 <style scoped lang="scss">
 .uploadButton:hover,.reset:hover{
