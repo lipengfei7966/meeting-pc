@@ -538,7 +538,7 @@ export default {
 }
 /*分割线*/
 .dividerLine{
-  margin: 0px 0px 15px 0!important;
+  margin: 5px 0px 15px 0!important;
 }
 .uploadButton{
   margin-top: 3px;
