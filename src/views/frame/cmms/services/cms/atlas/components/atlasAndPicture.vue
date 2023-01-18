@@ -131,11 +131,10 @@
             </template>
           </u-table-column>
           <u-table-column
-            prop="sex"
             :label="$t('website.atlasAndPicture.picture.operation')"
           >
             <template  slot-scope='scope'>
-              <div class="operation">
+              <div class="operationButton">
 <!--                <el-link type="primary" :underline="false" @click="pictureDetail(scope)">详情</el-link>-->
                 <el-link type="primary" :underline="false" @click="editPicture(scope)"  v-if="!disabled">{{ $t('website.atlasAndPicture.picture.edit') }}</el-link>
                 <el-link type="primary" :underline="false"  v-if="!disabled" @click="delPicture(scope)">{{ $t('website.atlasAndPicture.picture.delete') }}</el-link>
