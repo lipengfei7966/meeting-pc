@@ -95,7 +95,10 @@
             </div>
           </el-col>
           <el-col :span="6" v-if='form.moreShowFlg && addQueryConditionVisible'>
-            <span class='more-query' ref="moreQuery" @click='addQueryCondition' {{>$t('biz.btn.extend')}}&nbsp;+</span> </el-col> </template> <el-col class="none"></el-col>
+            <span class='more-query' ref="moreQuery" @click='addQueryCondition' {{>$t('biz.btn.extend')}}&nbsp;+</span>
+          </el-col>
+        </template>
+        <el-col class="none"></el-col>
       </el-row>
       <!-- 右侧搜索按钮 -->
       <el-col :span="6">
@@ -160,7 +163,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
-      expandText: this.$t('biz.btn.open'),
+      expandText: this.$t('website.department.expand'),
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},

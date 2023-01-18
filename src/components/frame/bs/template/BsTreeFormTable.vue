@@ -173,7 +173,7 @@ import exportExcel from '@/utils/frame/base/downloadExcel'
 export default {
   data() {
     return {
-      expandText: this.$t('biz.btn.expand'),
+      expandText: this.$t('website.department.expand'),
       expandStatus: process.env.EXPAND_FLG,
       scrolbox: '',
       scrollY: 0,
@@ -301,7 +301,7 @@ export default {
     language:{
       handler(newValue, oldValue) {
         if(oldValue!==newValue&&oldValue!=undefined){
-         this.expandText=this.$t('biz.btn.expand')
+         this.expandText=this.$t('website.department.expand')
         }
       },
       immediate: true,

@@ -164,7 +164,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
-      expandText: this.$t('biz.btn.open'),
+      expandText: this.$t('website.department.expand'),
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},
