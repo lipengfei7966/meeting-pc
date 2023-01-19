@@ -20,7 +20,18 @@
             <div v-else-if="element.systemName == '说明信息'" class="form-item-input">
               <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
             </div>
-
+            <!-- 是否出席 -->
+            <div v-else-if="element.systemName == '是否出席'" class="form-item-input">
+              <el-form-item :label="element.title">
+                <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                  <el-radio-group v-model="setForm.attendance" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                    <div v-for="item in element.options" :key="item">
+                      <el-radio :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                    </div>
+                  </el-radio-group>
+                </div>
+              </el-form-item>
+            </div>
             <div v-else>
               <!-- 自定义信息 -->
               <div v-if="element.isCoustomInfo">
@@ -439,11 +450,23 @@
               <div v-else-if="element.systemName == '说明信息'" class="form-item-input">
                 <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
               </div>
-
+              <!-- 是否出席 -->
+              <div v-else-if="element.systemName == '是否出席'" class="form-item-input">
+                <el-form-item :label="element.title">
+                  <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                    <el-radio-group v-model="setForm.attendance" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                      <div v-for="item in element.options" :key="item">
+                        <el-radio :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                      </div>
+                    </el-radio-group>
+                  </div>
+                </el-form-item>
+              </div>
               <div v-else>
                 <!-- 自定义信息 -->
                 <div v-if="element.isCoustomInfo">
                   <el-form-item :label="element.title">
+
                     <!-- 短文本 -->
                     <div v-if="element.systemName == '短文本'" class="form-item-input">
                       <div>
@@ -758,7 +781,18 @@
                     <div v-else-if="followItem.systemName == '说明信息'" class="form-item-input">
                       <pre style="padding-left: 150px">{{ followItem.placeholder }}</pre>
                     </div>
-
+                    <!-- 是否出席 -->
+                    <div v-else-if="followItem.systemName == '是否出席'" class="form-item-input">
+                      <el-form-item :label="followItem.title">
+                        <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                          <el-radio-group v-model="setForm.attendance" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: followItem.orientation == '横向' ? 'row' : 'column' }">
+                            <div v-for="item in followItem.options" :key="item">
+                              <el-radio :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                            </div>
+                          </el-radio-group>
+                        </div>
+                      </el-form-item>
+                    </div>
                     <div v-else>
                       <!-- 自定义信息 -->
                       <div v-if="followItem.isCoustomInfo">
@@ -1155,6 +1189,7 @@ export default {
         company: '', // 公司
         department: '', // 部门
         position: '', // 职位
+        attendance:'',//是否出席
         signupContactDtlDto: {}
       },
       pagingCount: 0,//分页数量

@@ -393,9 +393,8 @@
                 <span class="setInfoItemlabel"> {{ element.title }} : </span>
 
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-radio-group :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
-                    <el-radio v-for="item in element.options" :key="item" :label="item" style="margin: 5px 15px"> {{item}}</el-radio>
-                  </el-radio-group>
+                  <el-radio v-model="setForm.checkedAttendance" :label="element.options[0]" style="margin: 5px 15px"> {{element.options[0]}}</el-radio>
+                  <el-radio v-model="setForm.checkedAttendance" :label="element.options[1]" style="margin: 5px 15px"> {{element.options[1]}}</el-radio>
                 </div>
               </div>
               <!-- 分活动 -->
@@ -1434,7 +1433,6 @@
             <!-- 选项 -->
             <div class="eidtContentItem">
               <p class="eidtContentItemTitle" style="line-height: 34px">{{$t('form.options')}}</p>
-              <!-- <el-button type="text" @click="batchEditDiologVisible = true">{{$t('form.batchAddition')}}</el-button> -->
               <div class="radioOptions" style="width: 100%">
                 <draggable v-model="setInfoList[checkedIndex].options" chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
                   <el-input style="" size="mini" v-model="setInfoList[checkedIndex].options[0]"></el-input>
@@ -1618,6 +1616,7 @@ export default {
       formSetHeight: 0,// 表格高度
       setForm: {
         checkedSex: '',
+        checkedAttendance: '',
         chenkedCertificate: [],
         verifyType: '',
         nation: '',
@@ -2197,7 +2196,6 @@ export default {
             }
           }
           if (itemList.systemName=='是否出席') {
-            debugger
               this.specialInfoList.forEach((v,index)=>{
               if (v.value=='attendance') {
                 this.specialInfoList[index].isSee=false
@@ -2205,7 +2203,6 @@ export default {
             })
           }
           if (itemList.systemName=='分活动') {
-            debugger
               this.specialInfoList.forEach((v,index)=>{
               if (v.value=='subactivity') {
                 this.specialInfoList[index].isSee=false
