@@ -386,11 +386,11 @@
           </div>
           <el-divider></el-divider>
           <div v-show="isApplyBaseInfoShow">
-            <el-form-item :label="$t('applySet.dateofRegistration')" prop="applyDate">
+            <el-form-item :label="$t('applySet.dateofRegistration')" prop="applyDate" :rules="[{ required: true, message: '请输入报名日期', trigger: 'blur' }]">
               <el-date-picker v-model="applySetForm.applyDate" type="datetimerange" :range-separator="$t('applySet.to')" :start-placeholder="$t('applySet.startDate')" :end-placeholder="$t('applySet.dateClosed')">
               </el-date-picker>
             </el-form-item>
-            <el-form-item :label="$t('applySet.applyCheck')" prop="applyCheck">
+            <el-form-item :label="$t('applySet.applyCheck')" prop="applyCheck" :rules="[{ required: true, message: '请选择是否需要审核', trigger: ['blur', 'change'] }]">
               <el-radio-group v-model="applySetForm.applyCheck">
                 <el-radio label="0">{{$t('applySet.noneedtoaudit')}}</el-radio>
                 <el-radio label="1">{{$t('applySet.needtoaudit')}}</el-radio>
@@ -402,20 +402,20 @@
             <el-form-item :label="$t('applySet.assistin')" prop="assistApply">
               <el-switch v-model="applySetForm.assistApply" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </el-form-item>
-            <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.assistinregistration')" prop="assistApplyPermission">
-              <el-radio v-model="applySetForm.assistApplyPermission" label="2">{{$t('applySet.permissiontoassistRegistration')}}</el-radio>
-              <el-radio v-model="applySetForm.assistApplyPermission" label="1">{{$t('applySet.editingOnly')}}</el-radio>
+            <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.assistinregistration')" prop="assistSignupPower" :rules="[{ required: true, message: '请选择协助报名权限', trigger: ['blur', 'change'] }]">
+              <el-radio v-model="applySetForm.assistSignupPower" label="2">{{$t('applySet.permissiontoassistRegistration')}}</el-radio>
+              <el-radio v-model="applySetForm.assistSignupPower" label="1">{{$t('applySet.editingOnly')}}</el-radio>
             </el-form-item>
-            <el-form-item v-if="applySetForm.assistApply" label="同行人数限制" prop="assistApplyPermission">
-              <el-radio v-model="applySetForm.assistApplyPermission" label="0">不限制</el-radio>
-              <el-radio v-model="applySetForm.assistApplyPermission" label="1">最多添加 <el-input-number v-model="applySetForm.number" controls-position="right" :min="0" size="small"></el-input-number>位</el-radio>
+            <el-form-item v-if="applySetForm.assistApply" label="同行人数限制" prop="togetheCountStatus" :rules="[{ required: true, message: '请选择同行人数限制', trigger: ['blur', 'change'] }]">
+              <el-radio v-model="applySetForm.togetheCountStatus" label="0">不限制</el-radio>
+              <el-radio v-model="applySetForm.togetheCountStatus" label="1">最多添加 <el-input-number v-model="applySetForm.togetheCount" controls-position="right" :min="0" size="small"></el-input-number>位</el-radio>
             </el-form-item>
-            <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField">
+            <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField" :rules="[{ required: true, message: '请选择协助报名开放字段', trigger: ['blur', 'change'] }]">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField" @click.native="clickAssistApply($event)">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.mapCode" :label="item.mapCode">{{item.systemName}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item v-if="applySetForm.assistApply" label="协助报名表单位置及必填项" prop="assistApplyOpenField">
+            <el-form-item v-if="applySetForm.assistApply" label="协助报名表单位置及必填项" prop="togetheJson">
               <el-button type="text" @click="FellowEditorFn">编辑</el-button>
               <p style="color:#aaaaaa">协助报名位置默认位于报名表单最后，协助报名开放字段必填性默认与报名表单内保持一致</p>
             </el-form-item>
@@ -1123,7 +1123,6 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
 import request from '@/utils/frame/base/request'
 import moment from 'moment'
@@ -1131,6 +1130,8 @@ export default {
   name: 'applySet',
   data() {
     return {
+      pageOptTndex:'',
+      submitStatus:false,
       boxStatus:true,
       queryFollowList:{
         isTogethe:1,
@@ -1217,10 +1218,12 @@ export default {
         applyCheck: '0', // 报名审核
         checkUser: '', // 审核权限用户
         assistApply: true, // 协助报名
-        assistApplyPermission: '', // 协助报名权限
+        assistSignupPower: '1', // 协助报名权限
         assistApplyOpenField: [], // 协助报名开放字段
+        togetheCount:0,
+        togetheCountStatus:'0',
+        togetheJson:[],
         id: '',
-        number:0
       },
       setFormFile: [],//附件列表
       dialogFormVisible: false,//隐私协议显隐
@@ -1337,11 +1340,13 @@ export default {
       this.setInfoList.splice(index,1)
       var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
       this.setInfoList.splice(this.pageIndexArr[pageIndex-1],0,this.queryFollowList)
+      this.pageOptTndex=this.pageIndexArr[pageIndex-1]
     },
     moveDownBtn(index){
       this.setInfoList.splice(index,1)
       var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
       this.setInfoList.splice(this.pageIndexArr[pageIndex+1],0,this.queryFollowList)
+      this.pageOptTndex=this.pageIndexArr[pageIndex+1]
     },
     FellowEditorFn(){
       this.dialogFollowVisible=true
@@ -1352,12 +1357,15 @@ export default {
         if(this.boxStatus&&item.systemName == '分页'){
           this.pageIndexArr.push(index)
         }
+        // followList
         if(this.applySetForm.assistApplyOpenField.includes(item.mapCode)&&this.applySetForm.assistApplyOpenField.length!=0){
           this.followList.push(item)
         }
       })
+      // this.queryFollowList
       this.queryFollowList.isTogethe=1
       this.queryFollowList.followList=this.followList
+      // setInfoList
       if (this.boxStatus) {
         if (this.pageIndexArr.length==0&&this.applySetForm.assistApplyOpenField.length!=0) {
           this.setInfoList.push(this.queryFollowList)
@@ -1425,12 +1433,18 @@ export default {
           this.applySetForm.applyDate = ''
           this.applySetForm.applyCheck = '0'
           this.applySetForm.assistApply = true
-          this.applySetForm.assistApplyPermission = ''
+          this.applySetForm.assistSignupPower = '1'
           this.applySetForm.assistApplyOpenField = []
+          this.applySetForm.togetheCountStatus = '0'
+          this.applySetForm.togetheCount = 0
+          this.applySetForm.togetheJson = []
+          this.queryFollowList.followList=[]
           this.applySetForm.id = ''
           this.isSaveHref=false
+          this.submitStatus=false
         } else {
           this.isSaveHref=true
+          this.submitStatus=false
           this.applySetForm.isVerification = res.data.isVerification
           this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
           this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
@@ -1448,8 +1462,13 @@ export default {
           this.applySetForm.applyCheck = res.data.isApproval
           this.applySetForm.assistApply = res.data.isAssistSignup == '1' ? true : false
           this.applySetForm.approvalUser = res.data.approvalUser
-          this.applySetForm.assistApplyPermission = res.data.assistSignupPower
-          this.applySetForm.assistApplyOpenField = [...new Set(JSON.parse(res.data.signupField).split(','))]
+          this.applySetForm.assistSignupPower = res.data.assistSignupPower
+          this.applySetForm.assistApplyOpenField = [...new Set(res.data.signupField.split(','))]
+          this.applySetForm.togetheCountStatus=res.data.togetheCount==0?'0':'1'
+          this.applySetForm.togetheCount=res.data.togetheCount
+          this.applySetForm.togetheJson=res.data.togetheJson
+          this.setInfoList=[]
+          this.setInfoList=JSON.parse(res.data.togetheJson)
           this.applySetForm.id = res.data.id
         }
       })
@@ -1577,11 +1596,14 @@ export default {
             privacyContent: this.ruleForm.privacyContent,
             beginTime: moment(date1).format('YYYY-MM-DD HH:mm:ss'),
             endTime: moment(date2).format('YYYY-MM-DD HH:mm:ss'),
-
+            isAssistSignup:this.applySetForm.assistApply?'1':'0',
             isApproval: this.applySetForm.applyCheck,
             approvalUser: this.applySetForm.approvalUser,
-            assistSignupPower: this.applySetForm.assistApplyPermission,
+            assistSignupPower: this.applySetForm.assistSignupPower,
             signupField: this.applySetForm.assistApplyOpenField ? this.applySetForm.assistApplyOpenField.join(',') : [],
+            togetheCount:this.applySetForm.togetheCountStatus=='0'?0:this.applySetForm.togetheCount,
+            signupField:this.applySetForm.assistApplyOpenField.join(','),
+            togetheJson:JSON.stringify(this.setInfoList),
             eventCode: this.eventCode,
             id: this.applySetForm.id
           }
@@ -1597,9 +1619,10 @@ export default {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
               this.isSaveHref=true
+              this.submitStatus=true
               this.$message({ message: this.$t('applySet.SignUpAndGenerateLinkSuccessfully'), type: 'success' })
               this.signupContactCodeRuleFn()
-              this.$emit('stepIndex', step)
+              // this.$emit('stepIndex', step)
               this.$emit('isFormSetComplete', false)
             } else {
               this.$message({ message: this.$t('applySet.alreadyRegistered'), type: 'success' })
@@ -1636,7 +1659,7 @@ export default {
 
 <style scoped lang="scss">
 .applySet1 {
-  min-width: 1250px;
+  min-width: 90%;
   display: flex;
   justify-content: center;
 
@@ -1656,9 +1679,12 @@ export default {
     justify-content: space-around;
     .followForm {
       padding: 20px 50px 20px 0;
+      margin: 5px 0 15px 0;
       width: 95% !important;
-      border: 3px solid #dcdfe6;
-      border-radius: 5px;
+      border: 3px solid;
+      // border: 3px solid #dcdfe6;
+      border-image: linear-gradient(to right, #c9a9ed, #759ceb) 1;
+      border-radius: 8px;
       margin-right: 10px;
     }
     .followBtn {
@@ -1801,6 +1827,7 @@ export default {
     &:hover {
       border: 2px solid rgb(119, 189, 119);
       color: rgb(119, 189, 119);
+      background-color: #fff;
     }
   }
 }
