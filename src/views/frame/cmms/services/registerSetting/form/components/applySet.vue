@@ -736,8 +736,12 @@
                 </div>
               </div>
               <!-- 同行人 -->
-              element.title:{{element.title}}||index:{{ index }}||||pageIndexArr:{{ pageIndexArr }}||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
-              <div class="followBox" v-if="element.isTogethe=='1'&&element.followList.length>0">
+              <!-- element.title:{{element.title}}
+              <br />||index:{{ index }}
+              <br />||||pageIndexArr:{{ pageIndexArr }}
+              <br />||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
+              <br />||element.isTogethe:{{ element.isTogethe }} -->
+              <div class="followBox" v-if="element.isTogethe==1&&applySetForm.assistApplyOpenField.length>0&&element.followList.length>0">
                 <div class="followForm">
                   <div v-for="followItem in element.followList" :key="followItem.mapCode">
                     <!-- 分割线 -->
@@ -1053,8 +1057,8 @@
                   </div>
                 </div>
                 <div class="followBtn">
-                  <el-button type="primary" @click="moveUpBtn(index)" v-if="index!=pageIndexArr[0]">上移</el-button>
-                  <el-button type="primary" @click="moveDownBtn(index)" v-if="index!=pageIndexArr[pageIndexArr.length-1]">下移</el-button>
+                  <el-button type="primary" @click="moveUpBtn(index)" v-if="index!=pageIndexArr[0]&&pageIndexArr.length>0">上移</el-button>
+                  <el-button type="primary" @click="moveDownBtn(index)" v-if="index!=pageIndexArr[pageIndexArr.length-1]&&pageIndexArr.length>0">下移</el-button>
                 </div>
               </div>
             </div>
@@ -1307,10 +1311,10 @@ export default {
     FellowEditorFn(){
       this.dialogFollowVisible=true
       this.followList=[]
-      this.pageIndexArr=[]
+      this.pageIndexArr=this.boxStatus?[]:this.pageIndexArr
       this.setInfoList.forEach((item,index)=>{
         // 判断是否有分页
-        if(item.systemName == '分页'){
+        if(this.boxStatus&&item.systemName == '分页'){
           this.pageIndexArr.push(index)
         }
         if(this.applySetForm.assistApplyOpenField.includes(item.mapCode)&&this.applySetForm.assistApplyOpenField.length!=0){
@@ -1322,7 +1326,8 @@ export default {
       if (this.boxStatus) {
         if (this.pageIndexArr.length==0&&this.applySetForm.assistApplyOpenField.length!=0) {
           this.setInfoList.push(this.queryFollowList)
-        }else{
+        }
+        if (this.pageIndexArr.length>0&&this.applySetForm.assistApplyOpenField.length!=0){
           this.setInfoList.splice(this.pageIndexArr[this.pageIndexArr.length-1],0,this.queryFollowList)
         }
       this.boxStatus=false
