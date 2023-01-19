@@ -1,7 +1,7 @@
 /*
  * @Author: Sanmao
  * @Date: 2023-01-17 09:55:50
- * @LastEditTime: 2023-01-17 10:38:21
+ * @LastEditTime: 2023-01-19 10:08:25
  * @LastEditors: SanMao
  * @Description: form  Api
  * @FilePath: \meeting-pc\src\api\frame\form.js
@@ -20,7 +20,7 @@ Object.freeze(METHOD)
  */
 export function getLanguage(data) {
   return request({
-    url: `/api/register/cmsEventInfoLang/getLanguage`,
+    url: `/api/register/cmsEventFormLang/getLanguage`,
     method: METHOD.POST,
     data
   })
