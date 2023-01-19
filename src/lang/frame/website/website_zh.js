@@ -486,6 +486,7 @@ export default {
       saveSuccess: '保存成功', // 保存成功
       chooseTemplate: '选择模板', // 选择模板
       reselectTheTemplate: '重新选择模板', // 重新选择模板
+      settingLanguage:'设置其他语言',//设置其他语言
       moreTemplatesExpect: '更多模板 敬请期待', // 更多模板 敬请期待
       PleaseSelectaTemplate: '请选择一个模板！', // 请选择一个模板！
       noMoreTemplatesYet: '暂无更多模板！', // 暂无更多模板！

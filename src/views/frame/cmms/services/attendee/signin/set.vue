@@ -321,6 +321,15 @@ export default {
   },
   mounted() {
     this.sceneList()
+    if(this.$route.params.data){
+      if(this.$route.params.data){
+        this.form.listQuery.data.eventCode = this.$route.params.data
+      }
+      if(this.$route.params.code){
+        this.activeName = this.$route.params.code 
+        this.form.listQuery.data.sceneCode = this.$route.params.code
+      }
+    }
     this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {

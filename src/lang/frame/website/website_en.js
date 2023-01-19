@@ -486,6 +486,7 @@ export default {
       saveSuccess: 'Save Success', // 保存成功
       chooseTemplate: 'Choose Template', // 选择模板
       reselectTheTemplate: 'Reselect the template', // 重新选择模板
+      settingLanguage:'Setting language',//设置其他语言
       moreTemplatesExpect: 'More Templates Expect', // 更多模板 敬请期待
       PleaseSelectaTemplate: 'Please select a template!', // 请选择一个模板！
       noMoreTemplatesYet: 'No more templates yet!', // 暂无更多模板！

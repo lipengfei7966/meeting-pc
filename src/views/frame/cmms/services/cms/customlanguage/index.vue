@@ -20,17 +20,19 @@
         </el-tabs>
       </template>
       <!-- 操作按钮 -->
-      <div class="options" v-if="multiLanguage.length>0">
-        <el-button type="primary" v-show="batchShow" @click="batchClick">批量编辑</el-button>
-        <el-button @click="batchCancel" v-show="!batchShow">取消</el-button>
-        <el-button @click="batchSave" type="primary" v-show="!batchShow">保存</el-button>
+      <div class="options">
+        <el-button v-if="multiLanguage.length>0" type="primary" v-show="batchShow" @click="batchClick">批量编辑</el-button>
+        <el-button v-if="multiLanguage.length>0" @click="batchCancel" v-show="!batchShow">取消</el-button>
+        <el-button v-if="multiLanguage.length>0" @click="batchSave" type="primary" v-show="!batchShow">保存</el-button>
         <el-button type="primary" @click="exportExcel">导出</el-button>
       </div>
       <!-- 表格数据 -->
       <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs" @initCallback='initCallback' v-if="date">
         <template slot="operation" slot-scope="scope">
           <el-button type="text" v-if="!scope.row.isEdit && multiLanguage.length>0" @click="handleEditClick(scope.row)">编辑</el-button>
-          <el-button type="text" v-if="scope.row.isEdit" @click="handleSaveClick(scope.row,scope)">保存</el-button>
+          <el-button type="text" v-if="scope.row.isEdit && batchShow" @click="handleSaveClick(scope.row,scope)">保存</el-button>
+          <!--  -->
+          <el-button type="text" v-if="scope.row.isEdit && multiLanguage.length>0 && batchShow" @click="handleCalClick(scope.row,scope)">取消</el-button>
           <el-button type="text" size="small" @click="handleSetClick(scope.row)">功能设置</el-button>
         </template>
         <!-- 中文 -->
@@ -201,7 +203,7 @@ export default {
           }
         ],
         api: {
-          search:'/api/register/cmsEventInfoLang/page',
+          search:'/api/register/cmsEventFormLang/page',
           export: '/api/register/signupContactCol/exportModel',
         },
         // sonTabs: [
@@ -282,6 +284,14 @@ export default {
   created(){
     // 初始化数据
     setTimeout(() => {
+      if(this.$route.params && this.$route.params.eventCode){
+        debugger
+        if(this.$route.params.module == 'website'){
+          this.activeName = '微站设计'
+          this.form.listQuery.data.module = 'website'
+        }
+        this.form.listQuery.data.eventCode = this.$route.params.eventCode
+      }
           this.$refs.bsTable.getList()
           this.languageQuery()
       }, 500)
@@ -309,6 +319,16 @@ export default {
         this.mainData.table.cols[1].format.dict = []
         this.form.listQuery.data.module = 'sonActivity'
         this.$refs.bsTable.getList()
+      }else if(tab._props.label =='签到管理'){
+        this.form.formData[1].list = []
+        this.mainData.table.cols[1].format.dict = []
+        this.form.listQuery.data.module = 'scene'
+        this.$refs.bsTable.getList()
+      }else if(tab._props.label == '文章管理'){
+        this.form.formData[1].list = []
+        this.mainData.table.cols[1].format.dict = []
+        this.form.listQuery.data.module = 'article'
+        this.$refs.bsTable.getList()
       }
       // console.log(tab, this.form.listQuery.data,this.form.formData);
     },
@@ -328,6 +348,7 @@ export default {
       console.log(data);
     },
     handleEditClick(val){
+      debugger
       val.setUpName += '.卐.'
       let str = new RegExp(".卐.","g")
       var str_one = val.setUpName.replace(str,"");
@@ -343,7 +364,7 @@ export default {
       // 保存调取接口
       // /api/register/cmsEventInfoLang/update
       request({
-          url: '/api/register/cmsEventInfoLang/update',
+          url: '/api/register/cmsEventFormLang/update',
           method: 'POST',
           data: { data: this.dataList.data, funcModule: '更新语言', funcOperation: '更新语言' }
         })
@@ -360,12 +381,30 @@ export default {
       // 
       val.isEdit = false
     },
+    handleCalClick(val){
+      val.setUpName += '.卐.'
+      let str = new RegExp(".卐.","g")
+      var str_one = val.setUpName.replace(str,"");
+      val.setUpName = str_one
+      val.isEdit = false
+      this.$refs.bsTable.getList()
+    },
     handleSetClick(val){
       if(this.activeName == '微站设计'){
         // 微站
         this.$router.push({ name: 'microStationManagement', params: { ids: val.eventCode } })
       }else if(this.activeName == '报名设置'){
         this.$router.push({ name: 'attendeeFormConfig', params: { data: val.eventCode ,name:this.codeName} })
+      }else if(this.activeName == '分活动管理'){
+        this.$router.push({ name: 'activityManagement', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
+      }else if(this.activeName == '签到管理'){
+        debugger
+        this.$router.push({ name: 'attendeeSigninSet', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
+      }else if(this.activeName == '文章管理'){
+        // debugger
+        this.$router.push({ name: 'articleManage', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
+      }else if(this.activeName == '会议管理'){
+
       }
       console.log(val.eventCode);
     },
@@ -423,6 +462,8 @@ export default {
     },
     onChangeAll (params) {
       this.codeName = params.name
+      this.languageQuery()
+      this.$refs.bsTable.getList()
     },
     // 批量编辑
     batchClick(){
@@ -453,7 +494,7 @@ export default {
     // 保存
   batchSave(){
     request({
-          url: '/api/register/cmsEventInfoLang/update',
+          url: '/api/register/cmsEventFormLang/update',
           method: 'POST',
           data: { data: this.dataList.data, funcModule: '更新语言', funcOperation: '更新语言' }
         })
@@ -480,37 +521,11 @@ export default {
     },
     // 导出
     exportExcel() {
-      axios({
-        method: 'post',
-        url: process.env.BASE_API + this.mainData.api.export,
-        data: {
-          data: this.form.listQuery.data.eventCode,
-          funcModule: '自定义数据多语言导出',
-          funcOperation: '模板导出'
-        },
-        headers: {
-          Authorization: 'Bearer ' + this.$store.getters.token
-          // lang: storage.get('language') || 'zh',
-          // module: session.get('auditModule') || ''
-        },
-        responseType: 'blob'
-      })
-        .then((response) => {
-          if (!response.data) {
-          } else {
-            const url = window.URL.createObjectURL(new Blob([response.data]))
-            const link = document.createElement('a')
-            link.style.display = 'none'
-            link.href = url
-            link.setAttribute('download', '参会人导入模板.xlsx')
-            document.body.appendChild(link)
-            link.click()
-            link.remove()
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      let obj = {
+        loading: false,
+        name: "export"
+      }
+      this.$refs.bsTable.handleDownload(obj)
     },
   }
 }

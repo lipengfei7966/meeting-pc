@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative; top: 15%; transform: translateY(-30%)">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
       <el-form-item :label="$t('website.microStationDesign.mainHeading')" prop="mainTitle">
         <el-input v-model="ruleForm.mainTitle"></el-input>
       </el-form-item>
