@@ -1,27 +1,25 @@
 <template>
   <div class="content">
     <a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
-    <el-form ref="contactForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right"
-      :disabled="isView" :rules="rules" :model="setForm" label-width="150px" class="contactForm">
+    <el-form ref="contactForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :disabled="isView" :rules="rules" :model="setForm" label-width="150px" class="contactForm">
       <el-form-item :label="$t('attendee.detail.personnelCode')" prop="personnelCode">
-        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini"
-          :placeholder="$t('attendee.detail.placehorder.personnelCodePH')"></el-input>
+        <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" :placeholder="$t('attendee.detail.placehorder.personnelCodePH')"></el-input>
       </el-form-item>
       <el-form-item :label="$t('attendee.detail.participantsType')" prop="contactType">
 
-        <base-select v-model="setForm.contactType" :attrs="{ datadict: 'contantType' }" style="width: 50%"
-          :placeholder="$t('attendee.detail.placehorder.participantsTypePH')"></base-select>
+        <base-select v-model="setForm.contactType" :attrs="{ datadict: 'contantType' }" style="width: 50%" :placeholder="$t('attendee.detail.placehorder.participantsTypePH')"></base-select>
 
       </el-form-item>
 
       <div>
-        {{ $t('registration.form.certificate.title') }}
+        <!-- {{ $t('registration.form.certificate.title') }}
+        $t(`registration.form.${element.placeholder}.title`) :{{ $t(`registration.form.${element.mapCode}.placeholder`) }} -->
       </div>
 
       <div v-for="element in setInfoList" :key="element.mapCode">
         <!-- 分割线 -->
         <div v-if="element.systemName == '分割线'" class="form-item-input">
-          <el-divider content-position="center">{{ element.placeholder }}</el-divider>
+          <el-divider content-position="center">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</el-divider>
         </div>
 
         <!-- 分页 -->
@@ -31,53 +29,42 @@
 
         <!-- 说明信息 -->
         <div v-else-if="element.systemName == '说明信息'" class="form-item-input">
-          <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
+          <pre style="padding-left: 150px">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</pre>
         </div>
 
         <div v-else>
           <!-- 自定义信息 -->
           <div v-if="element.isCoustomInfo">
-            <el-form-item :label="element.title" :prop="'signupContactDtlDto.' + element.mapCode">
+            <el-form-item :label="$t(`registration.form.${element.mapCode}.title`)" :prop="'signupContactDtlDto.' + element.mapCode">
               <!-- 短文本 -->
               <div v-if="element.systemName == '短文本'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder"
-                    :disabled="element.notAllowEdit && isUpdate" :show-word-limit="true"
-                    :maxlength="element.wordCountLimit" size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :disabled="element.notAllowEdit && isUpdate" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
                 </div>
               </div>
 
               <!-- 长文本 -->
               <div v-if="element.systemName == '长文本'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea"
-                    :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true"
-                    :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :maxlength="element.wordCountLimit" size="mini"></el-input>
                 </div>
               </div>
 
               <!-- 数字 -->
               <div v-if="element.systemName == '数字'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]"
-                    :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder"
-                    @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])"
-                    size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])" size="mini"></el-input>
                 </div>
               </div>
 
               <!-- 单选框 -->
               <div v-if="element.systemName == '单选框'" class="form-item-input">
                 <div style="width: 50%; min-width: 300px; display: inline-block; vertical-align: top">
-                  <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]"
-                    :disabled="element.notAllowEdit && isUpdate"
-                    :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                  <el-radio-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
                     <div v-for="item in element.options" :key="item">
                       <el-radio v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                       <el-radio v-else :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
-                      <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'"
-                        v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini"
-                        style="width: 200px"></el-input>
+                      <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode] == '其他'" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width: 200px"></el-input>
                     </div>
                   </el-radio-group>
                 </div>
@@ -86,16 +73,11 @@
               <!-- 复选框 -->
               <div v-if="element.systemName == '复选框'" class="form-item-input">
                 <div style="width: 50%; min-width: 300px; display: inline-block; vertical-align: top">
-                  <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]"
-                    :disabled="element.notAllowEdit && isUpdate"
-                    :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }"
-                    :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
+                  <el-checkbox-group v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }" :min="element.minCheckedCount || 0" :max="element.maxCheckedCount || element.options.length || 0">
                     <div v-for="item in element.options" :key="item">
                       <el-checkbox v-if="item != '其他'" :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
                       <el-checkbox v-else :label="item" style="margin: 5px 15px"> {{ item }} </el-checkbox>
-                      <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode].includes('其他')"
-                        v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini"
-                        style="width: 200px; margin-top: 5px"></el-input>
+                      <el-input v-if="item == '其他' && setForm.signupContactDtlDto[element.mapCode].includes('其他')" v-model="setformOther[element.mapCode]" placeholder="请输入其他选项" size="mini" style="width: 200px; margin-top: 5px"></el-input>
                     </div>
                   </el-checkbox-group>
                 </div>
@@ -105,9 +87,7 @@
               <div v-if="element.systemName == '下拉列表'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]"
-                    :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%"
-                    :placeholder="element.placeholder">
+                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)">
                     <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
                   </el-select>
                 </div>
@@ -116,23 +96,15 @@
               <!-- 下拉复选框 -->
               <div v-if="element.systemName == '下拉复选框'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]"
-                    :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%"
-                    :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange"
-                    :multiple-limit="element.maxCheckedCount || 0">
-                    <el-option v-for="item in element.options" :key="item" :label="item" :value="item"
-                      :disabled="element.minCheckedCount != '' && (setForm.signupContactDtlDto[element.mapCode].length || 0) <= element.minCheckedCount && setForm.signupContactDtlDto[element.mapCode].includes(item)"></el-option>
+                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
+                    <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="element.minCheckedCount != '' && (setForm.signupContactDtlDto[element.mapCode].length || 0) <= element.minCheckedCount && setForm.signupContactDtlDto[element.mapCode].includes(item)"></el-option>
                   </el-select>
                 </div>
               </div>
 
               <!-- 附件 -->
               <div v-if="element.systemName == '附件'" class="form-item-input">
-                <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1"
-                  :disabled="element.notAllowEdit && isUpdate" :on-preview="downloadFile" :on-exceed="fileLimitCount"
-                  :show-file-list="false" :file-list="setFormFile[element.mapCode]"
-                  :before-upload="(file) => fileBeforeUpload(file, element)" :on-success="fileUploadSuccess"
-                  :http-request="(file) => flieHandleUploadForm(file, element)">
+                <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-preview="downloadFile" :on-exceed="fileLimitCount" :show-file-list="false" :file-list="setFormFile[element.mapCode]" :before-upload="(file) => fileBeforeUpload(file, element)" :on-success="fileUploadSuccess" :http-request="(file) => flieHandleUploadForm(file, element)">
                   <!-- <i class="el-icon-plus avatar-uploader-icon"></i> -->
                   <!-- <p> {{element.placeholder}} </p> -->
                   <el-button type="primary"> 上传附件 </el-button>
@@ -155,9 +127,7 @@
               <div v-if="element.systemName == '日期'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]"
-                    :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini"
-                    :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+                  <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :picker-options="pickerOptions"></el-date-picker>
                 </div>
               </div>
             </el-form-item>
@@ -166,26 +136,22 @@
           <!-- 固定信息 -->
           <div v-else>
             <!-- 姓名 -->
-            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" prop="name"
-              :label-width="element.nameSplit ? '0' : '150px'">
+            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" prop="name" :label-width="element.nameSplit ? '0' : '150px'">
               <!-- 姓名 -->
               <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" style="width: 50%"
-                  size="mini" :placeholder="element.placeholder"></el-input>
+                <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)"></el-input>
               </div>
               <!-- 姓名拆分 -->
               <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
                 <div>
                   <el-form-item :label="$t('attendee.detail.surname')" prop="surname">
-                    <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" style="width: 50%"
-                      size="mini" :placeholder="element.surnamePlaceholder"></el-input>
+                    <el-input v-model="setForm.surname" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.surnamePlaceholder"></el-input>
                   </el-form-item>
                 </div>
                 <div>
                   <el-form-item :label="$t('attendee.detail.name')" prop="ming">
-                    <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" style="width: 50%"
-                      size="mini" :placeholder="element.namePlaceholder"></el-input>
+                    <el-input v-model="setForm.ming" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.namePlaceholder"></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -196,9 +162,8 @@
               <div class="form-item-input">
                 <!-- 国家 -->
                 <div v-if="element.nationIsShow" class="addresItem">
-                  <el-form-item :label="element.nationTitle" prop="nations">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations"
-                      filterable :placeholder="element.nationPlaceholder">
+                  <el-form-item :label="$t(`registration.form.nations.nationTitle`)" prop="nations">
+                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="$t(`registration.form.nations.nationPlaceholder`)">
                       <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value">
                       </el-option>
                     </el-select>
@@ -213,10 +178,8 @@
                 <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
                     <el-form-item :label="element.provinceTitle" prop="province">
-                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate"
-                        v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
-                        <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name"
-                          :value="item.code"> </el-option>
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
+                        <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                       </el-select>
                     </el-form-item>
                   </div>
@@ -225,10 +188,8 @@
                 <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
                     <el-form-item :label="element.cityTitle" prop="city">
-                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city"
-                        :placeholder="element.cityPlaceholder" @change="cityChange">
-                        <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name"
-                          :value="item.code"> </el-option>
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                        <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                       </el-select>
                     </el-form-item>
                   </div>
@@ -237,10 +198,8 @@
                 <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
                     <el-form-item :label="element.countyTitle" prop="county">
-                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate"
-                        v-model="setForm.county" :placeholder="element.countyPlaceholder">
-                        <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name"
-                          :value="item.code"> </el-option>
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                        <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                       </el-select>
                     </el-form-item>
                   </div>
@@ -248,44 +207,37 @@
                 <!-- 详细地址 -->
                 <div v-if="element.detailedAdressISShow" class="addresItem">
                   <el-form-item :label="element.detailedAdressTitle" prop="fullAddress">
-                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini"
-                      v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
                   </el-form-item>
                 </div>
                 <!-- 邮编 -->
                 <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
                     <el-form-item :label="element.postcodeTitle" prop="postcode">
-                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini"
-                        v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
                     </el-form-item>
                   </div>
                 </div>
               </div>
             </el-form-item>
 
-            <el-form-item v-else :label="element.title" :prop="element.mapCode">
+            <el-form-item v-else :label="$t(`registration.form.${element.mapCode}.title`)" :prop="element.mapCode">
               <!-- 性别 -->
               <div v-if="element.mapCode == 'sex'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                <el-radio v-model="setForm.sex" :label="element.options[0]"
-                  :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
-                <el-radio v-model="setForm.sex" :label="element.options[1]"
-                  :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
+                <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
+                <el-radio v-model="setForm.sex" :label="element.options[1]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[1] }}</el-radio>
               </div>
 
               <!-- 证件 -->
               <div v-if="element.mapCode == 'certificate'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder"
-                    :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
-                    <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label"
-                      :value="item.value"> </el-option>
+                  <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="$t(`registration.form.certificateType.placeholder`)" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
+                    <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <br />
-                  <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable
-                    style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                  <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" :placeholder="$t(`registration.form.certificate.certificateNumPlaceholder`)"></el-input>
                 </div>
               </div>
 
@@ -302,16 +254,11 @@
                       <i class="el-icon-download" @click="downloadPhoto(setForm.photo)"></i>
                     </span>
                     <span class="el-upload-list__item-preview">
-                      <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView))"
-                        @click="deleteImg(setForm.photo)"></i>
+                      <i class="el-icon-delete" v-if="!(element.notAllowEdit && (isUpdate || isView))" @click="deleteImg(setForm.photo)"></i>
                     </span>
                   </span>
                 </div>
-                <el-upload v-else class="avatar-uploader"
-                  :disabled="element.photeTailor == '手动裁剪' || (element.notAllowEdit && isUpdate)" action
-                  :show-file-list="false" :on-success="handleAvatarSuccess"
-                  :before-upload="(file) => beforeAvatarUpload(file, element)"
-                  :http-request="(file) => handleUploadForm(file, element)">
+                <el-upload v-else class="avatar-uploader" :disabled="element.photeTailor == '手动裁剪' || (element.notAllowEdit && isUpdate)" action :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="(file) => beforeAvatarUpload(file, element)" :http-request="(file) => handleUploadForm(file, element)">
                   <i class="el-icon-plus avatar-uploader-icon" @click="showCropperModel(element)"></i>
                 </el-upload>
               </div>
@@ -320,13 +267,9 @@
               <div v-if="element.mapCode == 'mobile'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.mobile" :placeholder="element.placeholder"
-                    :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
-                      slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode"
-                      @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value"
-                        :value="item.value"> </el-option>
+                  <el-input v-model="setForm.mobile" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
                 </div>
@@ -335,13 +278,9 @@
               <!-- 备用手机号 -->
               <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
-                      slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode"
-                      @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
-                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value"
-                        :value="item.value"> </el-option>
+                  <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                      <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
                 </div>
@@ -352,22 +291,15 @@
                 <div style="width: 80%; display: inline-block; vertical-align: top">
                   <span style="display: inline-block">
                     <el-form-item prop="phoneAreaCode" label-width="0">
-                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate"
-                        style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini"
-                        class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
-                          slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value"
-                            :value="item.value"> </el-option>
+                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
                   </span>
-                  <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate"
-                      style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
-                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber"
-                      :disabled="element.notAllowEdit && isUpdate" style="width: 120px"
-                      :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                  <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini"></el-input> </span>
+                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="$t(`registration.form.phoneRunNumber.extensionNumberPlaceholder`)" size="mini"></el-input> </span>
                 </div>
               </div>
 
@@ -376,30 +308,22 @@
                 <div style="width: 80%; display: inline-block; vertical-align: top">
                   <span style="display: inline-block">
                     <el-form-item prop="faxAreaCode" label-width="0">
-                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate"
-                        style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini"
-                        class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate"
-                          slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
-                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value"
-                            :value="item.value"> </el-option>
+                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                          <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
                   </span>
-                  <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate"
-                      style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
-                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber"
-                      :disabled="element.notAllowEdit && isUpdate" style="width: 120px"
-                      :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                  <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini"></el-input> </span>
+                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
                 </div>
               </div>
 
               <!-- 邮箱 -->
               <div v-if="element.mapCode == 'email'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
@@ -407,48 +331,42 @@
               <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 微信号 -->
               <div v-if="element.mapCode == 'wechat'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- qq -->
               <div v-if="element.mapCode == 'qq'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 公司 -->
               <div v-if="element.mapCode == 'company'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 部门 -->
               <div v-if="element.mapCode == 'department'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 职位 -->
               <div v-if="element.mapCode == 'position'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate"
-                    :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -470,8 +388,7 @@
 
     <!-- 剪裁组件弹窗 -->
     <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="1200px" center>
-      <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth"
-        :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
+      <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
     </el-dialog>
   </div>
 </template>
@@ -708,7 +625,6 @@ export default {
               this.rules.addres[0].required = false
               if (item.nationIsShow) {
                 // 显示国家
-                // debugger
                 this.$set(this.rules, 'nations', [{ required: item.isRequire, message: '国家是必选项', trigger: ['blur', 'change'] }])
                 // this.setForm.nations = '86'
                 // this.setForm.nations = '国家'
@@ -876,7 +792,6 @@ export default {
         // console.log(this.$t('datadict.certificateType'));
         // }
         // if(this.setForm.nations){
-        //   debugger
         //  let cardCode = this.$t('datadict.countryCode')
         //  cardCode.forEach(item=>{
         //   if(item.value == this.setForm.nations){
@@ -921,7 +836,6 @@ export default {
               }
             }
           }
-          // debugger
           // if(this.setForm.certificateType){
           //  let cardCode = this.$t('datadict.certificateType')
           //   cardCode.forEach(item=>{
@@ -1198,7 +1112,6 @@ export default {
         this.$message.error(`上传附件大小不能超过 ${element.fileSizeLimit}MB!`)
         return false
       }
-      // debugger
       return isAllowUpload
     },
     // 自定义上传文件
@@ -1219,7 +1132,6 @@ export default {
         data: formData
       }).then(data => {
         if (data.status) {
-          debugger
           this.$message('上传文件成功')
           this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
 
@@ -1292,7 +1204,6 @@ export default {
     // 证件类型切换
     certificateTypeChange(val) {
       console.log(val, 'val');
-      debugger
       this.setForm.certificate = ''
       if (val == 'NI') {
         this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
@@ -1406,7 +1317,6 @@ export default {
     // 国际编码字典项查询
     getCountryCode() {
       this.countryCodeOptions = this.$t('datadict.countryCode')
-      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       this.nationsList = this.countryCodeOptions.filter(item => {
         //
@@ -1469,7 +1379,6 @@ export default {
       eleLink.remove()
     },
     downloadPhoto(fileUrl) {
-      debugger
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
       this.downloadEvt(fileUrl, fileName)
       // // window.open(file.file_path, "_blank");
@@ -1547,7 +1456,8 @@ export default {
       display: block;
     }
 
-    .picture:hover {}
+    .picture:hover {
+    }
 
     .el-upload-list__item-actions {
       position: absolute;
@@ -1584,7 +1494,7 @@ export default {
       display: inline-block;
     }
 
-    .el-upload-list__item-actions span+span {
+    .el-upload-list__item-actions span + span {
       margin-left: 15px;
     }
   }

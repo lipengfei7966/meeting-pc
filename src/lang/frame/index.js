@@ -55,8 +55,8 @@ import zhCount from '@/lang/frame/service/count/count_zh'
 import enCount from '@/lang/frame/service/count/count_en'
 
 // 参会人管理--详情
-import zhAttendeeDetail from '@/lang/frame/service/Attendee/attendeeDetail_en'
-import enAttendeeDetail from '@/lang/frame/service/Attendee/attendeeDetail_zh'
+import zhAttendeeDetail from '@/lang/frame/service/Attendee/attendeeDetail_zh'
+import enAttendeeDetail from '@/lang/frame/service/Attendee/attendeeDetail_en'
 
 const messages = {
   en: {
