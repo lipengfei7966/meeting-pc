@@ -481,6 +481,7 @@ export default {
     },
     // 按钮事件自定义
     triggerEvent(button) {
+      // debugger
       if (button.event && typeof button.event === 'function') {
         button.event(button)
       } else if (this.baseEvent[button.name]) {
@@ -1064,6 +1065,7 @@ export default {
 
     // 更新
     doUpdate(buttonInfo) {
+      // debugger
       if (!this.currentRow || this.currentRow.length === 0) {
         this.$notify(
           notifyInfo({
@@ -1251,6 +1253,7 @@ export default {
         })
     },
     handleDownload(buttonInfo) {
+      // debugger
       if (buttonInfo && buttonInfo.type && buttonInfo.type === 'api') {
         // 后台导出
         this.apiDownLoad(buttonInfo)
@@ -1258,7 +1261,10 @@ export default {
         exportExcel({
           fileName: this.$t('route.' + this.$route.meta.title),
           header: this.mainData.table.cols.map(col => {
-            if (col.label) return this.$t(col.label)
+            debugger
+            if(col.label && col.label != '操作'){
+              return this.$t(col.label)
+            }
           }),
           filterVal: this.mainData.table.cols.map(col => {
             if (col.format) {

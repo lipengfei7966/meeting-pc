@@ -314,6 +314,7 @@ export default {
         }
     },
     created () {
+      debugger
         this.listItemFn()
         this.orderCodeFn()
         this.trainDetailFn()

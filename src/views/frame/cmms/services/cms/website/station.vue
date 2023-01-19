@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div :class="!isPc ? 'place' : ''" style="margin-right: 10%; margin-top: 10px; float: right">
+    <div :class="!isPc ? 'place' : ''" :style="!isPc ? 'margin-top: 10px; float: right':'margin-right: 8.5%; margin-top: 10px; float: right'">
       <el-button v-if="isPc" class="btn" type="success" @click="handelClick">{{$t('website.microStationDesign.chooseTemplate')}}</el-button>
       <el-button v-if="!isPc" style="margin-right: -30px" class="btn" type="success" @click="handelEdit">{{$t('website.microStationDesign.reselectTheTemplate')}}</el-button>
+      <el-button v-if="!isPc" style="margin-left: 60px" class="btn" type="success" @click="handelChooseLanguage">{{$t('website.microStationDesign.settingLanguage')}}</el-button>
       <!-- <el-button v-if="!isPc" class="btn" type="success" @click="handelAdd">新增模块</el-button> -->
     </div>
     <ul :class="isPc ? 'isPc' : 'isMo'">
@@ -129,6 +130,10 @@ export default {
     handelAdd() {},
     handelEdit() {
       this.$message(this.$t('website.microStationDesign.noMoreTemplatesYet'))
+    },
+    handelChooseLanguage(){
+      debugger
+      this.$router.push({ name: 'customlanguage', params: { eventCode:this.$route.params.ids , module:"website" } })
     },
     handel(val) {
       if (val == 1) {

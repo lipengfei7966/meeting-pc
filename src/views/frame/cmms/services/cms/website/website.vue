@@ -80,12 +80,15 @@
                   </el-tooltip>
                   <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">{{$t('website.microStationDesign.copyLink')}}</span>
                 </div>
-                <el-form-item>
+                <!-- <el-form-item>
                   <div style="margin-left:-34px">
                     <vue-qr :text="imgUrl" :size="200"> </vue-qr>
                   </div>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
+              <div style="text-align: center; margin-left: 8%;">
+                <vue-qr :text="imgUrl" :size="200"> </vue-qr>
+              </div>
             </div>
             <div class="share">
               <el-button class="share-btn-one" @click="resetForm('ruleForm')">{{$t('website.microStationDesign.return')}}</el-button>
@@ -442,8 +445,8 @@ export default {
   filters: {
     commentEllipsis(value) {
       if (value.length != undefined) {
-        if (value.length > 24) {
-          return value.slice(0, 23) + '...'
+        if (value.length > 14) {
+          return value.slice(0, 13) + '...'
         } else {
           return value
         }

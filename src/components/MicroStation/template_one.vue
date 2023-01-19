@@ -1,7 +1,7 @@
 <template>
   <div class="contents" :style="{ backgroundImage: 'url(' + loginBg + ')' }">
     <div class="block">
-      <el-carousel trigger="click" height="230px" indicator-position="none">
+      <el-carousel trigger="click" height="32vh" indicator-position="none">
         <el-carousel-item v-for="(item, index) in slideshow" :key="index">
           <img :src="`${item.url}`" alt="" style="width: 100%" />
           <!-- <h2>{{ index }}</h2> -->
