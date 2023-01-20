@@ -42,8 +42,21 @@ export default {
         settingItem:'设置项',
         dictionaryContent:'字典内容'
       },
+      btn:{
+        batchEditing:'批量编辑',
+        edit:'编辑',
+        cancel:'取消',
+        save:'保存',
+        export:'导出',
+        functionSet:'功能设置',
+      },
       list:{
-        
+        dataFunction:'功能',
+        module:'模块',
+        settingItem:'设置项',
+        simplifiedChinese:'中文简体',
+        english:'英文',
+        hostLanguage:'主语言',
       }
     },
     article: {
