@@ -1336,21 +1336,27 @@ export default {
     // })
   },
   methods: {
+    // 上移
     moveUpBtn(index){
       this.setInfoList.splice(index,1)
       var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
       this.setInfoList.splice(this.pageIndexArr[pageIndex-1],0,this.queryFollowList)
       this.pageOptTndex=this.pageIndexArr[pageIndex-1]
     },
+    // 下移
     moveDownBtn(index){
       this.setInfoList.splice(index,1)
       var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
       this.setInfoList.splice(this.pageIndexArr[pageIndex+1],0,this.queryFollowList)
       this.pageOptTndex=this.pageIndexArr[pageIndex+1]
     },
+    // 点击编辑
     FellowEditorFn(){
+      debugger
       this.dialogFollowVisible=true
+      // 同行人列表
       this.followList=[]
+      // 分页下标
       this.pageIndexArr=this.boxStatus?[]:this.pageIndexArr
       this.setInfoList.forEach((item,index)=>{
         // 判断是否有分页
@@ -1659,7 +1665,7 @@ export default {
 
 <style scoped lang="scss">
 .applySet1 {
-  min-width: 90%;
+  min-width: 100%;
   display: flex;
   justify-content: center;
 
