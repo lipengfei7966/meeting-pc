@@ -764,7 +764,9 @@
               <br />||||pageIndexArr:{{ pageIndexArr }}
               <br />||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
               <br />||element.isTogethe:{{ element.isTogethe }} -->
-              <div class="followBox" v-if="element.isTogethe==1&&applySetForm.assistApplyOpenField.length>0&&element.followList.length>0">
+              <p>positionIndex:{{ positionIndex }}</p>
+              <p>index:{{ index }}</p>
+              <div class="followBox" v-if="index==positionIndex&&applySetForm.assistApplyOpenField.length>0&&queryFollowList.followList.length>0">
                 <div class="followForm">
                   <div v-for="followItem in element.followList" :key="followItem.mapCode">
                     <!-- 分割线 -->
@@ -1130,7 +1132,7 @@ export default {
   name: 'applySet',
   data() {
     return {
-      pageOptTndex:'',
+      positionIndex:'',
       submitStatus:false,
       boxStatus:true,
       queryFollowList:{
@@ -1292,7 +1294,7 @@ export default {
   mounted() {
     if (this.eventCode) {
       this.getEventInfo()
-      this.signupContactCodeRuleFn()
+
     }
     // 获取注册验证数据字典
     request({
@@ -1341,46 +1343,31 @@ export default {
       this.setInfoList.splice(index,1)
       var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
       this.setInfoList.splice(this.pageIndexArr[pageIndex-1],0,this.queryFollowList)
-      this.pageOptTndex=this.pageIndexArr[pageIndex-1]
+      this.positionIndex=this.pageIndexArr[pageIndex-1]
     },
     // 下移
     moveDownBtn(index){
       this.setInfoList.splice(index,1)
       var pageIndex=this.pageIndexArr.findIndex(item=>item==index)
       this.setInfoList.splice(this.pageIndexArr[pageIndex+1],0,this.queryFollowList)
-      this.pageOptTndex=this.pageIndexArr[pageIndex+1]
+      this.positionIndex=this.pageIndexArr[pageIndex+1]
     },
     // 点击编辑
     FellowEditorFn(){
-      debugger
       this.dialogFollowVisible=true
-      // 同行人列表
+      if (this.positionIndex==''||this.positionIndex==undefined) {
+        this.positionIndex=this.pageIndexArr[this.pageIndexArr.length-1]
+      }
       this.followList=[]
-      // 分页下标
-      this.pageIndexArr=this.boxStatus?[]:this.pageIndexArr
       this.setInfoList.forEach((item,index)=>{
-        // 判断是否有分页
-        if(this.boxStatus&&item.systemName == '分页'){
-          this.pageIndexArr.push(index)
-        }
         // followList
         if(this.applySetForm.assistApplyOpenField.includes(item.mapCode)&&this.applySetForm.assistApplyOpenField.length!=0){
           this.followList.push(item)
         }
       })
-      // this.queryFollowList
-      this.queryFollowList.isTogethe=1
       this.queryFollowList.followList=this.followList
-      // setInfoList
-      if (this.boxStatus) {
-        if (this.pageIndexArr.length==0&&this.applySetForm.assistApplyOpenField.length!=0) {
-          this.setInfoList.push(this.queryFollowList)
-        }
-        if (this.pageIndexArr.length>0&&this.applySetForm.assistApplyOpenField.length!=0){
-          this.setInfoList.splice(this.pageIndexArr[this.pageIndexArr.length-1],0,this.queryFollowList)
-        }
-      this.boxStatus=false
-      }
+      this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+      console.log(JSON.parse(res.data.togetheJson),'JSON.parse(res.data.togetheJson)');
     },
     clickAssistApply(e){
       // this.getEventInfo()
@@ -1444,10 +1431,18 @@ export default {
           this.applySetForm.togetheCountStatus = '0'
           this.applySetForm.togetheCount = 0
           this.applySetForm.togetheJson = []
-          this.queryFollowList.followList=[]
+          // this.queryFollowList.followList=[]
           this.applySetForm.id = ''
           this.isSaveHref=false
           this.submitStatus=false
+          this.queryFollowList={
+            isTogethe:1,
+            followList:[]
+          }
+          if (this.positionIndex==''||this.positionIndex==undefined) {
+            this.positionIndex=this.pageIndexArr[this.pageIndexArr.length-1]
+          }
+          this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
         } else {
           this.isSaveHref=true
           this.submitStatus=false
@@ -1473,8 +1468,16 @@ export default {
           this.applySetForm.togetheCountStatus=res.data.togetheCount==0?'0':'1'
           this.applySetForm.togetheCount=res.data.togetheCount
           this.applySetForm.togetheJson=res.data.togetheJson
-          this.setInfoList=[]
-          this.setInfoList=JSON.parse(res.data.togetheJson)
+          // this.setInfoList=[]
+          // this.setInfoList=JSON.parse(res.data.togetheJson)
+          console.log(JSON.parse(res.data.togetheJson),'JSON.parse(res.data.togetheJson)');
+          JSON.parse(res.data.togetheJson).forEach((v,index)=>{
+            if (v.isTogethe===1) {
+              this.queryFollowList=v
+              this.positionIndex=index
+            }
+          })
+          this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
           this.applySetForm.id = res.data.id
         }
       })
@@ -1498,15 +1501,19 @@ export default {
           this.setInfoList = JSON.parse(response.data.json)
           this.orgSetInfoList = JSON.parse(response.data.json)
           // this.signupFieldOptions = res.data
-          this.setInfoList.forEach(v=>{
+          this.setInfoList.forEach((v,index)=>{
             if (v.systemName!=='分页') {
               this.signupFieldOptions.push(v)
               this.signupFieldOptions=[...new Set(this.signupFieldOptions)]
+            }
+            if(v.systemName == '分页'){
+              this.pageIndexArr.push(index)
             }
           })
         } else {
           this.setInfoList = []
         }
+        this.signupContactCodeRuleFn()
         this.setInfoList.forEach(item => {
           // 1：自定义属性
           if (item.mapBase == 1) {
@@ -1518,7 +1525,6 @@ export default {
               // this.setForm[item.mapCode] = ''
             }
             if (['附件'].includes(item.systemName)) {
-              // debugger
               this.$set(this.setForm.signupContactDtlDto, item.mapCode, '')
               this.$set(this.setFormFile, item.mapCode, [])
             }
