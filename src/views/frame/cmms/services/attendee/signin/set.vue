@@ -172,7 +172,7 @@ export default {
         topBar: [
           {
             name: 'add',
-            i18n: 'attendee.btn.adScene',
+            i18n: 'attendee.btn.addScene',
             type: 'dialog',
             component: () => import('./sceneAdd.vue'),
             getParam: () => {
@@ -407,7 +407,7 @@ export default {
         this.$notify(notifyInfo({ msg: this.$t('attendee.cantCodeMsg') }))
         return
       }
-      this.$confirm(this.$t('attendee.msg.confirmDelete'), this.$t('attendee.msg.tip'), { confirmButtonText: this.$t('attendee.btn.confirm'), cancelButtonText: this.$t('attendee.btn.cancel'), type: 'warning' })
+      this.$confirm(this.$t('biz.msg.confirmDelete'), this.$t('biz.msg.tip'), { confirmButtonText: this.$t('biz.btn.confirm'), cancelButtonText: this.$t('biz.btn.cancel'), type: 'warning' })
         .then(() => {
           request({
             url: '/api/register/signupDictype/remove',

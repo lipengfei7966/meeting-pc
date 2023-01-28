@@ -14,7 +14,8 @@ export default {
     to: '至',
     btns: {
       screen: '筛选',
-      newlyBuild: '新建'
+      newlyBuild: '新建',
+      createImmediately: '立即创建'
     },
     column: {
       subActivityName: '分活动名称',
