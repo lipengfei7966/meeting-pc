@@ -411,7 +411,7 @@
               <el-radio v-model="applySetForm.togetheCountStatus" label="1">最多添加 <el-input-number v-model="applySetForm.togetheCount" controls-position="right" :min="0" size="small"></el-input-number>位</el-radio>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField" :rules="[{ required: true, message: '请选择协助报名开放字段', trigger: ['blur', 'change'] }]">
-              <el-checkbox-group v-model="applySetForm.assistApplyOpenField" @click.native="clickAssistApply($event)">
+              <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
                 <el-checkbox v-for="item in signupFieldOptions" :key="item.mapCode" :label="item.mapCode">{{item.systemName}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -1355,23 +1355,25 @@ export default {
     // 点击编辑
     FellowEditorFn(){
       this.dialogFollowVisible=true
+      console.log(this.setInfoList,'JSON.parse(res.data.togetheJson)');
       if (this.positionIndex==''||this.positionIndex==undefined) {
-        this.positionIndex=this.pageIndexArr[this.pageIndexArr.length-1]
+        if (this.pageIndexArr.length>=1) {
+          this.positionIndex=this.pageIndexArr[this.pageIndexArr.length-1]
+        }else{
+          this.positionIndex=this.setInfoList.length
+        }
       }
       this.followList=[]
       this.setInfoList.forEach((item,index)=>{
-        // followList
         if(this.applySetForm.assistApplyOpenField.includes(item.mapCode)&&this.applySetForm.assistApplyOpenField.length!=0){
           this.followList.push(item)
         }
       })
       this.queryFollowList.followList=this.followList
-      this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
-      console.log(JSON.parse(res.data.togetheJson),'JSON.parse(res.data.togetheJson)');
-    },
-    clickAssistApply(e){
-      // this.getEventInfo()
-
+      if (this.followList.length>=1) {
+        this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+      }
+      console.log(this.setInfoList,'JSON.parse(res.data.togetheJson)');
     },
     // 取消关闭隐私协议对话框
     resetForm() {
@@ -1431,7 +1433,6 @@ export default {
           this.applySetForm.togetheCountStatus = '0'
           this.applySetForm.togetheCount = 0
           this.applySetForm.togetheJson = []
-          // this.queryFollowList.followList=[]
           this.applySetForm.id = ''
           this.isSaveHref=false
           this.submitStatus=false
@@ -1439,10 +1440,17 @@ export default {
             isTogethe:1,
             followList:[]
           }
+          this.positionIndex=''
           if (this.positionIndex==''||this.positionIndex==undefined) {
-            this.positionIndex=this.pageIndexArr[this.pageIndexArr.length-1]
+            if (this.pageIndexArr.length>=1) {
+              this.positionIndex=this.pageIndexArr[this.pageIndexArr.length-1]
+            }else{
+              this.positionIndex=this.setInfoList.length
+            }
           }
-          this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          if (this.followList.length>=1) {
+            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          }
         } else {
           this.isSaveHref=true
           this.submitStatus=false
@@ -1468,8 +1476,7 @@ export default {
           this.applySetForm.togetheCountStatus=res.data.togetheCount==0?'0':'1'
           this.applySetForm.togetheCount=res.data.togetheCount
           this.applySetForm.togetheJson=res.data.togetheJson
-          // this.setInfoList=[]
-          // this.setInfoList=JSON.parse(res.data.togetheJson)
+          this.positionIndex=''
           console.log(JSON.parse(res.data.togetheJson),'JSON.parse(res.data.togetheJson)');
           JSON.parse(res.data.togetheJson).forEach((v,index)=>{
             if (v.isTogethe===1) {
@@ -1488,6 +1495,7 @@ export default {
       this.pagingCount=0
       this.signupFieldOptions=[]
       this.boxStatus=true
+      this.positionIndex=''
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -1501,6 +1509,7 @@ export default {
           this.setInfoList = JSON.parse(response.data.json)
           this.orgSetInfoList = JSON.parse(response.data.json)
           // this.signupFieldOptions = res.data
+          this.pageIndexArr=[]
           this.setInfoList.forEach((v,index)=>{
             if (v.systemName!=='分页') {
               this.signupFieldOptions.push(v)
