@@ -764,8 +764,8 @@
               <br />||||pageIndexArr:{{ pageIndexArr }}
               <br />||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
               <br />||element.isTogethe:{{ element.isTogethe }} -->
-              <p>positionIndex:{{ positionIndex }}</p>
-              <p>index:{{ index }}</p>
+              <!-- <p>positionIndex:{{ positionIndex }}</p>
+              <p>index:{{ index }}</p> -->
               <div class="followBox" v-if="index==positionIndex&&applySetForm.assistApplyOpenField.length>0&&queryFollowList.followList.length>0">
                 <div class="followForm">
                   <div v-for="followItem in element.followList" :key="followItem.mapCode">
@@ -1209,6 +1209,35 @@ export default {
       isUpdate: true,
       setformOther: {},
       etFormFile: {},
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() > Date.now()
+        },
+        shortcuts: [
+          {
+            text: '今天',
+            onClick (picker) {
+              picker.$emit('pick', new Date())
+            }
+          },
+          {
+            text: '昨天',
+            onClick (picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          },
+          {
+            text: '一周前',
+            onClick (picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
+          }
+        ]
+      },
       applySetForm: {
         isVerification: '', // 验证方式
         registerVerification: [], // 注册验证
@@ -1371,13 +1400,32 @@ export default {
       })
       this.queryFollowList.followList=this.followList
       if (this.followList.length>=1) {
-        this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+        this.pageUpdate()
+        this.setInfoList.forEach((v,index)=>{
+        if(index == this.positionIndex){
+          if(v.isTogethe==1){
+            this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+          }
+          if(v.systemName == '分页'){
+            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          }
+        }
+      })
       }
       console.log(this.setInfoList,'JSON.parse(res.data.togetheJson)');
     },
     // 取消关闭隐私协议对话框
     resetForm() {
       this.dialogFormVisible = false
+    },
+    // 分页下标数组更新
+    pageUpdate(){
+      this.pageIndexArr=[]
+      this.setInfoList.forEach((v,index)=>{
+        if(v.systemName == '分页'){
+          this.pageIndexArr.push(index)
+        }
+      })
     },
     // 确定关闭隐私协议对话框
     privacySubmitForm(formName) {
@@ -1440,6 +1488,7 @@ export default {
             isTogethe:1,
             followList:[]
           }
+          this.pageUpdate()
           this.positionIndex=''
           if (this.positionIndex==''||this.positionIndex==undefined) {
             if (this.pageIndexArr.length>=1) {
@@ -1449,6 +1498,7 @@ export default {
             }
           }
           if (this.followList.length>=1) {
+            this.pageUpdate()
             this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
           }
         } else {
@@ -1485,6 +1535,7 @@ export default {
             }
           })
           if (this.followList.length>=1) {
+            this.pageUpdate()
             this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
           }
           this.applySetForm.id = res.data.id
@@ -1674,7 +1725,6 @@ export default {
         this.$message.success(this.$t('applySet.copySuccess'))
       }
     },
-
     certificateTypeChange() {}
   }
 }

@@ -1459,7 +1459,7 @@
           <!-- 协议设置 -->
           <div v-if="setInfoList[checkedIndex].systemName == '协议设置'">
             <!-- 标题 -->
-            checkedIndex:==>{{ checkedIndex }}
+            <!-- checkedIndex:==>{{ checkedIndex }} -->
             <div class="eidtContentItem">
               <p class="eidtContentItemTitle">{{$t('form.title')}}</p>
               <el-input tyle="" size="mini" v-model="setInfoList[checkedIndex].title"></el-input>
