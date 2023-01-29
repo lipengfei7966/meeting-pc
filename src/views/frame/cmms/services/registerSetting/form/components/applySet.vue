@@ -1484,7 +1484,9 @@ export default {
               this.positionIndex=index
             }
           })
-          this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          if (this.followList.length>=1) {
+            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          }
           this.applySetForm.id = res.data.id
         }
       })
