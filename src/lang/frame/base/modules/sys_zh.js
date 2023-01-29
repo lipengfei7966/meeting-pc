@@ -47,6 +47,8 @@ export default {
       }
     },
     log: {
+      all: '全部', // 全部
+      exception: '异常', // 异常
       ipAddress: 'IP',
       serverIpAddress: '服务器IP地址',
       funcModule: '业务功能',
@@ -67,7 +69,6 @@ export default {
       memo: '登陆详细',
       requestParam: '请求参数',
       responseBody: '返回信息',
-      exception: '异常',
       errorMessage: '错误信息',
       excelName: '系统日志',
       inputParameter: '输入参数',
@@ -226,6 +227,7 @@ export default {
       }
     },
     bill: {
+      SerFunList: '业务功能列表',
       dialogPart1: '主信息',
       dialogPart2: '发号规则',
       moduleCode: '功能代码',

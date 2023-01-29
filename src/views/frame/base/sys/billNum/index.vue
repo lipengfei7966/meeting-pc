@@ -10,7 +10,7 @@ export default {
     return {
       treeTableData: {
         form: {
-          treeName: '业务功能列表',
+          treeName: this.$t('sys.bill.SerFunList'),
           leftWidth: 300,
           isSearch: true,
           expandOnClickNode: false,

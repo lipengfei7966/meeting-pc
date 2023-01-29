@@ -58,6 +58,7 @@ export default {
       department: 'Department'// 部门
     },
     employee: {
+      orgAndDepInfo: 'Organization and department information', // 机构和部门信息
       warnTitle: 'Employee Data Setting', // 员工数据设置
       staff: 'Staff', // 员工
       banner: 'Personnel Management', // 员工管理

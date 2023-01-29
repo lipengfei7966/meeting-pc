@@ -111,6 +111,7 @@ export default {
     },
     record: {
       title: 'Message record',
+      msgRecordNo: 'Message record number',
       msgTaskNo: 'Message task number',
       userSendDt: 'Send time',
       msgSendStat: 'status',

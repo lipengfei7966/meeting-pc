@@ -21,7 +21,7 @@ export default {
             defaultSortString: 'createDate.desc'
           },
           initSearch: true,
-          treeName: '机构信息',
+          treeName: this.$t('func.org.organInfo'),
           expandAll: true,
           expandOnClickNode: false,
           api: {

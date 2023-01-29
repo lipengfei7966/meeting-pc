@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: 'loginLog',
   data() {
@@ -82,9 +83,9 @@ export default {
       },
       mainData: {
         tabs: [
-          { name: 'all', label: '全部' },
-          { name: 'sucess', label: '成功' },
-          { name: 'error', label: '异常' }
+          { name: 'all', label: this.$t('sys.log.all') },
+          { name: 'sucess', label: this.$t('sys.log.success') },
+          { name: 'error', label: this.$t('sys.log.exception') }
         ],
         api: {
           search: '/api/sys/log/login'
@@ -156,6 +157,23 @@ export default {
         }
       }
     }
+  },
+  watch:{
+    language:{
+      handler(newValue, oldValue) {
+        if(newValue){
+          console.log(newValue,oldValue);
+          this.$set(this.mainData.tabs[0],'label',this.$t('sys.log.all'))
+          this.$set(this.mainData.tabs[1],'label',this.$t('sys.log.success'))
+          this.$set(this.mainData.tabs[2],'label',this.$t('sys.log.exception'))
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed:{
+    ...mapState({language: state => state.app.language})
   },
   methods: {
     handleTabClick(tab, event) {

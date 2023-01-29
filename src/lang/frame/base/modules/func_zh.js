@@ -51,6 +51,7 @@ export default {
       department: '部门'
     },
     employee: {
+      orgAndDepInfo: '机构和部门信息', // 机构和部门信息
       warnTitle: '员工数据设置',
       staff: '员工',
       banner: '员工管理',

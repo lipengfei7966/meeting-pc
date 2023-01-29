@@ -1,6 +1,8 @@
 export default {
   sys: {
     log: {
+      all: 'All', // 全部
+      exception: 'Exception', // 异常
       menuName: 'Function Menu',
       funcModule: 'Vital Business Function',
       billType: 'Document Type',
@@ -21,7 +23,6 @@ export default {
       staff: 'Staff',
       memo: 'Memo',
       requestParam: 'Request Parameter',
-      exception: 'Exception',
       errorMessage: 'Error message',
       inputParameter: 'Input Parameter',
       loginTime: 'Login Time',
@@ -103,6 +104,7 @@ export default {
       }
     },
     bill: {
+      SerFunList: 'Service Function List', // 业务功能列表
       dialogPart1: 'Main Message',
       dialogPart2: 'Signalling Rule',
       moduleCode: 'Functional Code',
