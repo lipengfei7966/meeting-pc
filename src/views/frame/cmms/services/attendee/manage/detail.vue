@@ -107,17 +107,17 @@
                 <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-preview="downloadFile" :on-exceed="fileLimitCount" :show-file-list="false" :file-list="setFormFile[element.mapCode]" :before-upload="(file) => fileBeforeUpload(file, element)" :on-success="fileUploadSuccess" :http-request="(file) => flieHandleUploadForm(file, element)">
                   <!-- <i class="el-icon-plus avatar-uploader-icon"></i> -->
                   <!-- <p> {{element.placeholder}} </p> -->
-                  <el-button type="primary"> 上传附件 </el-button>
+                  <el-button type="primary"> {{$t('form.uploadAttachment')}} </el-button>
                 </el-upload>
                 <ul>
                   <li v-for="file in setFormFile[element.mapCode]" :key="file">
                     <span @click="handlePreview(file)" style="cursor: pointer">{{ file.name }}</span>
                     <span style="margin: 0 15px">
-                      <el-button type="text" @click="delFile(setFormFile[element.mapCode], file)">删除</el-button>
+                      <el-button type="text" @click="delFile(setFormFile[element.mapCode], file)">{{$t('form.delete')}}</el-button>
                     </span>
                     <span>
                       <!-- @click="downloadFile(file)" -->
-                      <el-button type="text" v-downLoadUrl="downloadFile(file)">下载</el-button>
+                      <el-button type="text" v-downLoadUrl="downloadFile(file)">{{$t('form.download')}}</el-button>
                     </span>
                   </li>
                 </ul>
