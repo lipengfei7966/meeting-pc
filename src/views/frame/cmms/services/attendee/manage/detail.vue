@@ -24,7 +24,7 @@
 
         <!-- 分页 -->
         <div v-else-if="element.systemName == '分页'" class="form-item-input">
-          <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+          <p style="text-align: center">[ {{$t('form.di')}} {{ element.pagingIndex }} {{$t('form.total')}} {{ pagingCount }} {{$t('form.Page')}} ]</p>
         </div>
 
         <!-- 说明信息 -->
@@ -268,7 +268,7 @@
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-input v-model="setForm.mobile" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                       <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
@@ -279,7 +279,7 @@
               <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
                   <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                       <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
@@ -292,7 +292,7 @@
                   <span style="display: inline-block">
                     <el-form-item prop="phoneAreaCode" label-width="0">
                       <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
@@ -308,15 +308,15 @@
                 <div style="width: 80%; display: inline-block; vertical-align: top">
                   <span style="display: inline-block">
                     <el-form-item prop="faxAreaCode" label-width="0">
-                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="$t(`registration.form.phoneAreaCode.areaCodePlaceholder`)" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
                   </span>
                   <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini"></el-input> </span>
-                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="$t(`registration.form.phoneRunNumber.extensionNumberPlaceholder`)" size="mini"></el-input> </span>
                 </div>
               </div>
 
