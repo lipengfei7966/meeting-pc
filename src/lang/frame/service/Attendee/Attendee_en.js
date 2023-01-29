@@ -33,6 +33,10 @@ export default {
     checkScene: 'Check-in scene ', // 签到场景
     sceneName: 'Scene name', // 场景名称
     default: 'default', // 默认
+    msg: {
+      tip: 'Delete Scene', // 删除场景
+      confirmDelete: 'Are you sure you want to delete this scene?'// 确定要删除此场景吗？
+    },
     btn: {
       addAttendee: 'New participants', // 新增参会人
       changeAttendee: 'Modify participants', // 修改参会人
@@ -43,7 +47,9 @@ export default {
       signInSet: 'Sign in setting', // 签到设置
       signInHistory: 'Sign in record', // 签到记录
       addScene: 'Add Scene', // 添加场景
-      delScene: 'Delete Scene' // 删除场景
+      delScene: 'Delete Scene', // 删除场景
+      cancel: 'Cancel', // 取消
+      confirm: 'Confirm'// 确定
     },
     tab: {
       '2': 'Whole', // 全部
@@ -56,7 +62,7 @@ export default {
       '1': 'Signed in' // 已签到
     },
     setTab: {
-      '2': 'Whole' // 全部
+      default: 'Default' // 默认
     },
     detail: {
       personnelCode: 'Personnel code', // 人员编码

@@ -20,7 +20,8 @@ export default {
       usingFlag: '状态',
       organ: '机构',
       zipCode: '邮编',
-      isUsing: '启用机构无法删除'
+      isUsing: '启用机构无法删除',
+      description: '描述'
     },
     api: {
       title: '接口选择',

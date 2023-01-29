@@ -26,11 +26,26 @@ export default {
         endDate: '结束时间',
         eventPlace: '活动地点',
         eventDate: '会议时间',
+        mainLanguage: '主语言', // 主语言
+        multiLanguage: '多语言', // 多语言
         eventHashCode: '会议哈希'
       },
       btn: {
         design: '微站设计',
         set: '参会人编码设置'
+      }
+    },
+    customlanguage:{
+      title:'自定义数据多语言设置',
+      query:{
+        dictionariesId:'字典ID',
+        dataFunction:'功能',
+        superiorSettingId:'上级设置ID',
+        settingItem:'设置项',
+        dictionaryContent:'字典内容'
+      },
+      list:{
+        
       }
     },
     article: {
@@ -49,6 +64,83 @@ export default {
         articleTitle: '文章标题',
         articlePic: '文章首图',
         articleContent: '文章内容'
+      }
+    },
+    atlas: {
+      atlasTitle:"图册名称",
+      atlasIntroduction:"图册介绍",
+      numberOfPictures:"图片数量",
+      operation:"操作",
+      details:"详情",
+      delete:"删除",
+      deletionConfirmation:"删除确认",
+      deleteInformation:"删除后该图册内所有图片及信息均被删除。",
+      ConfirmDelete:"请确认是否删除？",
+      determine:"确定",
+      cancel:"取消",
+      save:"保存",
+      deleting:"删除中",
+      deletSuccess:"删除图册成功",
+      cancelDelete:"取消删除",
+      add:{
+        atlasAddition:"图册新增",
+        save:"保存中",
+        saveSuccessfully:"保存成功"
+      },
+      edit:{
+        atlasEditor:"图册编辑"
+      }
+    },
+    atlasAndPicture:{
+      editInformation:"编辑图册信息",
+      picture:{
+        atlasDetails:"图册详情",
+        pictureInformation: "图片信息",
+        searchInfo:"请输入关键词搜索图片描述",
+        search:"查询",
+        reset:"重置",
+        batchUpload:"批量上传",
+        addAPicture:"添加图片",
+        loading: '加载中', // 加载中
+        picture:"图片",
+        pictureDescription:"图片描述",
+        clickEffect:'点击效果',
+        imageClickEffect:'图片点击效果',
+        not:"无",
+        ViewEnlargedImage:"查看放大图片",
+        skipColumn:"跳转栏目",
+        OpenTheArticle:"打开文章",
+        customLink:"自定义链接",
+        jumpPosition:"跳转位置",
+        language:"语言",
+        operation:"操作",
+        edit:"编辑",
+        delete:"删除",
+        requireAtals:'请输入图册名称',
+        saveSuccess: '保存成功'
+      } ,
+      del:{
+        delPrompt:"删除后该图片将在被引用页面删除。",
+        confirmDelete:"请确认是否删除？",
+        delSuccess:"删除图片成功"
+      }
+    },
+    pictureView:{
+      loadFailure:"加载失败",
+      reupload:"重新上传",
+      clickUpload:"点击上传",
+      editPicture:"编辑图片",
+      addAPicture:"添加图片",
+      viewPictures:"查看图片",
+      add:{
+        seletLanguage:"请选择语言",
+        selectImage:'请选择图片点击效果',
+        uploading:"上传中，请稍候",
+        uploadSuccess:"图片上传成功",
+        noPicture:"请上传图片",
+        addSuccess:"图片新增成功",
+        addFail:"图片编辑成功",
+        batchUpload:"批量上传成功",
       }
     },
     activityManagement: {
@@ -442,6 +534,9 @@ export default {
       passwdValidPeriodDay: '密码有效期'
     },
     microStationDesign: {
+      carouselGraphManagement: '轮播图管理', // 轮播图管理
+      baseMapManagement: '底图管理', // 底图管理
+      TitleManagement: '标题管理', // 标题管理
       moduleSetup: '模块设置', // 模块设置
       addModules: '新增模块', // 新增模块
       moduleAdd: '请选择模块进行新增/编辑', // 请选择模块进行新增/编辑
@@ -473,51 +568,58 @@ export default {
       saveSuccess: '保存成功', // 保存成功
       chooseTemplate: '选择模板', // 选择模板
       reselectTheTemplate: '重新选择模板', // 重新选择模板
+      settingLanguage:'设置其他语言',//设置其他语言
       moreTemplatesExpect: '更多模板 敬请期待', // 更多模板 敬请期待
       PleaseSelectaTemplate: '请选择一个模板！', // 请选择一个模板！
-      noMoreTemplatesYet: '暂无更多模板！' // 暂无更多模板！
-      // noMoreTemplatesYet: '从素材库选择', // 从素材库选择
-      // noMoreTemplatesYet: '素材选择', // 素材选择
-      // noMoreTemplatesYet: '点击上传', // 点击上传
-      // noMoreTemplatesYet: '请删除已存在图片后再进行上传操作', // 请删除已存在图片后再进行上传操作
-      // noMoreTemplatesYet: '上传中，请稍候...', // 上传中，请稍候...
-      // noMoreTemplatesYet: '上传文件成功', // 上传文件成功
-      // noMoreTemplatesYet: '上传文件失败', // 上传文件失败
-      // noMoreTemplatesYet: '请上传jpg，png，jpeg，psd 类型的图片', // 请上传jpg，png，jpeg，psd 类型的图片
-      // noMoreTemplatesYet: '文件类型', // 文件类型
-      // noMoreTemplatesYet: '排序', // 排序
-      // noMoreTemplatesYet: '文件名称', // 文件名称
-      // noMoreTemplatesYet: '请选择文件夹', // 请选择文件夹
-      // noMoreTemplatesYet: '图片', // 图片
-      // noMoreTemplatesYet: '视频', // 视频
-      // noMoreTemplatesYet: '按上传时间升序', // 按上传时间升序
-      // noMoreTemplatesYet: '按上传时间降序', // 按上传时间降序
-      // noMoreTemplatesYet: '加载中', // 加载中
-      // noMoreTemplatesYet: '模块标题', // 模块标题
-      // noMoreTemplatesYet: '请输入模块标题', // 请输入模块标题
-      // noMoreTemplatesYet: '模块类型', // 模块类型
-      // noMoreTemplatesYet: '请选择模块类型', // 请选择模块类型
-      // noMoreTemplatesYet: '选择页面', // 选择页面
-      // noMoreTemplatesYet: '请选择页面', // 请选择页面
-      // noMoreTemplatesYet: '站外链接', // 站外链接
-      // noMoreTemplatesYet: '请输入站外链接', // 请输入站外链接
-      // noMoreTemplatesYet: '背景设置', // 背景设置
-      // noMoreTemplatesYet: '默认', // 默认
-      // noMoreTemplatesYet: '隐藏', // 隐藏
-      // noMoreTemplatesYet: '自定义', // 自定义
-      // noMoreTemplatesYet: '图标', // 图标
-      // noMoreTemplatesYet: '上传', // 上传
-      // noMoreTemplatesYet: '只能上传jpeg/png/jpg/psd文件', // 只能上传jpeg/png/jpg/psd文件
-      // noMoreTemplatesYet: '从素材库选择', // 从素材库选择
-      // noMoreTemplatesYet: '新增', // 新增
-      // noMoreTemplatesYet: '素材选择', // 素材选择
-      // noMoreTemplatesYet: '取 消', // 取 消
-      // noMoreTemplatesYet: '确 定', // 确 定
-      // noMoreTemplatesYet: '请输入模块标题', // 请输入模块标题
-      // noMoreTemplatesYet: '请选择模块类型', // 请选择模块类型
-      // noMoreTemplatesYet: '请选择页面', // 请选择页面
-      // noMoreTemplatesYet: '请输入站外链接', // 请输入站外链接
-      // noMoreTemplatesYet: '新增成功', // 新增成功
+      noMoreTemplatesYet: '暂无更多模板！', // 暂无更多模板！
+      clickUpload: '点击上传', // 点击上传
+      deleteOruploading: '请删除已存在图片后再进行上传操作', // 请删除已存在图片后再进行上传操作
+      UploadPleaseWait: '上传中，请稍候...', // 上传中，请稍候...
+      uploadedFileSuccess: '上传文件成功', // 上传文件成功
+      uploadedFileFail: '上传文件失败', // 上传文件失败
+      pleaseUploadType: '请上传jpg，png，jpeg，psd 类型的图片', // 请上传jpg，png，jpeg，psd 类型的图片
+      fileType: '文件类型', // 文件类型
+      sort: '排序', // 排序
+      fileName: '文件名称', // 文件名称
+      selectFolder: '请选择文件夹', // 请选择文件夹
+      picture: '图片', // 图片
+      video: '视频', // 视频
+      ascendingUploadTime: '按上传时间升序', // 按上传时间升序
+      DescendUploadTime: '按上传时间降序', // 按上传时间降序
+      loading: '加载中', // 加载中
+      moduleTitle: '模块标题', // 模块标题
+      enterModuleTitle: '请输入模块标题', // 请输入模块标题
+      moduleType: '模块类型', // 模块类型
+      apply: '站内页面', // 站内页面
+      selectApply: '请选择站内页面', // 请选择站内页面
+      selectmoduleType: '请选择模块类型', // 请选择模块类型
+      selectThePage: '选择页面', // 选择页面
+      selectPage: '请选择页面', // 请选择页面
+      backLink: '站外链接', // 站外链接
+      enterExternalLink: '请输入站外链接', // 请输入站外链接
+      backgroundSetting: '背景设置', // 背景设置
+      default: '默认', // 默认
+      hide: '隐藏', // 隐藏
+      custom: '自定义', // 自定义
+      icon: '图标', // 图标
+      upload: '上传', // 上传
+      onlyUploadType: '只能上传jpeg/png/jpg/psd文件', // 只能上传jpeg/png/jpg/psd文件
+      selectMaterialLibrary: '从素材库选择', // 从素材库选择
+      add: '新增', // 新增
+      materialSelection: '素材选择', // 素材选择
+      canel: '取 消', // 取 消
+      confirm: '确 定', // 确 定
+      inputModuleTitle: '请输入模块标题', // 请输入模块标题
+      inputModuleType: '请选择模块类型', // 请选择模块类型
+      pleaseSelectPage: '请选择页面', // 请选择页面
+      addSuccess: '新增成功', // 新增成功
+      mainHeading: '主标题', // 主标题
+      subtitle: '副标题', // 副标题
+      enterMainHeading: '请输入主标题', // 请输入主标题
+      lengthRanges: '长度在 2 到 100 个字符', // 请输入主标题
+      titleSaveSuccess: '标题保存成功', // 请输入主标题
+      titleSaveFail: '标题保存失败' // 请输入主标题
+
     }
   }
 }

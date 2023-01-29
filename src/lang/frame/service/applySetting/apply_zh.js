@@ -157,6 +157,7 @@ export default {
     // :'',//
   },
   applySet: {
+    to: '至', // 至
     registrationSetup: '注册报名设置', // 注册报名设置
     di: '第', // 第
     total: '页/共 ', // 页/共
@@ -212,6 +213,8 @@ export default {
     failedtolink: '生成报名链接失败', // 生成报名链接失败
     successtolink: '生成报名链接成功', // 生成报名链接成功
     SignUpAndGenerateLinkSuccessfully: '报名并生成链接成功', // 报名并生成链接成功
-    copySuccess: '复制成功' // 复制成功
+    copySuccess: '复制成功', // 复制成功
+    applyCheck: '是否需要审核', // 是否需要审核
+    settingOtherLanguages: '设置其他语言'// 设置其他语言
   }
 }

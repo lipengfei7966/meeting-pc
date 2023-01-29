@@ -14,7 +14,7 @@
 				'paragraph', 'fontfamily', 'fontsize'
 			],
 			[
-				'qmEditorForm', '|', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+				 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
 				'directionalityltr', 'directionalityrtl', 'indent', '|',
 				'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
 				'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',

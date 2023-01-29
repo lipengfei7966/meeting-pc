@@ -158,6 +158,7 @@ export default {
     // :'',//
   },
   applySet: {
+    to: 'to', // 至
     registrationSetup: 'Registration Setup', // 注册报名设置
     di: 'Page', // 第
     total: '/Page', // 页/共
@@ -212,6 +213,8 @@ export default {
     failedtolink: 'Failed to generate the registration link', // 生成报名链接失败
     successtolink: 'Successed to generate the registration link', // 生成报名链接成功
     SignUpAndGenerateLinkSuccessfully: 'Sign up and generate link successfully', // 报名并生成链接成功
-    copySuccess: 'Copy Success' // 复制成功
+    copySuccess: 'Copy Success', // 复制成功
+    applyCheck: 'Is Audit', // 是否需要审核
+    settingOtherLanguages: 'Setting other languages'// 设置其他语言
   }
 }

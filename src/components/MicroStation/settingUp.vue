@@ -1,52 +1,60 @@
 <template>
   <div class="demo-ruleForm">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-      <el-form-item label="模块标题" prop="title">
-        <el-input v-model="ruleForm.title" placeholder="请输入模块标题"></el-input>
+      <el-form-item :label="$t('website.microStationDesign.moduleTitle')" prop="title">
+        <el-input v-model="ruleForm.title" :placeholder="$t('website.microStationDesign.enterModuleTitle')"></el-input>
       </el-form-item>
       <!-- <el-form-item label="模块副标题" prop="subHeading">
         <el-input v-model="ruleForm.subHeading" placeholder="请输入模块副标题"></el-input>
       </el-form-item> -->
-      <el-form-item label="模块类型" prop="type">
-        <el-select @change="select_" v-model="ruleForm.type" placeholder="请选择模块类型" style="width: 100%">
+      <el-form-item :label="$t('website.microStationDesign.moduleType')" prop="type">
+        <!-- 模块类型 -->
+        <el-select @change="select_" v-model="ruleForm.type" :placeholder="$t('website.microStationDesign.selectmoduleType')" style="width: 100%">
           <el-option v-for="(item, index) in classify" :key="index" :label="item.label" :value="item.value"></el-option>
           <!-- <el-option label="站外链接" value="站外链接"></el-option> -->
         </el-select>
       </el-form-item>
-      <el-form-item v-if="ruleForm.type == 'article'" label="选择页面" prop="page">
-        <el-select v-model="ruleForm.page" placeholder="请选择页面" style="width: 100%">
+      <el-form-item v-if="ruleForm.type == 'article'" :label="$t('website.microStationDesign.selectThePage')" prop="page">
+        <el-select v-model="ruleForm.page" :placeholder="$t('website.microStationDesign.selectPage')" style="width: 100%">
           <el-option v-for="(item, index) in pageLists" :key="index" :label="item.name" :value="item.code"></el-option>
           <!-- <el-option label="页面二" value="页面二"></el-option> -->
         </el-select>
         <!-- <span style="margin-left: 10px; color: #409eff; cursor: pointer">新增</span> -->
       </el-form-item>
       <!--  -->
-      <el-form-item v-if="ruleForm.type == 'url'" label="站外链接" prop="link">
-        <el-input v-model="ruleForm.link" placeholder="请输入站外链接"></el-input>
+      <el-form-item v-if="ruleForm.type == 'url'" :label="$t('website.microStationDesign.backLink')" prop="link">
+        <el-input v-model="ruleForm.link" :placeholder="$t('website.microStationDesign.enterExternalLink')"></el-input>
+      </el-form-item>
+      <!-- 站内页面 -->
+      <el-form-item v-if="ruleForm.type == 'apply'" :label="$t('website.microStationDesign.apply')" prop="apply">
+        <el-select v-model="ruleForm.apply" :placeholder="$t('website.microStationDesign.selectApply')" style="width: 100%">
+          <el-option v-for="(item, index) in instationType" :key="index" :label="item.label" :value="item.value"></el-option>
+        </el-select>
       </el-form-item>
       <!--  -->
-      <el-form-item label="背景设置" prop="back">
+      <!--  -->
+      <el-form-item :label="$t('website.microStationDesign.backgroundSetting')" prop="back">
         <el-radio-group @change="selectChange" v-model="ruleForm.backgroundSetting">
-          <el-radio :label="'1'">默认</el-radio>
-          <el-radio :label="'2'">隐藏</el-radio>
-          <el-radio :label="'3'">自定义</el-radio>
+          <el-radio :label="'1'">{{$t('website.microStationDesign.default')}}</el-radio>
+          <el-radio :label="'2'">{{$t('website.microStationDesign.hide')}}</el-radio>
+          <el-radio :label="'3'">{{$t('website.microStationDesign.custom')}}</el-radio>
         </el-radio-group>
       </el-form-item>
       <div v-if="ruleForm.backgroundSetting == '3'" style="position: relative; left: 10%">
         <colorPicker defaultColor="rgba(198, 75, 34, 0.2)" v-model="colorValue" @change="handleChangeColor" size="5"></colorPicker>
       </div>
-      <el-form-item label="图标" prop="fileList">
+      <el-form-item :label="$t('website.microStationDesign.icon')" prop="fileList">
         <el-upload :before-upload="beforeUpload" accept="image/jpeg,image/psd,image/png,image/jpg" class="upload-demo" :headers="httpHeaders" :action="uploadUrl" :on-preview="handlePreview" :on-remove="handleRemove" multiple :limit="1" :on-exceed="handleExceed" :on-success="uploadFile" :file-list="ruleForm.fileList">
-          <el-button size="small" type="text">上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpeg/png/jpg/psd文件</div>
+          <el-button size="small" type="text">{{$t('website.microStationDesign.upload')}}</el-button>
+          <div slot="tip" class="el-upload__tip">{{$t('website.microStationDesign.onlyUploadType')}}</div>
         </el-upload>
-        <el-button size="small" type="text" @click="materialSelection" style="float: left">从素材库选择</el-button>
+        <el-button size="small" type="text" @click="materialSelection" style="float: left">{{$t('website.microStationDesign.selectMaterialLibrary')}}</el-button>
       </el-form-item>
       <el-form-item>
         <div>
-          <el-button @click="handelClick(1)">返回</el-button>
-          <el-button v-if="!isFlag_one" @click="submitForm('ruleForm')" type="primary">保存</el-button>
-          <el-button v-if="isFlag_one" @click="add('ruleForm')" type="primary">新增</el-button>
+          <el-button @click="handelClick(1)">{{$t('website.microStationDesign.return')}}</el-button>
+          <el-button v-if="!isFlag_one" @click="submitForm('ruleForm')" type="primary">{{$t('website.microStationDesign.save')}}</el-button>
+          <el-button v-if="isFlag_one" @click="add('ruleForm')" type="primary">{{$t('website.microStationDesign.add')}}</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -55,14 +63,14 @@
 <el-button>返回</el-button>
   <el-button type="primary">保存</el-button>
 </div> -->
-    <el-dialog title="素材选择" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
+    <el-dialog :title="$t('website.microStationDesign.materialSelection')" :visible.sync="dialogVisible" :fullscreen="true" destroy-on-close>
       <div>
         <!-- 放内容的 -->
         <material ref="material" :MultiSelect="false" />
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit_">确 定</el-button>
+        <el-button @click="dialogVisible = false">{{$t('website.microStationDesign.canel')}}</el-button>
+        <el-button type="primary" @click="submit_">{{$t('website.microStationDesign.confirm')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -82,6 +90,7 @@ export default {
   //   },
   data() {
     return {
+      instationType:'',
       colorValue: 'rgba(198, 75, 34, 0.2)',
       ruleForm: {
         id: '',
@@ -93,6 +102,7 @@ export default {
         type: '',
         page: '',
         link: '',
+        apply:'',
         backgroundSetting: '1',
         content: '',
         icon: '',
@@ -101,13 +111,14 @@ export default {
       },
       rules: {
         title: [
-          { required: true, message: '请输入模块标题', trigger: 'blur' }
+          { required: true, message: this.$t('website.microStationDesign.inputModuleTitle'), trigger: 'blur' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         //         subHeading: [{ required: true, message: '请输入模块副标题', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择模块类型', trigger: 'change' }],
-        page: [{ required: true, message: '请选择页面', trigger: 'change' }],
-        link: [{ required: true, message: '请输入站外链接', trigger: 'blur' }]
+        type: [{ required: true, message: this.$t('website.microStationDesign.inputModuleType'), trigger: 'change' }],
+        page: [{ required: true, message: this.$t('website.microStationDesign.pleaseSelectPage'), trigger: 'change' }],
+        link: [{ required: true, message: this.$t('website.microStationDesign.enterExternalLink'), trigger: 'blur' }],
+        apply:[{ required: true, message: this.$t('website.microStationDesign.selectApply'), trigger: 'blur' }],
       },
       pageLists: [],
       classify: [],
@@ -132,7 +143,7 @@ export default {
     newData: {
       immediate: true,
       handler(newValue, oldValue) {
-        debugger
+        // debugger
         console.log(newValue, oldValue)
         if (newValue) {
           let submitVal = newValue
@@ -153,7 +164,7 @@ export default {
           }
 
           // console.log(this.ruleForm)
-          debugger
+          // debugger
           console.log(submitVal, oldValue)
           if (submitVal.title) {
             if (this.ruleForm.title == '' || this.dataFlag_) {
@@ -163,7 +174,7 @@ export default {
               this.ruleForm.fileList[0].name = submitVal.title + '图标'
             }
           }
-          debugger
+          // debugger
           // 标注
           // if(this.ruleForm.type){
 
@@ -186,6 +197,13 @@ export default {
                 // hkz
                 if (this.flag_) {
                   this.ruleForm.link = submitVal.content
+                }
+                this.flag_ = true
+              }
+            }else if(submitVal.type == 'apply'){
+              if (this.ruleForm.apply == '' || this.dataFlag_) {
+                if (this.flag_) {
+                  this.ruleForm.apply = submitVal.content
                 }
                 this.flag_ = true
               }
@@ -253,6 +271,7 @@ export default {
             type: '',
             page: '',
             link: '',
+            apply:'',
             backgroundSetting: '1',
             content: '',
             icon: '',
@@ -281,6 +300,8 @@ export default {
           }
           if (this.ruleForm.type == 'article') {
             this.ruleForm.content = this.ruleForm.page
+          } else if(this.ruleForm.type == 'apply'){
+            this.ruleForm.content = this.ruleForm.apply
           } else {
             this.ruleForm.content = this.ruleForm.link
           }
@@ -296,7 +317,7 @@ export default {
           })
             .then((res) => {
               if (res.data) {
-                this.$message('保存成功')
+                this.$message(this.$t('website.microStationDesign.saveSuccess'))
                 this.$emit('upData')
               }
               this.console.log(res)
@@ -336,7 +357,7 @@ export default {
           })
             .then((res) => {
               if (res.data) {
-                this.$message('新增成功')
+                this.$message(this.$t('website.microStationDesign.addSuccess'))
                 this.$emit('upData')
               }
               this.console.log(res)
@@ -378,7 +399,7 @@ export default {
     },
     handleExceed(files, fileList) {
       // this.$message.warning(`当前限制选择 1 个图片，本次选择了 ${files.length} 个图片，共选择了 ${files.length + fileList.length} 个图片`)
-      this.$message.warning('请删除已存在图片后再进行上传操作')
+      this.$message.warning(this.$t('website.microStationDesign.deleteOruploading'))
     },
     // beforeRemove(file, fileList) {
     //   return this.$confirm(`确定移除 ${file.name}？`)
@@ -388,12 +409,18 @@ export default {
       this.$emit('onClick')
     },
     select_(val) {
+      debugger
       console.log(val)
       this.ruleForm.page = ''
       this.ruleForm.link = ''
+      this.ruleForm.apply = ''
     },
     getCode() {
       this.classify = this.$t('datadict.websiteButtonType')
+      this.instationType = this.$t('datadict.instationType')
+      // debugger
+      console.log(this.classify);
+      console.log(this.instationType);
       request({
         url: '/api/dd/selectData/list',
         method: 'POST',
@@ -423,14 +450,14 @@ export default {
       this.dialogVisible = false
     },
     beforeUpload(param) {
-      debugger
+      // debugger
       // debugger
       let mun = param.name.split('.')
       let format = mun[mun.length - 1]
       if (format == 'jpg' || format == 'jpeg' || format == 'png' || format == 'psd') {
         // 成功
       } else {
-        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        this.$message(this.$t('website.microStationDesign.pleaseUploadType'))
         return false
       }
     }

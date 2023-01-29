@@ -5,7 +5,7 @@
       <el-tabs v-model="activeName" type="border-card" style="margin-top:3px" @tab-click="handleTabClick">
         <template v-for='tab in mainData.tabs'>
           <el-tab-pane :key='tab.code' :index='tab.code' :name="tab.code">
-            <span slot="label">{{ tab.code == 2 ? $t(`attendee.setTab.${tab.code}`) : tab.name}} </span>
+            <span slot="label">{{ tab.code == '' ? $t(`attendee.setTab.default`) : tab.name}} </span>
           </el-tab-pane>
         </template>
       </el-tabs>
@@ -321,6 +321,15 @@ export default {
   },
   mounted() {
     this.sceneList()
+    if(this.$route.params.data){
+      if(this.$route.params.data){
+        this.form.listQuery.data.eventCode = this.$route.params.data
+      }
+      if(this.$route.params.code){
+        this.activeName = this.$route.params.code 
+        this.form.listQuery.data.sceneCode = this.$route.params.code
+      }
+    }
     this.$refs.bsTable.getList({ name: 'search' })
   },
   methods: {
@@ -342,7 +351,7 @@ export default {
       }).then(response => {
         this.mainData.tabs = []
         this.mainData.tabs.push({
-          code: '2',
+          code: '',
           name: '默认'
         })
         response.data.forEach((item, key) => {

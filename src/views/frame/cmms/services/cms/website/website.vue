@@ -9,17 +9,17 @@
               <!--  -->
               <li>
                 <div @click="management(2)" style="display: flex; justify-content: space-between; cursor: pointer">
-                  <span>轮播图管理</span>
+                  <span>{{$t('website.microStationDesign.carouselGraphManagement')}}</span>
                 </div>
               </li>
               <li>
                 <div @click="management(3)" style="display: flex; justify-content: space-between; cursor: pointer">
-                  <span>底图管理</span>
+                  <span>{{$t('website.microStationDesign.baseMapManagement')}}</span>
                 </div>
               </li>
               <li>
                 <div @click="management(4)" style="display: flex; justify-content: space-between; cursor: pointer">
-                  <span>标题管理</span>
+                  <span>{{$t('website.microStationDesign.TitleManagement')}}</span>
                 </div>
               </li>
               <!--  -->
@@ -80,12 +80,15 @@
                   </el-tooltip>
                   <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">{{$t('website.microStationDesign.copyLink')}}</span>
                 </div>
-                <el-form-item>
+                <!-- <el-form-item>
                   <div style="margin-left:-34px">
                     <vue-qr :text="imgUrl" :size="200"> </vue-qr>
                   </div>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
+              <div style="text-align: center; margin-left: 8%;">
+                <vue-qr :text="imgUrl" :size="200"> </vue-qr>
+              </div>
             </div>
             <div class="share">
               <el-button class="share-btn-one" @click="resetForm('ruleForm')">{{$t('website.microStationDesign.return')}}</el-button>
@@ -442,8 +445,8 @@ export default {
   filters: {
     commentEllipsis(value) {
       if (value.length != undefined) {
-        if (value.length > 24) {
-          return value.slice(0, 23) + '...'
+        if (value.length > 14) {
+          return value.slice(0, 13) + '...'
         } else {
           return value
         }

@@ -33,6 +33,10 @@ export default {
     checkScene: '签到场景',
     sceneName: '场景名称',
     default: '默认',
+    msg: {
+      tip: '删除场景',
+      confirmDelete: '确定要删除此场景吗？'
+    },
     btn: {
       addAttendee: '新增参会人',
       changeAttendee: '修改参会人',
@@ -58,7 +62,7 @@ export default {
       '1': '已签到'
     },
     setTab: {
-      '2': '全部'
+      default: '默认'
     },
     detail: {
       personnelCode: '人员编码',

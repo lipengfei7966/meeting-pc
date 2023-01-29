@@ -25,6 +25,11 @@ export default {
       applicantNum: 'ApplicantNumbers/toplimit', // 报名人数/上限
       operation: 'Operation' // 操作
     },
+    tableTxt: {
+      notStart: 'Not started', // 未开始
+      end: 'Have ended', // 已结束
+      progress: 'In progress' // 进行中
+    },
     dialogTxt: {
       unlimited: 'unlimited', // 不限
       none: 'nil', // 无

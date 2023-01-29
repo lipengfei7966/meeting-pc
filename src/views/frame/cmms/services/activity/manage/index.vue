@@ -70,9 +70,9 @@
         </el-table-column>
         <el-table-column prop="beginTime,endTime" :label="$t('sub.column.activityStatus')">
           <template slot-scope="scope">
-            <span v-if="new Date(scope.row.beginTime) > new Date()">未开始</span>
-            <span v-else-if="new Date(scope.row.endTime) < new Date()">已结束</span>
-            <span v-else>进行中</span>
+            <span v-if="new Date(scope.row.beginTime) > new Date()">{{$t('sub.tableTxt.notStart')}}</span>
+            <span v-else-if="new Date(scope.row.endTime) < new Date()">{{$t('sub.tableTxt.end')}}</span>
+            <span v-else>{{$t('sub.tableTxt.progress')}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="isGoLive" :label="$t('sub.column.enable')">
@@ -142,6 +142,7 @@ export default {
   name: 'activityManagement',
   data() {
     return {
+      getNum:0,
       handleTitle:this.$t('sub.dialogTxt.newSubActivity'),
       dialogVisible: false,
       moduleVal: {
@@ -229,6 +230,16 @@ export default {
         // this.pages = res.page
         this.size = res.size
         this.tableData = res.data
+        if(this.$route.params.code){
+          this.tableData.forEach(item=>{
+            if(item.id == this.$route.params.code){
+              if(this.getNum == 3){
+                this.handleClick(item,1)
+                this.getNum++
+              }
+            }
+          })
+        }
       })
     },
     addSubmit() {
@@ -261,7 +272,7 @@ export default {
             if (this.btnName == this.$t('biz.btn.update')) {
         if (this.ruleForm.triesLimit == 1) {
           // inputNum
-          debugger
+          // debugger
           this.ruleForm.triesLimit = this.ruleForm.inputNum
         }
         this.ruleForm.eventCode = this.moduleVal.eventCode
@@ -283,7 +294,7 @@ export default {
       } else if (this.btnName == this.$t('sub.btns.createImmediately')) {
         if (this.ruleForm.triesLimit == 1) {
           // inputNum
-          debugger
+          // debugger
           this.ruleForm.triesLimit = this.ruleForm.inputNum
         }
         this.ruleForm.eventCode = this.moduleVal.eventCode
@@ -340,7 +351,11 @@ export default {
         //  debugger
         console.log(res)
         this.activityList = res.data
-        this.moduleVal.eventCode = res.data[0].code
+        if(this.$route.params.data){
+          this.moduleVal.eventCode = this.$route.params.data
+        }else{
+          this.moduleVal.eventCode = res.data[0].code
+        }
         if(res.data[0].data.triesLimit){
           this.moduleVal.triesLimit = 1
           this.moduleVal.inputNum = res.data[0].data.triesLimit
@@ -382,6 +397,7 @@ export default {
         this.getEdit(item.code)
       } else {
         // 编辑
+        // debugger
         this.disabled_look = false
         this.btnName = this.$t('biz.btn.update')
       this.handleTitle = this.$t('sub.dialogTxt.modifySubActivity')
@@ -473,6 +489,8 @@ export default {
     }
   },
   created() {
+    // 第一次进来赋值0 用来判断是不是直接跳转进来的
+    this.getNum = 3
     this.getList()
   }
 }

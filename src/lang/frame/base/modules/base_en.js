@@ -151,7 +151,7 @@ export default {
       unlock: 'unlock', // 解除锁定
       quickConfirm: 'Confirm', // 确认
       quickConfirmList: 'Batch confirm', // 批量确认
-
+      unlock: 'Unlock', // 解锁
       start: 'start', // 启动
       submitAudit: 'submitAudit', // 提交审核
       end: 'end', // 停止
@@ -195,10 +195,10 @@ export default {
       close: 'close', // 关闭
       reset: 'reset', // 重置
       extend: 'extend', // 查询扩展
-      open: 'open', // 展开
-      stow: 'stow', // 收起
-      expand: 'spread out', // 展开
-      contract: 'retract', // 收起
+      open: 'Expand', // 展开
+      stow: 'Fewer', // 收起
+      expand: 'Expand', // 展开
+      contract: 'Fewer', // 收起
       clear: 'clear', // 清空
       print: 'print', // 打印
       retry: 'retry', // 重发
