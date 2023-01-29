@@ -91,10 +91,11 @@ export default {
     closeAll: 'closeAll' // 关闭所有
   },
   tableColSet: {
-    title: 'Table Column Settings', // 表格列设置
+    title: 'Table Column Settings', // 表格
     noCheckTip: 'Please check at least one item', // 请至少勾选一项
     props: 'attribute', // 属性
-    drag: 'drag' // 拖动
+    drag: 'drag', // 拖动
+    columnSetting: 'Column setting' // 列设置
   },
   biz: {
     route: {
@@ -147,7 +148,7 @@ export default {
       menuInfo: 'Menu information' // 菜单信息
     },
     btn: {
-
+      unlock: 'unlock', // 解除锁定
       quickConfirm: 'Confirm', // 确认
       quickConfirmList: 'Batch confirm', // 批量确认
 
@@ -250,7 +251,6 @@ export default {
       handle: 'handle', // 处理
       publish: 'publish', // 发布
       layout: 'layout' // 编排
-
     },
     msg: {
       tip: 'tip', // 提示

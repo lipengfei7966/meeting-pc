@@ -352,6 +352,9 @@ export default {
         length: '长度',
         type: '生成类型',
         startCode: '起始码'
+      },
+      placeholder: {
+        length: '最小为2，最大为16'
       }
     },
     role: {

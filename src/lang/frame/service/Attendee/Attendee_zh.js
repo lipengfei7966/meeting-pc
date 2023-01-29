@@ -30,6 +30,8 @@ export default {
     cantDelMsg: '无法删除默认场景',
     cantCodeMsg: '无法获取场景code',
     scene: '场景',
+    checkScene: '签到场景',
+    sceneName: '场景名称',
     default: '默认',
     btn: {
       addAttendee: '新增参会人',
@@ -54,6 +56,9 @@ export default {
       '2': '全部',
       '0': '未签到',
       '1': '已签到'
+    },
+    setTab: {
+      '2': '全部'
     },
     detail: {
       personnelCode: '人员编码',

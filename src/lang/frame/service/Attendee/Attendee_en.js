@@ -30,6 +30,8 @@ export default {
     cantDelMsg: 'Cannot delete default scene', // 无法删除默认场景
     cantCodeMsg: 'Unable to get scene code', // 无法获取场景code
     scene: 'scene', // 场景
+    checkScene: 'Check-in scene ', // 签到场景
+    sceneName: 'Scene name', // 场景名称
     default: 'default', // 默认
     btn: {
       addAttendee: 'New participants', // 新增参会人
@@ -52,6 +54,9 @@ export default {
       '2': 'Whole', // 全部
       '0': 'Fail to sign in', // 未签到
       '1': 'Signed in' // 已签到
+    },
+    setTab: {
+      '2': 'Whole' // 全部
     },
     detail: {
       personnelCode: 'Personnel code', // 人员编码

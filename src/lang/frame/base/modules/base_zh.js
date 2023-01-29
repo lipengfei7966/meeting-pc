@@ -96,7 +96,8 @@ export default {
     title: '表格列设置',
     noCheckTip: '请至少勾选一项',
     props: '属性',
-    drag: '拖动'
+    drag: '拖动',
+    columnSetting: '列设置'
   },
   biz: {
     route: {
