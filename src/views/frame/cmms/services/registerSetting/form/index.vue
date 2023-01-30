@@ -584,7 +584,6 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     onChangeAll (params) {
-      debugger
       // 会议编码 params.code
       // 会议名称 params.name
 
