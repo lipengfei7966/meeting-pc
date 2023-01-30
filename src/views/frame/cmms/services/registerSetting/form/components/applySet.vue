@@ -32,6 +32,19 @@
                 </div>
               </el-form-item>
             </div>
+            <!-- 分活动 -->
+            <div v-else-if="element.systemName == '分活动'" class="form-item-input">
+              <el-form-item :label="element.title">
+                <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                  <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                    <el-checkbox v-model="setForm.activityOptions" :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人)</el-checkbox>
+                    <p style="padding:10px">场景描述：{{ item.describeInfo }}</p>
+                  </div>
+
+                  <span style="float:right">{{ element.placeholder }}</span>
+                </div>
+              </el-form-item>
+            </div>
             <div v-else>
               <!-- 自定义信息 -->
               <div v-if="element.isCoustomInfo">
@@ -462,6 +475,19 @@
                   </div>
                 </el-form-item>
               </div>
+              <!-- 分活动 -->
+              <div v-else-if="element.systemName == '分活动'" class="form-item-input">
+                <el-form-item :label="element.title">
+                  <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                    <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                      <el-checkbox v-model="setForm.activityOptions" :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人)</el-checkbox>
+                      <p style="padding:10px">场景描述：{{ item.describeInfo }}</p>
+                    </div>
+
+                    <span style="float:right">{{ element.placeholder }}</span>
+                  </div>
+                </el-form-item>
+              </div>
               <div v-else>
                 <!-- 自定义信息 -->
                 <div v-if="element.isCoustomInfo">
@@ -792,6 +818,19 @@
                               <el-radio :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
                             </div>
                           </el-radio-group>
+                        </div>
+                      </el-form-item>
+                    </div>
+                    <!-- 分活动 -->
+                    <div v-else-if="followItem.systemName == '分活动'" class="form-item-input">
+                      <el-form-item :label="followItem.title">
+                        <div style="min-width: 300px; display: inline-block; vertical-align: top">
+                          <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                            <el-checkbox v-model="setForm.activityOptions" :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人)</el-checkbox>
+                            <p style="padding:10px">场景描述：{{ item.describeInfo }}</p>
+                          </div>
+
+                          <span style="float:right">{{ followItem.placeholder }}</span>
                         </div>
                       </el-form-item>
                     </div>
@@ -1132,6 +1171,7 @@ export default {
   name: 'applySet',
   data() {
     return {
+      eventInfoChildList:[],
       positionIndex:'',
       submitStatus:false,
       boxStatus:true,
@@ -1646,6 +1686,27 @@ export default {
           this.url = 'https://cmms-h5-dev.ctgbs.com'
         }
         this.imgUrl = `${this.url}/guest/#/login?ehc=${response.data.eventHashCode}&ec=${response.data.code}`
+      })
+    },
+    // 分活动管理
+    cmsEventInfoChildrenFn(eventCode){
+      this.eventCode=eventCode?eventCode:this.eventCode
+      request({
+        url: 'api/register/cmsEventInfoChildren/page',
+        method: 'POST',
+        data: {
+          current:1,
+          isPage: true,
+          size: 20,
+          data: {
+            eventCode: this.eventCode
+          },
+          funcModule: '分活动管理',
+          funcOperation: '获取分活动列表'
+        }
+      }).then(res => {
+        console.log(res,'resres');
+        this.eventInfoChildList=res.data
       })
     },
     // 编辑结果页
