@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="bs-new-container app-container">
-      <bs-form ref="bsForm" :form="form"></bs-form>
+      <!-- <bs-form ref="bsForm" :form="form"></bs-form> -->
       <!-- <bs-table ref="bsTable" :mainData="mainData" @fileCallback="fileCallback"></bs-table> -->
       <!-- <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
         <el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="item.title" :name="item.name">
