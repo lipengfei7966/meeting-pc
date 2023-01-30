@@ -119,7 +119,15 @@ export default {
       minute: 'minute', // 分钟
       second: 'second', // 秒
       usingFlag: 'status', // 状态
-      auditLogInfo: 'Audit information' // 审核信息
+      auditLogInfo: 'Audit information', // 审核信息
+      condition: 'condition', // 条件
+      equalTo: 'equal to', // 等于
+      include: 'include', // 包含
+      greater: 'greater than', // 大于
+      less: 'less than', // 小于
+      subordinate: 'subordinate', // 从属
+      beEmpty: 'be empty', // 为空
+      noneNull: 'none null' // 不为空
     },
     placeholder: {
       choose: 'choose', // 选择

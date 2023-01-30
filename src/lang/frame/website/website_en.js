@@ -35,30 +35,40 @@ export default {
         set: 'Participants Coding Settings'// 参会人编码设置
       }
     },
-    customlanguage:{
-      title:'customlanguage',//自定义数据多语言设置
-      query:{
-        dictionariesId:'Dictionaries Id',//字典ID
-        dataFunction:'Data Function',//功能
-        superiorSettingId:'Superior SettingId',//上级设置ID
-        settingItem:'Setting Item',//设置项
-        dictionaryContent:'Dictionary Content'//字典内容
+    customlanguage: {
+      title: 'customlanguage', // 自定义数据多语言设置
+      query: {
+        dictionariesId: 'Dictionaries Id', // 字典ID
+        dataFunction: 'Data Function', // 功能
+        superiorSettingId: 'Superior SettingId', // 上级设置ID
+        settingItem: 'Setting Item', // 设置项
+        dictionaryContent: 'Dictionary Content'// 字典内容
       },
-      btn:{
-        batchEditing:'Batch editing',//批量编辑
-        edit:'Edit',//编辑
-        cancel:'Cancel',//取消
-        save:'Save',//保存
-        export:'Export',//导出
-        functionSet:'Function Set',//功能设置
+      tab: {
+        meetingManagement: 'Meeting management', // 会议管理
+        subActivityManagement: 'Sub-activity management', // 分活动管理
+        microstationDesign: 'Microstation design', // 微站设计
+        articleManagement: 'Article management', // 文章管理
+        registrationSetting: 'Registration setting', // 报名设置
+        checkinManagement: 'Check-in management', // 签到管理
+        richText: 'Rich text' // 富文本
       },
-      list:{
-        dataFunction:'Data Function',//功能
-        module:'Module',//模块
-        settingItem:'Setting item',//设置项
-        simplifiedChinese:'Simplified Chinese',//中文简体
-        english:'English',//英文
-        hostLanguage:'Host language',//主语言
+      btn: {
+        batchEditing: 'Batch editing', // 批量编辑
+        edit: 'Edit', // 编辑
+        cancel: 'Cancel', // 取消
+        save: 'Save', // 保存
+        export: 'Export', // 导出
+        functionSet: 'Function Set' // 功能设置
+      },
+      list: {
+        dataFunction: 'Data Function', // 功能
+        module: 'Module', // 模块
+        settingItem: 'Setting item', // 设置项
+        simplifiedChinese: 'Simplified Chinese', // 中文简体
+        english: 'English', // 英文
+        hostLanguage: 'Host language', // 主语言
+        operation: 'operation' // 操作
       }
     },
     article: {
@@ -79,82 +89,82 @@ export default {
         articleContent: 'Contents of Article'// 文章内容
       }
     },
-     atlas: {
-       atlasTitle:"Atlas title",
-       atlasIntroduction:"Atlas introduction",
-       numberOfPictures:"Number of pictures",
-       operation:"Operation",
-       details:"Details",
-       delete:"Delete",
-       deletionConfirmation:"Deletion confirmation",
-       deleteInformation:"After deletion, all images and information in the album will be deleted。",
-       ConfirmDelete:"Please confirm whether to delete it？",
-       determine:"Determine",
-       cancel:"Cancel",
-       save:"Save",
-       deleting:"Deleting",
-       deletSuccess:"Deleting the atlas succeeded",
-       cancelDelete:"Cancel delete",
-       add:{
-         atlasAddition:"Atlas addition",
-         save:"Save",
-         saveSuccessfully:"Save successfully"
-       },
-       edit:{
-         atlasEditor:"Atlas editor"
-       }
-     },
-    atlasAndPicture:{
-      editInformation:"Edit the brochure information",
-      picture:{
-        atlasDetails:"Atlas details",
-        pictureInformation: "Picture information",
-        searchInfo:"Please enter keywords to search for image descriptions",
-        search:"Search",
-        reset:"Reset",
-        batchUpload:"Batch upload",
-        addAPicture:"Add a picture",
+    atlas: {
+      atlasTitle: 'Atlas title',
+      atlasIntroduction: 'Atlas introduction',
+      numberOfPictures: 'Number of pictures',
+      operation: 'Operation',
+      details: 'Details',
+      delete: 'Delete',
+      deletionConfirmation: 'Deletion confirmation',
+      deleteInformation: 'After deletion, all images and information in the album will be deleted.',
+      ConfirmDelete: 'Please confirm whether to delete it ?',
+      determine: 'Determine',
+      cancel: 'Cancel',
+      save: 'Save',
+      deleting: 'Deleting',
+      deletSuccess: 'Deleting the atlas succeeded',
+      cancelDelete: 'Cancel delete',
+      add: {
+        atlasAddition: 'Atlas addition',
+        save: 'Save',
+        saveSuccessfully: 'Save successfully'
+      },
+      edit: {
+        atlasEditor: 'Atlas editor'
+      }
+    },
+    atlasAndPicture: {
+      editInformation: 'Edit the brochure information',
+      picture: {
+        atlasDetails: 'Atlas details',
+        pictureInformation: 'Picture information',
+        searchInfo: 'Please enter keywords to search for image descriptions',
+        search: 'Search',
+        reset: 'Reset',
+        batchUpload: 'Batch upload',
+        addAPicture: 'Add a picture',
         loading: 'Loading', // 加载中
-        picture:"Picture",
-        pictureDescription:"Picture description",
-        clickEffect:"Click effect",
-        imageClickEffect:'Image click effect',
-        not:"Not",
-        ViewEnlargedImage:"View enlarged image",
-        skipColumn:"Skip column",
-        OpenTheArticle:"Open the article",
-        customLink:"Custom link",
-        jumpPosition:"Jump position",
-        language:"Language",
-        operation:"Operation",
-        edit:"edit",
-        delete:"Delete",
-        requireAtals:"Please enter the name of the album",
+        picture: 'Picture',
+        pictureDescription: 'Picture description',
+        clickEffect: 'Click effect',
+        imageClickEffect: 'Image click effect',
+        not: 'Not',
+        ViewEnlargedImage: 'View enlarged image',
+        skipColumn: 'Skip column',
+        OpenTheArticle: 'Open the article',
+        customLink: 'Custom link',
+        jumpPosition: 'Jump position',
+        language: 'Language',
+        operation: 'Operation',
+        edit: 'edit',
+        delete: 'Delete',
+        requireAtals: 'Please enter the name of the album',
         saveSuccess: 'Save Success'
       },
-      del:{
-        delPrompt:"After deletion, the image will be deleted from the referenced page。",
-        confirmDelete:'Please confirm whether to delete it？',
-        delSuccess:"Image deleted successfully",
+      del: {
+        delPrompt: 'After deletion, the image will be deleted from the referenced page.',
+        confirmDelete: 'Please confirm whether to delete it ?',
+        delSuccess: 'Image deleted successfully'
 
       }
     },
-    pictureView:{
-      loadFailure:"Load failure",
-      reupload:"Reupload",
-      clickUpload:"Click upload",
-      editPicture:"Edit picture",
-      addAPicture:"Add a picture",
-      viewPictures:"查看图片",
-      add:{
-        seletLanguage:"Please select a language",
-        selectImage:"Please select image click effect",
-        uploading:"Uploading, please hold on",
-        uploadSuccess:"Picture uploaded successfully",
-        noPicture:"Please upload pictures",
-        addSuccess:"Picture added successfully",
-        addFail:"Picture editing success",
-        batchUpload:"Batch upload success",
+    pictureView: {
+      loadFailure: 'Load failure',
+      reupload: 'Reupload',
+      clickUpload: 'Click upload',
+      editPicture: 'Edit picture',
+      addAPicture: 'Add a picture',
+      viewPictures: '查看图片',
+      add: {
+        seletLanguage: 'Please select a language',
+        selectImage: 'Please select image click effect',
+        uploading: 'Uploading, please hold on',
+        uploadSuccess: 'Picture uploaded successfully',
+        noPicture: 'Please upload pictures',
+        addSuccess: 'Picture added successfully',
+        addFail: 'Picture editing success',
+        batchUpload: 'Batch upload success'
       }
     },
     activityManagement: {
@@ -582,7 +592,7 @@ export default {
       saveSuccess: 'Save Success', // 保存成功
       chooseTemplate: 'Choose Template', // 选择模板
       reselectTheTemplate: 'Reselect the template', // 重新选择模板
-      settingLanguage:'Setting language',//设置其他语言
+      settingLanguage: 'Setting language', // 设置其他语言
       moreTemplatesExpect: 'More Templates Expect', // 更多模板 敬请期待
       PleaseSelectaTemplate: 'Please select a template!', // 请选择一个模板！
       noMoreTemplatesYet: 'No more templates yet!', // 暂无更多模板！
