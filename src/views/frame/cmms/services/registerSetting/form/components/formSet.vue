@@ -1863,9 +1863,9 @@ export default {
         url: 'api/register/cmsEventInfoChildren/page',
         method: 'POST',
         data: {
-          current:1,
-          isPage: true,
-          size: 20,
+          // current:1,
+          isPage: false,
+          // size: 20,
           data: {
             eventCode: this.eventCode
           },
