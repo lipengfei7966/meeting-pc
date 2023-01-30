@@ -12,14 +12,14 @@ export default {
         param: this.param,
         initType: 'param',
         styleType: 'medium',
-        titleName: '签到场景',
+        titleName: this.$t('attendee.checkScene'),
         api: {
           save: '/api/register/signupDictype/save'
         },
 
         formData: [
           {
-            label: '场景名称',
+            label: this.$t('attendee.sceneName'),
             prop: 'name',
             element: 'input-validate',
             attrs: {

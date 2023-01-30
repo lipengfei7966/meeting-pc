@@ -29,6 +29,10 @@ export default {
     contDelMsg: '无法删除场景',
     cantDelMsg: '无法删除默认场景',
     cantCodeMsg: '无法获取场景code',
+    scene: '场景',
+    checkScene: '签到场景',
+    sceneName: '场景名称',
+    default: '默认',
     msg: {
       tip: '删除场景',
       confirmDelete: '确定要删除此场景吗？'
@@ -42,7 +46,7 @@ export default {
       signIn: '签到',
       signInSet: '签到设置',
       signInHistory: '签到记录',
-      adScene: '添加场景',
+      addScene: '添加场景',
       delScene: '删除场景',
       cancel: '取消',
       confirm: '确定'
@@ -51,6 +55,14 @@ export default {
       '2': '全部',
       '0': '未办证',
       '1': '已办证'
+    },
+    signTab: {
+      '2': '全部',
+      '0': '未签到',
+      '1': '已签到'
+    },
+    setTab: {
+      default: '默认'
     },
     detail: {
       personnelCode: '人员编码',
@@ -71,7 +83,8 @@ export default {
     record: {
       '0001': '默认',
       '0084': '暂住证',
-      '0110': '护照'
+      '0110': '护照',
+      '0164': 'VIP'
     },
     set: {
       certificateSettings: '证件设置',

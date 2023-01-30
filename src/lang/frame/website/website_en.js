@@ -3,7 +3,7 @@ export default {
     version: 'Version', // 版本
     unpublished: 'Unpublished', // 未发布
     eventInfo: {
-      title: 'Conference Management', // 会议管理
+      title: 'Conference Management ', // 会议管理
       query: {
         eventName: 'Meeting Name', // 会议名称
         startDate: 'Meeting Start Date', // 会议开始日期
@@ -445,6 +445,9 @@ export default {
         length: 'Length', // 长度
         type: 'Build Type', // 生成类型
         startCode: 'Start Code'// 起始码
+      },
+      placeholder: {
+        length: 'The minimum is 2 and the maximum is 16'
       }
     },
     role: {
