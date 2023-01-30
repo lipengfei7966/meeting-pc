@@ -44,8 +44,21 @@ export default {
         settingItem:'Setting Item',//设置项
         dictionaryContent:'Dictionary Content'//字典内容
       },
+      btn:{
+        batchEditing:'Batch editing',//批量编辑
+        edit:'Edit',//编辑
+        cancel:'Cancel',//取消
+        save:'Save',//保存
+        export:'Export',//导出
+        functionSet:'Function Set',//功能设置
+      },
       list:{
-        
+        dataFunction:'Data Function',//功能
+        module:'Module',//模块
+        settingItem:'Setting item',//设置项
+        simplifiedChinese:'Simplified Chinese',//中文简体
+        english:'English',//英文
+        hostLanguage:'Host language',//主语言
       }
     },
     article: {

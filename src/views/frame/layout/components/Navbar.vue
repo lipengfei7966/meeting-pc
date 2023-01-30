@@ -489,6 +489,10 @@ export default {
           type: 'success'
         })
       }
+      // ---st 设置时间戳监听本地存储变化 触发对应事件，（自定义数据多语言）
+      const timestamp = Date.parse(new Date());
+      this.setSessionItem("LANGUAGE_SWITCH", timestamp);
+      // ---end
     },
     handleChangePwd() {
       this.isChangePwdDialogueShow = true
