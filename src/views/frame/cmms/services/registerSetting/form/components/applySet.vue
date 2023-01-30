@@ -1173,21 +1173,13 @@ export default {
     return {
       eventInfoChildList:[],
       positionIndex:'',
-      submitStatus:false,
-      boxStatus:true,
       queryFollowList:{
         isTogethe:1,
         followList:[]
       },
-      orgSetInfoList:[],
       pageIndexArr:[],
       followList:[],
       dialogFollowVisible: false,
-      followForm: {
-        name: '',
-        companyName: ''
-      },
-      formLabelWidth: '80px',
       pageTotal:0,
       isSaveHref:false,
       theCertificateType:[],//证件类型回显
@@ -1523,7 +1515,6 @@ export default {
           this.applySetForm.togetheJson = []
           this.applySetForm.id = ''
           this.isSaveHref=false
-          this.submitStatus=false
           this.queryFollowList={
             isTogethe:1,
             followList:[]
@@ -1543,7 +1534,6 @@ export default {
           }
         } else {
           this.isSaveHref=true
-          this.submitStatus=false
           this.applySetForm.isVerification = res.data.isVerification
           this.applySetForm.registerVerification = [...new Set(res.data.registerVerification.split(','))]
           this.applySetForm.loginVerification = [...new Set(res.data.loginVerification.split(','))]
@@ -1587,7 +1577,6 @@ export default {
       this.pageTotal=0
       this.pagingCount=0
       this.signupFieldOptions=[]
-      this.boxStatus=true
       this.positionIndex=''
       request({
         url: '/api/biz/cmsEventInfo/get',
@@ -1600,7 +1589,6 @@ export default {
       }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
-          this.orgSetInfoList = JSON.parse(response.data.json)
           // this.signupFieldOptions = res.data
           this.pageIndexArr=[]
           this.setInfoList.forEach((v,index)=>{
@@ -1690,7 +1678,7 @@ export default {
     },
     // 分活动管理
     cmsEventInfoChildrenFn(eventCode){
-      this.eventCode=eventCode?eventCode:this.eventCode
+      var evCode=eventCode?eventCode:this.eventCode
       request({
         url: 'api/register/cmsEventInfoChildren/page',
         method: 'POST',
@@ -1699,7 +1687,7 @@ export default {
           isPage: true,
           size: 20,
           data: {
-            eventCode: this.eventCode
+            eventCode: evCode
           },
           funcModule: '分活动管理',
           funcOperation: '获取分活动列表'
@@ -1754,7 +1742,6 @@ export default {
             console.log(res, '保存并生成报名链接')
             if (res.status) {
               this.isSaveHref=true
-              this.submitStatus=true
               this.$message({ message: this.$t('applySet.SignUpAndGenerateLinkSuccessfully'), type: 'success' })
               this.signupContactCodeRuleFn()
               // this.$emit('stepIndex', step)

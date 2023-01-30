@@ -441,7 +441,7 @@
       </div>
 
       <div v-if="setInfoList.length > 0">
-        <p class="systemName">{{$t('form.systemName')}}: {{ setInfoList[checkedIndex].systemName }}</p>
+        <p class="systemName">{{$t('form.systemName')}}: {{ setInfoList[checkedIndex]&&setInfoList[checkedIndex].systemName }}</p>
 
         <div class="eidtContent">
           <!-- 姓名 -->
