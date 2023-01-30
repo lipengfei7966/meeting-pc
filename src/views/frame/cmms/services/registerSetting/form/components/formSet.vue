@@ -1863,12 +1863,8 @@ export default {
         url: 'api/register/cmsEventInfoChildren/page',
         method: 'POST',
         data: {
-          // current:1,
           isPage: false,
-          // size: 20,
-          data: {
-            eventCode: this.eventCode
-          },
+          data: {eventCode: this.eventCode,isGoLive:'1'},
           funcModule: '分活动管理',
           funcOperation: '获取分活动列表'
         }
