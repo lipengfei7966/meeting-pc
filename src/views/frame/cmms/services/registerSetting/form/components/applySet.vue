@@ -425,7 +425,7 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField" :rules="[{ required: true, message: '请选择协助报名开放字段', trigger: ['blur', 'change'] }]">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
-                <el-checkbox v-for="item in signupFieldOptions" :key="item.mapCode" :label="item.mapCode">{{item.systemName}}</el-checkbox>
+                <el-checkbox v-for="item in signupFieldOptions" :key="item.mapCode" :label="item.mapCode">{{item.title}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="协助报名表单位置及必填项" prop="togetheJson">
