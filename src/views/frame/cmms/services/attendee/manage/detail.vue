@@ -19,7 +19,8 @@
       <div v-for="element in setInfoList" :key="element.mapCode">
         <!-- 分割线 -->
         <div v-if="element.systemName == '分割线'" class="form-item-input">
-          <el-divider content-position="center">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</el-divider>
+          <!-- <el-divider content-position="center">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</el-divider> -->
+          <el-divider content-position="center">{{ element.placeholder }}</el-divider>
         </div>
 
         <!-- 分页 -->
@@ -29,7 +30,8 @@
 
         <!-- 说明信息 -->
         <div v-else-if="element.systemName == '说明信息'" class="form-item-input">
-          <pre style="padding-left: 150px">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</pre>
+          <!-- <pre style="padding-left: 150px">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</pre> -->
+          <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
         </div>
 
         <div v-else>
