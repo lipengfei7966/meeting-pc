@@ -4,9 +4,8 @@
       <el-row :gutter="20" style='width:94%;' justify="space-between">
         <template v-for='(f, index) in expandStatus ?  (form.formData[0].attrs&&form.formData[0].attrs.cols) ? form.formData.slice(0,2) : form.formData.slice(0, 3) :form.formData'>
           <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if='f.isShow' :key='index'>
-            <!-- {{ f }} -->
             <!-- 日期 -->
-            <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(`count.${ $route.meta.title.replace('m', '' )}.form.${f.prop}`)" :prop='f.prop'>
+            <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(f.label)" :prop='f.prop'>
               <el-date-picker v-model="form.listQuery.data[f.prop]" :picker-options="f['picker-options']" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
               </el-date-picker>
             </el-form-item>
@@ -59,8 +58,7 @@
               </el-row>
             </el-form-item>
             <!-- 下拉输入 -->
-            <!-- :label="$t(`count.${ $route.meta.title.replace('m', '' )}.form.${f.prop}`)" -->
-            <el-form-item v-else :label="$t(`count.${ $route.meta.title.replace('m', '' )}.form.${f.prop}`)" :prop="f.prop">
+            <el-form-item v-else :label="f.label" :prop="f.prop">
               <!-- 字典码表 -->
               <el-select v-if="f.list && dataDictList[f.list]" v-model="form.listQuery.data[f.prop]" v-bind="f.attrs" placeholder="" @change="f.event && f.event.change()">
                 <el-option v-for="item in dataDictList[f.list]" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -165,7 +163,7 @@ export default {
       func: toolUtil,
       loading: false,
       expandStatus: process.env.EXPAND_FLG,
-      expandText: this.$t('biz.btn.open'),
+      expandText: this.$t('website.department.expand'),
       addQueryConditionVisible: true,
       datePick: {
         dateStartBefore: {},

@@ -26,6 +26,8 @@ export default {
         endDate: '结束时间',
         eventPlace: '活动地点',
         eventDate: '会议时间',
+        mainLanguage: '主语言', // 主语言
+        multiLanguage: '多语言', // 多语言
         eventHashCode: '会议哈希'
       },
       btn: {
@@ -33,30 +35,40 @@ export default {
         set: '参会人编码设置'
       }
     },
-    customlanguage:{
-      title:'自定义数据多语言设置',
-      query:{
-        dictionariesId:'字典ID',
-        dataFunction:'功能',
-        superiorSettingId:'上级设置ID',
-        settingItem:'设置项',
-        dictionaryContent:'字典内容'
+    customlanguage: {
+      title: '自定义数据多语言设置',
+      query: {
+        dictionariesId: '字典ID',
+        dataFunction: '功能',
+        superiorSettingId: '上级设置ID',
+        settingItem: '设置项',
+        dictionaryContent: '字典内容'
       },
-      btn:{
-        batchEditing:'批量编辑',
-        edit:'编辑',
-        cancel:'取消',
-        save:'保存',
-        export:'导出',
-        functionSet:'功能设置',
+      tab: {
+        meetingManagement: '会议管理',
+        subActivityManagement: '分活动管理',
+        microstationDesign: '微站设计',
+        articleManagement: '文章管理',
+        registrationSetting: '报名设置',
+        checkinManagement: '签到管理',
+        richText: '富文本'
       },
-      list:{
-        dataFunction:'功能',
-        module:'模块',
-        settingItem:'设置项',
-        simplifiedChinese:'中文简体',
-        english:'英文',
-        hostLanguage:'主语言',
+      btn: {
+        batchEditing: '批量编辑',
+        edit: '编辑',
+        cancel: '取消',
+        save: '保存',
+        export: '导出',
+        functionSet: '功能设置'
+      },
+      list: {
+        dataFunction: '功能',
+        module: '模块',
+        settingItem: '设置项',
+        simplifiedChinese: '中文简体',
+        english: '英文',
+        hostLanguage: '主语言',
+        operation: '操作'
       }
     },
     article: {
@@ -75,6 +87,83 @@ export default {
         articleTitle: '文章标题',
         articlePic: '文章首图',
         articleContent: '文章内容'
+      }
+    },
+    atlas: {
+      atlasTitle: '图册名称',
+      atlasIntroduction: '图册介绍',
+      numberOfPictures: '图片数量',
+      operation: '操作',
+      details: '详情',
+      delete: '删除',
+      deletionConfirmation: '删除确认',
+      deleteInformation: '删除后该图册内所有图片及信息均被删除。',
+      ConfirmDelete: '请确认是否删除？',
+      determine: '确定',
+      cancel: '取消',
+      save: '保存',
+      deleting: '删除中',
+      deletSuccess: '删除图册成功',
+      cancelDelete: '取消删除',
+      add: {
+        atlasAddition: '图册新增',
+        save: '保存中',
+        saveSuccessfully: '保存成功'
+      },
+      edit: {
+        atlasEditor: '图册编辑'
+      }
+    },
+    atlasAndPicture: {
+      editInformation: '编辑图册信息',
+      picture: {
+        atlasDetails: '图册详情',
+        pictureInformation: '图片信息',
+        searchInfo: '请输入关键词搜索图片描述',
+        search: '查询',
+        reset: '重置',
+        batchUpload: '批量上传',
+        addAPicture: '添加图片',
+        loading: '加载中', // 加载中
+        picture: '图片',
+        pictureDescription: '图片描述',
+        clickEffect: '点击效果',
+        imageClickEffect: '图片点击效果',
+        not: '无',
+        ViewEnlargedImage: '查看放大图片',
+        skipColumn: '跳转栏目',
+        OpenTheArticle: '打开文章',
+        customLink: '自定义链接',
+        jumpPosition: '跳转位置',
+        language: '语言',
+        operation: '操作',
+        edit: '编辑',
+        delete: '删除',
+        requireAtals: '请输入图册名称',
+        saveSuccess: '保存成功'
+      },
+      del: {
+        delPrompt: '删除后该图片将在被引用页面删除。',
+        confirmDelete: '请确认是否删除？',
+        delSuccess: '删除图片成功'
+      }
+    },
+    pictureView: {
+      loadFailure: '加载失败',
+      reupload: '重新上传',
+      clickUpload: '点击上传',
+      editPicture: '编辑图片',
+      addAPicture: '添加图片',
+      viewPictures: '查看图片',
+      add: {
+        seletLanguage: '请选择语言',
+        selectImage: '请选择图片点击效果',
+        uploading: '上传中，请稍候',
+        uploadSuccess: '图片上传成功',
+        noPicture: '请上传图片',
+        addSuccess: '图片新增成功',
+        addFail: '图片编辑成功',
+        batchUpload: '批量上传成功'
       }
     },
     activityManagement: {
@@ -378,6 +467,9 @@ export default {
         length: '长度',
         type: '生成类型',
         startCode: '起始码'
+      },
+      placeholder: {
+        length: '最小为2，最大为16'
       }
     },
     role: {
@@ -499,7 +591,7 @@ export default {
       saveSuccess: '保存成功', // 保存成功
       chooseTemplate: '选择模板', // 选择模板
       reselectTheTemplate: '重新选择模板', // 重新选择模板
-      settingLanguage:'设置其他语言',//设置其他语言
+      settingLanguage: '设置其他语言', // 设置其他语言
       moreTemplatesExpect: '更多模板 敬请期待', // 更多模板 敬请期待
       PleaseSelectaTemplate: '请选择一个模板！', // 请选择一个模板！
       noMoreTemplatesYet: '暂无更多模板！', // 暂无更多模板！
@@ -521,8 +613,8 @@ export default {
       moduleTitle: '模块标题', // 模块标题
       enterModuleTitle: '请输入模块标题', // 请输入模块标题
       moduleType: '模块类型', // 模块类型
-      apply:'站内页面',//站内页面
-      selectApply:'请选择站内页面',//请选择站内页面
+      apply: '站内页面', // 站内页面
+      selectApply: '请选择站内页面', // 请选择站内页面
       selectmoduleType: '请选择模块类型', // 请选择模块类型
       selectThePage: '选择页面', // 选择页面
       selectPage: '请选择页面', // 请选择页面

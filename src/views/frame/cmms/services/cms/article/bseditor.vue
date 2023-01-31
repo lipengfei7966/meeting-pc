@@ -2,7 +2,7 @@
   <div style="margin-top: 5px">
     <!--    <span @click="materialSelection" style="position: relative; left: 90%; top: 50px; font-size: 12px; color: rgb(64, 158, 255); cursor: pointer">插入素材库图片</span>-->
     <div class="addMaterialWrap" v-if="!dialogVisible_">
-      <div class="wrap" @mouseover.stop="addActive($event)" @mouseout.stop="removeActive($event)"
+      <div class="wrap" @mouseenter="addActive($event)" @mouseleave="removeActive($event)"
            @mouseleave.stop="removeActive($event)">
         <div class="titleInfo" :style="{display:displayFlag}" style="display: flex;justify-content: center">
           插入素材库图片
@@ -71,7 +71,9 @@ export default {
     },
     removeActive($event) {
       $event.currentTarget.className = 'wrap'
+      clearTimeout()
       this.displayFlag = 'none'
+
     },
     initDialog() {
       const bsEditorFrame = this.$refs.bsEditorFrame
@@ -146,9 +148,9 @@ export default {
   transform: scale(0.95);
   font-weight: 500;
   text-align: center;
-  background-color: #373739;
+  background-color: #d4d4d4;
   border-radius: 2px;
   font-size: 12px;
-  color: #FFFFFF;
+  color: rgba(0,0,0,0.6);
 }
 </style>

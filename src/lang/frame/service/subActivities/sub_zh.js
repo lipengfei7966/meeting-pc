@@ -14,7 +14,8 @@ export default {
     to: '至',
     btns: {
       screen: '筛选',
-      newlyBuild: '新建'
+      newlyBuild: '新建',
+      createImmediately: '立即创建'
     },
     column: {
       subActivityName: '分活动名称',
@@ -23,6 +24,11 @@ export default {
       enable: '启用',
       applicantNum: '报名人数/上限',
       operation: '操作'
+    },
+    tableTxt: {
+      notStart: '未开始',
+      end: '已结束',
+      progress: '进行中'
     },
     dialogTxt: {
       unlimited: '不限',

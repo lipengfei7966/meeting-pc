@@ -91,10 +91,11 @@ export default {
     closeAll: 'closeAll' // 关闭所有
   },
   tableColSet: {
-    title: 'Table Column Settings', // 表格列设置
+    title: 'Table Column Settings', // 表格
     noCheckTip: 'Please check at least one item', // 请至少勾选一项
     props: 'attribute', // 属性
-    drag: 'drag' // 拖动
+    drag: 'drag', // 拖动
+    columnSetting: 'Column setting' // 列设置
   },
   biz: {
     route: {
@@ -118,7 +119,15 @@ export default {
       minute: 'minute', // 分钟
       second: 'second', // 秒
       usingFlag: 'status', // 状态
-      auditLogInfo: 'Audit information' // 审核信息
+      auditLogInfo: 'Audit information', // 审核信息
+      condition: 'condition', // 条件
+      equalTo: 'equal to', // 等于
+      include: 'include', // 包含
+      greater: 'greater than', // 大于
+      less: 'less than', // 小于
+      subordinate: 'subordinate', // 从属
+      beEmpty: 'be empty', // 为空
+      noneNull: 'none null' // 不为空
     },
     placeholder: {
       choose: 'choose', // 选择
@@ -147,7 +156,7 @@ export default {
       menuInfo: 'Menu information' // 菜单信息
     },
     btn: {
-
+      unlock: 'unlock', // 解除锁定
       quickConfirm: 'Confirm', // 确认
       quickConfirmList: 'Batch confirm', // 批量确认
       unlock: 'Unlock', // 解锁
@@ -194,10 +203,10 @@ export default {
       close: 'close', // 关闭
       reset: 'reset', // 重置
       extend: 'extend', // 查询扩展
-      open: 'open', // 展开
-      stow: 'stow', // 收起
-      expand: 'spread out', // 展开
-      contract: 'retract', // 收起
+      open: 'Expand', // 展开
+      stow: 'Fewer', // 收起
+      expand: 'Expand', // 展开
+      contract: 'Fewer', // 收起
       clear: 'clear', // 清空
       print: 'print', // 打印
       retry: 'retry', // 重发
@@ -250,7 +259,6 @@ export default {
       handle: 'handle', // 处理
       publish: 'publish', // 发布
       layout: 'layout' // 编排
-
     },
     msg: {
       tip: 'tip', // 提示

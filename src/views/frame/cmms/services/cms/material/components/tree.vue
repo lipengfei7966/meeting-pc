@@ -9,9 +9,9 @@
           <el-dropdown>
             <span class="el-dropdown-link"><i class="el-icon-s-operation el-icon--right"></i> </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click="addWork(node, data)"><span @click=";(dialogVisible = true), addWork(node, data)">新建文件夹</span></el-dropdown-item>
-              <el-dropdown-item @click="editWork(node, data)"><span @click=";(dialogVisible = true), editWork(node, data)">编辑文件夹</span></el-dropdown-item>
-              <el-dropdown-item @click="delWork(node, data)"><span @click="delWork(node, data)">删除文件夹</span></el-dropdown-item>
+              <el-dropdown-item @click="addWork(node, data)"><span @click=";(dialogVisible = true), addWork(node, data)">{{$t('material.btn.addfolder')}}</span></el-dropdown-item>
+              <el-dropdown-item @click="editWork(node, data)"><span @click=";(dialogVisible = true), editWork(node, data)">{{$t('material.btn.updatefolder')}}</span></el-dropdown-item>
+              <el-dropdown-item @click="delWork(node, data)"><span @click="delWork(node, data)">{{$t('material.btn.delfolder')}}</span></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </span>
@@ -20,12 +20,12 @@
     <!-- 弹窗 -->
     <el-dialog destroy-on-close :title="title_" :visible.sync="dialogVisible" width="500px" :before-close="handleClose">
       <div style="padding: 20px 10px">
-        <span style="font-size: 14px; color: black">文件夹名称：</span>
-        <el-input style="width: 80%" v-model="workName" placeholder="请输入文件夹名称："></el-input>
+        <span style="font-size: 14px; color: black">{{$t('material.form.folderName')}}</span>
+        <el-input style="width: 80%" v-model="workName" :placeholder="$t('material.form.folderNamePH')"></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="present_">确 定</el-button>
+        <el-button @click="dialogVisible = false">{{$t('table.cancel')}}</el-button>
+        <el-button type="primary" @click="present_">{{$t('table.confirm')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -43,7 +43,7 @@ export default {
         label: 'name'
       },
       dialogVisible: false,
-      title_: '新建文件夹',
+      title_: this.$t('material.btn.addfolder'),
       workName: null,
       // 选中的数据
       getData: null
@@ -55,14 +55,14 @@ export default {
       this.$emit('matter', data)
     },
     addWork(node, data) {
-      this.title_ = '新建文件夹'
+      this.title_ = this.$t('material.btn.addfolder')
       // 清空名称
       this.workName = null
       this.getData = data
       console.log(node, data, 'hkz')
     },
     editWork(node, data) {
-      this.title_ = '编辑文件夹'
+      this.title_ = this.$t('material.btn.updatefolder')
       this.getData = data
       this.workName = data.name
       console.log(node, data, 'hkz')
@@ -80,11 +80,11 @@ export default {
       console.log('提交', this.workName)
       if (this.workName == null || this.workName == '') {
         this.dialogVisible = true
-        this.$message('请输入文件夹名称')
+        this.$message(this.$t('material.form.folderNamePH'))
       } else {
-        if (this.title_ == '新建文件夹') {
+        if (this.title_ == this.$t('material.btn.addfolder')) {
           this.add()
-        } else if (this.title_ == '编辑文件夹') {
+        } else if (this.title_ == this.$t('material.btn.updatefolder')) {
           this.getData.name = this.workName
           this.edit()
         }
@@ -116,7 +116,7 @@ export default {
           if (res.data) {
             console.log(res.data)
             this.$message({
-              message: '新增成功',
+              message: this.$t('material.msg.addSuccessMsg'),
               type: 'success'
             })
             this.loadData()
@@ -135,7 +135,7 @@ export default {
           if (res.data) {
             console.log(res.data)
             this.$message({
-              message: '修改成功',
+              message: this.$t('material.msg.updateSuccessMsg'),
               type: 'success'
             })
             this.loadData()
@@ -154,7 +154,7 @@ export default {
           if (res.data) {
             console.log(res.data)
             this.$message({
-              message: '删除成功',
+              message: this.$t('material.msg.delSuccessMsg'),
               type: 'success'
             })
             this.loadData()

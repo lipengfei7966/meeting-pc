@@ -13,7 +13,7 @@ export default {
         param: this.param,
         // initType: 'param',
         styleType: 'medium',
-        titleName: this.$t('route.' + this.$route.meta.title),
+        titleName: this.$t('route.' + this.$route.meta.title) + ' ',
         api: {
           view: '/api/register/signupContactCodeRule/get',
           save: '/api/register/signupContactCodeRule/save',
@@ -66,7 +66,7 @@ export default {
               precision: 0,
               clearable: true,
               cols: 3,
-              placeholder: '最小为2，最大为16'
+              placeholder: this.$t('website.signupContactCodeRule.placeholder.length')
             },
             validate: [
               {
