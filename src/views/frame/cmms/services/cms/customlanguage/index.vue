@@ -335,6 +335,11 @@ export default {
         this.mainData.table.cols[1].format.dict = []
         this.form.listQuery.data.module = 'article'
         this.$refs.bsTable.getList()
+      }else if(tab._props.label == '会议管理'){
+        this.form.formData[1].list = []
+        this.mainData.table.cols[1].format.dict = []
+        this.form.listQuery.data.module = 'management'
+        this.$refs.bsTable.getList()
       }
       // console.log(tab, this.form.listQuery.data,this.form.formData);
     },
