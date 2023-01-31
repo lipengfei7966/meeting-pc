@@ -45,7 +45,7 @@ export default {
         dictionaryContent:'字典内容'
       },
       list:{
-        
+
       }
     },
     article: {
@@ -82,6 +82,7 @@ export default {
       deleting:"删除中",
       deletSuccess:"删除图册成功",
       cancelDelete:"取消删除",
+      selectPrompt:"请选择图册！",
       add:{
         atlasAddition:"图册新增",
         save:"保存中",

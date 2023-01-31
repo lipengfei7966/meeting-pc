@@ -45,7 +45,7 @@ export default {
         dictionaryContent:'Dictionary Content'//字典内容
       },
       list:{
-        
+
       }
     },
     article: {
@@ -82,6 +82,7 @@ export default {
        deleting:"Deleting",
        deletSuccess:"Deleting the atlas succeeded",
        cancelDelete:"Cancel delete",
+       selectPrompt:"Please select an atlas！",
        add:{
          atlasAddition:"Atlas addition",
          save:"Save",

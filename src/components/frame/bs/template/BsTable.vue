@@ -1369,6 +1369,7 @@ export default {
     },
     // 点击当前行
     handleClick(row) {
+      this.$emit('selectTableRow', row)
       if (this.mainData.table.showCheckbox) {
         this.$nextTick(() => {
           this.$refs.singleTable.toggleRowSelection([{ row }])

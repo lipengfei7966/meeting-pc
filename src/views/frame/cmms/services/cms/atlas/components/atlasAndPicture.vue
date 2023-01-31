@@ -137,7 +137,7 @@
               <div class="operationButton">
 <!--                <el-link type="primary" :underline="false" @click="pictureDetail(scope)">详情</el-link>-->
                 <el-link type="primary" :underline="false" @click="editPicture(scope)"  v-if="!disabled">{{ $t('website.atlasAndPicture.picture.edit') }}</el-link>
-                <el-link type="primary" :underline="false"  v-if="!disabled" @click="delPicture(scope)">{{ $t('website.atlasAndPicture.picture.delete') }}</el-link>
+                <el-link type="primary" :underline="false"  v-if="!disabled && delFlag" @click="delPicture(scope)">{{ $t('website.atlasAndPicture.picture.delete') }}</el-link>
               </div>
             </template>
           </u-table-column>
@@ -171,6 +171,7 @@ export default {
   data() {
     let that = this
     return {
+      delFlag:false,
       maxFileLen:0,
       eventCode:"",
       uploadLoading:false,
@@ -230,6 +231,7 @@ export default {
     // }else{
     //   this.disabled=false
     // }
+    this.delFlag=this.$route.params.delFlag
     this.headerTitle=this.$t('website.atlasAndPicture.picture.atlasDetails')
     //获取字典信息
     this.getItem()
