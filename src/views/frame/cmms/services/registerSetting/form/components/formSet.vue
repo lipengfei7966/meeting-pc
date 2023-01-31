@@ -1755,6 +1755,14 @@ export default {
       this.workInfoList.forEach(workInfoItem => {
         workInfoItem.isSee = false
       })
+      this.specialInfoList.forEach((v,index)=>{
+        if (v.value=='attendance') {
+          this.specialInfoList[index].isSee=true
+        }
+        if (v.value=='subactivity') {
+          this.specialInfoList[index].isSee=true
+        }
+        })
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
