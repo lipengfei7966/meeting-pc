@@ -494,7 +494,7 @@ export default {
     async onChangeAll(params) {
       if (this.form.listQuery.data.eventCode) {
         const { data } = await getLanguage({
-          data: 'm000151',//this.$route.params.data
+          data: this.$route.params.data,//'m000151'
           funcModule: "获取多语言JSON",
           funcOperation: "获取多语言JSON",
         })
