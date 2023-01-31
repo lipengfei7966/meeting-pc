@@ -1432,7 +1432,7 @@ export default {
       })
       this.queryFollowList.followList=this.followList
       if (this.followList.length>=1) {
-        this.pageUpdate()
+        // this.pageUpdate()
         this.setInfoList.forEach((v,index)=>{
         if(index == this.positionIndex){
           if(v.isTogethe==1){
@@ -1442,10 +1442,15 @@ export default {
             this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
           }
         }
-      })
-      if ( this.setInfoList.length==this.positionIndex) {
-        this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
-      }
+        })
+        if ( this.setInfoList.length==this.positionIndex) {
+          if(this.setInfoList[this.positionIndex]&&this.setInfoList[this.positionIndex].isTogethe==1){
+            this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+          }
+          if(this.setInfoList[this.positionIndex]==undefined||this.setInfoList[this.positionIndex].isTogethe==0){
+            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          }
+        }
       }
       console.log(this.setInfoList,'JSON.parse(res.data.togetheJson)');
     },
@@ -1454,15 +1459,16 @@ export default {
       this.dialogFormVisible = false
     },
     // 分页下标数组更新
-    pageUpdate(){
-      this.pageIndexArr=[]
-      this.setInfoList.forEach((v,index)=>{
-        if(v.systemName == '分页'){
-          this.pageIndexArr.push(index)
-        }
-      })
-      this.pageIndexArr.push(this.setInfoList.length)
-    },
+    // pageUpdate(){
+    //   debugger
+    //   this.pageIndexArr=[]
+    //   this.setInfoList.forEach((v,index)=>{
+    //     if(v.systemName == '分页'){
+    //       this.pageIndexArr.push(index)
+    //     }
+    //   })
+    //   this.pageIndexArr.push(this.setInfoList.length)
+    // },
     // 确定关闭隐私协议对话框
     privacySubmitForm(formName) {
       const req = window.frames['myframe_'].getContent()
@@ -1523,7 +1529,7 @@ export default {
             isTogethe:1,
             followList:[]
           }
-          this.pageUpdate()
+          // this.pageUpdate()
           this.positionIndex=''
           if (this.positionIndex==''||this.positionIndex==undefined) {
             if (this.pageIndexArr.length>=1) {
@@ -1532,9 +1538,30 @@ export default {
               this.positionIndex=this.setInfoList.length
             }
           }
+          // if (this.followList.length>=1) {
+          //   this.pageUpdate()
+          //   this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          // }
           if (this.followList.length>=1) {
-            this.pageUpdate()
-            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+            // this.pageUpdate()
+            this.setInfoList.forEach((v,index)=>{
+            if(index == this.positionIndex){
+              if(v.isTogethe==1){
+                this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+              }
+              if(v.systemName == '分页'){
+                this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+              }
+            }
+            })
+            if ( this.setInfoList.length==this.positionIndex) {
+              if(this.setInfoList[this.positionIndex]&&this.setInfoList[this.positionIndex].isTogethe==1){
+                this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+              }
+              if(this.setInfoList[this.positionIndex]==undefined||this.setInfoList[this.positionIndex].isTogethe==0){
+                this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+              }
+            }
           }
         } else {
           this.isSaveHref=true
@@ -1568,9 +1595,30 @@ export default {
               this.positionIndex=index
             }
           })
+          // if (this.followList.length>=1) {
+          //   this.pageUpdate()
+          //   this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          // }
           if (this.followList.length>=1) {
-            this.pageUpdate()
-            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+            // this.pageUpdate()
+            this.setInfoList.forEach((v,index)=>{
+            if(index == this.positionIndex){
+              if(v.isTogethe==1){
+                this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+              }
+              if(v.systemName == '分页'){
+                this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+              }
+            }
+            })
+            if ( this.setInfoList.length==this.positionIndex) {
+              if(this.setInfoList[this.positionIndex]&&this.setInfoList[this.positionIndex].isTogethe==1){
+                this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+              }
+              if(this.setInfoList[this.positionIndex]==undefined||this.setInfoList[this.positionIndex].isTogethe==0){
+                this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+              }
+            }
           }
           this.applySetForm.id = res.data.id
         }
