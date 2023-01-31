@@ -1530,4 +1530,9 @@ tr.el-table__row.el-table__row--striped.success-row td {
   float: none;
   margin: 0 10px;
 }
+.el-tabs__nav-prev,
+.el-tabs__nav-next {
+  height: 47px;
+  line-height: 47px !important;
+}
 </style>

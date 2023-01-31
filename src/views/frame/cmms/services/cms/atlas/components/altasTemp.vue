@@ -146,7 +146,7 @@ export default {
       this.form.listQuery.data.eventCode=this.eventCode
     }
     //初始化数据
-    // this.$refs.bsTable.getList({name:"search"})
+    this.$refs.bsTable.getList({name:"search"})
 
   },
   methods:{
@@ -162,7 +162,7 @@ export default {
           message: that.$t('website.atlas.selectPrompt')
         });
       }else{
-        this.$emit('handleOK',this.selectRow)
+        this.$emit('handleOk',this.selectRow)
       }
     },
     //取消

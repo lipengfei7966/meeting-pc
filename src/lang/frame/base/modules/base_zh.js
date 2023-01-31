@@ -121,7 +121,15 @@ export default {
       minute: '分钟',
       second: '秒',
       usingFlag: '状态',
-      auditLogInfo: '审核信息'
+      auditLogInfo: '审核信息',
+      condition: '条件',
+      equalTo: '等于',
+      include: '包含',
+      greater: '大于',
+      less: '小于',
+      subordinate: '从属',
+      beEmpty: '为空',
+      noneNull: '不为空'
     },
     placeholder: {
       choose: '',

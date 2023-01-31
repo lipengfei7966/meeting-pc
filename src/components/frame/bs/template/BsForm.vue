@@ -83,20 +83,20 @@
             </div>
             <div class="el-form-item-more-right">
               <el-input v-model="extraQuery[item.bind].value" clearable class="input-with-select">
-                <el-select v-model="extraQuery[item.bind].type" slot="prepend" placeholder="条件" style="width: 60px">
-                  <el-option label="等于" value="="></el-option>
-                  <el-option label="包含" value="like"></el-option>
-                  <el-option label="大于" value=">="></el-option>
-                  <el-option label="小于" value="<="></el-option>
-                  <el-option label="从属" value="in"></el-option>
-                  <el-option label="为空" value="isnull"></el-option>
-                  <el-option label="不为空" value="notnull"></el-option>
+                <el-select v-model="extraQuery[item.bind].type" slot="prepend" :placeholder="$t('biz.lbl.condition')" style="width: 60px">
+                  <el-option :label="$t('biz.lbl.equalTo')" value="="></el-option>
+                  <el-option :label="$t('biz.lbl.include')" value="like"></el-option>
+                  <el-option :label="$t('biz.lbl.greater')" value=">="></el-option>
+                  <el-option :label="$t('biz.lbl.less')" value="<="></el-option>
+                  <el-option :label="$t('biz.lbl.subordinate')" value="in"></el-option>
+                  <el-option :label="$t('biz.lbl.beEmpty')" value="isnull"></el-option>
+                  <el-option :label="$t('biz.lbl.noneNull')" value="notnull"></el-option>
                 </el-select>
               </el-input>
             </div>
           </el-col>
           <el-col :span="6" v-if="form.moreShowFlg && addQueryConditionVisible">
-            <span class="more-query" ref="moreQuery" @click="addQueryCondition">查询扩展&nbsp;+</span>
+            <span class="more-query" ref="moreQuery" @click="addQueryCondition">{{$t('biz.btn.extend')}}&nbsp;+</span>
           </el-col>
         </template>
         <el-col class="none"></el-col>
