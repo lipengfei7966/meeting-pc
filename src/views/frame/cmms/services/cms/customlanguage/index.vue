@@ -6,7 +6,7 @@
       <!-- 模块Tabs -->
       <template v-if="mainData.tabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
         <el-tabs v-model="activeName" type="border-card" style="margin-top: 3px" @tab-click="handleTabClick">
-          <el-tab-pane v-for="tab in mainData.tabs" :key="tab.id" :label="tab.label" :name="tab.name">
+          <el-tab-pane v-for="tab in mainData.tabs" :key="tab.id" :label="$t(`website.customlanguage.tab.${tab.label}`)" :name="tab.name">
             <!--  -->
             <!-- 简单文本---=---富文本 -->
             <!-- <template v-if="mainData.sonTabs" :style="{ width: clientWidth < 1366 ? (sidebar.opened ? '1163px' : '1323px') : 'auto' }">
@@ -21,19 +21,19 @@
       </template>
       <!-- 操作按钮 -->
       <div class="options">
-        <el-button v-if="multiLanguage.length>0" type="primary" v-show="batchShow" @click="batchClick">批量编辑</el-button>
-        <el-button v-if="multiLanguage.length>0" @click="batchCancel" v-show="!batchShow">取消</el-button>
-        <el-button v-if="multiLanguage.length>0" @click="batchSave" type="primary" v-show="!batchShow">保存</el-button>
-        <el-button type="primary" @click="exportExcel">导出</el-button>
+        <el-button v-if="multiLanguage.length>0" type="primary" v-show="batchShow" @click="batchClick">{{ $t('website.customlanguage.btn.batchEditing') }}</el-button>
+        <el-button v-if="multiLanguage.length>0" @click="batchCancel" v-show="!batchShow">{{ $t('website.customlanguage.btn.cancel') }}</el-button>
+        <el-button v-if="multiLanguage.length>0" @click="batchSave" type="primary" v-show="!batchShow">{{ $t('website.customlanguage.btn.save') }}</el-button>
+        <el-button type="primary" @click="exportExcel">{{ $t('website.customlanguage.btn.export') }}</el-button>
       </div>
       <!-- 表格数据 -->
       <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs" @initCallback='initCallback' v-if="date">
         <template slot="operation" slot-scope="scope">
-          <el-button type="text" v-if="!scope.row.isEdit && multiLanguage.length>0" @click="handleEditClick(scope.row)">编辑</el-button>
-          <el-button type="text" v-if="scope.row.isEdit && batchShow" @click="handleSaveClick(scope.row,scope)">保存</el-button>
+          <el-button type="text" v-if="!scope.row.isEdit && multiLanguage.length>0" @click="handleEditClick(scope.row)">{{ $t('website.customlanguage.btn.edit') }}</el-button>
+          <el-button type="text" v-if="scope.row.isEdit && batchShow" @click="handleSaveClick(scope.row,scope)">{{ $t('website.customlanguage.btn.save') }}</el-button>
           <!--  -->
-          <el-button type="text" v-if="scope.row.isEdit && multiLanguage.length>0 && batchShow" @click="handleCalClick(scope.row,scope)">取消</el-button>
-          <el-button type="text" size="small" @click="handleSetClick(scope.row)">功能设置</el-button>
+          <el-button type="text" v-if="scope.row.isEdit && multiLanguage.length>0 && batchShow" @click="handleCalClick(scope.row,scope)">{{ $t('website.customlanguage.btn.cancel') }}</el-button>
+          <el-button type="text" size="small" @click="handleSetClick(scope.row)">{{ $t('website.customlanguage.btn.functionSet') }}</el-button>
         </template>
         <!-- 中文 -->
         <template slot="zh" slot-scope="scope">
@@ -59,6 +59,7 @@ export default {
   name:'customlanguage',
   data(){
     return {
+      languageSwitch:'',//获取语言
       batchShow:true,//是否批量编辑
       dataList:[],//点击保存的数据（浅）
       codeName:'',//会议名称（中文）
@@ -149,7 +150,7 @@ export default {
           // }
         ]
       },
-      // 
+      //
       mainData: {
         isLang:true,
         initSearch: false,
@@ -168,37 +169,37 @@ export default {
           // },
           {
             id:'2',
-            label:'会议管理',
+            label:'meetingManagement',
             name:'会议管理'
           },
           {
             id:'3',
-            label:'分活动管理',
+            label:'subActivityManagement',
             name:'分活动管理'
           },
           {
             id:'4',
-            label:'微站设计',
+            label:'microstationDesign',
             name:'微站设计'
           },
           {
             id:'5',
-            label:'文章管理',
+            label:'articleManagement',
             name:'文章管理'
           },
           {
             id:'6',
-            label:'报名设置',
+            label:'registrationSetting',
             name:'报名设置'
           },
           {
             id:'7',
-            label:'签到管理',
+            label:'checkinManagement',
             name:'签到管理'
           },
           {
             id:'8',
-            label:'富文本',
+            label:'richText',
             name:'富文本'
           }
         ],
@@ -223,7 +224,7 @@ export default {
           cols: [
             {
               // LANG_MODULE  langModule
-              label: '模块',
+              label: 'website.customlanguage.list.module',//模块
               prop: 'module',
               width: '150',
               format: {
@@ -231,7 +232,7 @@ export default {
               }
             },
             {
-              label: '功能',
+              label: 'website.customlanguage.list.dataFunction',//功能
               prop: 'functions',
               width: '150',
               format: {
@@ -241,28 +242,28 @@ export default {
               }
             },
             {
-              label: '设置项',
+              label: 'website.customlanguage.list.settingItem',//设置项
               prop: 'setUpName',
               width: '150'
             },
             {
-              label:'中文简体',
+              label:'website.customlanguage.list.simplifiedChinese',//中文简体
               prop: 'zh',
               isShow: false,
               width: '240',
               isSlot: true,
             },
             {
-              label: '英文',
+              label: 'website.customlanguage.list.english',//英文
               prop: 'en',
               isShow: false,
               width: '240',
               isSlot: true,
             },
             {
-              label: '操作',
+              label: 'website.customlanguage.list.operation', //操作
               prop: 'operation',
-              width: '160',
+              width: '260',
               isSlot: true,
               align: 'center',
               fixed: 'right'
@@ -277,7 +278,7 @@ export default {
           }
         }
       },
-      activeName:'微站设计',
+      activeName:this.$t('website.customlanguage.tab.microstationDesign'),
       sonActiveName:'简单文本设置'
     }
   },
@@ -285,9 +286,8 @@ export default {
     // 初始化数据
     setTimeout(() => {
       if(this.$route.params && this.$route.params.eventCode){
-        debugger
         if(this.$route.params.module == 'website'){
-          this.activeName = '微站设计'
+          this.activeName = this.$t('website.customlanguage.tab.microstationDesign')
           this.form.listQuery.data.module = 'website'
         }
         this.form.listQuery.data.eventCode = this.$route.params.eventCode
@@ -298,39 +298,52 @@ export default {
     // 获取语言信息
   },
   mounted() {
+    window.addEventListener("setItem", () => {
+      this.languageSwitch = sessionStorage.getItem("LANGUAGE_SWITCH");
+      // ---st 调取改变表格语言
+      this.languageQuery()
+      // ---end
+    });
   },
   methods:{
     // 外层tabs（模块类型）
     handleTabClick(tab) {
+      console.log(tab._props.label,311)
       this.form.listQuery.data.functions = ''
       this.form.listQuery.data.setUpName = ''
-      if(tab._props.label == '报名设置'){
+      this.activeName = tab._props.label
+      if(tab._props.label == this.$t('website.customlanguage.tab.registrationSetting')){
+        // 报名设置
         this.form.formData[1].list = this.$t('datadict.langSignupFunction')
         this.mainData.table.cols[1].format.dict = this.$t('datadict.langSignupFunction')
         this.form.listQuery.data.module = 'signup'
         this.$refs.bsTable.getList()
-      }else if(tab._props.label == '微站设计'){
+      }else if(tab._props.label == this.$t('website.customlanguage.tab.microstationDesign')){
+        // 微站设计
         this.form.formData[1].list = this.$t('datadict.langWebsiteFunction')
         this.mainData.table.cols[1].format.dict = this.$t('datadict.langWebsiteFunction')
         this.form.listQuery.data.module = 'website'
         this.$refs.bsTable.getList()
-      }else if(tab._props.label =='分活动管理'){
+      }else if(tab._props.label == this.$t('website.customlanguage.tab.subActivityManagement')){
+        // 分活动管理
         this.form.formData[1].list = []
         this.mainData.table.cols[1].format.dict = []
         this.form.listQuery.data.module = 'sonActivity'
         this.$refs.bsTable.getList()
-      }else if(tab._props.label =='签到管理'){
+      }else if(tab._props.label == this.$t('website.customlanguage.tab.checkinManagement')){
+        // 签到管理
         this.form.formData[1].list = []
         this.mainData.table.cols[1].format.dict = []
         this.form.listQuery.data.module = 'scene'
         this.$refs.bsTable.getList()
-      }else if(tab._props.label == '文章管理'){
+      }else if(tab._props.label == this.$t('website.customlanguage.tab.articleManagement')){
+        // 文章管理
         this.form.formData[1].list = []
         this.mainData.table.cols[1].format.dict = []
         this.form.listQuery.data.module = 'article'
         this.$refs.bsTable.getList()
       }
-      // console.log(tab, this.form.listQuery.data,this.form.formData);
+      console.log(tab, this.form.listQuery.data,this.form.formData);
     },
     // 内层tabs（文本类型）
     // texHandleTabClick(tab){
@@ -371,14 +384,14 @@ export default {
           .then(res => {
             if(res){
               this.$message({
-              message: '保存成功',
+              message: this.$t('biz.msg.saveSuccess'),
               type: 'success'
           })
           this.$refs.bsTable.getList()
             }
           })
           .catch(() => {})
-      // 
+      //
       val.isEdit = false
     },
     handleCalClick(val){
@@ -390,21 +403,28 @@ export default {
       this.$refs.bsTable.getList()
     },
     handleSetClick(val){
-      if(this.activeName == '微站设计'){
-        // 微站
+      console.log(this.activeName ,404)
+      if(this.activeName == this.$t('website.customlanguage.tab.microstationDesign')){
+        // 微站设计
         this.$router.push({ name: 'microStationManagement', params: { ids: val.eventCode } })
-      }else if(this.activeName == '报名设置'){
+      }else if(this.activeName == this.$t('website.customlanguage.tab.registrationSetting')){
+        // 报名设置
         this.$router.push({ name: 'attendeeFormConfig', params: { data: val.eventCode ,name:this.codeName} })
-      }else if(this.activeName == '分活动管理'){
+      }else if(this.activeName == this.$t('website.customlanguage.tab.subActivityManagement')){
+        // 分活动管理
         this.$router.push({ name: 'activityManagement', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
-      }else if(this.activeName == '签到管理'){
+      }else if(this.activeName == this.$t('website.customlanguage.tab.checkinManagement')){
+        // 签到管理
         debugger
         this.$router.push({ name: 'attendeeSigninSet', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
-      }else if(this.activeName == '文章管理'){
-        // debugger
+      }else if(this.activeName == this.$t('website.customlanguage.tab.articleManagement')){
+        // 文章管理
         this.$router.push({ name: 'articleManage', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
-      }else if(this.activeName == '会议管理'){
-
+      }else if(this.activeName == this.$t('website.customlanguage.tab.meetingManagement')){
+        // 会议管理
+        this.$router.push({ name: 'eventInfoManage', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
+      }else if(this.activeName == this.$t('website.customlanguage.tab.richText')){
+        // 富文本
       }
       console.log(val.eventCode);
     },
@@ -436,14 +456,17 @@ export default {
                       }
                       if(item.prop == this.mainLanguage){
                         if(item.prop == 'zh'){
-                        item.label = '中文简体（主语言）'
+                        item.label = this.$t('website.customlanguage.list.simplifiedChinese') + '（' + this.$t('website.customlanguage.list.hostLanguage') + '）'
                       }else if(item.prop == 'en'){
-                        item.label = '英文（主语言）'
+                        item.label = this.$t('website.customlanguage.list.english') + '（' + this.$t('website.customlanguage.list.hostLanguage') + '）'
                       }
                       }else{
-                        let str = new RegExp("（主语言）","g")
-                        var str_one = item.label.replace(str,"");
-                        item.label = str_one
+                        if(item.prop == 'zh'){
+                          item.label = this.$t('website.customlanguage.list.simplifiedChinese')
+                        }
+                        if(item.prop == 'en'){
+                          item.label = this.$t('website.customlanguage.list.english')
+                        }
                       }
                     if(this.multiLanguage.length>0){
                     this.multiLanguage.forEach(son=>{
@@ -501,7 +524,7 @@ export default {
           .then(res => {
             if(res){
               this.$message({
-              message: '保存成功',
+              message: this.$t('biz.msg.saveSuccess'),
               type: 'success'
           })
           this.$refs.bsTable.getList()
