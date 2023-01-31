@@ -1755,14 +1755,7 @@ export default {
       this.workInfoList.forEach(workInfoItem => {
         workInfoItem.isSee = false
       })
-      this.specialInfoList.forEach((v,index)=>{
-        if (v.value=='attendance') {
-          this.specialInfoList[index].isSee=true
-        }
-        if (v.value=='subactivity') {
-          this.specialInfoList[index].isSee=true
-        }
-        })
+
       request({
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
@@ -1777,6 +1770,15 @@ export default {
           if (response.data.json) {
             this.setInfoList = JSON.parse(response.data.json)
             console.log(JSON.parse(response.data.json),'JSON.parse(response.data.json)');
+            debugger
+            this.setInfoList.forEach((v,index)=>{
+              if (v.systemName=='是否出席') {
+                this.specialInfoList[3].isSee=true
+              }
+              if (v.systemName=='分活动') {
+                this.specialInfoList[4].isSee=true
+              }
+            })
           } else {
             this.setInfoList = []
           }
