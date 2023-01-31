@@ -790,8 +790,8 @@
               <br />||||pageIndexArr:{{ pageIndexArr }}
               <br />||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
               <br />||element.isTogethe:{{ element.isTogethe }} -->
-              <p>positionIndex:{{ positionIndex }}</p>
-              <p>index:{{ index }}</p>
+              <!-- <p>positionIndex:{{ positionIndex }}</p>
+              <p>index:{{ index }}</p> -->
               <div class="followBox" v-if="index==positionIndex&&applySetForm.assistApplyOpenField.length>0&&queryFollowList.followList.length>0">
                 <div class="followForm">
                   <div v-for="followItem in element.followList" :key="followItem.mapCode">
