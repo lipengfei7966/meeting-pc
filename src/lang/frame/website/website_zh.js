@@ -65,6 +65,7 @@ export default {
         dataFunction: '功能',
         module: '模块',
         settingItem: '设置项',
+        settingType:'类型',
         simplifiedChinese: '中文简体',
         english: '英文',
         hostLanguage: '主语言',

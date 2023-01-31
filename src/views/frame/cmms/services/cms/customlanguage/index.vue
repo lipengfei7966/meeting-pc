@@ -247,6 +247,11 @@ export default {
               width: '150'
             },
             {
+              label: 'website.customlanguage.list.settingType',//类型
+              prop: 'typeName',
+              width: '150',
+            },
+            {
               label:'website.customlanguage.list.simplifiedChinese',//中文简体
               prop: 'zh',
               isShow: false,
@@ -304,14 +309,19 @@ export default {
       this.languageQuery()
       // ---end
     });
+    debugger
+    console.log(this.$t('datadict'));
+    console.log(this.$t('datadict.langType'));
   },
   methods:{
+    // 
     // 外层tabs（模块类型）
     handleTabClick(tab) {
       console.log(tab._props.label,311)
       this.form.listQuery.data.functions = ''
       this.form.listQuery.data.setUpName = ''
       this.activeName = tab._props.label
+      this.mainData.api.search = '/api/register/cmsEventFormLang/page'
       if(tab._props.label == this.$t('website.customlanguage.tab.registrationSetting')){
         // 报名设置
         this.form.formData[1].list = this.$t('datadict.langSignupFunction')
@@ -347,6 +357,32 @@ export default {
         this.mainData.table.cols[1].format.dict = []
         this.form.listQuery.data.module = 'management'
         this.$refs.bsTable.getList()
+      }else if(tab._props.label == '富文本'){
+        this.form.formData[1].list = []
+        this.mainData.table.cols[1].format.dict = []
+        this.form.listQuery.data.module = ''
+        debugger
+        this.mainData.api.search = '/api/biz/cmsEventInfoLang/get'
+        // language
+        this.form.listQuery.data.language = this.mainLanguage
+        // this.$refs.bsTable.getList()
+        this.$refs.bsTable.tableData = [
+          {
+            module:'signup',
+            functions:'',
+            setUpName:'宣传页会议简介',
+            en:'暂未配置',
+            zh:'暂未配置'
+          },
+          {
+            module:'signup',
+            functions:'',
+            setUpName:'协议内容',
+            en:'暂未配置',
+            zh:'暂未配置'
+          },
+        ]
+        this.$refs.bsTable.$refs.singleTable.reloadData(this.$refs.bsTable.tableData)
       }
       console.log(tab, this.form.listQuery.data,this.form.formData);
     },
@@ -449,7 +485,8 @@ export default {
                 this.mainLanguage = ''
               }
               if(res.data.multiLanguage){
-                this.multiLanguage = res.data.multiLanguage.split(',')
+                debugger
+                this.multiLanguage = JSON.parse(res.data.multiLanguage)
               }else{
                 this.multiLanguage = []
               }
