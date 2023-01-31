@@ -58,6 +58,9 @@ import { mapGetters } from 'vuex'
 // 日期格式化方法
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
+import { getLanguage } from '@/api/frame/form'
+import enRegistration from '@/lang/frame/service/Attendee/attendeeDetail_en.js'
+import zhRegistration from '@/lang/frame/service/Attendee/attendeeDetail_zh.js'
 export default {
   name: 'attendeeFormConfig',
   data () {
@@ -583,7 +586,7 @@ export default {
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
-    onChangeAll (params) {
+    async onChangeAll (params) {
       // 会议编码 params.code
       // 会议名称 params.name
 
@@ -617,6 +620,29 @@ export default {
       this.$refs.resultSet.getResultFn(params.code)
       this.$refs.resultSet.getEventInfo(params.code)
       this.$refs.attCodeSet.copyHrefShow=false
+      if (params.code) {
+        const { data } = await getLanguage({
+          data: params.code,//'m000151'
+          funcModule: "获取多语言JSON",
+          funcOperation: "获取多语言JSON",
+        })
+        if (data) {
+
+          if (data.en) {
+            Object.keys(data.en).forEach((item, i) => {
+              enRegistration.registration[item] = Object.values(data.en)[i]
+            })
+
+          }
+          if (data.zh) {
+            Object.keys(data.zh).forEach((item, i) => {
+              zhRegistration.registration[item] = Object.values(data.zh)[i]
+            })
+
+          }
+
+        }
+      }
     },
     initialize () {
       if (this.form.listQuery.data.eventCode == '') {
