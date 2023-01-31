@@ -1,3 +1,4 @@
+
 // 基础信息
 import enBase from '@/lang/frame/base/modules/base_en'
 import zhBase from '@/lang/frame/base/modules/base_zh'
@@ -53,6 +54,10 @@ import enAttendee from '@/lang/frame/service/Attendee/Attendee_en'
 import zhCount from '@/lang/frame/service/count/count_zh'
 import enCount from '@/lang/frame/service/count/count_en'
 
+// 参会人管理--详情
+import zhAttendeeDetail from '@/lang/frame/service/Attendee/attendeeDetail_zh'
+import enAttendeeDetail from '@/lang/frame/service/Attendee/attendeeDetail_en'
+
 const messages = {
   en: {
     ...enBase,
@@ -69,7 +74,8 @@ const messages = {
     ...enSub,
     ...enMaterial,
     ...enAttendee,
-    ...enCount
+    ...enCount,
+    ...enAttendeeDetail
   },
   zh: {
     ...zhBase,
@@ -86,7 +92,8 @@ const messages = {
     ...zhSub,
     ...zhMaterial,
     ...zhAttendee,
-    ...zhCount
+    ...zhCount,
+    ...zhAttendeeDetail
   }
 }
 

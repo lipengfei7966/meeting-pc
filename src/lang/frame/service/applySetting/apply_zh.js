@@ -115,7 +115,10 @@ export default {
     saveFail: '保存失败', // 保存失败
     customInformationExceeds: '新增自定义信息数量超出最大限制', // 新增自定义信息数量超出最大限制
     onlyonefileisallowedtoupload: '只允许上传一个文件', // 只允许上传一个文件
-    uploadedNotice: '注意: 只允许上传以下文件类型' // 注意: 只允许上传以下文件类型
+    uploadedNotice: '注意: 只允许上传以下文件类型', // 注意: 只允许上传以下文件类型
+    uploadAttachment: '上传附件', // 上传附件
+    delete: '删除', // 删除
+    download: '下载' // 下载
   },
   result: {
     resultSettings: '结果设置', // 结果设置
