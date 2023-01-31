@@ -790,8 +790,8 @@
               <br />||||pageIndexArr:{{ pageIndexArr }}
               <br />||index!=pageIndexArr[pageIndexArr.length-1]:{{ index!=pageIndexArr[pageIndexArr.length-1] }}
               <br />||element.isTogethe:{{ element.isTogethe }} -->
-              <!-- <p>positionIndex:{{ positionIndex }}</p>
-              <p>index:{{ index }}</p> -->
+              <p>positionIndex:{{ positionIndex }}</p>
+              <p>index:{{ index }}</p>
               <div class="followBox" v-if="index==positionIndex&&applySetForm.assistApplyOpenField.length>0&&queryFollowList.followList.length>0">
                 <div class="followForm">
                   <div v-for="followItem in element.followList" :key="followItem.mapCode">
@@ -1443,6 +1443,9 @@ export default {
           }
         }
       })
+      if ( this.setInfoList.length==this.positionIndex) {
+        this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+      }
       }
       console.log(this.setInfoList,'JSON.parse(res.data.togetheJson)');
     },
@@ -1458,6 +1461,7 @@ export default {
           this.pageIndexArr.push(index)
         }
       })
+      this.pageIndexArr.push(this.setInfoList.length)
     },
     // 确定关闭隐私协议对话框
     privacySubmitForm(formName) {
@@ -1600,6 +1604,7 @@ export default {
               this.pageIndexArr.push(index)
             }
           })
+          this.pageIndexArr.push(this.setInfoList.length)
         } else {
           this.setInfoList = []
         }
