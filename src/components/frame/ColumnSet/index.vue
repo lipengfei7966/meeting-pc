@@ -1,5 +1,5 @@
 <template>
-  <el-tooltip class="item" effect="dark" content="列设置" placement="top">
+  <el-tooltip class="item" effect="dark" :content="$t('tableColSet.columnSetting')" placement="top">
     <el-popover placement="top-start" trigger="click" @after-leave="hanldeAfterLeave">
       <div class='menu-item_first'>
         <el-checkbox-group v-model="hasCheck" :min='1' size="mini" v-if='isClick'>

@@ -36,7 +36,7 @@ export default {
             }
           },
           {
-            label: '场景',
+            label: this.$t('attendee.scene'),
             prop: 'sceneCode',
             element: 'base-select',
             attrs: {

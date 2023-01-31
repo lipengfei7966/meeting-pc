@@ -19,10 +19,10 @@ export default {
         },
         formData: [
           {
-            label: '场景',
+            label: this.$t('attendee.scene'),
             prop: 'sceneCode',
             element: 'base-select',
-            list: [{ label: '默认', value: '' }],
+            list: [{ label: this.$t('attendee.default'), value: '' }],
             event: {
               changeAll: this.onChangeAll
             },
@@ -117,7 +117,7 @@ export default {
       })
         .then(response => {
           if (response.status) {
-            var selectList = [{ label: '默认', value: '' }]
+            var selectList = [{ label: this.$t('attendee.default'), value: '' }]
             response.data.forEach(t => {
               var json = { label: t.name, value: t.code }
               selectList.push(json)

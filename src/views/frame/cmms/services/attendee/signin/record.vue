@@ -113,7 +113,7 @@ export default {
             ]
           },
           {
-            label: '场景',
+            label: 'attendee.scene',
             prop: 'sceneCode',
             element: 'base-select',
             //default:'',
