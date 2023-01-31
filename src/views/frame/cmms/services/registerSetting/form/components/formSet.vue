@@ -1770,7 +1770,6 @@ export default {
           if (response.data.json) {
             this.setInfoList = JSON.parse(response.data.json)
             console.log(JSON.parse(response.data.json),'JSON.parse(response.data.json)');
-            debugger
             this.setInfoList.forEach((v,index)=>{
               if (v.systemName=='是否出席') {
                 this.specialInfoList[3].isSee=true
