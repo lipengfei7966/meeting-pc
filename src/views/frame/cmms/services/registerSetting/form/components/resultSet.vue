@@ -118,21 +118,33 @@
 
               </el-form-item>
               <el-form-item label="Banner:" prop="successBanner" style="marginBottom:50px">
-                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="successBannerUploadFile" :file-list="successBannerImageList" :headers="httpHeaders" :on-remove="successBannerHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview">
+                <el-button v-if="JSON.stringify(successBannerSelectRow)=='{}'" type="primary" @click="tempHandleFn('successBanner')">选择图册</el-button>
+                <div style="display:flex">
+                  <p v-if="JSON.stringify(successBannerSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ successBannerSelectRow.name }}</p>
+                  <el-link v-if="JSON.stringify(successBannerSelectRow)!='{}'" type="danger" @click="delectFn('successBanner')">删除</el-link>
+                </div>
+                <el-button v-if="JSON.stringify(successBannerSelectRow)!='{}'" type="primary" @click="tempHandleFn('successBanner')">重新选择图册</el-button>
+                <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="successBannerUploadFile" :file-list="successBannerImageList" :headers="httpHeaders" :on-remove="successBannerHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview">
                   <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="dialogVisible">
                   <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
+                </el-dialog> -->
               </el-form-item>
 
               <el-form-item :label="$t('result.backgroundImage')+':'" prop="successBackground" style="marginBottom:50px">
-                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="successBgcUploadFile" :file-list="successBgcImageList" :headers="httpHeaders" :on-remove="successBgcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="handleBgcPictureCardPreview">
+                <el-button v-if="JSON.stringify(successBackgroundSelectRow)=='{}'" type="primary" @click="tempHandleFn('successBackground')">选择图册</el-button>
+                <div style="display:flex">
+                  <p v-if="JSON.stringify(successBackgroundSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ successBackgroundSelectRow.name }}</p>
+                  <el-link v-if="JSON.stringify(successBackgroundSelectRow)!='{}'" type="danger" @click="delectFn('successBackground')">删除</el-link>
+                </div>
+                <el-button v-if="JSON.stringify(successBackgroundSelectRow)!='{}'" type="primary" @click="tempHandleFn('successBackground')">重新选择图册</el-button>
+                <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="successBgcUploadFile" :file-list="successBgcImageList" :headers="httpHeaders" :on-remove="successBgcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="handleBgcPictureCardPreview">
                   <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="bannerBgcVisible">
                   <img width="100%" :src="bannerBgcImageUrl" alt="">
-                </el-dialog>
+                </el-dialog> -->
               </el-form-item>
 
               <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="successIsJumpCurrentPage">
@@ -215,12 +227,12 @@
                 <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
               </el-form-item>
               <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
-                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="waitReviewBannerUploadFile" :file-list="waitReviewBannerImageList" :headers="httpHeaders" :on-remove="waitReviewBannerHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="waitReviewhandlePictureCardPreview">
+                <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="waitReviewBannerUploadFile" :file-list="waitReviewBannerImageList" :headers="httpHeaders" :on-remove="waitReviewBannerHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="waitReviewhandlePictureCardPreview">
                   <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="waitReviewdialogVisible">
                   <img width="100%" :src="waitReviewdialogImageUrl" alt="">
-                </el-dialog>
+                </el-dialog> -->
               </el-form-item>
 
               <el-form-item :label="$t('result.backgroundImage')+':'" prop="waitReviewBackground" style="marginBottom:50px">
@@ -374,13 +386,22 @@
 
       <el-button type="primary" @click="resultSetSave('resultSetForm')">{{$t('result.generatingtheform')}}</el-button>
     </div>
+    <el-dialog title="图册选择" :visible.sync="successBannerVisible">
+      <altasTemp ref="successBanner" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('successBanner',$event)" @cancel="cancel('successBanner')"></altasTemp>
+    </el-dialog>
+    <el-dialog title="图册选择" :visible.sync="successBackgroundVisible">
+      <altasTemp ref="successBackground" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('successBackground',$event)" @cancel="cancel('successBackground')"></altasTemp>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
+import altasTemp from '@/views/frame/cmms/services/cms/atlas/components/altasTemp.vue'
+import {mapState} from 'vuex'
 export default {
   name: 'resultSet',
+  components:{altasTemp},
   props:{
     isNeedApprove:{
       type: String,
@@ -389,7 +410,12 @@ export default {
   },
   data () {
     return {
+      theLanguage:'zh',
       eventCode:'',
+      successBannerSelectRow:{},
+      successBannerVisible:false,
+      successBackgroundSelectRow:{},
+      successBackgroundVisible:false,
       baseInfoList: [
         { label: '姓名', value: 'name', isSee: false },
         { label: '性别', value: 'sex', isSee: false },
@@ -546,6 +572,18 @@ export default {
     this.skipCodeOptions = this.$t('datadict.resultBtn')
   },
   watch: {
+    language:{
+      handler(newValue, oldValue) {
+        if(newValue){
+          this.theLanguage=newValue
+          console.log(newValue,oldValue,'newValue,oldValue');
+          this.findUrl('successBanner')
+          this.findUrl('successBackground')
+        }
+      },
+      immediate: true,
+      deep: true
+    },
 
     customInfoCount (newVal, oldVal) {
       if (newVal > 0) {
@@ -601,9 +639,127 @@ export default {
       return {
         Authorization: 'Bearer ' + this.$store.getters.token
       }
-    }
+    },
+    ...mapState({language: state => state.app.language})
   },
   methods: {
+    // 点击选择图册
+    tempHandleFn(status){
+      switch (status) {
+        case 'successBanner':
+          this.successBannerVisible=true
+          this.$refs.successBanner.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.successBanner.reload()
+          break;
+        case 'successBackground':
+          this.successBackgroundVisible=true
+          this.$refs.successBackground.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.successBackground.reload()
+          break;
+
+        default:
+          break;
+      }
+    },
+    // 选择行
+    selectRowFn(status,selectRow){
+      switch (status) {
+        case 'successBanner':
+          this.successBannerVisible=false
+          this.successBannerSelectRow=selectRow
+          this.findUrl('successBanner')
+          break;
+        case 'successBackground':
+          this.successBackgroundVisible=false
+          this.successBackgroundSelectRow=selectRow
+          this.findUrl('successBackground')
+          break;
+
+        default:
+          break;
+      }
+    },
+    // 取消图册弹窗
+    cancel(status){
+      switch (status) {
+        case 'successBanner':
+          this.successBannerVisible=false
+          break;
+        case 'successBackground':
+          this.successBackgroundVisible=false
+          break;
+
+        default:
+          break;
+      }
+    },
+    // 删除当前图册
+    delectFn(status){
+      switch (status) {
+        case 'successBanner':
+        this.successBannerSelectRow={}
+          break;
+        case 'successBackground':
+        this.successBackgroundSelectRow={}
+          break;
+
+        default:
+          break;
+      }
+    },
+    // 找当前要展示的url
+    findUrl(status){
+      switch (status) {
+        case 'successBanner':
+        request({
+            url: '/api/cms/atlasDetail/page',
+            method: 'POST',
+            data:{
+              current: 1,
+              size: 20,
+              isPage: true,
+              funcModule: '图册图片',
+              funcOperation: '查询',
+              data:{
+                atlasCode: this.successBannerSelectRow.code
+              }
+            }
+          }).then((res) => {
+            res.data.forEach(v=>{
+              if(v.language==this.theLanguage){
+                this.resultSetForm.successBanner=v.url
+              }
+            })
+          })
+          break;
+        case 'successBackground':
+        request({
+            url: '/api/cms/atlasDetail/page',
+            method: 'POST',
+            data:{
+              current: 1,
+              size: 20,
+              isPage: true,
+              funcModule: '图册图片',
+              funcOperation: '查询',
+              data:{
+                atlasCode: this.successBackgroundSelectRow.code
+              }
+            }
+          }).then((res) => {
+            res.data.forEach(v=>{
+              if(v.language==this.theLanguage){
+                this.resultSetForm.successBackground=v.url
+              }
+            })
+          })
+          break;
+
+        default:
+          break;
+      }
+
+    },
     // 获取表单设置
     getEventInfo (eventCode) {
       this.eventCode=eventCode?eventCode:this.eventCode
@@ -774,17 +930,21 @@ export default {
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
-                this.resultSetForm.successBanner = item.appFile
-                // this.successBannerImageList[0].url = item.appFile
-                if (item.appFile !== '') {
-                  var urlSplits = item.appFile.split('/')
-                  this.successBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
-                }
-                this.resultSetForm.successBackground = item.backgroundFile
-                if (item.backgroundFile !== '') {
-                  var urlSplits = item.backgroundFile.split('/')
-                  this.successBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
-                }
+                this.successBannerSelectRow = JSON.parse(item.appFile)
+                this.findUrl('successBanner')
+                this.successBackgroundSelectRow = JSON.parse(item.backgroundFile)
+                this.findUrl('successBackground')
+                // this.resultSetForm.successBanner = JSON.parse(item.appFile)
+                // // this.successBannerImageList[0].url = item.appFile
+                // if (item.appFile !== '') {
+                //   var urlSplits = item.appFile.split('/')
+                //   this.successBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                // }
+                // this.resultSetForm.successBackground = item.backgroundFile
+                // if (item.backgroundFile !== '') {
+                //   var urlSplits = item.backgroundFile.split('/')
+                //   this.successBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
+                // }
                 this.resultSetForm.successDescribe = item.describeInfo
                 this.resultSetForm.successIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.successJumpPage = item.skipPage
@@ -797,17 +957,17 @@ export default {
                 }
                 break
               case '2':
-                this.resultSetForm.waitReviewBanner = item.appFile
-                if (item.appFile !== '') {
-                  var urlSplits = item.appFile.split('/')
-                  this.waitReviewBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
-                }
+                // this.resultSetForm.waitReviewBanner = item.appFile
+                // if (item.appFile !== '') {
+                //   var urlSplits = item.appFile.split('/')
+                //   this.waitReviewBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                // }
 
-                this.resultSetForm.waitReviewBackground = item.backgroundFile
-                if (item.backgroundFile !== '') {
-                  var urlSplits = item.backgroundFile.split('/')
-                  this.waitReviewBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
-                }
+                // this.resultSetForm.waitReviewBackground = item.backgroundFile
+                // if (item.backgroundFile !== '') {
+                //   var urlSplits = item.backgroundFile.split('/')
+                //   this.waitReviewBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
+                // }
                 this.resultSetForm.waitReviewDescribe = item.describeInfo
                 this.resultSetForm.waitReviewIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.waitReviewJumpPage = item.skipPage
@@ -820,16 +980,16 @@ export default {
                 }
                 break
               case '3':
-                this.resultSetForm.noPassBanner = item.appFile
-                if (item.appFile !== '') {
-                  var urlSplits = item.appFile.split('/')
-                  this.noPassBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
-                }
-                this.resultSetForm.noPassBackground = item.backgroundFile
-                if (item.backgroundFile !== '') {
-                  var urlSplits = item.backgroundFile.split('/')
-                  this.noPassBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
-                }
+                // this.resultSetForm.noPassBanner = item.appFile
+                // if (item.appFile !== '') {
+                //   var urlSplits = item.appFile.split('/')
+                //   this.noPassBannerImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.appFile })
+                // }
+                // this.resultSetForm.noPassBackground = item.backgroundFile
+                // if (item.backgroundFile !== '') {
+                //   var urlSplits = item.backgroundFile.split('/')
+                //   this.noPassBgcImageList.push({ name: urlSplits[urlSplits.length - 1], url: item.backgroundFile })
+                // }
                 this.resultSetForm.noPassDescribe = item.describeInfo
                 this.resultSetForm.noPassIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.noPassJumpPage = item.skipPage
@@ -856,8 +1016,9 @@ export default {
           this.isFormSetComplete = true
           console.log(this.resultSetForm, 'resultSetFormresultSetForm')
           if (this.resultSetForm.isNeedApprove === '0') {
-            this.resultNoFrom[0].appFile = this.resultSetForm.successBanner
-            this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
+            this.resultNoFrom[0].appFile = JSON.stringify(this.successBannerSelectRow)
+            this.resultNoFrom[0].backgroundFile = JSON.stringify(this.successBackgroundSelectRow)
+            // this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultNoFrom[0].describeInfo = this.resultSetForm.successDescribe
             this.resultNoFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
             this.resultNoFrom[0].skipPage = this.resultSetForm.successJumpPage
@@ -877,8 +1038,9 @@ export default {
             console.log(this.resultNoFrom, 'resultNoFrom')
           }
           if (this.resultSetForm.isNeedApprove === '1') {
-            this.resultFrom[0].appFile = this.resultSetForm.successBanner
-            this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
+            this.resultFrom[0].appFile = JSON.stringify(this.resultSetForm.successBanner)
+            this.resultFrom[0].backgroundFile = JSON.stringify(this.resultSetForm.successBackground)
+            // this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultFrom[0].describeInfo = this.resultSetForm.successDescribe
             this.resultFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
             this.resultFrom[0].skipPage = this.resultSetForm.successJumpPage
@@ -894,8 +1056,8 @@ export default {
               }
             })
             this.resultFrom[0].type = '1'
-            this.resultFrom[1].appFile = this.resultSetForm.waitReviewBanner
-            this.resultFrom[1].backgroundFile = this.resultSetForm.waitReviewBackground
+            // this.resultFrom[1].appFile = this.resultSetForm.waitReviewBanner
+            // this.resultFrom[1].backgroundFile = this.resultSetForm.waitReviewBackground
             this.resultFrom[1].describeInfo = this.resultSetForm.waitReviewDescribe
             this.resultFrom[1].isSkip = this.resultSetForm.waitReviewIsJumpCurrentPage
             this.resultFrom[1].skipPage = this.resultSetForm.waitReviewJumpPage
@@ -911,8 +1073,8 @@ export default {
               }
             })
             this.resultFrom[1].type = '2'
-            this.resultFrom[2].appFile = this.resultSetForm.noPassBanner
-            this.resultFrom[2].backgroundFile = this.resultSetForm.noPassBackground
+            // this.resultFrom[2].appFile = this.resultSetForm.noPassBanner
+            // this.resultFrom[2].backgroundFile = this.resultSetForm.noPassBackground
             this.resultFrom[2].describeInfo = this.resultSetForm.noPassDescribe
             this.resultFrom[2].isSkip = this.resultSetForm.noPassIsJumpCurrentPage
             this.resultFrom[2].skipPage = this.resultSetForm.noPassJumpPage
@@ -956,75 +1118,75 @@ export default {
       this.$emit('stepIndex',2)
       this.resultSetForm.isNeedApprove = '1'
     },
-    successBannerUploadFile (response, file, fileList) {
-      console.log(fileList, 'fileList')
-      this.resultSetForm.successBanner = response.data.filePath
-    },
-    waitReviewBannerUploadFile (response, file, fileList) {
-      this.resultSetForm.waitReviewBanner = response.data.filePath
-    },
-    noPassBannerUploadFile (response, file, fileList) {
-      this.resultSetForm.noPassBanner = response.data.filePath
-    },
-    successBgcUploadFile (response, file, fileList) {
-      this.resultSetForm.successBackground = response.data.filePath
-    },
-    waitReviewBgcUploadFile (response, file, fileList) {
-      this.resultSetForm.waitReviewBackground = response.data.filePath
-    },
-    noPassBgcUploadFile (response, file, fileList) {
-      this.resultSetForm.noPassBackground = response.data.filePath
-    },
+    // successBannerUploadFile (response, file, fileList) {
+    //   console.log(fileList, 'fileList')
+    //   this.resultSetForm.successBanner = response.data.filePath
+    // },
+    // waitReviewBannerUploadFile (response, file, fileList) {
+    //   this.resultSetForm.waitReviewBanner = response.data.filePath
+    // },
+    // noPassBannerUploadFile (response, file, fileList) {
+    //   this.resultSetForm.noPassBanner = response.data.filePath
+    // },
+    // successBgcUploadFile (response, file, fileList) {
+    //   this.resultSetForm.successBackground = response.data.filePath
+    // },
+    // waitReviewBgcUploadFile (response, file, fileList) {
+    //   this.resultSetForm.waitReviewBackground = response.data.filePath
+    // },
+    // noPassBgcUploadFile (response, file, fileList) {
+    //   this.resultSetForm.noPassBackground = response.data.filePath
+    // },
 
-    successBannerHandleRemove (file, fileList) {
-      this.successBannerImageList = []
-      this.resultSetForm.successBanner = ''
-    },
-    waitReviewBannerHandleRemove (file, fileList) {
-      this.waitReviewBannerImageList = []
-      this.resultSetForm.waitReviewBanner = ''
-    },
-    noPassBannerHandleRemove (file, fileList) {
-      this.noPassBannerImageList = []
-      this.resultSetForm.noPassBanner = ''
-    },
-    successBgcHandleRemove (file, fileList) {
-      this.successBgcImageList = []
-      this.resultSetForm.successBackground = ''
-    },
-    waitReviewBgcHandleRemove (file, fileList) {
-      this.waitReviewBgcImageList = []
-      this.resultSetForm.waitReviewBackground = ''
-    },
-    noPassBgcHandleRemove (file, fileList) {
-      this.noPassBgcImageList = []
-      this.resultSetForm.noPassBackground = ''
-    },
+    // successBannerHandleRemove (file, fileList) {
+    //   this.successBannerImageList = []
+    //   this.resultSetForm.successBanner = ''
+    // },
+    // waitReviewBannerHandleRemove (file, fileList) {
+    //   this.waitReviewBannerImageList = []
+    //   this.resultSetForm.waitReviewBanner = ''
+    // },
+    // noPassBannerHandleRemove (file, fileList) {
+    //   this.noPassBannerImageList = []
+    //   this.resultSetForm.noPassBanner = ''
+    // },
+    // successBgcHandleRemove (file, fileList) {
+    //   this.successBgcImageList = []
+    //   this.resultSetForm.successBackground = ''
+    // },
+    // waitReviewBgcHandleRemove (file, fileList) {
+    //   this.waitReviewBgcImageList = []
+    //   this.resultSetForm.waitReviewBackground = ''
+    // },
+    // noPassBgcHandleRemove (file, fileList) {
+    //   this.noPassBgcImageList = []
+    //   this.resultSetForm.noPassBackground = ''
+    // },
 
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
-    waitReviewhandlePictureCardPreview (file) {
-      this.waitReviewdialogImageUrl = file.url
-      this.waitReviewdialogVisible = true
-    },
-    noPasshandlePictureCardPreview (file) {
-      this.noPassdialogImageUrl = file.url
-      this.noPassdialogVisible = true
-    },
-    handleBgcPictureCardPreview (file) {
-      this.bannerBgcImageUrl = file.url
-      this.bannerBgcVisible = true
-    },
-    waitReviewhandleBgcPictureCardPreview (file) {
-      this.waitReviewbannerBgcImageUrl = file.url
-      this.waitReviewbannerBgcVisible = true
-    },
-    noPasshandleBgcPictureCardPreview (file) {
-      this.noPassbannerBgcImageUrl = file.url
-      this.noPassbannerBgcVisible = true
-    },
+    // handlePictureCardPreview (file) {
+    //   this.dialogImageUrl = file.url
+    //   this.dialogVisible = true
+    // },
+    // waitReviewhandlePictureCardPreview (file) {
+    //   this.waitReviewdialogImageUrl = file.url
+    //   this.waitReviewdialogVisible = true
+    // },
+    // noPasshandlePictureCardPreview (file) {
+    //   this.noPassdialogImageUrl = file.url
+    //   this.noPassdialogVisible = true
+    // },
+    // handleBgcPictureCardPreview (file) {
+    //   this.bannerBgcImageUrl = file.url
+    //   this.bannerBgcVisible = true
+    // },
+    // waitReviewhandleBgcPictureCardPreview (file) {
+    //   this.waitReviewbannerBgcImageUrl = file.url
+    //   this.waitReviewbannerBgcVisible = true
+    // },
+    // noPasshandleBgcPictureCardPreview (file) {
+    //   this.noPassbannerBgcImageUrl = file.url
+    //   this.noPassbannerBgcVisible = true
+    // },
   },
 }
 </script>
