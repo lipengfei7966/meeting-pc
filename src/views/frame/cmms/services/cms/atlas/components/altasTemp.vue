@@ -43,6 +43,7 @@ export default {
     }
   },
   data(){
+    let that = this
     return{
       selectRow:{},
       dialogDetailVisible:false,
@@ -69,7 +70,8 @@ export default {
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
               isDefault: true,
-              clearable: false
+              clearable: false,
+              disabled:that.footerFlag == true ? true:false
             },
             event: {
               changeAll: this.onChangeAll
@@ -144,10 +146,9 @@ export default {
   mounted(){
     if(this.eventCode){
       this.form.listQuery.data.eventCode=this.eventCode
+      //初始化数据
+      this.$refs.bsTable.getList({name:"search"})
     }
-    //初始化数据
-    this.$refs.bsTable.getList({name:"search"})
-
   },
   methods:{
     selectTableRow(row){
@@ -186,6 +187,10 @@ export default {
     },
     //编辑
     editAtlas(item){
+      if(this.footerFlag == true){
+         //需要关闭弹窗
+        this.$emit('cancel')
+      }
       this.$router.push({
         name:"atlasAndPicture",
         params:{
