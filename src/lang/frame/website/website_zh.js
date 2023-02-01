@@ -56,6 +56,7 @@ export default {
       btn: {
         batchEditing: '批量编辑',
         edit: '编辑',
+        preview:'预览',
         cancel: '取消',
         save: '保存',
         export: '导出',

@@ -21,15 +21,15 @@
       </template>
       <!-- 操作按钮 -->
       <div class="options">
-        <el-button v-if="multiLanguage.length>0" type="primary" v-show="batchShow" @click="batchClick">{{ $t('website.customlanguage.btn.batchEditing') }}</el-button>
+        <el-button v-if="multiLanguage.length>0 && activeName != '富文本'" type="primary" v-show="batchShow" @click="batchClick">{{ $t('website.customlanguage.btn.batchEditing') }}</el-button>
         <el-button v-if="multiLanguage.length>0" @click="batchCancel" v-show="!batchShow">{{ $t('website.customlanguage.btn.cancel') }}</el-button>
         <el-button v-if="multiLanguage.length>0" @click="batchSave" type="primary" v-show="!batchShow">{{ $t('website.customlanguage.btn.save') }}</el-button>
-        <el-button type="primary" @click="exportExcel">{{ $t('website.customlanguage.btn.export') }}</el-button>
+        <el-button v-if="activeName != '富文本'" type="primary" @click="exportExcel">{{ $t('website.customlanguage.btn.export') }}</el-button>
       </div>
       <!-- 表格数据 -->
       <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs" @initCallback='initCallback' v-if="date">
         <template slot="operation" slot-scope="scope">
-          <el-button type="text" v-if="!scope.row.isEdit && multiLanguage.length>0" @click="handleEditClick(scope.row)">{{ $t('website.customlanguage.btn.edit') }}</el-button>
+          <el-button type="text" v-if="!scope.row.isEdit && multiLanguage.length>0 && activeName != '富文本'" @click="handleEditClick(scope.row)">{{ $t('website.customlanguage.btn.edit') }}</el-button>
           <el-button type="text" v-if="scope.row.isEdit && batchShow" @click="handleSaveClick(scope.row,scope)">{{ $t('website.customlanguage.btn.save') }}</el-button>
           <!--  -->
           <el-button type="text" v-if="scope.row.isEdit && multiLanguage.length>0 && batchShow" @click="handleCalClick(scope.row,scope)">{{ $t('website.customlanguage.btn.cancel') }}</el-button>
@@ -37,17 +37,41 @@
         </template>
         <!-- 中文 -->
         <template slot="zh" slot-scope="scope">
-          <el-input :disabled="mainLanguage == 'zh'" v-if="scope.row.isEdit" v-model="scope.row.zh" placeholder="请输入内容"></el-input>
-          <span v-else>{{ scope.row.zh }}</span>
+          <span v-if="activeName == '富文本'">
+            <!-- 富文本 -->
+            <el-button type="text" @click="previewClick(scope.row,'zh')">{{ $t('website.customlanguage.btn.preview') }}</el-button>
+            <el-button type="text" @click="editClick(scope.row,'zh')">{{ $t('website.customlanguage.btn.edit') }}</el-button>
+          </span>
+          <span v-else>
+            <el-input :disabled="mainLanguage == 'zh'" v-if="scope.row.isEdit" v-model="scope.row.zh" placeholder="请输入内容"></el-input>
+            <span v-else>{{ scope.row.zh }}</span>
+          </span>
         </template>
         <!-- 英文 -->
         <template slot="en" slot-scope="scope">
-          <el-input :disabled="mainLanguage == 'en'" v-if="scope.row.isEdit" v-model="scope.row.en" placeholder="Please enter the content"></el-input>
-          <span v-else>{{ scope.row.en }}</span>
+          <span v-if="activeName == '富文本'">
+            <!-- 富文本 -->
+            <el-button type="text" @click="previewClick(scope.row,'en')">{{ $t('website.customlanguage.btn.preview') }}</el-button>
+            <el-button type="text" @click="editClick(scope.row,'en')">{{ $t('website.customlanguage.btn.edit') }}</el-button>
+          </span>
+          <span v-else>
+            <el-input :disabled="mainLanguage == 'en'" v-if="scope.row.isEdit" v-model="scope.row.en" placeholder="Please enter the content"></el-input>
+            <span v-else>{{ scope.row.en }}</span>
+          </span>
         </template>
       </bs-table>
       <!-- end -->
     </div>
+    <el-dialog title="富文本信息" :visible.sync="dialogVisible" width="950px" :before-close="handleClose">
+      <div :key="new Date().getTime()">
+        <bs-editor></bs-editor>
+        <!-- <iframe name="myframe" ref="bsEditorFrame" src="static/qmeditor/index.html" style="width: 100%; height: 30rem; border-width: 1px"></iframe> -->
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogSave">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 
 </template>
@@ -59,6 +83,24 @@ export default {
   name:'customlanguage',
   data(){
     return {
+      language_:'',//表单多语言
+      // 表单暂存字段
+      menuId:'',
+      menuLang:'',
+      meunVal:'',
+      neunType:'',
+      // 文章暂存字段
+      code_:'',
+      eventCode_:'',
+      type_:'',
+      lang:'',//主语言/其他语言
+      essayData:'',//文章富文本主语言内容
+      restData:'',//文章富文本其他语言内容
+      synopsisData:'',//表单会议简介主语言
+      synopsisRestData:'',//表单会议简介其他语言
+      agreementData:'',//表单协议主语言
+      agreementRestData:'',//表单协议其他语言
+      dialogVisible: false,
       languageSwitch:'',//获取语言
       batchShow:true,//是否批量编辑
       dataList:[],//点击保存的数据（浅）
@@ -309,19 +351,21 @@ export default {
       this.languageQuery()
       // ---end
     });
-    debugger
+    // debugger
     console.log(this.$t('datadict'));
     console.log(this.$t('datadict.langType'));
   },
   methods:{
-    // 
     // 外层tabs（模块类型）
     handleTabClick(tab) {
       console.log(tab._props.label,311)
       this.form.listQuery.data.functions = ''
       this.form.listQuery.data.setUpName = ''
       this.activeName = tab._props.label
+      // 初始化普通文本接口
       this.mainData.api.search = '/api/register/cmsEventFormLang/page'
+      // 初始化分页显示
+      this.mainData.bottomBar.pagination.show = true
       if(tab._props.label == this.$t('website.customlanguage.tab.registrationSetting')){
         // 报名设置
         this.form.formData[1].list = this.$t('datadict.langSignupFunction')
@@ -358,33 +402,49 @@ export default {
         this.form.listQuery.data.module = 'management'
         this.$refs.bsTable.getList()
       }else if(tab._props.label == '富文本'){
-        this.form.formData[1].list = []
-        this.mainData.table.cols[1].format.dict = []
-        this.form.listQuery.data.module = ''
-        debugger
-        this.mainData.api.search = '/api/biz/cmsEventInfoLang/get'
-        // language
-        this.form.listQuery.data.language = this.mainLanguage
-        // this.$refs.bsTable.getList()
-        this.$refs.bsTable.tableData = [
-          {
-            module:'signup',
-            functions:'',
-            setUpName:'宣传页会议简介',
-            en:'暂未配置',
-            zh:'暂未配置'
-          },
-          {
-            module:'signup',
-            functions:'',
-            setUpName:'协议内容',
-            en:'暂未配置',
-            zh:'暂未配置'
-          },
-        ]
-        this.$refs.bsTable.$refs.singleTable.reloadData(this.$refs.bsTable.tableData)
+        // debugger
+        this.goTo()
       }
       console.log(tab, this.form.listQuery.data,this.form.formData);
+    },
+    getArticle(){
+      let params = {
+        articleName: "",
+        eventCode: this.form.listQuery.data.eventCode,
+        usingFlag: "",
+      }
+      request({
+          url: '/api/biz/cmsArticle/page',
+          method: 'POST',
+          data: { data: params,current: 1,isPage: false,size: 18, funcModule: '文章管理', funcOperation: '查询' }
+        })
+          .then(res => {
+            if(res){
+              let articleData = res.data
+              if(articleData.length>0){
+                articleData.forEach(item=>{
+                  let obj = {}
+                  obj = {
+                    en:'暂未配置',
+                    zh:'暂未配置',
+                    eventCode:this.form.listQuery.data.eventCode,
+                    functions:'',
+                    module:'article',
+                    setUpCode:'',
+                    setUpName:item.articleName,
+                    type:'',
+                    code:item.code,
+                    id:item.id,
+                    languageType:item.languageType
+                  }
+                  this.$refs.bsTable.tableData.unshift(obj)
+                  this.mainData.bottomBar.pagination.show = false
+                })
+                console.log(this.$refs.bsTable.tableData);
+              }
+            }
+          })
+          .catch(() => {})
     },
     // 内层tabs（文本类型）
     // texHandleTabClick(tab){
@@ -392,17 +452,23 @@ export default {
     // },
     // 初始化
     initCallback(data){
-      data.data.forEach(item=>{
+      if(this.activeName == '富文本'){
+        debugger
+        if(data.data.language){
+          this.language_ = data.data.language
+        }
+        this.goTo()
+      }else{
+        data.data.forEach(item=>{
         if(item){
           item.isEdit = false
         }
       })
       this.dataList = data
-      // debugger
-      console.log(data);
+      }
     },
     handleEditClick(val){
-      debugger
+      // debugger
       val.setUpName += '.卐.'
       let str = new RegExp(".卐.","g")
       var str_one = val.setUpName.replace(str,"");
@@ -456,7 +522,7 @@ export default {
         this.$router.push({ name: 'activityManagement', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
       }else if(this.activeName == this.$t('website.customlanguage.tab.checkinManagement')){
         // 签到管理
-        debugger
+        // debugger
         this.$router.push({ name: 'attendeeSigninSet', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
       }else if(this.activeName == this.$t('website.customlanguage.tab.articleManagement')){
         // 文章管理
@@ -485,13 +551,13 @@ export default {
                 this.mainLanguage = ''
               }
               if(res.data.multiLanguage){
-                debugger
                 this.multiLanguage = JSON.parse(res.data.multiLanguage)
               }else{
                 this.multiLanguage = []
               }
               this.$nextTick(() => {
                   this.mainData.table.cols.forEach(item=>{
+                    // debugger
                     if(item.prop == 'zh' || item.prop == 'en'){
                         item.isShow = false
                         console.log(this.mainLanguage);
@@ -528,7 +594,42 @@ export default {
     onChangeAll (params) {
       this.codeName = params.name
       this.languageQuery()
+      if(this.activeName == '富文本'){
+        // debugger
+        this.goTo()
+      }else{
       this.$refs.bsTable.getList()
+      }
+    },
+    goTo(){
+      // debugger
+      this.form.formData[1].list = []
+        this.mainData.table.cols[1].format.dict = []
+        this.form.listQuery.data.module = ''
+        this.mainData.api.search = '/api/biz/cmsEventInfoLang/get'
+        this.form.listQuery.data.language = this.mainLanguage
+      this.$refs.bsTable.tableData = [
+          {
+            module:'signup',
+            functions:'',
+            setUpName:'宣传页会议简介',
+            en:'暂未配置',
+            zh:'暂未配置',
+            id:'00001',
+            menu:true
+          },
+          {
+            module:'signup',
+            functions:'',
+            setUpName:'协议内容',
+            en:'暂未配置',
+            zh:'暂未配置',
+            id:'00002',
+            menu:true
+          },
+        ]
+        this.getArticle()
+        this.$refs.bsTable.$refs.singleTable.reloadData(this.$refs.bsTable.tableData)
     },
     // 批量编辑
     batchClick(){
@@ -592,6 +693,299 @@ export default {
       }
       this.$refs.bsTable.handleDownload(obj)
     },
+    previewClick(val,type){
+      // debugger
+      console.log(val,type);
+    },
+    // 修改
+    editClick(val,type){
+      // debugger
+      // 主语言
+      if(type == this.mainLanguage){
+        if(val.menu){
+          // 表单的富文本
+          // debugger
+          this.getMenuData(val.id,'main',val,type)
+        }else{
+          // 文章的富文本
+        this.getData('main',val.code,val.eventCode,type)
+        }
+      }else{
+        // 其他语言
+        if(val.menu){
+          // 表单的富文本
+          this.getMenuData(val.id,'rest',val,type)
+        }else{
+          // 文章的富文本
+        this.getData('rest',val.code,val.eventCode,type)
+        }
+      }
+      this.dialogVisible = true
+      console.log(val,type);
+    },
+    handleClose(done) {
+      done();
+    },
+    getMenuData(id,lang,val,type){
+      // debugger
+      this.menuId = id
+      this.menuLang = lang
+      this.meunVal = val
+      this.neunType = type
+      if(id == '00001'){
+        // 会议简介
+        if(lang == 'main'){
+          //主语言
+          request({
+          url: '/api/register/signupExterior/get',
+          method: 'POST',
+          data: { data: this.form.listQuery.data.eventCode, funcModule: '获取表单会议简介富文章内容', funcOperation: '获取表单会议简介富文章内容' }
+        })
+          .then(res => {
+            if(res){
+              this.synopsisData = res.data
+              debugger
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContents('')
+                  window.frames['myframe'].setContents(res.data.profile)
+                }
+              }, 2000)
+            }
+          })
+          .catch(() => {})
+        }else if(lang == 'rest'){
+          // 其他语言
+        }
+      }else if('00002'){
+        //协议内容
+        if(lang == 'main'){
+          //主语言
+          request({
+          url: '/api/register/signupContactCodeRule/get',
+          method: 'POST',
+          data: { data: this.form.listQuery.data.eventCode, funcModule: '获取表单协议富文章内容', funcOperation: '获取表单协议富文章内容' }
+        })
+          .then(res => {
+            if(res){
+              this.agreementData = res.data
+              debugger
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContents('')
+                  window.frames['myframe'].setContents(res.data.privacyContent)
+                }
+              }, 2000)
+            }
+          })
+          .catch(() => {})
+        }else if(lang == 'rest'){
+          // 其他语言
+        }
+      }
+      console.log(id,lang,val,type);
+    },
+      getData(lang,code,eventCode,type){
+        this.lang = lang
+        this.code_ = code
+        this.eventCode_ = eventCode
+        this.type_ = type
+        if(lang == 'main'){
+          let params = {
+          code:code,
+          languageType:type,
+          // eventCode:eventCode
+        }
+        request({
+          url: '/api/biz/cmsArticle/get',
+          method: 'POST',
+          data: { data: params, funcModule: '获取文章富文章文本内容', funcOperation: '获取文章富文章文本内容' }
+        })
+          .then(res => {
+            if(res){
+              this.essayData = res.data
+              // articleContent
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContents('')
+                  window.frames['myframe'].setContents(this.essayData.articleContent)
+                  //  const req = window.frames['myframe'].getContent()
+                }
+              }, 2000)
+            }
+          })
+          .catch(() => {})
+        }else if(lang == 'rest'){
+          // 其他语言
+          let params = {
+          articlCode:code,
+          language:type,
+          eventCode:eventCode
+        }
+        request({
+          url: '/api/cms/articleLang/get',
+          method: 'POST',
+          data: { data: params, funcModule: '获取富文章文本内容', funcOperation: '获取富文章文本内容' }
+        })
+          .then(res => {
+            if(res){
+              this.restData = res.data
+              debugger
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContents('')
+                  window.frames['myframe'].setContents(this.restData.articleContent)
+                }
+              }, 2000)
+            }
+          })
+          .catch(() => {})
+        }
+      },
+      menuSave(){
+        debugger
+      //   this.menuId = id
+      // this.menuLang = lang
+      // this.meunVal = val
+      // this.neunType = type
+      if(this.menuId == '00001'){
+        if(this.menuLang == 'main'){
+          this.synopsisData.profile = window.frames['myframe'].getContent()
+          request({
+          url: '/api/register/signupExterior/update',
+          method: 'POST',
+          data: { data:this.synopsisData, funcModule: '表单简介富文本保存', funcOperation: '表单简介富文本保存' }
+        })
+          .then(res => {
+            if(res){
+              debugger
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+        }else if(this.menuLang == 'rest'){
+          // 其他语言
+        }
+      }else if(this.menuId == '00002'){
+        if(this.menuLang == 'main'){
+          // 
+          let querySaveHref = {
+            isVerification: this.agreementData.isVerification,
+            registerVerification: this.agreementData.registerVerification,
+            loginVerification: this.agreementData.loginVerification,
+            customize: this.agreementData.customize,
+            isRequired: this.agreementData.isRequired,
+            isPrivacy: this.agreementData.isPrivacy,
+            privacyName: this.agreementData.privacyName,
+            privacyContent: window.frames['myframe'].getContent(),
+            beginTime: this.agreementData.beginTime,
+            endTime: this.agreementData.endTime,
+            isApproval: this.agreementData.applyCheck,
+            approvalUser: this.agreementData.approvalUser,
+            assistSignupPower: this.agreementData.assistApplyPermission,
+            signupField: this.agreementData.signupField,
+            eventCode: this.agreementData.eventCode,
+            id: this.agreementData.id
+          }
+          // 
+          request({
+          url: '/api/register/signupContactCodeRule/update',
+          method: 'POST',
+          data: { data:querySaveHref, funcModule: '表单协议富文本保存', funcOperation: '表单协议富文本保存' }
+        })
+          .then(res => {
+            if(res){
+              debugger
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+        }else if(this.menuLang == 'rest'){
+          // 其他语言
+        }
+      }
+      },
+      dialogSave(){
+        if(this.menuId){
+          this.menuSave()
+        }else{
+          // 文章保存
+          if(this.lang == 'main'){
+        this.essayData.articleContent = window.frames['myframe'].getContent()
+        request({
+          url: '/api/biz/cmsArticle/update',
+          method: 'POST',
+          data: { data:this.essayData, funcModule: '文章富文本保存', funcOperation: '文章富文本保存' }
+        })
+          .then(res => {
+            if(res){
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+        }else if(this.lang == 'rest'){
+          // 文章其他语言
+          if(this.restData.id){
+            // debugger
+            //有id 调取更新接口
+            this.restData.articleContent = window.frames['myframe'].getContent()
+        this.restData.articlCode = this.code_
+        this.restData.eventCode = this.eventCode_
+        this.restData.language = this.type_
+        request({
+          url: '/api/cms/articleLang/update',
+          method: 'POST',
+          data: { data:this.restData, funcModule: '文章富文本保存', funcOperation: '文章富文本保存' }
+        })
+          .then(res => {
+            if(res){
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+          }else{
+            // 没id 调取创建接口
+            debugger
+            this.restData.articleContent = window.frames['myframe'].getContent()
+        this.restData.articlCode = this.code_
+        this.restData.eventCode = this.eventCode_
+        this.restData.language = this.type_
+        request({
+          url: '/api/cms/articleLang/save',
+          method: 'POST',
+          data: { data:this.restData, funcModule: '文章富文本保存', funcOperation: '文章富文本保存' }
+        })
+          .then(res => {
+            if(res){
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+          }
+        }
+        }
+
+      }
   }
 }
 </script>
