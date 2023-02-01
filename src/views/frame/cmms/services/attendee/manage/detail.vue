@@ -45,15 +45,24 @@
             </div>
           </el-form-item>
         </div>
+        <!-- 协议设置 -->
+        <div v-else-if="element.systemName == '协议设置'" class="form-item-input">
+          <el-form-item :label="element.title">
+            <div style="min-width: 300px; display: inline-block; vertical-align: top">
+              <el-link type="primary" @click="privacyClick(element.privacyContent)">{{element.privacyName}}</el-link>
+            </div>
+          </el-form-item>
+        </div>
         <!-- 分活动 -->
         <div v-else-if="element.systemName == '分活动'" class="form-item-input">
           <el-form-item :label="element.title">
             <div style="min-width: 300px; display: inline-block; vertical-align: top">
-              <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
-                <el-checkbox v-model="setForm.activityOptions" :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人)</el-checkbox>
-                <p style="padding:10px">场景描述：{{ item.describeInfo }}</p>
-              </div>
-
+              <el-checkbox-group v-model="setForm.activityOptions" :max="actTriesLimit">
+                <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                  <el-checkbox :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人) <p style="paddingBottom:20px">场景描述：{{ item.describeInfo }}</p>
+                  </el-checkbox>
+                </div>
+              </el-checkbox-group>
               <span style="float:right">{{ element.placeholder }}</span>
             </div>
           </el-form-item>
@@ -417,6 +426,10 @@
     <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="1200px" center>
       <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
     </el-dialog>
+    <!--  -->
+    <el-dialog title="隐私协议" :visible.sync="privacyVisible" :close-on-click-modal="false" center>
+      <p v-html="privacyCon"></p>
+    </el-dialog>
   </div>
 </template>
 
@@ -430,6 +443,9 @@ export default {
   name: 'attendeeEdit',
   data() {
     return {
+      actTriesLimit:0,
+      privacyCon:'',
+      privacyVisible:false,
       eventInfoChildList:[],
       enRegistration: {},
       zhRegistration: {},
@@ -563,7 +579,7 @@ export default {
     this.getComCityTreeList()
     // // 表单配置查询
     // this.getEventInfo()
-
+    this.getList()
   },
   methods: {
     validateEmail,
@@ -746,6 +762,38 @@ export default {
           this.getContactInfo()
         }
         this.cmsEventInfoChildrenFn()
+      })
+    },
+    privacyClick(privacyCon){
+      this.privacyVisible=true
+      this.privacyCon=privacyCon
+    },
+    getList() {
+      request({
+        url: '/api/dd/selectData/list',
+        method: 'POST',
+        data: {
+          data: {
+            queryParams: {},
+            type: 'EVENT_INFO'
+          },
+          funcModule: '分活动管理',
+          funcOperation: '查询'
+        }
+      }).then(res => {
+        //  debugger
+        console.log(res,'分活动管理个数限制')
+        // this.activityList = res.data
+        res.data.forEach(v=>{
+          if (v.code==this.$route.params.data) {
+            if (v.data.triesLimit==undefined) {
+              this.actTriesLimit=99999
+            } else {
+              this.actTriesLimit=v.data.triesLimit
+            }
+          }
+        })
+
       })
     },
     // 参会人信息查询
