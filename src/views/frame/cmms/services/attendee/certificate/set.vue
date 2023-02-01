@@ -303,7 +303,6 @@ export default {
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
           this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
           this.WHchange()
-
           if (this.printSetform.printBackground) {
             let index = this.printSetform.printBackground.lastIndexOf('/')
             let filename = this.printSetform.printBackground.substr(index + 1)

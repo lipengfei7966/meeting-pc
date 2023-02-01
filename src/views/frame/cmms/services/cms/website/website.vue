@@ -126,6 +126,8 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import axios from 'axios'
+import { getLanguage } from '@/api/frame/form'
 import station from './station'
 import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
@@ -177,6 +179,15 @@ export default {
     }
   },
   methods: {
+    // async onChangeAll(){
+    //   console.log(this.userData,182)
+    //   const { data } = await getLanguage({
+    //     data: this.$route.params.ids,  //'m000151'
+    //       funcModule: "获取多语言JSON",
+    //       funcOperation: "获取多语言JSON",
+    //   })
+    //   console.log(data)
+    // },
     handelClick(item, data, type) {
       if (type == 0) {
         if (item.sort == 0) {
@@ -332,8 +343,9 @@ export default {
                   data: this.$route.params.ids
                 }
               })
-              console.log(res)
             }
+            // console.log(res,this.userData,201)
+
           })
           .catch(() => {})
       } else {
@@ -458,6 +470,7 @@ export default {
     this.getJurisdiction()
     // console.log(this.userData)
     console.log(this.$route)
+    // this.onChangeAll()、、
   }
 }
 </script>
