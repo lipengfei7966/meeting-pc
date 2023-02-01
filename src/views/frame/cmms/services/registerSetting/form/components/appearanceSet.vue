@@ -45,9 +45,10 @@
           </el-form-item>
 
           <el-form-item label="Banner(pc)" prop="meetingFile">
-            <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="meetingUploadFile" :file-list="meetingImageList" :headers="httpHeaders" :on-remove="meetingHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="mweetngHandlePreview">
+            <el-button type="primary" @click="BannerPcVisible=true">选择图册</el-button>
+            <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="meetingUploadFile" :file-list="meetingImageList" :headers="httpHeaders" :on-remove="meetingHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="mweetngHandlePreview">
               <i class="el-icon-plus"></i>
-            </el-upload>
+            </el-upload> -->
             <el-dialog :visible.sync="meetingdialogVisible">
               <img width="100%" :src="mettingdialogImageUrl" alt="">
             </el-dialog>
@@ -119,17 +120,23 @@
     <div class="appearanceSetBtns">
       <el-button type="primary" @click="appearanceSetSave">{{$t('appearance.saveAndNext')}}</el-button>
     </div>
+    <el-dialog title="图册选择" :visible.sync="BannerPcVisible">
+      <altasTemp delFlag="true" footerFlag="true"></altasTemp>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import request from '@/utils/frame/base/request'
+import altasTemp from './altasTemp.vue'
 export default {
   name: 'appearanceSet',
+  components:{altasTemp},
   data () {
     return {
       eventCode:'',
+      BannerPcVisible:false,
       resPcImageList: [],
       resPcdialogImageUrl: '',
       resPcdialogVisible: false,
