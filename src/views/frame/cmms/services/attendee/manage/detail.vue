@@ -33,6 +33,31 @@
           <!-- <pre style="padding-left: 150px">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</pre> -->
           <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
         </div>
+        <!-- 是否出席 -->
+        <div v-else-if="element.systemName == '是否出席'" class="form-item-input">
+          <el-form-item :label="element.title">
+            <div style="min-width: 300px; display: inline-block; vertical-align: top">
+              <el-radio-group v-model="setForm.attendance" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                <div v-for="item in element.options" :key="item">
+                  <el-radio :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                </div>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+        </div>
+        <!-- 分活动 -->
+        <div v-else-if="element.systemName == '分活动'" class="form-item-input">
+          <el-form-item :label="element.title">
+            <div style="min-width: 300px; display: inline-block; vertical-align: top">
+              <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                <el-checkbox v-model="setForm.activityOptions" :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人)</el-checkbox>
+                <p style="padding:10px">场景描述：{{ item.describeInfo }}</p>
+              </div>
+
+              <span style="float:right">{{ element.placeholder }}</span>
+            </div>
+          </el-form-item>
+        </div>
 
         <div v-else>
           <!-- 自定义信息 -->
@@ -405,6 +430,7 @@ export default {
   name: 'attendeeEdit',
   data() {
     return {
+      eventInfoChildList:[],
       enRegistration: {},
       zhRegistration: {},
       theCertificateType: [],
@@ -428,6 +454,7 @@ export default {
       cropperModel: false, // 图片裁剪弹窗
       countryCodeOptions: [], // 国际区号下拉选项  lable - value
       setForm: {
+        activityOptions:[],
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
         name: '', // 姓名
@@ -718,6 +745,7 @@ export default {
         if (this.$route.params.type == 'update') {
           this.getContactInfo()
         }
+        this.cmsEventInfoChildrenFn()
       })
     },
     // 参会人信息查询
@@ -806,6 +834,23 @@ export default {
         // console.log(this.setForm);
       })
     },
+    // 分活动管理
+    cmsEventInfoChildrenFn(){
+      request({
+        url: 'api/register/cmsEventInfoChildren/page',
+        method: 'POST',
+        data: {
+          isPage: false,
+          data: {eventCode: this.$route.params.data,isGoLive:'1'},
+          funcModule: '分活动管理',
+          funcOperation: '获取分活动列表'
+        }
+      }).then(res => {
+        console.log(res,'resres');
+        this.eventInfoChildList=res.data
+      })
+    },
+    handleCheckAllChangeActive(){},
     submit() {
       let queryUrl = ''
       if (this.$route.params.type == 'add') {
