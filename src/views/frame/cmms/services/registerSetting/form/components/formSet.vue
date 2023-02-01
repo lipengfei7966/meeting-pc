@@ -2411,6 +2411,7 @@ export default {
       // 是否出席
       if (itemList.value == 'attendance') {
         obj.isSpecialInfo=false
+        obj.isCoustomInfo=false
         obj.mapCode = 'attendance' + this.setInfoList.length
         obj.options = ['出席', '不出席']
         this.specialInfoList.forEach((v,index)=>{
@@ -2422,13 +2423,13 @@ export default {
       // 隐私协议
       if (itemList.value == 'protocol') {
         obj.isSpecialInfo=false
-        // obj.privacyContent=this.ruleForm.name
-        // obj.privacyContent=this.ruleForm.privacyContent
+        obj.isCoustomInfo=true
         obj.mapCode = 'protocol' + this.setInfoList.length
       }
       // 分活动
       if (itemList.value == 'subactivity') {
         obj.isSpecialInfo=false
+        obj.isCoustomInfo=false
         obj.mapCode = 'subactivity' + this.setInfoList.length
         obj.placeholder='您最多可报名三项活动'
         this.specialInfoList.forEach((v,index)=>{
