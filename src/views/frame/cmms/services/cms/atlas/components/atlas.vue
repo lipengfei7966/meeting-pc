@@ -32,6 +32,7 @@
         </template>
       </div>
     </div>
+    <div class="mask"></div>
   </div>
 </template>
 <script>
@@ -61,12 +62,12 @@ export default {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight'])
   },
   created(){
-     if(this.atlasCode){
+     if(!this.atlasCode){
        this.titleName=this.$t("website.atlas.add.atlasAddition")
-       //获取图册信息
-       this.getAtlas()
      }else{
        this.titleName=this.$t("website.atlas.edit.atlasEditor")
+       //获取图册信息
+       this.getAtlas()
      }
   },
   props:['atlasCode',"eventCode"],
