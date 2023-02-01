@@ -11,10 +11,10 @@
       </template>
     </bs-table>
     <div class="footer" v-if="footerFlag">
-      <el-button  type="primary" @click="handleOk">确 定</el-button>
+      <el-button type="primary" @click="handleOk">确 定</el-button>
       <el-button class="cancel" @click="cancel">取 消</el-button>
     </div>
-    <atlas  v-if="dialogDetailVisible"  @closeDialogAtlas='closeDialogAtlas' @reload="reload" :eventCode="form.listQuery.data.eventCode"></atlas>
+    <atlas v-if="dialogDetailVisible" @closeDialogAtlas='closeDialogAtlas' @reload="reload" :eventCode="form.listQuery.data.eventCode"></atlas>
   </div>
 </template>
 
@@ -145,8 +145,8 @@ export default {
     if(this.eventCode){
       this.form.listQuery.data.eventCode=this.eventCode
     }
-    //初始化数据
-    // this.$refs.bsTable.getList({name:"search"})
+    // 初始化数据
+    this.$refs.bsTable.getList({name:"search"})
 
   },
   methods:{
@@ -251,27 +251,28 @@ export default {
 </script>
 
 <style scoped>
-.atlas .operationButton{
-  display: flex!important;
+.atlas .operationButton {
+  display: flex !important;
   justify-content: flex-start;
-  gap: 12px!important;
+  gap: 12px !important;
 }
-.atlas .footer{
+.atlas .footer {
   padding: 10px 0px 20px 0px;
   display: flex;
   justify-content: center;
-    background-color: white;
+  background-color: white;
   border-radius: 5px;
 }
-.cancel:hover{
-  border-color: var(--menuBg)!important;
-  background: var(--menuBg)!important;
-  color: var(--btnFontColor)!important;
-  fill: var(--btnFontColor)!important;
+.cancel:hover {
+  border-color: var(--menuBg) !important;
+  background: var(--menuBg) !important;
+  color: var(--btnFontColor) !important;
+  fill: var(--btnFontColor) !important;
 }
-.cancel:focus, .cancel:hover {
-  background-color: #FFF;
+.cancel:focus,
+.cancel:hover {
+  background-color: #fff;
   color: #606266;
-  border-color: #DCDFE6
+  border-color: #dcdfe6;
 }
 </style>

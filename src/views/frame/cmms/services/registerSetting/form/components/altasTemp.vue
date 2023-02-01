@@ -6,7 +6,7 @@
         <div class="operationButton">
           <!--          <el-link type="primary" :underline="false" @click="viewDetail(scope)">详情</el-link>-->
           <el-link type="primary" :underline="false" @click="editAtlas(scope)">{{ $t('website.atlas.details') }}</el-link>
-          <el-link type="primary" :underline="false" @click="delAtlas(scope)" v-if="delFlag">{{ $t('website.atlas.delete') }}</el-link>
+          <!-- <el-link type="primary" :underline="false" @click="delAtlas(scope)" v-if="delFlag">{{ $t('website.atlas.delete') }}</el-link> -->
         </div>
       </template>
     </bs-table>
@@ -146,7 +146,7 @@ export default {
       this.form.listQuery.data.eventCode=this.eventCode
     }
     //初始化数据
-    // this.$refs.bsTable.getList({name:"search"})
+    this.$refs.bsTable.getList({name:"search"})
 
   },
   methods:{
@@ -171,6 +171,7 @@ export default {
     },
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
+      // this.$refs.bsTable.getList({ name: 'search' })
     },
     //刷新数据
     reload(){
