@@ -1018,6 +1018,7 @@ export default {
           this.isFormSetComplete = true
           console.log(this.resultSetForm, 'resultSetFormresultSetForm')
           if (this.resultSetForm.isNeedApprove === '0') {
+
             this.resultNoFrom[0].appFile = JSON.stringify(this.successBannerSelectRow)
             this.resultNoFrom[0].backgroundFile = JSON.stringify(this.successBackgroundSelectRow)
             // this.resultNoFrom[0].backgroundFile = this.resultSetForm.successBackground
@@ -1040,8 +1041,8 @@ export default {
             console.log(this.resultNoFrom, 'resultNoFrom')
           }
           if (this.resultSetForm.isNeedApprove === '1') {
-            this.resultFrom[0].appFile = JSON.stringify(this.resultSetForm.successBanner)
-            this.resultFrom[0].backgroundFile = JSON.stringify(this.resultSetForm.successBackground)
+            this.resultFrom[0].appFile = JSON.stringify(this.successBannerSelectRow)
+            this.resultFrom[0].backgroundFile = JSON.stringify(this.successBackgroundSelectRow)
             // this.resultFrom[0].backgroundFile = this.resultSetForm.successBackground
             this.resultFrom[0].describeInfo = this.resultSetForm.successDescribe
             this.resultFrom[0].isSkip = this.resultSetForm.successIsJumpCurrentPage
