@@ -443,13 +443,13 @@ export default {
                   window.frames['myframe'].setContents(this.appearanceSetForm.profile)
                 }
               }, 3000)
-              this.meetingFileSelectRow={code:res.data.meetingFile,name:'111'}
+              this.meetingFileSelectRow={code:res.data.meetingFile,name:res.data.meetingFileName}
               this.appearanceSetForm.meetingFile=res.data.meetingFile
-              this.appFileSelectRow={code:res.data.appFile,name:'111'}
+              this.appFileSelectRow={code:res.data.appFile,name:res.data.appFileName}
               this.appearanceSetForm.appFile=res.data.appFile
-              this.loginPcFileSelectRow={code:res.data.loginPcFile,name:'111'}
+              this.loginPcFileSelectRow={code:res.data.loginPcFile,name:res.data.loginPcFileName}
               this.appearanceSetForm.loginPcFile=res.data.loginPcFile
-              this.loginAppFileSelectRow={code:res.data.loginAppFile,name:'111'}
+              this.loginAppFileSelectRow={code:res.data.loginAppFile,name:res.data.loginAppFileName}
               this.appearanceSetForm.loginAppFile=res.data.loginAppFile
             // this.appearanceSetForm.language=res.data.language.split(',')
             // this.meetingImageList = res.data.meetingFile
