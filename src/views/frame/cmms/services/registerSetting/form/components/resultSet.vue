@@ -227,12 +227,12 @@
                 <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
               </el-form-item>
               <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
-                <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="waitReviewBannerUploadFile" :file-list="waitReviewBannerImageList" :headers="httpHeaders" :on-remove="waitReviewBannerHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="waitReviewhandlePictureCardPreview">
+                <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="waitReviewBannerUploadFile" :file-list="waitReviewBannerImageList" :headers="httpHeaders" :on-remove="waitReviewBannerHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="waitReviewhandlePictureCardPreview">
                   <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="waitReviewdialogVisible">
                   <img width="100%" :src="waitReviewdialogImageUrl" alt="">
-                </el-dialog> -->
+                </el-dialog>
               </el-form-item>
 
               <el-form-item :label="$t('result.backgroundImage')+':'" prop="waitReviewBackground" style="marginBottom:50px">
@@ -904,12 +904,12 @@ export default {
       this.resultSetForm.noPassButtonList = []
       var btnObj3 = { name: '', value: '' }
       this.resultSetForm.noPassButtonList.push(btnObj3)
-      this.successBannerImageList = []
-      this.waitReviewBannerImageList = []
-      this.noPassBannerImageList = []
-      this.successBgcImageList = []
-      this.waitReviewBgcImageList = []
-      this.noPassBgcImageList = []
+      // this.successBannerImageList = []
+      // this.waitReviewBannerImageList = []
+      // this.noPassBannerImageList = []
+      // this.successBgcImageList = []
+      // this.waitReviewBgcImageList = []
+      // this.noPassBgcImageList = []
     },
      getResultFn (eventCode) {
       this.eventCode=eventCode?eventCode:this.eventCode
@@ -930,6 +930,8 @@ export default {
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
+                debugger
+                console.log(item.appFile,'item.appFile');
                 this.successBannerSelectRow = JSON.parse(item.appFile)
                 this.findUrl('successBanner')
                 this.successBackgroundSelectRow = JSON.parse(item.backgroundFile)
