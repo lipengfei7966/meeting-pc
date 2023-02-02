@@ -39,8 +39,8 @@
         <template slot="zh" slot-scope="scope">
           <span v-if="activeName == '富文本'">
             <!-- 富文本 -->
-            <el-button type="text" @click="previewClick(scope.row,'zh')">{{ $t('website.customlanguage.btn.preview') }}</el-button>
-            <el-button type="text" @click="editClick(scope.row,'zh')">{{ $t('website.customlanguage.btn.edit') }}</el-button>
+            <el-button type="text" @click="editClick(scope.row,'zh',true)">{{ $t('website.customlanguage.btn.preview') }}</el-button>
+            <el-button type="text" @click="editClick(scope.row,'zh',false)">{{ $t('website.customlanguage.btn.edit') }}</el-button>
           </span>
           <span v-else>
             <el-input :disabled="mainLanguage == 'zh'" v-if="scope.row.isEdit" v-model="scope.row.zh" placeholder="请输入内容"></el-input>
@@ -51,8 +51,8 @@
         <template slot="en" slot-scope="scope">
           <span v-if="activeName == '富文本'">
             <!-- 富文本 -->
-            <el-button type="text" @click="previewClick(scope.row,'en')">{{ $t('website.customlanguage.btn.preview') }}</el-button>
-            <el-button type="text" @click="editClick(scope.row,'en')">{{ $t('website.customlanguage.btn.edit') }}</el-button>
+            <el-button type="text" @click="editClick(scope.row,'en',true)">{{ $t('website.customlanguage.btn.preview') }}</el-button>
+            <el-button type="text" @click="editClick(scope.row,'en',false)">{{ $t('website.customlanguage.btn.edit') }}</el-button>
           </span>
           <span v-else>
             <el-input :disabled="mainLanguage == 'en'" v-if="scope.row.isEdit" v-model="scope.row.en" placeholder="Please enter the content"></el-input>
@@ -72,6 +72,15 @@
         <el-button type="primary" @click="dialogSave">确 定</el-button>
       </span>
     </el-dialog>
+    <!--  -->
+    <el-dialog title="预览" :visible.sync="dialogVisible_" width="1200px" :before-close="handleClose_">
+      <div style="padding: 0 10px; height: 500px;overflow-y: scroll;" :key="new Date().getTime()" v-html="innerHtmlData">
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible_ = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!--  -->
   </div>
 
 </template>
@@ -83,6 +92,11 @@ export default {
   name:'customlanguage',
   data(){
     return {
+      innerHtmlData:'',//预览内容
+      sheetData:{},// 富文本其他语言协议 简介 数据暂存
+      formId:'',
+      privacyName_:'',//会议简介其他语言
+      profile_:'',//协议其他语言
       language_:'',//表单多语言
       // 表单暂存字段
       menuId:'',
@@ -100,7 +114,8 @@ export default {
       synopsisRestData:'',//表单会议简介其他语言
       agreementData:'',//表单协议主语言
       agreementRestData:'',//表单协议其他语言
-      dialogVisible: false,
+      dialogVisible: false,//编辑
+      dialogVisible_: false,//查看
       languageSwitch:'',//获取语言
       batchShow:true,//是否批量编辑
       dataList:[],//点击保存的数据（浅）
@@ -366,6 +381,7 @@ export default {
       this.mainData.api.search = '/api/register/cmsEventFormLang/page'
       // 初始化分页显示
       this.mainData.bottomBar.pagination.show = true
+      this.form.listQuery.isPage = true
       if(tab._props.label == this.$t('website.customlanguage.tab.registrationSetting')){
         // 报名设置
         this.form.formData[1].list = this.$t('datadict.langSignupFunction')
@@ -402,10 +418,66 @@ export default {
         this.form.listQuery.data.module = 'management'
         this.$refs.bsTable.getList()
       }else if(tab._props.label == '富文本'){
-        // debugger
         this.goTo()
       }
       console.log(tab, this.form.listQuery.data,this.form.formData);
+    },
+    // 获取富文本其他语言会议简介 会议协议
+    getMeetingData(language,formId){
+      this.formId = formId
+      let params = {
+        eventCode:this.form.listQuery.data.eventCode,
+        language:language
+      }
+      request({
+          url: '/api/biz/cmsEventInfoLang/get',
+          method: 'POST',
+          data: { data: params, funcModule: '获取富文本其他语言', funcOperation: '获取富文本其他语言' }
+        })
+          .then(res => {
+            if(res){
+              this.sheetData = res.data
+              if(res.data.privacyName){
+          this.privacyName_ = res.data.privacyName
+             }
+            if(res.data.profile){
+          this.profile_ = res.data.profile
+            }
+            if(res.data.language){
+          this.language_ = res.data.language
+           }
+            }
+            if(formId == '00001'){
+              // 预览暂存
+              if(res.data.profile){
+                this.innerHtmlData = res.data.profile
+              }else{
+                this.innerHtmlData = ''
+              }
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContents('')
+                  window.frames['myframe'].setContents(this.profile_)
+                }
+              }, 2000)
+            }else if(formId == '00002'){
+              // 预览暂存
+              if(res.data.privacyName){
+                this.innerHtmlData = res.data.privacyName
+              }else{
+                this.innerHtmlData = ''
+              }
+              setTimeout(() => {
+                if (window.frames['myframe']){
+                  window.frames['myframe'].setContents('')
+                  window.frames['myframe'].setContents(this.privacyName_)
+                }
+              }, 2000)
+            }
+          })
+          .catch(() => {
+            // debugger
+          })
     },
     getArticle(){
       let params = {
@@ -439,6 +511,7 @@ export default {
                   }
                   this.$refs.bsTable.tableData.unshift(obj)
                   this.mainData.bottomBar.pagination.show = false
+                  this.form.listQuery.isPage = false
                 })
                 console.log(this.$refs.bsTable.tableData);
               }
@@ -453,7 +526,12 @@ export default {
     // 初始化
     initCallback(data){
       if(this.activeName == '富文本'){
-        debugger
+        if(data.data.privacyName){
+          this.privacyName_ = data.data.privacyName
+        }
+        if(data.data.profile){
+          this.profile_ = data.data.profile
+        }
         if(data.data.language){
           this.language_ = data.data.language
         }
@@ -526,12 +604,23 @@ export default {
         this.$router.push({ name: 'attendeeSigninSet', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
       }else if(this.activeName == this.$t('website.customlanguage.tab.articleManagement')){
         // 文章管理
+        // debugger
         this.$router.push({ name: 'articleManage', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
       }else if(this.activeName == this.$t('website.customlanguage.tab.meetingManagement')){
         // 会议管理
         this.$router.push({ name: 'eventInfoManage', params: { data: val.eventCode ,name:this.codeName,code:val.setUpCode} })
       }else if(this.activeName == this.$t('website.customlanguage.tab.richText')){
         // 富文本
+        if(val.menu){
+          //报名表单
+          // debugger
+          this.$router.push({ name: 'attendeeFormConfig', params: { data: this.form.listQuery.data.eventCode ,name:this.codeName} })
+        }else{
+          // 文章
+          // debugger
+          this.$router.push({ name: 'articleManage', params: { data: val.eventCode ,name: this.codeName,code:val.id} })
+        }
+        console.log(val);
       }
       console.log(val.eventCode);
     },
@@ -693,12 +782,11 @@ export default {
       }
       this.$refs.bsTable.handleDownload(obj)
     },
-    previewClick(val,type){
-      // debugger
-      console.log(val,type);
+    previewClick(){
+      this.dialogVisible_ = true
     },
     // 修改
-    editClick(val,type){
+    editClick(val,type,preview){
       // debugger
       // 主语言
       if(type == this.mainLanguage){
@@ -720,10 +808,19 @@ export default {
         this.getData('rest',val.code,val.eventCode,type)
         }
       }
-      this.dialogVisible = true
+      if(preview){
+        //预览
+        this.previewClick()
+      }else{
+        // 编辑
+        this.dialogVisible = true
+      }
       console.log(val,type);
     },
     handleClose(done) {
+      done();
+    },
+    handleClose_(done) {
       done();
     },
     getMenuData(id,lang,val,type){
@@ -744,7 +841,13 @@ export default {
           .then(res => {
             if(res){
               this.synopsisData = res.data
-              debugger
+              // debugger
+              // 预览暂存
+              if(res.data.profile){
+                this.innerHtmlData = res.data.profile
+              }else{
+                this.innerHtmlData = ''
+              }
               setTimeout(() => {
                 if (window.frames['myframe']){
                   window.frames['myframe'].setContents('')
@@ -756,6 +859,7 @@ export default {
           .catch(() => {})
         }else if(lang == 'rest'){
           // 其他语言
+          this.getMeetingData(type,id)
         }
       }else if('00002'){
         //协议内容
@@ -769,7 +873,13 @@ export default {
           .then(res => {
             if(res){
               this.agreementData = res.data
-              debugger
+              // debugger
+              // 预览暂存
+              if(res.data.privacyContent){
+                this.innerHtmlData = res.data.privacyContent
+              }else{
+                this.innerHtmlData = ''
+              }
               setTimeout(() => {
                 if (window.frames['myframe']){
                   window.frames['myframe'].setContents('')
@@ -781,6 +891,7 @@ export default {
           .catch(() => {})
         }else if(lang == 'rest'){
           // 其他语言
+          this.getMeetingData(type,id)
         }
       }
       console.log(id,lang,val,type);
@@ -803,8 +914,14 @@ export default {
         })
           .then(res => {
             if(res){
+              // debugger
               this.essayData = res.data
-              // articleContent
+              // 预览暂存
+              if(res.data.articleContent){
+                this.innerHtmlData = res.data.articleContent
+              }else{
+                this.innerHtmlData = ''
+              }
               setTimeout(() => {
                 if (window.frames['myframe']){
                   window.frames['myframe'].setContents('')
@@ -830,7 +947,13 @@ export default {
           .then(res => {
             if(res){
               this.restData = res.data
-              debugger
+              // debugger
+              // 预览暂存
+              if(res.data.articleContent){
+                this.innerHtmlData = res.data.articleContent
+              }else{
+                this.innerHtmlData = ''
+              }
               setTimeout(() => {
                 if (window.frames['myframe']){
                   window.frames['myframe'].setContents('')
@@ -843,7 +966,6 @@ export default {
         }
       },
       menuSave(){
-        debugger
       //   this.menuId = id
       // this.menuLang = lang
       // this.meunVal = val
@@ -858,7 +980,7 @@ export default {
         })
           .then(res => {
             if(res){
-              debugger
+              // debugger
               this.dialogVisible = false
               this.$message({
               message: this.$t('biz.msg.saveSuccess'),
@@ -869,6 +991,49 @@ export default {
           .catch(() => {})
         }else if(this.menuLang == 'rest'){
           // 其他语言
+          if(this.privacyName_ != '' || this.profile_ != ''){
+            // 有会议简介数据 修改富文本
+            this.sheetData.profile = window.frames['myframe'].getContent()
+            request({
+          url: '/api/biz/cmsEventInfoLang/update',
+          method: 'POST',
+          data: { data:this.sheetData, funcModule: '会议简介富文本创建', funcOperation: '会议简介富文本创建' }
+        })
+          .then(res => {
+            if(res){
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+          }else{
+            // 无会议简介数据 创建富文本
+            // 没id 调取创建接口
+            // debugger
+            this.sheetData.profile = window.frames['myframe'].getContent()
+            this.sheetData.privacyName = ''
+            this.sheetData.eventCode = this.form.listQuery.data.eventCode
+            this.sheetData.language = this.neunType
+            request({
+              url: '/api/biz/cmsEventInfoLang/save',
+              method: 'POST',
+              data: { data:this.sheetData, funcModule: '文章富文本保存', funcOperation: '文章富文本保存' }
+            })
+              .then(res => {
+                if(res){
+                  this.dialogVisible = false
+                  this.$message({
+                  message: this.$t('biz.msg.saveSuccess'),
+                  type: 'success'
+              })
+                }
+              })
+                .catch(() => {})
+                // 
+              }
         }
       }else if(this.menuId == '00002'){
         if(this.menuLang == 'main'){
@@ -899,7 +1064,7 @@ export default {
         })
           .then(res => {
             if(res){
-              debugger
+              // debugger
               this.dialogVisible = false
               this.$message({
               message: this.$t('biz.msg.saveSuccess'),
@@ -910,11 +1075,56 @@ export default {
           .catch(() => {})
         }else if(this.menuLang == 'rest'){
           // 其他语言
+          if(this.privacyName_ != '' || this.profile_ != ''){
+            // debugger
+            // 有会议简介数据 修改富文本
+            this.sheetData.privacyName = window.frames['myframe'].getContent()
+            request({
+          url: '/api/biz/cmsEventInfoLang/update',
+          method: 'POST',
+          data: { data:this.sheetData, funcModule: '会议简介富文本创建', funcOperation: '会议简介富文本创建' }
+        })
+          .then(res => {
+            if(res){
+              this.dialogVisible = false
+              this.$message({
+              message: this.$t('biz.msg.saveSuccess'),
+              type: 'success'
+          })
+            }
+          })
+          .catch(() => {})
+          }else{
+            // 无会议协议数据 创建富文本
+            // 没id 调取创建接口
+            // debugger
+            this.sheetData.privacyName = window.frames['myframe'].getContent()
+            this.sheetData.profile = ''
+            this.sheetData.eventCode = this.form.listQuery.data.eventCode
+            this.sheetData.language = this.neunType
+            request({
+              url: '/api/biz/cmsEventInfoLang/save',
+              method: 'POST',
+              data: { data:this.sheetData, funcModule: '文章富文本保存', funcOperation: '文章富文本保存' }
+            })
+              .then(res => {
+                if(res){
+                  this.dialogVisible = false
+                  this.$message({
+                  message: this.$t('biz.msg.saveSuccess'),
+                  type: 'success'
+              })
+                }
+              })
+                .catch(() => {})
+                // 
+          }
         }
       }
       },
       dialogSave(){
         if(this.menuId){
+          // 表单富文本保存
           this.menuSave()
         }else{
           // 文章保存
@@ -961,7 +1171,7 @@ export default {
           .catch(() => {})
           }else{
             // 没id 调取创建接口
-            debugger
+            // debugger
             this.restData.articleContent = window.frames['myframe'].getContent()
         this.restData.articlCode = this.code_
         this.restData.eventCode = this.eventCode_
@@ -1003,5 +1213,21 @@ export default {
   padding-bottom: 10px;
   padding-right: 10px;
   // float: right;
+}
+// 改变默认滚动条样式
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #ebeef5;
+}
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #ccc;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 1);
 }
 </style>
