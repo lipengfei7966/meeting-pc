@@ -147,13 +147,13 @@
       <altasTemp ref="meetingFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('meetingFile',$event)" @cancel="cancel('meetingFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="appFileVisible">
-      <altasTemp :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('appFile',$event)" @cancel="cancel('appFile')"></altasTemp>
+      <altasTemp ref="appFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('appFile',$event)" @cancel="cancel('appFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="loginPcFileVisible">
-      <altasTemp :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginPcFile',$event)" @cancel="cancel('loginPcFile')"></altasTemp>
+      <altasTemp ref="loginPcFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginPcFile',$event)" @cancel="cancel('loginPcFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="loginAppFileVisible">
-      <altasTemp :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginAppFile',$event)" @cancel="cancel('loginAppFile')"></altasTemp>
+      <altasTemp ref="loginAppFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginAppFile',$event)" @cancel="cancel('loginAppFile')"></altasTemp>
     </el-dialog>
   </div>
 </template>
@@ -239,18 +239,18 @@ export default {
           break;
         case 'appFile':
           this.appFileVisible=true
-          this.$refs.meetingFile.form.listQuery.data.eventCode=this.eventCode
-          this.$refs.meetingFile.reload()
+          this.$refs.appFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.appFile.reload()
           break;
         case 'loginPcFile':
           this.loginPcFileVisible=true
-          this.$refs.meetingFile.form.listQuery.data.eventCode=this.eventCode
-          this.$refs.meetingFile.reload()
+          this.$refs.loginPcFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.loginPcFile.reload()
           break;
         case 'loginAppFile':
           this.loginAppFileVisible=true
-          this.$refs.meetingFile.form.listQuery.data.eventCode=this.eventCode
-          this.$refs.meetingFile.reload()
+          this.$refs.loginAppFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.loginAppFile.reload()
           break;
 
         default:
@@ -263,22 +263,22 @@ export default {
         case 'meetingFile':
           this.meetingFileVisible=false
           this.meetingFileSelectRow=selectRow
-          this.appearanceSetForm.meetingFile=selectRow
+          this.appearanceSetForm.meetingFile=selectRow.code
           break;
         case 'appFile':
           this.appFileVisible=false
           this.appFileSelectRow=selectRow
-          this.appearanceSetForm.appFile=selectRow
+          this.appearanceSetForm.appFile=selectRow.code
           break;
         case 'loginPcFile':
           this.loginPcFileVisible=false
           this.loginPcFileSelectRow=selectRow
-          this.appearanceSetForm.loginPcFile=selectRow
+          this.appearanceSetForm.loginPcFile=selectRow.code
           break;
         case 'loginAppFile':
           this.loginAppFileVisible=false
           this.loginAppFileSelectRow=selectRow
-          this.appearanceSetForm.loginAppFile=selectRow
+          this.appearanceSetForm.loginAppFile=selectRow.code
           break;
 
         default:
@@ -308,19 +308,19 @@ export default {
       switch (status) {
         case 'meetingFile':
         this.meetingFileSelectRow={}
-        this.appearanceSetForm.meetingFile={}
+        this.appearanceSetForm.meetingFile=''
           break;
         case 'appFile':
         this.appFileSelectRow={}
-        this.appearanceSetForm.appFile={}
+        this.appearanceSetForm.appFile=''
           break;
         case 'loginPcFile':
         this.loginPcFileSelectRow={}
-        this.appearanceSetForm.loginPcFile={}
+        this.appearanceSetForm.loginPcFile=''
           break;
         case 'loginAppFile':
         this.loginAppFileSelectRow={}
-        this.appearanceSetForm.loginAppFile={}
+        this.appearanceSetForm.loginAppFile=''
           break;
 
         default:
@@ -443,14 +443,14 @@ export default {
                   window.frames['myframe'].setContents(this.appearanceSetForm.profile)
                 }
               }, 3000)
-              this.meetingFileSelectRow=JSON.parse(res.data.meetingFile)
-              this.appearanceSetForm.meetingFile=JSON.parse(res.data.meetingFile)
-              this.appFileSelectRow=JSON.parse(res.data.appFile)
-              this.appearanceSetForm.appFile=JSON.parse(res.data.appFile)
-              this.loginPcFileSelectRow=JSON.parse(res.data.loginPcFile)
-              this.appearanceSetForm.loginPcFile=JSON.parse(res.data.loginPcFile)
-              this.loginAppFileSelectRow=JSON.parse(res.data.loginAppFile)
-              this.appearanceSetForm.loginAppFile=JSON.parse(res.data.loginAppFile)
+              this.meetingFileSelectRow={code:res.data.meetingFile,name:'111'}
+              this.appearanceSetForm.meetingFile=res.data.meetingFile
+              this.appFileSelectRow={code:res.data.appFile,name:'111'}
+              this.appearanceSetForm.appFile=res.data.appFile
+              this.loginPcFileSelectRow={code:res.data.loginPcFile,name:'111'}
+              this.appearanceSetForm.loginPcFile=res.data.loginPcFile
+              this.loginAppFileSelectRow={code:res.data.loginAppFile,name:'111'}
+              this.appearanceSetForm.loginAppFile=res.data.loginAppFile
             // this.appearanceSetForm.language=res.data.language.split(',')
             // this.meetingImageList = res.data.meetingFile
             // this.meetingImageList = []
@@ -524,10 +524,10 @@ export default {
             // this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             const req = window.frames['myframe'].getContent()
             this.appearanceSetForm.profile = req.trim()
-            this.appearanceSetForm.meetingFile=JSON.stringify(this.appearanceSetForm.meetingFile)
-            this.appearanceSetForm.appFile=JSON.stringify(this.appearanceSetForm.appFile)
-            this.appearanceSetForm.loginPcFile=JSON.stringify(this.appearanceSetForm.loginPcFile)
-            this.appearanceSetForm.loginAppFile=JSON.stringify(this.appearanceSetForm.loginAppFile)
+            this.appearanceSetForm.meetingFile=this.appearanceSetForm.meetingFile
+            this.appearanceSetForm.appFile=this.appearanceSetForm.appFile
+            this.appearanceSetForm.loginPcFile=this.appearanceSetForm.loginPcFile
+            this.appearanceSetForm.loginAppFile=this.appearanceSetForm.loginAppFile
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
             request({
               url: '/api/register/signupExterior/update',
