@@ -1050,9 +1050,9 @@ export default {
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
-                this.successBannerSelectRow = {code:item.appFile,name:'111'}
+                this.successBannerSelectRow = {code:item.appFile,name:item.appFileName}
                 this.findUrl('successBanner')
-                this.successBackgroundSelectRow = {code:item.backgroundFile,name:'222'}
+                this.successBackgroundSelectRow = {code:item.backgroundFile,name:item.backgroundFileName}
                 this.findUrl('successBackground')
                 this.resultSetForm.successDescribe = item.describeInfo
                 this.resultSetForm.successIsJumpCurrentPage = item.isSkip
@@ -1066,9 +1066,9 @@ export default {
                 }
                 break
               case '2'://waitReviewBanner
-                this.waitReviewBannerSelectRow = {code:item.appFile,name:'333'}
+                this.waitReviewBannerSelectRow = {code:item.appFile,name:item.appFileName}
                 this.findUrl('waitReviewBanner')
-                this.waitReviewBackgroundSelectRow = {code:item.backgroundFile,name:'444'}
+                this.waitReviewBackgroundSelectRow = {code:item.backgroundFile,name:item.backgroundFileName}
                 this.findUrl('waitReviewBackground')
                 this.resultSetForm.waitReviewDescribe = item.describeInfo
                 this.resultSetForm.waitReviewIsJumpCurrentPage = item.isSkip
@@ -1082,9 +1082,9 @@ export default {
                 }
                 break
               case '3':
-                this.noPassBannerSelectRow = {code:item.appFile,name:'555'}
+                this.noPassBannerSelectRow = {code:item.appFile,name:item.appFileName}
                 this.findUrl('noPassBanner')
-                this.noPassBackgroundSelectRow = {code:item.backgroundFile,name:'666'}
+                this.noPassBackgroundSelectRow = {code:item.backgroundFile,name:item.backgroundFileName}
                 this.findUrl('noPassBackground')
                 this.resultSetForm.noPassDescribe = item.describeInfo
                 this.resultSetForm.noPassIsJumpCurrentPage = item.isSkip
