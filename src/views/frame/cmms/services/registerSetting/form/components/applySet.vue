@@ -421,7 +421,7 @@
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" label="同行人数限制" prop="togetheCountStatus" :rules="[{ required: true, message: '请选择同行人数限制', trigger: ['blur', 'change'] }]">
               <el-radio v-model="applySetForm.togetheCountStatus" label="0">不限制</el-radio>
-              <el-radio v-model="applySetForm.togetheCountStatus" label="1">最多添加 <el-input-number v-model="applySetForm.togetheCount" controls-position="right" :min="0" size="small"></el-input-number>位</el-radio>
+              <el-radio v-model="applySetForm.togetheCountStatus" label="1">最多添加 <el-input-number v-model="applySetForm.togetheCount" controls-position="right" :min="0" size="small" :disabled="applySetForm.togetheCountStatus=='0'"></el-input-number>位</el-radio>
             </el-form-item>
             <el-form-item v-if="applySetForm.assistApply" :label="$t('applySet.supportNewAdditions')" prop="assistApplyOpenField" :rules="[{ required: true, message: '请选择协助报名开放字段', trigger: ['blur', 'change'] }]">
               <el-checkbox-group v-model="applySetForm.assistApplyOpenField">
