@@ -1443,12 +1443,12 @@ export default {
           }
         }
         })
-        if ( this.setInfoList.length==this.positionIndex) {
-          if(this.setInfoList[this.positionIndex]&&this.setInfoList[this.positionIndex].isTogethe==1){
-            this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+        if ( this.setInfoList.length>=this.positionIndex) {
+          if(this.setInfoList[this.setInfoList.length]&&this.setInfoList[this.setInfoList.length].isTogethe==1){
+            this.setInfoList.splice(this.setInfoList.length ,1,this.queryFollowList)
           }
-          if(this.setInfoList[this.positionIndex]==undefined||this.setInfoList[this.positionIndex].isTogethe==0){
-            this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+          if(this.setInfoList[this.setInfoList.length]==undefined||this.setInfoList[this.setInfoList.length].isTogethe==0){
+            this.setInfoList.splice(this.setInfoList.length ,0,this.queryFollowList)
           }
         }
       }
@@ -1554,12 +1554,12 @@ export default {
               }
             }
             })
-            if ( this.setInfoList.length==this.positionIndex) {
-              if(this.setInfoList[this.positionIndex]&&this.setInfoList[this.positionIndex].isTogethe==1){
-                this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+            if ( this.setInfoList.length>=this.positionIndex) {
+              if(this.setInfoList[this.setInfoList.length]&&this.setInfoList[this.setInfoList.length].isTogethe==1){
+                this.setInfoList.splice(this.setInfoList.length ,1,this.queryFollowList)
               }
-              if(this.setInfoList[this.positionIndex]==undefined||this.setInfoList[this.positionIndex].isTogethe==0){
-                this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+              if(this.setInfoList[this.setInfoList.length]==undefined||this.setInfoList[this.setInfoList.length].isTogethe==0){
+                this.setInfoList.splice(this.setInfoList.length ,0,this.queryFollowList)
               }
             }
           }
@@ -1611,12 +1611,12 @@ export default {
               }
             }
             })
-            if ( this.setInfoList.length==this.positionIndex) {
-              if(this.setInfoList[this.positionIndex]&&this.setInfoList[this.positionIndex].isTogethe==1){
-                this.setInfoList.splice(this.positionIndex ,1,this.queryFollowList)
+            if ( this.setInfoList.length>=this.positionIndex) {
+              if(this.setInfoList[this.setInfoList.length]&&this.setInfoList[this.setInfoList.length].isTogethe==1){
+                this.setInfoList.splice(this.setInfoList.length ,1,this.queryFollowList)
               }
-              if(this.setInfoList[this.positionIndex]==undefined||this.setInfoList[this.positionIndex].isTogethe==0){
-                this.setInfoList.splice(this.positionIndex ,0,this.queryFollowList)
+              if(this.setInfoList[this.setInfoList.length]==undefined||this.setInfoList[this.setInfoList.length].isTogethe==0){
+                this.setInfoList.splice(this.setInfoList.length ,0,this.queryFollowList)
               }
             }
           }
