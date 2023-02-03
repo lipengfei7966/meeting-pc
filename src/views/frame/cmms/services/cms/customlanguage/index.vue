@@ -1032,12 +1032,12 @@ export default {
                 }
               })
                 .catch(() => {})
-                // 
+                //
               }
         }
       }else if(this.menuId == '00002'){
         if(this.menuLang == 'main'){
-          // 
+          //
           let querySaveHref = {
             isVerification: this.agreementData.isVerification,
             registerVerification: this.agreementData.registerVerification,
@@ -1056,7 +1056,7 @@ export default {
             eventCode: this.agreementData.eventCode,
             id: this.agreementData.id
           }
-          // 
+          //
           request({
           url: '/api/register/signupContactCodeRule/update',
           method: 'POST',
@@ -1117,7 +1117,7 @@ export default {
                 }
               })
                 .catch(() => {})
-                // 
+                //
           }
         }
       }

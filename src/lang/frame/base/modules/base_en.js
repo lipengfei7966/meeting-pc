@@ -156,7 +156,6 @@ export default {
       menuInfo: 'Menu information' // 菜单信息
     },
     btn: {
-      unlock: 'unlock', // 解除锁定
       quickConfirm: 'Confirm', // 确认
       quickConfirmList: 'Batch confirm', // 批量确认
       unlock: 'Unlock', // 解锁
