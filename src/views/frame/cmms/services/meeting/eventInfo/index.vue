@@ -2,7 +2,7 @@
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
 
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" @initCallback='initCallback'></bs-table>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   name: 'eventInfoManage',
   data() {
     return {
+      getNum:0,
       form: {
         moreShowFlg: true,
         listQuery: {
@@ -191,6 +192,9 @@ export default {
     // 设置行高为38
     // this.$refs.bsTable.rowHeight = 38
   },
+  created(){
+    this.getNum = 3
+  },
   methods: {
     doDesign() {
       debugger
@@ -204,7 +208,24 @@ export default {
           eventHashCode: this.$refs.bsTable.currentRow.eventHashCode
         }
       })
+    },
+    initCallback(data){
+      console.log(this.$route.params.code);
+      console.log(data);
+      this.dataList = data
+      // 调取弹窗
+      if(this.$route.params.data){
+        this.dataList.data.forEach(item=>{
+          if(item.id == this.$route.params.code){
+            if(this.getNum == 3){
+              this.$refs.bsTable.currentRow = item
+            this.$refs.bsTable.triggerEvent(this.mainData.topBar[1])
+            this.getNum++
+            }
+          }
+        })
     }
+    },
   }
 }
 </script>

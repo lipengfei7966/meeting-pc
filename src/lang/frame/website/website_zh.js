@@ -56,6 +56,7 @@ export default {
       btn: {
         batchEditing: '批量编辑',
         edit: '编辑',
+        preview:'预览',
         cancel: '取消',
         save: '保存',
         export: '导出',
@@ -65,6 +66,7 @@ export default {
         dataFunction: '功能',
         module: '模块',
         settingItem: '设置项',
+        settingType:'类型',
         simplifiedChinese: '中文简体',
         english: '英文',
         hostLanguage: '主语言',
