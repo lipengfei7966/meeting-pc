@@ -10,6 +10,9 @@
 import { dateFormate } from '@/utils/frame/base/index'
 import request from '@/utils/frame/base/request'
 import axios from 'axios'
+import { getLanguage } from '@/api/frame/form'
+import enRegistration from '@/lang/frame/service/Attendee/attendeeDetail_en.js'
+import zhRegistration from '@/lang/frame/service/Attendee/attendeeDetail_zh.js'
 export default {
   name: 'attendeeManage',
   data() {
@@ -483,9 +486,35 @@ export default {
       }
     }
   },
-  mounted() {},
+  created() {
+  },
+  mounted() {
+  },
   methods: {
-    onChangeAll(params) {
+    async onChangeAll(params) {
+      if (this.form.listQuery.data.eventCode) {
+        const { data } = await getLanguage({
+          data: this.form.listQuery.data.eventCode,//'m000151'
+          funcModule: "获取多语言JSON",
+          funcOperation: "获取多语言JSON",
+        })
+        if (data) {
+
+          if (data.en) {
+            Object.keys(data.en).forEach((item, i) => {
+              enRegistration.registration[item] = Object.values(data.en)[i]
+            })
+
+          }
+          if (data.zh) {
+            Object.keys(data.zh).forEach((item, i) => {
+              zhRegistration.registration[item] = Object.values(data.zh)[i]
+            })
+
+          }
+
+        }
+      }
       this.mainData.topBar.forEach((item) => {
         if (item.name === 'upload') {
           item.atrrs.paramData = {

@@ -72,7 +72,7 @@ export default {
       })
       window.frames['myframe'].execCommand(str)
       this.dialogVisible_ = false
-    }
+    },
   }
 }
 </script>

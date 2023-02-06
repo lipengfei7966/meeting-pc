@@ -13,27 +13,24 @@
           <el-form :model="fileSearch" label-width="90px">
             <el-row>
               <el-col :span="8">
-                <el-form-item label="文件类型">
+                <el-form-item :label="$t('material.form.fileType')">
                   <el-select filterable size="mini" v-model="fileSearch.picType" clearable>
-                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.id"
-                               :key="item.id"></el-option>
+                    <el-option v-for="item in leixingOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="排序">
+                <el-form-item :label="$t('material.form.sort')">
                   <el-select filterable size="mini" v-model="fileSearch.rank_" clearable>
-                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.id"
-                               :key="item.id"></el-option>
+                    <el-option v-for="item in paixuOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="文件名称">
+                <el-form-item :label="$t('material.form.fileName')">
                   <el-input size="mini" v-model="fileSearch.picName" clearable>
                     <template slot="append">
-                      <span @click="searchClick"
-                            style="padding: 0px 20px; cursor: pointer; line-height: 26px; display: inline-block">
+                      <span @click="searchClick" style="padding: 0px 20px; cursor: pointer; line-height: 26px; display: inline-block">
                         <i class="el-icon-search"></i>
                       </span>
                     </template>
@@ -45,26 +42,25 @@
                 <!-- 新增 删除功能-->
                 <el-button class="right-btn" v-db-click size="mini" style="margin-right: 5px" @click="addMaterial">
                   <svg-icon icon-class="upload" style="margin-right: 6px"></svg-icon>
-                  上传素材
+                  {{$t('material.btn.uploadMaterial')}}
                 </el-button>
-                <input v-show="false" ref="fileRefAdd" type="file" @change="fileChangeAdd($event)" multiple
-                       accept="image/jpeg,image/psd,image/png,image/jpg" />
+                <input v-show="false" ref="fileRefAdd" type="file" @change="fileChangeAdd($event)" multiple accept="image/jpeg,image/psd,image/png,image/jpg" />
                 <el-dropdown>
                   <el-button type="primary">
-                    更多操作<i class="el-icon-arrow-down el-icon--right"></i>
+                    {{$t('material.btn.operation')}}<i class="el-icon-arrow-down el-icon--right"></i>
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                        <span @click="delMaterial">
-                             <svg-icon icon-class="delete" style="margin-right: 6px"></svg-icon>
-                        批量删除
-                        </span>
+                      <span @click="delMaterial">
+                        <svg-icon icon-class="delete" style="margin-right: 6px"></svg-icon>
+                        {{$t('material.btn.deletion')}}
+                      </span>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                        <span @click="moveMaterial">
-                          <i class="el-icon-top-right" style="margin-right: 6px"></i>
-                        批量移动文件夹
-                        </span>
+                      <span @click="moveMaterial">
+                        <i class="el-icon-top-right" style="margin-right: 6px"></i>
+                        {{$t('material.btn.moveFolders')}}
+                      </span>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -83,21 +79,20 @@
             <!--                  @click="details(item, index)">文件信息</span>-->
             <div style="display: inline-block; line-height: 47px; ">
               <el-checkbox @change="changeCheckBox($event,item.id)" style="margin-right: 10px"></el-checkbox>
-              <span @click="details(item, index)" style="color: #409eff; cursor: pointer">文件信息</span>
+              <span @click="details(item, index)" style="color: #409eff; cursor: pointer">{{$t('material.fileTxt')}}</span>
             </div>
           </li>
           <!-- <li class="resource">视频</li> -->
         </ul>
         <!-- <div v-if="matterList.length > 0 && size >= total">到底啦</div> -->
-        <div v-if="matterList.length <= 0"
-             style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span>
+        <div v-if="matterList.length <= 0" style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh"><span></span>
           <el-empty :image="require('@/assets/image/wushuju.png')" description=" "></el-empty>
         </div>
         <!-- @/assets/image/wushuju.png -->
       </div>
       <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else>
         <span></span>
-        <el-empty description="请选择文件夹"></el-empty>
+        <el-empty :description="$t('material.form.choose')"></el-empty>
       </div>
     </el-card>
     <!-- 右侧详细信息 -->
@@ -108,34 +103,34 @@
         </div>
         <div class="set_two">
           <div class="particulars">
-            <span style="font-size: 12px; color: black">文件名：</span>
-            <el-input size="mini" @blur="blur_" v-model="workName" style="width: 70%" placeholder="请输入文件名"></el-input>
+            <span style="font-size: 12px; color: black">{{$t('material.fileName')}}：</span>
+            <el-input size="mini" @blur="blur_" v-model="workName" style="width: 70%" :placeholder="$t('material.fileNamePH')"></el-input>
             <p>
-              大小：<span class="sp">{{ more.big | formatbytes(more.big) }}</span>
+              {{$t('material.fileSize')}}：<span class="sp">{{ more.big | formatbytes(more.big) }}</span>
             </p>
             <p>
-              格式：<span class="sp">{{ more.format }}</span>
+              {{$t('material.fileFormat')}}：<span class="sp">{{ more.format }}</span>
             </p>
             <p>
-              类型：<span class="sp">{{ more.type }}</span>
+              {{$t('material.fileType')}}：<span class="sp">{{ more.type }}</span>
             </p>
             <p>
-              尺寸：<span class="sp">{{ more.size }}</span>
+              {{$t('material.documentSize')}}：<span class="sp">{{ more.size }}</span>
             </p>
             <p>
-              上传时间：<span class="sp">{{ more.createdTime }}</span>
+              {{$t('material.updateTime')}}：<span class="sp">{{ more.createdTime }}</span>
             </p>
             <p>
-              所在文件夹：<span class="sp">{{ more.place }}</span>
+              {{$t('material.atFolder')}}：<span class="sp">{{ more.place }}</span>
             </p>
             <p>
-              文件链接：<span class="sp">{{ more.link | commentEllipsis(more.link) }}</span>
-              <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">复制链接
+              {{$t('material.fileUrl')}}：<span class="sp">{{ more.link | commentEllipsis(more.link) }}</span>
+              <el-button style="font-size: 12px; margin-left: 5px" type="text" size="small" @click="copyUrl">{{$t('material.copyUrl')}}
               </el-button>
             </p>
             <div class="btn">
               <!-- 上传（替换文件） -->
-              <el-button type="primary" @click="upload_" style="margin-right: 2vw">替换文件</el-button>
+              <el-button type="primary" @click="upload_" style="margin-right: 2vw">{{$t('material.replaceFile')}}</el-button>
               <input v-show="false" ref="fileRef" type="file" @change="fileChange($event)" />
               <!--  -->
               <!-- <el-button type="primary" @click="download_()">下载</el-button> -->
@@ -145,7 +140,7 @@
       </div>
       <div style="font-size: 20px; color: lightgray; text-align: center; margin-top: 20vh; height: 75vh" v-else>
         <span></span>
-        <el-empty description="请选择文件"></el-empty>
+        <el-empty :description="$t('material.chooseFile')"></el-empty>
       </div>
     </el-card>
     <treeMove ref="treeMove" @checkFile="checkFile"></treeMove>
@@ -256,7 +251,7 @@ export default {
       let that_ = this
       let loading_ = this.$loading({
         lock: true,
-        text: '文件移动中，请稍候...',
+        text: this.$t('material.msg.movingMsg'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -270,7 +265,7 @@ export default {
         }
       })
         .then(data => {
-          that_.$message('移动成功')
+          that_.$message(this.$t('material.msg.moveSuccessMsg'))
           that_.matterList = []
           that_.checkList = []
           that_.loadData(that_.treeDatas, true)
@@ -287,7 +282,7 @@ export default {
     //移动文件
     moveMaterial() {
       if (this.checkList.length == 0) {
-        this.$message('请选择你要移动的素材！')
+        this.$message(this.$t('material.msg.chooseMoveMsg'))
         return
       }
       this.$refs.treeMove.disabledKey = [this.treeDatas.id]
@@ -296,19 +291,19 @@ export default {
     //删除素材提示
     delMaterial() {
       if (this.checkList.length == 0) {
-        this.$message('请选择你要删除的素材！')
+        this.$message(this.$t('material.msg.delMsg'))
         return
       }
-      this.$confirm('是否要删除选中的素材?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('material.msg.delOrNotMsg'),this.$t('biz.msg.tip'), {
+        confirmButtonText: this.$t('biz.btn.confirm'),
+        cancelButtonText: this.$t('biz.btn.cancel'),
         type: 'warning'
       }).then(() => {
         this.delMaterialId()
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: this.$t('material.msg.undeleted')
         })
       })
     },
@@ -317,7 +312,7 @@ export default {
       this.loading = true
       let loading_ = this.$loading({
         lock: true,
-        text: '删除中，请稍候...',
+        text: this.$t('material.msg.deletingMsg'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -332,7 +327,7 @@ export default {
         }
       })
         .then(data => {
-          that_.$message('删除成功')
+          that_.$message(this.$t('material.msg.delSuccessMsg'))
           that_.matterList = []
           that_.checkList = []
           that_.loadData(that_.treeDatas, true)
@@ -353,7 +348,7 @@ export default {
       let file = e.target.files
       let loading_ = this.$loading({
         lock: true,
-        text: '上传中，请稍候...',
+        text: this.$t('material.msg.UploadingMsg'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
@@ -385,14 +380,14 @@ export default {
           .then(data => {
             if (data) {
               loading.close()
-              that_.$message('上传文件成功')
+              that_.$message(this.$t('material.msg.successMsg'))
               that_.matterList = []
               that_.checkList = []
               that_.loadData(that_.treeDatas, true)
               that_.exhibitionRight = false
             } else {
               loading.close()
-              that_.$message('上传文件失败')
+              that_.$message(this.$t('material.msg.errorMsg'))
             }
           })
           .catch(() => {
@@ -400,7 +395,7 @@ export default {
           })
       }).catch(() => {
         loading_.close()
-        that.$message('上传文件失败')
+        that.$message(this.$t('material.msg.errorMsg'))
       }).finally(() => {
 
       })
@@ -431,7 +426,7 @@ export default {
       document.execCommand('Copy')
       inputTest.className = 'oInput'
       inputTest.style.display = 'none'
-      this.$message.success('复制成功')
+      this.$message.success(this.$t('biz.msg.copySuccess'))
     },
     // 顶部搜索
     searchClick() {
@@ -457,11 +452,11 @@ export default {
             if (res.data) {
               // 控制不改变值不刷新
               this.workName_ = this.workName
-              this.$message.success('修改成功')
+              this.$message.success(this.$t('material.msg.updateSuccessMsg'))
               this.loadData(this.treeDatas)
               console.log(res.data)
             } else {
-              this.$message.success('修改失败')
+              this.$message.success(this.$t('material.msg.updateErrorMsg'))
             }
           })
           .catch(() => {
@@ -500,7 +495,7 @@ export default {
         formData.append('file', e.target.files[0])
         let loading_ = thiz.$loading({
           lock: true,
-          text: '上传中，请稍候...',
+          text: this.$t('material.msg.UploadingMsg'),
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
@@ -512,19 +507,19 @@ export default {
           .then(data => {
             if (data) {
               loading_.close()
-              thiz.$message('上传文件成功')
+              thiz.$message(this.$t('material.msg.successMsg'))
               this.loadData(this.treeDatas, true)
               this.exhibitionRight = false
             } else {
               loading_.close()
-              thiz.$message('上传文件失败')
+              thiz.$message(this.$t('material.msg.errorMsg'))
             }
           })
           .catch(() => {
           })
         //替换文件--- end
       } else {
-        this.$message('请上传jpg，png，jpeg，psd 类型的图片')
+        this.$message(this.$t('material.msg.restrictionsMsg'))
         return
       }
     },
@@ -571,7 +566,7 @@ export default {
     loadData(data, isFile) {
       const loading = this.$loading({
         lock: true,
-        text: '加载中',
+        text: this.$t('material.msg.loadingMsg'),
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })

@@ -22,7 +22,10 @@ export default {
         },
         apiData: {
           view(param) {
-            return param.code
+            return {
+              code:param.code,
+              languageType:param.languageType
+            }
           }
         },
         topButtons: [
@@ -107,6 +110,12 @@ export default {
                 element: 'input-validate',
                 default: this.param.eventCode,
                 isShow: false
+              },
+              {
+                prop: 'languageType',
+                element: 'input-validate',
+                default: this.param.languageType,
+                isShow: false
               }
             ]
           }
@@ -168,6 +177,6 @@ export default {
       this.$loopDOM(this, 'bsDialogEdit').editForm.articleContent = this.$loopDOM(this, 'articleContent')[0].template.editorWin.getContent()
       return true
     }
-  }
+  },
 }
 </script>

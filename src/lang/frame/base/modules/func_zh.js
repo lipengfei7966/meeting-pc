@@ -20,7 +20,8 @@ export default {
       usingFlag: '状态',
       organ: '机构',
       zipCode: '邮编',
-      isUsing: '启用机构无法删除'
+      isUsing: '启用机构无法删除',
+      description: '描述'
     },
     api: {
       title: '接口选择',
@@ -50,6 +51,7 @@ export default {
       department: '部门'
     },
     employee: {
+      orgAndDepInfo: '机构和部门信息', // 机构和部门信息
       warnTitle: '员工数据设置',
       staff: '员工',
       banner: '员工管理',

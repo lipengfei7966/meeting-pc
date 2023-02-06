@@ -2,15 +2,19 @@
   <div class="bs-new-container app-container">
     <bs-form ref="bsForm" :form="form"></bs-form>
 
-    <bs-table ref="bsTable" :mainData="mainData"></bs-table>
+    <bs-table ref="bsTable" :mainData="mainData" @initCallback='initCallback'></bs-table>
   </div>
 </template>
 
 <script>
+import request from '@/utils/frame/base/request'
 export default {
   name: 'articleManage',
   data() {
     return {
+      getNum:0,
+      dataList:[],//表格数据
+      mainLanguage:'',
       form: {
         moreShowFlg: false,
         listQuery: {
@@ -56,7 +60,6 @@ export default {
           }
         ]
       },
-
       mainData: {
         api: {
           search: '/api/biz/cmsArticle/page',
@@ -71,8 +74,10 @@ export default {
             $refs: this.$refs,
             component: () => import('@/views/frame/cmms/services/cms/article/editForm.vue'),
             getParam: () => {
+              this.getLanguage()
               return {
-                eventCode: this.form.listQuery.data.eventCode
+                eventCode: this.form.listQuery.data.eventCode,
+                languageType:'zh'
               }
             }
           },
@@ -133,10 +138,53 @@ export default {
       }
     }
   },
+  mounted() {
+  },
+  created(){
+    this.getNum = 3
+  },
   methods: {
     onChangeAll(params) {
-      this.$refs.bsTable.doRefresh()
+      if(this.$route.params.data){
+      this.form.listQuery.data.eventCode = this.$route.params.data
     }
+      this.getLanguage()
+      this.$refs.bsTable.doRefresh()
+    },
+    getLanguage(){
+      request({
+          url: '/api/biz/cmsEventInfo/get',
+          method: 'POST',
+          data: { data: this.form.listQuery.data.eventCode, funcModule: '获取语言表信息', funcOperation: '获取语言表信息' }
+        })
+          .then(res => {
+            if(res){
+              if(res.data.mainLanguage){
+                this.mainLanguage = res.data.mainLanguage
+              }else{
+                this.mainLanguage = ''
+              }
+            }
+          })
+          .catch(() => {})
+    },
+    initCallback(data){
+      console.log(this.$route.params.code);
+      console.log(data);
+      this.dataList = data
+      // 调取弹窗
+      if(this.$route.params.data){
+        this.dataList.data.forEach(item=>{
+          if(item.id == this.$route.params.code){
+            if(this.getNum == 3){
+              this.$refs.bsTable.currentRow = item
+            this.$refs.bsTable.triggerEvent(this.mainData.topBar[1])
+            this.getNum++
+            }
+          }
+        })
+    }
+    },
   }
 }
 </script>

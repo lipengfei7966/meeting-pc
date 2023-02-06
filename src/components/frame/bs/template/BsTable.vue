@@ -481,6 +481,7 @@ export default {
     },
     // 按钮事件自定义
     triggerEvent(button) {
+      // debugger
       if (button.event && typeof button.event === 'function') {
         button.event(button)
       } else if (this.baseEvent[button.name]) {
@@ -1064,6 +1065,7 @@ export default {
 
     // 更新
     doUpdate(buttonInfo) {
+      // debugger
       if (!this.currentRow || this.currentRow.length === 0) {
         this.$notify(
           notifyInfo({
@@ -1251,6 +1253,7 @@ export default {
         })
     },
     handleDownload(buttonInfo) {
+      // debugger
       if (buttonInfo && buttonInfo.type && buttonInfo.type === 'api') {
         // 后台导出
         this.apiDownLoad(buttonInfo)
@@ -1258,7 +1261,10 @@ export default {
         exportExcel({
           fileName: this.$t('route.' + this.$route.meta.title),
           header: this.mainData.table.cols.map(col => {
-            if (col.label) return this.$t(col.label)
+            debugger
+            if(col.label && col.label != '操作'){
+              return this.$t(col.label)
+            }
           }),
           filterVal: this.mainData.table.cols.map(col => {
             if (col.format) {
@@ -1363,6 +1369,7 @@ export default {
     },
     // 点击当前行
     handleClick(row) {
+      this.$emit('selectTableRow', row)
       if (this.mainData.table.showCheckbox) {
         this.$nextTick(() => {
           this.$refs.singleTable.toggleRowSelection([{ row }])
@@ -1522,5 +1529,10 @@ tr.el-table__row.el-table__row--striped.success-row td {
 .bottom-operate-left {
   float: none;
   margin: 0 10px;
+}
+.el-tabs__nav-prev,
+.el-tabs__nav-next {
+  height: 47px;
+  line-height: 47px !important;
 }
 </style>

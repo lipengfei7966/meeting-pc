@@ -159,8 +159,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{$t('biz.table.cancel')}}</el-button>
-        <el-button type="primary" @click="certificateTypeSubmit">{{$t('biz.table.confirm')}}</el-button>
+        <el-button @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
+        <el-button type="primary" @click="certificateTypeSubmit">{{$t('table.confirm')}}</el-button>
       </div>
     </el-dialog>
 
@@ -303,7 +303,6 @@ export default {
           this.printSetform.certificateContent = this.printSetform.certificateContent ? this.printSetform.certificateContent.split(',') : []
           this.list = JSON.parse(this.printSetform.certificatePreview || '[]')
           this.WHchange()
-
           if (this.printSetform.printBackground) {
             let index = this.printSetform.printBackground.lastIndexOf('/')
             let filename = this.printSetform.printBackground.substr(index + 1)

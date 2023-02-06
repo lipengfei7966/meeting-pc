@@ -115,7 +115,10 @@ export default {
     saveFail: '保存失败', // 保存失败
     customInformationExceeds: '新增自定义信息数量超出最大限制', // 新增自定义信息数量超出最大限制
     onlyonefileisallowedtoupload: '只允许上传一个文件', // 只允许上传一个文件
-    uploadedNotice: '注意: 只允许上传以下文件类型' // 注意: 只允许上传以下文件类型
+    uploadedNotice: '注意: 只允许上传以下文件类型', // 注意: 只允许上传以下文件类型
+    uploadAttachment: '上传附件', // 上传附件
+    delete: '删除', // 删除
+    download: '下载' // 下载
   },
   result: {
     resultSettings: '结果设置', // 结果设置
@@ -157,6 +160,7 @@ export default {
     // :'',//
   },
   applySet: {
+    to: '至', // 至
     registrationSetup: '注册报名设置', // 注册报名设置
     di: '第', // 第
     total: '页/共 ', // 页/共
@@ -212,6 +216,8 @@ export default {
     failedtolink: '生成报名链接失败', // 生成报名链接失败
     successtolink: '生成报名链接成功', // 生成报名链接成功
     SignUpAndGenerateLinkSuccessfully: '报名并生成链接成功', // 报名并生成链接成功
-    copySuccess: '复制成功' // 复制成功
+    copySuccess: '复制成功', // 复制成功
+    applyCheck: '是否需要审核', // 是否需要审核
+    settingOtherLanguages: '设置其他语言'// 设置其他语言
   }
 }

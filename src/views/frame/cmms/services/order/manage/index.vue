@@ -10,52 +10,50 @@
       </template>
       <bs-table ref='bsTable' :mainData='mainData' :mainDataTabs="mainData.tabs" @initCallback='initCallback'>
         <template slot="operation" slot-scope="scope">
-          <el-button type="text" :disabled="!fundTicket.includes(scope.row.orderStatus)" @click="handleRemoveClick(scope.row)">退票</el-button>
-          <el-button type="text" size="small" @click="handleInfoClick(scope.row)">详情</el-button>
+          <el-button type="text" :disabled="!fundTicket.includes(scope.row.orderStatus)" @click="handleRemoveClick(scope.row)">{{$t('order.orderManagement.refund')}}</el-button>
+          <el-button type="text" size="small" @click="handleInfoClick(scope.row)">{{$t('order.orderManagement.details')}}</el-button>
         </template>
       </bs-table>
     </div>
     <!-- 退票弹窗 -->
-    <el-dialog title="退票申请" :visible.sync="centerDialogVisible" width="55%" center top="10px">
+    <el-dialog :title="$t('order.orderManagement.applicationForRefund')" :visible.sync="centerDialogVisible" width="55%" center top="10px">
       <div class="remove-line1">
         <img src="@/assets/frame/svg/wenhao.svg" class="wenhao" alt="" srcset="">
-        <span>您确认要退票吗？</span>
+        <span>{{$t('order.orderManagement.sureRefund')}}</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line2">
-        <span class="fontSize2Left fontWeight">预计退款：</span><span class="fontSize2Right yellowColor">{{fightReissueRefund.returnPrice }}元</span>
+        <span class="fontSize2Left fontWeight">{{$t('order.orderManagement.refundExpected')}}：</span><span class="fontSize2Right yellowColor">{{fightReissueRefund.returnPrice }}元</span>
       </div>
       <el-divider></el-divider>
       <div class="remove-line3">
         <div class="remove-line3-1">
-          <span class="fontSize3Left fontWeight">手续费用：</span><span class="fontSize3Right yellowColor">{{ fightReissueRefund.refundPrice }}元</span>
+          <span class="fontSize3Left fontWeight">{{$t('order.orderManagement.handlingCharge')}}：</span><span class="fontSize3Right yellowColor">{{ fightReissueRefund.refundPrice }}元</span>
         </div>
         <div class="remove-line3-2">
-          <span class="fontSize3Left fontWeight">车票票价：</span><span class="fontSize3Right yellowColor">{{costDetailInfo.ticketAmount}}元</span>
+          <span class="fontSize3Left fontWeight">{{$t('order.orderManagement.refundExpected')}}：</span><span class="fontSize3Right yellowColor">{{costDetailInfo.ticketAmount}}元</span>
         </div>
         <div class="remove-line3-3">
-          <span class="fontSize3Left fontWeight">预计退款：</span><span class="fontSize3Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
+          <span class="fontSize3Left fontWeight">{{$t('order.orderManagement.ticket_Price')}}：</span><span class="fontSize3Right yellowColor">{{fightReissueRefund.returnPrice}}元</span>
         </div>
       </div>
       <el-divider></el-divider>
       <div class="remove-line4">
         <img src="@/assets/frame/svg/tanhao.svg" class="tanhao" alt="" srcset="">
-        <span>实际核收退票费及应退票款将按最终交易时间计算。</span>
+        <span>{{$t('order.orderManagement.finalTransactionTime')}}</span>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelFn">取 消</el-button>
-        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">确 定</el-button>
+        <el-button @click="cancelFn">{{$t('order.orderManagement.cancel')}}</el-button>
+        <el-button style="margin-bottom:250px" type="primary" @click="comfirmRefund">{{$t('order.orderManagement.confirm')}}</el-button>
         <div class="remove-rules" v-if="businessType === '2'">
-          <div class="title">退票规则：</div>
-          <div class="rule1">1、使用现金购买或已领取报销凭证的电子票，线上完成退票后，请持相关证件（购票证件、报销凭证）至车站窗口完成退款。</div>
-          <div class="rule2">
-            2、退票费按如下规则核收：票面乘车站开车时间前8天（含）以上不收取退票费，48小时以上的按票价5%计，24小时以上、不足48小时的按票价10%计，不足24小时的按票价20%计。上述计算的尾数以5角为单位，尾数小于2.5角的舍去、2.5角及以上且小于7.5角的计为5角、7.5角及以上的进为1元。退票费最低按2元计收。
-          </div>
-          <div class="rule3">3、应退款项按银行规定时限退还至购票时所使用的网上支付工具账户，请注意查询，如有疑问请致电人工客服查询。</div>
-          <div class="rule4">4、跨境旅客旅行须知详见铁路跨境旅客相关运输组织规则和车站公告。</div>
+          <div class="title">{{$t('order.orderManagement.refundRule')}}:</div>
+          <div class="rule1">{{$t('order.orderManagement.rule1Tips')}}</div>
+          <div class="rule2">{{$t('order.orderManagement.rule2Tips')}}</div>
+          <div class="rule3">{{$t('order.orderManagement.rule3Tips')}}</div>
+          <div class="rule4">{{$t('order.orderManagement.rule4Tips')}}</div>
         </div>
         <div class="remove-rules" v-if="businessType === '1'">
-          <div class="title">退票规则：</div>
+          <div class="title">{{$t('order.orderManagement.refundRule')}}:</div>
           <div class="rule1">
             <p>* {{ baggageText }}</p>
             <p>* {{ checkedBaggage }}</p>
@@ -75,6 +73,7 @@
 
 <script>
 import { getStatusCount, fightRefund, refundUpdateRule, airDetail, estimatedRefund, comfirmRefund, fightReissueRefund } from './utils/api'
+import {mapState} from 'vuex'
 export default {
   name: 'orderManagement',
   data() {
@@ -148,7 +147,7 @@ export default {
             ]
           },
           {
-            label: this.$t('order.orderManagement.orderStatus'),
+            label: 'order.orderManagement.orderStatus',
             prop: 'orderStatus',
             element: 'base-select',
             list: this.$t('datadict.basicOrderStatus'),
@@ -158,7 +157,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.travelType'),
+            label: 'order.orderManagement.travelType',
             prop: 'businessType',
             element: 'base-select',
             list: this.$t('datadict.travelType'),
@@ -168,7 +167,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.affiliatedCustomers'),
+            label: 'order.orderManagement.affiliatedCustomers',
             prop: 'customerName',
             element: 'input-validate',
             attrs: {
@@ -177,7 +176,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.orderNumber'),
+            label: 'order.orderManagement.orderNumber',
             prop: 'orderNumber',
             element: 'input-validate',
             attrs: {
@@ -187,7 +186,7 @@ export default {
           },
           {
             type: 'date',
-            label: this.$t('order.orderManagement.orderTime'),
+            label: 'order.orderManagement.orderTime',
             props: ['startTime', 'endTime'],
             attrs: {
               clearable: true,
@@ -207,7 +206,7 @@ export default {
           //   }
           // },
           {
-            label: this.$t('order.orderManagement.orderType'),
+            label: 'order.orderManagement.orderType',
             prop: 'orderType',
             element: 'base-select',
             list: this.$t('datadict.orderType'),
@@ -217,7 +216,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.passenger'),
+            label: 'order.orderManagement.passenger',
             prop: 'contactPerson',
             element: 'input-validate',
             attrs: {
@@ -226,7 +225,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.paymentMethod'),
+            label: 'order.orderManagement.paymentMethod',
             prop: 'payType',
             element: 'base-select',
             list: this.$t('datadict.payType'),
@@ -236,7 +235,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.payStatus'),
+            label: 'order.orderManagement.payStatus',
             prop: 'payStatus',
             element: 'base-select',
             list: this.$t('datadict.payStatus'),
@@ -246,7 +245,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.typeOfTrip'),
+            label: 'order.orderManagement.typeOfTrip',
             prop: 'tripType',
             element: 'base-select',
             list: this.$t('datadict.tripType'),
@@ -256,7 +255,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.ticketNumber'),
+            label: 'order.orderManagement.ticketNumber',
             prop: 'ticketNo',
             element: 'input-validate',
             attrs: {
@@ -265,7 +264,7 @@ export default {
             }
           },
           {
-            label: this.$t('order.orderManagement.contactPhone'),
+            label: 'order.orderManagement.contactPhone',
             prop: 'contactPhone',
             element: 'input-validate',
             attrs: {
@@ -293,7 +292,7 @@ export default {
           // showCheckbox: true,
           cols: [
             {
-              label: this.$t('order.orderManagement.orderStatus'),
+              label: 'order.orderManagement.orderStatus',
               prop: 'orderStatus',
               sortProp: 'funcUser.name',
               width: '100',
@@ -302,23 +301,23 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.affiliatedCustomers'),
+              label: 'order.orderManagement.affiliatedCustomers',
               prop: 'customerName',
               width: '150'
             },
             {
-              label: this.$t('order.orderManagement.orderNumber'),
+              label: 'order.orderManagement.orderNumber',
               prop: 'orderNumber',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.orderTime'),
+              label: 'order.orderManagement.orderTime',
               prop: 'updateDate',
               width: '160',
               align: 'center'
             },
             {
-              label: this.$t('order.orderManagement.travelType'),
+              label: 'order.orderManagement.travelType',
               prop: 'travelType',
               width: '120',
               align: 'center',
@@ -327,7 +326,7 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.orderType'),
+              label: 'order.orderManagement.orderType',
               prop: 'orderType',
               width: '100',
               align: 'center',
@@ -336,12 +335,12 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.orderPlacer'),
+              label: 'order.orderManagement.orderPlacer',
               prop: 'optEmployeeName',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.paymentMethod'),
+              label: 'order.orderManagement.paymentMethod',
               prop: 'payType',
               width: '120',
               format: {
@@ -349,7 +348,7 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.payStatus'),
+              label: 'order.orderManagement.payStatus',
               prop: 'payStatus',
               width: '120',
               format: {
@@ -357,7 +356,7 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.typeOfTrip'),
+              label: 'order.orderManagement.typeOfTrip',
               prop: 'tripType',
               width: '120',
               format: {
@@ -365,27 +364,27 @@ export default {
               }
             },
             {
-              label: this.$t('order.orderManagement.contactPhone'),
+              label: 'order.orderManagement.contactPhone',
               prop: 'contactPhone',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.ticketNumber'),
+              label: 'order.orderManagement.ticketNumber',
               prop: 'ticketNo',
               width: '140'
             },
             {
-              label: this.$t('order.orderManagement.flightInformation'),
+              label: 'order.orderManagement.flightInformation',
               prop: 'tripInformation',
               width: '200'
             },
             {
-              label: this.$t('order.orderManagement.paymentAmount'),
+              label: 'order.orderManagement.paymentAmount',
               prop: 'payAmount',
               width: '120'
             },
             {
-              label: this.$t('order.orderManagement.operation'),
+              label: 'order.orderManagement.operation',
               prop: 'operation',
               width: '120',
               isSlot: true,
@@ -410,12 +409,34 @@ export default {
   },
   created() {},
   mounted() {
-    //this.getStatusCountFn()
+    // this.getStatusCountFn()
+  },
+  watch:{
+    language:{
+      handler(newValue, oldValue) {
+        if(newValue){
+          console.log(newValue,oldValue);
+          this.getStatusCountFn()
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed:{
+    ...mapState({language: state => state.app.language})
   },
   methods: {
-    initCallback() {
+    onChangeAll (params) {
+      // 会议编码 params.code
+      // 会议名称 params.name
+      this.form.listQuery.data.eventCode=params.code
       this.getStatusCountFn()
+      this.$refs.bsTable.getList({ name: 'search' })
     },
+    // initCallback() {
+    //   this.getStatusCountFn()
+    // },
     // 机票订单详情数据查询
     airDetailFn(row) {
       this.theOrderCode = row.orderCode
@@ -456,13 +477,15 @@ export default {
     // 获取订单状态总数
     getStatusCountFn() {
       getStatusCount(this.form.listQuery.data).then(res => {
-        this.mainData.tabs = [
+        this.$nextTick(()=>{
+          this.mainData.tabs = [
           { id: 1, name: 'first', label: this.$t('order.orderManagement.quickOrder')+`(${res.data.allOrderCount})` },
           { id: 2, name: 'second', label: this.$t('order.orderManagement.ticketIssued')+`(${res.data.ticketsIssuedCount})` },
           { id: 3, name: 'third', label:  this.$t('order.orderManagement.pendingPayment')+`(${res.data.obligationCount})` },
           { id: 4, name: 'fourth', label: this.$t('order.orderManagement.canceled')+`(${res.data.cancelCount})` }
           // { id: 5, name: 'fifth', label: `退票异常订单(${res.data.abnormalOrderCount})` }
         ]
+        })
         //this.handleTabClick(this.mainData.tabs[0])
       })
     },

@@ -162,7 +162,7 @@
 // 调用Vue全局过滤器
 import Vue from 'vue'
 // vuex辅助函数
-import { mapGetters } from 'vuex'
+import { mapGetters,mapState } from 'vuex'
 // axios访问
 import request from '@/utils/frame/base/request'
 // 提醒
@@ -282,6 +282,7 @@ export default {
   },
   computed: {
     ...mapGetters(['sidebar', 'clientWidth', 'clientHeight']),
+    ...mapState({language: state => state.app.language}),
     tableHeight() {
       if (this.treeTableData.form.formDataVisible) {
         return this.clientWidth < 1366 ? this.clientHeight - 118 - 105 : this.clientHeight - 101 - 105 - 75
@@ -296,6 +297,15 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val)
+    },
+    language:{
+      handler(newValue, oldValue) {
+        if(oldValue!==newValue&&oldValue!=undefined){
+         this.expandText=this.$t('website.department.expand')
+        }
+      },
+      immediate: true,
+      deep: true
     }
   },
   beforeMount() {

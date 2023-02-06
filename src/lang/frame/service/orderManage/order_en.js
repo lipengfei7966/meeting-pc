@@ -85,7 +85,11 @@ export default {
       startingTime: 'Starting Time', // 发时
       remain: 'Remain', // 停留
       destination: 'Destination', // 终点
-      minute: 'Minute' // 分钟
+      minute: 'Minute', // 分钟
+      rule1Tips: '1. Electronic tickets purchased in cash or with reimbursement vouchers have been obtained. After returning the tickets online, please go to the station window to complete the refund with relevant documents (ticket purchase certificates, reimbursement vouchers).',
+      rule2Tips: '2. Refund fee shall be collected according to the following rules: No refund fee shall be charged for more than 8 days (including) before the departure time of the ticket station; 5% of the ticket price shall be charged for more than 48 hours; 10% of the ticket price shall be charged for more than 24 hours and less than 48 hours; 20% of the ticket price shall be charged for less than 24 hours. The mantissa of the above calculation is 5 Angle as the unit. Rounding off the mantissa is less than 2.5 Angle, and rounding off 2.5 Angle or more and less than 7.5 Angle is 5 Angle, and rounding up 7.5 Angle or more is 1 yuan. The minimum refund fee is 2 yuan.',
+      rule3Tips: '3. The refund shall be returned to the online payment tool account used at the time of ticket purchase within the time limit stipulated by the bank. Please pay attention to the inquiry.',
+      rule4Tips: '4. Instructions for cross-border passenger travel Please refer to the relevant rules of railway cross-border passenger transport organization and station announcements.'
     },
     payment: {
       pleaseSelect: 'Please Select', // 请选择

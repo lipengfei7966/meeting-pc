@@ -125,7 +125,32 @@ import toolUtil from '@/utils/frame/base/toolUtil.js'
 Vue.prototype.$toolUtil = toolUtil
 // 全局错误处理
 import '@/utils/frame/base/errorLog'
+// 监听本地存储的变化
+Vue.prototype.setSessionItem = function (key, newVal) {
+  // 创建 StorageEvent 事件
+  const newStorageEvent = document.createEvent('StorageEvent')
+  const storage = {
+    setItem: function (k, val) {
+      sessionStorage.setItem(k, val)
 
+      // 初始化 StorageEvent 事件
+      newStorageEvent.initStorageEvent(
+        'setItem', // 事件别名
+        false,
+        false,
+        k,
+        null,
+        val,
+        null,
+        null
+      )
+
+      // 派发事件
+      window.dispatchEvent(newStorageEvent)
+    }
+  }
+  return storage.setItem(key, newVal)
+}
 new Vue({
   render: h => h(App),
   router,

@@ -115,7 +115,10 @@ export default {
     saveFail: 'Save Fail', // 保存失败
     customInformationExceeds: 'The amount of new custom information exceeds the maximum limit', // 新增自定义信息数量超出最大限制
     onlyonefileisallowedtoupload: 'Only one file is allowed to upload', // 只允许上传一个文件
-    uploadedNotice: 'Notice:Only the following file types are allowed to be uploaded' // 注意: 只允许上传以下文件类型：
+    uploadedNotice: 'Notice:Only the following file types are allowed to be uploaded', // 注意: 只允许上传以下文件类型：
+    uploadAttachment: 'upload attachment', // 上传附件
+    delete: 'Delete', // 删除
+    download: 'Download' // 下载
   },
   result: {
     resultSettings: 'Result Settings', // 结果设置
@@ -158,6 +161,7 @@ export default {
     // :'',//
   },
   applySet: {
+    to: 'to', // 至
     registrationSetup: 'Registration Setup', // 注册报名设置
     di: 'Page', // 第
     total: '/Page', // 页/共
@@ -212,6 +216,8 @@ export default {
     failedtolink: 'Failed to generate the registration link', // 生成报名链接失败
     successtolink: 'Successed to generate the registration link', // 生成报名链接成功
     SignUpAndGenerateLinkSuccessfully: 'Sign up and generate link successfully', // 报名并生成链接成功
-    copySuccess: 'Copy Success' // 复制成功
+    copySuccess: 'Copy Success', // 复制成功
+    applyCheck: 'Is Audit', // 是否需要审核
+    settingOtherLanguages: 'Setting other languages'// 设置其他语言
   }
 }

@@ -14,7 +14,8 @@ export default {
     to: 'to', // 至
     btns: {
       screen: 'Screen', // 筛选
-      newlyBuild: 'Add' // 新建
+      newlyBuild: 'Add', // 新建
+      createImmediately: 'Create immediately' // 立即创建
     },
     column: {
       subActivityName: 'SubActivityName', // 分活动名称
@@ -24,11 +25,17 @@ export default {
       applicantNum: 'ApplicantNumbers/toplimit', // 报名人数/上限
       operation: 'Operation' // 操作
     },
+    tableTxt: {
+      notStart: 'Not started', // 未开始
+      end: 'Have ended', // 已结束
+      progress: 'In progress' // 进行中
+    },
     dialogTxt: {
       unlimited: 'unlimited', // 不限
       none: 'nil', // 无
       newSubActivity: 'New Sub activity', // 新建分活动
       modifySubActivity: 'Modify Sub activity', // 修改分活动
+      viewSubActivity: 'View Sub activity', // 查看分活动
       subActivityNamePH: 'Please enter the name of the sub activity', // 请输入分活动名称
       participantsNumLimit: 'Limit the number of participants', // 参加人数限制
       participantsMax: 'No more than', // 活动最多允许

@@ -7,7 +7,7 @@
             {{$t('sub.meetingName')}}
           </div>
           <div>
-            <el-select filterable style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" placeholder="会议名称">
+            <el-select filterable style="width:120px" size="mini" v-model="moduleVal.eventCode" @change="eventChange" :placeholder="$t('sub.meetingName')">
               <el-option v-for="(item,index) in activityList" :key="index" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </div>
@@ -70,9 +70,9 @@
         </el-table-column>
         <el-table-column prop="beginTime,endTime" :label="$t('sub.column.activityStatus')">
           <template slot-scope="scope">
-            <span v-if="new Date(scope.row.beginTime) > new Date()">未开始</span>
-            <span v-else-if="new Date(scope.row.endTime) < new Date()">已结束</span>
-            <span v-else>进行中</span>
+            <span v-if="new Date(scope.row.beginTime) > new Date()">{{$t('sub.tableTxt.notStart')}}</span>
+            <span v-else-if="new Date(scope.row.endTime) < new Date()">{{$t('sub.tableTxt.end')}}</span>
+            <span v-else>{{$t('sub.tableTxt.progress')}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="isGoLive" :label="$t('sub.column.enable')">
@@ -128,7 +128,7 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button @click="dialogVisible = false">{{ $t('table.cancel') }}</el-button>
           <el-button type="primary" @click="submitForm('ruleForm')">{{btnName}}</el-button>
         </span>
       </el-dialog>
@@ -142,6 +142,7 @@ export default {
   name: 'activityManagement',
   data() {
     return {
+      getNum:0,
       handleTitle:this.$t('sub.dialogTxt.newSubActivity'),
       dialogVisible: false,
       moduleVal: {
@@ -188,7 +189,7 @@ export default {
       pages: 1,
       size: 20,
       total: 0,
-      btnName: '立即创建',
+      btnName: this.$t('sub.btns.createImmediately'),
       disabled_look: false
     }
   },
@@ -229,10 +230,20 @@ export default {
         // this.pages = res.page
         this.size = res.size
         this.tableData = res.data
+        if(this.$route.params.code){
+          this.tableData.forEach(item=>{
+            if(item.id == this.$route.params.code){
+              if(this.getNum == 3){
+                this.handleClick(item,1)
+                this.getNum++
+              }
+            }
+          })
+        }
       })
     },
     addSubmit() {
-      this.btnName = '立即创建'
+      this.btnName = this.$t('sub.btns.createImmediately')
       this.handleTitle = this.$t('sub.dialogTxt.newSubActivity')
       this.dialogVisible = true
       this.disabled_look = false
@@ -258,10 +269,10 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (this.btnName == '修改') {
+            if (this.btnName == this.$t('biz.btn.update')) {
         if (this.ruleForm.triesLimit == 1) {
           // inputNum
-          debugger
+          // debugger
           this.ruleForm.triesLimit = this.ruleForm.inputNum
         }
         this.ruleForm.eventCode = this.moduleVal.eventCode
@@ -280,10 +291,10 @@ export default {
             this.$message.error(this.$t('biz.msg.updateFailed'))
           }
         })
-      } else if (this.btnName == '立即创建') {
+      } else if (this.btnName == this.$t('sub.btns.createImmediately')) {
         if (this.ruleForm.triesLimit == 1) {
           // inputNum
-          debugger
+          // debugger
           this.ruleForm.triesLimit = this.ruleForm.inputNum
         }
         this.ruleForm.eventCode = this.moduleVal.eventCode
@@ -340,7 +351,11 @@ export default {
         //  debugger
         console.log(res)
         this.activityList = res.data
-        this.moduleVal.eventCode = res.data[0].code
+        if(this.$route.params.data){
+          this.moduleVal.eventCode = this.$route.params.data
+        }else{
+          this.moduleVal.eventCode = res.data[0].code
+        }
         if(res.data[0].data.triesLimit){
           this.moduleVal.triesLimit = 1
           this.moduleVal.inputNum = res.data[0].data.triesLimit
@@ -377,13 +392,14 @@ export default {
       if (type == 0) {
         //查看
         this.disabled_look = true
-        this.btnName = '确定'
-      this.handleTitle = '查看分活动'
+        this.btnName = this.$t('biz.btn.confirm')
+      this.handleTitle = this.$t('sub.dialogTxt.viewSubActivity')
         this.getEdit(item.code)
       } else {
         // 编辑
+        // debugger
         this.disabled_look = false
-        this.btnName = '修改'
+        this.btnName = this.$t('biz.btn.update')
       this.handleTitle = this.$t('sub.dialogTxt.modifySubActivity')
         this.getEdit(item.code)
       }
@@ -473,6 +489,8 @@ export default {
     }
   },
   created() {
+    // 第一次进来赋值0 用来判断是不是直接跳转进来的
+    this.getNum = 3
     this.getList()
   }
 }

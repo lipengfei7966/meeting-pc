@@ -5,16 +5,16 @@
       :before-close="cancel"
       width="60%">
        <span slot="title" class="dialog-footer">
-           <span style="font-size: 16px;color: #FFFFFF">移动文件</span>
-           <span style="font-size: 14px;color: rgba(255,255,255,0.6);margin-left: 5px">将选择的素材移动至目标的文件夹</span>
+           <span style="font-size: 16px;color: #FFFFFF">{{$t('material.dialog.title')}}</span>
+           <span style="font-size: 14px;color: rgba(255,255,255,0.6);margin-left: 5px">{{$t('material.dialog.prompt')}}</span>
         </span>
       <el-input
         style="margin-bottom: 10px"
-        placeholder="输入关键字进行过滤"
+        :placeholder="$t('material.dialog.placeholder')"
         v-model="filterText">
       </el-input>
       <div style="margin-bottom: 10px">
-        当前选中文件： {{ selectInfo.name ? selectInfo.name : '无' }}
+        {{$t('material.dialog.nowCheck')}}： {{ selectInfo.name ? selectInfo.name : $t('material.dialog.none') }}
       </div>
       <div style="height:60vh;overflow:hidden;">
         <el-tree :default-expanded-keys="treeData.length > 0 ? [treeData[0].id] : ['0001']"
@@ -35,8 +35,8 @@
         </el-tree>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size='mini' @click="cancel">取 消</el-button>
-        <el-button size='mini' type="primary" @click="handleOk">确 定</el-button>
+        <el-button size='mini' @click="cancel">{{ $t('table.cancel') }}</el-button>
+        <el-button size='mini' type="primary" @click="handleOk">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -104,11 +104,11 @@ export default {
     },
     handleOk() {
       this.$nextTick(() => {
-        if (this.$refs.moveTree.getCurrentNode()) {
-          let id = this.$refs.moveTree.getCurrentNode().code
+        if (this.$refs.moveTree.getCheckedNodes()) {
+          let id = this.$refs.moveTree.getCheckedNodes()[0].code
           this.$emit('checkFile', id)
         } else {
-          this.$message('请选择目标文件夹！')
+          this.$message(this.$t('material.dialog.checkTarget'))
         }
       })
 

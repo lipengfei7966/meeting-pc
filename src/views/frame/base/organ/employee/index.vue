@@ -19,7 +19,7 @@ export default {
           },
           leftWidth: 300,
           initSearch: true,
-          treeName: '机构和部门信息',
+          treeName: this.$t('func.employee.orgAndDepInfo'),
           expandOnClickNode: false,
           expandAll: true,
           showCode: false,

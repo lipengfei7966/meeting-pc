@@ -3,7 +3,7 @@ export default {
     version: 'Version', // 版本
     unpublished: 'Unpublished', // 未发布
     eventInfo: {
-      title: 'Conference Management', // 会议管理
+      title: 'Conference Management ', // 会议管理
       query: {
         eventName: 'Meeting Name', // 会议名称
         startDate: 'Meeting Start Date', // 会议开始日期
@@ -26,11 +26,51 @@ export default {
         endDate: 'End Time', // 结束时间
         eventPlace: 'Activity Place', // 活动地点
         eventDate: 'Meeting Time', // 会议时间
+        mainLanguage: 'Main Language', // 主语言
+        multiLanguage: 'Multi-language', // 多语言
         eventHashCode: 'Conference Hashing'// 会议哈希
       },
       btn: {
         design: 'Micro Station Design', // 微站设计
         set: 'Participants Coding Settings'// 参会人编码设置
+      }
+    },
+    customlanguage: {
+      title: 'customlanguage', // 自定义数据多语言设置
+      query: {
+        dictionariesId: 'Dictionaries Id', // 字典ID
+        dataFunction: 'Data Function', // 功能
+        superiorSettingId: 'Superior SettingId', // 上级设置ID
+        settingItem: 'Setting Item', // 设置项
+        dictionaryContent: 'Dictionary Content'// 字典内容
+      },
+      tab: {
+        meetingManagement: 'Meeting management', // 会议管理
+        subActivityManagement: 'Sub-activity management', // 分活动管理
+        microstationDesign: 'Microstation design', // 微站设计
+        articleManagement: 'Article management', // 文章管理
+        registrationSetting: 'Registration setting', // 报名设置
+        checkinManagement: 'Check-in management', // 签到管理
+        richText: 'Rich text' // 富文本
+      },
+      btn: {
+        batchEditing: 'Batch editing', // 批量编辑
+        edit: 'Edit', // 编辑
+        preview: 'Preview', // 预览,
+        cancel: 'Cancel', // 取消
+        save: 'Save', // 保存
+        export: 'Export', // 导出
+        functionSet: 'Function Set' // 功能设置
+      },
+      list: {
+        dataFunction: 'Data Function', // 功能
+        module: 'Module', // 模块
+        settingItem: 'Setting item', // 设置项
+        settingType: 'Setting Type', // 类型
+        simplifiedChinese: 'Simplified Chinese', // 中文简体
+        english: 'English', // 英文
+        hostLanguage: 'Host language', // 主语言
+        operation: 'operation' // 操作
       }
     },
     article: {
@@ -49,6 +89,85 @@ export default {
         articleTitle: 'Article Title', // 文章标题
         articlePic: 'First Image', // 文章首图
         articleContent: 'Contents of Article'// 文章内容
+      }
+    },
+    atlas: {
+      atlasTitle: 'Atlas title',
+      atlasIntroduction: 'Atlas introduction',
+      numberOfPictures: 'Number of pictures',
+      operation: 'Operation',
+      details: 'Details',
+      delete: 'Delete',
+      deletionConfirmation: 'Deletion confirmation',
+      deleteInformation: 'After deletion, all images and information in the album will be deleted.',
+      ConfirmDelete: 'Please confirm whether to delete it ?',
+      determine: 'Determine',
+      cancel: 'Cancel',
+      save: 'Save',
+      deleting: 'Deleting',
+      deletSuccess: 'Deleting the atlas succeeded',
+      cancelDelete: 'Cancel delete',
+      selectPrompt: 'Please select an atlas!',
+      add: {
+        atlasAddition: 'Atlas addition',
+        save: 'Save',
+        saveSuccessfully: 'Save successfully'
+      },
+      edit: {
+        atlasEditor: 'Atlas editor'
+      }
+    },
+    atlasAndPicture: {
+      editInformation: 'Edit the brochure information',
+      picture: {
+        atlasDetails: 'Atlas details',
+        pictureInformation: 'Picture information',
+        searchInfo: 'Please enter keywords to search for image descriptions',
+        search: 'Search',
+        reset: 'Reset',
+        batchUpload: 'Batch upload',
+        addAPicture: 'Add a picture',
+        loading: 'Loading', // 加载中
+        picture: 'Picture',
+        pictureDescription: 'Picture description',
+        clickEffect: 'Click effect',
+        imageClickEffect: 'Image click effect',
+        not: 'Not',
+        ViewEnlargedImage: 'View enlarged image',
+        skipColumn: 'Skip column',
+        OpenTheArticle: 'Open the article',
+        customLink: 'Custom link',
+        jumpPosition: 'Jump position',
+        language: 'Language',
+        operation: 'Operation',
+        edit: 'edit',
+        delete: 'Delete',
+        requireAtals: 'Please enter the name of the album',
+        saveSuccess: 'Save Success'
+      },
+      del: {
+        delPrompt: 'After deletion, the image will be deleted from the referenced page.',
+        confirmDelete: 'Please confirm whether to delete it ?',
+        delSuccess: 'Image deleted successfully'
+
+      }
+    },
+    pictureView: {
+      loadFailure: 'Load failure',
+      reupload: 'Reupload',
+      clickUpload: 'Click upload',
+      editPicture: 'Edit picture',
+      addAPicture: 'Add a picture',
+      viewPictures: '查看图片',
+      add: {
+        seletLanguage: 'Please select a language',
+        selectImage: 'Please select image click effect',
+        uploading: 'Uploading, please hold on',
+        uploadSuccess: 'Picture uploaded successfully',
+        noPicture: 'Please upload pictures',
+        addSuccess: 'Picture added successfully',
+        addFail: 'Picture editing success',
+        batchUpload: 'Batch upload success'
       }
     },
     activityManagement: {
@@ -352,6 +471,9 @@ export default {
         length: 'Length', // 长度
         type: 'Build Type', // 生成类型
         startCode: 'Start Code'// 起始码
+      },
+      placeholder: {
+        length: 'The minimum is 2 and the maximum is 16'
       }
     },
     role: {
@@ -473,6 +595,7 @@ export default {
       saveSuccess: 'Save Success', // 保存成功
       chooseTemplate: 'Choose Template', // 选择模板
       reselectTheTemplate: 'Reselect the template', // 重新选择模板
+      settingLanguage: 'Setting language', // 设置其他语言
       moreTemplatesExpect: 'More Templates Expect', // 更多模板 敬请期待
       PleaseSelectaTemplate: 'Please select a template!', // 请选择一个模板！
       noMoreTemplatesYet: 'No more templates yet!', // 暂无更多模板！
@@ -494,6 +617,8 @@ export default {
       moduleTitle: 'Module Title', // 模块标题
       enterModuleTitle: 'Please enter a module title', // 请输入模块标题
       moduleType: 'Module Type', // 模块类型
+      apply: 'In-site page', // 站内页面
+      selectApply: 'Please select page', // 请选择站内页面
       selectmoduleType: 'Please select the module type', // 请选择模块类型
       selectThePage: 'Select the page', // 选择页面
       selectPage: 'Please select page', // 请选择页面
@@ -507,6 +632,7 @@ export default {
       upload: 'Upload', // 上传
       onlyUploadType: 'Only jpeg/png/jpg/psd files can be uploaded', // 只能上传jpeg/png/jpg/psd文件
       selectMaterialLibrary: 'Select from the material library', // 从素材库选择
+      selectAtlas: 'Select from the picture book', // 从图册选择
       add: 'Add', // 新增
       materialSelection: 'Material selection', // 素材选择
       canel: 'Canel', // 取 消

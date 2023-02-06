@@ -80,12 +80,15 @@
                   </el-tooltip>
                   <span @click="copyTxt" style="color: #409eff; margin-left: 10px; cursor: pointer">{{$t('website.microStationDesign.copyLink')}}</span>
                 </div>
-                <el-form-item>
+                <!-- <el-form-item>
                   <div style="margin-left:-34px">
                     <vue-qr :text="imgUrl" :size="200"> </vue-qr>
                   </div>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
+              <div style="text-align: center; margin-left: 8%;">
+                <vue-qr :text="imgUrl" :size="200"> </vue-qr>
+              </div>
             </div>
             <div class="share">
               <el-button class="share-btn-one" @click="resetForm('ruleForm')">{{$t('website.microStationDesign.return')}}</el-button>
@@ -123,6 +126,8 @@
 
 <script>
 import request from '@/utils/frame/base/request'
+import axios from 'axios'
+import { getLanguage } from '@/api/frame/form'
 import station from './station'
 import settingUp from '@/components/MicroStation/settingUp'
 import baseMap from '@/components/MicroStation/baseMap'
@@ -174,6 +179,15 @@ export default {
     }
   },
   methods: {
+    // async onChangeAll(){
+    //   console.log(this.userData,182)
+    //   const { data } = await getLanguage({
+    //     data: this.$route.params.ids,  //'m000151'
+    //       funcModule: "获取多语言JSON",
+    //       funcOperation: "获取多语言JSON",
+    //   })
+    //   console.log(data)
+    // },
     handelClick(item, data, type) {
       if (type == 0) {
         if (item.sort == 0) {
@@ -329,8 +343,9 @@ export default {
                   data: this.$route.params.ids
                 }
               })
-              console.log(res)
             }
+            // console.log(res,this.userData,201)
+
           })
           .catch(() => {})
       } else {
@@ -442,8 +457,8 @@ export default {
   filters: {
     commentEllipsis(value) {
       if (value.length != undefined) {
-        if (value.length > 24) {
-          return value.slice(0, 23) + '...'
+        if (value.length > 14) {
+          return value.slice(0, 13) + '...'
         } else {
           return value
         }
@@ -455,6 +470,7 @@ export default {
     this.getJurisdiction()
     // console.log(this.userData)
     console.log(this.$route)
+    // this.onChangeAll()、、
   }
 }
 </script>

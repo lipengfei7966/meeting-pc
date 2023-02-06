@@ -3,6 +3,7 @@
   <div style="height: 90vh; overflow: auto; margin-top: 10px">
     <div>
       <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="materialSelection">{{$t('website.microStationDesign.selectMaterialLibrary')}}</el-button>
+      <el-button size="small" type="primary" style="float: left; margin-right: 10px" @click="atlasSelection">{{$t('website.microStationDesign.selectAtlas')}}</el-button>
       <el-upload accept="image/jpeg,image/psd,image/png,image/jpg" :before-upload="beforeUpload" class="upload-demo" :http-request="handleUploadForm" :headers="httpHeaders" action :on-preview="handlePreview" :on-remove="handleRemove" :file-list="webpagePicDtoList_" list-type="picture">
         <el-button size="small" type="primary">{{$t('website.microStationDesign.clickUpload')}}</el-button>
       </el-upload>
@@ -17,16 +18,21 @@
         <el-button type="primary" @click="submit_">{{$t('website.microStationDesign.confirm')}}</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="图册" :visible.sync="atlasDialogVisible">
+      <altasTemp :delFlag="delFlag" :footerFlag="footerFlag" :eventCode="$route.params.ids" @handleOk="handleOk" @cancel="cancel"></altasTemp>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import altasTemp from '@/views/frame/cmms/services/cms/atlas/components/altasTemp'
 import request from '@/utils/frame/base/request'
 import material from '@/components/MicroStation/materialSelection'
 export default {
   props: ['code', 'webpagePicDtoList'], //接收值
   components: {
-    material
+    material,
+    altasTemp
   },
   data() {
     return {
@@ -34,7 +40,10 @@ export default {
       // process.env.BASE_API +
       uploadUrl: '/api/biz/cmsWebpagePic/uploadRotationPic',
       webpagePicDtoList_: [],
-      dialogVisible: false
+      dialogVisible: false,
+      atlasDialogVisible:false,
+      footerFlag:true,
+      delFlag:false,
       // fileList: [
       //   { name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
       //   { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }
@@ -64,6 +73,52 @@ export default {
     // console.log(this.webpagePicDtoList_)
   },
   methods: {
+    cancel(){
+      this.atlasDialogVisible = false
+    },
+    handleOk(row){
+      this.atlasDialogVisible = false
+      this.getAtlas(row.code);
+      // this.submit_()
+      // console.log(row,294)
+    },
+    getAtlas(code) {
+      //获取图册信息
+      request({
+        url: '/api/cms/atlas/get',
+        method: 'POST',
+        data: {
+          funcModule: '图册信息',
+          funcOperation: '查询',
+          data: code
+        }
+      }).then((res) => {
+        // console.log(res.data.url,3888)
+        let arr = []
+        res.data.url.forEach(item => {
+          let obj = {
+            webpageCode: this.code,
+            url: item.url,
+            name: item.name
+          }
+          arr.push(obj)
+        })
+            request({
+            url: '/api/biz/cmsWebpagePic/setRotationPic',
+            method: 'POST',
+            data: { data: arr, funcModule: '图册选择轮播图片', funcOperation: '图册选择轮播图片' }
+          })
+          .then(res => {
+            if (res.data) {
+              this.$message(this.$t('website.microStationDesign.uploadedFileSuccess'))
+              this.$emit('upData_')
+            } else {
+              this.$message(this.$t('website.microStationDesign.uploadedFileFail'))
+            }
+          })
+          .catch(() => {})
+      }).catch(() => {})
+    },
     handleRemove(file, fileList) {
       if (this.flag_) {
         //
@@ -133,6 +188,10 @@ export default {
     },
     materialSelection() {
       this.dialogVisible = true
+    },
+    atlasSelection(){
+      this.atlasDialogVisible = true
+
     },
     submit_() {
       console.log(this.$refs.material.checkList, this.$refs.material.treeDatas)

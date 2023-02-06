@@ -7,48 +7,89 @@
       </el-form-item>
       <el-form-item :label="$t('attendee.detail.participantsType')" prop="contactType">
 
-        <base-select v-model="setForm.contactType" :attrs=" { datadict: 'contantType' }" style="width: 50%" :placeholder="$t('attendee.detail.placehorder.participantsTypePH')"></base-select>
+        <base-select v-model="setForm.contactType" :attrs="{ datadict: 'contantType' }" style="width: 50%" :placeholder="$t('attendee.detail.placehorder.participantsTypePH')"></base-select>
 
       </el-form-item>
+
+      <div>
+        <!-- {{ $t('registration.form.certificate.title') }}
+        $t(`registration.form.${element.placeholder}.title`) :{{ $t(`registration.form.${element.mapCode}.placeholder`) }} -->
+      </div>
 
       <div v-for="element in setInfoList" :key="element.mapCode">
         <!-- 分割线 -->
         <div v-if="element.systemName == '分割线'" class="form-item-input">
+          <!-- <el-divider content-position="center">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</el-divider> -->
           <el-divider content-position="center">{{ element.placeholder }}</el-divider>
         </div>
 
         <!-- 分页 -->
         <div v-else-if="element.systemName == '分页'" class="form-item-input">
-          <p style="text-align: center">[ 第 {{ element.pagingIndex }} 页/共 {{ pagingCount }} 页 ]</p>
+          <p style="text-align: center">[ {{$t('form.di')}} {{ element.pagingIndex }} {{$t('form.total')}} {{ pagingCount }} {{$t('form.Page')}} ]</p>
         </div>
 
         <!-- 说明信息 -->
         <div v-else-if="element.systemName == '说明信息'" class="form-item-input">
+          <!-- <pre style="padding-left: 150px">{{ $t(`registration.form.${element.mapCode}.placeholder`) }}</pre> -->
           <pre style="padding-left: 150px">{{ element.placeholder }}</pre>
+        </div>
+        <!-- 是否出席 -->
+        <div v-else-if="element.systemName == '是否出席'" class="form-item-input">
+          <el-form-item :label="element.title">
+            <div style="min-width: 300px; display: inline-block; vertical-align: top">
+              <el-radio-group v-model="setForm.attendance" :style="{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: element.orientation == '横向' ? 'row' : 'column' }">
+                <div v-for="item in element.options" :key="item">
+                  <el-radio :label="item" style="margin: 5px 15px"> {{ item }}</el-radio>
+                </div>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+        </div>
+        <!-- 协议设置 -->
+        <div v-else-if="element.systemName == '协议设置'" class="form-item-input">
+          <el-form-item :label="element.title">
+            <div style="min-width: 300px; display: inline-block; vertical-align: top">
+              <el-link type="primary" @click="privacyClick(element.privacyContent)">{{element.privacyName}}</el-link>
+            </div>
+          </el-form-item>
+        </div>
+        <!-- 分活动 -->
+        <div v-else-if="element.systemName == '分活动'" class="form-item-input">
+          <el-form-item :label="element.title">
+            <div style="min-width: 300px; display: inline-block; vertical-align: top">
+              <el-checkbox-group v-model="setForm.activityOptions" :max="actTriesLimit">
+                <div v-for="(item,index) in eventInfoChildList" :key="index" style="paddingBottom:10px">
+                  <el-checkbox :label="item.code" @change="handleCheckAllChangeActive">(活动报名上限{{ item.triesLimit }}人) <p style="paddingBottom:20px">场景描述：{{ item.describeInfo }}</p>
+                  </el-checkbox>
+                </div>
+              </el-checkbox-group>
+              <span style="float:right">{{ element.placeholder }}</span>
+            </div>
+          </el-form-item>
         </div>
 
         <div v-else>
           <!-- 自定义信息 -->
           <div v-if="element.isCoustomInfo">
-            <el-form-item :label="element.title" :prop="'signupContactDtlDto.' + element.mapCode">
+            <el-form-item :label="$t(`registration.form.${element.mapCode}.title`)" :prop="'signupContactDtlDto.' + element.mapCode">
               <!-- 短文本 -->
               <div v-if="element.systemName == '短文本'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :disabled="element.notAllowEdit && isUpdate" :show-word-limit="true" :maxlength="element.wordCountLimit" size="mini"></el-input>
                 </div>
               </div>
 
               <!-- 长文本 -->
               <div v-if="element.systemName == '长文本'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true" :placeholder="element.placeholder" :maxlength="element.wordCountLimit" size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" type="textarea" :disabled="element.notAllowEdit && isUpdate" :rows="5" :show-word-limit="true" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :maxlength="element.wordCountLimit" size="mini"></el-input>
                 </div>
               </div>
 
               <!-- 数字 -->
               <div v-if="element.systemName == '数字'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])" size="mini"></el-input>
+                  <el-input v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" @input="setForm.signupContactDtlDto[element.mapCode] = limitInput(element, setForm.signupContactDtlDto[element.mapCode])" size="mini"></el-input>
                 </div>
               </div>
 
@@ -82,7 +123,7 @@
               <div v-if="element.systemName == '下拉列表'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%" :placeholder="element.placeholder">
+                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)">
                     <el-option v-for="item in element.options" :key="item" :label="item" :value="item"></el-option>
                   </el-select>
                 </div>
@@ -91,7 +132,7 @@
               <!-- 下拉复选框 -->
               <div v-if="element.systemName == '下拉复选框'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%" :placeholder="element.placeholder" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
+                  <el-select v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" style="margin-left: 10px; width: 70%" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :multiple="true" @change="selectMultipleChange" :multiple-limit="element.maxCheckedCount || 0">
                     <el-option v-for="item in element.options" :key="item" :label="item" :value="item" :disabled="element.minCheckedCount != '' && (setForm.signupContactDtlDto[element.mapCode].length || 0) <= element.minCheckedCount && setForm.signupContactDtlDto[element.mapCode].includes(item)"></el-option>
                   </el-select>
                 </div>
@@ -102,17 +143,17 @@
                 <el-upload :ref="element.mapCode" class="avatar-uploader" action :limit="1" :disabled="element.notAllowEdit && isUpdate" :on-preview="downloadFile" :on-exceed="fileLimitCount" :show-file-list="false" :file-list="setFormFile[element.mapCode]" :before-upload="(file) => fileBeforeUpload(file, element)" :on-success="fileUploadSuccess" :http-request="(file) => flieHandleUploadForm(file, element)">
                   <!-- <i class="el-icon-plus avatar-uploader-icon"></i> -->
                   <!-- <p> {{element.placeholder}} </p> -->
-                  <el-button type="primary"> 上传附件 </el-button>
+                  <el-button type="primary"> {{$t('form.uploadAttachment')}} </el-button>
                 </el-upload>
                 <ul>
                   <li v-for="file in setFormFile[element.mapCode]" :key="file">
                     <span @click="handlePreview(file)" style="cursor: pointer">{{ file.name }}</span>
                     <span style="margin: 0 15px">
-                      <el-button type="text" @click="delFile(setFormFile[element.mapCode], file)">删除</el-button>
+                      <el-button type="text" @click="delFile(setFormFile[element.mapCode], file)">{{$t('form.delete')}}</el-button>
                     </span>
                     <span>
                       <!-- @click="downloadFile(file)" -->
-                      <el-button type="text" v-downLoadUrl="downloadFile(file)">下载</el-button>
+                      <el-button type="text" v-downLoadUrl="downloadFile(file)">{{$t('form.download')}}</el-button>
                     </span>
                   </li>
                 </ul>
@@ -122,7 +163,7 @@
               <div v-if="element.systemName == '日期'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="element.placeholder" :picker-options="pickerOptions"></el-date-picker>
+                  <el-date-picker v-model="setForm.signupContactDtlDto[element.mapCode]" :disabled="element.notAllowEdit && isUpdate" align="right" type="date" size="mini" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :picker-options="pickerOptions"></el-date-picker>
                 </div>
               </div>
             </el-form-item>
@@ -135,7 +176,7 @@
               <!-- 姓名 -->
               <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
-                <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="element.placeholder"></el-input>
+                <el-input v-model="setForm.name" :disabled="element.notAllowEdit && isUpdate" style="width: 50%" size="mini" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)"></el-input>
               </div>
               <!-- 姓名拆分 -->
               <div v-if="element.mapCode == 'name' && element.nameSplit" class="form-item-input">
@@ -157,9 +198,10 @@
               <div class="form-item-input">
                 <!-- 国家 -->
                 <div v-if="element.nationIsShow" class="addresItem">
-                  <el-form-item :label="element.nationTitle" prop="nations">
-                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="element.nationPlaceholder">
-                      <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                  <el-form-item :label="$t(`registration.form.nations.nationTitle`)" prop="nations">
+                    <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.nations" filterable :placeholder="$t(`registration.form.nations.nationPlaceholder`)">
+                      <el-option v-for="item in nationsList" :key="item.value" :label="item.label" :value="item.value">
+                      </el-option>
                     </el-select>
                   </el-form-item>
                   <!-- <el-form-item :label="element.nationTitle" prop="nations">
@@ -215,7 +257,7 @@
               </div>
             </el-form-item>
 
-            <el-form-item v-else :label="element.title" :prop="element.mapCode">
+            <el-form-item v-else :label="$t(`registration.form.${element.mapCode}.title`)" :prop="element.mapCode">
               <!-- 性别 -->
               <div v-if="element.mapCode == 'sex'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
@@ -227,11 +269,11 @@
               <div v-if="element.mapCode == 'certificate'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
+                  <el-select style="width: 100%" v-model="setForm.certificateType" :placeholder="$t(`registration.form.certificateType.placeholder`)" :disabled="element.notAllowEdit && isUpdate" @change="certificateTypeChange">
                     <el-option v-for="item in theCertificateType" :key="item.key" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <br />
-                  <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" placeholder="请输入您的证件号码"></el-input>
+                  <el-input v-model="setForm.certificate" :disabled="element.notAllowEdit && isUpdate" clearable style="margin-top: 10px" size="mini" :placeholder="$t(`registration.form.certificate.certificateNumPlaceholder`)"></el-input>
                 </div>
               </div>
 
@@ -261,8 +303,8 @@
               <div v-if="element.mapCode == 'mobile'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.mobile" :placeholder="element.placeholder" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" placeholder="请选择国际区号">
+                  <el-input v-model="setForm.mobile" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" :disabled="element.notAllowEdit && isUpdate" size="mini" class="input-with-select">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.mobileIntCode" @change="mobileIntCodeChange(setForm.mobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                       <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
@@ -272,8 +314,8 @@
               <!-- 备用手机号 -->
               <div v-if="element.mapCode == 'spareMobile'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select">
-                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" placeholder="请选择国际区号">
+                  <el-input v-model="setForm.spareMobile" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select">
+                    <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 80px" v-model="setForm.spareMobileIntCode" @change="spareMobileIntCodeChange(setForm.spareMobileIntCode, element)" :placeholder="$t('form.selectInternationalCode')">
                       <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                     </el-select>
                   </el-input>
@@ -285,15 +327,15 @@
                 <div style="width: 80%; display: inline-block; vertical-align: top">
                   <span style="display: inline-block">
                     <el-form-item prop="phoneAreaCode" label-width="0">
-                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.phoneAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.phoneIntCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
                   </span>
-                  <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
-                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                  <span> - <el-input v-model="setForm.phone" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini"></el-input> </span>
+                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.phoneRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="$t(`registration.form.phoneRunNumber.extensionNumberPlaceholder`)" size="mini"></el-input> </span>
                 </div>
               </div>
 
@@ -302,22 +344,22 @@
                 <div style="width: 80%; display: inline-block; vertical-align: top">
                   <span style="display: inline-block">
                     <el-form-item prop="faxAreaCode" label-width="0">
-                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="element.areaCodePlaceholder" size="mini" class="input-with-select">
-                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" placeholder="请选择国际区号">
+                      <el-input v-model="setForm.faxAreaCode" :disabled="element.notAllowEdit && isUpdate" style="width: 200px" :placeholder="$t(`registration.form.phoneAreaCode.areaCodePlaceholder`)" size="mini" class="input-with-select">
+                        <el-select v-if="element.countryCodeIsShow" :disabled="element.notAllowEdit && isUpdate" slot="prepend" style="width: 90px" v-model="setForm.faxIntCode" :placeholder="$t('form.selectInternationalCode')">
                           <el-option v-for="item in countryCodeOptions" :key="item.value" :label="'+' + item.value" :value="item.value"> </el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
                   </span>
-                  <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="element.placeholder" size="mini"></el-input> </span>
-                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="element.extensionNumberPlaceholder" size="mini"></el-input> </span>
+                  <span> - <el-input v-model="setForm.fax" :disabled="element.notAllowEdit && isUpdate" style="width: 150px" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini"></el-input> </span>
+                  <span v-if="element.extensionNumbeIsShow"> - <el-input v-model="setForm.faxRunNumber" :disabled="element.notAllowEdit && isUpdate" style="width: 120px" :placeholder="$t(`registration.form.phoneRunNumber.extensionNumberPlaceholder`)" size="mini"></el-input> </span>
                 </div>
               </div>
 
               <!-- 邮箱 -->
               <div v-if="element.mapCode == 'email'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.email" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
@@ -325,42 +367,42 @@
               <div v-if="element.mapCode == 'spareEmail'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.spareEmail" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 微信号 -->
               <div v-if="element.mapCode == 'wechat'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.wechat" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- qq -->
               <div v-if="element.mapCode == 'qq'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.qq" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 公司 -->
               <div v-if="element.mapCode == 'company'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.company" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 部门 -->
               <div v-if="element.mapCode == 'department'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.department" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
 
               <!-- 职位 -->
               <div v-if="element.mapCode == 'position'" class="form-item-input">
                 <div style="width: 50%; display: inline-block; vertical-align: top">
-                  <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate" :placeholder="element.placeholder" size="mini" class="input-with-select"></el-input>
+                  <el-input v-model="setForm.position" :disabled="element.notAllowEdit && isUpdate" :placeholder="$t(`registration.form.${element.mapCode}.placeholder`)" size="mini" class="input-with-select"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -371,7 +413,7 @@
       <div v-if="!isView" style="width: 100%; text-align: center">
         <el-button type="primary" @click="submit">
           <span class="el-icon-upload2"></span>
-          {{$t('biz.btn.submit')}}
+          {{ $t('biz.btn.submit') }}
         </el-button>
       </div>
     </el-form>
@@ -384,18 +426,30 @@
     <el-dialog title="裁切照片" :visible.sync="cropperModel" :close-on-click-modal="false" width="1200px" center>
       <cropper-image :fileName="photoName" :filePath="photoPath" :limitWidth="photoLimitWidth" :limitHeight="photoLimitHeight" @uploadImgSuccess="handleUploadSuccess" ref="child"> </cropper-image>
     </el-dialog>
+    <!--  -->
+    <el-dialog title="隐私协议" :visible.sync="privacyVisible" :close-on-click-modal="false" center>
+      <p v-html="privacyCon"></p>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import request from '@/utils/frame/base/request'
 import CropperImage from '@/components/frame/CropperImage'
+import attendeeDetail_en from '@/lang/frame/service/Attendee/attendeeDetail_en.js'
+import attendeeDetail_zh from '@/lang/frame/service/Attendee/attendeeDetail_zh.js'
 import { validateEmail, validateMobile, validateIDcard } from '@/utils/frame/base/validate.js'
 export default {
   name: 'attendeeEdit',
   data() {
     return {
-      theCertificateType:[],
+      actTriesLimit:0,
+      privacyCon:'',
+      privacyVisible:false,
+      eventInfoChildList:[],
+      enRegistration: {},
+      zhRegistration: {},
+      theCertificateType: [],
       setInfoList: [], // 选中的配置信息列表
       baseInfoList: [], // 基础信息
       customInfoList: [], // 自定义信息列表
@@ -416,6 +470,7 @@ export default {
       cropperModel: false, // 图片裁剪弹窗
       countryCodeOptions: [], // 国际区号下拉选项  lable - value
       setForm: {
+        activityOptions:[],
         personnelCode: '', // 人员编码
         contactType: '', // 参会人类型
         name: '', // 姓名
@@ -464,7 +519,7 @@ export default {
         personnelCode: [{ required: true, message: '请输入人员编码', trigger: 'blur' }],
         contactType: [{ required: true, message: '请选择参会人类型', trigger: 'change' }]
       },
-      isAllowUploadPhoto:false,
+      isAllowUploadPhoto: false,
       pickerOptions: {
         disabledDate(time) {
           // return time.getTime() > Date.now();
@@ -511,6 +566,9 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$t('registration'), "789");
+    console.log(attendeeDetail_en, "attendeeDetail_en");
+    console.log(attendeeDetail_zh, "attendeeDetail_zh");
     if (this.$route.params.type == 'update') {
       this.isUpdate = true
     }
@@ -521,7 +579,7 @@ export default {
     this.getComCityTreeList()
     // // 表单配置查询
     // this.getEventInfo()
-
+    this.getList()
   },
   methods: {
     validateEmail,
@@ -540,14 +598,14 @@ export default {
       }).then(response => {
         if (response.data.json) {
           this.setInfoList = JSON.parse(response.data.json)
-          console.log(JSON.parse(response.data.json),'JSON.parse(response.data.json)');
+          console.log(JSON.parse(response.data.json), 'JSON.parse(response.data.json)');
         } else {
           this.setInfoList = []
         }
 
         this.setInfoList.forEach(item => {
           // 1：自定义属性
-          console.log(item,891)
+          console.log(item, 891)
           if (item.mapBase == 1) {
             if (['复选框', '下拉复选框'].includes(item.systemName)) {
               // this.setForm[item.mapCode] = []
@@ -566,7 +624,7 @@ export default {
             }
             this.$set(this.setformOther, item.mapCode, '')
             // 添加必填校验
-            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur','change'] }])
+            this.$set(this.rules.signupContactDtlDto, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur', 'change'] }])
           } else {
             // 国际区号设置默认值
             if (item.mapCode == 'mobile') {
@@ -585,7 +643,7 @@ export default {
             }
             if (item.mapCode == 'phone') {
               this.setForm.phoneIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur','change'] }])
+              this.$set(this.rules, 'phoneAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur', 'change'] }])
               // 国际区号不显示,后台默认86
               if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
@@ -593,7 +651,7 @@ export default {
             }
             if (item.mapCode == 'fax') {
               this.setForm.faxIntCode = item.defaultCountryCode
-              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur','change'] }])
+              this.$set(this.rules, 'faxAreaCode', [{ required: item.isRequire, message: '区号是必填项', trigger: ['blur', 'change'] }])
               // 国际区号不显示,后台默认86
               if (!item.countryCodeIsShow) {
                 this.setForm.mobileIntCode = '86'
@@ -601,11 +659,11 @@ export default {
             }
 
             // 添加必填校验
-            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur','change'] }])
+            this.$set(this.rules, item.mapCode, [{ required: item.isRequire, message: item.title + '是必填项', trigger: ['blur', 'change'] }])
             if (item.mapCode == 'name' && item.nameSplit) {
               this.rules.name[0].required = false
-              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: ['blur','change'] }])
-              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: ['blur','change'] }])
+              this.$set(this.rules, 'surname', [{ required: item.isRequire, message: '姓是必填项', trigger: ['blur', 'change'] }])
+              this.$set(this.rules, 'ming', [{ required: item.isRequire, message: '名是必填项', trigger: ['blur', 'change'] }])
             }
 
             if (item.mapCode == 'addres') {
@@ -619,25 +677,25 @@ export default {
               }
               if (item.provinceIsShow) {
                 // 显示省份
-                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: ['blur','change'] }])
+                this.$set(this.rules, 'province', [{ required: item.isRequire, message: '省份是必选项', trigger: ['blur', 'change'] }])
               }
               if (item.cityIsShow) {
                 // 显示城市
-                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: ['blur','change'] }])
+                this.$set(this.rules, 'city', [{ required: item.isRequire, message: '城市是必选项', trigger: ['blur', 'change'] }])
               }
               if (item.countyIsShow) {
                 // 显示区县
-                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: ['blur','change'] }])
+                this.$set(this.rules, 'county', [{ required: item.isRequire, message: '区/县是必选项', trigger: ['blur', 'change'] }])
               }
               if (item.detailedAdressISShow) {
                 // 显示详细地址
-                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: ['blur','change'] }])
+                this.$set(this.rules, 'fullAddress', [{ required: item.isRequire, message: '详细地址必填项', trigger: ['blur', 'change'] }])
               }
               if (item.postcodeIsShow) {
                 // 显示邮编
                 this.$set(this.rules, 'postcode', [
-                  { required: item.isRequire, message: '邮编是必填项', trigger: ['blur','change'] },
-                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: ['blur','change'] }
+                  { required: item.isRequire, message: '邮编是必填项', trigger: ['blur', 'change'] },
+                  { pattern: /^\d{6}$/, message: '请输入正确的邮编', trigger: ['blur', 'change'] }
                 ])
               }
               // this.$set(this.rules, 'surname', [{required: item.isRequire, message:  "姓是必填项", trigger: "blur" }])
@@ -649,40 +707,40 @@ export default {
                 // 是否设置国际默认区号
                 if (item.check.some(item => item.code == '005') && item.defaultCountryCode == '86') {
                   // 中国大陆 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '852') {
                   // 香港区号 手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '853') {
                   // 澳门区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules.mobile.push({ pattern: /^6\d{7}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 } else if (item.check.some(item => item.code == '006') && item.defaultCountryCode == '886') {
                   // 台湾区号 手机号校验
-                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules.mobile.push({ pattern: /^[0][9]\d{8}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 }
               } else {
                 if (item.check.some(checkItem => checkItem.code == '005') && !item.check.some(checkItem => checkItem.code == '006')) {
                   // 中国大陆手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 } else if (!item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 港澳台手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules[item.mapCode].push({ pattern: /^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 } else if (item.check.some(checkItem => checkItem.code == '005') && item.check.some(checkItem => checkItem.code == '006')) {
                   // 大陆加港澳台手机号校验
-                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur','change'] })
+                  this.rules[item.mapCode].push({ pattern: /^((13[0-9])|(14(0|[5-7]|9))|(15([0-3]|[5-9]))|(16(2|[5-7]))|(17[0-8])|(18[0-9])|(19([0-3]|[5-9])))\d{8}$|^([5|6|9])\d{7}$|^[0][9]\d{8}$|^[6]\d{7}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] })
                 }
               }
             }
             if (item.mapCode == 'email' || item.mapCode == 'spareEmail') {
-              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: ['blur','change'] })
+              this.rules[item.mapCode].push({ pattern: /^[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4}(,[A-Za-z\d]+([-_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-\.])+[A-Za-z\d]{2,4})*$/, message: '请输入正确的邮箱', trigger: ['blur', 'change'] })
             }
           }
           if (item.systemName == '证件') {
             let cardCode = this.$t('datadict.certificateType')
-            this.theCertificateType=[]
-            item.options.forEach(v=>{
-              cardCode.forEach(i=>{
-                if(i.value == v){
+            this.theCertificateType = []
+            item.options.forEach(v => {
+              cardCode.forEach(i => {
+                if (i.value == v) {
                   this.theCertificateType.push(i)
                 }
               })
@@ -703,6 +761,39 @@ export default {
         if (this.$route.params.type == 'update') {
           this.getContactInfo()
         }
+        this.cmsEventInfoChildrenFn()
+      })
+    },
+    privacyClick(privacyCon){
+      this.privacyVisible=true
+      this.privacyCon=privacyCon
+    },
+    getList() {
+      request({
+        url: '/api/dd/selectData/list',
+        method: 'POST',
+        data: {
+          data: {
+            queryParams: {},
+            type: 'EVENT_INFO'
+          },
+          funcModule: '分活动管理',
+          funcOperation: '查询'
+        }
+      }).then(res => {
+        //  debugger
+        console.log(res,'分活动管理个数限制')
+        // this.activityList = res.data
+        res.data.forEach(v=>{
+          if (v.code==this.$route.params.data) {
+            if (v.data.triesLimit==undefined) {
+              this.actTriesLimit=99999
+            } else {
+              this.actTriesLimit=v.data.triesLimit
+            }
+          }
+        })
+
       })
     },
     // 参会人信息查询
@@ -777,21 +868,37 @@ export default {
         //     this.setForm.certificateType = item.value
         //   }
         //  })
-          // console.log(this.$t('datadict.certificateType'));
+        // console.log(this.$t('datadict.certificateType'));
         // }
         // if(this.setForm.nations){
-        //   debugger
         //  let cardCode = this.$t('datadict.countryCode')
         //  cardCode.forEach(item=>{
         //   if(item.value == this.setForm.nations){
         //     this.setForm.nations = item.label
         //   }
         //  })
-          // console.log(this.$t('datadict.certificateType'));
+        // console.log(this.$t('datadict.certificateType'));
         // }
         // console.log(this.setForm);
       })
     },
+    // 分活动管理
+    cmsEventInfoChildrenFn(){
+      request({
+        url: 'api/register/cmsEventInfoChildren/page',
+        method: 'POST',
+        data: {
+          isPage: false,
+          data: {eventCode: this.$route.params.data,isGoLive:'1'},
+          funcModule: '分活动管理',
+          funcOperation: '获取分活动列表'
+        }
+      }).then(res => {
+        console.log(res,'resres');
+        this.eventInfoChildList=res.data
+      })
+    },
+    handleCheckAllChangeActive(){},
     submit() {
       let queryUrl = ''
       if (this.$route.params.type == 'add') {
@@ -817,30 +924,31 @@ export default {
                   this.setForm.signupContactDtlDto[key][checkIndex] = this.setForm.signupContactDtlDto[key][checkIndex] + '&' + this.setformOther[key]
                 }
               })
-              this.setForm.signupContactDtlDto[key].unshift('卍')
-              this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
+              if( this.setForm.signupContactDtlDto[key].length){
+                this.setForm.signupContactDtlDto[key].unshift('卍')
+                this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key].join(',')
+              }
             } else {
               if (this.setForm.signupContactDtlDto[key] == '其他') {
                 this.setForm.signupContactDtlDto[key] = this.setForm.signupContactDtlDto[key] + '&' + this.setformOther[key]
               }
             }
           }
-          // debugger
           // if(this.setForm.certificateType){
-            //  let cardCode = this.$t('datadict.certificateType')
-            //   cardCode.forEach(item=>{
-            //     if(item.value == this.setForm.certificateType){
-            //       this.setForm.certificateType = item.label
-            //     }
-            //   })
+          //  let cardCode = this.$t('datadict.certificateType')
+          //   cardCode.forEach(item=>{
+          //     if(item.value == this.setForm.certificateType){
+          //       this.setForm.certificateType = item.label
+          //     }
+          //   })
           // }
-          if(this.setForm.nations){
-             let cardCode = this.$t('datadict.countryCode')
-         cardCode.forEach(item=>{
-          if(item.label == this.setForm.nations){
-            this.setForm.nations = item.value
-          }
-         })
+          if (this.setForm.nations) {
+            let cardCode = this.$t('datadict.countryCode')
+            cardCode.forEach(item => {
+              if (item.label == this.setForm.nations) {
+                this.setForm.nations = item.value
+              }
+            })
           }
           console.log(this.setForm);
           // return
@@ -910,7 +1018,7 @@ export default {
     // 预览附件
     handlePreview(file) {
       let filepath = file.url
-      let filename=filepath.slice(filepath.lastIndexOf('/') + 1)
+      let filename = filepath.slice(filepath.lastIndexOf('/') + 1)
       if (!filepath) return
       // 获取文件后缀名
       let suffix = filepath.substring(filepath.lastIndexOf('.') + 1).toLowerCase()
@@ -1005,9 +1113,9 @@ export default {
       this.photoName = res.fileName
     },
     fileUploadSuccess(res, file) {
-      console.log(this.setFormFile,"???")
+      console.log(this.setFormFile, "???")
     },
-     beforeAvatarUpload(file, element) {
+    beforeAvatarUpload(file, element) {
       // fileTypeLimit // 是否限制文件类型
       // pictureSizeLimit: false, // 是否限制图片尺寸
       // imageCheckedTypes:[], // 图片文件选中类型
@@ -1017,10 +1125,10 @@ export default {
       // audioFileCheckedTypes: [],// 音频文件选中类型
       // allFileTypes:[], // 允许上传文件类型合集
       // fileSizeLimit: 50, // 文件大小限制
-      console.log(file,'file');
+      console.log(file, 'file');
       const fileName = file.name
       const extension = fileName.substr(fileName.lastIndexOf('.')).toLowerCase()
-      console.log(extension,'extension');
+      console.log(extension, 'extension');
       let isAllUpload = false
       // let acceptType = ['.jpg', '.png', '.jpeg', '.bmp', '.webp']
       var acceptType = ['.jpg', '.png']
@@ -1048,10 +1156,10 @@ export default {
       const _this = this
       let imgWidth = ''
       let imgHight = ''
-      const isSize = new Promise(function(resolve, reject) {
+      const isSize = new Promise(function (resolve, reject) {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
-        img.onload = function() {
+        img.onload = function () {
           imgWidth = img.width
           imgHight = img.height
           // const valid = img.width <= 1700 && img.height <= 2500
@@ -1075,27 +1183,27 @@ export default {
       return await isSize
     },
     fileBeforeUpload(file, element) {
-            // fileTypeLimit // 是否限制文件类型
-            // pictureSizeLimit: false, // 是否限制图片尺寸
-            // imageCheckedTypes:[], // 图片文件选中类型
-            // documentCheckedTypes: [], // 文档选中类型
-            // compressedFileCheckedTypes: [], // 压缩文件选中类型
-            // videoFileCheckedTypes: [], // 视频文件选中类型
-            // audioFileCheckedTypes: [],// 音频文件选中类型
-            // allFileTypes:[], // 允许上传文件类型合集
-            // fileSizeLimit: 50, // 文件大小限制
-            const fileName = file.name
-            const extension = fileName.substr(fileName.lastIndexOf('.'))
-            let isAllowUpload = true
-            if (element.fileTypeLimit) {
-                // 判断后缀名是否允许上传
-                isAllowUpload = element.allFileTypes.includes(extension)
-                if (!isAllowUpload) {
-                    const errMsg = '注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、')
-                    this.$message.error(errMsg)
-                    return false
-                }
-            }
+      // fileTypeLimit // 是否限制文件类型
+      // pictureSizeLimit: false, // 是否限制图片尺寸
+      // imageCheckedTypes:[], // 图片文件选中类型
+      // documentCheckedTypes: [], // 文档选中类型
+      // compressedFileCheckedTypes: [], // 压缩文件选中类型
+      // videoFileCheckedTypes: [], // 视频文件选中类型
+      // audioFileCheckedTypes: [],// 音频文件选中类型
+      // allFileTypes:[], // 允许上传文件类型合集
+      // fileSizeLimit: 50, // 文件大小限制
+      const fileName = file.name
+      const extension = fileName.substr(fileName.lastIndexOf('.'))
+      let isAllowUpload = true
+      if (element.fileTypeLimit) {
+        // 判断后缀名是否允许上传
+        isAllowUpload = element.allFileTypes.includes(extension)
+        if (!isAllowUpload) {
+          const errMsg = '注意: 只允许上传以下文件类型：' + element.allFileTypes.join('、')
+          this.$message.error(errMsg)
+          return false
+        }
+      }
 
             const sizeLimit = file.size / 1024 / 1024 < element.fileSizeLimit
             if (!sizeLimit) {
@@ -1127,22 +1235,22 @@ export default {
                     this.$message('上传文件成功')
                     this.setForm.signupContactDtlDto[element.mapCode] = data.data.filePath
 
-                    this.setFormFile[element.mapCode].push({
-                        name: data.data.fileName,
-                        url: data.data.filePath
-                    })
+          this.setFormFile[element.mapCode].push({
+            name: data.data.fileName,
+            url: data.data.filePath
+          })
 
-                    console.log(this.setForm.signupContactDtlDto[element.mapCode])
-                    param.onSuccess(data, element)
-                } else {
-                    const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
-                    this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
-                    // param.file.splice(idx, 1)
-                    this.$message('上传文件失败')
-                }
-                loading.close()
-            })
-        },
+          console.log(this.setForm.signupContactDtlDto[element.mapCode])
+          param.onSuccess(data, element)
+        } else {
+          const idx = this.$refs[element.mapCode][0].uploadFiles.findIndex(item => item.uid === param.file.uid)
+          this.$refs[element.mapCode][0].uploadFiles.splice(idx, 1)
+          // param.file.splice(idx, 1)
+          this.$message('上传文件失败')
+        }
+        loading.close()
+      })
+    },
     // 自定义上传照片
     handleUploadForm(param, element) {
       // let thiz = this
@@ -1196,7 +1304,6 @@ export default {
     // 证件类型切换
     certificateTypeChange(val) {
       console.log(val,'val');
-      debugger
       this.setForm.certificate = ''
       if (val == 'NI') {
         this.rules.certificate.push({ pattern: /(^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|"+"(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, message: '请输入正确的身份证号码', trigger: 'blur' })
@@ -1306,11 +1413,10 @@ export default {
       this.cityCountyList = selectCity.chirldren // 接口返回字段为 chirldren 非 children
       this.setForm.county = ''
     },
-    selectMultipleChange(val) {},
+    selectMultipleChange(val) { },
     // 国际编码字典项查询
     getCountryCode() {
       this.countryCodeOptions = this.$t('datadict.countryCode')
-      debugger
       // 86 大陆, 852 香港, 853 澳门, 886 台湾
       this.nationsList = this.countryCodeOptions.filter(item => {
         //
@@ -1332,8 +1438,8 @@ export default {
     downloadFile(file) {
       let obj = {}
       obj = {
-        url:file.url,
-        name:file.name
+        url: file.url,
+        name: file.name
       }
       return obj
       // console.log(file,'file');
@@ -1373,7 +1479,6 @@ export default {
       eleLink.remove()
     },
     downloadPhoto(fileUrl) {
-      debugger
       let fileName = fileUrl.slice(fileUrl.lastIndexOf('/') + 1)
       this.downloadEvt(fileUrl, fileName)
       // // window.open(file.file_path, "_blank");
@@ -1403,21 +1508,26 @@ export default {
 <style lang="scss">
 .content {
   min-width: 1250px;
+
   .contactForm {
     width: 50%;
     background: #fff;
     padding: 20px;
     margin: 0 auto;
   }
+
   .form-item-input {
     width: 100%;
+
     .addresItem {
       margin-bottom: 15px;
     }
+
     .avatar-uploader {
       // width: 100px;
       display: inline-block;
       vertical-align: top;
+
       .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -1425,10 +1535,12 @@ export default {
         position: relative;
         overflow: hidden;
       }
+
       .el-upload:hover {
         border-color: #409eff;
       }
     }
+
     .avatar-uploader-icon {
       font-size: 28px;
       color: #8c939d;
@@ -1437,13 +1549,16 @@ export default {
       line-height: 100px;
       text-align: center;
     }
+
     .avatar {
       width: 100px;
       height: 100px;
       display: block;
     }
+
     .picture:hover {
     }
+
     .el-upload-list__item-actions {
       position: absolute;
       width: 100%;
@@ -1458,32 +1573,39 @@ export default {
       background-color: rgba(0, 0, 0, 0.5);
       transition: opacity 0.3s;
     }
+
     .el-upload-list__item-actions:after {
       display: inline-block;
       content: '';
       height: 100%;
       vertical-align: middle;
     }
+
     .el-upload-list__item-actions span {
       display: none;
       cursor: pointer;
     }
+
     .el-upload-list__item-actions:hover {
       opacity: 1;
     }
+
     .el-upload-list__item-actions:hover span {
       display: inline-block;
     }
+
     .el-upload-list__item-actions span + span {
       margin-left: 15px;
     }
   }
 }
+
 .el-form-item__label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .el-form-label__frame {
   position: absolute;
 }
