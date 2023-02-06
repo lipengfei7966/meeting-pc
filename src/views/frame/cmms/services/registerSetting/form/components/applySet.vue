@@ -1459,7 +1459,6 @@ export default {
     },
     // 分页下标数组更新
     // pageUpdate(){
-    //   debugger
     //   this.pageIndexArr=[]
     //   this.setInfoList.forEach((v,index)=>{
     //     if(v.systemName == '分页'){
@@ -1638,7 +1637,6 @@ export default {
         }
       }).then(response => {
         if (response.data.json) {
-          debugger
           this.setInfoList = JSON.parse(response.data.json)
           // this.signupFieldOptions = res.data
           this.pageIndexArr=[]
