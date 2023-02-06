@@ -111,6 +111,22 @@ export default {
             ]
           },
           {
+            label: 'platform.tenant.tmcCompany',
+            prop: 'tmcCompanyId',
+            element: 'base-select',
+            attrs: {
+              data: 'COMPANY',
+              clearable: true,
+              cols: 4
+            },
+            validate: [
+              {
+                required: false,
+                trigger: 'blur'
+              }
+            ]
+          },
+          {
             label: 'biz.lbl.remark',
             prop: 'remark',
             element: 'el-input',
