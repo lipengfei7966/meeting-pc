@@ -144,7 +144,7 @@
       <el-button type="primary" @click="appearanceSetSave">{{$t('appearance.saveAndNext')}}</el-button>
     </div>
     <el-dialog title="图册选择" :visible.sync="meetingFileVisible">
-      <altasTemp ref="meetingFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="cancel('meetingFile')" @cancel="cancel('meetingFile')"></altasTemp>
+      <altasTemp ref="meetingFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('meetingFile',$event)" @cancel="cancel('meetingFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="appFileVisible">
       <altasTemp ref="appFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('appFile',$event)" @cancel="cancel('appFile')"></altasTemp>
@@ -162,6 +162,7 @@
 import { mapGetters } from 'vuex'
 import request from '@/utils/frame/base/request'
 import altasTemp from '@/views/frame/cmms/services/cms/atlas/components/altasTemp.vue'
+// import altasTemp from './altasTemp.vue'
 export default {
   name: 'appearanceSet',
   components:{altasTemp},
