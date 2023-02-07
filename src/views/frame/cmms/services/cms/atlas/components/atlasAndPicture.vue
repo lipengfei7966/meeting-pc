@@ -43,7 +43,6 @@
               accept="image/png, image/jpeg, image/gif, image/jpg"
               :auto-upload="false"
               :on-change="handleChange"
-              :before-upload="beforeUpload"
               action
               style='display:inline-block;margin-right:10px;'
                >
@@ -305,12 +304,8 @@ export default {
         instance.confirmButtonLoading=false
       })
     },
-    beforeUpload(){//
-       console.log("上传前")
-    },
     //批量上传
     handleChange(file, fileList){
-      // this.$refs.upload.clearFiles();
        let currLengh=fileList.length;
        this.maxFileLen=Math.max(currLengh,this.maxFileLen);
        setTimeout(()=>{
