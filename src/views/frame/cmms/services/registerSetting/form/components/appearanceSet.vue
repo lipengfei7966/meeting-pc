@@ -45,20 +45,32 @@
           </el-form-item>
 
           <el-form-item label="Banner(pc)" prop="meetingFile">
-            <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="meetingUploadFile" :file-list="meetingImageList" :headers="httpHeaders" :on-remove="meetingHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="mweetngHandlePreview">
+            <el-button v-if="JSON.stringify(meetingFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('meetingFile')">选择图册</el-button>
+            <div style="display:flex">
+              <p v-if="JSON.stringify(meetingFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ meetingFileSelectRow.name }}</p>
+              <el-link v-if="JSON.stringify(meetingFileSelectRow)!='{}'" type="danger" @click="delectFn('meetingFile')">删除</el-link>
+            </div>
+            <el-button v-if="JSON.stringify(meetingFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('meetingFile')">重新选择图册</el-button>
+            <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="meetingUploadFile" :file-list="meetingImageList" :headers="httpHeaders" :on-remove="meetingHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="mweetngHandlePreview">
               <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="meetingdialogVisible">
+            </el-upload> -->
+            <!-- <el-dialog :visible.sync="meetingdialogVisible">
               <img width="100%" :src="mettingdialogImageUrl" alt="">
-            </el-dialog>
+            </el-dialog> -->
           </el-form-item>
           <el-form-item :label="$t('appearance.mobileClientBanner')" prop="appFile">
-            <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="AppUploadFile" :file-list="AppImageList" :headers="httpHeaders" :on-remove="AppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="AppHandlePreview">
+            <el-button v-if="JSON.stringify(appFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('appFile')">选择图册</el-button>
+            <div style="display:flex">
+              <p v-if="JSON.stringify(appFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ appFileSelectRow.name }}</p>
+              <el-link v-if="JSON.stringify(appFileSelectRow)!='{}'" type="danger" @click="delectFn('appFile')">删除</el-link>
+            </div>
+            <el-button v-if="JSON.stringify(appFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('appFile')">重新选择图册</el-button>
+            <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="AppUploadFile" :file-list="AppImageList" :headers="httpHeaders" :on-remove="AppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="AppHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="AppdialogVisible">
               <img width="100%" :src="AppdialogImageUrl" alt="">
-            </el-dialog>
+            </el-dialog> -->
           </el-form-item>
           · <el-form-item :label="$t('appearance.isMeetingTime')" prop="isMeetingDate" v-if="appearanceSetForm.isPropaganda == '1'">
             <el-switch v-model="appearanceSetForm.isMeetingDate" active-color="#13ce66" inactive-co lor="#ff4949" active-value="1" inactive-value="0"></el-switch>
@@ -89,20 +101,32 @@
         <el-divider></el-divider>
         <div v-show="isRegisterSetShow">
           <el-form-item label="Banner(pc)" prop="loginPcFile">
-            <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="resPcUploadFile" :file-list="resPcImageList" :headers="httpHeaders" :on-remove="resPcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="resPcHandlePreview">
+            <el-button v-if="JSON.stringify(loginPcFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('loginPcFile')">选择图册</el-button>
+            <div style="display:flex">
+              <p v-if="JSON.stringify(loginPcFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ loginPcFileSelectRow.name }}</p>
+              <el-link v-if="JSON.stringify(loginPcFileSelectRow)!='{}'" type="danger" @click="delectFn('loginPcFile')">删除</el-link>
+            </div>
+            <el-button v-if="JSON.stringify(loginPcFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('loginPcFile')">重新选择图册</el-button>
+            <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="resPcUploadFile" :file-list="resPcImageList" :headers="httpHeaders" :on-remove="resPcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="resPcHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="resPcdialogVisible">
               <img width="100%" :src="resPcdialogImageUrl" alt="">
-            </el-dialog>
+            </el-dialog> -->
           </el-form-item>
           <el-form-item :label="$t('appearance.mobileClientBanner')" prop="loginAppFile">
-            <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="resAppUploadFile" :file-list="resAppImageList" :headers="httpHeaders" :on-remove="resAppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="resAppHandlePreview">
+            <el-button v-if="JSON.stringify(loginAppFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('loginAppFile')">选择图册</el-button>
+            <div style="display:flex">
+              <p v-if="JSON.stringify(loginAppFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ loginAppFileSelectRow.name }}</p>
+              <el-link v-if="JSON.stringify(loginAppFileSelectRow)!='{}'" type="danger" @click="delectFn('loginAppFile')">删除</el-link>
+            </div>
+            <el-button v-if="JSON.stringify(loginAppFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('loginAppFile')">重新选择图册</el-button>
+            <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="resAppUploadFile" :file-list="resAppImageList" :headers="httpHeaders" :on-remove="resAppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="resAppHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload>
             <el-dialog :visible.sync="resAppdialogVisible">
               <img width="100%" :src="resAppdialogImageUrl" alt="">
-            </el-dialog>
+            </el-dialog> -->
           </el-form-item>
           <el-form-item :label="$t('appearance.isMeetingTime')" prop="isLoginDate">
             <el-switch v-model="appearanceSetForm.isLoginDate" active-color="#13ce66" inactive-color="#ff4949" active-value="1" inactive-value="0"></el-switch>
@@ -119,17 +143,40 @@
     <div class="appearanceSetBtns">
       <el-button type="primary" @click="appearanceSetSave">{{$t('appearance.saveAndNext')}}</el-button>
     </div>
+    <el-dialog title="图册选择" :visible.sync="meetingFileVisible">
+      <altasTemp ref="meetingFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('meetingFile',$event)" @cancel="cancel('meetingFile')"></altasTemp>
+    </el-dialog>
+    <el-dialog title="图册选择" :visible.sync="appFileVisible">
+      <altasTemp ref="appFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('appFile',$event)" @cancel="cancel('appFile')"></altasTemp>
+    </el-dialog>
+    <el-dialog title="图册选择" :visible.sync="loginPcFileVisible">
+      <altasTemp ref="loginPcFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginPcFile',$event)" @cancel="cancel('loginPcFile')"></altasTemp>
+    </el-dialog>
+    <el-dialog title="图册选择" :visible.sync="loginAppFileVisible">
+      <altasTemp ref="loginAppFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginAppFile',$event)" @cancel="cancel('loginAppFile')"></altasTemp>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import request from '@/utils/frame/base/request'
+import altasTemp from '@/views/frame/cmms/services/cms/atlas/components/altasTemp.vue'
 export default {
   name: 'appearanceSet',
+  components:{altasTemp},
   data () {
     return {
       eventCode:'',
+      meetingFileSelectRow:{},
+      meetingFileVisible:false,
+      appFileSelectRow:{},
+      appFileVisible:false,
+      loginPcFileSelectRow:{},
+      loginPcFileVisible:false,
+      loginAppFileSelectRow:{},
+      loginAppFileVisible:false,
+
       resPcImageList: [],
       resPcdialogImageUrl: '',
       resPcdialogVisible: false,
@@ -183,6 +230,103 @@ export default {
     }
   },
   methods: {
+    tempHandleFn(status){
+      switch (status) {
+        case 'meetingFile':
+          this.meetingFileVisible=true
+          this.$refs.meetingFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.meetingFile.reload()
+          break;
+        case 'appFile':
+          this.appFileVisible=true
+          this.$refs.appFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.appFile.reload()
+          break;
+        case 'loginPcFile':
+          this.loginPcFileVisible=true
+          this.$refs.loginPcFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.loginPcFile.reload()
+          break;
+        case 'loginAppFile':
+          this.loginAppFileVisible=true
+          this.$refs.loginAppFile.form.listQuery.data.eventCode=this.eventCode
+          this.$refs.loginAppFile.reload()
+          break;
+
+        default:
+          break;
+      }
+    },
+
+    selectRowFn(status,selectRow){
+      switch (status) {
+        case 'meetingFile':
+          this.meetingFileVisible=false
+          this.meetingFileSelectRow=selectRow
+          this.appearanceSetForm.meetingFile=selectRow.code
+          break;
+        case 'appFile':
+          this.appFileVisible=false
+          this.appFileSelectRow=selectRow
+          this.appearanceSetForm.appFile=selectRow.code
+          break;
+        case 'loginPcFile':
+          this.loginPcFileVisible=false
+          this.loginPcFileSelectRow=selectRow
+          this.appearanceSetForm.loginPcFile=selectRow.code
+          break;
+        case 'loginAppFile':
+          this.loginAppFileVisible=false
+          this.loginAppFileSelectRow=selectRow
+          this.appearanceSetForm.loginAppFile=selectRow.code
+          break;
+
+        default:
+          break;
+      }
+    },
+    cancel(status){
+      switch (status) {
+        case 'meetingFile':
+          this.meetingFileVisible=false
+          break;
+        case 'appFile':
+          this.appFileVisible=false
+          break;
+        case 'loginPcFile':
+          this.loginPcFileVisible=false
+          break;
+        case 'loginAppFile':
+          this.loginAppFileVisible=false
+          break;
+
+        default:
+          break;
+      }
+    },
+    delectFn(status){
+      switch (status) {
+        case 'meetingFile':
+        this.meetingFileSelectRow={}
+        this.appearanceSetForm.meetingFile=''
+          break;
+        case 'appFile':
+        this.appFileSelectRow={}
+        this.appearanceSetForm.appFile=''
+          break;
+        case 'loginPcFile':
+        this.loginPcFileSelectRow={}
+        this.appearanceSetForm.loginPcFile=''
+          break;
+        case 'loginAppFile':
+        this.loginAppFileSelectRow={}
+        this.appearanceSetForm.loginAppFile=''
+          break;
+
+        default:
+          break;
+      }
+    },
     meetingUploadFile (response, file, fileList) {
       this.appearanceSetForm.meetingFile = response.data.filePath
     },
@@ -287,6 +431,10 @@ export default {
               this.appearanceSetForm.isLoginDate = 0 // 是否显示会议时间
               this.appearanceSetForm.isLoginPlace = 0 // 是否显示会议地点
               this.appearanceSetForm.isLoginCountdown = 0 // 是否显示倒计时
+              this.meetingFileSelectRow={}
+              this.appFileSelectRow={}
+              this.loginPcFileSelectRow={}
+              this.loginAppFileSelectRow={}
           } else {
             this.appearanceSetForm = res.data
             setTimeout(() => {
@@ -295,28 +443,36 @@ export default {
                   window.frames['myframe'].setContents(this.appearanceSetForm.profile)
                 }
               }, 3000)
+              this.meetingFileSelectRow={code:res.data.meetingFile,name:res.data.meetingFileName}
+              this.appearanceSetForm.meetingFile=res.data.meetingFile
+              this.appFileSelectRow={code:res.data.appFile,name:res.data.appFileName}
+              this.appearanceSetForm.appFile=res.data.appFile
+              this.loginPcFileSelectRow={code:res.data.loginPcFile,name:res.data.loginPcFileName}
+              this.appearanceSetForm.loginPcFile=res.data.loginPcFile
+              this.loginAppFileSelectRow={code:res.data.loginAppFile,name:res.data.loginAppFileName}
+              this.appearanceSetForm.loginAppFile=res.data.loginAppFile
             // this.appearanceSetForm.language=res.data.language.split(',')
             // this.meetingImageList = res.data.meetingFile
-            this.meetingImageList = []
-            this.AppImageList = []
-            this.resPcImageList = []
-            this.resAppImageList = []
-            if (res.data.meetingFile !== ''&&res.data.meetingFile!=undefined) {
-              var urlSplits = res.data.meetingFile && res.data.meetingFile.split('/')
-              this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
-            }
-            if (res.data.appFile !== ''&&res.data.appFile!=undefined) {
-              var urlSplits = res.data.appFile && res.data.appFile.split('/')
-              this.AppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.appFile })
-            }
-            if (res.data.loginPcFile !== ''&&res.data.loginPcFile!=undefined) {
-              var urlSplits = res.data.loginPcFile && res.data.loginPcFile.split('/')
-              this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
-            }
-            if (res.data.loginAppFile !== ''&&res.data.loginAppFile!=undefined) {
-              var urlSplits = res.data.loginAppFile && res.data.loginAppFile.split('/')
-              this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
-            }
+            // this.meetingImageList = []
+            // this.AppImageList = []
+            // this.resPcImageList = []
+            // this.resAppImageList = []
+            // if (res.data.meetingFile !== ''&&res.data.meetingFile!=undefined) {
+            //   var urlSplits = res.data.meetingFile && res.data.meetingFile.split('/')
+            //   this.meetingImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.meetingFile })
+            // }
+            // if (res.data.appFile !== ''&&res.data.appFile!=undefined) {
+            //   var urlSplits = res.data.appFile && res.data.appFile.split('/')
+            //   this.AppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.appFile })
+            // }
+            // if (res.data.loginPcFile !== ''&&res.data.loginPcFile!=undefined) {
+            //   var urlSplits = res.data.loginPcFile && res.data.loginPcFile.split('/')
+            //   this.resPcImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginPcFile })
+            // }
+            // if (res.data.loginAppFile !== ''&&res.data.loginAppFile!=undefined) {
+            //   var urlSplits = res.data.loginAppFile && res.data.loginAppFile.split('/')
+            //   this.resAppImageList.push({ name: urlSplits[urlSplits.length - 1], url: res.data.loginAppFile })
+            // }
             console.log(res.data, '外观设置')
             Object.keys(this.appearanceSetForm).forEach(key => {
               if (key === 'tenantCode') delete this.appearanceSetForm[key]
@@ -368,6 +524,10 @@ export default {
             // this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             const req = window.frames['myframe'].getContent()
             this.appearanceSetForm.profile = req.trim()
+            this.appearanceSetForm.meetingFile=this.appearanceSetForm.meetingFile
+            this.appearanceSetForm.appFile=this.appearanceSetForm.appFile
+            this.appearanceSetForm.loginPcFile=this.appearanceSetForm.loginPcFile
+            this.appearanceSetForm.loginAppFile=this.appearanceSetForm.loginAppFile
             console.log(this.appearanceSetForm, 'this.appearanceSetForm')
             request({
               url: '/api/register/signupExterior/update',

@@ -512,6 +512,17 @@ export default {
             })
 
           }
+          // 成哥提的方案
+          if (data.en && !data.zh) {
+            Object.keys(data.en).forEach((item, i) => {
+              zhRegistration.registration[item] = Object.values(data.en)[i]
+            })
+          }
+          if (!data.en && data.zh) {
+            Object.keys(data.zh).forEach((item, i) => {
+              enRegistration.registration[item] = Object.values(data.en)[i]
+            })
+          }
 
         }
       }

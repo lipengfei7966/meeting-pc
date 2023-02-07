@@ -6,7 +6,7 @@
         <div class="operationButton">
           <!--          <el-link type="primary" :underline="false" @click="viewDetail(scope)">详情</el-link>-->
           <el-link type="primary" :underline="false" @click="editAtlas(scope)">{{ $t('website.atlas.details') }}</el-link>
-          <el-link type="primary" :underline="false" @click="delAtlas(scope)" v-if="delFlag">{{ $t('website.atlas.delete') }}</el-link>
+          <!-- <el-link type="primary" :underline="false" @click="delAtlas(scope)" v-if="delFlag">{{ $t('website.atlas.delete') }}</el-link> -->
         </div>
       </template>
     </bs-table>
@@ -43,7 +43,6 @@ export default {
     }
   },
   data(){
-    let that = this
     return{
       selectRow:{},
       dialogDetailVisible:false,
@@ -70,8 +69,7 @@ export default {
             attrs: {
               data: 'EVENT_INFO', // 统一基础档案组件，传值data区分,
               isDefault: true,
-              clearable: false,
-              disabled:that.footerFlag == true ? true:false
+              clearable: false
             },
             event: {
               changeAll: this.onChangeAll
@@ -146,10 +144,8 @@ export default {
   mounted(){
     if(this.eventCode){
       this.form.listQuery.data.eventCode=this.eventCode
-      //初始化数据
-      this.$refs.bsTable.getList({name:"search"})
     }
-    // 初始化数据
+    //初始化数据
     this.$refs.bsTable.getList({name:"search"})
 
   },
@@ -166,7 +162,7 @@ export default {
           message: that.$t('website.atlas.selectPrompt')
         });
       }else{
-        this.$emit('handleOk',this.selectRow)
+        this.$emit('handleOK',this.selectRow)
       }
     },
     //取消
@@ -175,6 +171,7 @@ export default {
     },
     onChangeAll(params) {
       this.$refs.bsTable.doRefresh()
+      // this.$refs.bsTable.getList({ name: 'search' })
     },
     //刷新数据
     reload(){
@@ -190,10 +187,6 @@ export default {
     },
     //编辑
     editAtlas(item){
-      if(this.footerFlag == true){
-         //需要关闭弹窗
-        this.$emit('cancel')
-      }
       this.$router.push({
         name:"atlasAndPicture",
         params:{

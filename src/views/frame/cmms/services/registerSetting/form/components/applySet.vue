@@ -1444,11 +1444,10 @@ export default {
         }
         })
         if ( this.setInfoList.length>=this.positionIndex) {
-          if(this.setInfoList[this.setInfoList.length]&&this.setInfoList[this.setInfoList.length].isTogethe==1){
-            this.setInfoList.splice(this.setInfoList.length ,1,this.queryFollowList)
-          }
-          if(this.setInfoList[this.setInfoList.length]==undefined||this.setInfoList[this.setInfoList.length].isTogethe==0){
-            this.setInfoList.splice(this.setInfoList.length ,0,this.queryFollowList)
+          if(this.setInfoList[this.setInfoList.length-1]&&this.setInfoList[this.setInfoList.length-1].isTogethe==1){
+            this.setInfoList.splice(this.setInfoList.length-1,1,this.queryFollowList)
+          }else{
+            this.setInfoList.splice(this.setInfoList.length,0,this.queryFollowList)
           }
         }
       }
@@ -1460,7 +1459,6 @@ export default {
     },
     // 分页下标数组更新
     // pageUpdate(){
-    //   debugger
     //   this.pageIndexArr=[]
     //   this.setInfoList.forEach((v,index)=>{
     //     if(v.systemName == '分页'){
@@ -1555,11 +1553,10 @@ export default {
             }
             })
             if ( this.setInfoList.length>=this.positionIndex) {
-              if(this.setInfoList[this.setInfoList.length]&&this.setInfoList[this.setInfoList.length].isTogethe==1){
-                this.setInfoList.splice(this.setInfoList.length ,1,this.queryFollowList)
-              }
-              if(this.setInfoList[this.setInfoList.length]==undefined||this.setInfoList[this.setInfoList.length].isTogethe==0){
-                this.setInfoList.splice(this.setInfoList.length ,0,this.queryFollowList)
+              if(this.setInfoList[this.setInfoList.length-1]&&this.setInfoList[this.setInfoList.length-1].isTogethe==1){
+                this.setInfoList.splice(this.setInfoList.length-1,1,this.queryFollowList)
+              }else{
+                this.setInfoList.splice(this.setInfoList.length,0,this.queryFollowList)
               }
             }
           }
@@ -1612,11 +1609,10 @@ export default {
             }
             })
             if ( this.setInfoList.length>=this.positionIndex) {
-              if(this.setInfoList[this.setInfoList.length]&&this.setInfoList[this.setInfoList.length].isTogethe==1){
-                this.setInfoList.splice(this.setInfoList.length ,1,this.queryFollowList)
-              }
-              if(this.setInfoList[this.setInfoList.length]==undefined||this.setInfoList[this.setInfoList.length].isTogethe==0){
-                this.setInfoList.splice(this.setInfoList.length ,0,this.queryFollowList)
+              if(this.setInfoList[this.setInfoList.length-1]&&this.setInfoList[this.setInfoList.length-1].isTogethe==1){
+                this.setInfoList.splice(this.setInfoList.length-1,1,this.queryFollowList)
+              }else{
+                this.setInfoList.splice(this.setInfoList.length,0,this.queryFollowList)
               }
             }
           }
@@ -1625,7 +1621,8 @@ export default {
       })
     },
     // 表单配置查询
-    getEventInfo() {
+    getEventInfo(evevtCodeByIndex) {
+      var evCode = evevtCodeByIndex ? evevtCodeByIndex : this.eventCode
       this.pageTotal=0
       this.pagingCount=0
       this.signupFieldOptions=[]
@@ -1634,7 +1631,7 @@ export default {
         url: '/api/biz/cmsEventInfo/get',
         method: 'POST',
         data: {
-          data: this.eventCode,
+          data: evCode,
           funcModule: '表单设置',
           funcOperation: '表单初始化'
         }
@@ -1643,6 +1640,7 @@ export default {
           this.setInfoList = JSON.parse(response.data.json)
           // this.signupFieldOptions = res.data
           this.pageIndexArr=[]
+          this.signupFieldOptions=[]
           this.setInfoList.forEach((v,index)=>{
             if (v.systemName!=='分页') {
               this.signupFieldOptions.push(v)
@@ -1656,7 +1654,8 @@ export default {
         } else {
           this.setInfoList = []
         }
-        this.signupContactCodeRuleFn()
+        this.signupContactCodeRuleFn(evCode)
+        this.pagingCount=0
         this.setInfoList.forEach(item => {
           // 1：自定义属性
           if (item.mapBase == 1) {
