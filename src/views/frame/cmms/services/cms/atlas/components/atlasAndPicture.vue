@@ -43,6 +43,7 @@
               accept="image/png, image/jpeg, image/gif, image/jpg"
               :auto-upload="false"
               :on-change="handleChange"
+              :before-upload="beforeUpload"
               action
               style='display:inline-block;margin-right:10px;'
                >
@@ -304,14 +305,18 @@ export default {
         instance.confirmButtonLoading=false
       })
     },
+    beforeUpload(){//
+       console.log("上传前")
+    },
     //批量上传
     handleChange(file, fileList){
-     let currLengh=fileList.length;
-     this.maxFileLen=Math.max(currLengh,this.maxFileLen);
-     setTimeout(()=>{
-        if(currLengh != this.maxFileLen) return
-        this.requestUpload(fileList)
-     })
+      // this.$refs.upload.clearFiles();
+       let currLengh=fileList.length;
+       this.maxFileLen=Math.max(currLengh,this.maxFileLen);
+       setTimeout(()=>{
+          if(currLengh != this.maxFileLen) return
+          this.requestUpload(fileList)
+       })
     },
     //自定义上传图片
     requestUpload(fileList) {
@@ -338,6 +343,8 @@ export default {
       }).catch(() => {
 
       }).finally(() => {
+        that.maxLength = 0
+        that.$refs.upload.clearFiles();
         loading_.close()
         that.uploadLoading=false
       })
