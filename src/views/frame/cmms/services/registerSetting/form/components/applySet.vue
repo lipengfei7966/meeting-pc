@@ -1655,6 +1655,7 @@ export default {
           this.setInfoList = []
         }
         this.signupContactCodeRuleFn(evCode)
+        this.pagingCount=0
         this.setInfoList.forEach(item => {
           // 1：自定义属性
           if (item.mapBase == 1) {
