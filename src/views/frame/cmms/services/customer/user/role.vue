@@ -11,7 +11,7 @@
             <el-table-column align='center' type="index" fixed="left" width="50" :label='$t("table.id")'></el-table-column>
             <el-table-column :label="$t('website.role.roleName')" prop="roleName" align="left"></el-table-column>
             <el-table-column :label="$t('website.role.customerName')" prop="customerName" align="left"></el-table-column>
-            <el-table-column label="操作" width="80" align="center">
+            <el-table-column :label="$t('website.role.operation')" width="80" align="center">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="view(scope.$index, scope.row)" type="text" size="small">
                   {{$t('biz.btn.view')}}
