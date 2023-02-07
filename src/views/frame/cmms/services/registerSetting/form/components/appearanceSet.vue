@@ -144,16 +144,16 @@
       <el-button type="primary" @click="appearanceSetSave">{{$t('appearance.saveAndNext')}}</el-button>
     </div>
     <el-dialog title="图册选择" :visible.sync="meetingFileVisible">
-      <altasTemp ref="meetingFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('meetingFile',$event)" @cancel="cancel('meetingFile')"></altasTemp>
+      <altasTemp ref="meetingFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="cancel('meetingFile')" @cancel="cancel('meetingFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="appFileVisible">
-      <altasTemp ref="appFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('appFile',$event)" @cancel="cancel('appFile')"></altasTemp>
+      <altasTemp ref="appFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('appFile',$event)" @cancel="cancel('appFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="loginPcFileVisible">
-      <altasTemp ref="loginPcFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginPcFile',$event)" @cancel="cancel('loginPcFile')"></altasTemp>
+      <altasTemp ref="loginPcFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('loginPcFile',$event)" @cancel="cancel('loginPcFile')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="loginAppFileVisible">
-      <altasTemp ref="loginAppFile" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('loginAppFile',$event)" @cancel="cancel('loginAppFile')"></altasTemp>
+      <altasTemp ref="loginAppFile" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('loginAppFile',$event)" @cancel="cancel('loginAppFile')"></altasTemp>
     </el-dialog>
   </div>
 </template>

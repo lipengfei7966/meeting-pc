@@ -375,22 +375,22 @@
       <el-button type="primary" @click="resultSetSave('resultSetForm')">{{$t('result.generatingtheform')}}</el-button>
     </div>
     <el-dialog title="图册选择" :visible.sync="successBannerVisible">
-      <altasTemp ref="successBanner" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('successBanner',$event)" @cancel="cancel('successBanner')"></altasTemp>
+      <altasTemp ref="successBanner" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('successBanner',$event)" @cancel="cancel('successBanner')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="successBackgroundVisible">
-      <altasTemp ref="successBackground" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('successBackground',$event)" @cancel="cancel('successBackground')"></altasTemp>
+      <altasTemp ref="successBackground" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('successBackground',$event)" @cancel="cancel('successBackground')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="waitReviewBannerVisible">
-      <altasTemp ref="waitReviewBanner" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('waitReviewBanner',$event)" @cancel="cancel('waitReviewBanner')"></altasTemp>
+      <altasTemp ref="waitReviewBanner" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('waitReviewBanner',$event)" @cancel="cancel('waitReviewBanner')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="waitReviewBackgroundVisible">
-      <altasTemp ref="waitReviewBackground" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('waitReviewBackground',$event)" @cancel="cancel('waitReviewBackground')"></altasTemp>
+      <altasTemp ref="waitReviewBackground" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('waitReviewBackground',$event)" @cancel="cancel('waitReviewBackground')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="noPassBannerVisible">
-      <altasTemp ref="noPassBanner" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('noPassBanner',$event)" @cancel="cancel('noPassBanner')"></altasTemp>
+      <altasTemp ref="noPassBanner" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('noPassBanner',$event)" @cancel="cancel('noPassBanner')"></altasTemp>
     </el-dialog>
     <el-dialog title="图册选择" :visible.sync="noPassBackgroundVisible">
-      <altasTemp ref="noPassBackground" :delFlag="true" :footerFlag="true" :eventCode="eventCode" @handleOK="selectRowFn('noPassBackground',$event)" @cancel="cancel('noPassBackground')"></altasTemp>
+      <altasTemp ref="noPassBackground" :delFlag="false" :footerFlag="true" :eventCode="eventCode" @handleOk="selectRowFn('noPassBackground',$event)" @cancel="cancel('noPassBackground')"></altasTemp>
     </el-dialog>
   </div>
 </template>
