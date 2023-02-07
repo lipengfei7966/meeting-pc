@@ -1030,6 +1030,12 @@ export default {
       this.resultSetForm.noPassButtonList = []
       var btnObj3 = { name: '', value: '' }
       this.resultSetForm.noPassButtonList.push(btnObj3)
+      this.successBannerSelectRow={}
+      this.successBackgroundSelectRow={}
+      this.waitReviewBannerSelectRow={}
+      this.waitReviewBackgroundSelectRow ={}
+      this.noPassBannerSelectRow={}
+      this.noPassBackgroundSelectRow={}
     },
      getResultFn (eventCode) {
       this.eventCode=eventCode?eventCode:this.eventCode
