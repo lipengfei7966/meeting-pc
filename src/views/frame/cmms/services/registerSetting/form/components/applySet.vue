@@ -358,7 +358,7 @@
           </div>
           <el-divider></el-divider>
           <div v-show="isRegisterSetShow">
-            <el-form-item :label="$t('applySet.authenticationMethods')" prop="isVerification">
+            <el-form-item :label="$t('result.authenticationMethods')" prop="isVerification">
               <el-radio v-model="applySetForm.isVerification" label="0">{{$t('applySet.noverification')}}</el-radio>
               <el-radio v-model="applySetForm.isVerification" label="1">{{$t('applySet.verification')}}</el-radio>
             </el-form-item>

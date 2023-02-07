@@ -159,7 +159,7 @@
                   <el-form-item label="" :prop="'successButtonList.' + btnIndex + '.name'">
                     <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                   </el-form-item>
-                  <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'successButtonList.' + btnIndex + '.value'">
+                  <el-form-item :label="$t('result.function')+':'" label-width="100px" :prop="'successButtonList.' + btnIndex + '.value'">
                     <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                       <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
@@ -256,7 +256,7 @@
                   <el-form-item label="" :prop="'waitReviewButtonList.' + btnIndex + '.name'">
                     <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                   </el-form-item>
-                  <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
+                  <el-form-item :label="$t('result.function')+':'" label-width="100px" :prop="'waitReviewButtonList.' + btnIndex + '.value'">
                     <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                       <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
@@ -353,7 +353,7 @@
                   <el-form-item label="" :prop="'noPassButtonList.' + btnIndex + '.name'">
                     <el-input v-model="btnItem.name" size="mini" :placeholder="$t('result.pleaseenteranameforthebutton')"></el-input>
                   </el-form-item>
-                  <el-form-item :label="$t('result.function')+':'" label-width="50px" :prop="'noPassButtonList.' + btnIndex + '.value'">
+                  <el-form-item :label="$t('result.function')+':'" label-width="100px" :prop="'noPassButtonList.' + btnIndex + '.value'">
                     <el-select v-model="btnItem.value" :placeholder="$t('result.pleaseselectthepagetogoto')">
                       <el-option v-for="item in skipCodeOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
