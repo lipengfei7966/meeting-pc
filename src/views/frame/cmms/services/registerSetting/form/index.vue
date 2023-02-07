@@ -615,6 +615,7 @@ export default {
       this.$refs.appearanceSet.getAppearanceSet(params.code)
       this.$refs.formSet.getEventInfo(params.code,params.name )
       this.$refs.formSet.cmsEventInfoChildrenFn(params.code )
+      this.$refs.resultSet.eventCode=params.code
       this.$refs.resultSet.getResultFn(params.code)
       this.$refs.resultSet.getEventInfo(params.code)
       this.$refs.attCodeSet.getEventInfo(params.code )
