@@ -259,6 +259,7 @@
 
             <el-form-item v-else :label="$t(`registration.form.${element.mapCode}.title`)" :prop="element.mapCode">
               <!-- 性别 -->
+              <!-- Object.values($t(`registration.form.${element.mapCode}`)):{{ Object.values($t(`registration.form.${element.mapCode}`)) }} -->
               <div v-if="element.mapCode == 'sex'" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
                 <el-radio v-model="setForm.sex" :label="element.options[0]" :disabled="element.notAllowEdit && isUpdate">{{ element.options[0] }}</el-radio>
