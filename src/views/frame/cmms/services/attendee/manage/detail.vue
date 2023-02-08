@@ -172,7 +172,7 @@
           <!-- 固定信息 -->
           <div v-else>
             <!-- 姓名 -->
-            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : element.title" prop="name" :label-width="element.nameSplit ? '0' : '150px'">
+            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : $t(`registration.form.${element.mapCode}.title`)" prop="name" :label-width="element.nameSplit ? '0' : '150px'">
               <!-- 姓名 -->
               <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
@@ -213,8 +213,8 @@
                 <!-- 省份 -->
                 <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.provinceIsShow && setForm.nations == '86'" class="addresItem">
-                    <el-form-item :label="element.provinceTitle" prop="province">
-                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="element.provincePlaceholder" @change="provinceChange">
+                    <el-form-item :label="$t(`registration.form.province.provinceTitle`)" prop="province">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.province" :placeholder="$t(`registration.form.province.provincePlaceholder`)" @change="provinceChange">
                         <el-option v-for="item in chinaProvinceList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                       </el-select>
                     </el-form-item>
@@ -223,8 +223,8 @@
                 <!-- 城市 -->
                 <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.cityIsShow && setForm.nations == '86'" class="addresItem">
-                    <el-form-item :label="element.cityTitle" prop="city">
-                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="element.cityPlaceholder" @change="cityChange">
+                    <el-form-item :label="$t(`registration.form.city.cityTitle`)" prop="city">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.city" :placeholder="$t(`registration.form.city.cityPlaceholder`)" @change="cityChange">
                         <el-option v-for="item in provinceCityList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                       </el-select>
                     </el-form-item>
@@ -233,8 +233,8 @@
                 <!-- 区县 -->
                 <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.countyIsShow && setForm.nations == '86'" class="addresItem">
-                    <el-form-item :label="element.countyTitle" prop="county">
-                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="element.countyPlaceholder">
+                    <el-form-item :label="$t(`registration.form.county.countyTitle`)" prop="county">
+                      <el-select style="width: 50%" :disabled="element.notAllowEdit && isUpdate" v-model="setForm.county" :placeholder="$t(`registration.form.county.countyPlaceholder`)">
                         <el-option v-for="item in cityCountyList" :key="item.code" :label="item.name" :value="item.code"> </el-option>
                       </el-select>
                     </el-form-item>
@@ -242,15 +242,15 @@
                 </div>
                 <!-- 详细地址 -->
                 <div v-if="element.detailedAdressISShow" class="addresItem">
-                  <el-form-item :label="element.detailedAdressTitle" prop="fullAddress">
-                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="element.detailedAdressPlaceholder"></el-input>
+                  <el-form-item :label="$t(`registration.form.fullAddress.detailedAdressTitle`)" prop="fullAddress">
+                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :label="$t(`registration.form.fullAddress.detailedAdressPlaceholder`)"></el-input>
                   </el-form-item>
                 </div>
                 <!-- 邮编 -->
                 <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
-                    <el-form-item :label="element.postcodeTitle" prop="postcode">
-                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="element.postcodePlaceholder"></el-input>
+                    <el-form-item :label="$t(`registration.form.postcode.postcodeTitle`)" prop="postcode">
+                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :label="$t(`registration.form.postcode.postcodePlaceholder`)"></el-input>
                     </el-form-item>
                   </div>
                 </div>
@@ -526,13 +526,13 @@ export default {
         },
         shortcuts: [
           {
-            text: '今天',
+            text: this.$t('applySet.today'),
             onClick(picker) {
               picker.$emit('pick', new Date())
             }
           },
           {
-            text: '昨天',
+            text: this.$t('applySet.yesterday'),
             onClick(picker) {
               const date = new Date()
               date.setTime(date.getTime() - 3600 * 1000 * 24)
@@ -540,7 +540,7 @@ export default {
             }
           },
           {
-            text: '一周前',
+            text: this.$t('applySet.week'),
             onClick(picker) {
               const date = new Date()
               date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)

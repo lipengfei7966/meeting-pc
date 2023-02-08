@@ -219,6 +219,9 @@ export default {
     SignUpAndGenerateLinkSuccessfully: 'Sign up and generate link successfully', // 报名并生成链接成功
     copySuccess: 'Copy Success', // 复制成功
     applyCheck: 'Is Audit', // 是否需要审核
-    settingOtherLanguages: 'Setting other languages'// 设置其他语言
+    settingOtherLanguages: 'Setting other languages', // 设置其他语言
+    today: 'Today', // 今天
+    yesterday: 'Yesterday', // 昨天
+    week: 'Week' // 一周前
   }
 }
