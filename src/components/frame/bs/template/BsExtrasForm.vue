@@ -6,7 +6,7 @@
           <el-col :span="f.attrs && f.attrs.cols ? f.attrs.cols * 6 : 6" v-if='f.isShow' :key='index'>
             <!-- {{ f }} -->
             <!-- 日期 -->
-            <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(`count.${ $route.meta.title.replace('m', '' )}.form.${f.prop}`)" :prop='f.prop'>
+            <el-form-item v-if='f.type === "daterange" ||f.type === "datetimerange"' :label="$t(f.label)" :prop='f.prop'>
               <el-date-picker v-model="form.listQuery.data[f.prop]" :picker-options="f['picker-options']" type="daterange" range-separator="~" start-placeholder="" end-placeholder="" v-bind='f.attrs' @change='changeDaterangeTime(f)'>
               </el-date-picker>
             </el-form-item>
@@ -60,7 +60,7 @@
             </el-form-item>
             <!-- 下拉输入 -->
             <!-- :label="$t(`count.${ $route.meta.title.replace('m', '' )}.form.${f.prop}`)" -->
-            <el-form-item v-else :label="$t(`count.${ $route.meta.title.replace('m', '' )}.form.${f.prop}`)" :prop="f.prop">
+            <el-form-item v-else :label="f.label" :prop="f.prop">
               <!-- 字典码表 -->
               <el-select v-if="f.list && dataDictList[f.list]" v-model="form.listQuery.data[f.prop]" v-bind="f.attrs" placeholder="" @change="f.event && f.event.change()">
                 <el-option v-for="item in dataDictList[f.list]" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -97,7 +97,7 @@
             </div>
           </el-col>
           <el-col :span="6" v-if='form.moreShowFlg && addQueryConditionVisible'>
-            <span class='more-query' ref="moreQuery" @click='addQueryCondition' {{>$t('biz.btn.extend')}}&nbsp;+</span>
+            <span class='more-query' ref="moreQuery" @click='addQueryCondition'>{{$t('biz.btn.extend')}}&nbsp;+</span>
           </el-col>
         </template>
         <el-col class="none"></el-col>
