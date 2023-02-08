@@ -173,6 +173,7 @@ export default {
     registerAndLogin: 'Register And Login', // 注册登录
     fewer: 'Fewer', // 收起
     expand: 'Expand', // 展开
+    authenticationMethods: 'Authentication Methods', // 验证方式
     noverification: 'No verification', // 不验证
     verification: 'verification', // 验证
     registrationVerification: 'Registration Verification', // 注册验证
