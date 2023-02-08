@@ -124,6 +124,7 @@
  
 <script>
 import request from '@/utils/frame/base/request'
+import {mapState} from 'vuex'
 export default {
   name: 'paymentManagement',
   data() {
@@ -349,6 +350,26 @@ export default {
   },
   created() {
     this.getList()
+  },
+  watch:{
+    language:{
+      handler(newValue, oldValue) {
+        if(newValue){
+          console.log(newValue,oldValue);
+          this.$set(this.individualType[0],'name',this.$t('order.payment.WeChat'))
+          this.$set(this.individualType[1],'name',this.$t('order.payment.alipay'))
+          this.$set(this.individualType[2],'name',this.$t('order.payment.unionPay'))
+          this.$set(this.individualPrivateType[0],'name',this.$t('order.payment.WeChat'))
+          this.$set(this.individualPrivateType[1],'name',this.$t('order.payment.alipay'))
+          this.$set(this.individualPrivateType[2],'name',this.$t('order.payment.unionPay'))
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed:{
+    ...mapState({language: state => state.app.language})
   },
   methods: {
     install(item) {

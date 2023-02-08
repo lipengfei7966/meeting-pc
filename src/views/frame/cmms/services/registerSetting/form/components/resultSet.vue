@@ -118,21 +118,21 @@
 
               </el-form-item>
               <el-form-item label="Banner:" prop="successBanner" style="marginBottom:50px">
-                <el-button v-if="JSON.stringify(successBannerSelectRow)=='{}'" type="primary" @click="tempHandleFn('successBanner')">选择图册</el-button>
+                <el-button v-if="resultSetForm.successBanner==''" type="primary" @click="tempHandleFn('successBanner')">选择图册</el-button>
                 <div style="display:flex">
-                  <p v-if="JSON.stringify(successBannerSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ successBannerSelectRow.name }}</p>
-                  <el-link v-if="JSON.stringify(successBannerSelectRow)!='{}'" type="danger" @click="delectFn('successBanner')">删除</el-link>
+                  <p v-if="resultSetForm.successBanner!=''" style="paddingRight:30px">图册名称：{{ successBannerSelectRow.name }}</p>
+                  <el-link v-if="resultSetForm.successBanner!=''" type="danger" @click="delectFn('successBanner')">删除</el-link>
                 </div>
-                <el-button v-if="JSON.stringify(successBannerSelectRow)!='{}'" type="primary" @click="tempHandleFn('successBanner')">重新选择图册</el-button>
+                <el-button v-if="resultSetForm.successBanner!=''" type="primary" @click="tempHandleFn('successBanner')">重新选择图册</el-button>
               </el-form-item>
 
               <el-form-item :label="$t('result.backgroundImage')+':'" prop="successBackground" style="marginBottom:50px">
-                <el-button v-if="JSON.stringify(successBackgroundSelectRow)=='{}'" type="primary" @click="tempHandleFn('successBackground')">选择图册</el-button>
+                <el-button v-if="resultSetForm.successBackground==''" type="primary" @click="tempHandleFn('successBackground')">选择图册</el-button>
                 <div style="display:flex">
-                  <p v-if="JSON.stringify(successBackgroundSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ successBackgroundSelectRow.name }}</p>
-                  <el-link v-if="JSON.stringify(successBackgroundSelectRow)!='{}'" type="danger" @click="delectFn('successBackground')">删除</el-link>
+                  <p v-if="resultSetForm.successBackground!=''" style="paddingRight:30px">图册名称：{{ successBackgroundSelectRow.name }}</p>
+                  <el-link v-if="resultSetForm.successBackground!=''" type="danger" @click="delectFn('successBackground')">删除</el-link>
                 </div>
-                <el-button v-if="JSON.stringify(successBackgroundSelectRow)!='{}'" type="primary" @click="tempHandleFn('successBackground')">重新选择图册</el-button>
+                <el-button v-if="resultSetForm.successBackground!=''" type="primary" @click="tempHandleFn('successBackground')">重新选择图册</el-button>
               </el-form-item>
 
               <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="successIsJumpCurrentPage">
@@ -215,21 +215,21 @@
                 <el-input v-model="resultSetForm.waitReviewDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
               </el-form-item>
               <el-form-item label="Banner:" prop="waitReviewBanner" style="marginBottom:50px">
-                <el-button v-if="JSON.stringify(waitReviewBannerSelectRow)=='{}'" type="primary" @click="tempHandleFn('waitReviewBanner')">选择图册</el-button>
+                <el-button v-if="resultSetForm.waitReviewBanner==''" type="primary" @click="tempHandleFn('waitReviewBanner')">选择图册</el-button>
                 <div style="display:flex">
-                  <p v-if="JSON.stringify(waitReviewBannerSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ waitReviewBannerSelectRow.name }}</p>
-                  <el-link v-if="JSON.stringify(waitReviewBannerSelectRow)!='{}'" type="danger" @click="delectFn('waitReviewBanner')">删除</el-link>
+                  <p v-if="resultSetForm.waitReviewBanner!=''" style="paddingRight:30px">图册名称：{{ waitReviewBannerSelectRow.name }}</p>
+                  <el-link v-if="resultSetForm.waitReviewBanner!=''" type="danger" @click="delectFn('waitReviewBanner')">删除</el-link>
                 </div>
-                <el-button v-if="JSON.stringify(waitReviewBannerSelectRow)!='{}'" type="primary" @click="tempHandleFn('waitReviewBanner')">重新选择图册</el-button>
+                <el-button v-if="resultSetForm.waitReviewBanner!=''" type="primary" @click="tempHandleFn('waitReviewBanner')">重新选择图册</el-button>
               </el-form-item>
 
               <el-form-item :label="$t('result.backgroundImage')+':'" prop="waitReviewBackground" style="marginBottom:50px">
-                <el-button v-if="JSON.stringify(waitReviewBackgroundSelectRow)=='{}'" type="primary" @click="tempHandleFn('waitReviewBackground')">选择图册</el-button>
+                <el-button v-if="resultSetForm.waitReviewBackground==''" type="primary" @click="tempHandleFn('waitReviewBackground')">选择图册</el-button>
                 <div style="display:flex">
-                  <p v-if="JSON.stringify(waitReviewBackgroundSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ waitReviewBackgroundSelectRow.name }}</p>
-                  <el-link v-if="JSON.stringify(waitReviewBackgroundSelectRow)!='{}'" type="danger" @click="delectFn('waitReviewBackground')">删除</el-link>
+                  <p v-if="resultSetForm.waitReviewBackground!=''" style="paddingRight:30px">图册名称：{{ waitReviewBackgroundSelectRow.name }}</p>
+                  <el-link v-if="resultSetForm.waitReviewBackground!=''" type="danger" @click="delectFn('waitReviewBackground')">删除</el-link>
                 </div>
-                <el-button v-if="JSON.stringify(waitReviewBackgroundSelectRow)!='{}'" type="primary" @click="tempHandleFn('waitReviewBackground')">重新选择图册</el-button>
+                <el-button v-if="resultSetForm.waitReviewBackground!=''" type="primary" @click="tempHandleFn('waitReviewBackground')">重新选择图册</el-button>
               </el-form-item>
 
               <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="waitReviewIsJumpCurrentPage">
@@ -312,21 +312,21 @@
                 <el-input v-model="resultSetForm.noPassDescribe" type="textarea" :rows="4" size="mini" :placeholder="$t('result.pleaseenterthedescriptiontext')"></el-input>
               </el-form-item>
               <el-form-item label="Banner:" prop="noPassBanner" style="marginBottom:50px">
-                <el-button v-if="JSON.stringify(noPassBannerSelectRow)=='{}'" type="primary" @click="tempHandleFn('noPassBanner')">选择图册</el-button>
+                <el-button v-if="resultSetForm.noPassBanner==''" type="primary" @click="tempHandleFn('noPassBanner')">选择图册</el-button>
                 <div style="display:flex">
-                  <p v-if="JSON.stringify(noPassBannerSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ noPassBannerSelectRow.name }}</p>
-                  <el-link v-if="JSON.stringify(noPassBannerSelectRow)!='{}'" type="danger" @click="delectFn('noPassBanner')">删除</el-link>
+                  <p v-if="resultSetForm.noPassBanner!=''" style="paddingRight:30px">图册名称：{{ noPassBannerSelectRow.name }}</p>
+                  <el-link v-if="resultSetForm.noPassBanner!=''" type="danger" @click="delectFn('noPassBanner')">删除</el-link>
                 </div>
-                <el-button v-if="JSON.stringify(noPassBannerSelectRow)!='{}'" type="primary" @click="tempHandleFn('noPassBanner')">重新选择图册</el-button>
+                <el-button v-if="resultSetForm.noPassBanner!=''" type="primary" @click="tempHandleFn('noPassBanner')">重新选择图册</el-button>
               </el-form-item>
 
               <el-form-item :label="$t('result.backgroundImage')+':'" prop="noPassBackground" style="marginBottom:50px">
-                <el-button v-if="JSON.stringify(noPassBackgroundSelectRow)=='{}'" type="primary" @click="tempHandleFn('noPassBackground')">选择图册</el-button>
+                <el-button v-if="resultSetForm.noPassBackground==''" type="primary" @click="tempHandleFn('noPassBackground')">选择图册</el-button>
                 <div style="display:flex">
-                  <p v-if="JSON.stringify(noPassBackgroundSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ noPassBackgroundSelectRow.name }}</p>
-                  <el-link v-if="JSON.stringify(noPassBackgroundSelectRow)!='{}'" type="danger" @click="delectFn('noPassBackground')">删除</el-link>
+                  <p v-if="resultSetForm.noPassBackground!=''" style="paddingRight:30px">图册名称：{{ noPassBackgroundSelectRow.name }}</p>
+                  <el-link v-if="resultSetForm.noPassBackground!=''" type="danger" @click="delectFn('noPassBackground')">删除</el-link>
                 </div>
-                <el-button v-if="JSON.stringify(noPassBackgroundSelectRow)!='{}'" type="primary" @click="tempHandleFn('noPassBackground')">重新选择图册</el-button>
+                <el-button v-if="resultSetForm.noPassBackground!=''" type="primary" @click="tempHandleFn('noPassBackground')">重新选择图册</el-button>
               </el-form-item>
 
               <el-form-item :label="$t('result.whethertoskiptheresultspageaftersubmission')+':'" prop="noPassIsJumpCurrentPage">
@@ -724,21 +724,27 @@ export default {
       switch (status) {
         case 'successBanner':
         this.successBannerSelectRow={}
+        this.resultSetForm.successBanner=''
           break;
         case 'successBackground':
         this.successBackgroundSelectRow={}
+        this.resultSetForm.successBackground=''
           break;
         case 'waitReviewBanner':
         this.waitReviewBannerSelectRow={}
+        this.resultSetForm.waitReviewBanner=''
           break;
         case 'waitReviewBackground':
         this.waitReviewBackgroundSelectRow={}
+        this.resultSetForm.waitReviewBackground=''
           break;
         case 'noPassBanner':
         this.noPassBannerSelectRow={}
+        this.resultSetForm.noPassBanner=''
           break;
         case 'noPassBackground':
         this.noPassBackgroundSelectRow={}
+        this.resultSetForm.noPassBackground=''
           break;
 
         default:
@@ -749,136 +755,148 @@ export default {
     findUrl(status){
       switch (status) {
         case 'successBanner':
-        request({
-            url: '/api/cms/atlasDetail/page',
-            method: 'POST',
-            data:{
-              current: 1,
-              size: 20,
-              isPage: true,
-              funcModule: '图册图片',
-              funcOperation: '查询',
+          if (this.successBannerSelectRow.code!=''&&this.successBannerSelectRow.code!=undefined) {
+            request({
+              url: '/api/cms/atlasDetail/page',
+              method: 'POST',
               data:{
-                atlasCode: this.successBannerSelectRow.code
+                current: 1,
+                size: 20,
+                isPage: true,
+                funcModule: '图册图片',
+                funcOperation: '查询',
+                data:{
+                  atlasCode: this.successBannerSelectRow.code
+                }
               }
-            }
-          }).then((res) => {
-            res.data.forEach(v=>{
-              if(v.language==this.theLanguage){
-                this.resultSetForm.successBanner=v.url
-              }
+            }).then((res) => {
+              res.data.forEach(v=>{
+                if(v.language==this.theLanguage){
+                  this.resultSetForm.successBanner=v.url
+                }
+              })
             })
-          })
+          }
           break;
         case 'successBackground':
-        request({
-            url: '/api/cms/atlasDetail/page',
-            method: 'POST',
-            data:{
-              current: 1,
-              size: 20,
-              isPage: true,
-              funcModule: '图册图片',
-              funcOperation: '查询',
+          if (this.successBackgroundSelectRow.code!=''&&this.successBackgroundSelectRow.code!=undefined) {
+            request({
+              url: '/api/cms/atlasDetail/page',
+              method: 'POST',
               data:{
-                atlasCode: this.successBackgroundSelectRow.code
+                current: 1,
+                size: 20,
+                isPage: true,
+                funcModule: '图册图片',
+                funcOperation: '查询',
+                data:{
+                  atlasCode: this.successBackgroundSelectRow.code
+                }
               }
-            }
-          }).then((res) => {
-            res.data.forEach(v=>{
-              if(v.language==this.theLanguage){
-                this.resultSetForm.successBackground=v.url
-              }
+            }).then((res) => {
+              res.data.forEach(v=>{
+                if(v.language==this.theLanguage){
+                  this.resultSetForm.successBackground=v.url
+                }
+              })
             })
-          })
+          }
           break;
         case 'waitReviewBanner':
-        request({
-            url: '/api/cms/atlasDetail/page',
-            method: 'POST',
-            data:{
-              current: 1,
-              size: 20,
-              isPage: true,
-              funcModule: '图册图片',
-              funcOperation: '查询',
+          if(this.waitReviewBannerSelectRow.code!=''&&this.waitReviewBannerSelectRow.code!=undefined){
+            request({
+              url: '/api/cms/atlasDetail/page',
+              method: 'POST',
               data:{
-                atlasCode: this.waitReviewBannerSelectRow.code
+                current: 1,
+                size: 20,
+                isPage: true,
+                funcModule: '图册图片',
+                funcOperation: '查询',
+                data:{
+                  atlasCode: this.waitReviewBannerSelectRow.code
+                }
               }
-            }
-          }).then((res) => {
-            res.data.forEach(v=>{
-              if(v.language==this.theLanguage){
-                this.resultSetForm.waitReviewBanner=v.url
-              }
+            }).then((res) => {
+              res.data.forEach(v=>{
+                if(v.language==this.theLanguage){
+                  this.resultSetForm.waitReviewBanner=v.url
+                }
+              })
             })
-          })
+          }
           break;
         case 'waitReviewBackground':
-        request({
-            url: '/api/cms/atlasDetail/page',
-            method: 'POST',
-            data:{
-              current: 1,
-              size: 20,
-              isPage: true,
-              funcModule: '图册图片',
-              funcOperation: '查询',
+          if (this.waitReviewBackgroundSelectRow.code!=''&&this.waitReviewBackgroundSelectRow.code!=undefined) {
+            request({
+              url: '/api/cms/atlasDetail/page',
+              method: 'POST',
               data:{
-                atlasCode: this.waitReviewBackgroundSelectRow.code
+                current: 1,
+                size: 20,
+                isPage: true,
+                funcModule: '图册图片',
+                funcOperation: '查询',
+                data:{
+                  atlasCode: this.waitReviewBackgroundSelectRow.code
+                }
               }
-            }
-          }).then((res) => {
-            res.data.forEach(v=>{
-              if(v.language==this.theLanguage){
-                this.resultSetForm.waitReviewBackground=v.url
-              }
+            }).then((res) => {
+              res.data.forEach(v=>{
+                if(v.language==this.theLanguage){
+                  this.resultSetForm.waitReviewBackground=v.url
+                }
+              })
             })
-          })
+          }
           break;
         case 'noPassBanner':
-        request({
-            url: '/api/cms/atlasDetail/page',
-            method: 'POST',
-            data:{
-              current: 1,
-              size: 20,
-              isPage: true,
-              funcModule: '图册图片',
-              funcOperation: '查询',
+          if (this.noPassBannerSelectRow.code!=''&&this.noPassBannerSelectRow.code!=undefined) {
+            request({
+              url: '/api/cms/atlasDetail/page',
+              method: 'POST',
               data:{
-                atlasCode: this.noPassBannerSelectRow.code
+                current: 1,
+                size: 20,
+                isPage: true,
+                funcModule: '图册图片',
+                funcOperation: '查询',
+                data:{
+                  atlasCode: this.noPassBannerSelectRow.code
+                }
               }
-            }
-          }).then((res) => {
-            res.data.forEach(v=>{
-              if(v.language==this.theLanguage){
-                this.resultSetForm.noPassBanner=v.url
-              }
+            }).then((res) => {
+              res.data.forEach(v=>{
+                if(v.language==this.theLanguage){
+                  this.resultSetForm.noPassBanner=v.url
+                }
+              })
             })
-          })
+          }
           break;
         case 'noPassBackground':
-        request({
-            url: '/api/cms/atlasDetail/page',
-            method: 'POST',
-            data:{
-              current: 1,
-              size: 20,
-              isPage: true,
-              funcModule: '图册图片',
-              funcOperation: '查询',
+          if (this.noPassBackgroundSelectRow.code!=''&&this.noPassBackgroundSelectRow.code!=undefined) {
+            request({
+              url: '/api/cms/atlasDetail/page',
+              method: 'POST',
               data:{
-                atlasCode: this.noPassBackgroundSelectRow.code
+                current: 1,
+                size: 20,
+                isPage: true,
+                funcModule: '图册图片',
+                funcOperation: '查询',
+                data:{
+                  atlasCode: this.noPassBackgroundSelectRow.code
+                }
               }
-            }
-          }).then((res) => {
-            res.data.forEach(v=>{
-              if(v.language==this.theLanguage){
-                this.resultSetForm.noPassBackground=v.url
-              }
+            }).then((res) => {
+              res.data.forEach(v=>{
+                if(v.language==this.theLanguage){
+                  this.resultSetForm.noPassBackground=v.url
+                }
+              })
             })
-          })
+          }
           break;
 
         default:
@@ -1056,10 +1074,14 @@ export default {
           res.data.forEach(item => {
             switch (item.type) {
               case '1':
-                this.successBannerSelectRow = {code:item.appFile,name:item.appFileName}
-                this.findUrl('successBanner')
-                this.successBackgroundSelectRow = {code:item.backgroundFile,name:item.backgroundFileName}
-                this.findUrl('successBackground')
+                this.successBannerSelectRow = {code:item.appFile?item.appFile:'',name:item.appFileName}
+                if (this.successBannerSelectRow.code!='') {
+                  this.findUrl('successBanner')
+                }
+                this.successBackgroundSelectRow = {code:item.backgroundFile?item.backgroundFile:'',name:item.backgroundFileName}
+                if (this.successBackgroundSelectRow.code!='') {
+                  this.findUrl('successBackground')
+                }
                 this.resultSetForm.successDescribe = item.describeInfo
                 this.resultSetForm.successIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.successJumpPage = item.skipPage
@@ -1072,10 +1094,14 @@ export default {
                 }
                 break
               case '2'://waitReviewBanner
-                this.waitReviewBannerSelectRow = {code:item.appFile,name:item.appFileName}
-                this.findUrl('waitReviewBanner')
-                this.waitReviewBackgroundSelectRow = {code:item.backgroundFile,name:item.backgroundFileName}
-                this.findUrl('waitReviewBackground')
+                this.waitReviewBannerSelectRow = {code:item.appFile?item.appFile:'',name:item.appFileName}
+                if (this.waitReviewBannerSelectRow.code!='') {
+                  this.findUrl('waitReviewBanner')
+                }
+                this.waitReviewBackgroundSelectRow = {code:item.backgroundFile?item.backgroundFile:'',name:item.backgroundFileName}
+                if (this.waitReviewBackgroundSelectRow.code!='') {
+                  this.findUrl('waitReviewBackground')
+                }
                 this.resultSetForm.waitReviewDescribe = item.describeInfo
                 this.resultSetForm.waitReviewIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.waitReviewJumpPage = item.skipPage
@@ -1088,10 +1114,14 @@ export default {
                 }
                 break
               case '3':
-                this.noPassBannerSelectRow = {code:item.appFile,name:item.appFileName}
-                this.findUrl('noPassBanner')
-                this.noPassBackgroundSelectRow = {code:item.backgroundFile,name:item.backgroundFileName}
-                this.findUrl('noPassBackground')
+                this.noPassBannerSelectRow = {code:item.appFile?item.appFile:'',name:item.appFileName}
+                if (this.noPassBannerSelectRow.code!='') {
+                  this.findUrl('noPassBanner')
+                }
+                this.noPassBackgroundSelectRow = {code:item.backgroundFile?item.backgroundFile:'',name:item.backgroundFileName}
+                if (this.noPassBackgroundSelectRow.code!='') {
+                  this.findUrl('noPassBackground')
+                }
                 this.resultSetForm.noPassDescribe = item.describeInfo
                 this.resultSetForm.noPassIsJumpCurrentPage = item.isSkip
                 this.resultSetForm.noPassJumpPage = item.skipPage

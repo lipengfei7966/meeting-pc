@@ -45,12 +45,12 @@
           </el-form-item>
 
           <el-form-item label="Banner(pc)" prop="meetingFile">
-            <el-button v-if="JSON.stringify(meetingFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('meetingFile')">选择图册</el-button>
+            <el-button v-if="appearanceSetForm.meetingFile==''" type="primary" @click="tempHandleFn('meetingFile')">选择图册</el-button>
             <div style="display:flex">
-              <p v-if="JSON.stringify(meetingFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ meetingFileSelectRow.name }}</p>
-              <el-link v-if="JSON.stringify(meetingFileSelectRow)!='{}'" type="danger" @click="delectFn('meetingFile')">删除</el-link>
+              <p v-if="appearanceSetForm.meetingFile!=''" style="paddingRight:30px">图册名称：{{ meetingFileSelectRow.name }}</p>
+              <el-link v-if="appearanceSetForm.meetingFile!=''" type="danger" @click="delectFn('meetingFile')">删除</el-link>
             </div>
-            <el-button v-if="JSON.stringify(meetingFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('meetingFile')">重新选择图册</el-button>
+            <el-button v-if="appearanceSetForm.meetingFile!=''" type="primary" @click="tempHandleFn('meetingFile')">重新选择图册</el-button>
             <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="meetingUploadFile" :file-list="meetingImageList" :headers="httpHeaders" :on-remove="meetingHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="mweetngHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload> -->
@@ -59,12 +59,12 @@
             </el-dialog> -->
           </el-form-item>
           <el-form-item :label="$t('appearance.mobileClientBanner')" prop="appFile">
-            <el-button v-if="JSON.stringify(appFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('appFile')">选择图册</el-button>
+            <el-button v-if="appearanceSetForm.appFile==''" type="primary" @click="tempHandleFn('appFile')">选择图册</el-button>
             <div style="display:flex">
-              <p v-if="JSON.stringify(appFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ appFileSelectRow.name }}</p>
-              <el-link v-if="JSON.stringify(appFileSelectRow)!='{}'" type="danger" @click="delectFn('appFile')">删除</el-link>
+              <p v-if="appearanceSetForm.appFile!=''" style="paddingRight:30px">图册名称：{{ appFileSelectRow.name }}</p>
+              <el-link v-if="appearanceSetForm.appFile!=''" type="danger" @click="delectFn('appFile')">删除</el-link>
             </div>
-            <el-button v-if="JSON.stringify(appFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('appFile')">重新选择图册</el-button>
+            <el-button v-if="appearanceSetForm.appFile!=''" type="primary" @click="tempHandleFn('appFile')">重新选择图册</el-button>
             <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="AppUploadFile" :file-list="AppImageList" :headers="httpHeaders" :on-remove="AppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="AppHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -101,12 +101,12 @@
         <el-divider></el-divider>
         <div v-show="isRegisterSetShow">
           <el-form-item label="Banner(pc)" prop="loginPcFile">
-            <el-button v-if="JSON.stringify(loginPcFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('loginPcFile')">选择图册</el-button>
+            <el-button v-if="appearanceSetForm.loginPcFile==''" type="primary" @click="tempHandleFn('loginPcFile')">选择图册</el-button>
             <div style="display:flex">
-              <p v-if="JSON.stringify(loginPcFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ loginPcFileSelectRow.name }}</p>
-              <el-link v-if="JSON.stringify(loginPcFileSelectRow)!='{}'" type="danger" @click="delectFn('loginPcFile')">删除</el-link>
+              <p v-if="appearanceSetForm.loginPcFile!=''" style="paddingRight:30px">图册名称：{{ loginPcFileSelectRow.name }}</p>
+              <el-link v-if="appearanceSetForm.loginPcFile!=''" type="danger" @click="delectFn('loginPcFile')">删除</el-link>
             </div>
-            <el-button v-if="JSON.stringify(loginPcFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('loginPcFile')">重新选择图册</el-button>
+            <el-button v-if="appearanceSetForm.loginPcFile!=''" type="primary" @click="tempHandleFn('loginPcFile')">重新选择图册</el-button>
             <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="resPcUploadFile" :file-list="resPcImageList" :headers="httpHeaders" :on-remove="resPcHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="resPcHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -115,12 +115,12 @@
             </el-dialog> -->
           </el-form-item>
           <el-form-item :label="$t('appearance.mobileClientBanner')" prop="loginAppFile">
-            <el-button v-if="JSON.stringify(loginAppFileSelectRow)=='{}'" type="primary" @click="tempHandleFn('loginAppFile')">选择图册</el-button>
+            <el-button v-if="appearanceSetForm.loginAppFile==''" type="primary" @click="tempHandleFn('loginAppFile')">选择图册</el-button>
             <div style="display:flex">
-              <p v-if="JSON.stringify(loginAppFileSelectRow)!='{}'" style="paddingRight:30px">图册名称：{{ loginAppFileSelectRow.name }}</p>
-              <el-link v-if="JSON.stringify(loginAppFileSelectRow)!='{}'" type="danger" @click="delectFn('loginAppFile')">删除</el-link>
+              <p v-if="appearanceSetForm.loginAppFile!=''" style="paddingRight:30px">图册名称：{{ loginAppFileSelectRow.name }}</p>
+              <el-link v-if="appearanceSetForm.loginAppFile!=''" type="danger" @click="delectFn('loginAppFile')">删除</el-link>
             </div>
-            <el-button v-if="JSON.stringify(loginAppFileSelectRow)!='{}'" type="primary" @click="tempHandleFn('loginAppFile')">重新选择图册</el-button>
+            <el-button v-if="appearanceSetForm.loginAppFile!=''" type="primary" @click="tempHandleFn('loginAppFile')">重新选择图册</el-button>
             <!-- <el-upload class="upload-demo" :action="uploadUrl" drag list-type="picture-card" :limit="1" :on-success="resAppUploadFile" :file-list="resAppImageList" :headers="httpHeaders" :on-remove="resAppHandleRemove" :on-exceed="fileLimitCount" :before-upload="beforeAvatarUpload" :on-preview="resAppHandlePreview">
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -479,6 +479,7 @@ export default {
                   window.frames['myframe'].setContents(this.appearanceSetForm.profile)
                 }
               }, 3000)
+              debugger
               this.meetingFileSelectRow={code:res.data.meetingFile,name:res.data.meetingFileName}
               this.appearanceSetForm.meetingFile=res.data.meetingFile
               this.appFileSelectRow={code:res.data.appFile,name:res.data.appFileName}
@@ -556,6 +557,7 @@ export default {
                 console.log(res)
               })
           } else {
+            debugger
             this.appearanceSetForm.eventCode = this.eventCode
             // this.appearanceSetForm.language = this.appearanceSetForm.language.join(',')
             const req = window.frames['myframe'].getContent()
