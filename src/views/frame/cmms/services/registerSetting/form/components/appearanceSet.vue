@@ -221,7 +221,43 @@ export default {
     }
   },
   created () {},
-  mounted () {},
+  mounted () {
+    let _this = this
+    window.onbeforeunload = function (e) {
+    if (_this.$route.name == "attendeeFormConfig") {
+      e = e || window.event;
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+      e.returnValue = '关闭提示1111';
+      }
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return '关闭提示222';
+    } else {
+      window.onbeforeunload = null
+    }
+    };
+  },
+  updated() {
+    setTimeout(() => {
+      if (window.frames['myframe']){
+        window.frames['myframe'].setContents(this.appearanceSetForm.profile)
+      }
+    }, 3000)
+  },
+  // 监听,当路由发生变化的时候执行
+  watch: {
+    $route: {
+      handler: function(val, oldVal){
+        setTimeout(() => {
+          if (window.frames['myframe']){
+            window.frames['myframe'].setContents(this.appearanceSetForm.profile)
+          }
+        }, 3000)
+      },
+      // 深度观察监听
+      deep: true
+    }
+  },
   computed: {
     ...mapGetters(['dataDictList', 'sidebar', 'clientWidth', 'clientHeight']),
     httpHeaders () {
@@ -440,7 +476,6 @@ export default {
             this.appearanceSetForm = res.data
             setTimeout(() => {
                 if (window.frames['myframe']){
-                  window.frames['myframe'].setContents('')
                   window.frames['myframe'].setContents(this.appearanceSetForm.profile)
                 }
               }, 3000)
