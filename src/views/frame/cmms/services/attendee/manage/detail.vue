@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <a v-show="false" :href="downloadUrl" target="_blank" ref="a_click" download></a>
-    <el-form ref="contactForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :disabled="isView" :rules="rules" :model="setForm" label-width="150px" class="contactForm">
+    <el-form ref="contactForm" :validate-on-rule-change="false" @submit.native.prevent label-position="right" :disabled="isView" :rules="rules" :model="setForm" label-width="200px" class="contactForm">
       <el-form-item :label="$t('attendee.detail.personnelCode')" prop="personnelCode">
         <el-input v-model="setForm.personnelCode" style="width: 50%" size="mini" :placeholder="$t('attendee.detail.placehorder.personnelCodePH')"></el-input>
       </el-form-item>
@@ -172,7 +172,7 @@
           <!-- 固定信息 -->
           <div v-else>
             <!-- 姓名 -->
-            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : $t(`registration.form.${element.mapCode}.title`)" prop="name" :label-width="element.nameSplit ? '0' : '150px'">
+            <el-form-item v-if="element.mapCode == 'name'" :label="element.nameSplit ? '' : $t(`registration.form.${element.mapCode}.title`)" prop="name" :label-width="element.nameSplit ? '0' : '200px'">
               <!-- 姓名 -->
               <div v-if="element.mapCode == 'name' && !element.nameSplit" class="form-item-input">
                 <!-- <span class="setInfoItemlabel"> {{element.title}} : </span> -->
@@ -243,14 +243,14 @@
                 <!-- 详细地址 -->
                 <div v-if="element.detailedAdressISShow" class="addresItem">
                   <el-form-item :label="$t(`registration.form.fullAddress.detailedAdressTitle`)" prop="fullAddress">
-                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :label="$t(`registration.form.fullAddress.detailedAdressPlaceholder`)"></el-input>
+                    <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.fullAddress" :placeholder="$t(`registration.form.fullAddress.detailedAdressPlaceholder`)"></el-input>
                   </el-form-item>
                 </div>
                 <!-- 邮编 -->
                 <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
                   <div v-if="element.postcodeIsShow && setForm.nations == '86'" class="addresItem">
                     <el-form-item :label="$t(`registration.form.postcode.postcodeTitle`)" prop="postcode">
-                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :label="$t(`registration.form.postcode.postcodePlaceholder`)"></el-input>
+                      <el-input style="width: 50%" :disabled="element.notAllowEdit && isUpdate" size="mini" v-model="setForm.postcode" :placeholder="$t(`registration.form.postcode.postcodePlaceholder`)"></el-input>
                     </el-form-item>
                   </div>
                 </div>
