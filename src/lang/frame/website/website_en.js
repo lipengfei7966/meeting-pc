@@ -477,6 +477,7 @@ export default {
       }
     },
     role: {
+      operation: 'operate', // 操作
       roleInfo: 'Role Information', // 角色信息
       roleName: 'Role Name', // 角色名称
       roleCode: 'Role Code', // 角色代码
