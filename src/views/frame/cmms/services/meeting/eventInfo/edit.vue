@@ -122,16 +122,6 @@ export default {
               cols: 3
             }
           },
-          // {
-          //   label: 'website.eventInfo.edit.eventHashCode',
-          //   prop: 'eventHashCode',
-          //   element: 'input-validate',
-          //   attrs: {
-          //     clearable: false,
-          //     disabled: true,
-          //     cols: 3
-          //   }
-          // },
           {
             type: 'select',
             label: 'website.eventInfo.edit.mainLanguage',
